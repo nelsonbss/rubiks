@@ -39,7 +39,7 @@ void slicer::simpleSlicing(cutter &icutter, sgCObject *obj, int turn){
 	sgCGroup *tempGroup;
 
 	//it will make three cuts to get each "piece"
-	for(int i=0 ; i<28; i++){
+	for(int i=1 ; i<28; i++){//this has to go out!!!
 		// 1 -> 9 are the top cubies
 		if(i==1){
 			//top layer, far left corner

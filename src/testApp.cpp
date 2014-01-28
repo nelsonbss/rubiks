@@ -6,9 +6,9 @@
 #include "Painter.h"
 #include "sgCore.h"
 ///////////////////////////////////////////
-#define planeThicknes 10.1
+#define planeThicknes 5.1
 #define planeSize 450
-#define tamPiece 100
+#define tamPiece 30
 //--------------------------------------------------------------
 void testApp::setup(){
 	/////initialize sgCore library

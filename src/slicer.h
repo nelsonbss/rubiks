@@ -27,6 +27,6 @@ public:
 	sgCGroup** getPieces(); //returns the array of * of groups of objects for each volume(smallCube) of the puzzle
 
 	//// algorithms
-	void simpleSlicing(cutter *cut, sgCObject *obj);
+	void simpleSlicing(cutter &cut, sgCObject *obj, int turn);
 };
 #endif /* defined(__Tslicer__slicer__) */

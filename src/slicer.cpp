@@ -26,7 +26,7 @@ sgCGroup** slicer::getPieces(){
 	return pieces;
 }
 //----------------------------------------------------------------
-void slicer::simpleSlicing(cutter *icutter, sgCObject *obj){
+void slicer::simpleSlicing(cutter &icutter, sgCObject *obj, int turn){
 	//this is the implementation of the algorithm to produce the 27 pieces of the "cube"
 	//output: fills sgCGroup  **pieces  ,   with the pieces obtained 
 	sgCGroup* sub1;
@@ -40,13 +40,24 @@ void slicer::simpleSlicing(cutter *icutter, sgCObject *obj){
 			//top layer, far left corner
 			//make cut with x1, y1, z1 planes from cutter *cut
 
-			//cut1: with x1
-			sub1 = sgBoolean::Sub(*(sgC3DObject*)obj->Clone(),*(sgC3DObject*)icutter->x1->Clone());
-
-			if(sub1){
+			if(turn == 1){
+				//cut1: with x1
+				sub1 = sgBoolean::Sub(*(sgC3DObject*)obj->Clone(),*(sgC3DObject*)icutter.x1->Clone());
 				// make sure we have the elements to the left (-x) of the cut
-				comparePos = icutter->transPlaneX1.x;
+				comparePos = icutter.transPlaneX1.x;
+			}else if(turn == 2){
+				//cut1: with x2
+				sub1 = sgBoolean::Sub(*(sgC3DObject*)obj->Clone(),*(sgC3DObject*)icutter.x2->Clone());
+				// make sure we have the elements to the left (-x) of the cut
+				comparePos = icutter.transPlaneX2.x;
+			}else if(turn == 3){
+				//no cut left with planes X!!!
+				//sub1 = sgBoolean::Sub(*(sgC3DObject*)obj->Clone(),*(sgC3DObject*)icutter.x2->Clone());
+				//// make sure we have the elements to the left (-x) of the cut
+				//comparePos = icutter.transPlaneX2.x;
+			}
 
+			if(sub1){//there was someting cut !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!have to know what o do when there is no cut!!!!
 				//know how many pieces we have after the sub operation
 				int ChCnt = sub1->GetChildrenList()->GetCount();
 				sgCObject** allChilds = (sgCObject**)malloc(ChCnt*sizeof(sgCObject*));
@@ -68,7 +79,7 @@ void slicer::simpleSlicing(cutter *icutter, sgCObject *obj){
 
 					//now I have all the vertices of all the triangles of 1 object of the substraction
 					for (int i=0; i < sizeof(*points) ; i ++){
-						if (points[i].x <  comparePos){
+						if (points[i].x < comparePos){
 							//this is to the left of the plane x1
 							//we want this object!!!
 							wantedObjects[realNumberofObjects] = aux->Clone();
@@ -77,8 +88,13 @@ void slicer::simpleSlicing(cutter *icutter, sgCObject *obj){
 							//because the objects will not be on boths sides or in the middle
 							i = sizeof(*points);
 						}else{
-							//its on the right... so we dont want it
+							//its on the right... so we send it to cutting turn 2 or 3
 							i = sizeof(*points);
+							/*if(turn == 1){
+								simpleSlicing(*myCutter, aux->Clone(), 2);
+							}else if(turn ==2){
+								simpleSlicing(*myCutter, aux->Clone(), 3);
+							}*/
 						}
 					}
 					//clean up objects

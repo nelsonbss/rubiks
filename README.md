@@ -18,8 +18,7 @@ download ISO image here: http://www.microsoft.com/en-us/download/details.aspx?id
 I used Virtual clone drive to run the ISO image and install VSE 2012: 
 http://www.slysoft.com/en/virtual-clonedrive.html
 
-After installing VSE2012 you should execute an upgrade package file: 
-VS2012.4.exe
+After installing VSE2012 you should execute an upgrade package file:VS2012.4.exe (on nelsonramon.com/rubik)
 ====================================
 
 Download openFrameworks (Windows VISUAL STUDIO VERSION) here: http://openframeworks.cc/download/

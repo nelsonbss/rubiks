@@ -6,7 +6,7 @@
 #include "Painter.h"
 #include "sgCore.h"
 ///////////////////////////////////////////
-#define planeThicknes 5.1
+#define planeThicknes 10.1
 #define planeSize 450
 #define tamPiece 100
 //--------------------------------------------------------------
@@ -42,7 +42,7 @@ void testApp::setup(){
 	////////////////////////////////////////////////////////////////////////
 	//for testing reasosn., we know we should be getting one object on
 	//wantedObjects[0]
-	sgCObject *result = (sgCObject*) mySlicer->wantedObjects[0]->Clone();
+	/*sgCObject *result = (sgCObject*) mySlicer->wantedObjects[0]->Clone();
 	SG_VECTOR transBox1 = {300,0,0}; 
 	result->InitTempMatrix()->Translate(transBox1);
 	SG_VECTOR transBox12 = {0,300,0}; 
@@ -50,12 +50,13 @@ void testApp::setup(){
 	result->ApplyTempMatrix();  
 	result->DestroyTempMatrix();
 	result->SetAttribute(SG_OA_COLOR,8);
-	sgGetScene()->AttachObject(result);
+	sgGetScene()->AttachObject(result);*/
 	//////////////////////////////////////////////////
 
-	//more testing.. to see if the piece is getting wrapped on the **group
-	sgCGroup *result2 = (sgCGroup*) mySlicer->pieces[0];  //  ->wantedObjects[0]->Clone();
 
+	///////////////////////////////////////////////////////////////////////////////////
+	//more testing.. to see if the piece is getting wrapped on the **group
+	sgCGroup *result2 = (sgCGroup*) mySlicer->pieces[0];
 	//know how many pieces we have after the sub operation
 	int ChCnt = result2->GetChildrenList()->GetCount();
 	sgCObject** allChilds = (sgCObject**)malloc(ChCnt*sizeof(sgCObject*));
@@ -73,7 +74,7 @@ void testApp::setup(){
 		allChilds[j]->SetAttribute(SG_OA_COLOR,8);
 		sgGetScene()->AttachObject(allChilds[j]);
 	}
-
+	///////////////////////////////////////////////////////////////////////////////////////
 	
 }
 //--------------------------------------------------------------

@@ -33,6 +33,11 @@ void slicer::simpleSlicing(cutter &icutter, sgCObject *obj, int turn){
 
 	float comparePos = 0;
 
+	int ChCnt;
+	sgCObject** allChilds;
+
+	sgCGroup *tempGroup;
+
 	//it will make three cuts to get each "piece"
 	for(int i=0 ; i<28; i++){
 		// 1 -> 9 are the top cubies
@@ -59,8 +64,8 @@ void slicer::simpleSlicing(cutter &icutter, sgCObject *obj, int turn){
 
 			if(sub1){//there was someting cut !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!have to know what o do when there is no cut!!!!
 				//know how many pieces we have after the sub operation
-				int ChCnt = sub1->GetChildrenList()->GetCount();
-				sgCObject** allChilds = (sgCObject**)malloc(ChCnt*sizeof(sgCObject*));
+				ChCnt = sub1->GetChildrenList()->GetCount();
+				allChilds = (sgCObject**)malloc(ChCnt*sizeof(sgCObject*));
 				//allChilds[] will have all the objects in the sub1 group
 				sub1->BreakGroup(allChilds);
 				sgCObject::DeleteObject(sub1);
@@ -82,14 +87,19 @@ void slicer::simpleSlicing(cutter &icutter, sgCObject *obj, int turn){
 						if (points[i].x < comparePos){
 							//this is to the left of the plane x1
 							//we want this object!!!
-							wantedObjects[realNumberofObjects] = aux->Clone();
+
+							//fill the array wantedObjects[] to build a sgCGroup with it 
+							//the group  to be cut the second time by Y1 plane
+							wantedObjects[realNumberofObjects] = aux->Clone(); 
 							realNumberofObjects ++;
+
 							// we just need one of the vertices to know on which side of the plain it is
 							//because the objects will not be on boths sides or in the middle
 							i = sizeof(*points);
 						}else{
 							//its on the right... so we send it to cutting turn 2 or 3
 							i = sizeof(*points);
+							//send this pieces to other cutting functions!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 							/*if(turn == 1){
 								simpleSlicing(*myCutter, aux->Clone(), 2);
 							}else if(turn ==2){
@@ -102,12 +112,131 @@ void slicer::simpleSlicing(cutter &icutter, sgCObject *obj, int turn){
 				}
 				free(allChilds);
             }
-			//to test passing groups
-			sgCGroup *tempGroup = sgCGroup::CreateGroup(wantedObjects,realNumberofObjects);
-			pieces[0]= tempGroup;
-			////
+			///////////////////////////////////////////////////////////////////
+			//to save the group that is going for the second cut with plane Y1
+			tempGroup = sgCGroup::CreateGroup(wantedObjects,realNumberofObjects);
+			//free(wantedObjects);
+			realNumberofObjects = 0;
+			//pieces[0]= tempGroup;//this was to test it, to draw it.
+
 			//////take this group and cut it with y1
 			//////cut2: with y1
+			sub1 = sgBoolean::Sub(*(sgC3DObject*)wantedObjects[0],*(sgC3DObject*)icutter.y1->Clone());
+			// make sure we have the elements to the left (-x) of the cut
+			comparePos = icutter.transPlaneY1.y;
+			free(wantedObjects);
+
+			if(sub1){//there was someting cut !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!have to know what o do when there is no cut!!!!
+				//know how many pieces we have after the sub operation
+				ChCnt = sub1->GetChildrenList()->GetCount();
+				allChilds = (sgCObject**)malloc(ChCnt*sizeof(sgCObject*));
+				//allChilds[] will have all the objects in the sub1 group
+				sub1->BreakGroup(allChilds);
+				sgCObject::DeleteObject(sub1);
+
+				//to save the objects that we want from this first cut
+				//sgCObject **wantedObjects;
+				wantedObjects = (sgCObject**)malloc(ChCnt*sizeof(sgCObject*));
+				realNumberofObjects = 0;
+
+				for (int j=0; j < ChCnt; j++){
+					//get triangles to check their position relative to plane y1
+					sgC3DObject *aux = (sgC3DObject*)allChilds[j]->Clone();
+					aux->Triangulate(SG_DELAUNAY_TRIANGULATION);
+					const SG_ALL_TRIANGLES* trngls = aux->GetTriangles();
+					SG_POINT *points =  trngls->allVertex;
+
+					//now I have all the vertices of all the triangles of 1 object of the substraction
+					for (int i=0; i < sizeof(*points) ; i ++){
+						if (points[i].y < comparePos){
+							//this is above of the plane y1, because y increases down vertically on the screen
+							//we want this object!!!
+
+							//fill the array wantedObjects[] to build a sgCGroup with it 
+							//the group  to be cut the third time by plane Z1
+							wantedObjects[realNumberofObjects] = aux->Clone(); 
+							realNumberofObjects ++;
+
+							// we just need one of the vertices to know on which side of the plain it is
+							//because the objects will not be on boths sides or in the middle
+							i = sizeof(*points);
+						}else{
+							//its below the plane Y1
+							i = sizeof(*points);
+							//send this pieces to other cutting functions!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+						}
+					}
+					//clean up objects
+					sgCObject::DeleteObject(aux);
+				}
+				free(allChilds);
+			}
+
+			///////////////////////////////////////////////////////////////////
+			//to save the group that is going for the third cut with plane Z1
+			tempGroup = sgCGroup::CreateGroup(wantedObjects,realNumberofObjects);
+			free(wantedObjects);
+			realNumberofObjects = 0;
+			pieces[0]= tempGroup;//this was to test it, to draw it.
+
+			//////take this group and cut it with Z1
+			//////cut2: with y1
+			sub1 = sgBoolean::Sub(*(sgC3DObject*)obj->Clone(),*(sgC3DObject*)icutter.z1->Clone());
+			// make sure we have the elements to the left (-x) of the cut
+			comparePos = icutter.transPlaneZ1.z;
+
+			if(sub1){//there was someting cut !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!have to know what o do when there is no cut!!!!
+				//know how many pieces we have after the sub operation
+				ChCnt = sub1->GetChildrenList()->GetCount();
+				allChilds = (sgCObject**)malloc(ChCnt*sizeof(sgCObject*));
+				//allChilds[] will have all the objects in the sub1 group
+				sub1->BreakGroup(allChilds);
+				sgCObject::DeleteObject(sub1);
+
+				//to save the objects that we want from this first cut
+				//sgCObject **wantedObjects;
+				wantedObjects = (sgCObject**)malloc(ChCnt*sizeof(sgCObject*));
+				realNumberofObjects = 0;
+
+				for (int j=0; j < ChCnt; j++){
+					//get triangles to check their position relative to plane y1
+					sgC3DObject *aux = (sgC3DObject*)allChilds[j]->Clone();
+					aux->Triangulate(SG_DELAUNAY_TRIANGULATION);
+					const SG_ALL_TRIANGLES* trngls = aux->GetTriangles();
+					SG_POINT *points =  trngls->allVertex;
+
+					//now I have all the vertices of all the triangles of 1 object of the substraction
+					for (int i=0; i < sizeof(*points) ; i ++){
+						if (points[i].z > comparePos){
+							//this is above of the plane Z1, because it increases outside of the screen
+							//we want this object!!!
+
+							//fill the array wantedObjects[] to build a sgCGroup with it 
+							//the group  to be cut the third time by plane Z1
+							wantedObjects[realNumberofObjects] = aux->Clone(); 
+							realNumberofObjects ++;
+
+							// we just need one of the vertices to know on which side of the plain it is
+							//because the objects will not be on boths sides or in the middle
+							i = sizeof(*points);
+						}else{
+							//its below the plane z1
+							i = sizeof(*points);
+							//send this pieces to other cutting functions!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+						}
+					}
+					//clean up objects
+					sgCObject::DeleteObject(aux);
+				}
+				free(allChilds);
+			}
+			///////////////////////////////////////////////////////////////////FIRST CUBIE!!!!!!!!!!!!!!!
+			//to save the group that is going TO BE THE FIRST CUBIE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+			tempGroup = sgCGroup::CreateGroup(wantedObjects,realNumberofObjects);
+			free(wantedObjects);
+			realNumberofObjects = 0;
+			//pieces[0]= tempGroup;//this was to test it, to draw it.
+
 
 		}else if(i==2){
 		}else if(i==3){

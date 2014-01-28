@@ -38,6 +38,11 @@ void slicer::simpleSlicing(cutter &icutter, sgCObject *obj, int turn){
 
 	sgCGroup *tempGroup;
 
+	sgCGroup **tempGroupToZ1;
+	int realNumObjectsToZ1 = 0;
+	sgCGroup *realGroupToZ1;
+
+
 	//it will make three cuts to get each "piece"
 	for(int i=1 ; i<28; i++){//this has to go out!!!
 		// 1 -> 9 are the top cubies
@@ -130,7 +135,12 @@ void slicer::simpleSlicing(cutter &icutter, sgCObject *obj, int turn){
 			sgCObject**  allChildsCutx1 = (sgCObject**)malloc(ChCntCutx1*sizeof(sgCObject*));
 			tempGroup->BreakGroup(allChildsCutx1);
 			sgDeleteObject(tempGroup);
-			for (int i=0;i<ChCntCutx1;i++){//go through pieces left of x1
+
+			//tempGroupToZ1 will have maximum this number of pieces??
+			tempGroupToZ1 = (sgCGroup**)malloc(ChCntCutx1*sizeof(sgCGroup*));
+
+			//go through pieces left of x1
+			for (int i=0;i<ChCntCutx1;i++){
 				//////cut2: with y1
 				sub1 = sgBoolean::Sub(*(sgC3DObject*)allChildsCutx1[i],*(sgC3DObject*)icutter.y1->Clone());
 				// make sure we have the elements to the left (-x) of the cut
@@ -184,11 +194,22 @@ void slicer::simpleSlicing(cutter &icutter, sgCObject *obj, int turn){
 					free(allChilds);
 					///////////////////////////////////////////////////////////////////
 					//to save the group that is going for the third cut with plane Z1
-					tempGroup = sgCGroup::CreateGroup(wantedObjects,realNumberofObjects);
+					if(realNumberofObjects > 0){
+						tempGroupToZ1[i] = sgCGroup::CreateGroup(wantedObjects,realNumberofObjects);
+					}
 					free(wantedObjects);
+					realNumObjectsToZ1 += realNumberofObjects;
 					realNumberofObjects = 0;
-					pieces[0]= tempGroup;//this was to test it, to draw it.
-
+					//pieces[0]= tempGroupToZ1[i];//this was to test it, to draw it.
+					realGroupToZ1  = sgCGroup::CreateGroup((sgCObject **)tempGroupToZ1,realNumObjectsToZ1);
+					////for testing purposes...//////////////////////////////////////
+					//break this group and draw it
+					ChCnt = realGroupToZ1->GetChildrenList()->GetCount();
+					allChilds = (sgCObject**)malloc(ChCnt*sizeof(sgCObject*));
+					//allChilds[] will have all the objects in the sub1 group
+					realGroupToZ1->BreakGroup(allChilds);
+					pieces[0] = (sgCGroup*) allChilds[0];
+					//////////////////////////////////////////////////
 				}
 			}  
 			free(allChildsCutx1); 

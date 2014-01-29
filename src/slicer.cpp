@@ -258,25 +258,39 @@ void slicer::ySlicing(cutter &icutter, sgCGroup *grp, int turn,int cubePart){
 	int ChCnt=0;
 	sgCObject** allChilds;
 
-	//sgCGroup *tempGroup; //this is first going to be cut by Y
-	sgCGroup **tempGroupToY;//tosend to be cut by Y again
-
-	//yslicing
-	sgCObject **wantedObjectsY;
-	int realNumberofObjectsY;
-	sgCObject **toNextYSlicing;
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//to send to another ySlice function call
+	//yes cut
+	sgCObject **toNextYSlicing; 
 	int realNumberofObjectstoNextYSlicing;
-
-	sgCObject **wantedObjectsYnocut;
-	int realNumberofObjectsYnocut;
+	sgCGroup **tempGroupToY;//to send to be cut by Y again
+	int realNumObjectsToY = 0;
+	//no cut
 	sgCObject **toNextYSlicingnocut;
 	int realNumberofObjectstoNextYSlicingnocut;
+	sgCGroup **tempGroupToYnocut; //to send to be cut by Y again
+	int realNumObjectsToYnocut;
 
-
-	sgCGroup **tempGroupToZ1; // to gather the pieces that will go to Z cutting
+	sgCGroup *realGroupToY; //this is the real group going to be cut by Y turn ++
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//wanted objects to send to Z cutting
+	//yes cut
+	sgCObject **wantedObjectsY; // wanted objects to be sent to be cut by Z
+	int realNumberofObjectsY;
+	sgCGroup **tempGroupToZ1; // to gather the pieces that will go to Z cutting in the YES cut section
 	int realNumObjectsToZ1 = 0;
-	sgCGroup *realGroupToZ1; //this is the real group going to Z cut, it gathers all the tempGroupToZ1[]
+	//no cut
+	sgCObject **wantedObjectsYnocut;
+	int realNumberofObjectsYnocut;
+	sgCGroup **tempGroupToZ1nocut; // to gather the pieces that will go to Z cutting in the NO CUT seccion
+	int realNumObjectsToZ1nocut = 0;
 
+	sgCGroup *realGroupToZ1; //this is the real group going to Z cut, it gathers all the tempGroupToZ1[]
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+	//memory allocaton!! for tempgroups
 	/////////////////////////////////////////////////////////////////////////////////////////////////
 	//////take this group and cut it with Y(turn)
 	//have to iterate through all the pieces of the group left of the previous cutting plzne X
@@ -286,15 +300,13 @@ void slicer::ySlicing(cutter &icutter, sgCGroup *grp, int turn,int cubePart){
 	//sgDeleteObject(grp); this has to be deleted??????
 
 	////////////////////////////////////////////////////////////////////////////////////////////////
+	//tempGroupToY to send to ySlicing turn ++
+	tempGroupToY = (sgCGroup**)malloc(ChCntCutX*sizeof(sgCGroup*));
+	tempGroupToYnocut = (sgCGroup**)malloc(ChCntCutX*sizeof(sgCGroup*));
+	////////////////////////////////////////////////////////////////////////////////////////////////
 	//tempGroupToZ1 will have maximum this number of pieces??
 	tempGroupToZ1 = (sgCGroup**)malloc(ChCntCutX*sizeof(sgCGroup*));
-
-	////////////////////////////////////////////////////////////////////////////////////////////////
-	///allocate memory for possible wanted&nextY pieces if there are no cuts by Y plane
-	wantedObjectsYnocut = (sgCObject**)malloc(ChCntCutX*sizeof(sgCObject*));
-	realNumberofObjectsYnocut =0 ;
-	toNextYSlicingnocut = (sgCObject**)malloc(ChCntCutX*sizeof(sgCObject*));
-	realNumberofObjectstoNextYSlicingnocut = 0;
+	tempGroupToZ1nocut = (sgCGroup**)malloc(ChCntCutX*sizeof(sgCGroup*));
 
 	////go through pieces on the left of X cut
 	for (int i=0;i<ChCntCutX;i++){
@@ -366,13 +378,20 @@ void slicer::ySlicing(cutter &icutter, sgCGroup *grp, int turn,int cubePart){
 			}
 			free(allChilds);
 
+			//////////////////////////////////////////////////////////////////////////////////////////////////////////
+			//to save group that is going for another cut with Y plane
+			tempGroupToY[i] = sgCGroup::CreateGroup(toNextYSlicing,realNumberofObjectstoNextYSlicing);
+			free(toNextYSlicing);
+			realNumObjectsToY += realNumberofObjectstoNextYSlicing;
+			realNumberofObjectstoNextYSlicing = 0;
+
 			///////////////////////////////////////////////////////////////////////////////////////////////////////////
-			//to save the group that is going for the third cut with plane Z1
+			//to save the group that is going for the cut with plane Z
 			//if(realNumberofObjects > 0){
 			//if we have objects above y1
 			tempGroupToZ1[i] = sgCGroup::CreateGroup(wantedObjectsY,realNumberofObjectsY);
 			//}else{
-			//what if we dont have objects above y1??-> this means there was no cut// thisonly happens if the cutter takes part of the object !!
+			//what if we dont have objects above y1??-> this means there was no cut// thisonly happens if the cutter thickness eats part of the object and the rest is on the goto Y zone!!
 			//tempGroupToZ1[i] = NULL
 			//}
 			free(wantedObjectsY);
@@ -380,6 +399,13 @@ void slicer::ySlicing(cutter &icutter, sgCGroup *grp, int turn,int cubePart){
 			realNumberofObjectsY = 0;
 		}
 		else{
+			////////////////////////////////////////////////////////////////////////////////////////////////
+			///allocate memory for possible wanted&nextY pieces if there are no cuts by Y plane
+			wantedObjectsYnocut = (sgCObject**)malloc(ChCntCutX*sizeof(sgCObject*));
+			realNumberofObjectsYnocut =0 ;
+			toNextYSlicingnocut = (sgCObject**)malloc(ChCntCutX*sizeof(sgCObject*));
+			realNumberofObjectstoNextYSlicingnocut = 0;
+
 			//nothing was cut by Y PLANE!!!
 			//this piece could not be in contact with the Y plane, 
 			//but it can still be in the desired area
@@ -416,14 +442,29 @@ void slicer::ySlicing(cutter &icutter, sgCGroup *grp, int turn,int cubePart){
 				}
 			}
 			//at this point we have pieces that were not cut, but that have to go to next Y cutting or to Z cutting
-			//they have to be added to the groups on the YES CUT side of this funciton
-
-			toNextYSlicing[realNumberofObjectstoNextYSlicing];
-			toNextYSlicingnocut[realNumberofObjectstoNextYSlicingnocut];
+			//they have to be unified to the groups on the YES CUT side of this funciton
 
 
-			wantedObjectsY[realNumberofObjectsY];
-			wantedObjectsYnocut[realNumberofObjectsYnocut];
+			//////////////////////////////////////////////////////////////////////////////////////////////////////////
+			//to save group that is going for another cut with Y plane
+			tempGroupToYnocut[i] = sgCGroup::CreateGroup(toNextYSlicingnocut,realNumberofObjectstoNextYSlicingnocut);
+			free(toNextYSlicingnocut);
+			realNumObjectsToY += realNumberofObjectstoNextYSlicingnocut;
+			realNumberofObjectstoNextYSlicingnocut = 0;
+
+			///////////////////////////////////////////////////////////////////////////////////////////////////////////
+			//to save the group that is going for the cut with plane Z from NO CUT area
+			//if(realNumberofObjects > 0){
+			//if we have objects above y1
+			tempGroupToZ1nocut[i] = sgCGroup::CreateGroup(wantedObjectsYnocut,realNumberofObjectsYnocut);
+			//}else{
+			//what if we dont have objects above y1??-> this means there was no cut// thisonly happens if the cutter takes part of the object !!
+			//tempGroupToZ1[i] = NULL
+			//}
+			free(wantedObjectsYnocut);
+			realNumObjectsToZ1nocut += realNumberofObjectsYnocut;
+			realNumberofObjectsYnocut = 0;
+			////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		}
 	}  
 	free(allChildsCutX); 

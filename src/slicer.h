@@ -22,11 +22,19 @@ public:
 
 	sgCObject **wantedObjects;
 	int realNumberofObjects;
+	sgCObject **toNextXSlicing;
+	int realNumberofObjectstoNextXSlicing;
+
+	sgCObject **wantedObjectsY;
+	int realNumberofObjectsY;
+	sgCObject **toNextYSlicing;
+	int realNumberofObjectstoNextYSlicing;
 
 
 	sgCGroup** getPieces(); //returns the array of * of groups of objects for each volume(smallCube) of the puzzle
 
 	//// algorithms
-	void simpleSlicing(cutter &cut, sgCObject *obj, int turn);
+	void xSlicing(cutter &cut, sgCObject *obj, int turn);
+	void ySlicing(cutter &cut, sgCGroup *grp, int turn, int cubePart);
 };
 #endif /* defined(__Tslicer__slicer__) */

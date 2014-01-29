@@ -13,7 +13,7 @@ void slicer::setup(){
 
 //--------------------------------------------------------------
 void slicer::update(){
-	
+
 }
 
 //--------------------------------------------------------------
@@ -106,9 +106,9 @@ void slicer::simpleSlicing(cutter &icutter, sgCObject *obj, int turn){
 							i = sizeof(*points);
 							//send this pieces to other cutting functions!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 							/*if(turn == 1){
-								simpleSlicing(*myCutter, aux->Clone(), 2);
+							simpleSlicing(*myCutter, aux->Clone(), 2);
 							}else if(turn ==2){
-								simpleSlicing(*myCutter, aux->Clone(), 3);
+							simpleSlicing(*myCutter, aux->Clone(), 3);
 							}*/
 						}
 					}
@@ -117,158 +117,155 @@ void slicer::simpleSlicing(cutter &icutter, sgCObject *obj, int turn){
 				}
 				free(allChilds);
 
+				///////////////////////////////////////////////////////////////////
+				//to save the group that is going for the second cut with plane Y1
+				tempGroup = sgCGroup::CreateGroup(wantedObjects,realNumberofObjects);
+				free(wantedObjects);
+				realNumberofObjects = 0;
+				//pieces[0]= tempGroup;//this was to test it, to draw it.
 
-            }//end there was something cut by X1
-			else{
-				//nothing was cut by x1!! so piece is smaller and doesnt have parts on the left of x1
-				//send piece to be cut by x2
-				//this same function but with turn 2 ?????
-			}
+				//////take this group and cut it with Y1
+				//have to iterate through all the pieces of the group left of X1
+				int ChCntCutx1 = tempGroup->GetChildrenList()->GetCount();
+				sgCObject**  allChildsCutx1 = (sgCObject**)malloc(ChCntCutx1*sizeof(sgCObject*));
+				tempGroup->BreakGroup(allChildsCutx1);
+				sgDeleteObject(tempGroup);
 
+				//tempGroupToZ1 will have maximum this number of pieces??
+				tempGroupToZ1 = (sgCGroup**)malloc(ChCntCutx1*sizeof(sgCGroup*));
 
-			//all this BELOW!!must go inside of the if sub1!!on z1 cut!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-			//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+				//go through pieces on the left of x1
+				for (int i=0;i<ChCntCutx1;i++){
+					//////cut2: with y1
+					sub1 = sgBoolean::Sub(*(sgC3DObject*)allChildsCutx1[i],*(sgC3DObject*)icutter.y1->Clone());
+					// make sure we have the elements to the left (-x) of the cut
+					comparePos = icutter.transPlaneY1.y;
 
-			///////////////////////////////////////////////////////////////////
-			//to save the group that is going for the second cut with plane Y1
-			tempGroup = sgCGroup::CreateGroup(wantedObjects,realNumberofObjects);
-			free(wantedObjects);
-			realNumberofObjects = 0;
-			//pieces[0]= tempGroup;//this was to test it, to draw it.
+					if(sub1){//there was someting cut !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!have to know what to do when there is no cut!!!!
+						//know how many pieces we have after the sub operation
+						ChCnt = sub1->GetChildrenList()->GetCount();
+						allChilds = (sgCObject**)malloc(ChCnt*sizeof(sgCObject*));
+						//allChilds[] will have all the objects in the sub1 group
+						sub1->BreakGroup(allChilds);
+						sgCObject::DeleteObject(sub1);
 
-			//////take this group and cut it with Y1
-			//have to iterate through all the pieces of the group left of X1
-			int ChCntCutx1 = tempGroup->GetChildrenList()->GetCount();
-			sgCObject**  allChildsCutx1 = (sgCObject**)malloc(ChCntCutx1*sizeof(sgCObject*));
-			tempGroup->BreakGroup(allChildsCutx1);
-			sgDeleteObject(tempGroup);
+						//to save the objects that we want from this second cut with Y1
+						//sgCObject **wantedObjects;
+						wantedObjects = (sgCObject**)malloc(ChCnt*sizeof(sgCObject*));
+						realNumberofObjects = 0;
 
-			//tempGroupToZ1 will have maximum this number of pieces??
-			tempGroupToZ1 = (sgCGroup**)malloc(ChCntCutx1*sizeof(sgCGroup*));
+						//going through all the pieces of Y1 cut
+						for (int j=0; j < ChCnt; j++){
+							//get triangles to check their position relative to plane y1
+							sgC3DObject *aux = (sgC3DObject*)allChilds[j]->Clone();
+							aux->Triangulate(SG_DELAUNAY_TRIANGULATION);
+							const SG_ALL_TRIANGLES* trngls = aux->GetTriangles();
+							SG_POINT *points =  trngls->allVertex;
 
-			//go through pieces on the left of x1
-			for (int i=0;i<ChCntCutx1;i++){
-				//////cut2: with y1
-				sub1 = sgBoolean::Sub(*(sgC3DObject*)allChildsCutx1[i],*(sgC3DObject*)icutter.y1->Clone());
-				// make sure we have the elements to the left (-x) of the cut
-				comparePos = icutter.transPlaneY1.y;
+							//now I have all the vertices of all the triangles of 1 object of the substraction
+							for (int i=0; i < sizeof(*points) ; i ++){
+								if (points[i].y < comparePos){
+									//this is above of the plane y1, because y increases down vertically on the screen
+									//we want this object!!!
 
-				if(sub1){//there was someting cut !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!have to know what to do when there is no cut!!!!
-					//know how many pieces we have after the sub operation
-					ChCnt = sub1->GetChildrenList()->GetCount();
-					allChilds = (sgCObject**)malloc(ChCnt*sizeof(sgCObject*));
-					//allChilds[] will have all the objects in the sub1 group
-					sub1->BreakGroup(allChilds);
-					sgCObject::DeleteObject(sub1);
+									//fill the array wantedObjects[] to build a sgCGroup with it 
+									//the group  to be cut the third time by plane Z1
+									wantedObjects[realNumberofObjects] = aux->Clone(); 
+									realNumberofObjects ++;
 
-					//to save the objects that we want from this second cut with Y1
-					//sgCObject **wantedObjects;
-					wantedObjects = (sgCObject**)malloc(ChCnt*sizeof(sgCObject*));
-					realNumberofObjects = 0;
-
-					//going through all the pieces of Y1 cut
-					for (int j=0; j < ChCnt; j++){
-						//get triangles to check their position relative to plane y1
-						sgC3DObject *aux = (sgC3DObject*)allChilds[j]->Clone();
-						aux->Triangulate(SG_DELAUNAY_TRIANGULATION);
-						const SG_ALL_TRIANGLES* trngls = aux->GetTriangles();
-						SG_POINT *points =  trngls->allVertex;
-
-						//now I have all the vertices of all the triangles of 1 object of the substraction
-						for (int i=0; i < sizeof(*points) ; i ++){
-							if (points[i].y < comparePos){
-								//this is above of the plane y1, because y increases down vertically on the screen
-								//we want this object!!!
-
-								//fill the array wantedObjects[] to build a sgCGroup with it 
-								//the group  to be cut the third time by plane Z1
-								wantedObjects[realNumberofObjects] = aux->Clone(); 
-								realNumberofObjects ++;
-
-								// we just need one of the vertices to know on which side of the plain it is
-								//because the objects will not be on boths sides or in the middle
-								i = sizeof(*points);
-							}else{
-								//its below the plane Y1
-								i = sizeof(*points);
-								//send this pieces to other cutting functions!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-								//send this pieces to other cutting functions!????????????????????????????????????????????????
+									// we just need one of the vertices to know on which side of the plain it is
+									//because the objects will not be on boths sides or in the middle
+									i = sizeof(*points);
+								}else{
+									//its below the plane Y1
+									i = sizeof(*points);
+									//send this pieces to other cutting functions!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+									//send this pieces to other cutting functions!????????????????????????????????????????????????
+								}
 							}
+							//clean up objects
+							sgCObject::DeleteObject(aux);
 						}
-						//clean up objects
-						sgCObject::DeleteObject(aux);
-					}
-					free(allChilds);
-					///////////////////////////////////////////////////////////////////////////////////////////////////////////
-					//to save the group that is going for the third cut with plane Z1
-					//if(realNumberofObjects > 0){
+						free(allChilds);
+						///////////////////////////////////////////////////////////////////////////////////////////////////////////
+						//to save the group that is going for the third cut with plane Z1
+						//if(realNumberofObjects > 0){
 						//if we have objects above y1
 						tempGroupToZ1[i] = sgCGroup::CreateGroup(wantedObjects,realNumberofObjects);
-					//}else{
+						//}else{
 						//what if we dont have objects above y1??-> this means there was no cut// thisonly happens if the cutter takes part of the object !!
 						//tempGroupToZ1[i] = NULL
-					//}
-					free(wantedObjects);
-					realNumObjectsToZ1 += realNumberofObjects;
-					realNumberofObjects = 0;
-				}
-				else{
-					//nothing was cut by y1
-					//this means that the object will have nothing on the column of cubies, 1,4,7
-					tempGroupToZ1[i] = NULL;
-				}
-			}  
-			free(allChildsCutx1); 
-			//after having iterated all of the pieces from the x1 cut
-			//we have all the pieces we want from the y1 cut in: tempGroupToZ1[] // we have ChCntCutx1 of these
-			//we have hte number of pieces in total in: realNumObjectsToZ1
+						//}
+						free(wantedObjects);
+						realNumObjectsToZ1 += realNumberofObjects;
+						realNumberofObjects = 0;
+					}
+					else{
+						//nothing was cut by y1
+						//this means that the object will have nothing on the column of cubies, 1,4,7
+						tempGroupToZ1[i] = NULL;
+					}
+				}  
+				free(allChildsCutx1); 
+				//after having iterated all of the pieces from the x1 cut
+				//we have all the pieces we want from the y1 cut in: tempGroupToZ1[] // we have ChCntCutx1 of these
+				//we have hte number of pieces in total in: realNumObjectsToZ1
 
-			//add each of this obj to sgCObject*   objcts[realNumObjectsToZ1]; 
-			sgCObject  *objcts[500];
-			int z=0;
-			//break each tempGroupToZ1[]
-			for (int o=0;o<ChCntCutx1;o++){
-				ChCnt = tempGroupToZ1[o]->GetChildrenList()->GetCount();
-				allChilds = (sgCObject**)malloc(ChCnt*sizeof(sgCObject*));
-				tempGroupToZ1[o]->BreakGroup(allChilds);
+				//add each of this obj to sgCObject*   objcts[realNumObjectsToZ1]; 
+				sgCObject  *objcts[500];
+				int z=0;
+				//break each tempGroupToZ1[]
+				for (int o=0;o<ChCntCutx1;o++){
+					ChCnt = tempGroupToZ1[o]->GetChildrenList()->GetCount();
+					allChilds = (sgCObject**)malloc(ChCnt*sizeof(sgCObject*));
+					tempGroupToZ1[o]->BreakGroup(allChilds);
 
-				for (int j=0; j < ChCnt; j++){
-					objcts[z] = allChilds[j];
-					z ++;
+					for (int j=0; j < ChCnt; j++){
+						objcts[z] = allChilds[j];
+						z ++;
+					}
 				}
+				free(allChilds);
+				//create group to be sent to z1
+				realGroupToZ1  = sgCGroup::CreateGroup(objcts,realNumObjectsToZ1);
+				//clean objects
+				//sgCObject::DeleteObject(*tempGroupToZ1);
+				//sgCObject::DeleteObject(*objcts);
+
+
+				///////////////////////////////////////////////////////////////////////
+				////for testing purposes...////////////////////////////////////////////
+				//break this group and draw it
+				/*ChCnt = realGroupToZ1->GetChildrenList()->GetCount();
+				sgCObject** temp = (sgCObject**)malloc(ChCnt*sizeof(sgCObject*));
+				realGroupToZ1->BreakGroup(temp);*/
+				pieces[0] = realGroupToZ1;
+				///////////////////////////////////////////////////////////////////////
+
+			}//end there was something cut by X1
+			else{
+				//nothing was cut by x1!! so piece is smaller and doesnt have parts on the left of x1
+				//this 3rd of the puzzle will be empty
+				pieces[0] = NULL;
+				pieces[1] = NULL;
+				pieces[2] = NULL;
+				pieces[3] = NULL;
+				pieces[4] = NULL;
+				pieces[5] = NULL;
+				pieces[6] = NULL;
+				pieces[7] = NULL;
+				pieces[8] = NULL;
+				//send piece to be cut by x2
+				//this same function but with turn 2
+				simpleSlicing(*myCutter, obj, 2);
 			}
-			free(allChilds);
-			//create group to be sent to z1
-			realGroupToZ1  = sgCGroup::CreateGroup(objcts,realNumObjectsToZ1);
-			//clean objects
-			//sgCObject::DeleteObject(*tempGroupToZ1);
-			//sgCObject::DeleteObject(*objcts);
-
-
-			///////////////////////////////////////////////////////////////////////
-			////for testing purposes...////////////////////////////////////////////
-			//break this group and draw it
-			/*ChCnt = realGroupToZ1->GetChildrenList()->GetCount();
-			sgCObject** temp = (sgCObject**)malloc(ChCnt*sizeof(sgCObject*));
-			realGroupToZ1->BreakGroup(temp);*/
-			pieces[0] = realGroupToZ1;
-			///////////////////////////////////////////////////////////////////////
-			
-			
-
-			
-
-			
 
 
 
 
 
-
-
-
-
-
+			///THIS HAS TO BE PUT INSIDE THE FIRST SUCCESFUL CUT WITH X1!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+			///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			//////take this group and cut it with Z1
 			//////cut2: with y1
 			sub1 = sgBoolean::Sub(*(sgC3DObject*)obj->Clone(),*(sgC3DObject*)icutter.z1->Clone());

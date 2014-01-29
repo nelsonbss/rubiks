@@ -19,17 +19,9 @@ public:
 	//!!!important
 	//its an array of groups because in one siliced piece, there might be 1 or more 3Dobjects
 	//as the result of the booleansubstraction!!!
+	
 
-	sgCObject **wantedObjects;
-	int realNumberofObjects;
-	sgCObject **toNextXSlicing;
-	int realNumberofObjectstoNextXSlicing;
-
-	sgCObject **wantedObjectsY;
-	int realNumberofObjectsY;
-	sgCObject **toNextYSlicing;
-	int realNumberofObjectstoNextYSlicing;
-
+	
 
 	sgCGroup** getPieces(); //returns the array of * of groups of objects for each volume(smallCube) of the puzzle
 

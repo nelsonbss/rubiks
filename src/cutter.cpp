@@ -10,6 +10,11 @@ cutter::cutter(float thick, float tamPlane, float tamCuby,float numCutr){
 	posY=0;
 	planes = (sgCObject**)malloc(6*sizeof(sgCObject*));  //allocate memory
 	cubes = (sgCObject**)malloc(27*sizeof(sgCObject*));  //allocate memory
+	///
+	centerCube.x = -tamCubie/2;
+	centerCube.y = -tamCubie/2;
+	centerCube.z = tamCubie/2; 
+	infinity = (cutterSize-tamCubie)/2;
 }
 
 //--------------------------------------------------------------
@@ -174,21 +179,115 @@ void cutter::setup(){
 	allPlanes = sgCGroup::CreateGroup(planes,6);
 
 
-	//////////////////////////////////////////////////////////////////
-	///make cubes	
-	c1 = sgCreateBox(300,300,300); //only 7 cubes are equilateral
-	//move plane to the middle of its side
-	SG_VECTOR transCube1 = {300,50,0}; 
-	c1->InitTempMatrix()->Translate(transCube1);
-	//////
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	///make cubes///make cubes///make cubes///make cubes///make cubes///make cubes///make cubes///make cubes ///
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//the "cube" will be constructed by planes. the cube has three planes.
+	//the first plane constucted is the middle plane
+
+	//fist put the center cubie, it is the only cubic cubie, the other ones expand towards the outside to "infinity"
+	c1 = sgCreateBox(tamCubie,tamCubie,tamCubie); //only 7 cubes are equilateral
+	c1->InitTempMatrix()->Translate(centerCube);
 	c1->ApplyTempMatrix();  
 	c1->DestroyTempMatrix();
-	c1->SetAttribute(SG_OA_COLOR,18);
+	c1->SetAttribute(SG_OA_COLOR,0);
+	////
+	c2 = sgCreateBox(infinity,tamCubie,tamCubie); //it expands -> x
+	c2->InitTempMatrix()->Translate(centerCube);//center box
+	SG_VECTOR transc2 = {tamCubie,0,0};//move to its position
+	c2->GetTempMatrix()->Translate(transc2);
+	c2->ApplyTempMatrix();  
+	c2->DestroyTempMatrix();
+	c2->SetAttribute(SG_OA_COLOR,2);
+	////
+	c3 = sgCreateBox(infinity,tamCubie,infinity); //it expands -> x & -> z (z is positive, have to handle this with rotations)
+	c3->InitTempMatrix()->Translate(centerCube);//center box
+	SG_VECTOR transc3 = {tamCubie,0,0};//move to its position
+	c3->GetTempMatrix()->Translate(transc3);
+	SG_VECTOR transc31 = {0,0,tamCubie};//move to its position
+	c3->GetTempMatrix()->Translate(transc31);
+	c3->ApplyTempMatrix();  
+	c3->DestroyTempMatrix();
+	c3->SetAttribute(SG_OA_COLOR,4);
+	////
+	c4 = sgCreateBox(tamCubie,tamCubie,infinity); //it expands -> z
+	c4->InitTempMatrix()->Translate(centerCube);//center box
+	SG_VECTOR transc4 = {0,0,tamCubie};//move to its position
+	c4->GetTempMatrix()->Translate(transc4);
+	c4->ApplyTempMatrix();  
+	c4->DestroyTempMatrix();
+	c4->SetAttribute(SG_OA_COLOR,6);
+	////
+	c5 = sgCreateBox(infinity,tamCubie,infinity); //it expands -> x & -> z 
+	SG_POINT rot5 = {0,0,0};
+	SG_VECTOR rotD5 = {0,-1,0};
+	c5->InitTempMatrix()->Rotate(rot5,rotD5, 1.57079633);
+	c5->GetTempMatrix()->Translate(centerCube);//center box
+	SG_VECTOR transc5 = {0,0,tamCubie};//move to its position
+	c5->GetTempMatrix()->Translate(transc5);
+	c5->ApplyTempMatrix();  
+	c5->DestroyTempMatrix();
+	c5->SetAttribute(SG_OA_COLOR,8);
+	////
+	c6 = sgCreateBox(infinity,tamCubie,tamCubie); //it expands -> x 
+	SG_POINT rot6 = {0,0,0};
+	SG_VECTOR rotD6 = {0,-1,0};
+	c6->InitTempMatrix()->Rotate(rot6,rotD6, 3.14);
+	c6->GetTempMatrix()->Translate(centerCube);//center box
+	SG_VECTOR transc6 = {0,0,tamCubie};//move to its position
+	c6->GetTempMatrix()->Translate(transc6);
+	c6->ApplyTempMatrix();  
+	c6->DestroyTempMatrix();
+	c6->SetAttribute(SG_OA_COLOR,10);
+	////
+	c7 = sgCreateBox(infinity,tamCubie,infinity); //it expands -> x & -> z 
+	SG_POINT rot7 = {0,0,0};
+	SG_VECTOR rotD7 = {0,-1,0};
+	c7->InitTempMatrix()->Rotate(rot7,rotD7, 3.14);
+	c7->GetTempMatrix()->Translate(centerCube);//center box
+	c7->ApplyTempMatrix();  
+	c7->DestroyTempMatrix();
+	c7->SetAttribute(SG_OA_COLOR,12);
+	////
+	c8 = sgCreateBox(infinity,tamCubie,tamCubie); //it expands -> x
+	SG_POINT rot8 = {0,0,0};
+	SG_VECTOR rotD8 = {0,-1,0};
+	c8->InitTempMatrix()->Rotate(rot8,rotD8, -1.57079633);
+	c8->GetTempMatrix()->Translate(centerCube);//center box
+	c8->ApplyTempMatrix();  
+	c8->DestroyTempMatrix();
+	c8->SetAttribute(SG_OA_COLOR,14);
+	////
+	c9 = sgCreateBox(infinity,tamCubie,infinity); //it expands -> x & -> z
+	SG_POINT rot9 = {0,0,0};
+	SG_VECTOR rotD9 = {0,-1,0};
+	c9->InitTempMatrix()->Rotate(rot9,rotD9, -1.57079633);
+	c9->GetTempMatrix()->Translate(centerCube);//center box
+	SG_VECTOR transc9 = {tamCubie,0,0};//move to its position
+	c9->GetTempMatrix()->Translate(transc9);
+	c9->ApplyTempMatrix();  
+	c9->DestroyTempMatrix();
+	c9->SetAttribute(SG_OA_COLOR,16);
 	////////////////////////////////////////////////////////////////
 	///put cubes in [] to make group
 	cubes[0] = c1;
+	cubes[1] = c2;
+	cubes[2] = c3;
+	cubes[3] = c4;
+	cubes[4] = c5;
+	cubes[5] = c6;
+	cubes[6] = c7;
+	cubes[7] = c8;
+	cubes[8] = c9;
 	//////create group
-	allCubes = sgCGroup::CreateGroup(cubes,1);
+	allCubes = sgCGroup::CreateGroup(cubes,9);
+	SG_VECTOR center = {400,400,0};
+	allCubes->InitTempMatrix()->Translate(center);
+	SG_POINT rot = {400,400,0};
+	SG_VECTOR rotD = {1,0,0};
+	allCubes->GetTempMatrix()->Rotate(rot,rotD, 1.57079633); 
+	allCubes->ApplyTempMatrix();  
+	allCubes->DestroyTempMatrix();
 }
 
 //--------------------------------------------------------------
@@ -202,9 +301,10 @@ void cutter::update(){
 	//	//////create group
 	allPlanes = sgCGroup::CreateGroup(planes,6);
 
-	//cubes[0] = c1;
+	//why do I have to do this update... or else allPlanes & allCubes are forgotten and cannot draw ?????????????????????
+	//cubes[0] = c1; 
 	//////create group
-	allCubes = sgCGroup::CreateGroup(cubes,1);
+	allCubes = sgCGroup::CreateGroup(cubes,9);
 
 }
 

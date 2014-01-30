@@ -43,6 +43,8 @@ public:
     sgCGroup *allPlanes;
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/////cutting cubes
+	SG_VECTOR centerCube; 
+	float infinity;
 	sgCBox *c1; //cutting "planes"
 	SG_VECTOR posCube1;//this is to do the translation of the plane, and remember its position for slicing
 	sgCBox *c2;

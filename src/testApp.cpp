@@ -6,9 +6,9 @@
 #include "Painter.h"
 #include "sgCore.h"
 ///////////////////////////////////////////
-#define planeThicknes 5.1
-#define planeSize 450
-#define tamCubie 30
+#define planeThicknes 0.1
+#define planeSize 300
+#define tamCubie 50
 //--------------------------------------------------------------
 void testApp::setup(){
 	/////initialize sgCore library
@@ -48,24 +48,24 @@ void testApp::setup(){
 
 	///////////////////////////////////////////////////////////////////////////////////
 	//more testing.. to see if the piece is getting wrapped on the **group
-	sgCGroup *result2 = (sgCGroup*) myCutter->allCubes; //cubie 1
+	//sgCGroup *result2 = (sgCGroup*) myCutter->allCubes; //cubie 1
 	//sgCGroup *result2 = (sgCGroup*) mySlicer->pieces[0]; //cubie 1
-	const int ChCnt = result2->GetChildrenList()->GetCount();
-	sgCObject** allChilds3 = (sgCObject**)malloc(ChCnt*sizeof(sgCObject*));
-	result2->BreakGroup(allChilds3);// ->BreakGroup(allChilds3);
-	sgCObject::DeleteObject(result2);
+	//const int ChCnt = result2->GetChildrenList()->GetCount();
+	//sgCObject** allChilds3 = (sgCObject**)malloc(ChCnt*sizeof(sgCObject*));
+	//result2->BreakGroup(allChilds3);// ->BreakGroup(allChilds3);
+	//sgCObject::DeleteObject(result2);
 
-	for (int j=0; j < ChCnt; j++){
-		/*SG_VECTOR transBox11 = {500,0,0}; 
-		allChilds3[j]->InitTempMatrix()->Translate(transBox11);
-		SG_VECTOR transBox121 = {0,500,0}; 
-		allChilds3[j]->GetTempMatrix()->Translate(transBox121);
-		allChilds3[j]->ApplyTempMatrix();  
-		allChilds3[j]->DestroyTempMatrix();
-		allChilds3[j]->SetAttribute(SG_OA_COLOR,18);*/
-		sgGetScene()->AttachObject(allChilds3[j]);
-	}
-	free(allChilds3);
+	//for (int j=0; j < ChCnt; j++){
+	//	/*SG_VECTOR transBox11 = {500,0,0}; 
+	//	allChilds3[j]->InitTempMatrix()->Translate(transBox11);
+	//	SG_VECTOR transBox121 = {0,500,0}; 
+	//	allChilds3[j]->GetTempMatrix()->Translate(transBox121);
+	//	allChilds3[j]->ApplyTempMatrix();  
+	//	allChilds3[j]->DestroyTempMatrix();
+	//	allChilds3[j]->SetAttribute(SG_OA_COLOR,18);*/
+	//	sgGetScene()->AttachObject(allChilds3[j]);
+	//}
+	//free(allChilds3);
 	///////////////////////////////////////////////////////////////////////////////////////
 	
 }
@@ -90,7 +90,7 @@ void testApp::update(){
 //--------------------------------------------------------------
 void testApp::draw(){
 
-  sgGetScene()->AttachObject(objectDisplayed->getObject());
+  //sgGetScene()->AttachObject(objectDisplayed->getObject());
   
   //addGroupToScene((sgCGroup*)myCutter->getCutterPlanes());
   addGroupToScene((sgCGroup*)myCutter->getCutterCubes());

@@ -183,10 +183,10 @@ void cutter::setup(){
 
 		//////create group////////////////////////////////////////////////
 		allPlanes = sgCGroup::CreateGroup(planes,6);
-	}else{
+	}else if(numCutter==2){
 		//////////////////////////////////////////////////////////////////
 		///make cubes	
-		x1 = sgCreateBox(cutterSize,cutterSize,cutterSize); 
+		x1 = sgCreateBox(tamCubie,tamCubie,tamCubie); //only 7 cubes are equilateral
 		//move plane to the middle of its side
 		SG_VECTOR transBox1 = {0,-cutterSize/2,0}; 
 		x1->InitTempMatrix()->Translate(transBox1);

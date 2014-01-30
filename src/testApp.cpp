@@ -25,58 +25,44 @@ void testApp::setup(){
 	/////////////////////////////////////////////////////////////////////////////////
 
 	//////////////////////////////create cutter//////////////////////////////////////
-	normalCutter = new cutter(planeThicknes,planeSize,tamCubie,1);
-	normalCutter->setup();
-
-	/*cubeCutter = new cutter(0,planeSize,tamCubie,2);
-	cubeCutter->setup();*/
+	myCutter = new cutter(planeThicknes,planeSize,tamCubie,1); //to make a plane based cutter
+	myCutter->setup();
 	/////////////////////////////////////////////////////////////////////////////////
 
 	//////////////////////////////create slicer//////////////////////////////////////
-	mySlicer = new slicer(normalCutter);
+	mySlicer = new slicer(myCutter);
 	mySlicer->setup();
+
+	//mySlicer = new slicer(cubeCutter);
+	//mySlicer->setup();
 	/////////////////////////////////////////////////////////////////////////////////
 
 
 	////BOOLEAN SUBSTRACTION////////////////////////////////Make all the CUTS//////////////////////////////
-	mySlicer->xSlicing(*mySlicer->myCutter,objectDisplayed->getObject(),1,1);
+	//mySlicer->xSlicing(*mySlicer->myCutter,objectDisplayed->getObject(),1,1);
 	///////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	///boolean INTERSECTION//////////////////////////////////////////////////////////////////////////////
 	//mySlicer->intersectCubes(*mySlicer->myCutter,objectDisplayed->getObject());
 	/////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	////////////////////////////////////////////////////////////////////////
-	//for testing reasosn., we know we should be getting one object on
-	//wantedObjects[0]
-	/*sgCObject *result = (sgCObject*) mySlicer->wantedObjects[0]->Clone();
-	SG_VECTOR transBox1 = {300,0,0}; 
-	result->InitTempMatrix()->Translate(transBox1);
-	SG_VECTOR transBox12 = {0,300,0}; 
-	result->GetTempMatrix()->Translate(transBox12);
-	result->ApplyTempMatrix();  
-	result->DestroyTempMatrix();
-	result->SetAttribute(SG_OA_COLOR,8);
-	sgGetScene()->AttachObject(result);*/
-	//////////////////////////////////////////////////
-
-
 	///////////////////////////////////////////////////////////////////////////////////
 	//more testing.. to see if the piece is getting wrapped on the **group
-	sgCGroup *result2 = (sgCGroup*) mySlicer->pieces[0]; //cubie 1
+	sgCGroup *result2 = (sgCGroup*) myCutter->allCubes; //cubie 1
+	//sgCGroup *result2 = (sgCGroup*) mySlicer->pieces[0]; //cubie 1
 	const int ChCnt = result2->GetChildrenList()->GetCount();
 	sgCObject** allChilds3 = (sgCObject**)malloc(ChCnt*sizeof(sgCObject*));
 	result2->BreakGroup(allChilds3);// ->BreakGroup(allChilds3);
 	sgCObject::DeleteObject(result2);
 
 	for (int j=0; j < ChCnt; j++){
-		SG_VECTOR transBox11 = {500,0,0}; 
+		/*SG_VECTOR transBox11 = {500,0,0}; 
 		allChilds3[j]->InitTempMatrix()->Translate(transBox11);
 		SG_VECTOR transBox121 = {0,500,0}; 
 		allChilds3[j]->GetTempMatrix()->Translate(transBox121);
 		allChilds3[j]->ApplyTempMatrix();  
 		allChilds3[j]->DestroyTempMatrix();
-		allChilds3[j]->SetAttribute(SG_OA_COLOR,8);
+		allChilds3[j]->SetAttribute(SG_OA_COLOR,18);*/
 		sgGetScene()->AttachObject(allChilds3[j]);
 	}
 	free(allChilds3);
@@ -87,7 +73,7 @@ void testApp::setup(){
 void testApp::update(){
 	////////put all elements on the scene/////////////////
 	//add cutter to scene
-    normalCutter->update();
+    myCutter->update();
 	 
 
 	//add original object to scene
@@ -106,7 +92,8 @@ void testApp::draw(){
 
   sgGetScene()->AttachObject(objectDisplayed->getObject());
   
-  addGroupToScene((sgCGroup*)normalCutter->getCutter());
+  //addGroupToScene((sgCGroup*)myCutter->getCutterPlanes());
+  addGroupToScene((sgCGroup*)myCutter->getCutterCubes());
   ////////////////////////////////////////////////////////////
   //draw the elements of the scene
   sgCObject*  curObj = sgGetScene()->GetObjectsList()->GetHead();

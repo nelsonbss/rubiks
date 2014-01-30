@@ -30,8 +30,7 @@ class testApp : public ofBaseApp{
 
 		////////////////
 		myobject3D *objectDisplayed;
-		cutter *normalCutter;
-		cutter *cubeCutter;
+		cutter *myCutter;
 		slicer *mySlicer;
 		////////////////
 

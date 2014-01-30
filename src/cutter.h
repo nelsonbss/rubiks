@@ -6,14 +6,15 @@
 
 class cutter {
 public:
-	cutter(float thick, float tam, float tamPiece,int numCutr);
+	cutter(float thick, float tam, float tamPiece,float numCutr);
     
 	void setup();
 	void update();
 	void draw();
 
-	sgCGroup* getCutter();//it will return the object, i.e to be drawn
-   
+	sgCGroup* getCutterPlanes();//it will return the object, i.e to be drawn
+    sgCGroup* getCutterCubes();
+
 	float cutterThick; // ideally it will be 0.1; how thick is the "blade"
 	float cutterSize; //width and height of the "blade"
 	float tamCubie;
@@ -21,7 +22,7 @@ public:
 	float posX;
 	float posY;
 
-	int numCutter;
+	float numCutter;
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	///cutting planes
@@ -62,8 +63,8 @@ public:
 	SG_VECTOR posCube9;
 	sgCBox *c10;
 	SG_VECTOR posCube10;
-	sgCBox *c11; //cutting "planes"
-	SG_VECTOR posCube11;//this is to do the translation of the plane, and remember its position for slicing
+	sgCBox *c11;
+	SG_VECTOR posCube11;
 	sgCBox *c12;
 	SG_VECTOR posCube12;
 	sgCBox *c13;
@@ -82,8 +83,8 @@ public:
 	SG_VECTOR posCube19;
 	sgCBox *c20;
 	SG_VECTOR posCube20;
-	sgCBox *c21; //cutting "planes"
-	SG_VECTOR posCube21;//this is to do the translation of the plane, and remember its position for slicing
+	sgCBox *c21;
+	SG_VECTOR posCube21;
 	sgCBox *c22;
 	SG_VECTOR posCube22;
 	sgCBox *c23;

@@ -1,19 +1,30 @@
 #include "cutter.h"
 #include "sgCore.h"
 
-cutter::cutter(float thick, float tamPlane, float tamCuby){
-	cutterThick = thick;
-	cutterSize = tamPlane;
-	tamCubie = tamCuby;
-	posX=0;
-	posY=0;
-
-	planes = (sgCObject**)malloc(6*sizeof(sgCObject*));  //allocate memory
+cutter::cutter(float thick, float tamPlane, float tamCuby,int numCutr){
+	if(numCutr==1){
+		numCutter = 1;
+		cutterThick = thick;
+		cutterSize = tamPlane;
+		tamCubie = tamCuby;
+		posX=0;
+		posY=0;
+		planes = (sgCObject**)malloc(6*sizeof(sgCObject*));  //allocate memory
+	}else if(numCutr==2){
+		numCutter = 2;
+		cutterThick = 0;
+		cutterSize = tamPlane;
+		tamCubie = tamCuby;
+		posX=0;
+		posY=0;
+		cubes = (sgCObject**)malloc(27*sizeof(sgCObject*));  //allocate memory
+	}
 }
+
 //--------------------------------------------------------------
 void cutter::setup(){
 	if(numCutter==1){
-		////////////////////// BOX 1 -> 6///////////////////////////////////////////////////////////////////////
+		////////////////////// BOX 1 -> 6////////////////////////////////////
 		x1 = sgCreateBox(cutterSize,cutterSize,cutterThick); 
 		//move plane to the middle of its side
 		SG_VECTOR transBox1 = {0,-cutterSize/2,0}; 
@@ -37,7 +48,7 @@ void cutter::setup(){
 		x1->ApplyTempMatrix();  
 		x1->DestroyTempMatrix();
 		x1->SetAttribute(SG_OA_COLOR,8);
-		//////////////////////////////////////////////////////////////////////////////////////////////////////
+		///////////////////////////////////////////////////////////////////
 		x2 = sgCreateBox(cutterSize,cutterSize,cutterThick); 
 		//move plane to the middle of its side
 		SG_VECTOR transBox2 = {0,-cutterSize/2,0}; 
@@ -61,7 +72,7 @@ void cutter::setup(){
 		x2->ApplyTempMatrix();  
 		x2->DestroyTempMatrix();
 		x2->SetAttribute(SG_OA_COLOR,9);
-		//////////////////////////////////////////////////////////////////////////////////////////////////////
+		////////////////////////////////////////////////////////////////////
 		y1 = sgCreateBox(cutterSize,cutterSize,cutterThick); 
 		//move plane to the middle of its side
 		SG_VECTOR transBox3 = {-cutterSize/2,0,0}; 
@@ -85,7 +96,7 @@ void cutter::setup(){
 		y1->ApplyTempMatrix();  
 		y1->DestroyTempMatrix();
 		y1->SetAttribute(SG_OA_COLOR,10);
-		//////////////////////////////////////////////////////////////////////////////////////////////////////
+		/////////////////////////////////////////////////////////////////
 		y2 = sgCreateBox(cutterSize,cutterSize,cutterThick); 
 		//move plane to the middle of its side
 		SG_VECTOR transBox4 = {-cutterSize/2,0,0}; 
@@ -109,7 +120,7 @@ void cutter::setup(){
 		y2->ApplyTempMatrix();  
 		y2->DestroyTempMatrix();
 		y2->SetAttribute(SG_OA_COLOR,11);
-		/////////////////////////////////////////////////////////////////////////////////////////////////////
+		/////////////////////////////////////////////////////////////////
 		z1 = sgCreateBox(cutterSize,cutterSize,cutterThick); 
 		//will not be rotated
 		//move plane so that its center is on 0,0
@@ -134,7 +145,7 @@ void cutter::setup(){
 		z1->ApplyTempMatrix();
 		z1->DestroyTempMatrix();
 		z1->SetAttribute(SG_OA_COLOR,12);
-		/////////////////////////////////////////////////////////////////////////////////////////////////////
+		////////////////////////////////////////////////////////////////
 		z2 = sgCreateBox(cutterSize,cutterSize,cutterThick); 
 		//will not be rotated
 		//move plane so that its center is on 0,0
@@ -159,7 +170,7 @@ void cutter::setup(){
 		z2->ApplyTempMatrix();  
 		z2->DestroyTempMatrix();
 		z2->SetAttribute(SG_OA_COLOR,13);
-		/////////////////////////////////////////////////////////////////////////////////////////////////////
+		////////////////////////////////////////////////////////////////
 		//put boxes/planes on the array of pointer
 		//to pass it along and create a group
 		//to be able to return it as a group to the main class
@@ -170,11 +181,35 @@ void cutter::setup(){
 		planes[4] = z1;
 		planes[5] = z2;
 
-		//////create group////////////////////////////////////////////////////////////////////////////////////
+		//////create group////////////////////////////////////////////////
 		allPlanes = sgCGroup::CreateGroup(planes,6);
 	}else{
+		//////////////////////////////////////////////////////////////////
 		///make cubes	
-
+		x1 = sgCreateBox(cutterSize,cutterSize,cutterSize); 
+		//move plane to the middle of its side
+		SG_VECTOR transBox1 = {0,-cutterSize/2,0}; 
+		x1->InitTempMatrix()->Translate(transBox1);
+		//move plane to the LEFT edge of the tamPiece
+		transPlaneX1.x =-tamCubie/2;
+		transPlaneX1.y = 0;
+		transPlaneX1.z = 0;
+		x1->GetTempMatrix()->Translate(transPlaneX1);
+		//will be rotated to be parallel to x planes  
+		SG_POINT rotCen1 = {-tamCubie/2,0,0};
+		//it is orignally parallel to z planes
+		//rotate it around y axis 90deg= 1.57079633 rad
+		SG_VECTOR rotDir1 = {0,1,0};
+		x1->GetTempMatrix()->Rotate(rotCen1,rotDir1, 1.57079633);
+		//translate plane 1.5Tamcubie on each axix,so that the center of the cutter is on the origin
+		//remember -z is towards inside the screen
+		SG_VECTOR transBox11 = {0,0,cutterSize/2}; //move towards viwer z 
+		x1->GetTempMatrix()->Translate(transBox11);
+		//////
+		x1->ApplyTempMatrix();  
+		x1->DestroyTempMatrix();
+		x1->SetAttribute(SG_OA_COLOR,8);
+		////////////////////////////////////////////////////////////////
 
 		///put cubes in [] to make group
 		cubes[0] = c1;

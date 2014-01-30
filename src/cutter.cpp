@@ -169,12 +169,6 @@ void cutter::setup(){
 	planes[4] = z1;
 	planes[5] = z2;
 
-	sum =  sgBoolean::Union(*(sgC3DObject*)x1->Clone(),*(sgC3DObject*)y1->Clone());
-	sum1 =  sgBoolean::Union(*(sgC3DObject*)y2->Clone(),*(sgC3DObject*)x2->Clone());
-	sum2 =  sgBoolean::Union(*(sgC3DObject*)sum,*(sgC3DObject*)sum1);
-	/*sum =  sgBoolean::Union(*(sgC3DObject*)sum,*(sgC3DObject*)y2->Clone());
-	sum =  sgBoolean::Union(*(sgC3DObject*)sum,*(sgC3DObject*)z1->Clone());
-	sum =  sgBoolean::Union(*(sgC3DObject*)sum,*(sgC3DObject*)z2->Clone());*/
 	//////create group////////////////////////////////////////////////////////////////////////////////////
 	allPlanes = sgCGroup::CreateGroup(planes,6);
 }

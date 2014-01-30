@@ -36,10 +36,6 @@ public:
 	sgCBox *z2;
 	SG_VECTOR transPlaneZ2;
 
-	sgCGroup *sum;
-	sgCGroup *sum1;
-	sgCGroup *sum2;
-
 	sgCObject  **planes;
     sgCGroup *allPlanes;
 };

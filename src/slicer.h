@@ -24,7 +24,7 @@ public:
 
 	//// algorithms
 	///cubes
-	void intersectCubes(cutter &icutter, sgCObject *obj);
+	void intersectCubes(cutter *icutter, sgCObject *obj);
 	//planes
 	void xSlicing(cutter &cut, sgCObject *obj, int turn, int cubePart);
 	void ySlicing(cutter &cut, sgCGroup *grp, int turn, int cubePart);

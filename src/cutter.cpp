@@ -505,13 +505,13 @@ void cutter::setup(){
 	//////create group
 	allCubes = sgCGroup::CreateGroup(cubes,27);
 	//translate to be able to see it
-	SG_VECTOR center = {400,400,0};
+	/*SG_VECTOR center = {450,400,0};
 	allCubes->InitTempMatrix()->Translate(center);
 	SG_POINT rot = {400,400,0};
 	SG_VECTOR rotD = {1,0,0};
-	allCubes->GetTempMatrix()->Rotate(rot,rotD,0.7); 
+	allCubes->GetTempMatrix()->Rotate(rot,rotD,1.57); 
 	allCubes->ApplyTempMatrix();  
-	allCubes->DestroyTempMatrix();
+	allCubes->DestroyTempMatrix();*/
 }
 
 //--------------------------------------------------------------

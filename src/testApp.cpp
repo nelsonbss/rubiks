@@ -7,7 +7,7 @@
 #include "sgCore.h"
 ///////////////////////////////////////////
 #define planeThicknes 0.1
-#define planeSize 300
+#define planeSize 400
 #define tamCubie 50
 //--------------------------------------------------------------
 void testApp::setup(){

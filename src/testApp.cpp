@@ -8,7 +8,7 @@
 ///////////////////////////////////////////
 #define planeThicknes 5.1
 #define planeSize 450
-#define tamPiece 30
+#define tamCubie 30
 //--------------------------------------------------------------
 void testApp::setup(){
 	/////initialize sgCore library
@@ -25,8 +25,11 @@ void testApp::setup(){
 	/////////////////////////////////////////////////////////////////////////////////
 
 	//////////////////////////////create cutter//////////////////////////////////////
-	normalCutter = new cutter(planeThicknes,planeSize,tamPiece);
+	normalCutter = new cutter(planeThicknes,planeSize,tamCubie,1);
 	normalCutter->setup();
+
+	/*cubeCutter = new cutter(0,planeSize,tamCubie,2);
+	cubeCutter->setup();*/
 	/////////////////////////////////////////////////////////////////////////////////
 
 	//////////////////////////////create slicer//////////////////////////////////////
@@ -36,8 +39,12 @@ void testApp::setup(){
 
 
 	////BOOLEAN SUBSTRACTION////////////////////////////////Make all the CUTS//////////////////////////////
-	mySlicer->simpleSlicing(*mySlicer->myCutter,objectDisplayed->getObject(),1);
+	mySlicer->xSlicing(*mySlicer->myCutter,objectDisplayed->getObject(),1,1);
 	///////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	///boolean INTERSECTION//////////////////////////////////////////////////////////////////////////////
+	//mySlicer->intersectCubes(*mySlicer->myCutter,objectDisplayed->getObject());
+	/////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	////////////////////////////////////////////////////////////////////////
 	//for testing reasosn., we know we should be getting one object on
@@ -56,24 +63,23 @@ void testApp::setup(){
 
 	///////////////////////////////////////////////////////////////////////////////////
 	//more testing.. to see if the piece is getting wrapped on the **group
-	sgCGroup *result2 = (sgCGroup*) mySlicer->pieces[0];
-	//know how many pieces we have after the sub operation
-	int ChCnt = result2->GetChildrenList()->GetCount();
-	sgCObject** allChilds = (sgCObject**)malloc(ChCnt*sizeof(sgCObject*));
-	//allChilds[] will have all the objects in the sub1 group
-	result2->BreakGroup(allChilds);
+	sgCGroup *result2 = (sgCGroup*) mySlicer->pieces[0]; //cubie 1
+	const int ChCnt = result2->GetChildrenList()->GetCount();
+	sgCObject** allChilds3 = (sgCObject**)malloc(ChCnt*sizeof(sgCObject*));
+	result2->BreakGroup(allChilds3);// ->BreakGroup(allChilds3);
 	sgCObject::DeleteObject(result2);
 
 	for (int j=0; j < ChCnt; j++){
 		SG_VECTOR transBox11 = {500,0,0}; 
-		allChilds[j]->InitTempMatrix()->Translate(transBox11);
+		allChilds3[j]->InitTempMatrix()->Translate(transBox11);
 		SG_VECTOR transBox121 = {0,500,0}; 
-		allChilds[j]->GetTempMatrix()->Translate(transBox121);
-		allChilds[j]->ApplyTempMatrix();  
-		allChilds[j]->DestroyTempMatrix();
-		allChilds[j]->SetAttribute(SG_OA_COLOR,8);
-		sgGetScene()->AttachObject(allChilds[j]);
+		allChilds3[j]->GetTempMatrix()->Translate(transBox121);
+		allChilds3[j]->ApplyTempMatrix();  
+		allChilds3[j]->DestroyTempMatrix();
+		allChilds3[j]->SetAttribute(SG_OA_COLOR,8);
+		sgGetScene()->AttachObject(allChilds3[j]);
 	}
+	free(allChilds3);
 	///////////////////////////////////////////////////////////////////////////////////////
 	
 }

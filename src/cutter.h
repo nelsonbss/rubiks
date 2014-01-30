@@ -6,7 +6,7 @@
 
 class cutter {
 public:
-	cutter(float thick, float tam, float tamPiece);
+	cutter(float thick, float tam, float tamPiece,int numCutr);
     
 	void setup();
 	void update();
@@ -17,11 +17,13 @@ public:
 	float cutterThick; // ideally it will be 0.1; how thick is the "blade"
 	float cutterSize; //width and height of the "blade"
 	float tamCubie;
-	//whole cutter coordinates
+	//whole cutter coordinatespo
 	float posX;
 	float posY;
 
+	int numCutter;
 
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	///cutting planes
 	sgCBox *x1; //cutting "planes"
 	SG_VECTOR transPlaneX1;//this is to do the translation of the plane, and remember its position for slicing
@@ -37,6 +39,66 @@ public:
 	SG_VECTOR transPlaneZ2;
 
 	sgCObject  **planes;
-	sgCGroup *allPlanes;
+    sgCGroup *allPlanes;
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////
+	/////cutting cubes
+	sgCBox *c1; //cutting "planes"
+	SG_VECTOR posCube1;//this is to do the translation of the plane, and remember its position for slicing
+	sgCBox *c2;
+	SG_VECTOR posCube2;
+	sgCBox *c3;
+	SG_VECTOR posCube3;
+	sgCBox *c4;
+	SG_VECTOR posCube4;
+	sgCBox *c5;
+	SG_VECTOR posCube5;
+	sgCBox *c6;
+	SG_VECTOR posCube6;
+	sgCBox *c7;
+	SG_VECTOR posCube7;
+	sgCBox *c8;
+	SG_VECTOR posCube8;
+	sgCBox *c9;
+	SG_VECTOR posCube9;
+	sgCBox *c10;
+	SG_VECTOR posCube10;
+	sgCBox *c11; //cutting "planes"
+	SG_VECTOR posCube11;//this is to do the translation of the plane, and remember its position for slicing
+	sgCBox *c12;
+	SG_VECTOR posCube12;
+	sgCBox *c13;
+	SG_VECTOR posCube13;
+	sgCBox *c14;
+	SG_VECTOR posCube14;
+	sgCBox *c15;
+	SG_VECTOR posCube15;
+	sgCBox *c16;
+	SG_VECTOR posCube16;
+	sgCBox *c17;
+	SG_VECTOR posCube17;
+	sgCBox *c18;
+	SG_VECTOR posCube18;
+	sgCBox *c19;
+	SG_VECTOR posCube19;
+	sgCBox *c20;
+	SG_VECTOR posCube20;
+	sgCBox *c21; //cutting "planes"
+	SG_VECTOR posCube21;//this is to do the translation of the plane, and remember its position for slicing
+	sgCBox *c22;
+	SG_VECTOR posCube22;
+	sgCBox *c23;
+	SG_VECTOR posCube23;
+	sgCBox *c24;
+	SG_VECTOR posCube24;
+	sgCBox *c25;
+	SG_VECTOR posCube25;
+	sgCBox *c26;
+	SG_VECTOR posCube26;
+	sgCBox *c27;
+	SG_VECTOR posCube27;
+	sgCObject  **cubes;
+    sgCGroup *allCubes;
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+
 };
 #endif /* defined(__Tcutter__cutter__) */

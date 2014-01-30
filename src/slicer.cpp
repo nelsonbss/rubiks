@@ -27,13 +27,13 @@ sgCGroup** slicer::getPieces(){
 }
 //----------------------------------------------------------------
 //////////////////////////// Intersection/////////////////////////////////////////////////////////////////////////////////
-void slicer::intersectCubes(cutter &icutter, sgCObject *obj){
+void slicer::intersectCubes(cutter *icutter, sgCObject *obj){
 	//it uses intersection of 27 cubes, on the object, to get all the pieces for each cubie in one oeration
 	const sgCGroup *inter;
 
 	for(int i =0; i<27; i ++){
 		sgCObject *tempObj = obj->Clone();
-		sgCObject *tempCutter = icutter.cubes[i]->Clone();
+		sgCObject *tempCutter = icutter->cubes[i]->Clone();
 
 		//position objects to start making bool intersect
 

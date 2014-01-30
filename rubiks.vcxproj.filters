@@ -64,6 +64,12 @@
     <ClCompile Include="src\StdAfx.cpp">
       <Filter>src\sgCore</Filter>
     </ClCompile>
+    <ClCompile Include="src\puzzle.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\cubie.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -262,6 +268,12 @@
     </ClInclude>
     <ClInclude Include="src\StdAfx.h">
       <Filter>src\sgCore</Filter>
+    </ClInclude>
+    <ClInclude Include="src\puzzle.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\cubie.h">
+      <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

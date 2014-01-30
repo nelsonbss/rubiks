@@ -93,10 +93,12 @@
   <ItemGroup>
     <ClCompile Include="src\3DCamera.cpp" />
     <ClCompile Include="src\armature.cpp" />
+    <ClCompile Include="src\cubie.cpp" />
     <ClCompile Include="src\cutter.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\myobject3D.cpp" />
     <ClCompile Include="src\Painter.cpp" />
+    <ClCompile Include="src\puzzle.cpp" />
     <ClCompile Include="src\slicer.cpp" />
     <ClCompile Include="src\StdAfx.cpp" />
     <ClCompile Include="src\testApp.cpp" />
@@ -116,9 +118,11 @@
   <ItemGroup>
     <ClInclude Include="src\3DCamera.h" />
     <ClInclude Include="src\armature.h" />
+    <ClInclude Include="src\cubie.h" />
     <ClInclude Include="src\cutter.h" />
     <ClInclude Include="src\myobject3D.h" />
     <ClInclude Include="src\Painter.h" />
+    <ClInclude Include="src\puzzle.h" />
     <ClInclude Include="src\slicer.h" />
     <ClInclude Include="src\StdAfx.h" />
     <ClInclude Include="src\testApp.h" />

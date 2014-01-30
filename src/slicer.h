@@ -23,7 +23,7 @@ public:
 	sgCGroup** getPieces(); //returns the array of * of groups of objects for each volume(smallCube) of the puzzle
 
 	//// algorithms
-	void xSlicing(cutter &cut, sgCObject *obj, int turn);
+	void xSlicing(cutter &cut, sgCObject *obj, int turn, int cubePart);
 	void ySlicing(cutter &cut, sgCGroup *grp, int turn, int cubePart);
 	void zSlicing(cutter &cut, sgCGroup *grp, int turn, int cubePart);
 };

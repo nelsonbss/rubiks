@@ -29,7 +29,7 @@ sgCGroup** slicer::getPieces(){
 //////////////////////////////////X SLICING!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 //////////////////////////////////X SLICING!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 //////////////////////////////////X SLICING!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-void slicer::xSlicing(cutter &icutter, sgCObject *obj, int turn){
+void slicer::xSlicing(cutter &icutter, sgCObject *obj, int turn, int cubePart){
 	//this is the implementation of the algorithm to produce the 27 pieces of the "cube"
 	//output: fills sgCGroup  **pieces  ,   with the pieces obtained 
 	sgCGroup* sub1;
@@ -146,7 +146,7 @@ void slicer::xSlicing(cutter &icutter, sgCObject *obj, int turn){
 	else{
 		//nothing was cut by x so piece is smaller and doesnt have parts on the left of x
 		//this 3rd of the puzzle will be empty
-		if(turn==1){
+		if(turn==1 && cubePart==1){
 			pieces[0] = NULL;
 			pieces[1] = NULL;
 			pieces[2] = NULL;
@@ -158,8 +158,8 @@ void slicer::xSlicing(cutter &icutter, sgCObject *obj, int turn){
 			pieces[8] = NULL;
 			//send piece to be cut by x2
 			//this same function but with turn ++
-			xSlicing(*myCutter, obj, turn++);
-		}else if (turn == 2){
+			xSlicing(*myCutter, obj, turn++,2);
+		}else if (turn == 2 && cubePart==2){
 			pieces[9] = NULL;
 			pieces[10] = NULL;
 			pieces[11] = NULL;
@@ -171,10 +171,11 @@ void slicer::xSlicing(cutter &icutter, sgCObject *obj, int turn){
 			pieces[17] = NULL;
 			//send piece to be cut by x3!! no x3
 			//this same function but with turn ++
-			xSlicing(*myCutter, obj, turn++);
-		}else{
+			xSlicing(*myCutter, obj, turn++,3);
+		}else if (turn == 3 && cubePart==3){
 			//if turn 3 there was no cut with X plane
-			/*pieces[18] = NULL;
+			//there is nothing to cut!!
+			pieces[18] = NULL;
 			pieces[19] = NULL;
 			pieces[20] = NULL;
 			pieces[21] = NULL;
@@ -182,7 +183,7 @@ void slicer::xSlicing(cutter &icutter, sgCObject *obj, int turn){
 			pieces[23] = NULL;
 			pieces[24] = NULL;
 			pieces[25] = NULL;
-			pieces[26] = NULL;*/
+			pieces[26] = NULL;
 		}
 	}
 }
@@ -462,7 +463,7 @@ void slicer::ySlicing(cutter &icutter, sgCGroup *grp, int turn,int cubePart){
 		zSlicing(*myCutter,realGroupToZ1,turn,turn);
 
 	}else{
-		//no pieces to be send to be cut by Z!!!
+		//no pieces to be sent to be cut by Z!!!
 		//this means the colum to the left of x1 and above y1 is going to be empty, it doesn't have any objects on that volume of space
 		if(turn==1 && cubePart==1){
 			pieces[0] = NULL;
@@ -476,6 +477,30 @@ void slicer::ySlicing(cutter &icutter, sgCGroup *grp, int turn,int cubePart){
 			pieces[2] = NULL;
 			pieces[5] = NULL;
 			pieces[8] = NULL;
+		}else if(turn==1 && cubePart==2){
+			pieces[9] = NULL;
+			pieces[12] = NULL;
+			pieces[15] = NULL;
+		}else if(turn==2 && cubePart==2){
+			pieces[10] = NULL;
+			pieces[13] = NULL;
+			pieces[16] = NULL;
+		}else if(turn==3 && cubePart==2){
+			pieces[11] = NULL;
+			pieces[14] = NULL;
+			pieces[17] = NULL;
+		}else if(turn==1 && cubePart==3){
+			pieces[18] = NULL;
+			pieces[21] = NULL;
+			pieces[24] = NULL;
+		}else if(turn==2 && cubePart==3){
+			pieces[19] = NULL;
+			pieces[22] = NULL;
+			pieces[25] = NULL;
+		}else if(turn==3 && cubePart==3){
+			pieces[20] = NULL;
+			pieces[23] = NULL;
+			pieces[26] = NULL;
 		}
 	}
 

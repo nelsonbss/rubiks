@@ -36,53 +36,15 @@ void testApp::setup(){
 	//////////////////////////////create slicer///////////////////////////////////////
 	mySlicer = new slicer(myCutter);
 	mySlicer->setup();
-	////BOOLEAN SUBSTRACTION//////////////////////////////////////////////////////////
-	//mySlicer->xSlicing(*mySlicer->myCutter,objectDisplayed->getObject(),1,1);
-	/*///boolean INTERSECTION///////////////////////////////////////////////////////////
-	mySlicer->intersectCubes(mySlicer->myCutter,objectDisplayed->getObject());*/
-	//////////////////////////////////////////////////////////////////////////////////
 	///////////////////////end create slicer /////////////////////////////////////////
 
 	//////////////////////////////create puzzle///////////////////////////////////////
-	//myPuzzle = new puzzle();
-	//myPuzzle->setup();
-	//sgCGroup ** aux = (sgCGroup**) mySlicer->pieces; //WHY CANT I GET THE DATA HERE???
-	//sgCGroup * aux2 = (sgCGroup*) mySlicer->pieces[6]; //AND HERE IT IS!!!
-	//myPuzzle->loadPieces(*mySlicer);
-	//////////////////////////////end create puzzle///////////////////////////////////
-
-
-	///////////////////////////////////////////////////////////////////////////////////////////////////////
-	////Draw the pieces!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-	//for(int i=0; i<27 ; i++){
-	//	if(mySlicer->pieces[i] != NULL){
-	//		sgCGroup *result2 = (sgCGroup*) mySlicer->pieces[i];
-	//		const int ChCnt = result2->GetChildrenList()->GetCount();
-	//		sgCObject** allChilds3 = (sgCObject**)malloc(ChCnt*sizeof(sgCObject*));
-	//		result2->BreakGroup(allChilds3);// ->BreakGroup(allChilds3);
-	//		sgCObject::DeleteObject(result2);
-
-	//		for (int j=0; j < ChCnt; j++){
-	//			SG_VECTOR rotD = {0,1,0};
-	//			SG_POINT rot = {0,0,0};
-	//			allChilds3[j]->InitTempMatrix()->Rotate(rot,rotD,1.0);
-	//			SG_VECTOR transBox11 = {500,0,0}; 
-	//			allChilds3[j]->GetTempMatrix()->Translate(transBox11);
-	//			SG_VECTOR transBox121 = {0,500,0}; 
-	//			allChilds3[j]->GetTempMatrix()->Translate(transBox121);
-	//			allChilds3[j]->ApplyTempMatrix();  
-	//			allChilds3[j]->DestroyTempMatrix();
-	//			allChilds3[j]->SetAttribute(SG_OA_COLOR,rand()%50);
-	//			sgGetScene()->AttachObject(allChilds3[j]);
-	//		}
-	//		free(allChilds3);
-	//	}
-	//}
-	///////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-	///////////////////////////////////////////////////////////////////////////////////////
+	myPuzzle = new puzzle();
+	myPuzzle->setup();
+	sgCGroup ** aux = (sgCGroup**) mySlicer->pieces; //WHY CANT I GET THE DATA HERE???
+	sgCGroup * aux2 = (sgCGroup*) mySlicer->pieces[6]; //AND HERE IT IS!!!
+	myPuzzle->loadPieces(*mySlicer);
+	//////////////////////////////end create puzzle////////////////////////////////////
 
 }
 //--------------------------------------------------------------
@@ -102,11 +64,11 @@ void testApp::update(){
 	//sgGetScene()->AttachObject(add); 
 	//add->SetAttribute(SG_OA_COLOR,12);
 	if(makeCut==true){
+		////BOOLEAN SUBSTRACTION//////////////////////////////////////////////////////////
+		//mySlicer->xSlicing(*mySlicer->myCutter,objectDisplayed->getObject(),1,1);
 		///boolean INTERSECTION///////////////////////////////////////////////////////////
 		mySlicer->intersectCubes(mySlicer->myCutter,objectDisplayed->getObject());
-		/////////////////////////////////////////////////////////////////////////////////////////////////////
-		//Draw the pieces!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
+		//Draw the pieces!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		for(int i=0; i<27 ; i++){
 			if(mySlicer->pieces[i] != NULL){
 				sgCGroup *result2 = (sgCGroup*) mySlicer->pieces[i];
@@ -131,8 +93,9 @@ void testApp::update(){
 				free(allChilds3);
 			}
 		}
-		/////////////////////////////////////////////////////////////////////////////////////////////////////
+		/////////////////////////////////////////////////////////////////////////////////////
 		makeCut = false;
+		cout << "end cut: " << ofGetElapsedTimeMillis() << endl;
 	}
 }
 
@@ -171,6 +134,7 @@ void testApp::draw(){
 }
 //--------------------------------------------------------------
 void testApp::keyPressed(int key){
+	cout << "init cut: " << ofGetElapsedTimeMillis() << endl;
 	makeCut = true;
 }
 //--------------------------------------------------------------

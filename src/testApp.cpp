@@ -41,16 +41,12 @@ void testApp::setup(){
 	//////////////////////////////create puzzle///////////////////////////////////////
 	myPuzzle = new puzzle();
 	myPuzzle->setup();
-	sgCGroup ** aux = (sgCGroup**) mySlicer->pieces; //WHY CANT I GET THE DATA HERE???
-	sgCGroup * aux2 = (sgCGroup*) mySlicer->pieces[6]; //AND HERE IT IS!!!
-	myPuzzle->loadPieces(*mySlicer);
 	//////////////////////////////end create puzzle////////////////////////////////////
 
 }
 //--------------------------------------------------------------
 void testApp::update(){
-	////////put all elements on the scene/////////////////
-	//add cutter to scene
+	////////update cutter/////////////////
 	myCutter->update();
 
 
@@ -96,6 +92,12 @@ void testApp::update(){
 		/////////////////////////////////////////////////////////////////////////////////////
 		makeCut = false;
 		cout << "end cut: " << ofGetElapsedTimeMillis() << endl;
+		//////////////////////////////create puzzle///////////////////////////////////////
+		//sgCGroup ** aux = (sgCGroup**) mySlicer->pieces; //WHY CANT I GET THE DATA ** HERE???
+		//sgCGroup ** aux = (sgCGroup**) mySlicer->getPieces(); //WHY CANT I GET THE DATA ** HERE??? on the SETUP?? now on the update I can...!!!
+		//sgCGroup * aux2 = (sgCGroup*) mySlicer->pieces[6]; //AND HERE IT IS!!!
+		myPuzzle->loadPieces(mySlicer);
+		//////////////////////////////end create puzzle////////////////////////////////////
 	}
 }
 

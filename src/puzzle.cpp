@@ -26,6 +26,17 @@ void puzzle::draw(){
 		myCubies[i]->draw();
 	}
 }
+//-------------------------------------------------------------------------------------------------
+int puzzle::giveNumCubies(){
+	//to test how many cubies we have here
+	int aux=0;
+	for(int i=0;i<27;i++){
+		if(myCubies[i]->objects!= NULL){
+			aux++;
+		}
+	}
+	return aux;
+}
 ///////////////////////////////////////////////////////////////
 void puzzle::loadPieces(sgCGroup **pcs){
 	//it loads the pieces that the slicer made, the pieces are in a sgCGroup**, 

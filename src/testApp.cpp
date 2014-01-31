@@ -133,6 +133,9 @@ void testApp::keyPressed(int key){
 		cout << "manualDRAW" << endl;
 		drawCuts = true;
 	}
+	if(key == 'g') {
+		cout << "nu cubies " << myPuzzle->giveNumCubies() << endl;
+	}
 }
 //--------------------------------------------------------------
 void testApp::keyReleased(int key){

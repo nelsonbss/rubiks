@@ -1,7 +1,9 @@
 #include "testApp.h"
 #include "myobject3D.h"
+#include "slicer.h"
 #include "cutter.h"
-#include "armature.h"
+#include "puzzle.h"
+
 ///////////////////////////////////////////
 #include "Painter.h"
 #include "sgCore.h"
@@ -41,8 +43,11 @@ void testApp::setup(){
 	///////////////////////end create slicer /////////////////////////////////////////
 
 	//////////////////////////////create puzzle///////////////////////////////////////
-	myPuzzle = new puzzle ();
-	myPuzzle->loadPieces(mySlicer->getPieces);
+	myPuzzle = new puzzle();
+	myPuzzle->setup();
+	sgCGroup ** aux = (sgCGroup**) mySlicer->pieces; //WHY CANT I GET THE DATA HERE???
+	sgCGroup * aux2 = (sgCGroup*) mySlicer->pieces[6]; //AND HERE IT IS!!!
+	myPuzzle->loadPieces(*mySlicer);
 	//////////////////////////////end create puzzle///////////////////////////////////
 
 

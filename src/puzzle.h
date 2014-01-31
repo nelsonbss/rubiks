@@ -4,6 +4,7 @@
 #include "ofMain.h"
 #include "sgCore.h"
 #include "cubie.h"
+#include "slicer.h"
 
 class puzzle {
 	
@@ -14,7 +15,7 @@ public:
 	void update();
 	void draw();
 
-	void loadPieces(sgCGroup **pcs);
+	void loadPieces(slicer &pcs);
 
 	cubie **myCubies; //malloc 27 of these
 };

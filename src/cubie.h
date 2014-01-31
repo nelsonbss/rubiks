@@ -12,6 +12,10 @@ public:
 	void setup();
 	void update();
 	void draw();
+
+	sgCGroup *objects;
+
+	void setObjects(sgCGroup *objs);
 };
 
 #endif /* defined(__Tcubie__cubie__) */

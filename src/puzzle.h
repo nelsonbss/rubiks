@@ -16,6 +16,7 @@ public:
 	void draw();
 
 	void loadPieces(sgCGroup **pcs);
+	int giveNumCubies();
 
 	cubie **myCubies; //malloc 27 of these
 };

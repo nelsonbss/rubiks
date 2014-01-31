@@ -39,4 +39,5 @@ class testApp : public ofBaseApp{
 		sgCGroup* add;
 
 		bool makeCut;
+		bool drawCuts;
 };

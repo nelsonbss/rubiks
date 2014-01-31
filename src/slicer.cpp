@@ -13,7 +13,6 @@ void slicer::setup(){
 
 //--------------------------------------------------------------
 void slicer::update(){
-	//cout << "update slicer" << pieces[0] << endl;
 }
 
 //--------------------------------------------------------------
@@ -45,13 +44,16 @@ sgCGroup** slicer::getPieces(){
 			}
 			free(allParts);
 			//put that new group inside aux**[]
-			pieces[i] = sgCGroup::CreateGroup(objcts,objctr); //so pieces[] has the data again, and it keeps it
+			pieces[i] = sgCGroup::CreateGroup(objcts,objctr); //so pieces[] has the data again, and keeps it for future requests
 			aux[i] = sgCGroup::CreateGroup(objcts,objctr);  
 		}else{
 			pieces[i] = NULL;
 			aux[i] = NULL; 
 		}
 	}
+	/////important!!!!!!!!!!!!!!!!important!!!!!!!!!!!///////////important/////////////////////////////
+	//sgCObject::DeleteObject(*objcts); //why if I delete the objects everything goes KAPUT?????
+	///////////////important////////////////////important//////////////important//////////////////////
 	return aux;
 }
 //----------------------------------------------------------------

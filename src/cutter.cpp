@@ -270,108 +270,110 @@ void cutter::setup(){
 	c9->DestroyTempMatrix();
 	c9->SetAttribute(SG_OA_COLOR,16);
 	//////////second layer..on top of the previous one
-	c10 = sgCreateBox(tamCubie,tamCubie,tamCubie); //only 7 cubes are equilateral
+	//this layer has to expand on -> -y to "infitiy"
+	c10 = sgCreateBox(tamCubie,infinity,tamCubie); //only 7 cubes are equilateral
 	c10->InitTempMatrix()->Translate(centerCube);
-	SG_VECTOR transc10 = {0,-tamCubie,0};
+	SG_VECTOR transc10 = {0,-infinity,0};
 	c10->GetTempMatrix()->Translate(transc10);
 	c10->ApplyTempMatrix();  
 	c10->DestroyTempMatrix();
 	c10->SetAttribute(SG_OA_COLOR,18);
 	////
-	c11 = sgCreateBox(infinity,tamCubie,tamCubie); //it expands -> x
+	c11 = sgCreateBox(infinity,infinity,tamCubie); //it expands -> x
 	c11->InitTempMatrix()->Translate(centerCube);//center box
 	SG_VECTOR transc11 = {tamCubie,0,0};//move to its position
 	c11->GetTempMatrix()->Translate(transc11);
-	SG_VECTOR transc111 = {0,-tamCubie,0};
+	SG_VECTOR transc111 = {0,-infinity,0};
 	c11->GetTempMatrix()->Translate(transc111);
 	c11->ApplyTempMatrix();  
 	c11->DestroyTempMatrix();
 	c11->SetAttribute(SG_OA_COLOR,20);
 	////
-	c12 = sgCreateBox(infinity,tamCubie,infinity); //it expands -> x & -> z (z is positive, have to handle this with rotations)
+	c12 = sgCreateBox(infinity,infinity,infinity); //it expands -> x & -> z (z is positive, have to handle this with rotations)
 	c12->InitTempMatrix()->Translate(centerCube);//center box
 	SG_VECTOR transc12 = {tamCubie,0,0};//move to its position
 	c12->GetTempMatrix()->Translate(transc12);
 	SG_VECTOR transc121 = {0,0,tamCubie};//move to its position
 	c12->GetTempMatrix()->Translate(transc121);
-	SG_VECTOR transc122 = {0,-tamCubie,0};
+	SG_VECTOR transc122 = {0,-infinity,0};
 	c12->GetTempMatrix()->Translate(transc122);
 	c12->ApplyTempMatrix();  
 	c12->DestroyTempMatrix();
 	c12->SetAttribute(SG_OA_COLOR,30);
 	////
-	c13 = sgCreateBox(tamCubie,tamCubie,infinity); //it expands -> z
+	c13 = sgCreateBox(tamCubie,infinity,infinity); //it expands -> z
 	c13->InitTempMatrix()->Translate(centerCube);//center box
 	SG_VECTOR transc13 = {0,0,tamCubie};//move to its position
 	c13->GetTempMatrix()->Translate(transc13);
-	SG_VECTOR transc131 = {0,-tamCubie,0};
+	SG_VECTOR transc131 = {0,-infinity,0};
 	c13->GetTempMatrix()->Translate(transc131);
 	c13->ApplyTempMatrix();  
 	c13->DestroyTempMatrix();
 	c13->SetAttribute(SG_OA_COLOR,32);
 	////
-	c14 = sgCreateBox(infinity,tamCubie,infinity); //it expands -> x & -> z 
+	c14 = sgCreateBox(infinity,infinity,infinity); //it expands -> x & -> z 
 	SG_POINT rot14 = {0,0,0};
 	SG_VECTOR rotD14 = {0,-1,0};
 	c14->InitTempMatrix()->Rotate(rot14,rotD14, 1.57079633);
 	c14->GetTempMatrix()->Translate(centerCube);//center box
 	SG_VECTOR transc14 = {0,0,tamCubie};//move to its position
 	c14->GetTempMatrix()->Translate(transc14);
-	SG_VECTOR transc141 = {0,-tamCubie,0};
+	SG_VECTOR transc141 = {0,-infinity,0};
 	c14->GetTempMatrix()->Translate(transc141);
 	c14->ApplyTempMatrix();  
 	c14->DestroyTempMatrix();
 	c14->SetAttribute(SG_OA_COLOR,34);
 	////
-	c15 = sgCreateBox(infinity,tamCubie,tamCubie); //it expands -> x 
+	c15 = sgCreateBox(infinity,infinity,tamCubie); //it expands -> x 
 	SG_POINT rot15 = {0,0,0};
 	SG_VECTOR rotD15 = {0,-1,0};
 	c15->InitTempMatrix()->Rotate(rot15,rotD15, 3.14);
 	c15->GetTempMatrix()->Translate(centerCube);//center box
 	SG_VECTOR transc15 = {0,0,tamCubie};//move to its position
 	c15->GetTempMatrix()->Translate(transc15);
-	SG_VECTOR transc151 = {0,-tamCubie,0};
+	SG_VECTOR transc151 = {0,-infinity,0};
 	c15->GetTempMatrix()->Translate(transc151);
 	c15->ApplyTempMatrix();  
 	c15->DestroyTempMatrix();
 	c15->SetAttribute(SG_OA_COLOR,36);
 	////
-	c16 = sgCreateBox(infinity,tamCubie,infinity); //it expands -> x & -> z 
+	c16 = sgCreateBox(infinity,infinity,infinity); //it expands -> x & -> z 
 	SG_POINT rot16 = {0,0,0};
 	SG_VECTOR rotD16 = {0,-1,0};
 	c16->InitTempMatrix()->Rotate(rot16,rotD16, 3.14);
 	c16->GetTempMatrix()->Translate(centerCube);//center box
-	SG_VECTOR transc161 = {0,-tamCubie,0};
+	SG_VECTOR transc161 = {0,-infinity,0};
 	c16->GetTempMatrix()->Translate(transc161);
 	c16->ApplyTempMatrix();  
 	c16->DestroyTempMatrix();
 	c16->SetAttribute(SG_OA_COLOR,38);
 	////
-	c17 = sgCreateBox(infinity,tamCubie,tamCubie); //it expands -> x
+	c17 = sgCreateBox(infinity,infinity,tamCubie); //it expands -> x
 	SG_POINT rot17 = {0,0,0};
 	SG_VECTOR rotD17 = {0,-1,0};
 	c17->InitTempMatrix()->Rotate(rot17,rotD17, -1.57079633);
 	c17->GetTempMatrix()->Translate(centerCube);//center box
-	SG_VECTOR transc171 = {0,-tamCubie,0};
+	SG_VECTOR transc171 = {0,-infinity,0};
 	c17->GetTempMatrix()->Translate(transc171);
 	c17->ApplyTempMatrix();  
 	c17->DestroyTempMatrix();
 	c17->SetAttribute(SG_OA_COLOR,40);
 	////
-	c18 = sgCreateBox(infinity,tamCubie,infinity); //it expands -> x & -> z
+	c18 = sgCreateBox(infinity,infinity,infinity); //it expands -> x & -> z
 	SG_POINT rot18 = {0,0,0};
 	SG_VECTOR rotD18 = {0,-1,0};
 	c18->InitTempMatrix()->Rotate(rot18,rotD18, -1.57079633);
 	c18->GetTempMatrix()->Translate(centerCube);//center box
 	SG_VECTOR transc18 = {tamCubie,0,0};//move to its position
 	c18->GetTempMatrix()->Translate(transc18);
-	SG_VECTOR transc181 = {0,-tamCubie,0};
+	SG_VECTOR transc181 = {0,-infinity,0};
 	c18->GetTempMatrix()->Translate(transc181);
 	c18->ApplyTempMatrix();  
 	c18->DestroyTempMatrix();
 	c18->SetAttribute(SG_OA_COLOR,42);
 	//////////third layer..on botom of the first one
-	c19 = sgCreateBox(tamCubie,tamCubie,tamCubie); //only 7 cubes are equilateral
+	//this layer has to expand on -> y to "infitiy"
+	c19 = sgCreateBox(tamCubie,infinity,tamCubie); //only 7 cubes are equilateral
 	c19->InitTempMatrix()->Translate(centerCube);
 	SG_VECTOR transc19 = {0,tamCubie,0};
 	c19->GetTempMatrix()->Translate(transc19);
@@ -379,7 +381,7 @@ void cutter::setup(){
 	c19->DestroyTempMatrix();
 	c19->SetAttribute(SG_OA_COLOR,44);
 	////
-	c20 = sgCreateBox(infinity,tamCubie,tamCubie); //it expands -> x
+	c20 = sgCreateBox(infinity,infinity,tamCubie); //it expands -> x
 	c20->InitTempMatrix()->Translate(centerCube);//center box
 	SG_VECTOR transc20 = {tamCubie,0,0};//move to its position
 	c20->GetTempMatrix()->Translate(transc20);
@@ -389,7 +391,7 @@ void cutter::setup(){
 	c20->DestroyTempMatrix();
 	c20->SetAttribute(SG_OA_COLOR,46);
 	////
-	c21 = sgCreateBox(infinity,tamCubie,infinity); //it expands -> x & -> z (z is positive, have to handle this with rotations)
+	c21 = sgCreateBox(infinity,infinity,infinity); //it expands -> x & -> z (z is positive, have to handle this with rotations)
 	c21->InitTempMatrix()->Translate(centerCube);//center box
 	SG_VECTOR transc21 = {tamCubie,0,0};//move to its position
 	c21->GetTempMatrix()->Translate(transc21);
@@ -401,7 +403,7 @@ void cutter::setup(){
 	c21->DestroyTempMatrix();
 	c21->SetAttribute(SG_OA_COLOR,48);
 	////
-	c22 = sgCreateBox(tamCubie,tamCubie,infinity); //it expands -> z
+	c22 = sgCreateBox(tamCubie,infinity,infinity); //it expands -> z
 	c22->InitTempMatrix()->Translate(centerCube);//center box
 	SG_VECTOR transc22 = {0,0,tamCubie};//move to its position
 	c22->GetTempMatrix()->Translate(transc22);
@@ -411,7 +413,7 @@ void cutter::setup(){
 	c22->DestroyTempMatrix();
 	c22->SetAttribute(SG_OA_COLOR,50);
 	////
-	c23 = sgCreateBox(infinity,tamCubie,infinity); //it expands -> x & -> z 
+	c23 = sgCreateBox(infinity,infinity,infinity); //it expands -> x & -> z 
 	SG_POINT rot23 = {0,0,0};
 	SG_VECTOR rotD23 = {0,-1,0};
 	c23->InitTempMatrix()->Rotate(rot23,rotD23, 1.57079633);
@@ -424,7 +426,7 @@ void cutter::setup(){
 	c23->DestroyTempMatrix();
 	c23->SetAttribute(SG_OA_COLOR,52);
 	////
-	c24 = sgCreateBox(infinity,tamCubie,tamCubie); //it expands -> x 
+	c24 = sgCreateBox(infinity,infinity,tamCubie); //it expands -> x 
 	SG_POINT rot24 = {0,0,0};
 	SG_VECTOR rotD24 = {0,-1,0};
 	c24->InitTempMatrix()->Rotate(rot24,rotD24, 3.14);
@@ -437,7 +439,7 @@ void cutter::setup(){
 	c24->DestroyTempMatrix();
 	c24->SetAttribute(SG_OA_COLOR,54);
 	////
-	c25 = sgCreateBox(infinity,tamCubie,infinity); //it expands -> x & -> z 
+	c25 = sgCreateBox(infinity,infinity,infinity); //it expands -> x & -> z 
 	SG_POINT rot25 = {0,0,0};
 	SG_VECTOR rotD25 = {0,-1,0};
 	c25->InitTempMatrix()->Rotate(rot25,rotD25, 3.14);
@@ -448,7 +450,7 @@ void cutter::setup(){
 	c25->DestroyTempMatrix();
 	c25->SetAttribute(SG_OA_COLOR,56);
 	////
-	c26 = sgCreateBox(infinity,tamCubie,tamCubie); //it expands -> x
+	c26 = sgCreateBox(infinity,infinity,tamCubie); //it expands -> x
 	SG_POINT rot26 = {0,0,0};
 	SG_VECTOR rotD26 = {0,-1,0};
 	c26->InitTempMatrix()->Rotate(rot26,rotD26, -1.57079633);
@@ -459,7 +461,7 @@ void cutter::setup(){
 	c26->DestroyTempMatrix();
 	c26->SetAttribute(SG_OA_COLOR,58);
 	////
-	c27 = sgCreateBox(infinity,tamCubie,infinity); //it expands -> x & -> z
+	c27 = sgCreateBox(infinity,infinity,infinity); //it expands -> x & -> z
 	SG_POINT rot27 = {0,0,0};
 	SG_VECTOR rotD27 = {0,-1,0};
 	c27->InitTempMatrix()->Rotate(rot27,rotD27, -1.57079633);
@@ -505,13 +507,13 @@ void cutter::setup(){
 	//////create group
 	allCubes = sgCGroup::CreateGroup(cubes,27);
 	//translate to be able to see it
-	/*SG_VECTOR center = {450,400,0};
-	allCubes->InitTempMatrix()->Translate(center);
-	SG_POINT rot = {400,400,0};
-	SG_VECTOR rotD = {1,0,0};
-	allCubes->GetTempMatrix()->Rotate(rot,rotD,1.57); 
-	allCubes->ApplyTempMatrix();  
-	allCubes->DestroyTempMatrix();*/
+	//SG_VECTOR center = {450,400,0};
+	//allCubes->InitTempMatrix()->Translate(center);
+	//SG_POINT rot = {400,400,0};
+	//SG_VECTOR rotD = {1,0,0};
+	//allCubes->GetTempMatrix()->Rotate(rot,rotD,0.0); 
+	//allCubes->ApplyTempMatrix();  
+	//allCubes->DestroyTempMatrix();
 }
 
 //--------------------------------------------------------------

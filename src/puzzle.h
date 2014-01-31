@@ -15,7 +15,7 @@ public:
 	void update();
 	void draw();
 
-	void loadPieces(slicer &pcs);
+	void loadPieces(sgCGroup **pcs);
 
 	cubie **myCubies; //malloc 27 of these
 };

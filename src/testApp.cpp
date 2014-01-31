@@ -9,10 +9,11 @@
 #include "sgCore.h"
 ///////////////////////////////////////////
 #define planeThicknes 0.1
-#define planeSize 400
-#define tamCubie 80
+#define planeSize 500
+#define tamCubie 100
 //--------------------------------------------------------------
 void testApp::setup(){
+	makeCut =false;
 	/////initialize sgCore library
 	sgInitKernel();  
 
@@ -20,7 +21,7 @@ void testApp::setup(){
 	///////////////////////////3D OBJECT LOADING//////////////////////////////////////
 	////////////////////// create primitive torus
 	objectDisplayed = new myobject3D();
-	objectDisplayed->loadObject(*(sgCObject*)sgCreateTorus(100,20,24,24));
+	objectDisplayed->loadObject(*(sgCObject*)sgCreateTorus(100,80,24,24));
 	////////////////////// from STL file
 	/*const char* nel =  ofToDataPath("cube.stl",false).c_str();
 	objectDisplayed.loadObjectFromFile(nel);*/
@@ -31,60 +32,21 @@ void testApp::setup(){
 	myCutter->setup();
 	//////////////////////////////end create cutter///////////////////////////////////
 
-	
+
 	//////////////////////////////create slicer///////////////////////////////////////
 	mySlicer = new slicer(myCutter);
 	mySlicer->setup();
-	////BOOLEAN SUBSTRACTION//////////////////////////////////////////////////////////
-	//mySlicer->xSlicing(*mySlicer->myCutter,objectDisplayed->getObject(),1,1);
-	///boolean INTERSECTION///////////////////////////////////////////////////////////
-	mySlicer->intersectCubes(mySlicer->myCutter,objectDisplayed->getObject());
-	//////////////////////////////////////////////////////////////////////////////////
 	///////////////////////end create slicer /////////////////////////////////////////
 
 	//////////////////////////////create puzzle///////////////////////////////////////
 	myPuzzle = new puzzle();
 	myPuzzle->setup();
-	sgCGroup ** aux = (sgCGroup**) mySlicer->pieces; //WHY CANT I GET THE DATA HERE???
-	sgCGroup * aux2 = (sgCGroup*) mySlicer->pieces[6]; //AND HERE IT IS!!!
-	myPuzzle->loadPieces(*mySlicer);
-	//////////////////////////////end create puzzle///////////////////////////////////
-
-
-	/////////////////////////////////////////////////////////////////////////////////////////////////////
-	//Draw the pieces!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-	for(int i=0; i<27 ; i++){
-		if(mySlicer->pieces[i] != NULL){
-			sgCGroup *result2 = (sgCGroup*) mySlicer->pieces[i];
-			const int ChCnt = result2->GetChildrenList()->GetCount();
-			sgCObject** allChilds3 = (sgCObject**)malloc(ChCnt*sizeof(sgCObject*));
-			result2->BreakGroup(allChilds3);// ->BreakGroup(allChilds3);
-			sgCObject::DeleteObject(result2);
-
-			for (int j=0; j < ChCnt; j++){
-				SG_VECTOR transBox11 = {500,0,0}; 
-				allChilds3[j]->InitTempMatrix()->Translate(transBox11);
-				SG_VECTOR transBox121 = {0,500,0}; 
-				allChilds3[j]->GetTempMatrix()->Translate(transBox121);
-				allChilds3[j]->ApplyTempMatrix();  
-				allChilds3[j]->DestroyTempMatrix();
-				allChilds3[j]->SetAttribute(SG_OA_COLOR,rand()%50);
-				sgGetScene()->AttachObject(allChilds3[j]);
-			}
-			free(allChilds3);
-		}
-	}
-	/////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-	///////////////////////////////////////////////////////////////////////////////////////
+	//////////////////////////////end create puzzle////////////////////////////////////
 
 }
 //--------------------------------------------------------------
 void testApp::update(){
-	////////put all elements on the scene/////////////////
-	//add cutter to scene
+	////////update cutter/////////////////
 	myCutter->update();
 
 
@@ -97,11 +59,61 @@ void testApp::update(){
 
 	//sgGetScene()->AttachObject(add); 
 	//add->SetAttribute(SG_OA_COLOR,12);
+
+
+	if(makeCut==true){
+		////BOOLEAN SUBSTRACTION//////////////////////////////////////////////////////////
+		//mySlicer->xSlicing(*mySlicer->myCutter,objectDisplayed->getObject(),1,1);
+		///boolean INTERSECTION///////////////////////////////////////////////////////////
+		mySlicer->intersectCubes(mySlicer->myCutter,objectDisplayed->getObject()); 
+
+		//////////////////////////////create puzzle///////////////////////////////////////
+		//sgCGroup ** aux = (sgCGroup**) mySlicer->pieces; //WHY CANT I GET THE DATA ** HERE??? its a group**!!
+		//sgCGroup ** aux = (sgCGroup**) mySlicer->getPieces(); //WHY CANT I GET THE DATA ** HERE??? on the SETUP?? now on the update I can...!!!
+		//sgCGroup * aux2 = (sgCGroup*) mySlicer->pieces[6]; //AND HERE IT IS!!! ->> why???
+		myPuzzle->loadPieces(mySlicer->getPieces());
+		//////////////////////////////end create puzzle////////////////////////////////////
+		/////////////////////////////////////////////////////////////////////////////////////
+		makeCut = false;
+		cout << "end cut:" << ofGetElapsedTimeMillis() << endl;
+		//Draw the pieces!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		sgCGroup **aux = (sgCGroup**)malloc(27*sizeof(sgCGroup*));
+		aux = mySlicer->getPieces();
+		for(int i=0; i<27 ; i++){
+			if(aux[i] != NULL){
+				sgCGroup *result2 = (sgCGroup*) aux[i];  //WHY am I loosing the data here?? do I have to make a copy always before doing this?? how????
+				const int ChCnt = result2->GetChildrenList()->GetCount();
+				sgCObject** allChilds3a = (sgCObject**)malloc(ChCnt*sizeof(sgCObject*));
+				result2->BreakGroup(allChilds3a);// ->BreakGroup(allChilds3);
+				sgCObject::DeleteObject(result2);
+				for (int j=0; j < ChCnt; j++){
+					SG_VECTOR rotD = {0,1,0};
+					SG_POINT rot = {0,0,0};
+					allChilds3a[j]->InitTempMatrix()->Rotate(rot,rotD,1.0);
+					SG_VECTOR transBox11 = {500,0,0}; 
+					allChilds3a[j]->GetTempMatrix()->Translate(transBox11);
+					SG_VECTOR transBox121 = {0,500,0}; 
+					allChilds3a[j]->GetTempMatrix()->Translate(transBox121);
+					allChilds3a[j]->ApplyTempMatrix();  
+					allChilds3a[j]->DestroyTempMatrix();
+					allChilds3a[j]->SetAttribute(SG_OA_COLOR,rand()%50);
+					sgGetScene()->AttachObject(allChilds3a[j]);
+					break;
+				}
+				free(allChilds3a);
+			}
+		}
+	}
 }
 
 //--------------------------------------------------------------
 void testApp::draw(){
 
+	/*SG_VECTOR rotD = {0,1,0};
+	SG_POINT rot = {500,500,0};
+	objectDisplayed->getObject()->InitTempMatrix()->Rotate(rot,rotD,0.0); 
+	objectDisplayed->getObject()->ApplyTempMatrix();  
+	objectDisplayed->getObject()->DestroyTempMatrix();*/
 	sgGetScene()->AttachObject(objectDisplayed->getObject());
 
 	//addGroupToScene((sgCGroup*)myCutter->getCutterPlanes());
@@ -129,6 +141,8 @@ void testApp::draw(){
 }
 //--------------------------------------------------------------
 void testApp::keyPressed(int key){
+	cout << "init cut: " << ofGetElapsedTimeMillis() << endl;
+	makeCut = true;
 }
 //--------------------------------------------------------------
 void testApp::keyReleased(int key){

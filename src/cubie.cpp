@@ -42,7 +42,7 @@ void cubie::draw(){
 sgCGroup* cubie::getObjects(){
 	//make a copy of *objects send outside, so originals dont get messed up, and cubies can draw every time without making a the boolean first
 	sgCGroup* aux;
-	sgCObject *objcts[500];  
+	sgCObject *objcts[50];  
 	int objctr = 0;
 
 	if(objects != NULL){
@@ -58,7 +58,7 @@ sgCGroup* cubie::getObjects(){
 			objctr ++;
 		}
 		free(allParts);
-		//put that new group inside aux**[]
+		//put thatnew group inside aux**[]
 		objects = sgCGroup::CreateGroup(objcts,objctr); //so pieces[] has the data again, and keeps it for future requests
 		aux = sgCGroup::CreateGroup(objcts,objctr);  
 	}else{

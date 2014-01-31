@@ -5,6 +5,7 @@
 #include "myobject3D.h"
 #include "cutter.h"
 #include "slicer.h"
+#include "puzzle.h"
 
 class testApp : public ofBaseApp{
 
@@ -32,6 +33,7 @@ class testApp : public ofBaseApp{
 		myobject3D *objectDisplayed;
 		cutter *myCutter;
 		slicer *mySlicer;
+		puzzle *myPuzzle;
 		////////////////
 
 		sgCGroup* add;

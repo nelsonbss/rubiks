@@ -35,7 +35,7 @@ void slicer::intersectCubes(cutter *icutter, sgCObject *obj){
 		sgCObject *tempObj = obj->Clone();
 		sgCObject *tempCutter = icutter->cubes[i]->Clone();
 
-		//position objects to start making bool intersect
+		//INTERSECTION IS BEING DONE ON THE ORIGIN!!!
 
 		//do intersecton
 		inter = sgBoolean::Intersection(*(sgC3DObject*)tempObj,*(sgC3DObject*)tempCutter);

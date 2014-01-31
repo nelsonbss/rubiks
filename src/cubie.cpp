@@ -42,7 +42,7 @@ void cubie::draw(){
 sgCGroup* cubie::getObjects(){
 	//make a copy of *objects send outside, so originals dont get messed up, and cubies can draw every time without making a the boolean first
 	sgCGroup* aux;
-	sgCObject *objcts[50];  
+	sgCObject *objcts[500];  
 	int objctr = 0;
 
 	if(objects != NULL){
@@ -52,7 +52,7 @@ sgCGroup* cubie::getObjects(){
 		//sgCObject::DeleteObject(objects);
 		for (int j=0; j < ChCnt; j++){
 			//clone each object
-			sgCObject *temp = allParts[j]->Clone();
+			sgCObject *temp = allParts[j]->Clone(); ///HERE IS THE PROBLEM!!!!!
 			//put clone on *[] tomake new group
 			objcts[objctr] = temp;
 			objctr ++;

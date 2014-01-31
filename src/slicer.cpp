@@ -13,7 +13,7 @@ void slicer::setup(){
 
 //--------------------------------------------------------------
 void slicer::update(){
-
+	//cout << "update slicer" << pieces[0] << endl;
 }
 
 //--------------------------------------------------------------
@@ -23,7 +23,36 @@ void slicer::draw(){
 //////////////////////////////////////////////////////////////////////////////////////////////////
 //----------------------------------------------------------------
 sgCGroup** slicer::getPieces(){
-	return pieces;
+	//make a copy of the group** to send outside pieces[]
+	sgCGroup **aux = (sgCGroup**)malloc(27*sizeof(sgCGroup*));
+	sgCObject *objcts[500];  
+
+	for(int i =0; i<27; i ++){
+		int objctr = 0;
+		//break each pieces[i]
+		sgCGroup *parts = pieces[i];
+		if(parts != NULL){
+			const int ChCnt = parts->GetChildrenList()->GetCount();
+			sgCObject** allParts = (sgCObject**)malloc(ChCnt*sizeof(sgCObject*));
+			parts->BreakGroup(allParts);
+			sgCObject::DeleteObject(parts);
+			for (int j=0; j < ChCnt; j++){
+				//clone each object
+				sgCObject *temp = allParts[j]->Clone();
+				//put clone on *[] tomake new group
+				objcts[objctr] = temp;
+				objctr ++;
+			}
+			free(allParts);
+			//put that new group inside aux**[]
+			pieces[i] = sgCGroup::CreateGroup(objcts,objctr); //so pieces[] has the data again, and it keeps it
+			aux[i] = sgCGroup::CreateGroup(objcts,objctr);  
+		}else{
+			pieces[i] = NULL;
+			aux[i] = NULL; 
+		}
+	}
+	return aux;
 }
 //----------------------------------------------------------------
 //////////////////////////// Intersection/////////////////////////////////////////////////////////////////////////////////

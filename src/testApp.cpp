@@ -21,7 +21,7 @@ void testApp::setup(){
 	///////////////////////////3D OBJECT LOADING//////////////////////////////////////
 	////////////////////// create primitive torus
 	objectDisplayed = new myobject3D();
-	objectDisplayed->loadObject(*(sgCObject*)sgCreateTorus(100,80,24,24));
+	objectDisplayed->loadObject(*(sgCObject*)sgCreateTorus(100,80,4,4));
 	////////////////////// from STL file
 	/*const char* nel =  ofToDataPath("cube.stl",false).c_str();
 	objectDisplayed.loadObjectFromFile(nel);*/
@@ -73,10 +73,11 @@ void testApp::update(){
 		//sgCGroup * aux2 = (sgCGroup*) mySlicer->pieces[6]; //AND HERE IT IS!!! ->> why???
 		myPuzzle->loadPieces(mySlicer->getPieces());
 		//////////////////////////////end create puzzle////////////////////////////////////
-		/////////////////////////////////////////////////////////////////////////////////////
 		makeCut = false;
 		cout << "end cut:" << ofGetElapsedTimeMillis() << endl;
-		//Draw the pieces!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+		///////////////////////////////////////////////////////////////////////////////////
+		////////////////////////////////Draw the pieces////////////////////////////////////
 		sgCGroup **aux = (sgCGroup**)malloc(27*sizeof(sgCGroup*));
 		aux = mySlicer->getPieces();
 		for(int i=0; i<27 ; i++){

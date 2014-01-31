@@ -75,9 +75,7 @@ void testApp::update(){
 		//////////////////////////////end create puzzle////////////////////////////////////
 		/////////////////////////////////////////////////////////////////////////////////////
 		makeCut = false;
-		cout << "end cut: " << ofGetElapsedTimeMillis() << endl;
-
-
+		cout << "end cut:" << ofGetElapsedTimeMillis() << endl;
 		//Draw the pieces!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		sgCGroup **aux = (sgCGroup**)malloc(27*sizeof(sgCGroup*));
 		aux = mySlicer->getPieces();

@@ -16,6 +16,7 @@ public:
 	sgCGroup *objects;
 
 	void setObjects(sgCGroup *objs);
+	sgCGroup* getObjects();
 };
 
 #endif /* defined(__Tcubie__cubie__) */

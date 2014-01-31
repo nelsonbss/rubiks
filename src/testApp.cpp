@@ -13,7 +13,8 @@
 #define tamCubie 100
 //--------------------------------------------------------------
 void testApp::setup(){
-	makeCut =false;
+	makeCut = false;
+	drawCuts = false;
 	/////initialize sgCore library
 	sgInitKernel();  
 
@@ -21,7 +22,8 @@ void testApp::setup(){
 	///////////////////////////3D OBJECT LOADING//////////////////////////////////////
 	////////////////////// create primitive torus
 	objectDisplayed = new myobject3D();
-	objectDisplayed->loadObject(*(sgCObject*)sgCreateTorus(100,80,4,4));
+	//objectDisplayed->loadObject(*(sgCObject*)sgCreateTorus(100,80,24,24));
+	objectDisplayed->loadObject(*(sgCObject*)sgCreateCone(200,1,300.0, 3));
 	////////////////////// from STL file
 	/*const char* nel =  ofToDataPath("cube.stl",false).c_str();
 	objectDisplayed.loadObjectFromFile(nel);*/
@@ -31,7 +33,6 @@ void testApp::setup(){
 	myCutter = new cutter(planeThicknes,planeSize,tamCubie,1); //to make a plane based cutter
 	myCutter->setup();
 	//////////////////////////////end create cutter///////////////////////////////////
-
 
 	//////////////////////////////create slicer///////////////////////////////////////
 	mySlicer = new slicer(myCutter);
@@ -74,41 +75,23 @@ void testApp::update(){
 		myPuzzle->loadPieces(mySlicer->getPieces());
 		//////////////////////////////end create puzzle////////////////////////////////////
 		makeCut = false;
+
+		drawCuts = true;
 		cout << "end cut:" << ofGetElapsedTimeMillis() << endl;
 
 		///////////////////////////////////////////////////////////////////////////////////
-		////////////////////////////////Draw the pieces////////////////////////////////////
-		sgCGroup **aux = (sgCGroup**)malloc(27*sizeof(sgCGroup*));
-		aux = mySlicer->getPieces();
-		for(int i=0; i<27 ; i++){
-			if(aux[i] != NULL){
-				sgCGroup *result2 = (sgCGroup*) aux[i];  //WHY am I loosing the data here?? do I have to make a copy always before doing this?? how????
-				const int ChCnt = result2->GetChildrenList()->GetCount();
-				sgCObject** allChilds3a = (sgCObject**)malloc(ChCnt*sizeof(sgCObject*));
-				result2->BreakGroup(allChilds3a);// ->BreakGroup(allChilds3);
-				sgCObject::DeleteObject(result2);
-				for (int j=0; j < ChCnt; j++){
-					SG_VECTOR rotD = {0,1,0};
-					SG_POINT rot = {0,0,0};
-					allChilds3a[j]->InitTempMatrix()->Rotate(rot,rotD,1.0);
-					SG_VECTOR transBox11 = {500,0,0}; 
-					allChilds3a[j]->GetTempMatrix()->Translate(transBox11);
-					SG_VECTOR transBox121 = {0,500,0}; 
-					allChilds3a[j]->GetTempMatrix()->Translate(transBox121);
-					allChilds3a[j]->ApplyTempMatrix();  
-					allChilds3a[j]->DestroyTempMatrix();
-					allChilds3a[j]->SetAttribute(SG_OA_COLOR,rand()%50);
-					sgGetScene()->AttachObject(allChilds3a[j]);
-					break;
-				}
-				free(allChilds3a);
-			}
-		}
+
 	}
 }
 
 //--------------------------------------------------------------
 void testApp::draw(){
+
+	////////////////////////////////Draw the pieces////////////////////////////////////
+	if(drawCuts==true){
+		myPuzzle->draw();
+		drawCuts = false;
+	}
 
 	/*SG_VECTOR rotD = {0,1,0};
 	SG_POINT rot = {500,500,0};
@@ -142,8 +125,14 @@ void testApp::draw(){
 }
 //--------------------------------------------------------------
 void testApp::keyPressed(int key){
-	cout << "init cut: " << ofGetElapsedTimeMillis() << endl;
-	makeCut = true;
+	if(key == 'c') {
+		cout << "init cut: " << ofGetElapsedTimeMillis() << endl;
+		makeCut = true;
+	}
+	if(key == 'd') {
+		cout << "manualDRAW" << endl;
+		drawCuts = true;
+	}
 }
 //--------------------------------------------------------------
 void testApp::keyReleased(int key){

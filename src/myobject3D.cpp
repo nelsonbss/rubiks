@@ -26,13 +26,13 @@ void myobject3D::loadObjectFromFile(const char* pathTofile){
 	cout << "draw: " << sgGetScene()->GetObjectsList()->GetCount() << endl;
 }
 //----------------------------------------------------------------
-void myobject3D::loadObject(sgCObject &obj){
+void myobject3D::loadObject(sgCObject *obj){
 	//it will load a sgCore lib object: torus, box
-	object = &obj;
+	object = obj;
 }
 //----------------------------------------------------------------
 sgCObject* myobject3D::getObject(){
 	//it returns a clone of the object
 	//NEVER return the real object
-	return object->Clone();
+	return object;
 }

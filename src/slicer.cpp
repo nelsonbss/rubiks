@@ -58,30 +58,27 @@ sgCGroup** slicer::getPieces(){
 }
 //----------------------------------------------------------------
 //////////////////////////// Intersection/////////////////////////////////////////////////////////////////////////////////
-void slicer::intersectCubes(cutter *icutter, sgCObject *obj){
+void slicer::intersectCubes(sgCObject *obj){
 	//it uses intersection of 27 cubes, on the object, to get all the pieces for each cubie in one oeration
-	const sgCGroup *inter;
+	sgCGroup *inter;
 
 	for(int i =0; i<27; i ++){
 		sgCObject *tempObj = obj->Clone();
-		sgCObject *tempCutter = icutter->cubes[i]->Clone();
+		sgCObject *tempCutter = myCutter->cubes[i]->Clone();
 
 		//INTERSECTION IS BEING DONE ON THE ORIGIN!!!
 
 		//do intersecton
 		inter = sgBoolean::Intersection(*(sgC3DObject*)tempObj,*(sgC3DObject*)tempCutter);
-		if(inter){
-			//now we have the whole piece that goes into a cubie for that cube
-			pieces[i] = new sgCGroup(*inter);
-		}else{
-			//no intersection
-			pieces[i]=NULL;
-		}
+
+		//now we have the whole piece that goes into a cubie for that cube
+		pieces[i] = inter;
+
 		//clean up
 		sgCObject::DeleteObject(tempObj);
 		sgCObject::DeleteObject(tempCutter);
 	}
-	sgCObject::DeleteObject(obj);
+	//sgCObject::DeleteObject(obj);
 }
 
 

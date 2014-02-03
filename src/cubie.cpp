@@ -52,7 +52,7 @@ sgCGroup* cubie::getObjects(){
 		//sgCObject::DeleteObject(objects);
 		for (int j=0; j < ChCnt; j++){
 			//clone each object
-			sgCObject *temp = allParts[j]->Clone(); ///HERE IS THE PROBLEM!!!!!
+			sgCObject *temp = allParts[j]; ///HERE IS THE PROBLEM!!!!!
 			//put clone on *[] tomake new group
 			objcts[objctr] = temp;
 			objctr ++;
@@ -84,7 +84,7 @@ void cubie::setObjects(sgCGroup *objs){
 
 	for (int j=0; j < ChCnt; j++){
 		//clone each object
-		sgCObject *temp = allParts[j]->Clone();
+		sgCObject *temp = allParts[j];
 		//put clone on *[] tomake new group
 		objcts[objctr] = temp;
 		objctr ++;
@@ -92,6 +92,4 @@ void cubie::setObjects(sgCGroup *objs){
 	free(allParts);
 	//put that new group inside *objects of this class, of every cubie
 	objects = sgCGroup::CreateGroup(objcts,objctr);  
-
-
 }

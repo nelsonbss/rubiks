@@ -61,7 +61,7 @@ void puzzle::loadPieces(sgCGroup **pcs){
 
 			for (int j=0; j < ChCnt; j++){
 				//clone each part
-				sgCObject *tempOBJ = allParts[j]->Clone(); //each is an object that goes in one cubie
+				sgCObject *tempOBJ = allParts[j]; //each is an object that goes in one cubie
 				obj[j] = tempOBJ;
 				realNumPieces ++;
 			}

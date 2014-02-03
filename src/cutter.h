@@ -12,6 +12,8 @@ public:
 	void update();
 	void draw();
 
+	void exit();
+
 	sgCGroup* getCutterPlanes();//it will return the object, i.e to be drawn
     sgCGroup* getCutterCubes();
 

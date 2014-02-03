@@ -518,22 +518,9 @@ void cutter::setup(){
 
 //--------------------------------------------------------------
 void cutter::update(){
-	//	planes[0] = x1;
-	//	planes[1] = x2;
-	//	planes[2] = y1;
-	//	planes[3] = y2;
-	//	planes[4] = z1;
-	//	planes[5] = z2;
-	//	//////create group
 	//allPlanes = sgCGroup::CreateGroup(planes,6);
-
-	//why do I have to do this update... or else allPlanes & allCubes are forgotten and cannot draw ?????????????????????
-	//cubes[0] = c1; 
-	//////create group
 	//allCubes = sgCGroup::CreateGroup(cubes,27);
-
 }
-
 //--------------------------------------------------------------
 void cutter::draw(){  
 	//allPlanes = sgCGroup::CreateGroup(planes,6);
@@ -547,4 +534,11 @@ sgCGroup* cutter::getCutterPlanes(){
 
 sgCGroup* cutter::getCutterCubes(){
 	return allCubes; 
+}
+
+void cutter::exit(){
+	/*free(allPlanes);
+	free(allCubes);*/
+	free(planes);
+	free(cubes);
 }

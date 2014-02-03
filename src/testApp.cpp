@@ -24,7 +24,7 @@ void testApp::setup(){
 	////////////////////// create primitive torus
 	objectDisplayed = new myobject3D();
 	objectDisplayed->loadObject(sgCreateTorus(100,80,24,24));
-	//objectDisplayed->loadObject(*(sgCObject*)sgCreateCone(200,1,300.0, 3));
+	//objectDisplayed->loadObject(sgCreateCone(200,1,300.0, 3));
 	////////////////////// from STL file
 	/*const char* nel =  ofToDataPath("cube.stl",false).c_str();
 	objectDisplayed.loadObjectFromFile(nel);*/
@@ -33,14 +33,14 @@ void testApp::setup(){
 	//////////////////////////////create cutter///////////////////////////////////////
 	myCutter = new cutter(planeThicknes,planeSize,tamCubie,1); //to make a plane based cutter
 	myCutter->setup();
-	//////////////////////////////end create cutter///////////////////////////////////
+	////////////////////////////////end create cutter///////////////////////////////////
 
-	//////////////////////////////create slicer///////////////////////////////////////
+	////////////////////////////////create slicer///////////////////////////////////////
 	mySlicer = new slicer(myCutter);
 	mySlicer->setup();
-	///////////////////////end create slicer /////////////////////////////////////////
+	/////////////////////////end create slicer /////////////////////////////////////////
 
-	//////////////////////////////create puzzle///////////////////////////////////////
+	////////////////////////////////create puzzle///////////////////////////////////////
 	myPuzzle = new puzzle();
 	myPuzzle->setup();
 	//////////////////////////////end create puzzle////////////////////////////////////
@@ -105,10 +105,10 @@ void testApp::draw(){
 	objectDisplayed->getObject()->InitTempMatrix()->Rotate(rot,rotD,0.0); 
 	objectDisplayed->getObject()->ApplyTempMatrix();  
 	objectDisplayed->getObject()->DestroyTempMatrix();*/
-	//sgGetScene()->AttachObject(objectDisplayed->getObject());
+	sgGetScene()->AttachObject(objectDisplayed->getObject());
 
-	//addGroupToScene((sgCGroup*)myCutter->getCutterPlanes());
-	//addGroupToScene((sgCGroup*)myCutter->getCutterCubes());
+	addGroupToScene((sgCGroup*)myCutter->getCutterPlanes());
+	addGroupToScene((sgCGroup*)myCutter->getCutterCubes());
 
 	////////////////////////////////////////////////////////////
 	//draw the elements of the scene
@@ -204,4 +204,10 @@ void testApp::addGroupToScene(sgCGroup *group){
 	//assert(sz==0);  
 	//sgDeleteObject(group);  
 
+}
+
+void testApp::exit(){
+	myCutter->exit();
+	mySlicer->exit();
+	sgFreeKernel();
 }

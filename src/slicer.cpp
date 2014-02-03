@@ -24,7 +24,7 @@ void slicer::draw(){
 sgCGroup** slicer::getPieces(){
 	//make a copy of the group** to send outside pieces[]
 	sgCGroup **aux = (sgCGroup**)malloc(27*sizeof(sgCGroup*));
-	sgCObject *objcts[500];  
+	sgCObject *objcts[5];  
 
 	for(int i =0; i<27; i ++){
 		int objctr = 0;
@@ -92,7 +92,10 @@ void slicer::intersectCubes(sgCObject *obj){
 	}
 	//sgCObject::DeleteObject(obj);
 }
-
+//----------------------------------------------------------------------------------------------------------------------------------------------
+void slicer::exit(){
+	free(pieces);
+}
 
 
 

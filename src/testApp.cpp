@@ -22,8 +22,8 @@ void testApp::setup(){
 	///////////////////////////3D OBJECT LOADING//////////////////////////////////////
 	////////////////////// create primitive torus
 	objectDisplayed = new myobject3D();
-	//objectDisplayed->loadObject(*(sgCObject*)sgCreateTorus(100,80,24,24));
-	objectDisplayed->loadObject(*(sgCObject*)sgCreateCone(200,1,300.0, 3));
+	objectDisplayed->loadObject(sgCreateTorus(100,80,24,24));
+	//objectDisplayed->loadObject(*(sgCObject*)sgCreateCone(200,1,300.0, 3));
 	////////////////////// from STL file
 	/*const char* nel =  ofToDataPath("cube.stl",false).c_str();
 	objectDisplayed.loadObjectFromFile(nel);*/
@@ -48,7 +48,7 @@ void testApp::setup(){
 //--------------------------------------------------------------
 void testApp::update(){
 	////////update cutter/////////////////
-	myCutter->update();
+	//myCutter->update();
 
 
 	//add original object to scene
@@ -66,7 +66,7 @@ void testApp::update(){
 		////BOOLEAN SUBSTRACTION//////////////////////////////////////////////////////////
 		//mySlicer->xSlicing(*mySlicer->myCutter,objectDisplayed->getObject(),1,1);
 		///boolean INTERSECTION///////////////////////////////////////////////////////////
-		mySlicer->intersectCubes(mySlicer->myCutter,objectDisplayed->getObject()); 
+		mySlicer->intersectCubes(objectDisplayed->getObject()); 
 
 		//////////////////////////////create puzzle///////////////////////////////////////
 		//sgCGroup ** aux = (sgCGroup**) mySlicer->pieces; //WHY CANT I GET THE DATA ** HERE??? its a group**!!
@@ -172,7 +172,7 @@ void testApp::addGroupToScene(sgCGroup *group){
 	}  
 	const int sz = group->GetChildrenList()->GetCount();  
 	//assert(sz==0);  
-	sgDeleteObject(group);  
+	//sgDeleteObject(group);  
 	for (int i=0;i<ChildsCount;i++){  
 		sgGetScene()->AttachObject(allChilds[i]);  
 	}  

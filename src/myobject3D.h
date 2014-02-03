@@ -14,7 +14,7 @@ public:
 	void draw();
 
 	void loadObjectFromFile(const char* pathTofile); //it will load a stl file into object
-	void loadObject(sgCObject &obj); //it will load a sgCore lib object: torus, box...
+	void loadObject(sgCObject *obj); //it will load a sgCore lib object: torus, box...
 	sgCObject* getObject();//it will return the object, i.e to be drawn
    
 	sgCObject *object;

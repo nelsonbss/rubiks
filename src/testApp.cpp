@@ -15,6 +15,7 @@
 void testApp::setup(){
 	makeCut = false;
 	drawCuts = false;
+	drawCuts1 = false;
 	/////initialize sgCore library
 	sgInitKernel();  
 
@@ -76,7 +77,7 @@ void testApp::update(){
 		//////////////////////////////end create puzzle////////////////////////////////////
 		makeCut = false;
 
-		drawCuts = true;
+		drawCuts1 = true;
 		cout << "end cut:" << ofGetElapsedTimeMillis() << endl;
 
 		///////////////////////////////////////////////////////////////////////////////////
@@ -87,9 +88,15 @@ void testApp::update(){
 //--------------------------------------------------------------
 void testApp::draw(){
 
+
 	////////////////////////////////Draw the pieces////////////////////////////////////
+	if(drawCuts1==true){
+		myPuzzle->draw1(sgGetScene());
+		drawCuts1 = false;
+	}
+
 	if(drawCuts==true){
-		myPuzzle->draw();
+		myPuzzle->draw(sgGetScene());
 		drawCuts = false;
 	}
 
@@ -98,13 +105,15 @@ void testApp::draw(){
 	objectDisplayed->getObject()->InitTempMatrix()->Rotate(rot,rotD,0.0); 
 	objectDisplayed->getObject()->ApplyTempMatrix();  
 	objectDisplayed->getObject()->DestroyTempMatrix();*/
-	sgGetScene()->AttachObject(objectDisplayed->getObject());
+	//sgGetScene()->AttachObject(objectDisplayed->getObject());
 
 	//addGroupToScene((sgCGroup*)myCutter->getCutterPlanes());
-	addGroupToScene((sgCGroup*)myCutter->getCutterCubes());
+	//addGroupToScene((sgCGroup*)myCutter->getCutterCubes());
+
 	////////////////////////////////////////////////////////////
 	//draw the elements of the scene
 	sgCObject*  curObj = sgGetScene()->GetObjectsList()->GetHead();
+
 	while (curObj)
 	{
 		if (true)
@@ -121,7 +130,18 @@ void testApp::draw(){
 		curObj = sgGetScene()->GetObjectsList()->GetNext(curObj);
 	}
 
-	//sgGetScene()->Clear();
+
+	//int tt = sgGetScene()->GetObjectsList()->GetCount();
+	//if(tt != 0){
+	//	sgCObject*  curObj = sgGetScene()->GetObjectsList()->GetHead();
+	//	for(int i=0;i<tt;i++){
+	//		if(curObj){
+	//			//sgGetScene()->Clear();
+	//			Painter::DrawObject(GL_RENDER,curObj,false);
+	//			curObj = sgGetScene()->GetObjectsList()->GetNext(curObj);
+	//		}
+	//	}
+	//}
 }
 //--------------------------------------------------------------
 void testApp::keyPressed(int key){
@@ -135,6 +155,12 @@ void testApp::keyPressed(int key){
 	}
 	if(key == 'g') {
 		cout << "nu cubies " << myPuzzle->giveNumCubies() << endl;
+	}
+	if(key == 'h') {
+		cout << "nu pieces " << mySlicer->countPieces() << endl;
+	}
+	if(key == 'r') {
+	  myPuzzle->rotate();
 	}
 }
 //--------------------------------------------------------------
@@ -167,14 +193,15 @@ void testApp::addGroupToScene(sgCGroup *group){
 	const int ChildsCount = group->GetChildrenList()->GetCount();  
 	sgCObject**  allChilds = (sgCObject**)malloc(ChildsCount*sizeof(sgCObject*));  
 
-	if (!group->BreakGroup(allChilds)){  
+	if (group->BreakGroup(allChilds)){  
 		//assert(0);  
+		for (int i=0;i<ChildsCount;i++){  
+			sgGetScene()->AttachObject(allChilds[i]);  
+		}  
+		free(allChilds); 
 	}  
-	const int sz = group->GetChildrenList()->GetCount();  
+	//const int sz = group->GetChildrenList()->GetCount();  
 	//assert(sz==0);  
 	//sgDeleteObject(group);  
-	for (int i=0;i<ChildsCount;i++){  
-		sgGetScene()->AttachObject(allChilds[i]);  
-	}  
-	free(allChilds);  
+
 }

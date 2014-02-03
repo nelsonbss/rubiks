@@ -11,12 +11,16 @@ public:
     
 	void setup();
 	void update();
-	void draw();
+	void draw(sgCScene *scn);
+	void draw1(sgCScene *scn);
+
+	void rotate();
 
 	sgCGroup *objects;
+	float move;
 
 	void setObjects(sgCGroup *objs);
-	sgCGroup* getObjects();
+	sgCGroup* copyObjects();
 };
 
 #endif /* defined(__Tcubie__cubie__) */

@@ -21,7 +21,7 @@ public:
 	//as the result of the booleansubstraction!!!
 
 	sgCGroup** getPieces(); //returns the array of * of groups of objects for each volume(smallCube) of the puzzle
-
+	int countPieces();
 	//// algorithms
 	///cubes
 	void intersectCubes(sgCObject *obj);

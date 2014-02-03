@@ -13,7 +13,10 @@ public:
     
 	void setup();
 	void update();
-	void draw();
+	void draw(sgCScene *scn);
+	void draw1(sgCScene *scn);
+
+	void rotate();
 
 	void loadPieces(sgCGroup **pcs);
 	int giveNumCubies();

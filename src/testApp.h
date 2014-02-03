@@ -40,4 +40,5 @@ class testApp : public ofBaseApp{
 
 		bool makeCut;
 		bool drawCuts;
+		bool drawCuts1;
 };

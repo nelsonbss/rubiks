@@ -4,20 +4,20 @@
 
 slicer::slicer(cutter *c){
 	myCutter = c;
+	//create & initialize the pieces of the slicer as NULL
 	pieces = (sgCGroup**)malloc(27*sizeof(sgCObject*));
+	for(int i =0; i<27; i ++){
+		pieces[i] = NULL;
+	}
 }
 //--------------------------------------------------------------
 void slicer::setup(){
-
 }
-
 //--------------------------------------------------------------
 void slicer::update(){
 }
-
 //--------------------------------------------------------------
 void slicer::draw(){  
-
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////
 //----------------------------------------------------------------
@@ -55,6 +55,18 @@ sgCGroup** slicer::getPieces(){
 	//sgCObject::DeleteObject(*objcts); //why if I delete the objects everything goes KAPUT?????
 	///////////////important////////////////////important//////////////important//////////////////////
 	return aux;
+}
+//----------------------------------------------------------------
+int slicer::countPieces(){
+	int count =0;
+	for(int i =0; i<27; i ++){
+		//break each pieces[i]
+		sgCGroup *parts = pieces[i];
+		if(parts != NULL){
+			count ++;
+		}
+	}
+	return count;
 }
 //----------------------------------------------------------------
 //////////////////////////// Intersection/////////////////////////////////////////////////////////////////////////////////

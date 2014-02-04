@@ -13,13 +13,14 @@
 #define tamCubie 100
 //--------------------------------------------------------------
 void testApp::setup(){
-	initScene(); 
+	 
 	///////////////////////////////////////////////////////////////
 	makeCut = false;
 	drawCuts = false;
 	drawCuts1 = false;
 	/////initialize sgCore library
 	sgInitKernel();  
+	initScene();
 	sgC3DObject::AutoTriangulate(false, SG_DELAUNAY_TRIANGULATION);
 
 	//////////////////////////////////////////////////////////////////////////////////
@@ -82,9 +83,7 @@ void testApp::update(){
 
 		drawCuts1 = true;
 		cout << "end cut:" << ofGetElapsedTimeMillis() << endl;
-
 		///////////////////////////////////////////////////////////////////////////////////
-
 	}
 }
 

@@ -82,15 +82,17 @@ void testApp::update(){
 		makeCut = false;
 
 		drawCuts1 = true;
-		cout << "end cut:" << ofGetElapsedTimeMillis() << endl;
+		//cout << "end cut:" << ofGetElapsedTimeMillis() << endl;
 		///////////////////////////////////////////////////////////////////////////////////
 	}
+
+	objectDisplayed->update();
 }
 
 //--------------------------------------------------------------
 void testApp::draw(){
 	////////////////////////////////Draw the pieces////////////////////////////////////
-	if(drawCuts1==true){
+	/*if(drawCuts1==true){
 		myPuzzle->draw1(sgGetScene());
 		drawCuts1 = false;
 	}
@@ -98,21 +100,26 @@ void testApp::draw(){
 	if(drawCuts==true){
 		myPuzzle->draw(sgGetScene());
 		drawCuts = false;
-	}
+	}*/
 
 	
-	/*SG_VECTOR rotD = {100,0,0};
-	objectDisplayed->getObject()->InitTempMatrix()->Translate(rotD);
-	objectDisplayed->getObject()->ApplyTempMatrix();  
-	objectDisplayed->getObject()->DestroyTempMatrix();*/
-	sgGetScene()->AttachObject(objectDisplayed->getObject());
-	//objectDisplayed->draw();
+	//SG_VECTOR rotD = {1,0,0};
+	//objectDisplayed->getObject()->InitTempMatrix()->Translate(rotD);
+	//objectDisplayed->getObject()->ApplyTempMatrix();  
+	////objectDisplayed->getObject()->DestroyTempMatrix();
+	//sgGetScene()->AttachObject(objectDisplayed->getObject());
+	ofPushMatrix();
+	ofTranslate(300,300);
+	
+	ofCircle(ofPoint(0,0),30);
+	objectDisplayed->draw();
+	ofPopMatrix();
 
-	addGroupToScene((sgCGroup*)myCutter->getCutterPlanes());
-	addGroupToScene((sgCGroup*)myCutter->getCutterCubes());
+	//addGroupToScene((sgCGroup*)myCutter->getCutterPlanes());
+	//addGroupToScene((sgCGroup*)myCutter->getCutterCubes());
 
-	////////////////////////////////////////////////////////////
-	//draw the elements of the scene
+	//////////////////////////////////////////////////////////////
+	////draw the elements of the scene
 	sgCObject*  curObj = sgGetScene()->GetObjectsList()->GetHead();
 
 	while (curObj)
@@ -147,7 +154,7 @@ void testApp::draw(){
 //--------------------------------------------------------------
 void testApp::keyPressed(int key){
 	if(key == 'c') {
-		cout << "init cut: " << ofGetElapsedTimeMillis() << endl;
+		//cout << "init cut: " << ofGetElapsedTimeMillis() << endl;
 		makeCut = true;
 	}
 	if(key == 'd') {
@@ -233,7 +240,7 @@ void testApp::initScene(){
 
   glHint(GL_LINE_SMOOTH_HINT,GL_FASTEST);
 
-  // Texture
+  //// Texture
   glEnable(GL_TEXTURE_2D);
   glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
   glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
@@ -241,7 +248,7 @@ void testApp::initScene(){
 
   // Default : lighting
 
-  glEnable(GL_LIGHTING);
+  //glEnable(GL_LIGHTING);
   glEnable(GL_LIGHT0);
 
 
@@ -251,5 +258,5 @@ void testApp::initScene(){
 
   glEnable(GL_DEPTH_TEST);
 
-    glEnable(GL_CULL_FACE);
+    //glEnable(GL_CULL_FACE);
 }

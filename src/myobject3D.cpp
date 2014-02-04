@@ -8,14 +8,23 @@ void myobject3D::setup(){
 }
 //--------------------------------------------------------------
 void myobject3D::update(){
+	/*SG_POINT rot27 = {0,0,0};
+	SG_VECTOR rotD27 = {0,-1,0};
+	object->InitTempMatrix()->Rotate(rot27,rotD27,0.01);
+	SG_VECTOR rotD = {0,0,0};
+	object->GetTempMatrix()->Translate(rotD);
+	object->ApplyTempMatrix();  
+	object->DestroyTempMatrix();*/
 }
 //--------------------------------------------------------------
 void myobject3D::draw(){  
-	/*SG_VECTOR rotD = {100,0,0};
-	object->InitTempMatrix()->Translate(rotD);
-	object->ApplyTempMatrix();  
-	object->DestroyTempMatrix();
-	sgGetScene()->AttachObject(object);*/
+	ofPushMatrix();
+	ofTranslate(0,0);
+	
+	ofCircle(ofPoint(100,100),30);
+	sgGetScene()->AttachObject(object);
+	ofPopMatrix();
+	
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////
 //--------------------------------------------------------------

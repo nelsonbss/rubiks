@@ -8,13 +8,13 @@ void myobject3D::setup(){
 }
 //--------------------------------------------------------------
 void myobject3D::update(){
-	/*SG_POINT rot27 = {0,0,0};
+	SG_POINT rot27 = {0,0,0};
 	SG_VECTOR rotD27 = {0,-1,0};
 	object->InitTempMatrix()->Rotate(rot27,rotD27,0.01);
 	SG_VECTOR rotD = {0,0,0};
 	object->GetTempMatrix()->Translate(rotD);
 	object->ApplyTempMatrix();  
-	object->DestroyTempMatrix();*/
+	object->DestroyTempMatrix();
 }
 //--------------------------------------------------------------
 void myobject3D::draw(){  

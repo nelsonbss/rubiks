@@ -9,7 +9,7 @@
 #include "sgCore.h"
 ///////////////////////////////////////////
 #define planeThicknes 0.1
-#define planeSize 200
+#define planeSize 300
 #define tamCubie 50
 
 #define displayX 500
@@ -32,15 +32,15 @@ void testApp::setup(){
 	////////////////////// create primitive torus
 	objectDisplayed = new myobject3D(displayX,displayY);
 	objectDisplayed->loadObject(sgCreateTorus(100,80,34,34));
-	objectDisplayed->setup();
 	//objectDisplayed->loadObject(sgCreateCone(200,1,300.0, 3));
+	objectDisplayed->setup();
 	////////////////////// from STL file
 	/*const char* nel =  ofToDataPath("cube.stl",false).c_str();
 	objectDisplayed.loadObjectFromFile(nel);*/
 	//////////////////////////////////////////////////////////////////////////////////
-
+	
 	//////////////////////////////create cutter///////////////////////////////////////
-	myCutter = new cutter(planeThicknes,planeSize,tamCubie,1,displayX,displayY); //to make a plane based cutter
+	myCutter = new cutter(planeThicknes,planeSize,tamCubie,1,0,0); //to make a plane based cutter
 	myCutter->setup();
 	////////////////////////////////end create cutter///////////////////////////////////
 
@@ -98,7 +98,8 @@ void testApp::update(){
 void testApp::draw(){
 	////////////////////////////////Draw the pieces////////////////////////////////////
 	if(drawCuts1==true){
-		myPuzzle->draw1(sgGetScene());
+		//myPuzzle->draw1(sgGetScene());
+		mySlicer->draw();
 		drawCuts1 = false;
 		draw3dObject = false;
 	}
@@ -107,6 +108,7 @@ void testApp::draw(){
 		myCutter->draw();
 	}else{
 		objectDisplayed->unDraw();
+		myCutter->unDraw();
 	}
 
 	if(drawCuts==true){

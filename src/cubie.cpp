@@ -24,7 +24,7 @@ void cubie::draw1(sgCScene *scn){
 		const int ChCnt = result2->GetChildrenList()->GetCount();
 		sgCObject** allChilds3a = (sgCObject**)malloc(ChCnt*sizeof(sgCObject*));
 		result2->BreakGroup(allChilds3a);// ->BreakGroup(allChilds3);
-		//sgCObject::DeleteObject(result2);
+		sgCObject::DeleteObject(result2);
 		for (int j=0; j < ChCnt; j++){
 			move += 100;
 			SG_VECTOR rotD = {0,1,0};
@@ -37,7 +37,7 @@ void cubie::draw1(sgCScene *scn){
 			aux->GetTempMatrix()->Translate(transBox121);
 			aux->ApplyTempMatrix();  
 			aux->DestroyTempMatrix();
-			//aux->Triangulate(SG_VERTEX_TRIANGULATION);
+			aux->Triangulate(SG_VERTEX_TRIANGULATION);
 			aux->SetAttribute(SG_OA_COLOR,rand()%50);
 			sgGetScene()->AttachObject(allChilds3a[j]);
 		}
@@ -90,14 +90,14 @@ sgCGroup* cubie::copyObjects(){
 		//sgCObject::DeleteObject(objects);
 		for (int j=0; j < ChCnt; j++){
 			//clone each object
-			sgCObject *temp = allParts[j]->Clone(); ///HERE IS THE PROBLEM!!!!!
+			sgCObject *temp = allParts[j]; ///HERE IS THE PROBLEM!!!!!
 			//put clone on *[] tomake new group
 			objcts[objctr] = temp;
 			objctr ++;
 		}
 		//free(allParts);
 		//put thatnew group inside aux**[]
-		objects = sgCGroup::CreateGroup(objcts,objctr); //so pieces[] has the data again, and keeps it for future requests
+		objects = sgCGroup::CreateGroup(objcts,objctr); //so objects[] has the data again, and keeps it for future requests
 		aux = sgCGroup::CreateGroup(objcts,objctr);  
 	}else{
 		return NULL;

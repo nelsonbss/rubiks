@@ -538,6 +538,11 @@ void cutter::draw(){
 	addGroupToScene(getCutterPlanes());
 	addGroupToScene(getCutterCubes());
 }
+//--------------------------------------------------------------
+void cutter::unDraw(){  
+	deleteGroupFromScene(getCutterPlanes());
+	deleteGroupFromScene(getCutterCubes());
+}
 /////////////////////////////////////////////////////////////////
 //----------------------------------------------------------------
 sgCGroup* cutter::getCutterPlanes(){
@@ -567,8 +572,55 @@ void cutter::addGroupToScene(sgCGroup *group){
 		}  
 		free(allChilds); 
 	}  
-	//const int sz = group->GetChildrenList()->GetCount();  
-	//assert(sz==0);  
-	//sgDeleteObject(group);  
+}
+//////////////////////CUSTOM TWISTY FUNCTIONS////////////////////////////////
+void cutter::deleteGroupFromScene(sgCGroup *group){
+	const int ChildsCount = group->GetChildrenList()->GetCount();  
+	sgCObject**  allChilds = (sgCObject**)malloc(ChildsCount*sizeof(sgCObject*));  
 
+	if (group->BreakGroup(allChilds)){  
+		//assert(0);  
+		for (int i=0;i<ChildsCount;i++){  
+			sgGetScene()->DetachObject(allChilds[i]);  
+		}  
+		free(allChilds); 
+	}  
+}
+
+sgCGroup* cutter::getGroup(){
+	//make a copy of the group** to send outside pieces[]
+	sgCGroup *aux;
+
+	//sgCGroup **aux = (sgCGroup**)malloc(27*sizeof(sgCGroup*));
+	//sgCObject *objcts[50];  
+
+	//for(int i =0; i<27; i ++){
+	//	int objctr = 0;
+	//	//break each pieces[i]
+	//	sgCGroup *parts = pieces[i];
+	//	if(parts != NULL){
+	//		const int ChCnt = parts->GetChildrenList()->GetCount();
+	//		sgCObject** allParts = (sgCObject**)malloc(ChCnt*sizeof(sgCObject*));
+	//		parts->BreakGroup(allParts);
+	//		sgCObject::DeleteObject(parts);
+	//		for (int j=0; j < ChCnt; j++){
+	//			//clone each object
+	//			sgCObject *temp = allParts[j]->Clone();
+	//			//put clone on *[] tomake new group
+	//			objcts[objctr] = temp;
+	//			objctr ++;
+	//		}
+	//		free(allParts);
+	//		//put that new group inside aux**[]
+	//		pieces[i] = sgCGroup::CreateGroup(objcts,objctr); //so pieces[] has the data again, and keeps it for future requests
+	//		aux[i] = sgCGroup::CreateGroup(objcts,objctr);  
+	//	}else{
+	//		pieces[i] = NULL;
+	//		aux[i] = NULL; 
+	//	}
+	//}
+	/////important!!!!!!!!!!!!!!!!important!!!!!!!!!!!///////////important/////////////////////////////
+	//sgCObject::DeleteObject(*objcts); //why if I delete the objects everything goes KAPUT?????
+	///////////////important////////////////////important//////////////important//////////////////////
+	return aux;
 }

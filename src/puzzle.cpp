@@ -24,7 +24,9 @@ void puzzle::draw(sgCScene *scn){
 	//puzzle tells every cubie to draw itself
 	//iterate through cubies
 	for(int i=0;i<numPieces;i++){
-		myCubies[i]->draw(scn);
+		if(myCubies[i] != NULL){
+			myCubies[i]->draw(scn);
+		}
 	}
 }
 void puzzle::draw1(sgCScene *scn){  

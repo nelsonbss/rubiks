@@ -7,7 +7,7 @@ slicer::slicer(cutter *c){
 	//create & initialize the pieces of the slicer as NULL
 	pieces = (sgCGroup**)malloc(27*sizeof(sgCObject*));
 	for(int i =0; i<27; i ++){
-		pieces[i] = NULL;
+		pieces[i] = NULL; //initiallize every piece with NULL
 	}
 }
 //--------------------------------------------------------------
@@ -18,6 +18,31 @@ void slicer::update(){
 }
 //--------------------------------------------------------------
 void slicer::draw(){  
+	sgCGroup **result2 = getPieces();
+	for(int i =0; i<27; i ++){
+	if(pieces[i] != NULL){
+		const int ChCnt = result2[i]->GetChildrenList()->GetCount();
+		sgCObject** allChilds3a = (sgCObject**)malloc(ChCnt*sizeof(sgCObject*));
+		result2[i]->BreakGroup(allChilds3a);
+		sgCObject::DeleteObject(result2[i]);
+		for (int j=0; j < ChCnt; j++){
+			SG_VECTOR rotD = {0,1,0};
+			SG_POINT rot = {0,0,0};
+			sgC3DObject *aux = (sgC3DObject *) allChilds3a[j]; 
+			//aux->InitTempMatrix()->Rotate(rot,rotD,1.0);
+			//SG_VECTOR transBox11 = {0,0,0}; 
+			//aux->GetTempMatrix()->Translate(transBox11);
+			//SG_VECTOR transBox121 = {0,0,0}; 
+			//aux->GetTempMatrix()->Translate(transBox121);
+			//aux->ApplyTempMatrix();  
+			//aux->DestroyTempMatrix();
+			aux->Triangulate(SG_VERTEX_TRIANGULATION);
+			aux->SetAttribute(SG_OA_COLOR,rand()%50);
+			sgGetScene()->AttachObject(allChilds3a[j]);
+		}
+		free(allChilds3a);
+	}
+	}
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////
 //----------------------------------------------------------------
@@ -58,6 +83,7 @@ sgCGroup** slicer::getPieces(){
 }
 //----------------------------------------------------------------
 int slicer::countPieces(){
+	//it tells me how many pieces have info
 	int count =0;
 	for(int i =0; i<27; i ++){
 		//break each pieces[i]
@@ -84,7 +110,11 @@ void slicer::intersectCubes(sgCObject *obj){
 		inter = sgBoolean::Intersection(*(sgC3DObject*)tempObj,*(sgC3DObject*)tempCutter);
 
 		//now we have the whole piece that goes into a cubie for that cube
-		pieces[i] = inter;
+		if(inter != NULL){
+			pieces[i] = inter;
+		}else{
+			pieces[i] = inter;
+		}
 
 		//clean up
 		sgCObject::DeleteObject(tempObj);

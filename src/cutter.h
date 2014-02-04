@@ -17,6 +17,9 @@ public:
 	sgCGroup* getCutterPlanes();//it will return the object, i.e to be drawn
     sgCGroup* getCutterCubes();
 	void addGroupToScene(sgCGroup *group);
+	void unDraw();
+	void deleteGroupFromScene(sgCGroup *group);
+	sgCGroup* getGroup();
 
 	float cutterThick; // ideally it will be 0.1; how thick is the "blade"
 	float cutterSize; //width and height of the "blade"

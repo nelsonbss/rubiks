@@ -24,15 +24,15 @@ void myobject3D::update(){
 	SG_POINT rotPobject = {0,0,0};
 	SG_VECTOR rotV = {0,1,0};
 	temp->InitTempMatrix()->Rotate(rotP,rotV,0.01);
-	object->InitTempMatrix()->Rotate(rotPobject,rotV,0.01);
+	//object->InitTempMatrix()->Rotate(rotPobject,rotV,0.01);
 	SG_VECTOR rotD = {0,0,0};
 	temp->GetTempMatrix()->Translate(rotD);
 	SG_VECTOR rotDobject = {0,0,0};
-	object->GetTempMatrix()->Translate(rotDobject);
+	//object->GetTempMatrix()->Translate(rotDobject);
 	temp->ApplyTempMatrix();  
-	object->ApplyTempMatrix();
+	//object->ApplyTempMatrix();
 	temp->DestroyTempMatrix();
-	object->DestroyTempMatrix();
+	//object->DestroyTempMatrix();
 	//glPopMatrix();
 }
 //--------------------------------------------------------------
@@ -43,7 +43,7 @@ void myobject3D::draw(){
 		//temp->Triangulate(SG_VERTEX_TRIANGULATION);
 		sgGetScene()->AttachObject(temp);
 	//ofPopMatrix();
-	reset();
+	//reset();
 }
 //--------------------------------------------------------------
 void myobject3D::reset(){  

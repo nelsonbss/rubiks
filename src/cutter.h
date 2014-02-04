@@ -6,7 +6,7 @@
 
 class cutter {
 public:
-	cutter(float thick, float tam, float tamPiece,float numCutr);
+	cutter(float thick, float tam, float tamPiece,float numCutrc, float x, float y);
     
 	void setup();
 	void update();
@@ -16,6 +16,7 @@ public:
 
 	sgCGroup* getCutterPlanes();//it will return the object, i.e to be drawn
     sgCGroup* getCutterCubes();
+	void addGroupToScene(sgCGroup *group);
 
 	float cutterThick; // ideally it will be 0.1; how thick is the "blade"
 	float cutterSize; //width and height of the "blade"

@@ -9,8 +9,11 @@
 #include "sgCore.h"
 ///////////////////////////////////////////
 #define planeThicknes 0.1
-#define planeSize 500
-#define tamCubie 100
+#define planeSize 200
+#define tamCubie 50
+
+#define displayX 500
+#define displayY 500
 //--------------------------------------------------------------
 void testApp::setup(){
 	 
@@ -18,6 +21,7 @@ void testApp::setup(){
 	makeCut = false;
 	drawCuts = false;
 	drawCuts1 = false;
+	draw3dObject = true;
 	/////initialize sgCore library
 	sgInitKernel();  
 	initScene();
@@ -26,8 +30,9 @@ void testApp::setup(){
 	//////////////////////////////////////////////////////////////////////////////////
 	///////////////////////////3D OBJECT LOADING//////////////////////////////////////
 	////////////////////// create primitive torus
-	objectDisplayed = new myobject3D();
+	objectDisplayed = new myobject3D(displayX,displayY);
 	objectDisplayed->loadObject(sgCreateTorus(100,80,34,34));
+	objectDisplayed->setup();
 	//objectDisplayed->loadObject(sgCreateCone(200,1,300.0, 3));
 	////////////////////// from STL file
 	/*const char* nel =  ofToDataPath("cube.stl",false).c_str();
@@ -35,7 +40,7 @@ void testApp::setup(){
 	//////////////////////////////////////////////////////////////////////////////////
 
 	//////////////////////////////create cutter///////////////////////////////////////
-	myCutter = new cutter(planeThicknes,planeSize,tamCubie,1); //to make a plane based cutter
+	myCutter = new cutter(planeThicknes,planeSize,tamCubie,1,displayX,displayY); //to make a plane based cutter
 	myCutter->setup();
 	////////////////////////////////end create cutter///////////////////////////////////
 
@@ -92,15 +97,24 @@ void testApp::update(){
 //--------------------------------------------------------------
 void testApp::draw(){
 	////////////////////////////////Draw the pieces////////////////////////////////////
-	/*if(drawCuts1==true){
+	if(drawCuts1==true){
 		myPuzzle->draw1(sgGetScene());
 		drawCuts1 = false;
+		draw3dObject = false;
+	}
+	if(draw3dObject){
+		objectDisplayed->draw();
+		myCutter->draw();
+	}else{
+		objectDisplayed->unDraw();
 	}
 
 	if(drawCuts==true){
 		myPuzzle->draw(sgGetScene());
 		drawCuts = false;
-	}*/
+	}
+
+	
 
 	
 	//SG_VECTOR rotD = {1,0,0};
@@ -108,15 +122,13 @@ void testApp::draw(){
 	//objectDisplayed->getObject()->ApplyTempMatrix();  
 	////objectDisplayed->getObject()->DestroyTempMatrix();
 	//sgGetScene()->AttachObject(objectDisplayed->getObject());
+
 	ofPushMatrix();
-	ofTranslate(300,300);
-	
-	ofCircle(ofPoint(0,0),30);
-	objectDisplayed->draw();
+		ofTranslate(300,300);
+		ofCircle(ofPoint(0,0),30);
 	ofPopMatrix();
 
-	//addGroupToScene((sgCGroup*)myCutter->getCutterPlanes());
-	//addGroupToScene((sgCGroup*)myCutter->getCutterCubes());
+	
 
 	//////////////////////////////////////////////////////////////
 	////draw the elements of the scene

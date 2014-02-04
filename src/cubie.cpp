@@ -11,6 +11,7 @@ void cubie::setup(){
 }
 //--------------------------------------------------------------
 void cubie::update(){
+
 }
 //--------------------------------------------------------------
 void cubie::draw1(sgCScene *scn){  
@@ -30,13 +31,13 @@ void cubie::draw1(sgCScene *scn){
 			SG_POINT rot = {0,0,0};
 			sgC3DObject *aux = (sgC3DObject *) allChilds3a[j]; 
 			aux->InitTempMatrix()->Rotate(rot,rotD,0.0);
-			SG_VECTOR transBox11 = {600+move,0,0}; 
+			SG_VECTOR transBox11 = {500+move,0,0}; 
 			aux->GetTempMatrix()->Translate(transBox11);
 			SG_VECTOR transBox121 = {0,500,0}; 
 			aux->GetTempMatrix()->Translate(transBox121);
 			aux->ApplyTempMatrix();  
 			aux->DestroyTempMatrix();
-			aux->Triangulate(SG_VERTEX_TRIANGULATION);
+			//aux->Triangulate(SG_VERTEX_TRIANGULATION);
 			aux->SetAttribute(SG_OA_COLOR,rand()%50);
 			sgGetScene()->AttachObject(allChilds3a[j]);
 		}

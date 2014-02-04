@@ -1,13 +1,13 @@
 #include "cutter.h"
 #include "sgCore.h"
 
-cutter::cutter(float thick, float tamPlane, float tamCuby,float numCutr){
+cutter::cutter(float thick, float tamPlane, float tamCuby,float numCutr, float x, float y){
 	numCutter = numCutr;
 	cutterThick = thick;
 	cutterSize = tamPlane;
 	tamCubie = tamCuby;
-	posX=0;
-	posY=0;
+	posX = x;
+	posY = y;
 	planes = (sgCObject**)malloc(6*sizeof(sgCObject*));  //allocate memory
 	cubes = (sgCObject**)malloc(27*sizeof(sgCObject*));  //allocate memory
 	///
@@ -177,7 +177,11 @@ void cutter::setup(){
 	planes[5] = z2;
 	//////create group////////////////////////////////////////////////
 	allPlanes = sgCGroup::CreateGroup(planes,6);
-
+	//move planes to display position, where cuts are going to be made
+	SG_VECTOR transPlanes = {posX,posY,0};
+	allPlanes->InitTempMatrix()->Translate(transPlanes);
+	allPlanes->ApplyTempMatrix();  
+	allPlanes->DestroyTempMatrix();
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	///make cubes///make cubes///make cubes///make cubes///make cubes///make cubes///make cubes///make cubes ///
@@ -506,6 +510,11 @@ void cutter::setup(){
 	cubes[26] = c27;
 	//////create group
 	allCubes = sgCGroup::CreateGroup(cubes,27);
+	//move cubes to display position, where cuts are going to be made
+	allCubes->InitTempMatrix()->Translate(transPlanes);
+	allCubes->ApplyTempMatrix();  
+	allCubes->DestroyTempMatrix();
+
 	//translate to be able to see it
 	//SG_VECTOR center = {450,400,0};
 	//allCubes->InitTempMatrix()->Translate(center);
@@ -524,7 +533,10 @@ void cutter::update(){
 //--------------------------------------------------------------
 void cutter::draw(){  
 	//allPlanes = sgCGroup::CreateGroup(planes,6);
-
+	ofCircle(ofPoint(posX,posY),10);
+	////////////////////////add planes &/or cubies to scene//
+	addGroupToScene(getCutterPlanes());
+	addGroupToScene(getCutterCubes());
 }
 /////////////////////////////////////////////////////////////////
 //----------------------------------------------------------------
@@ -541,4 +553,22 @@ void cutter::exit(){
 	free(allCubes);*/
 	free(planes);
 	free(cubes);
+}
+
+//////////////////////CUSTOM TWISTY FUNCTIONS////////////////////////////////
+void cutter::addGroupToScene(sgCGroup *group){
+	const int ChildsCount = group->GetChildrenList()->GetCount();  
+	sgCObject**  allChilds = (sgCObject**)malloc(ChildsCount*sizeof(sgCObject*));  
+
+	if (group->BreakGroup(allChilds)){  
+		//assert(0);  
+		for (int i=0;i<ChildsCount;i++){  
+			sgGetScene()->AttachObject(allChilds[i]);  
+		}  
+		free(allChilds); 
+	}  
+	//const int sz = group->GetChildrenList()->GetCount();  
+	//assert(sz==0);  
+	//sgDeleteObject(group);  
+
 }

@@ -26,6 +26,7 @@ class testApp : public ofBaseApp{
 		void gotMessage(ofMessage msg);
 
 		////////////////
+		void initScene();
 		void addGroupToScene(sgCGroup *group);
 		////////////////
 

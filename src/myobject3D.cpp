@@ -11,12 +11,11 @@ void myobject3D::update(){
 }
 //--------------------------------------------------------------
 void myobject3D::draw(){  
-   SG_VECTOR transV3 = {250,250,0};  
-   object->InitTempMatrix()->Translate(transV3);  
-   object->ApplyTempMatrix();  
-   object->DestroyTempMatrix();
-
-   object->SetAttribute(SG_OA_COLOR,5);
+	/*SG_VECTOR rotD = {100,0,0};
+	object->InitTempMatrix()->Translate(rotD);
+	object->ApplyTempMatrix();  
+	object->DestroyTempMatrix();
+	sgGetScene()->AttachObject(object);*/
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////
 //--------------------------------------------------------------

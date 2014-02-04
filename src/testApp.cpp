@@ -13,17 +13,20 @@
 #define tamCubie 100
 //--------------------------------------------------------------
 void testApp::setup(){
+	initScene(); 
+	///////////////////////////////////////////////////////////////
 	makeCut = false;
 	drawCuts = false;
 	drawCuts1 = false;
 	/////initialize sgCore library
 	sgInitKernel();  
+	sgC3DObject::AutoTriangulate(false, SG_DELAUNAY_TRIANGULATION);
 
 	//////////////////////////////////////////////////////////////////////////////////
 	///////////////////////////3D OBJECT LOADING//////////////////////////////////////
 	////////////////////// create primitive torus
 	objectDisplayed = new myobject3D();
-	objectDisplayed->loadObject(sgCreateTorus(100,80,24,24));
+	objectDisplayed->loadObject(sgCreateTorus(100,80,34,34));
 	//objectDisplayed->loadObject(sgCreateCone(200,1,300.0, 3));
 	////////////////////// from STL file
 	/*const char* nel =  ofToDataPath("cube.stl",false).c_str();
@@ -87,8 +90,6 @@ void testApp::update(){
 
 //--------------------------------------------------------------
 void testApp::draw(){
-
-
 	////////////////////////////////Draw the pieces////////////////////////////////////
 	if(drawCuts1==true){
 		myPuzzle->draw1(sgGetScene());
@@ -100,12 +101,13 @@ void testApp::draw(){
 		drawCuts = false;
 	}
 
-	/*SG_VECTOR rotD = {0,1,0};
-	SG_POINT rot = {500,500,0};
-	objectDisplayed->getObject()->InitTempMatrix()->Rotate(rot,rotD,0.0); 
+	
+	/*SG_VECTOR rotD = {100,0,0};
+	objectDisplayed->getObject()->InitTempMatrix()->Translate(rotD);
 	objectDisplayed->getObject()->ApplyTempMatrix();  
 	objectDisplayed->getObject()->DestroyTempMatrix();*/
 	sgGetScene()->AttachObject(objectDisplayed->getObject());
+	//objectDisplayed->draw();
 
 	addGroupToScene((sgCGroup*)myCutter->getCutterPlanes());
 	addGroupToScene((sgCGroup*)myCutter->getCutterCubes());
@@ -205,9 +207,50 @@ void testApp::addGroupToScene(sgCGroup *group){
 	//sgDeleteObject(group);  
 
 }
-
+//--------------------------------------------------------------------------------------------------------------------------------------------------------
 void testApp::exit(){
 	myCutter->exit();
 	mySlicer->exit();
-	sgFreeKernel();
+	//sgFreeKernel();
+}
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------
+//
+// InitScene()
+// Called when the OpenGL RC has been created. Sets initial state for the OpenGL scene.
+//
+void testApp::initScene(){
+  // Lights properties
+  float ambientProperties[]  = {0.1f, 0.1f, 0.1f, 1.0f};
+  float diffuseProperties[]  = {1.0f, 1.0f, 1.0f, 1.0f};
+  float specularProperties[] = {1.0f, 1.0f, 1.0f, 1.0f};
+
+  glLightfv( GL_LIGHT0, GL_AMBIENT, ambientProperties);
+  glLightfv( GL_LIGHT0, GL_DIFFUSE,diffuseProperties);
+  glLightfv( GL_LIGHT0, GL_SPECULAR, specularProperties);
+  //glLightModelf(GL_LIGHT_MODEL_TWO_SIDE, 1.0);
+
+  glClearColor(1.0,1.0,1.0,1.0f);
+
+  glHint(GL_LINE_SMOOTH_HINT,GL_FASTEST);
+
+  // Texture
+  glEnable(GL_TEXTURE_2D);
+  glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+  glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
+
+
+  // Default : lighting
+
+  glEnable(GL_LIGHTING);
+  glEnable(GL_LIGHT0);
+
+
+  // Default : blending
+  glEnable(GL_BLEND);
+  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+  glEnable(GL_DEPTH_TEST);
+
+    glEnable(GL_CULL_FACE);
 }

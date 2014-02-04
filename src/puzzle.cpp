@@ -3,7 +3,7 @@
 #include "cubie.h"
 
 puzzle::puzzle(){
-	numPieces = 1;
+	numPieces = 27;
 	myCubies = (cubie**)malloc(numPieces*sizeof(cubie*));
 }
 //--------------------------------------------------------------

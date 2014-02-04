@@ -14,6 +14,8 @@ public:
 	void update();
 	void draw();
 
+	void exit();
+
 	cutter *myCutter;
 	sgCGroup  **pieces;//this array of GROUP pointers that will have the object for the 27 "pieces" for the puzzle
 	//!!!important

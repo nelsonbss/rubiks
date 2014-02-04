@@ -13,7 +13,7 @@ class testApp : public ofBaseApp{
 		void setup();
 		void update();
 		void draw();
-		//void exit();
+		void exit();
 
 		void keyPressed(int key);
 		void keyReleased(int key);
@@ -26,6 +26,7 @@ class testApp : public ofBaseApp{
 		void gotMessage(ofMessage msg);
 
 		////////////////
+		void initScene();
 		void addGroupToScene(sgCGroup *group);
 		////////////////
 

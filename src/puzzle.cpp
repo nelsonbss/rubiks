@@ -3,12 +3,13 @@
 #include "cubie.h"
 
 puzzle::puzzle(){
-	myCubies = (cubie**)malloc(27*sizeof(cubie*));
+	numPieces = 27;
+	myCubies = (cubie**)malloc(numPieces*sizeof(cubie*));
 }
 //--------------------------------------------------------------
 void puzzle::setup(){
 	//create cubies
-	for(int i =0;i<27;i++){
+	for(int i =0;i<numPieces;i++){
 		cubie *auxCubie = new cubie();// is this really creating independent instances of cubie??
 		auxCubie->setup();
 		//add this cubie to mycubies[]
@@ -22,21 +23,21 @@ void puzzle::update(){
 void puzzle::draw(sgCScene *scn){  
 	//puzzle tells every cubie to draw itself
 	//iterate through cubies
-	for(int i=0;i<1;i++){
+	for(int i=0;i<numPieces;i++){
 		myCubies[i]->draw(scn);
 	}
 }
 void puzzle::draw1(sgCScene *scn){  
 	//puzzle tells every cubie to draw itself
 	//iterate through cubies
-	for(int i=0;i<1;i++){
+	for(int i=0;i<numPieces;i++){
 		myCubies[i]->draw1(scn);
 	}
 }
 void puzzle::rotate(){  
 	//puzzle tells every cubie to draw itself
 	//iterate through cubies
-	for(int i=0;i<1;i++){
+	for(int i=0;i<numPieces;i++){
 		myCubies[i]->rotate();
 	}
 }
@@ -44,7 +45,7 @@ void puzzle::rotate(){
 int puzzle::giveNumCubies(){
 	//to test how many cubies we have here
 	int aux=0;
-	for(int i=0;i<27;i++){
+	for(int i=0;i<numPieces;i++){
 		if(myCubies[i]->objects!= NULL){
 			aux++;
 		}
@@ -56,7 +57,7 @@ void puzzle::loadPieces(sgCGroup **pcs){
 	//it loads the pieces that the slicer made, the pieces are in a sgCGroup**, 
 	//this function receives a copy of that sgCGroup** made by mySlicer->getPieces()
 	//it loads them into its own cubies
-	for(int i=0;i<27;i++){
+	for(int i=0;i<numPieces;i++){
 		//get group from pieces[] copy
 		sgCGroup *part = pcs[i]; //pcs[i] will get destroyed!!!!!!!!!!!!!!!!!
 

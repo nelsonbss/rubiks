@@ -21,7 +21,8 @@ public:
 	void loadPieces(sgCGroup **pcs);
 	int giveNumCubies();
 
-	cubie **myCubies; //malloc 27 of these
+	float numPieces;
+	cubie **myCubies; //malloc numPieces of these
 };
 
 #endif /* defined(__Tpuzzle__puzzle__) */

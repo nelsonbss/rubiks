@@ -28,41 +28,22 @@ void cubie::draw1(sgCScene *scn){
 			move += 100;
 			SG_VECTOR rotD = {0,1,0};
 			SG_POINT rot = {0,0,0};
-			allChilds3a[j]->InitTempMatrix()->Rotate(rot,rotD,1.0);
-			SG_VECTOR transBox11 = {40+move,0,0}; 
-			allChilds3a[j]->GetTempMatrix()->Translate(transBox11);
+			sgC3DObject *aux = (sgC3DObject *) allChilds3a[j]; 
+			aux->InitTempMatrix()->Rotate(rot,rotD,0.0);
+			SG_VECTOR transBox11 = {600+move,0,0}; 
+			aux->GetTempMatrix()->Translate(transBox11);
 			SG_VECTOR transBox121 = {0,500,0}; 
-			allChilds3a[j]->GetTempMatrix()->Translate(transBox121);
-			allChilds3a[j]->ApplyTempMatrix();  
-			allChilds3a[j]->DestroyTempMatrix();
-			allChilds3a[j]->SetAttribute(SG_OA_COLOR,rand()%50);
-			scn->AttachObject(allChilds3a[j]);
+			aux->GetTempMatrix()->Translate(transBox121);
+			aux->ApplyTempMatrix();  
+			aux->DestroyTempMatrix();
+			aux->Triangulate(SG_VERTEX_TRIANGULATION);
+			aux->SetAttribute(SG_OA_COLOR,rand()%50);
+			sgGetScene()->AttachObject(allChilds3a[j]);
 		}
 		free(allChilds3a);
 	}
 
 	//cout << "objects from slicer end:" << objects << endl;
-}
-
-void cubie::rotate(){
-	sgCGroup *result2 = copyObjects();  //DO I have to make a copy of this sgCGroup *objects???? so I don't ever loose the objects?
-	//yessss!!!!!
-	if(result2 != NULL){
-		const int ChCnt = result2->GetChildrenList()->GetCount();
-		sgCObject** allChilds3a = (sgCObject**)malloc(ChCnt*sizeof(sgCObject*));
-		result2->BreakGroup(allChilds3a);
-		sgCObject::DeleteObject(result2);
-		const int ChCnt2 = result2->GetChildrenList()->GetCount();
-		for (int j=0; j < ChCnt; j++){
-			SG_VECTOR rotD = {0,1,0};
-			SG_POINT rot = {0,0,0};
-			allChilds3a[j]->InitTempMatrix()->Rotate(rot,rotD,1.57);
-			allChilds3a[j]->ApplyTempMatrix();  
-			allChilds3a[j]->DestroyTempMatrix();
-			sgGetScene()->AttachObject(allChilds3a[j]);
-		}
-		free(allChilds3a);
-	}
 }
 //--------------------------------------------------------------
 void cubie::draw(sgCScene *scn){  
@@ -78,14 +59,16 @@ void cubie::draw(sgCScene *scn){
 			move += 100;
 			SG_VECTOR rotD = {0,1,0};
 			SG_POINT rot = {0,0,0};
-			allChilds3a[j]->InitTempMatrix()->Rotate(rot,rotD,1.0);
+			sgC3DObject *aux = (sgC3DObject *) allChilds3a[j]; 
+			aux->InitTempMatrix()->Rotate(rot,rotD,1.0);
 			SG_VECTOR transBox11 = {60+move,0,0}; 
-			allChilds3a[j]->GetTempMatrix()->Translate(transBox11);
+			aux->GetTempMatrix()->Translate(transBox11);
 			SG_VECTOR transBox121 = {0,500,0}; 
-			allChilds3a[j]->GetTempMatrix()->Translate(transBox121);
-			allChilds3a[j]->ApplyTempMatrix();  
-			allChilds3a[j]->DestroyTempMatrix();
-			allChilds3a[j]->SetAttribute(SG_OA_COLOR,rand()%50);
+			aux->GetTempMatrix()->Translate(transBox121);
+			aux->ApplyTempMatrix();  
+			aux->DestroyTempMatrix();
+			aux->Triangulate(SG_VERTEX_TRIANGULATION);
+			aux->SetAttribute(SG_OA_COLOR,rand()%50);
 			sgGetScene()->AttachObject(allChilds3a[j]);
 		}
 		free(allChilds3a);
@@ -96,7 +79,7 @@ void cubie::draw(sgCScene *scn){
 sgCGroup* cubie::copyObjects(){
 	//make a copy of *objects send outside, so originals dont get messed up, and cubies can draw every time without making a the boolean first
 	sgCGroup* aux;
-	sgCObject *objcts[500];  
+	sgCObject *objcts[50];  
 	int objctr = 0;
 
 	if(objects != NULL){
@@ -126,7 +109,7 @@ sgCGroup* cubie::copyObjects(){
 }
 //-------------------------------------------------------------------------------------------------------------------------------------------
 void cubie::setObjects(sgCGroup *objs){
-	sgCObject *objcts[500];  
+	sgCObject *objcts[50];  
 	int objctr = 0;
 
 	const int ChCnt = objs->GetChildrenList()->GetCount();
@@ -144,4 +127,26 @@ void cubie::setObjects(sgCGroup *objs){
 	free(allParts);
 	//put that new group inside *objects of this class, of every cubie
 	objects = sgCGroup::CreateGroup(objcts,objctr);  
+}
+
+
+void cubie::rotate(){
+	sgCGroup *result2 = copyObjects();  //DO I have to make a copy of this sgCGroup *objects???? so I don't ever loose the objects?
+	//yessss!!!!!
+	if(result2 != NULL){
+		const int ChCnt = result2->GetChildrenList()->GetCount();
+		sgCObject** allChilds3a = (sgCObject**)malloc(ChCnt*sizeof(sgCObject*));
+		result2->BreakGroup(allChilds3a);
+		sgCObject::DeleteObject(result2);
+		const int ChCnt2 = result2->GetChildrenList()->GetCount();
+		for (int j=0; j < ChCnt; j++){
+			SG_VECTOR rotD = {0,1,0};
+			SG_POINT rot = {0,0,0};
+			allChilds3a[j]->InitTempMatrix()->Rotate(rot,rotD,1.57);
+			allChilds3a[j]->ApplyTempMatrix();  
+			allChilds3a[j]->DestroyTempMatrix();
+			sgGetScene()->AttachObject(allChilds3a[j]);
+		}
+		free(allChilds3a);
+	}
 }

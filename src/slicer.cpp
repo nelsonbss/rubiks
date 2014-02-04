@@ -24,7 +24,7 @@ void slicer::draw(){
 sgCGroup** slicer::getPieces(){
 	//make a copy of the group** to send outside pieces[]
 	sgCGroup **aux = (sgCGroup**)malloc(27*sizeof(sgCGroup*));
-	sgCObject *objcts[500];  
+	sgCObject *objcts[50];  
 
 	for(int i =0; i<27; i ++){
 		int objctr = 0;
@@ -92,10 +92,10 @@ void slicer::intersectCubes(sgCObject *obj){
 	}
 	//sgCObject::DeleteObject(obj);
 }
-
-
-
-
+//----------------------------------------------------------------------------------------------------------------------------------------------
+void slicer::exit(){
+	free(pieces);
+}
 
 
 //////////////////////////////////X SLICING!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -483,7 +483,7 @@ void slicer::ySlicing(cutter &icutter, sgCGroup *grp, int turn,int cubePart){
 		//we have the number of pieces in total in: realNumObjectsToZ1
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//unify temp groups[] of pieces to be sent to be cut by Z
-		sgCObject  *objcts[500]; //500 to be on the safe side
+		sgCObject  *objcts[50]; //50 to be on the safe side
 		int z=0;
 		//break each tempGroupToZ1[]
 		//ask if tempGroupToZ1[] was ever used

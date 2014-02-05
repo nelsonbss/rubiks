@@ -17,6 +17,7 @@ public:
 	void rotate();
 
 	sgCGroup *objects;
+	sgCObject **objectList;
 	float move;
 
 	void setObjects(sgCGroup *objs);

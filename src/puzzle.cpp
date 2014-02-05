@@ -83,7 +83,7 @@ void puzzle::loadPieces(sgCGroup **pcs){
 			part->BreakGroup(allParts);
 			sgCObject::DeleteObject(part);
 
-			sgCObject *obj[500];
+			sgCObject **obj = (sgCObject**)malloc(50*sizeof(sgCObject*));
 			int realNumPieces=0;
 
 			for (int j=0; j < ChCnt; j++){
@@ -99,13 +99,10 @@ void puzzle::loadPieces(sgCGroup **pcs){
 			//put that cubie on the cubies[]
 			//myCubies[i] = auxCubie; //am I loosing whtas inside auxCubie here?
 
-			///////////////////////////////////important!!!!!!??????????????????????????????//////////////////////////////////////////////////////
-			//sgCObject::DeleteObject(cubieGroup); //its getting deleted inside auxCubie->setObjects(cubieGroup);
-			///////////////////////////////////important!!!!!!??????????????????????????????//////////////////////////////////////////////////////
+			free(obj);
 			free(allParts);
 		}else{
 			myCubies[i]->objects = NULL;
-			//myCubies[i] = auxCubie; //am I loosing whats inside auxCubie here?
 		}
 
 	}

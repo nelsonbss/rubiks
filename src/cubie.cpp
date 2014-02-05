@@ -14,40 +14,10 @@ void cubie::update(){
 	move += 100;
 }
 //--------------------------------------------------------------
-//void cubie::draw1(sgCScene *scn){  
-//	//each cubie draws its own sgCGroup *objects;
-//
-//	//cout << "objects from slicer start:" << objects << endl;
-//	//sgCGroup *result2 = copyObjects();  //DO I have to make a copy of this sgCGroup *objects???? so I don't ever loose the objects?
-//	////yessss!!!!!
-//	//if(result2 != NULL){
-//	//	const int ChCnt = result2->GetChildrenList()->GetCount();
-//	//	sgCObject** allChilds3a = (sgCObject**)malloc(ChCnt*sizeof(sgCObject*));
-//	//	result2->BreakGroup(allChilds3a);// ->BreakGroup(allChilds3);
-//	//	sgCObject::DeleteObject(result2);
-//	//	for (int j=0; j < ChCnt; j++){
-//	//		SG_VECTOR rotD = {0,1,0};
-//	//		SG_POINT rot = {0,0,0};
-//	//		sgC3DObject *aux = (sgC3DObject *) allChilds3a[j]; 
-//	//		aux->InitTempMatrix()->Rotate(rot,rotD,0.0);
-//	//		SG_VECTOR transBox11 = {move,0,0}; 
-//	//		aux->GetTempMatrix()->Translate(transBox11);
-//	//		SG_VECTOR transBox121 = {0,500,0}; 
-//	//		aux->GetTempMatrix()->Translate(transBox121);
-//	//		aux->ApplyTempMatrix();  
-//	//		aux->DestroyTempMatrix();
-//	//		aux->Triangulate(SG_VERTEX_TRIANGULATION);
-//	//		aux->SetAttribute(SG_OA_COLOR,rand()%50);
-//	//		sgGetScene()->AttachObject(allChilds3a[j]);
-//	//	}
-//	//	free(allChilds3a);
-//	//}
-//
-//	//cout << "objects from slicer end:" << objects << endl;
-//}
-//--------------------------------------------------------------
 void cubie::draw(){  
 	//each cubie draws its own sgCGroup *objects;
+	// it attaches to scene
+
 	//cout << "objects from slicer start:" << objects << endl;
 	sgCGroup *result2 = copyObjects();
 	sgCObject** allChilds3a = (sgCObject**)malloc(1*sizeof(sgCObject*));
@@ -110,7 +80,9 @@ void cubie::unDraw(){
 }
 //-------------------------------------------------------------------------------------------------------------------------------------------
 sgCGroup* cubie::copyObjects(){
-	//make a copy of *objects send outside, so originals dont get messed up, and cubies can draw every time without making a the boolean first
+	//make a copy of *objects send outside cubie
+	//so originals dont get messed up, and cubies can draw every time without making a the boolean first
+
 	sgCGroup* aux;
 	sgCObject **objcts = (sgCObject**)malloc(50*sizeof(sgCObject*));
 	int objctr = 0;
@@ -139,6 +111,9 @@ sgCGroup* cubie::copyObjects(){
 }
 //-------------------------------------------------------------------------------------------------------------------------------------------
 void cubie::setObjects(sgCGroup *objs){
+	//it receives a group, when Puzzle loadsPieces(ySlicer->getPieces())  on main
+	//it takes the input group and breaks it, to put parts on cubie group "objects"
+
 	sgCObject **objcts = (sgCObject**)malloc(50*sizeof(sgCObject*));
 	int objctr = 0;
 

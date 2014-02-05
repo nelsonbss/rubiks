@@ -110,3 +110,44 @@ void puzzle::loadPieces(sgCGroup **pcs){
 
 	}
 }
+
+//--------------------------------------------------------------
+void puzzle::moveRight(){
+	//iterate through cubies
+	for(int i=0;i<numPieces;i++){
+		if(myCubies[i] != NULL){
+			myCubies[i]->moveRight();
+		}
+	}
+}
+
+//--------------------------------------------------------------
+void puzzle::moveLeft(){
+	//iterate through cubies
+	for(int i=0;i<numPieces;i++){
+		if(myCubies[i] != NULL){
+			myCubies[i]->moveLeft();
+		}
+	}
+}
+
+//--------------------------------------------------------------
+void puzzle::moveUp(){
+	//iterate through cubies
+	for(int i=0;i<numPieces;i++){
+		if(myCubies[i] != NULL){
+			myCubies[i]->moveUp();
+		}
+	}
+}
+
+//--------------------------------------------------------------
+void puzzle::moveDown(){
+	//iterate through cubies
+	for(int i=0;i<numPieces;i++){
+		if(myCubies[i] != NULL){
+			myCubies[i]->moveDown();
+		}
+	}
+}
+

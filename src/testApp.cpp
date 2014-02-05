@@ -23,6 +23,9 @@ void testApp::setup(){
 	drawCuts1 = false;
 	draw3dObject = true;
 	moveRight = false;
+	moveLeft = false;
+	moveUp = false;
+	moveDown = false;
 	/////initialize sgCore library
 	sgInitKernel();  
 	initScene();
@@ -95,7 +98,19 @@ void testApp::update(){
 
 	if(moveRight){
 		myPuzzle->unDraw();
-		myPuzzle->update();
+		myPuzzle->moveRight();
+		drawCuts = true;
+	}else if(moveLeft){
+		myPuzzle->unDraw();
+		myPuzzle->moveLeft();
+		drawCuts = true;
+	}else if(moveUp){
+		myPuzzle->unDraw();
+		myPuzzle->moveUp();
+		drawCuts = true;
+	}else if(moveDown){
+		myPuzzle->unDraw();
+		myPuzzle->moveDown();
 		drawCuts = true;
 	}
 
@@ -159,10 +174,20 @@ void testApp::keyPressed(int key){
 	if(key == 'r') {
 	  myPuzzle->rotate();
 	}
+	/////////move around the object
 	if(key == 'l') {
 	  moveRight = true;
 	}
-
+	if(key == 'j') {
+	  moveLeft= true;
+	}
+	if(key == 'i') {
+	  moveUp= true;
+	}
+	if(key == 'k') {
+	  moveDown= true;
+	}
+	////////////erase object ///////////
 	if(key == 'u') {
 	  myPuzzle->unDraw();
 	}
@@ -174,6 +199,15 @@ void testApp::keyPressed(int key){
 void testApp::keyReleased(int key){
 	if(key == 'l') {
 	  moveRight = false;
+	}
+	if(key == 'j') {
+	  moveLeft= false;
+	}
+	if(key == 'i') {
+	  moveUp= false;
+	}
+	if(key == 'k') {
+	  moveDown= false;
 	}
 }
 //--------------------------------------------------------------

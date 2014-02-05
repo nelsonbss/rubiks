@@ -7,10 +7,10 @@
 #include "slicer.h"
 
 class puzzle {
-	
+
 public:
 	puzzle();
-    
+
 	void setup();
 	void update();
 	void draw();
@@ -23,6 +23,11 @@ public:
 
 	float numPieces;
 	cubie **myCubies; //malloc numPieces of these
+
+	void moveRight();
+	void moveLeft();
+	void moveUp();
+	void moveDown();
 };
 
 #endif /* defined(__Tpuzzle__puzzle__) */

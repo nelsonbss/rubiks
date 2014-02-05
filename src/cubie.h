@@ -19,10 +19,16 @@ public:
 	sgCGroup *objects;
 	float numObjs;
 	sgCObject **objectList;
-	float move;
-
+	
 	void setObjects(sgCGroup *objs);
 	sgCGroup* copyObjects();
+
+	float moveH;
+	float moveV;
+	void moveRight();
+	void moveLeft();
+	void moveUp();
+	void moveDown();
 };
 
 #endif /* defined(__Tcubie__cubie__) */

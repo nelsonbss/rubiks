@@ -88,14 +88,13 @@ void testApp::update(){
 		myPuzzle->loadPieces(mySlicer->getPieces());
 		//////////////////////////////end create puzzle////////////////////////////////////
 		makeCut = false;
-
 		drawCuts1 = true;
 		//cout << "end cut:" << ofGetElapsedTimeMillis() << endl;
 		///////////////////////////////////////////////////////////////////////////////////
 	}
 
 	if(moveRight){
-		//myPuzzle->unDraw();
+		myPuzzle->unDraw();
 		myPuzzle->update();
 		drawCuts = true;
 	}

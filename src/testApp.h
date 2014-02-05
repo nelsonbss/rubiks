@@ -44,5 +44,9 @@ class testApp : public ofBaseApp{
 		bool drawCuts;
 		bool drawCuts1;
 		bool draw3dObject;
+		//move object(cubies)
 		bool moveRight;
+		bool moveLeft;
+		bool moveUp;
+		bool moveDown;
 };

@@ -86,28 +86,30 @@ void cubie::unDraw(){
 	if(objects != NULL){
 		for (int j=0; j < numObjs; j++){
 			sgGetScene()->DetachObject(objectList[j]);
-
 		}
 	}else{
 		cout << "null at undraw" << endl;
 	}
 
-	//   sgCGroup *objects2 = objects; //keep incomming group
+	////remake objectList for next drawing
+	if(objects != NULL){
+		sgCGroup *objects2 = copyObjects(); 
+		const int ChCnt = objects2->GetChildrenList()->GetCount();
+		numObjs = ChCnt;
+		//give this cubies list some memory
+		objectList = (sgCObject**)malloc(ChCnt*sizeof(sgCObject*));
 
-	////break incomming group
-	//const int ChCnt = objects2->GetChildrenList()->GetCount();
-	//numObjs = ChCnt;
-	////give this cubies list some memory
-	//objectList = (sgCObject**)malloc(ChCnt*sizeof(sgCObject*));
-	////start breaking incoming group
-	//sgCObject** allParts = (sgCObject**)malloc(ChCnt*sizeof(sgCObject*));
-	//objects2->BreakGroup(allParts);
-	//sgCObject::DeleteObject(objects2);
-	//for (int j=0; j < ChCnt; j++){
-	//	objectList[j] = allParts[j];
-	//}
-	//free(allParts);
-
+		//start breaking incoming group
+		sgCObject** allParts = (sgCObject**)malloc(ChCnt*sizeof(sgCObject*));
+		objects2->BreakGroup(allParts);
+		sgCObject::DeleteObject(objects2);
+		for (int j=0; j < ChCnt; j++){
+			objectList[j] = allParts[j];
+		}
+		free(allParts);
+	}else{
+		cout << "null at undraw2" << endl;
+	}
 }
 //-------------------------------------------------------------------------------------------------------------------------------------------
 sgCGroup* cubie::copyObjects(){
@@ -149,29 +151,10 @@ void cubie::setObjects(sgCGroup *objs){
 	//it receives a group, when Puzzle loadsPieces(ySlicer->getPieces())  on main
 	//it takes the input group and breaks it, to put parts on cubie group "objects"
 
-	//////sgCObject **objcts = (sgCObject**)malloc(50*sizeof(sgCObject*));
-	//////int objctr = 0;
-
-	//////const int ChCnt = objs->GetChildrenList()->GetCount();
-	//////sgCObject** allParts = (sgCObject**)malloc(ChCnt*sizeof(sgCObject*));
-	//////objs->BreakGroup(allParts);
-	//////sgCObject::DeleteObject(objs);//after this function ends, objs is messed up , so the caller of this function doesn't have to delete the inputed group
-
-	//////for (int j=0; j < ChCnt; j++){
-	//////	//clone each object
-	//////	//sgCObject *temp = allParts[j];
-	//////	//put clone on *[] tomake new group
-	//////	objcts[objctr] = allParts[j];
-	//////	objctr ++;
-	//////}
-	//////free(allParts);
-
-	////////put that new group inside *objects of this class, of every cubie
-	//////objects = sgCGroup::CreateGroup(objcts,objctr);
-	//////free(objcts);
-
 	if(objs != NULL){
-		objects = objs; //keep incomming group
+
+		sgCObject **objcts = (sgCObject**)malloc(50*sizeof(sgCObject*));
+		int objctr = 0;
 
 		//break incomming group
 		const int ChCnt = objs->GetChildrenList()->GetCount();
@@ -182,10 +165,19 @@ void cubie::setObjects(sgCGroup *objs){
 		sgCObject** allParts = (sgCObject**)malloc(ChCnt*sizeof(sgCObject*));
 		objs->BreakGroup(allParts);
 		sgCObject::DeleteObject(objs);
+
 		for (int j=0; j < ChCnt; j++){
-			objectList[j] = allParts[j];
+			//clone each object
+			sgCObject *temp = allParts[j];
+			//put clone on *[] tomake new group
+			objectList[j] = temp->Clone();
+			objcts[objctr] = temp->Clone();
+			objctr ++;
 		}
 		free(allParts);
+		//put that new group inside *objects of this class, of every cubie
+		objects = sgCGroup::CreateGroup(objcts,objctr);
+		free(objcts);
 	}else{
 		objects = NULL;
 	}

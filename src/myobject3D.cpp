@@ -20,6 +20,7 @@ void myobject3D::setup(){
 //--------------------------------------------------------------
 void myobject3D::update(){
 	//glPushMatrix();
+	sgGetScene()->DetachObject(temp);
 	SG_POINT rotP = {posX,posY,0};
 	SG_POINT rotPobject = {0,0,0};
 	SG_VECTOR rotV = {0,1,0};

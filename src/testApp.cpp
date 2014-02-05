@@ -106,6 +106,7 @@ void testApp::update(){
 
 //--------------------------------------------------------------
 void testApp::draw(){
+	ofBackground(50, 50, 50, 0);
 	////////////////////////////////Draw the pieces////////////////////////////////////
 	if(drawCuts1==true){
 		mySlicer->draw();

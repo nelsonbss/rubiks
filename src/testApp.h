@@ -43,4 +43,5 @@ class testApp : public ofBaseApp{
 		bool drawCuts;
 		bool drawCuts1;
 		bool draw3dObject;
+		bool moveRight;
 };

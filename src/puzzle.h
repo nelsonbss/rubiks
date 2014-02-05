@@ -13,7 +13,7 @@ public:
     
 	void setup();
 	void update();
-	void draw(sgCScene *scn);
+	void draw();
 	void draw1(sgCScene *scn);
 
 	void rotate();

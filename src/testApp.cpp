@@ -22,6 +22,7 @@ void testApp::setup(){
 	drawCuts = false;
 	drawCuts1 = false;
 	draw3dObject = true;
+	moveRight = false;
 	/////initialize sgCore library
 	sgInitKernel();  
 	initScene();
@@ -33,10 +34,11 @@ void testApp::setup(){
 	objectDisplayed = new myobject3D(displayX,displayY);
 	objectDisplayed->loadObject(sgCreateTorus(100,80,34,34));
 	//objectDisplayed->loadObject(sgCreateCone(200,1,300.0, 3));
-	objectDisplayed->setup();
+	
 	////////////////////// from STL file
 	/*const char* nel =  ofToDataPath("cube.stl",false).c_str();
 	objectDisplayed.loadObjectFromFile(nel);*/
+	objectDisplayed->setup();
 	//////////////////////////////////////////////////////////////////////////////////
 	
 	//////////////////////////////create cutter///////////////////////////////////////
@@ -91,6 +93,11 @@ void testApp::update(){
 		///////////////////////////////////////////////////////////////////////////////////
 	}
 
+	if(moveRight){
+		myPuzzle->update();
+		drawCuts = true;
+	}
+
 	objectDisplayed->update();
 }
 
@@ -99,7 +106,7 @@ void testApp::draw(){
 	////////////////////////////////Draw the pieces////////////////////////////////////
 	if(drawCuts1==true){
 		//myPuzzle->draw1(sgGetScene());
-		mySlicer->draw();
+		//mySlicer->draw();
 		drawCuts1 = false;
 		draw3dObject = false;
 	}
@@ -112,7 +119,7 @@ void testApp::draw(){
 	}
 
 	if(drawCuts==true){
-		myPuzzle->draw(sgGetScene());
+		myPuzzle->draw();
 		drawCuts = false;
 	}
 
@@ -184,9 +191,18 @@ void testApp::keyPressed(int key){
 	if(key == 'r') {
 	  myPuzzle->rotate();
 	}
+	if(key == 'l') {
+	  moveRight = true;
+	}
+	
+
+
 }
 //--------------------------------------------------------------
 void testApp::keyReleased(int key){
+	if(key == 'l') {
+	  moveRight = false;
+	}
 }
 //--------------------------------------------------------------
 void testApp::mouseMoved(int x, int y ){

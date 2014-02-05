@@ -18,23 +18,30 @@ void puzzle::setup(){
 }
 //--------------------------------------------------------------
 void puzzle::update(){
+	//iterate through cubies
+	for(int i=0;i<numPieces;i++){
+		if(myCubies[i] != NULL){
+			myCubies[i]->update();
+		}
+	}
 }
 //--------------------------------------------------------------
-void puzzle::draw(sgCScene *scn){  
+void puzzle::draw(){  
 	//puzzle tells every cubie to draw itself
 	//iterate through cubies
 	for(int i=0;i<numPieces;i++){
 		if(myCubies[i] != NULL){
-			myCubies[i]->draw(scn);
+			//myCubies[i]->unDraw();
+			myCubies[i]->draw();
 		}
 	}
 }
 void puzzle::draw1(sgCScene *scn){  
 	//puzzle tells every cubie to draw itself
-	//iterate through cubies
-	for(int i=0;i<numPieces;i++){
-		myCubies[i]->draw1(scn);
-	}
+	////iterate through cubies
+	//for(int i=0;i<numPieces;i++){
+	//	myCubies[i]->draw1(scn);
+	//}
 }
 void puzzle::rotate(){  
 	//puzzle tells every cubie to draw itself

@@ -18,69 +18,92 @@ void cubie::draw(){
 	//each cubie draws its own sgCGroup *objects;
 	// it attaches to scene
 
-	sgCGroup *result2 = copyObjects();
-	//sgCGroup *result2 = objects;
+	////////sgCGroup *result2 = copyObjects();
+	////////sgCGroup *result2 = objects;
+	////////if(objects != NULL){
+	////////	const int ChCnt = result2->GetChildrenList()->GetCount();
+	////////	sgCObject **allChilds = (sgCObject**)malloc(ChCnt*sizeof(sgCObject*));
+	////////	result2->BreakGroup(allChilds);
+	////////	//sgCObject::DeleteObject(result2);
+	////////	for (int j=0; j < ChCnt; j++){
+	////////		SG_VECTOR rotD = {0,1,0};
+	////////		SG_POINT rot = {0,0,0};
+	////////		allChilds[j]->InitTempMatrix()->Rotate(rot,rotD,0.0);
+	////////		SG_VECTOR transBox11 = {move,0,0}; 
+	////////		allChilds[j]->GetTempMatrix()->Translate(transBox11);
+	////////		SG_VECTOR transBox121 = {0,500,0}; 
+	////////		allChilds[j]->GetTempMatrix()->Translate(transBox121);
+	////////		allChilds[j]->ApplyTempMatrix();
+	////////		allChilds[j]->DestroyTempMatrix();
+	////////		allChilds[j]->SetAttribute(SG_OA_COLOR,rand()%27);
+	////////		sgGetScene()->AttachObject(allChilds[j]);
+	////////	}
+	////////	free(allChilds);
+	////////}
 
-	//sgCObject **objcts = (sgCObject**)malloc(50*sizeof(sgCObject*));
-	//int objctr = 0;
-
-	if(objects != NULL){
-		const int ChCnt = result2->GetChildrenList()->GetCount();
-		sgCObject **allChilds = (sgCObject**)malloc(ChCnt*sizeof(sgCObject*));
-		result2->BreakGroup(allChilds);
-		//sgCObject::DeleteObject(result2);
-		for (int j=0; j < ChCnt; j++){
+	//use this cubies objectList to draw elements without ever loosing them on groupBreaking
+	for (int j=0; j < numObjs; j++){
+		if(objectList[j] != NULL){
 			SG_VECTOR rotD = {0,1,0};
 			SG_POINT rot = {0,0,0};
-			allChilds[j]->InitTempMatrix()->Rotate(rot,rotD,0.0);
+			objectList[j]->InitTempMatrix()->Rotate(rot,rotD,0.0);
 			SG_VECTOR transBox11 = {move,0,0}; 
-			allChilds[j]->GetTempMatrix()->Translate(transBox11);
+			objectList[j]->GetTempMatrix()->Translate(transBox11);
 			SG_VECTOR transBox121 = {0,500,0}; 
-			allChilds[j]->GetTempMatrix()->Translate(transBox121);
-			allChilds[j]->ApplyTempMatrix();
-			allChilds[j]->DestroyTempMatrix();
-			allChilds[j]->SetAttribute(SG_OA_COLOR,rand()%27);
-			sgGetScene()->AttachObject(allChilds[j]);
-			/*const char *name = "n";
-			allChilds[j]->SetName(name);
-		    cout << "name of object:" << allChilds[j]->GetName() << endl;*/
-			//objcts[objctr] = allChilds[j]->Clone();
-			//objctr ++;
+			objectList[j]->GetTempMatrix()->Translate(transBox121);
+			objectList[j]->ApplyTempMatrix();
+			objectList[j]->DestroyTempMatrix();
+			objectList[j]->SetAttribute(SG_OA_COLOR,rand()%27);
+			sgGetScene()->AttachObject(objectList[j]);
 		}
-		
-		//const int ChCnt2 = objects->GetChildrenList()->GetCount();
-		//objects = sgCGroup::CreateGroup(objcts,objctr);
-		//const int ChCnt3 = objects->GetChildrenList()->GetCount();
-		free(allChilds);
 	}
-	//free(objcts);
-	//cout << "drew" << endl;
-	//move += 20;
+
 }
 //--------------------------------------------------------------
 void cubie::unDraw(){  
+		//sgGetScene()->Clear();
+
 	//detach from scene
-	//sgCGroup *result2 = copyObjects();
-	//sgGetScene()->Clear();
-
-	sgCObject **objcts = (sgCObject**)malloc(50*sizeof(sgCObject*));
-	int objctr = 0;
-
-
-	if(objects != NULL){
-		const int ChCnt = objects->GetChildrenList()->GetCount();
-		sgCObject** allpieces = (sgCObject**)malloc(ChCnt*sizeof(sgCObject*));
-		objects->BreakGroup(allpieces);
-		//sgCObject::DeleteObject(result2);
-		for (int j=0; j < ChCnt; j++){
-			sgGetScene()->DetachObject(allpieces[j]);
-			objcts[objctr] = allpieces[j]->Clone();
-			objctr ++;
+	////////sgCGroup *result2 = copyObjects();
+	////////sgCObject **objcts = (sgCObject**)malloc(50*sizeof(sgCObject*));
+	////////int objctr = 0;
+	////////if(objects != NULL){
+	////////	const int ChCnt = objects->GetChildrenList()->GetCount();
+	////////	sgCObject** allpieces = (sgCObject**)malloc(ChCnt*sizeof(sgCObject*));
+	////////	objects->BreakGroup(allpieces);
+	////////	//sgCObject::DeleteObject(result2);
+	////////	for (int j=0; j < ChCnt; j++){
+	////////		sgGetScene()->DetachObject(allpieces[j]);
+	////////		objcts[objctr] = allpieces[j]->Clone();
+	////////		objctr ++;
+	////////	}
+	////////	free(allpieces);
+	////////	objects = sgCGroup::CreateGroup(objcts,objctr);
+	////////}
+	////////cout << "objects from slicer end:" << objects << endl;
+	//use this cubies objectList to draw elements without ever loosing them on groupBreaking
+	for (int j=0; j < numObjs; j++){
+		if(objectList[j] != NULL){
+			sgGetScene()->DetachObject(objectList[j]);
 		}
-		free(allpieces);
-		objects = sgCGroup::CreateGroup(objcts,objctr);
 	}
-	//cout << "objects from slicer end:" << objects << endl;
+
+ //   sgCGroup *objects2 = objects; //keep incomming group
+
+	////break incomming group
+	//const int ChCnt = objects2->GetChildrenList()->GetCount();
+	//numObjs = ChCnt;
+	////give this cubies list some memory
+	//objectList = (sgCObject**)malloc(ChCnt*sizeof(sgCObject*));
+	////start breaking incoming group
+	//sgCObject** allParts = (sgCObject**)malloc(ChCnt*sizeof(sgCObject*));
+	//objects2->BreakGroup(allParts);
+	//sgCObject::DeleteObject(objects2);
+	//for (int j=0; j < ChCnt; j++){
+	//	objectList[j] = allParts[j];
+	//}
+	//free(allParts);
+
 }
 //-------------------------------------------------------------------------------------------------------------------------------------------
 sgCGroup* cubie::copyObjects(){
@@ -122,30 +145,43 @@ void cubie::setObjects(sgCGroup *objs){
 	//it receives a group, when Puzzle loadsPieces(ySlicer->getPieces())  on main
 	//it takes the input group and breaks it, to put parts on cubie group "objects"
 
-	sgCObject **objcts = (sgCObject**)malloc(50*sizeof(sgCObject*));
-	int objctr = 0;
+	//////sgCObject **objcts = (sgCObject**)malloc(50*sizeof(sgCObject*));
+	//////int objctr = 0;
 
+	//////const int ChCnt = objs->GetChildrenList()->GetCount();
+	//////sgCObject** allParts = (sgCObject**)malloc(ChCnt*sizeof(sgCObject*));
+	//////objs->BreakGroup(allParts);
+	//////sgCObject::DeleteObject(objs);//after this function ends, objs is messed up , so the caller of this function doesn't have to delete the inputed group
+
+	//////for (int j=0; j < ChCnt; j++){
+	//////	//clone each object
+	//////	//sgCObject *temp = allParts[j];
+	//////	//put clone on *[] tomake new group
+	//////	objcts[objctr] = allParts[j];
+	//////	objctr ++;
+	//////}
+	//////free(allParts);
+
+	////////put that new group inside *objects of this class, of every cubie
+	//////objects = sgCGroup::CreateGroup(objcts,objctr);
+	//////free(objcts);
+
+	objects = objs; //keep incomming group
+
+	//break incomming group
 	const int ChCnt = objs->GetChildrenList()->GetCount();
-
-	objectList =  (sgCObject**)malloc(ChCnt*sizeof(sgCObject*));
-
+	numObjs = ChCnt;
+	//give this cubies list some memory
+	objectList = (sgCObject**)malloc(ChCnt*sizeof(sgCObject*));
+	//start breaking incoming group
 	sgCObject** allParts = (sgCObject**)malloc(ChCnt*sizeof(sgCObject*));
 	objs->BreakGroup(allParts);
-	sgCObject::DeleteObject(objs);//after this function ends, objs is messed up , so the caller of this function doesn't have to delete the inputed group
-
+	sgCObject::DeleteObject(objs);
 	for (int j=0; j < ChCnt; j++){
-		//clone each object
-		//sgCObject *temp = allParts[j];
-		//put clone on *[] tomake new group
-		objcts[objctr] = allParts[j];
-		objctr ++;
+		objectList[j] = allParts[j];
 	}
 	free(allParts);
 
-	//put that new group inside *objects of this class, of every cubie
-	objects = sgCGroup::CreateGroup(objcts,objctr);  
-
-	free(objcts);
 }
 //-------------------------------------------------------------------------------------------------------------------------------------------
 void cubie::rotate(){

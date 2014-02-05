@@ -97,8 +97,6 @@ void testApp::update(){
 	if(moveRight){
 		myPuzzle->unDraw();
 		myPuzzle->update();
-		
-		//drawElements();
 		drawCuts = true;
 	}
 
@@ -128,9 +126,6 @@ void testApp::draw(){
 		drawCuts = false;
 	}
 
-	
-
-	
 	//SG_VECTOR rotD = {1,0,0};
 	//objectDisplayed->getObject()->InitTempMatrix()->Translate(rotD);
 	//objectDisplayed->getObject()->ApplyTempMatrix();  

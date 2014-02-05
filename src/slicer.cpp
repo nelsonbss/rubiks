@@ -117,6 +117,13 @@ void slicer::exit(){
 	free(pieces);
 }
 
+/////////////////////////////////////////first algorithms developped///////////////////////////////////////////////////////
+///these algorithms use boolean substraction to do "slicing" with 6 planes
+///Y slicing still needs to group pieces that are going to Ycut again with turn++
+///Z slicing has basic slicing, still needs to look for all cases and recursive calls
+///nice programming, but it was getting too delicate, lots of micromanaging pieces made it difficult to concieve and implement
+///a new approach was take with boolean intersection, and the algorithm became more simple
+///NOTE: the planes created are of use when defining which cubies are going to be rotating
 
 //////////////////////////////////X SLICING!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 //////////////////////////////////X SLICING!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!

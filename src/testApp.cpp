@@ -62,20 +62,6 @@ void testApp::setup(){
 }
 //--------------------------------------------------------------
 void testApp::update(){
-	////////update cutter/////////////////
-	//myCutter->update();
-
-
-	//add original object to scene
-	//objectDisplayed->update();
-	//sgGetScene()->AttachObject((sgCObject*)objectDisplayed->getObject());
-
-	//sgGetScene()->AttachObject(sub1); 
-	//sub1->SetAttribute(SG_OA_COLOR,3);
-
-	//sgGetScene()->AttachObject(add); 
-	//add->SetAttribute(SG_OA_COLOR,12);
-
 
 	if(makeCut==true){
 		////BOOLEAN SUBSTRACTION//////////////////////////////////////////////////////////
@@ -111,7 +97,7 @@ void testApp::update(){
 		drawCuts = true;
 	}
 
-	objectDisplayed->update(); //rotates the onject.. jsut for show
+	objectDisplayed->update(); //rotates the selected object...just for show
 }
 
 //--------------------------------------------------------------
@@ -137,12 +123,13 @@ void testApp::draw(){
 		drawCuts = false;
 	}
 
+	//small test of openFrameworks simple drawing embeded with sgCore geometry 
 	ofPushMatrix();
 		ofTranslate(300,300);
 		ofCircle(ofPoint(0,0),30);
 	ofPopMatrix();
 
-	
+	///use openGL do draw elements taht are on the sgCore Scene object
 	drawElements();
 	
 }
@@ -163,7 +150,7 @@ void testApp::keyPressed(int key){
 		cout << "nu pieces " << mySlicer->countPieces() << endl;
 	}
 	if(key == 'r') {
-	  myPuzzle->rotate();
+	  myPuzzle->rotateUp();
 	}
 	/////////move around the object
 	if(key == 'l') {
@@ -219,8 +206,7 @@ void testApp::gotMessage(ofMessage msg){
 //--------------------------------------------------------------
 void testApp::dragEvent(ofDragInfo dragInfo){ 
 }
-/////////////////////////////////////////////////////////////////////////////
-//////////////////////CUSTOM TWISTY FUNCTIONS////////////////////////////////
+//--------------------------------------------------------------------------------------------------------------------------------------------------------
 void testApp::addGroupToScene(sgCGroup *group){
 	const int ChildsCount = group->GetChildrenList()->GetCount();  
 	sgCObject**  allChilds = (sgCObject**)malloc(ChildsCount*sizeof(sgCObject*));  
@@ -235,7 +221,6 @@ void testApp::addGroupToScene(sgCGroup *group){
 	//const int sz = group->GetChildrenList()->GetCount();  
 	//assert(sz==0);  
 	//sgDeleteObject(group);  
-
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------
 void testApp::exit(){
@@ -243,7 +228,6 @@ void testApp::exit(){
 	mySlicer->exit();
 	//sgFreeKernel();
 }
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------
 //
 // InitScene()
@@ -284,10 +268,9 @@ void testApp::initScene(){
 
     //glEnable(GL_CULL_FACE);
 }
-
 //---------------------------------------------------------------------------------------------------------------------------------------------------
 void testApp::drawElements(){
-//////////////////////////////////////////////////////////////
+	//////////////////////////////////////////////////////////////
 	////draw the elements of the scene
 	sgCObject*  curObj = sgGetScene()->GetObjectsList()->GetHead();
 

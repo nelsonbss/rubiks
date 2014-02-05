@@ -96,7 +96,8 @@ void testApp::update(){
 
 	if(moveRight){
 		myPuzzle->update();
-		myPuzzle->unDraw();
+		//myPuzzle->unDraw();
+		//drawElements();
 		drawCuts = true;
 	}
 
@@ -107,7 +108,6 @@ void testApp::update(){
 void testApp::draw(){
 	////////////////////////////////Draw the pieces////////////////////////////////////
 	if(drawCuts1==true){
-		//myPuzzle->draw1(sgGetScene());
 		mySlicer->draw();
 		drawCuts1 = false;
 		draw3dObject = false;
@@ -118,7 +118,7 @@ void testApp::draw(){
 		myCutter->draw();
 	}else{
 		objectDisplayed->unDraw();
-		//myCutter->unDraw();
+		myCutter->unDraw();
 	}
 
 	if(drawCuts==true){
@@ -141,39 +141,8 @@ void testApp::draw(){
 	ofPopMatrix();
 
 	
-
-	//////////////////////////////////////////////////////////////
-	////draw the elements of the scene
-	sgCObject*  curObj = sgGetScene()->GetObjectsList()->GetHead();
-
-	while (curObj)
-	{
-		if (true)
-		{
-			Painter::DrawObject(GL_RENDER,curObj,false);
-
-			if ((curObj->GetAttribute(SG_OA_DRAW_STATE) & SG_DS_GABARITE))
-			{
-				SG_POINT a1,a2;
-				curObj->GetGabarits(a1,a2);
-				Painter::DrawGabariteBox(a1,a2);
-			}
-		}
-		curObj = sgGetScene()->GetObjectsList()->GetNext(curObj);
-	}
-
-
-	//int tt = sgGetScene()->GetObjectsList()->GetCount();
-	//if(tt != 0){
-	//	sgCObject*  curObj = sgGetScene()->GetObjectsList()->GetHead();
-	//	for(int i=0;i<tt;i++){
-	//		if(curObj){
-	//			//sgGetScene()->Clear();
-	//			Painter::DrawObject(GL_RENDER,curObj,false);
-	//			curObj = sgGetScene()->GetObjectsList()->GetNext(curObj);
-	//		}
-	//	}
-	//}
+	drawElements();
+	
 }
 //--------------------------------------------------------------
 void testApp::keyPressed(int key){
@@ -296,4 +265,40 @@ void testApp::initScene(){
   glEnable(GL_DEPTH_TEST);
 
     //glEnable(GL_CULL_FACE);
+}
+
+//---------------------------------------------------------------------------------------------------------------------------------------------------
+void testApp::drawElements(){
+//////////////////////////////////////////////////////////////
+	////draw the elements of the scene
+	sgCObject*  curObj = sgGetScene()->GetObjectsList()->GetHead();
+
+	while (curObj)
+	{
+		if (true)
+		{
+			Painter::DrawObject(GL_RENDER,curObj,false);
+
+			if ((curObj->GetAttribute(SG_OA_DRAW_STATE) & SG_DS_GABARITE))
+			{
+				SG_POINT a1,a2;
+				curObj->GetGabarits(a1,a2);
+				Painter::DrawGabariteBox(a1,a2);
+			}
+		}
+		curObj = sgGetScene()->GetObjectsList()->GetNext(curObj);
+	}
+
+
+	//int tt = sgGetScene()->GetObjectsList()->GetCount();
+	//if(tt != 0){
+	//	sgCObject*  curObj = sgGetScene()->GetObjectsList()->GetHead();
+	//	for(int i=0;i<tt;i++){
+	//		if(curObj){
+	//			//sgGetScene()->Clear();
+	//			Painter::DrawObject(GL_RENDER,curObj,false);
+	//			curObj = sgGetScene()->GetObjectsList()->GetNext(curObj);
+	//		}
+	//	}
+	//}
 }

@@ -28,6 +28,7 @@ class testApp : public ofBaseApp{
 		////////////////
 		void initScene();
 		void addGroupToScene(sgCGroup *group);
+		void drawElements();
 		////////////////
 
 		////////////////

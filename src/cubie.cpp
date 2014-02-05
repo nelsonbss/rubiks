@@ -3,7 +3,7 @@
 
 cubie::cubie(){
 	objects = NULL;
-	move=600;
+	move=0;
 }
 //--------------------------------------------------------------
 void cubie::setup(){
@@ -19,16 +19,17 @@ void cubie::draw(){
 	// it attaches to scene
 
 	//cout << "objects from slicer start:" << objects << endl;
-	sgCGroup *result2 = copyObjects();
-	sgCObject** allChilds3a = (sgCObject**)malloc(1*sizeof(sgCObject*));
-	if(result2 != NULL){
-		const int ChCnt = result2->GetChildrenList()->GetCount();
-		if(allChilds3a != NULL){
-			free(allChilds3a);
-		}
-		allChilds3a = (sgCObject**)malloc(ChCnt*sizeof(sgCObject*));
-		result2->BreakGroup(allChilds3a);
-		sgCObject::DeleteObject(result2);
+	//sgCGroup *result2 = copyObjects();
+	//sgCGroup *result2 = objects;
+
+	sgCObject **objcts = (sgCObject**)malloc(50*sizeof(sgCObject*));
+	int objctr = 0;
+
+	if(objects != NULL){
+		const int ChCnt = objects->GetChildrenList()->GetCount();
+		sgCObject **allChilds = (sgCObject**)malloc(ChCnt*sizeof(sgCObject*));
+		objects->BreakGroup(allChilds);
+		//sgCObject::DeleteObject(result2);
 		for (int j=0; j < ChCnt; j++){
 			SG_VECTOR rotD = {0,1,0};
 			SG_POINT rot = {0,0,0};
@@ -43,38 +44,50 @@ void cubie::draw(){
 			aux->Triangulate(SG_VERTEX_TRIANGULATION);
 			aux->SetAttribute(SG_OA_COLOR,rand()%50);
 			sgGetScene()->AttachObject(aux);*/
-			allChilds3a[j]->InitTempMatrix()->Rotate(rot,rotD,1.0);
+			allChilds[j]->InitTempMatrix()->Rotate(rot,rotD,1.0);
 			SG_VECTOR transBox11 = {move,0,0}; 
-			allChilds3a[j]->GetTempMatrix()->Translate(transBox11);
+			allChilds[j]->GetTempMatrix()->Translate(transBox11);
 			SG_VECTOR transBox121 = {0,500,0}; 
-			allChilds3a[j]->GetTempMatrix()->Translate(transBox121);
-			allChilds3a[j]->ApplyTempMatrix();  
-			allChilds3a[j]->DestroyTempMatrix();
+			allChilds[j]->GetTempMatrix()->Translate(transBox121);
+			allChilds[j]->ApplyTempMatrix();  
+			allChilds[j]->DestroyTempMatrix();
 			//allChilds3a[j]->Triangulate(SG_VERTEX_TRIANGULATION); // it has to be a sgC3dObject to be able to do "Triangulate"
-			allChilds3a[j]->SetAttribute(SG_OA_COLOR,rand()%27);
-			sgGetScene()->DetachObject(allChilds3a[j]);
-			sgGetScene()->AttachObject(allChilds3a[j]);
-		}
-		if(allChilds3a != NULL){
-			free(allChilds3a);
+			allChilds[j]->SetAttribute(SG_OA_COLOR,rand()%27);
+			sgGetScene()->AttachObject(allChilds[j]);
+			cout << "name of object:" << allChilds[j]->GetName() << endl;
+			//objcts[objctr] = allChilds[j];
+			objctr ++;
 		}
 		
+		//const int ChCnt2 = objects->GetChildrenList()->GetCount();
+		//objects = sgCGroup::CreateGroup(objcts,objctr);
+		//const int ChCnt3 = objects->GetChildrenList()->GetCount();
+		free(allChilds);
 	}
+	free(objcts);
 	//cout << "objects from slicer end:" << objects << endl;
 }
 //--------------------------------------------------------------
 void cubie::unDraw(){  
 	//detach from scene
-	sgCGroup *result2 = copyObjects();
-	if(result2 != NULL){
-		const int ChCnt = result2->GetChildrenList()->GetCount();
+	//sgCGroup *result2 = copyObjects();
+
+	sgCObject **objcts = (sgCObject**)malloc(50*sizeof(sgCObject*));
+	int objctr = 0;
+
+
+	if(objects != NULL){
+		const int ChCnt = objects->GetChildrenList()->GetCount();
 		sgCObject** allpieces = (sgCObject**)malloc(ChCnt*sizeof(sgCObject*));
-		result2->BreakGroup(allpieces);
+		objects->BreakGroup(allpieces);
 		//sgCObject::DeleteObject(result2);
 		for (int j=0; j < ChCnt; j++){
 			sgGetScene()->DetachObject(allpieces[j]);
+			objcts[objctr] = allpieces[j]->Clone();
+			objctr ++;
 		}
 		free(allpieces);
+		objects = sgCGroup::CreateGroup(objcts,objctr);
 	}
 	//cout << "objects from slicer end:" << objects << endl;
 }
@@ -134,7 +147,7 @@ void cubie::setObjects(sgCGroup *objs){
 		objctr ++;
 	}
 	free(allParts);
-	
+
 	//put that new group inside *objects of this class, of every cubie
 	objects = sgCGroup::CreateGroup(objcts,objctr);  
 

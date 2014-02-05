@@ -70,10 +70,6 @@ void puzzle::loadPieces(sgCGroup **pcs){
 		//get group from pieces[] copy
 		sgCGroup *part = pcs[i]; //pcs[i] will get destroyed!!!!!!!!!!!!!!!!!
 
-		//temp cubie
-		//cubie *auxCubie = new cubie();//if I put the group directly on cubie... do I loose the object? do I have to clone it?
-		//thisgot commented out because puzzle contructed its cubies on setup()
-
 		if(part != NULL){
 			const int ChCnt = part->GetChildrenList()->GetCount();
 			sgCObject** allParts = (sgCObject**)malloc(ChCnt*sizeof(sgCObject*));
@@ -99,7 +95,7 @@ void puzzle::loadPieces(sgCGroup **pcs){
 			free(obj);
 			free(allParts);
 		}else{
-			myCubies[i]->objects = NULL;
+			myCubies[i]->setObjects(NULL);
 		}
 
 	}

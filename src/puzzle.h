@@ -16,8 +16,6 @@ public:
 	void draw();
 	void unDraw();
 
-	void rotate();
-
 	void loadPieces(sgCGroup **pcs);
 	int giveNumCubies();
 
@@ -28,6 +26,8 @@ public:
 	void moveLeft();
 	void moveUp();
 	void moveDown();
+
+	void rotateUp();
 };
 
 #endif /* defined(__Tpuzzle__puzzle__) */

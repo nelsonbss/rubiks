@@ -8,13 +8,8 @@ puzzle::puzzle(){
 }
 //--------------------------------------------------------------
 void puzzle::setup(){
-	//create cubies
-	//for(int i =0;i<numPieces;i++){
-	//	cubie *auxCubie = new cubie();// is this really creating independent instances of cubie??
-	//	auxCubie->setup();
-	//	//add this cubie to mycubies[]
-	//	myCubies[i] = auxCubie;
-	//}
+	//create cubies each time loadPieces is called
+	//because thats whe a new boolean occured
 }
 //--------------------------------------------------------------
 void puzzle::update(){
@@ -44,10 +39,10 @@ void puzzle::unDraw(){
 	}
 }
 //--------------------------------------------------------------
-void puzzle::rotate(){  
+void puzzle::rotateUp(){  
 	//puzzle tells every cubie to rotate
 	for(int i=0;i<numPieces;i++){
-		myCubies[i]->rotate();
+		myCubies[i]->rotateUp();
 	}
 }
 //-------------------------------------------------------------------------------------------------
@@ -110,7 +105,6 @@ void puzzle::loadPieces(sgCGroup **pcs){
 
 	}
 }
-
 //--------------------------------------------------------------
 void puzzle::moveRight(){
 	//iterate through cubies
@@ -120,7 +114,6 @@ void puzzle::moveRight(){
 		}
 	}
 }
-
 //--------------------------------------------------------------
 void puzzle::moveLeft(){
 	//iterate through cubies
@@ -130,7 +123,6 @@ void puzzle::moveLeft(){
 		}
 	}
 }
-
 //--------------------------------------------------------------
 void puzzle::moveUp(){
 	//iterate through cubies
@@ -140,7 +132,6 @@ void puzzle::moveUp(){
 		}
 	}
 }
-
 //--------------------------------------------------------------
 void puzzle::moveDown(){
 	//iterate through cubies

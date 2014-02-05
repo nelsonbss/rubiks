@@ -14,8 +14,6 @@ public:
 	void draw();
 	void unDraw();
 
-	void rotate();
-
 	sgCGroup *objects;
 	float numObjs;
 	sgCObject **objectList;
@@ -29,6 +27,8 @@ public:
 	void moveLeft();
 	void moveUp();
 	void moveDown();
+
+	void rotateUp();
 };
 
 #endif /* defined(__Tcubie__cubie__) */

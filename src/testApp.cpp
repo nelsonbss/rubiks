@@ -85,9 +85,6 @@ void testApp::update(){
 		//now slicer has all the parts inside sgCGroup ** = pieces[]
 
 		//////////////////////////////create puzzle///////////////////////////////////////
-		//sgCGroup ** aux = (sgCGroup**) mySlicer->pieces; //WHY CANT I GET THE DATA ** HERE??? its a group**!!
-		//sgCGroup ** aux = (sgCGroup**) mySlicer->getPieces(); //WHY CANT I GET THE DATA ** HERE??? on the SETUP?? now on the update I can...!!!
-		//sgCGroup * aux2 = (sgCGroup*) mySlicer->pieces[6]; //AND HERE IT IS!!! ->> why???
 		myPuzzle->loadPieces(mySlicer->getPieces());
 		//////////////////////////////end create puzzle////////////////////////////////////
 		makeCut = false;
@@ -140,12 +137,6 @@ void testApp::draw(){
 		drawCuts = false;
 	}
 
-	//SG_VECTOR rotD = {1,0,0};
-	//objectDisplayed->getObject()->InitTempMatrix()->Translate(rotD);
-	//objectDisplayed->getObject()->ApplyTempMatrix();  
-	////objectDisplayed->getObject()->DestroyTempMatrix();
-	//sgGetScene()->AttachObject(objectDisplayed->getObject());
-
 	ofPushMatrix();
 		ofTranslate(300,300);
 		ofCircle(ofPoint(0,0),30);
@@ -191,9 +182,6 @@ void testApp::keyPressed(int key){
 	if(key == 'u') {
 	  myPuzzle->unDraw();
 	}
-	
-
-
 }
 //--------------------------------------------------------------
 void testApp::keyReleased(int key){

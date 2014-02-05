@@ -18,34 +18,10 @@ void cubie::update(){
 void cubie::draw(){  
 	//each cubie draws its own sgCGroup *objects;
 	// it attaches to scene
-
-	////////sgCGroup *result2 = copyObjects();
-	////////sgCGroup *result2 = objects;
-	////////if(objects != NULL){
-	////////	const int ChCnt = result2->GetChildrenList()->GetCount();
-	////////	sgCObject **allChilds = (sgCObject**)malloc(ChCnt*sizeof(sgCObject*));
-	////////	result2->BreakGroup(allChilds);
-	////////	//sgCObject::DeleteObject(result2);
-	////////	for (int j=0; j < ChCnt; j++){
-	////////		SG_VECTOR rotD = {0,1,0};
-	////////		SG_POINT rot = {0,0,0};
-	////////		allChilds[j]->InitTempMatrix()->Rotate(rot,rotD,0.0);
-	////////		SG_VECTOR transBox11 = {move,0,0}; 
-	////////		allChilds[j]->GetTempMatrix()->Translate(transBox11);
-	////////		SG_VECTOR transBox121 = {0,500,0}; 
-	////////		allChilds[j]->GetTempMatrix()->Translate(transBox121);
-	////////		allChilds[j]->ApplyTempMatrix();
-	////////		allChilds[j]->DestroyTempMatrix();
-	////////		allChilds[j]->SetAttribute(SG_OA_COLOR,rand()%27);
-	////////		sgGetScene()->AttachObject(allChilds[j]);
-	////////	}
-	////////	free(allChilds);
-	////////}
-
 	//use this cubies objectList to draw elements without ever loosing them on groupBreaking
 	if(objects != NULL){
 		for (int j=0; j < numObjs; j++){
-			SG_VECTOR rotD = {0,1,0};
+			SG_VECTOR rotD = {0,0,0};
 			SG_POINT rot = {0,0,0};
 			objectList[j]->InitTempMatrix()->Rotate(rot,rotD,0.0);
 			SG_VECTOR transBox11 = {moveH,0,0}; 
@@ -66,23 +42,6 @@ void cubie::unDraw(){
 	//sgGetScene()->Clear();
 
 	//detach from scene
-	////////sgCGroup *result2 = copyObjects();
-	////////sgCObject **objcts = (sgCObject**)malloc(50*sizeof(sgCObject*));
-	////////int objctr = 0;
-	////////if(objects != NULL){
-	////////	const int ChCnt = objects->GetChildrenList()->GetCount();
-	////////	sgCObject** allpieces = (sgCObject**)malloc(ChCnt*sizeof(sgCObject*));
-	////////	objects->BreakGroup(allpieces);
-	////////	//sgCObject::DeleteObject(result2);
-	////////	for (int j=0; j < ChCnt; j++){
-	////////		sgGetScene()->DetachObject(allpieces[j]);
-	////////		objcts[objctr] = allpieces[j]->Clone();
-	////////		objctr ++;
-	////////	}
-	////////	free(allpieces);
-	////////	objects = sgCGroup::CreateGroup(objcts,objctr);
-	////////}
-	////////cout << "objects from slicer end:" << objects << endl;
 	//use this cubies objectList to draw elements without ever loosing them on groupBreaking
 	if(objects != NULL){
 		for (int j=0; j < numObjs; j++){
@@ -92,6 +51,7 @@ void cubie::unDraw(){
 		cout << "null at undraw" << endl;
 	}
 
+	////////////////////////////////////IMPORTANT!!!!!!!!///////////////////////////////////
 	////remake objectList for next drawing
 	if(objects != NULL){
 		sgCGroup *objects2 = copyObjects(); 
@@ -185,7 +145,7 @@ void cubie::setObjects(sgCGroup *objs){
 
 }
 //-------------------------------------------------------------------------------------------------------------------------------------------
-void cubie::rotate(){
+void cubie::rotateUp(){
 	sgCGroup *result2 = copyObjects();  
 	if(result2 != NULL){
 		const int ChCnt = result2->GetChildrenList()->GetCount();

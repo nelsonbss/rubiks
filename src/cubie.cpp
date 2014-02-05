@@ -50,15 +50,19 @@ void cubie::draw(){
 	//each cubie draws its own sgCGroup *objects;
 	//cout << "objects from slicer start:" << objects << endl;
 	sgCGroup *result2 = copyObjects();
+	sgCObject** allChilds3a = (sgCObject**)malloc(1*sizeof(sgCObject*));
 	if(result2 != NULL){
 		const int ChCnt = result2->GetChildrenList()->GetCount();
-		sgCObject** allChilds3a = (sgCObject**)malloc(ChCnt*sizeof(sgCObject*));
+		if(allChilds3a != NULL){
+			free(allChilds3a);
+		}
+		allChilds3a = (sgCObject**)malloc(ChCnt*sizeof(sgCObject*));
 		result2->BreakGroup(allChilds3a);
-		//sgCObject::DeleteObject(result2);
+		sgCObject::DeleteObject(result2);
 		for (int j=0; j < ChCnt; j++){
 			SG_VECTOR rotD = {0,1,0};
 			SG_POINT rot = {0,0,0};
-			sgC3DObject *aux = (sgC3DObject *) allChilds3a[j]; 
+			/*sgC3DObject *aux = (sgC3DObject *) allChilds3a[j]; 
 			aux->InitTempMatrix()->Rotate(rot,rotD,1.0);
 			SG_VECTOR transBox11 = {move,0,0}; 
 			aux->GetTempMatrix()->Translate(transBox11);
@@ -68,9 +72,23 @@ void cubie::draw(){
 			aux->DestroyTempMatrix();
 			aux->Triangulate(SG_VERTEX_TRIANGULATION);
 			aux->SetAttribute(SG_OA_COLOR,rand()%50);
-			sgGetScene()->AttachObject(aux);
+			sgGetScene()->AttachObject(aux);*/
+			allChilds3a[j]->InitTempMatrix()->Rotate(rot,rotD,1.0);
+			SG_VECTOR transBox11 = {move,0,0}; 
+			allChilds3a[j]->GetTempMatrix()->Translate(transBox11);
+			SG_VECTOR transBox121 = {0,500,0}; 
+			allChilds3a[j]->GetTempMatrix()->Translate(transBox121);
+			allChilds3a[j]->ApplyTempMatrix();  
+			allChilds3a[j]->DestroyTempMatrix();
+			//allChilds3a[j]->Triangulate(SG_VERTEX_TRIANGULATION); // it has to be a sgC3dObject to be able to do "Triangulate"
+			allChilds3a[j]->SetAttribute(SG_OA_COLOR,rand()%27);
+			sgGetScene()->DetachObject(allChilds3a[j]);
+			sgGetScene()->AttachObject(allChilds3a[j]);
 		}
-		//free(allChilds3a);
+		if(allChilds3a != NULL){
+			free(allChilds3a);
+		}
+		
 	}
 	//cout << "objects from slicer end:" << objects << endl;
 }
@@ -80,13 +98,13 @@ void cubie::unDraw(){
 	sgCGroup *result2 = copyObjects();
 	if(result2 != NULL){
 		const int ChCnt = result2->GetChildrenList()->GetCount();
-		sgCObject** allChilds3a = (sgCObject**)malloc(ChCnt*sizeof(sgCObject*));
-		result2->BreakGroup(allChilds3a);
+		sgCObject** allpieces = (sgCObject**)malloc(ChCnt*sizeof(sgCObject*));
+		result2->BreakGroup(allpieces);
 		//sgCObject::DeleteObject(result2);
 		for (int j=0; j < ChCnt; j++){
-			sgGetScene()->DetachObject(allChilds3a[j]);
+			sgGetScene()->DetachObject(allpieces[j]);
 		}
-		//free(allChilds3a);
+		free(allpieces);
 	}
 	//cout << "objects from slicer end:" << objects << endl;
 }
@@ -94,7 +112,7 @@ void cubie::unDraw(){
 sgCGroup* cubie::copyObjects(){
 	//make a copy of *objects send outside, so originals dont get messed up, and cubies can draw every time without making a the boolean first
 	sgCGroup* aux;
-	sgCObject *objcts[50];  
+	sgCObject **objcts = (sgCObject**)malloc(50*sizeof(sgCObject*));
 	int objctr = 0;
 
 	if(objects != NULL){
@@ -109,22 +127,19 @@ sgCGroup* cubie::copyObjects(){
 			objcts[objctr] = temp;
 			objctr ++;
 		}
-		//free(allParts);
+		free(allParts);
 		//put thatnew group inside aux**[]
 		objects = sgCGroup::CreateGroup(objcts,objctr); //so objects[] has the data again, and keeps it for future requests
 		aux = sgCGroup::CreateGroup(objcts,objctr);  
 	}else{
 		return NULL;
 	}
-
-	/////important!!!!!!!!!!!!!!!!important!!!!!!!!!!!///////////important/////////////////////////////
-	//sgCObject::DeleteObject(*objcts); //why if I delete the objects everything goes KAPUT?????
-	///////////////important////////////////////important//////////////important//////////////////////
+	free(objcts);
 	return aux;
 }
 //-------------------------------------------------------------------------------------------------------------------------------------------
 void cubie::setObjects(sgCGroup *objs){
-	sgCObject *objcts[50];  
+	sgCObject **objcts = (sgCObject**)malloc(50*sizeof(sgCObject*));
 	int objctr = 0;
 
 	const int ChCnt = objs->GetChildrenList()->GetCount();
@@ -140,14 +155,15 @@ void cubie::setObjects(sgCGroup *objs){
 		objctr ++;
 	}
 	free(allParts);
+	
 	//put that new group inside *objects of this class, of every cubie
 	objects = sgCGroup::CreateGroup(objcts,objctr);  
+
+	free(objcts);
 }
-
-
+//-------------------------------------------------------------------------------------------------------------------------------------------
 void cubie::rotate(){
-	sgCGroup *result2 = copyObjects();  //DO I have to make a copy of this sgCGroup *objects???? so I don't ever loose the objects?
-	//yessss!!!!!
+	sgCGroup *result2 = copyObjects();  
 	if(result2 != NULL){
 		const int ChCnt = result2->GetChildrenList()->GetCount();
 		sgCObject** allChilds3a = (sgCObject**)malloc(ChCnt*sizeof(sgCObject*));

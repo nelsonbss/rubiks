@@ -31,18 +31,21 @@ void puzzle::draw(){
 	//iterate through cubies
 	for(int i=0;i<numPieces;i++){
 		if(myCubies[i] != NULL){
-			//myCubies[i]->unDraw();
 			myCubies[i]->draw();
 		}
 	}
 }
-void puzzle::draw1(sgCScene *scn){  
+//--------------------------------------------------------------
+void puzzle::unDraw(){  
 	//puzzle tells every cubie to draw itself
-	////iterate through cubies
-	//for(int i=0;i<numPieces;i++){
-	//	myCubies[i]->draw1(scn);
-	//}
+	//iterate through cubies
+	for(int i=0;i<numPieces;i++){
+		if(myCubies[i] != NULL){
+			myCubies[i]->unDraw();
+		}
+	}
 }
+//--------------------------------------------------------------
 void puzzle::rotate(){  
 	//puzzle tells every cubie to draw itself
 	//iterate through cubies
@@ -63,7 +66,7 @@ int puzzle::giveNumCubies(){
 }
 ///////////////////////////////////////////////////////////////
 void puzzle::loadPieces(sgCGroup **pcs){
-	//it loads the pieces that the slicer made, the pieces are in a sgCGroup**, 
+	//it loads the pieces that the slicer made, the pieces are in a sgCGroup** pieces[], 
 	//this function receives a copy of that sgCGroup** made by mySlicer->getPieces()
 	//it loads them into its own cubies
 	for(int i=0;i<numPieces;i++){

@@ -14,7 +14,7 @@ public:
 	void setup();
 	void update();
 	void draw();
-	void draw1(sgCScene *scn);
+	void unDraw();
 
 	void rotate();
 

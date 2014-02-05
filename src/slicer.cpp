@@ -49,9 +49,8 @@ void slicer::draw(){
 sgCGroup** slicer::getPieces(){
 	//make a copy of the group** to send outside pieces[]
 	sgCGroup **aux = (sgCGroup**)malloc(27*sizeof(sgCGroup*));
-	sgCObject *objcts[50];  
-
 	for(int i =0; i<27; i ++){
+		sgCObject **objcts = (sgCObject**)malloc(50*sizeof(sgCObject*));
 		int objctr = 0;
 		//break each pieces[i]
 		sgCGroup *parts = pieces[i];
@@ -75,10 +74,8 @@ sgCGroup** slicer::getPieces(){
 			pieces[i] = NULL;
 			aux[i] = NULL; 
 		}
+		free(objcts);
 	}
-	/////important!!!!!!!!!!!!!!!!important!!!!!!!!!!!///////////important/////////////////////////////
-	//sgCObject::DeleteObject(*objcts); //why if I delete the objects everything goes KAPUT?????
-	///////////////important////////////////////important//////////////important//////////////////////
 	return aux;
 }
 //----------------------------------------------------------------
@@ -108,19 +105,12 @@ void slicer::intersectCubes(sgCObject *obj){
 
 		//do intersecton
 		inter = sgBoolean::Intersection(*(sgC3DObject*)tempObj,*(sgC3DObject*)tempCutter);
-
 		//now we have the whole piece that goes into a cubie for that cube
-		if(inter != NULL){
-			pieces[i] = inter;
-		}else{
-			pieces[i] = inter;
-		}
-
+		pieces[i] = inter;
 		//clean up
 		sgCObject::DeleteObject(tempObj);
 		sgCObject::DeleteObject(tempCutter);
 	}
-	//sgCObject::DeleteObject(obj);
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------
 void slicer::exit(){

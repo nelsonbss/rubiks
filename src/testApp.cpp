@@ -79,6 +79,7 @@ void testApp::update(){
 		//mySlicer->xSlicing(*mySlicer->myCutter,objectDisplayed->getObject(),1,1);
 		///boolean INTERSECTION///////////////////////////////////////////////////////////
 		mySlicer->intersectCubes(objectDisplayed->getObject()); 
+		//now slicer has all the parts inside sgCGroup ** = pieces[]
 
 		//////////////////////////////create puzzle///////////////////////////////////////
 		//sgCGroup ** aux = (sgCGroup**) mySlicer->pieces; //WHY CANT I GET THE DATA ** HERE??? its a group**!!
@@ -95,6 +96,7 @@ void testApp::update(){
 
 	if(moveRight){
 		myPuzzle->update();
+		myPuzzle->unDraw();
 		drawCuts = true;
 	}
 
@@ -106,16 +108,17 @@ void testApp::draw(){
 	////////////////////////////////Draw the pieces////////////////////////////////////
 	if(drawCuts1==true){
 		//myPuzzle->draw1(sgGetScene());
-		//mySlicer->draw();
+		mySlicer->draw();
 		drawCuts1 = false;
 		draw3dObject = false;
 	}
+
 	if(draw3dObject){
 		objectDisplayed->draw();
 		myCutter->draw();
 	}else{
 		objectDisplayed->unDraw();
-		myCutter->unDraw();
+		//myCutter->unDraw();
 	}
 
 	if(drawCuts==true){
@@ -193,6 +196,10 @@ void testApp::keyPressed(int key){
 	}
 	if(key == 'l') {
 	  moveRight = true;
+	}
+
+	if(key == 'u') {
+	  myPuzzle->unDraw();
 	}
 	
 

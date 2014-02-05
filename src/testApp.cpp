@@ -95,13 +95,14 @@ void testApp::update(){
 	}
 
 	if(moveRight){
+		myPuzzle->unDraw();
 		myPuzzle->update();
-		//myPuzzle->unDraw();
+		
 		//drawElements();
 		drawCuts = true;
 	}
 
-	objectDisplayed->update();
+	objectDisplayed->update(); //rotates the onject.. jsut for show
 }
 
 //--------------------------------------------------------------
@@ -109,17 +110,17 @@ void testApp::draw(){
 	ofBackground(50, 50, 50, 0);
 	////////////////////////////////Draw the pieces////////////////////////////////////
 	if(drawCuts1==true){
-		mySlicer->draw();
+		//mySlicer->draw();
 		drawCuts1 = false;
 		draw3dObject = false;
 	}
 
 	if(draw3dObject){
-		objectDisplayed->draw();
-		myCutter->draw();
+		//objectDisplayed->draw();
+		//myCutter->draw();
 	}else{
 		objectDisplayed->unDraw();
-		myCutter->unDraw();
+		//myCutter->unDraw();
 	}
 
 	if(drawCuts==true){

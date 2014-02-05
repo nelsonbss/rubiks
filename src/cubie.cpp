@@ -61,24 +61,25 @@ void cubie::draw(){
 void cubie::unDraw(){  
 	//detach from scene
 	//sgCGroup *result2 = copyObjects();
+	sgGetScene()->Clear();
 
-	sgCObject **objcts = (sgCObject**)malloc(50*sizeof(sgCObject*));
-	int objctr = 0;
+	//sgCObject **objcts = (sgCObject**)malloc(50*sizeof(sgCObject*));
+	//int objctr = 0;
 
 
-	if(objects != NULL){
-		const int ChCnt = objects->GetChildrenList()->GetCount();
-		sgCObject** allpieces = (sgCObject**)malloc(ChCnt*sizeof(sgCObject*));
-		objects->BreakGroup(allpieces);
-		//sgCObject::DeleteObject(result2);
-		for (int j=0; j < ChCnt; j++){
-			sgGetScene()->DetachObject(allpieces[j]);
-			objcts[objctr] = allpieces[j]->Clone();
-			objctr ++;
-		}
-		free(allpieces);
-		objects = sgCGroup::CreateGroup(objcts,objctr);
-	}
+	//if(objects != NULL){
+	//	const int ChCnt = objects->GetChildrenList()->GetCount();
+	//	sgCObject** allpieces = (sgCObject**)malloc(ChCnt*sizeof(sgCObject*));
+	//	objects->BreakGroup(allpieces);
+	//	//sgCObject::DeleteObject(result2);
+	//	for (int j=0; j < ChCnt; j++){
+	//		sgGetScene()->DetachObject(allpieces[j]);
+	//		objcts[objctr] = allpieces[j]->Clone();
+	//		objctr ++;
+	//	}
+	//	free(allpieces);
+	//	objects = sgCGroup::CreateGroup(objcts,objctr);
+	//}
 	//cout << "objects from slicer end:" << objects << endl;
 }
 //-------------------------------------------------------------------------------------------------------------------------------------------

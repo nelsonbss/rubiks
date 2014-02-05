@@ -27,8 +27,7 @@ void puzzle::update(){
 }
 //--------------------------------------------------------------
 void puzzle::draw(){  
-	//puzzle tells every cubie to draw itself
-	//iterate through cubies
+	//puzzle tells every cubie to attach objects to scene
 	for(int i=0;i<numPieces;i++){
 		if(myCubies[i] != NULL){
 			myCubies[i]->draw();
@@ -37,8 +36,7 @@ void puzzle::draw(){
 }
 //--------------------------------------------------------------
 void puzzle::unDraw(){  
-	//puzzle tells every cubie to draw itself
-	//iterate through cubies
+	//puzzle tells every cubie to detach its objects from scene
 	for(int i=0;i<numPieces;i++){
 		if(myCubies[i] != NULL){
 			myCubies[i]->unDraw();
@@ -47,15 +45,14 @@ void puzzle::unDraw(){
 }
 //--------------------------------------------------------------
 void puzzle::rotate(){  
-	//puzzle tells every cubie to draw itself
-	//iterate through cubies
+	//puzzle tells every cubie to rotate
 	for(int i=0;i<numPieces;i++){
 		myCubies[i]->rotate();
 	}
 }
 //-------------------------------------------------------------------------------------------------
 int puzzle::giveNumCubies(){
-	//to test how many cubies we have here
+	//tell how many cubies we have with objects inside
 	int aux=0;
 	for(int i=0;i<numPieces;i++){
 		if(myCubies[i]->objects!= NULL){

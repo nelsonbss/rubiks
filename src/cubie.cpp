@@ -11,7 +11,7 @@ void cubie::setup(){
 }
 //--------------------------------------------------------------
 void cubie::update(){
-	move += 100;
+	move += 10;
 }
 //--------------------------------------------------------------
 void cubie::draw(){  
@@ -85,6 +85,7 @@ sgCGroup* cubie::copyObjects(){
 
 	sgCGroup* aux;
 	sgCObject **objcts = (sgCObject**)malloc(50*sizeof(sgCObject*));
+	sgCObject **objcts1 = (sgCObject**)malloc(50*sizeof(sgCObject*));
 	int objctr = 0;
 
 	if(objects != NULL){
@@ -94,19 +95,22 @@ sgCGroup* cubie::copyObjects(){
 		//sgCObject::DeleteObject(objects);
 		for (int j=0; j < ChCnt; j++){
 			//clone each object
-			sgCObject *temp = allParts[j]; ///HERE IS THE PROBLEM!!!!!
+			sgCObject *temp = allParts[j];
 			//put clone on *[] tomake new group
-			objcts[objctr] = temp;
+			objcts[objctr] = temp->Clone();
+			objcts1[objctr] = temp->Clone();
 			objctr ++;
+			sgCObject::DeleteObject(temp);
 		}
 		free(allParts);
-		//put thatnew group inside aux**[]
+		//put that new group inside aux**[]
 		objects = sgCGroup::CreateGroup(objcts,objctr); //so objects[] has the data again, and keeps it for future requests
-		aux = sgCGroup::CreateGroup(objcts,objctr);  
+		aux = sgCGroup::CreateGroup(objcts1,objctr);  
 	}else{
 		return NULL;
 	}
 	free(objcts);
+	free(objcts1);
 	return aux;
 }
 //-------------------------------------------------------------------------------------------------------------------------------------------

@@ -44,19 +44,17 @@ void cubie::draw(){
 	//use this cubies objectList to draw elements without ever loosing them on groupBreaking
 	if(objects != NULL){
 		for (int j=0; j < numObjs; j++){
-			if(objectList[j] != NULL){
-				SG_VECTOR rotD = {0,1,0};
-				SG_POINT rot = {0,0,0};
-				objectList[j]->InitTempMatrix()->Rotate(rot,rotD,0.0);
-				SG_VECTOR transBox11 = {move,0,0}; 
-				objectList[j]->GetTempMatrix()->Translate(transBox11);
-				SG_VECTOR transBox121 = {0,500,0}; 
-				objectList[j]->GetTempMatrix()->Translate(transBox121);
-				objectList[j]->ApplyTempMatrix();
-				objectList[j]->DestroyTempMatrix();
-				objectList[j]->SetAttribute(SG_OA_COLOR,rand()%27);
-				sgGetScene()->AttachObject(objectList[j]);
-			}
+			SG_VECTOR rotD = {0,1,0};
+			SG_POINT rot = {0,0,0};
+			objectList[j]->InitTempMatrix()->Rotate(rot,rotD,0.0);
+			SG_VECTOR transBox11 = {move,0,0}; 
+			objectList[j]->GetTempMatrix()->Translate(transBox11);
+			SG_VECTOR transBox121 = {0,500,0}; 
+			objectList[j]->GetTempMatrix()->Translate(transBox121);
+			objectList[j]->ApplyTempMatrix();
+			objectList[j]->DestroyTempMatrix();
+			objectList[j]->SetAttribute(SG_OA_COLOR,rand()%27);
+			sgGetScene()->AttachObject(objectList[j]);
 		}
 	}else{
 		cout << "null at draw" << endl;

@@ -9,12 +9,12 @@ puzzle::puzzle(){
 //--------------------------------------------------------------
 void puzzle::setup(){
 	//create cubies
-	for(int i =0;i<numPieces;i++){
-		cubie *auxCubie = new cubie();// is this really creating independent instances of cubie??
-		auxCubie->setup();
-		//add this cubie to mycubies[]
-		myCubies[i] = auxCubie;
-	}
+	//for(int i =0;i<numPieces;i++){
+	//	cubie *auxCubie = new cubie();// is this really creating independent instances of cubie??
+	//	auxCubie->setup();
+	//	//add this cubie to mycubies[]
+	//	myCubies[i] = auxCubie;
+	//}
 }
 //--------------------------------------------------------------
 void puzzle::update(){
@@ -66,6 +66,16 @@ void puzzle::loadPieces(sgCGroup **pcs){
 	//it loads the pieces that the slicer made, the pieces are in a sgCGroup** pieces[], 
 	//this function receives a copy of that sgCGroup** made by mySlicer->getPieces()
 	//it loads them into its own cubies
+
+	//create cubies
+	//so each time there is a new boolean operation, whole new cubies get created with variables in zero or blank
+	for(int i =0;i<numPieces;i++){
+		cubie *auxCubie = new cubie();// is this really creating independent instances of cubie??
+		auxCubie->setup();
+		//add this cubie to mycubies[]
+		myCubies[i] = auxCubie;
+	}
+
 	for(int i=0;i<numPieces;i++){
 		//get group from pieces[] copy
 		sgCGroup *part = pcs[i]; //pcs[i] will get destroyed!!!!!!!!!!!!!!!!!

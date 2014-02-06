@@ -100,7 +100,7 @@ void puzzle::loadPieces(sgCGroup **pcs){
 			myCubies[i]->setObjects(NULL);
 		}
 	}
-	//sgDeleteObject(*pcs);
+	//sgCObject::DeleteObject(*pcs);
 }
 ////////////////////////////////////////////////////////////////
 void puzzle::rotateHright(){  

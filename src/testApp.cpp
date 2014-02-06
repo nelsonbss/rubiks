@@ -92,19 +92,19 @@ void testApp::update(){
 	}
 	///move all puzzle
 	if(movePRight){
-		//myPuzzle->unDraw();
+		myPuzzle->unDraw();
 		myPuzzle->moveRight();
 		drawCuts = true;
 	}else if(movePLeft){
-		//myPuzzle->unDraw();
+		myPuzzle->unDraw();
 		myPuzzle->moveLeft();
 		drawCuts = true;
 	}else if(movePUp){
-		//myPuzzle->unDraw();
+		myPuzzle->unDraw();
 		myPuzzle->moveUp();
 		drawCuts = true;
 	}else if(movePDown){
-		//myPuzzle->unDraw();
+		myPuzzle->unDraw();
 		myPuzzle->moveDown();
 		drawCuts = true;
 	}

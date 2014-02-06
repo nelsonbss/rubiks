@@ -109,13 +109,13 @@ void slicer::intersectCubes(sgCObject *obj){
 
 		//now we have the whole piece that goes into a cubie for that cube
 		//clean up
-		sgDeleteObject(tempObj);
-		sgDeleteObject(tempCutter);
+		sgCObject::DeleteObject(tempObj);
+		sgCObject::DeleteObject(tempCutter);
 	}
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------
 void slicer::exit(){
-	sgDeleteObject(*pieces);
+	sgCObject::DeleteObject(*pieces);
 	free(myCutter);
 	free(aux);
 }
@@ -339,7 +339,7 @@ void slicer::ySlicing(cutter &icutter, sgCGroup *grp, int turn,int cubePart){
 	int ChCntCutX = grp->GetChildrenList()->GetCount();
 	sgCObject**  allChildsCutX = (sgCObject**)malloc(ChCntCutX*sizeof(sgCObject*));
 	grp->BreakGroup(allChildsCutX);
-	//sgDeleteObject(grp); this has to be deleted??????
+	//sgCObject::DeleteObject(grp); this has to be deleted??????
 
 	////////////////////////////////////////////////////////////////////////////////////////////////
 	//tempGroupToY to send to ySlicing turn ++

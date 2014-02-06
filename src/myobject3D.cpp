@@ -70,6 +70,6 @@ sgCObject* myobject3D::getObject(){
 }
 //----------------------------------------------------------------
 void myobject3D::exit(){
-	sgDeleteObject(temp);
-	sgDeleteObject(object);
+	sgCObject::DeleteObject(temp);
+	sgCObject::DeleteObject(object);
 }

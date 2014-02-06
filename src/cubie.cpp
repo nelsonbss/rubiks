@@ -76,21 +76,24 @@ void cubie::unDraw(){
 		for (int j=0; j < numObjs; j++){
 			//objectList[j]->SetAttribute(SG_OA_DRAW_STATE,SG_DS_HIDE);
 			sgGetScene()->DetachObject(objectList[j]);
+			sgCObject::DeleteObject(objectList[j]);
 			okDraw = true;
 		}
 		////////////////////////////////////IMPORTANT!!!!!!!!///////////////////////////////////
 		////remake objectList for next drawing
+		////there is somememory leakage here!!!!! even after sgCObject::DeleteObject(objectList[j]);
+		/////////////////////////////////////////////////////////////////////////////////////////////
 
 		sgCGroup *objects2 = copyObjects(); 
 		const int ChCnt = objects2->GetChildrenList()->GetCount();
 		numObjs = ChCnt;
 		//give this cubies list some memory
 		objectList = (sgCObject**)malloc(ChCnt*sizeof(sgCObject*));
-
 		//start breaking incoming group
 		sgCObject** allParts = (sgCObject**)malloc(ChCnt*sizeof(sgCObject*));
 		objects2->BreakGroup(allParts);
 		sgCObject::DeleteObject(objects2);
+
 		for (int j=0; j < ChCnt; j++){
 			objectList[j] = allParts[j];
 		}
@@ -189,6 +192,6 @@ void cubie::moveV(float posy){
 void cubie::exit(){
 	if(objects != NULL){
 		free(objectList);
-		sgDeleteObject(objects);
+		sgCObject::DeleteObject(objects);
 	}
 }

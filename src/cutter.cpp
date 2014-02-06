@@ -554,8 +554,8 @@ sgCGroup* cutter::getCutterCubes(){
 }
 
 void cutter::exit(){
-	sgDeleteObject(allPlanes);
-	sgDeleteObject(allCubes);
+	sgCObject::DeleteObject(allPlanes);
+	sgCObject::DeleteObject(allCubes);
 	free(planes);
 	free(cubes);
 }

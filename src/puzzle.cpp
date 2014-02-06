@@ -32,7 +32,6 @@ void puzzle::draw(){
 			myCubies[i]->draw();
 		}
 	}
-	cout << posX << endl;
 }
 //--------------------------------------------------------------
 void puzzle::unDraw(){  
@@ -69,7 +68,7 @@ void puzzle::loadPieces(sgCGroup **pcs){
 		myCubies[i] = auxCubie;
 	}
 
-	for(int i=0;i<numPieces;i++){
+	for(int i=0;i<numPieces;i++){ //this is creating some 2400 ish objects not cleared!
 		//get group from pieces[] copy
 		sgCGroup *part = pcs[i]; //pcs[i] will get destroyed!!!!!!!!!!!!!!!!!
 
@@ -100,8 +99,8 @@ void puzzle::loadPieces(sgCGroup **pcs){
 		}else{
 			myCubies[i]->setObjects(NULL);
 		}
-
 	}
+	//sgDeleteObject(*pcs);
 }
 ////////////////////////////////////////////////////////////////
 void puzzle::rotateHright(){  
@@ -202,7 +201,8 @@ void puzzle::faceRotate(SG_POINT point, SG_VECTOR axis, float deg){
 void puzzle::exit(){
 	for(int i=0;i<numPieces;i++){
 		if(myCubies[i] != NULL){
-			myCubies[i]->exit();
+			//myCubies[i]->exit();
 		}
 	}
+	free(myCubies);
 }

@@ -92,19 +92,19 @@ void testApp::update(){
 	}
 	///move all puzzle
 	if(movePRight){
-		myPuzzle->unDraw();
+		//myPuzzle->unDraw();
 		myPuzzle->moveRight();
 		drawCuts = true;
 	}else if(movePLeft){
-		myPuzzle->unDraw();
+		//myPuzzle->unDraw();
 		myPuzzle->moveLeft();
 		drawCuts = true;
 	}else if(movePUp){
-		myPuzzle->unDraw();
+		//myPuzzle->unDraw();
 		myPuzzle->moveUp();
 		drawCuts = true;
 	}else if(movePDown){
-		myPuzzle->unDraw();
+		//myPuzzle->unDraw();
 		myPuzzle->moveDown();
 		drawCuts = true;
 	}
@@ -141,7 +141,7 @@ void testApp::update(){
 	if(faceRotateCC == true) {//
 		tempDeg -= 0.1;
 		myPuzzle->unDraw();
-		myPuzzle->faceRotate( point,  axis,  tempDeg);
+		myPuzzle->faceRotate(point,axis,tempDeg);
 		drawCuts = true;
 	}
 	objectDisplayed->update(); //rotates the selected object...just for show
@@ -152,7 +152,7 @@ void testApp::draw(){
 	ofBackground(10, 10, 10, 0);
 	////////////////////////////////Draw the pieces////////////////////////////////////
 	if(drawCuts1==true){
-		mySlicer->draw();
+		//mySlicer->draw();
 		drawCuts1 = false;
 		draw3dObject = false;
 		drawCuts = true;
@@ -160,10 +160,10 @@ void testApp::draw(){
 
 	if(draw3dObject){
 		objectDisplayed->draw();
-		myCutter->draw();
+		//myCutter->draw();
 	}else{
 		objectDisplayed->unDraw();
-		myCutter->unDraw();
+		//myCutter->unDraw();
 	}
 
 	if(drawCuts==true){
@@ -319,7 +319,6 @@ void testApp::addGroupToScene(sgCGroup *group){
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------
 void testApp::exit(){
-
 	if(puzzleExists == true){
 		myPuzzle->exit();
 		objectDisplayed->exit();

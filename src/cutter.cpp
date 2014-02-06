@@ -540,8 +540,8 @@ void cutter::draw(){
 }
 //--------------------------------------------------------------
 void cutter::unDraw(){  
-	deleteGroupFromScene(getCutterPlanes());
-	deleteGroupFromScene(getCutterCubes());
+	//deleteGroupFromScene(getCutterPlanes());
+	//deleteGroupFromScene(getCutterCubes());
 }
 /////////////////////////////////////////////////////////////////
 //----------------------------------------------------------------
@@ -554,8 +554,8 @@ sgCGroup* cutter::getCutterCubes(){
 }
 
 void cutter::exit(){
-	/*free(allPlanes);
-	free(allCubes);*/
+	sgDeleteObject(allPlanes);
+	sgDeleteObject(allCubes);
 	free(planes);
 	free(cubes);
 }

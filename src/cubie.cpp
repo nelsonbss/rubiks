@@ -8,6 +8,7 @@ cubie::cubie(float x, float y){
 	rotH = 0.0;
 	rotV = 0.0;
 	color = rand()%27;
+	okDraw = true;
 }
 //--------------------------------------------------------------
 void cubie::setup(){
@@ -39,28 +40,32 @@ void cubie::draw(){
 	//each cubie draws its own sgCGroup *objects;
 	// it attaches to scene
 	//use this cubies objectList to draw elements without ever loosing them on groupBreaking
-	if(objects != NULL){
-		for (int j=0; j < numObjs; j++){
-			//rotations
-			SG_VECTOR vrotH = {0,1,0}; //rotate H
-			SG_POINT protH = {0,0,0};
-			objectList[j]->InitTempMatrix()->Rotate(protH,vrotH,rotH);
-			SG_VECTOR vrotV = {1,0,0}; //rotate V
-			SG_POINT protV = {0,0,0};
-			objectList[j]->GetTempMatrix()->Rotate(protV,vrotV,rotV);
-			//translations
-			SG_VECTOR transBox11 = {posX,0,0}; 
-			objectList[j]->GetTempMatrix()->Translate(transBox11);
-			SG_VECTOR transBox121 = {0,posY,0}; 
-			objectList[j]->GetTempMatrix()->Translate(transBox121);
-			objectList[j]->ApplyTempMatrix();
-			objectList[j]->DestroyTempMatrix();
-			objectList[j]->SetAttribute(SG_OA_COLOR,color);
-			//objectList[j]->SetAttribute(SG_OA_DRAW_STATE,SG_DS_FULL);
-			sgGetScene()->AttachObject(objectList[j]);
+	if(okDraw == true){
+		if(objects != NULL){
+			for (int j=0; j < numObjs; j++){
+				//rotations
+				SG_VECTOR vrotH = {0,1,0}; //rotate H
+				SG_POINT protH = {0,0,0};
+				objectList[j]->InitTempMatrix()->Rotate(protH,vrotH,rotH);
+				SG_VECTOR vrotV = {1,0,0}; //rotate V
+				SG_POINT protV = {0,0,0};
+				objectList[j]->GetTempMatrix()->Rotate(protV,vrotV,rotV);
+				//translations
+				SG_VECTOR transBox11 = {posX,0,0}; 
+				objectList[j]->GetTempMatrix()->Translate(transBox11);
+				SG_VECTOR transBox121 = {0,posY,0}; 
+				objectList[j]->GetTempMatrix()->Translate(transBox121);
+				objectList[j]->ApplyTempMatrix();
+				objectList[j]->DestroyTempMatrix();
+				objectList[j]->SetAttribute(SG_OA_COLOR,color);
+				//objectList[j]->SetAttribute(SG_OA_DRAW_STATE,SG_DS_FULL);
+				sgGetScene()->AttachObject(objectList[j]);
+
+			}
+		}else{
+			//cout << "null at draw" << endl;
 		}
-	}else{
-		//cout << "null at draw" << endl;
+		okDraw = false;
 	}
 }
 //--------------------------------------------------------------
@@ -71,14 +76,11 @@ void cubie::unDraw(){
 		for (int j=0; j < numObjs; j++){
 			//objectList[j]->SetAttribute(SG_OA_DRAW_STATE,SG_DS_HIDE);
 			sgGetScene()->DetachObject(objectList[j]);
+			okDraw = true;
 		}
-	}else{
-		//cout << "null at undraw" << endl;
-	}
+		////////////////////////////////////IMPORTANT!!!!!!!!///////////////////////////////////
+		////remake objectList for next drawing
 
-	////////////////////////////////////IMPORTANT!!!!!!!!///////////////////////////////////
-	////remake objectList for next drawing
-	if(objects != NULL){
 		sgCGroup *objects2 = copyObjects(); 
 		const int ChCnt = objects2->GetChildrenList()->GetCount();
 		numObjs = ChCnt;
@@ -94,7 +96,7 @@ void cubie::unDraw(){
 		}
 		free(allParts);
 	}else{
-		//cout << "null at undraw2" << endl;
+		//cout << "null at undraw" << endl;
 	}
 }
 //-------------------------------------------------------------------------------------------------------------------------------------------
@@ -136,9 +138,7 @@ sgCGroup* cubie::copyObjects(){
 void cubie::setObjects(sgCGroup *objs){
 	//it receives a group, when Puzzle loadsPieces(ySlicer->getPieces())  on main
 	//it takes the input group and breaks it, to put parts on cubie group "objects"
-
 	if(objs != NULL){
-
 		sgCObject **objcts = (sgCObject**)malloc(50*sizeof(sgCObject*));
 		int objctr = 0;
 
@@ -187,8 +187,8 @@ void cubie::moveV(float posy){
 }
 //----------------------------------------------------------------
 void cubie::exit(){
-	free(objectList);
 	if(objects != NULL){
+		free(objectList);
 		sgDeleteObject(objects);
 	}
 }

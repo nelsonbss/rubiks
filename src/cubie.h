@@ -20,7 +20,8 @@ public:
 	sgCObject **objectList;
 
 	float color;
-	
+	bool okDraw;
+
 	void setObjects(sgCGroup *objs);
 	sgCGroup* copyObjects();
 

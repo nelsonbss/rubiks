@@ -12,6 +12,7 @@ public:
 	void setup();
 	void update();
 	void draw();
+	void exit();
 
 	void loadObjectFromFile(const char* pathTofile); //it will load a stl file into object
 	void loadObject(sgCObject *obj); //it will load a sgCore lib object: torus, box...

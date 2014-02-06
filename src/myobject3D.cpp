@@ -7,10 +7,6 @@ myobject3D::myobject3D(float x, float y){
 }
 //--------------------------------------------------------------
 void myobject3D::setup(){
-	/*SG_VECTOR rotD = {500,500,0};
-	object->InitTempMatrix()->Translate(rotD);
-	object->ApplyTempMatrix();  
-	object->DestroyTempMatrix();*/
 	temp = (sgC3DObject *) object->Clone();
 	SG_VECTOR rotD = {posX,posY,0};
 	temp->InitTempMatrix()->Translate(rotD);
@@ -19,7 +15,6 @@ void myobject3D::setup(){
 }
 //--------------------------------------------------------------
 void myobject3D::update(){
-	//glPushMatrix();
 	sgGetScene()->DetachObject(temp);
 	SG_POINT rotP = {posX,posY,0};
 	SG_POINT rotPobject = {0,0,0};
@@ -34,21 +29,19 @@ void myobject3D::update(){
 	//object->ApplyTempMatrix();
 	temp->DestroyTempMatrix();
 	//object->DestroyTempMatrix();
-	//glPopMatrix();
 }
 //--------------------------------------------------------------
-void myobject3D::draw(){  
-	//ofPushMatrix();
-		//ofTranslate(0,0);
-		ofCircle(ofPoint(100,100),30);
-		//temp->Triangulate(SG_VERTEX_TRIANGULATION);
-		sgGetScene()->AttachObject(temp);
-	//ofPopMatrix();
+void myobject3D::draw(){
+	//ofTranslate(0,0);
+	ofCircle(ofPoint(100,100),5);
+	//temp->Triangulate(SG_VERTEX_TRIANGULATION);
+	temp->SetAttribute(SG_OA_COLOR,2);
+	sgGetScene()->AttachObject(temp);
 	//reset();
 }
 //--------------------------------------------------------------
 void myobject3D::reset(){  
-/*	SG_VECTOR rotD = {-500,-500,0};
+	/*	SG_VECTOR rotD = {-500,-500,0};
 	object->InitTempMatrix()->Translate(rotD);
 	object->ApplyTempMatrix();  
 	object->DestroyTempMatrix()*/;
@@ -74,4 +67,9 @@ sgCObject* myobject3D::getObject(){
 	//it returns a clone of the object
 	//NEVER return the real object
 	return object;
+}
+//----------------------------------------------------------------
+void myobject3D::exit(){
+	sgDeleteObject(temp);
+	sgDeleteObject(object);
 }

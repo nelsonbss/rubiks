@@ -16,6 +16,8 @@ public:
 	void draw();
 	void unDraw();
 
+	void exit();
+
 	void loadPieces(sgCGroup **pcs);
 	int giveNumCubies();
 

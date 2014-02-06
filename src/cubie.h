@@ -13,10 +13,13 @@ public:
 	void update();
 	void draw();
 	void unDraw();
+	void exit();
 
 	sgCGroup *objects;
 	float numObjs;
 	sgCObject **objectList;
+
+	float color;
 	
 	void setObjects(sgCGroup *objs);
 	sgCGroup* copyObjects();
@@ -28,8 +31,10 @@ public:
 	
 	float rotH;
 	float rotV;
-	void rotateH(float radH);
+	void rotateH(float radH); //rotates the cubie as part of the whole puzzle object NOT as a faceMove rotation
 	void rotateV(float radV);
+
+	void faceRotate(SG_POINT point, SG_VECTOR axis, float deg);
 };
 
 #endif /* defined(__Tcubie__cubie__) */

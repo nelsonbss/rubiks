@@ -32,6 +32,7 @@ void puzzle::draw(){
 			myCubies[i]->draw();
 		}
 	}
+	cout << posX << endl;
 }
 //--------------------------------------------------------------
 void puzzle::unDraw(){  
@@ -196,4 +197,12 @@ void puzzle::faceRotate(SG_POINT point, SG_VECTOR axis, float deg){
 	myCubies[25]->faceRotate(point,axis,deg);
 	myCubies[26]->faceRotate(point,axis,deg);
 
+}
+//----------------------------------------------------------------
+void puzzle::exit(){
+	for(int i=0;i<numPieces;i++){
+		if(myCubies[i] != NULL){
+			myCubies[i]->exit();
+		}
+	}
 }

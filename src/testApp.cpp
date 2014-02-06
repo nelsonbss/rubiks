@@ -65,16 +65,16 @@ void testApp::setup(){
 	mySlicer->setup();
 	/////////////////////////end create slicer /////////////////////////////////////////
 
-	////////////////////////////////create puzzle///////////////////////////////////////
-	myPuzzle = new puzzle(displayX,displayY);
-	myPuzzle->setup();
-	//////////////////////////////end create puzzle////////////////////////////////////
-
 }
 //--------------------------------------------------------------
 void testApp::update(){
 
 	if(makeCut==true){
+		////////////////////////////////create puzzle///////////////////////////////////////
+		myPuzzle = new puzzle(displayX,displayY);
+		myPuzzle->setup();
+		//////////////////////////////end create puzzle////////////////////////////////////
+
 		////BOOLEAN SUBSTRACTION//////////////////////////////////////////////////////////
 		//mySlicer->xSlicing(*mySlicer->myCutter,objectDisplayed->getObject(),1,1);
 		///boolean INTERSECTION///////////////////////////////////////////////////////////
@@ -138,7 +138,7 @@ void testApp::update(){
 		myPuzzle->faceRotate(point, axis, tempDeg);
 		drawCuts = true;
 	}
-	if(faceRotateCC == true) {//cc
+	if(faceRotateCC == true) {//
 		tempDeg -= 0.1;
 		myPuzzle->unDraw();
 		myPuzzle->faceRotate( point,  axis,  tempDeg);
@@ -155,6 +155,7 @@ void testApp::draw(){
 		mySlicer->draw();
 		drawCuts1 = false;
 		draw3dObject = false;
+		drawCuts = true;
 	}
 
 	if(draw3dObject){
@@ -168,14 +169,14 @@ void testApp::draw(){
 	if(drawCuts==true){
 		if(puzzleExists == true){
 			myPuzzle->draw();
-			drawCuts = false;
 		}
+		drawCuts = false;
 	}
 
 	//small test of openFrameworks simple drawing embeded with sgCore geometry 
 	ofPushMatrix();
 	ofTranslate(300,300);
-	ofCircle(ofPoint(0,0),30);
+	ofCircle(ofPoint(0,0),5);
 	ofPopMatrix();
 
 	///use openGL do draw elements taht are on the sgCore Scene object
@@ -188,92 +189,95 @@ void testApp::keyPressed(int key){
 		//cout << "init cut: " << ofGetElapsedTimeMillis() << endl;
 		makeCut = true;
 	}
-	if(key == 'd') {
-		cout << "manualDRAW" << endl;
-		drawCuts = true;
+	if(puzzleExists == true){
+		if(key == 'd') {
+			cout << "manualDRAW" << endl;
+			drawCuts = true;
+		}
+		if(key == 'f') {
+			cout << "nu cubies " << myPuzzle->giveNumCubies() << endl;
+		}
+		if(key == 'g') {
+			cout << "nu pieces " << mySlicer->countPieces() << endl;
+		}
+		//////////////////////////////move all puzzle
+		if(key == 'l') {
+			movePRight = true;
+		}
+		if(key == 'j') {
+			movePLeft= true;
+		}
+		if(key == 'i') {
+			movePUp= true;
+		}
+		if(key == 'k') {
+			movePDown= true;
+		}
+		/////////////////////////////rotate all puzzle
+		if(key == 'm') {//rotate right
+			rotatePHright = true;
+		}
+		if(key == 'n') {//rotate left
+			rotatePHleft = true;
+		}
+		if(key == 'y') {//rotate up
+			rotatePVup = true;
+		}
+		if(key == 'h') {//rotate down
+			rotatePVdown = true;
+		}
+		////////////erase object ///////////
+		if(key == 'u') {
+			myPuzzle->unDraw();
+		}
+		/////////////////////FACE ROTATIONS!!!///////////////////////////
+		////rotate "FRONT" face original cubie #s:
+		//16-17-18
+		//7-8-9
+		//25-26-27
+		//rotation point: 3D-center of cubie 8
+		if(key == 'q') {
+			faceRotateC = true; //clockwise
+		}if(key == 'a') {
+			faceRotateCC = true; //counter clockwise
+		}
 	}
-	if(key == 'f') {
-		cout << "nu cubies " << myPuzzle->giveNumCubies() << endl;
-	}
-	if(key == 'g') {
-		cout << "nu pieces " << mySlicer->countPieces() << endl;
-	}
-	//////////////////////////////move all puzzle
-	if(key == 'l') {
-		movePRight = true;
-	}
-	if(key == 'j') {
-		movePLeft= true;
-	}
-	if(key == 'i') {
-		movePUp= true;
-	}
-	if(key == 'k') {
-		movePDown= true;
-	}
-	/////////////////////////////rotate all puzzle
-	if(key == 'm') {//rotate right
-		rotatePHright = true;
-	}
-	if(key == 'n') {//rotate left
-		rotatePHleft = true;
-	}
-	if(key == 'y') {//rotate up
-		rotatePVup = true;
-	}
-	if(key == 'h') {//rotate down
-		rotatePVdown = true;
-	}
-	////////////erase object ///////////
-	if(key == 'u') {
-		myPuzzle->unDraw();
-	}
-	/////////////////////FACE ROTATIONS!!!///////////////////////////
-	////rotate "FRONT" face original cubie #s:
-	//16-17-18
-	//7-8-9
-	//25-26-27
-	//rotation point: 3D-center of cubie 8
-	if(key == 'q') {
-		faceRotateC = true; //clockwise
-	}if(key == 'a') {
-		faceRotateCC = true; //counter clockwise
-	}
-
 }
 //--------------------------------------------------------------
 void testApp::keyReleased(int key){
-	///////////////////////////move all puzzle
-	if(key == 'l') {
-		movePRight = false;
-	}
-	if(key == 'j') {
-		movePLeft = false;
-	}
-	if(key == 'i') {
-		movePUp = false;
-	}
-	if(key == 'k') {
-		movePDown = false;
-	}
-	/////////////////////////////rotate all puzzle
-	if(key == 'm') {
-		rotatePHright = false;
-	}
-	if(key == 'n') {
-		rotatePHleft = false;
-	}
-	if(key == 'y') {
-		rotatePVup = false;
-	}
-	if(key == 'h') {
-		rotatePVdown = false;
-	}
-	/////////////////////FACE ROTATIONS!!!///////////////////////////
-	if(key == 'q') {
-		faceRotateC = false; //clockwise
-	}if(key == 'a') {
-		faceRotateCC = false; //counter clockwise
+	if(puzzleExists == true){
+		///////////////////////////move all puzzle
+		if(key == 'l') {
+			movePRight = false;
+		}
+		if(key == 'j') {
+			movePLeft = false;
+		}
+		if(key == 'i') {
+			movePUp = false;
+		}
+		if(key == 'k') {
+			movePDown = false;
+		}
+		/////////////////////////////rotate all puzzle
+		if(key == 'm') {
+			rotatePHright = false;
+		}
+		if(key == 'n') {
+			rotatePHleft = false;
+		}
+		if(key == 'y') {
+			rotatePVup = false;
+		}
+		if(key == 'h') {
+			rotatePVdown = false;
+		}
+		/////////////////////FACE ROTATIONS!!!///////////////////////////
+		if(key == 'q') {
+			faceRotateC = false; //clockwise
+		}if(key == 'a') {
+			faceRotateCC = false; //counter clockwise
+		}
 	}
 }
 //--------------------------------------------------------------
@@ -315,9 +319,18 @@ void testApp::addGroupToScene(sgCGroup *group){
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------
 void testApp::exit(){
-	myCutter->exit();
-	mySlicer->exit();
-	//sgFreeKernel();
+
+	if(puzzleExists == true){
+		myPuzzle->exit();
+		objectDisplayed->exit();
+		myCutter->exit();
+		mySlicer->exit();
+	}else{
+		objectDisplayed->exit();
+		myCutter->exit();
+		mySlicer->exit();
+	}
+	sgFreeKernel();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------
 //

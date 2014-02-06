@@ -35,6 +35,8 @@ public:
 	void rotateHleft();
 	void rotateVup();
 	void rotateVdown();
+
+	void faceRotate(SG_POINT point, SG_VECTOR axis, float deg);
 };
 
 #endif /* defined(__Tpuzzle__puzzle__) */

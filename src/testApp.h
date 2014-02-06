@@ -40,6 +40,8 @@ public:
 
 	sgCGroup* add;
 
+	bool puzzleExists;
+
 	bool makeCut;
 	bool drawCuts;
 	bool drawCuts1;
@@ -54,4 +56,9 @@ public:
 	bool rotatePHleft;
 	bool rotatePVup;
 	bool rotatePVdown;
+
+	//face rotations
+	float tempDeg;
+	bool faceRotateC;
+	bool faceRotateCC;
 };

@@ -18,6 +18,7 @@
 void testApp::setup(){
 
 	///////////////////////////////////////////////////////////////
+	puzzleExists = false;
 	makeCut = false;
 	drawCuts = false;
 	drawCuts1 = false;
@@ -32,6 +33,10 @@ void testApp::setup(){
 	rotatePHleft = false;
 	rotatePVup = false;
 	rotatePVdown = false;
+	//
+	tempDeg = 0.0;
+	faceRotateC = false;
+	faceRotateCC = false;
 	/////initialize sgCore library
 	sgInitKernel();  
 	initScene();
@@ -78,6 +83,7 @@ void testApp::update(){
 
 		//////////////////////////////create puzzle///////////////////////////////////////
 		myPuzzle->loadPieces(mySlicer->getPieces());
+		puzzleExists = true;
 		//////////////////////////////end create puzzle////////////////////////////////////
 		makeCut = false;
 		drawCuts1 = true;
@@ -123,7 +129,21 @@ void testApp::update(){
 		myPuzzle->rotateVdown();
 		drawCuts = true;
 	}
-
+	//////////////////////////////////////////////face rotations
+	SG_POINT point = {0,0,0};
+	SG_VECTOR axis = {0,0,1};
+	if(faceRotateC == true) {//c
+		tempDeg += 0.1;
+		myPuzzle->unDraw();
+		myPuzzle->faceRotate(point, axis, tempDeg);
+		drawCuts = true;
+	}
+	if(faceRotateCC == true) {//cc
+		tempDeg -= 0.1;
+		myPuzzle->unDraw();
+		myPuzzle->faceRotate( point,  axis,  tempDeg);
+		drawCuts = true;
+	}
 	objectDisplayed->update(); //rotates the selected object...just for show
 }
 
@@ -146,8 +166,10 @@ void testApp::draw(){
 	}
 
 	if(drawCuts==true){
-		myPuzzle->draw();
-		drawCuts = false;
+		if(puzzleExists == true){
+			myPuzzle->draw();
+			drawCuts = false;
+		}
 	}
 
 	//small test of openFrameworks simple drawing embeded with sgCore geometry 
@@ -206,6 +228,18 @@ void testApp::keyPressed(int key){
 	if(key == 'u') {
 		myPuzzle->unDraw();
 	}
+	/////////////////////FACE ROTATIONS!!!///////////////////////////
+	////rotate "FRONT" face original cubie #s:
+	//16-17-18
+	//7-8-9
+	//25-26-27
+	//rotation point: 3D-center of cubie 8
+	if(key == 'q') {
+		faceRotateC = true; //clockwise
+	}if(key == 'a') {
+		faceRotateCC = true; //counter clockwise
+	}
+
 }
 //--------------------------------------------------------------
 void testApp::keyReleased(int key){
@@ -234,6 +268,12 @@ void testApp::keyReleased(int key){
 	}
 	if(key == 'h') {
 		rotatePVdown = false;
+	}
+	/////////////////////FACE ROTATIONS!!!///////////////////////////
+	if(key == 'q') {
+		faceRotateC = false; //clockwise
+	}if(key == 'a') {
+		faceRotateCC = false; //counter clockwise
 	}
 }
 //--------------------------------------------------------------

@@ -7,7 +7,7 @@
 class cubie {
 	
 public:
-	cubie();
+	cubie(float x,float y);
     
 	void setup();
 	void update();
@@ -21,14 +21,15 @@ public:
 	void setObjects(sgCGroup *objs);
 	sgCGroup* copyObjects();
 
-	float moveH;
-	float moveV;
-	void moveRight();
-	void moveLeft();
-	void moveUp();
-	void moveDown();
-
-	void rotateUp();
+	float posX;
+	float posY;
+	void moveH(float px);
+	void moveV(float py);
+	
+	float rotH;
+	float rotV;
+	void rotateH(float radH);
+	void rotateV(float radV);
 };
 
 #endif /* defined(__Tcubie__cubie__) */

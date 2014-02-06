@@ -9,7 +9,7 @@
 class puzzle {
 
 public:
-	puzzle();
+	puzzle(float x, float y);
 
 	void setup();
 	void update();
@@ -22,12 +22,19 @@ public:
 	float numPieces;
 	cubie **myCubies; //malloc numPieces of these
 
+	float posX;
+	float posY;
 	void moveRight();
 	void moveLeft();
 	void moveUp();
 	void moveDown();
 
-	void rotateUp();
+	float rotH;
+	float rotV;
+	void rotateHright();
+	void rotateHleft();
+	void rotateVup();
+	void rotateVdown();
 };
 
 #endif /* defined(__Tpuzzle__puzzle__) */

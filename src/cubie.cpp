@@ -1,10 +1,12 @@
 #include "cubie.h"
 #include "sgCore.h"
 
-cubie::cubie(){
+cubie::cubie(float x, float y){
 	objects = NULL;
-	moveH=200;
-	moveV=500;
+	posX = x;
+	posY = y;
+	rotH = 0.0;
+	rotV = 0.0;
 }
 //--------------------------------------------------------------
 void cubie::setup(){
@@ -21,16 +23,21 @@ void cubie::draw(){
 	//use this cubies objectList to draw elements without ever loosing them on groupBreaking
 	if(objects != NULL){
 		for (int j=0; j < numObjs; j++){
-			SG_VECTOR rotD = {0,0,0};
-			SG_POINT rot = {0,0,0};
-			objectList[j]->InitTempMatrix()->Rotate(rot,rotD,0.0);
-			SG_VECTOR transBox11 = {moveH,0,0}; 
+			SG_VECTOR vrotH = {0,1,0}; //rotate H
+			SG_POINT protH = {0,0,0};
+			objectList[j]->InitTempMatrix()->Rotate(protH,vrotH,rotH);
+			SG_VECTOR vrotV = {1,0,0}; //rotate V
+			SG_POINT protV = {0,0,0};
+			objectList[j]->GetTempMatrix()->Rotate(protV,vrotV,rotV);
+			//translations
+			SG_VECTOR transBox11 = {posX,0,0}; 
 			objectList[j]->GetTempMatrix()->Translate(transBox11);
-			SG_VECTOR transBox121 = {0,moveV,0}; 
+			SG_VECTOR transBox121 = {0,posY,0}; 
 			objectList[j]->GetTempMatrix()->Translate(transBox121);
 			objectList[j]->ApplyTempMatrix();
 			objectList[j]->DestroyTempMatrix();
 			objectList[j]->SetAttribute(SG_OA_COLOR,rand()%27);
+			//objectList[j]->SetAttribute(SG_OA_DRAW_STATE,SG_DS_FULL);
 			sgGetScene()->AttachObject(objectList[j]);
 		}
 	}else{
@@ -39,12 +46,12 @@ void cubie::draw(){
 }
 //--------------------------------------------------------------
 void cubie::unDraw(){  
-	//sgGetScene()->Clear();
+	//sgGetScene()->Clear();ll
 
 	//detach from scene
-	//use this cubies objectList to draw elements without ever loosing them on groupBreaking
 	if(objects != NULL){
 		for (int j=0; j < numObjs; j++){
+			//objectList[j]->SetAttribute(SG_OA_DRAW_STATE,SG_DS_HIDE);
 			sgGetScene()->DetachObject(objectList[j]);
 		}
 	}else{
@@ -145,38 +152,19 @@ void cubie::setObjects(sgCGroup *objs){
 
 }
 //-------------------------------------------------------------------------------------------------------------------------------------------
-void cubie::rotateUp(){
-	sgCGroup *result2 = copyObjects();  
-	if(result2 != NULL){
-		const int ChCnt = result2->GetChildrenList()->GetCount();
-		sgCObject** allChilds3a = (sgCObject**)malloc(ChCnt*sizeof(sgCObject*));
-		result2->BreakGroup(allChilds3a);
-		sgCObject::DeleteObject(result2);
-		const int ChCnt2 = result2->GetChildrenList()->GetCount();
-		for (int j=0; j < ChCnt; j++){
-			SG_VECTOR rotD = {0,1,0};
-			SG_POINT rot = {0,0,0};
-			allChilds3a[j]->InitTempMatrix()->Rotate(rot,rotD,1.57);
-			allChilds3a[j]->ApplyTempMatrix();  
-			allChilds3a[j]->DestroyTempMatrix();
-			sgGetScene()->AttachObject(allChilds3a[j]);
-		}
-		free(allChilds3a);
-	}
+void cubie::rotateH(float rad){
+	rotH = rad;
+}
+//-------------------------------------------------------------------------------------------------------------------------------------------
+void cubie::rotateV(float rad){
+	rotV = rad;
+}
+
+//--------------------------------------------------------------
+void cubie::moveH(float posx){
+	posX = posx;
 }
 //--------------------------------------------------------------
-void cubie::moveRight(){
-	moveH += 10;
-}
-//--------------------------------------------------------------
-void cubie::moveLeft(){
-	moveH -= 10;
-}
-//--------------------------------------------------------------
-void cubie::moveUp(){
-	moveV -= 10;
-}
-//--------------------------------------------------------------
-void cubie::moveDown(){
-	moveV += 10;
+void cubie::moveV(float posy){
+	posY = posy;
 }

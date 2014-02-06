@@ -16,16 +16,22 @@
 #define displayY 500
 //--------------------------------------------------------------
 void testApp::setup(){
-	 
+
 	///////////////////////////////////////////////////////////////
 	makeCut = false;
 	drawCuts = false;
 	drawCuts1 = false;
 	draw3dObject = true;
-	moveRight = false;
-	moveLeft = false;
-	moveUp = false;
-	moveDown = false;
+	//
+	movePRight = false;
+	movePLeft = false;
+	movePUp = false;
+	movePDown = false;
+	//
+	rotatePHright = false;
+	rotatePHleft = false;
+	rotatePVup = false;
+	rotatePVdown = false;
 	/////initialize sgCore library
 	sgInitKernel();  
 	initScene();
@@ -37,13 +43,13 @@ void testApp::setup(){
 	objectDisplayed = new myobject3D(displayX,displayY);
 	objectDisplayed->loadObject(sgCreateTorus(100,80,34,34));
 	//objectDisplayed->loadObject(sgCreateCone(200,1,300.0, 3));
-	
+
 	////////////////////// from STL file
 	/*const char* nel =  ofToDataPath("cube.stl",false).c_str();
 	objectDisplayed.loadObjectFromFile(nel);*/
 	objectDisplayed->setup();
 	//////////////////////////////////////////////////////////////////////////////////
-	
+
 	//////////////////////////////create cutter///////////////////////////////////////
 	myCutter = new cutter(planeThicknes,planeSize,tamCubie,1,0,0); //to make a plane based cutter
 	myCutter->setup();
@@ -55,7 +61,7 @@ void testApp::setup(){
 	/////////////////////////end create slicer /////////////////////////////////////////
 
 	////////////////////////////////create puzzle///////////////////////////////////////
-	myPuzzle = new puzzle();
+	myPuzzle = new puzzle(displayX,displayY);
 	myPuzzle->setup();
 	//////////////////////////////end create puzzle////////////////////////////////////
 
@@ -78,22 +84,43 @@ void testApp::update(){
 		//cout << "end cut:" << ofGetElapsedTimeMillis() << endl;
 		///////////////////////////////////////////////////////////////////////////////////
 	}
-
-	if(moveRight){
+	///move all puzzle
+	if(movePRight){
 		myPuzzle->unDraw();
 		myPuzzle->moveRight();
 		drawCuts = true;
-	}else if(moveLeft){
+	}else if(movePLeft){
 		myPuzzle->unDraw();
 		myPuzzle->moveLeft();
 		drawCuts = true;
-	}else if(moveUp){
+	}else if(movePUp){
 		myPuzzle->unDraw();
 		myPuzzle->moveUp();
 		drawCuts = true;
-	}else if(moveDown){
+	}else if(movePDown){
 		myPuzzle->unDraw();
 		myPuzzle->moveDown();
+		drawCuts = true;
+	}
+	////////////////////////////////////////////rotate all puzzle
+	if(rotatePHright == true) {//rotate right
+		myPuzzle->unDraw();
+		myPuzzle->rotateHright();
+		drawCuts = true;
+	}
+	if(rotatePHleft == true) {//rotate left
+		myPuzzle->unDraw();
+		myPuzzle->rotateHleft();
+		drawCuts = true;
+	}
+	if(rotatePVup == true) {//rotate up
+		myPuzzle->unDraw();
+		myPuzzle->rotateVup();
+		drawCuts = true;
+	}
+	if(rotatePVdown == true) {//rotate down
+		myPuzzle->unDraw();
+		myPuzzle->rotateVdown();
 		drawCuts = true;
 	}
 
@@ -102,7 +129,7 @@ void testApp::update(){
 
 //--------------------------------------------------------------
 void testApp::draw(){
-	ofBackground(50, 50, 50, 0);
+	ofBackground(10, 10, 10, 0);
 	////////////////////////////////Draw the pieces////////////////////////////////////
 	if(drawCuts1==true){
 		mySlicer->draw();
@@ -125,13 +152,13 @@ void testApp::draw(){
 
 	//small test of openFrameworks simple drawing embeded with sgCore geometry 
 	ofPushMatrix();
-		ofTranslate(300,300);
-		ofCircle(ofPoint(0,0),30);
+	ofTranslate(300,300);
+	ofCircle(ofPoint(0,0),30);
 	ofPopMatrix();
 
 	///use openGL do draw elements taht are on the sgCore Scene object
 	drawElements();
-	
+
 }
 //--------------------------------------------------------------
 void testApp::keyPressed(int key){
@@ -143,46 +170,70 @@ void testApp::keyPressed(int key){
 		cout << "manualDRAW" << endl;
 		drawCuts = true;
 	}
-	if(key == 'g') {
+	if(key == 'f') {
 		cout << "nu cubies " << myPuzzle->giveNumCubies() << endl;
 	}
-	if(key == 'h') {
+	if(key == 'g') {
 		cout << "nu pieces " << mySlicer->countPieces() << endl;
 	}
-	if(key == 'r') {
-	  myPuzzle->rotateUp();
-	}
-	/////////move around the object
+	//////////////////////////////move all puzzle
 	if(key == 'l') {
-	  moveRight = true;
+		movePRight = true;
 	}
 	if(key == 'j') {
-	  moveLeft= true;
+		movePLeft= true;
 	}
 	if(key == 'i') {
-	  moveUp= true;
+		movePUp= true;
 	}
 	if(key == 'k') {
-	  moveDown= true;
+		movePDown= true;
+	}
+	/////////////////////////////rotate all puzzle
+	if(key == 'm') {//rotate right
+		rotatePHright = true;
+	}
+	if(key == 'n') {//rotate left
+		rotatePHleft = true;
+	}
+	if(key == 'y') {//rotate up
+		rotatePVup = true;
+	}
+	if(key == 'h') {//rotate down
+		rotatePVdown = true;
 	}
 	////////////erase object ///////////
 	if(key == 'u') {
-	  myPuzzle->unDraw();
+		myPuzzle->unDraw();
 	}
 }
 //--------------------------------------------------------------
 void testApp::keyReleased(int key){
+	///////////////////////////move all puzzle
 	if(key == 'l') {
-	  moveRight = false;
+		movePRight = false;
 	}
 	if(key == 'j') {
-	  moveLeft= false;
+		movePLeft = false;
 	}
 	if(key == 'i') {
-	  moveUp= false;
+		movePUp = false;
 	}
 	if(key == 'k') {
-	  moveDown= false;
+		movePDown = false;
+	}
+	/////////////////////////////rotate all puzzle
+	if(key == 'm') {
+		rotatePHright = false;
+	}
+	if(key == 'n') {
+		rotatePHleft = false;
+	}
+	if(key == 'y') {
+		rotatePVup = false;
+	}
+	if(key == 'h') {
+		rotatePVdown = false;
 	}
 }
 //--------------------------------------------------------------
@@ -234,39 +285,39 @@ void testApp::exit(){
 // Called when the OpenGL RC has been created. Sets initial state for the OpenGL scene.
 //
 void testApp::initScene(){
-  // Lights properties
-  float ambientProperties[]  = {0.1f, 0.1f, 0.1f, 1.0f};
-  float diffuseProperties[]  = {1.0f, 1.0f, 1.0f, 1.0f};
-  float specularProperties[] = {1.0f, 1.0f, 1.0f, 1.0f};
+	// Lights properties
+	float ambientProperties[]  = {0.1f, 0.1f, 0.1f, 1.0f};
+	float diffuseProperties[]  = {1.0f, 1.0f, 1.0f, 1.0f};
+	float specularProperties[] = {1.0f, 1.0f, 1.0f, 1.0f};
 
-  glLightfv( GL_LIGHT0, GL_AMBIENT, ambientProperties);
-  glLightfv( GL_LIGHT0, GL_DIFFUSE,diffuseProperties);
-  glLightfv( GL_LIGHT0, GL_SPECULAR, specularProperties);
-  //glLightModelf(GL_LIGHT_MODEL_TWO_SIDE, 1.0);
+	glLightfv( GL_LIGHT0, GL_AMBIENT, ambientProperties);
+	glLightfv( GL_LIGHT0, GL_DIFFUSE,diffuseProperties);
+	glLightfv( GL_LIGHT0, GL_SPECULAR, specularProperties);
+	//glLightModelf(GL_LIGHT_MODEL_TWO_SIDE, 1.0);
 
-  glClearColor(1.0,1.0,1.0,1.0f);
+	glClearColor(1.0,1.0,1.0,1.0f);
 
-  glHint(GL_LINE_SMOOTH_HINT,GL_FASTEST);
+	glHint(GL_LINE_SMOOTH_HINT,GL_FASTEST);
 
-  //// Texture
-  glEnable(GL_TEXTURE_2D);
-  glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-  glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
-
-
-  // Default : lighting
-
-  //glEnable(GL_LIGHTING);
-  glEnable(GL_LIGHT0);
+	//// Texture
+	glEnable(GL_TEXTURE_2D);
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 
 
-  // Default : blending
-  glEnable(GL_BLEND);
-  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	// Default : lighting
 
-  glEnable(GL_DEPTH_TEST);
+	//glEnable(GL_LIGHTING);
+	glEnable(GL_LIGHT0);
 
-    //glEnable(GL_CULL_FACE);
+
+	// Default : blending
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	glEnable(GL_DEPTH_TEST);
+
+	//glEnable(GL_CULL_FACE);
 }
 //---------------------------------------------------------------------------------------------------------------------------------------------------
 void testApp::drawElements(){

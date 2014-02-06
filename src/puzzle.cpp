@@ -2,9 +2,13 @@
 #include "sgCore.h"
 #include "cubie.h"
 
-puzzle::puzzle(){
+puzzle::puzzle(float x, float y){
 	numPieces = 27;
 	myCubies = (cubie**)malloc(numPieces*sizeof(cubie*));
+	posX = x;
+	posY = y;
+	rotH = 0;
+	rotV = 0;
 }
 //--------------------------------------------------------------
 void puzzle::setup(){
@@ -39,10 +43,35 @@ void puzzle::unDraw(){
 	}
 }
 //--------------------------------------------------------------
-void puzzle::rotateUp(){  
+void puzzle::rotateHright(){  
 	//puzzle tells every cubie to rotate
+	rotH += 0.1;
 	for(int i=0;i<numPieces;i++){
-		myCubies[i]->rotateUp();
+		myCubies[i]->rotateH(rotH);
+	}
+}
+//--------------------------------------------------------------
+void puzzle::rotateHleft(){  
+	//puzzle tells every cubie to rotate
+	rotH -= 0.1;
+	for(int i=0;i<numPieces;i++){
+		myCubies[i]->rotateH(rotH);
+	}
+}
+//--------------------------------------------------------------
+void puzzle::rotateVup(){  
+	//puzzle tells every cubie to rotate
+	rotV += 0.1;
+	for(int i=0;i<numPieces;i++){
+		myCubies[i]->rotateV(rotV);
+	}
+}
+//--------------------------------------------------------------
+void puzzle::rotateVdown(){  
+	//puzzle tells every cubie to rotate
+	rotV -= 0.1;
+	for(int i=0;i<numPieces;i++){
+		myCubies[i]->rotateV(rotV);
 	}
 }
 //-------------------------------------------------------------------------------------------------
@@ -65,7 +94,7 @@ void puzzle::loadPieces(sgCGroup **pcs){
 	//create cubies
 	//so each time there is a new boolean operation, whole new cubies get created with variables in zero or blank
 	for(int i =0;i<numPieces;i++){
-		cubie *auxCubie = new cubie();// is this really creating independent instances of cubie??
+		cubie *auxCubie = new cubie(posX,posY);// is this really creating independent instances of cubie??
 		auxCubie->setup();
 		//add this cubie to mycubies[]
 		myCubies[i] = auxCubie;
@@ -108,36 +137,40 @@ void puzzle::loadPieces(sgCGroup **pcs){
 //--------------------------------------------------------------
 void puzzle::moveRight(){
 	//iterate through cubies
+	posX += 10;
 	for(int i=0;i<numPieces;i++){
 		if(myCubies[i] != NULL){
-			myCubies[i]->moveRight();
+			myCubies[i]->moveH(posX);
 		}
 	}
 }
 //--------------------------------------------------------------
 void puzzle::moveLeft(){
 	//iterate through cubies
+	posX -= 10;
 	for(int i=0;i<numPieces;i++){
 		if(myCubies[i] != NULL){
-			myCubies[i]->moveLeft();
+			myCubies[i]->moveH(posX);
 		}
 	}
 }
 //--------------------------------------------------------------
 void puzzle::moveUp(){
 	//iterate through cubies
+	posY -= 10;
 	for(int i=0;i<numPieces;i++){
 		if(myCubies[i] != NULL){
-			myCubies[i]->moveUp();
+			myCubies[i]->moveV(posY);
 		}
 	}
 }
 //--------------------------------------------------------------
 void puzzle::moveDown(){
 	//iterate through cubies
+	posY += 10;
 	for(int i=0;i<numPieces;i++){
 		if(myCubies[i] != NULL){
-			myCubies[i]->moveDown();
+			myCubies[i]->moveV(posY);
 		}
 	}
 }

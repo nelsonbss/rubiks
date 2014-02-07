@@ -18,7 +18,6 @@ public:
 	void loadObject(sgCObject *obj); //it will load a sgCore lib object: torus, box...
 	sgCObject* getObject();//it will return the object, i.e to be used in boolean
 	void unDraw();
-	void reset();
 
 	sgCObject *object;
 	sgC3DObject *temp;// this will be used to draw the object, the original will be in 0,0,0 to be cut. the temp will be moved around and be drawn.

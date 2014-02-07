@@ -12,10 +12,14 @@ void myobject3D::setup(){
 	temp->InitTempMatrix()->Translate(rotD);
 	temp->ApplyTempMatrix();  
 	temp->DestroyTempMatrix();
+
+	/*SG_VECTOR rotD = {posX,posY,0};
+	object->InitTempMatrix()->Translate(rotD);
+	object->ApplyTempMatrix();  
+	object->DestroyTempMatrix();*/
 }
 //--------------------------------------------------------------
 void myobject3D::update(){
-	sgGetScene()->DetachObject(temp);
 	SG_POINT rotP = {posX,posY,0};
 	SG_POINT rotPobject = {0,0,0};
 	SG_VECTOR rotV = {0,1,0};
@@ -23,6 +27,7 @@ void myobject3D::update(){
 	//object->InitTempMatrix()->Rotate(rotPobject,rotV,0.01);
 	SG_VECTOR rotD = {0,0,0};
 	temp->GetTempMatrix()->Translate(rotD);
+	//object->GetTempMatrix()->Translate(rotD);
 	SG_VECTOR rotDobject = {0,0,0};
 	//object->GetTempMatrix()->Translate(rotDobject);
 	temp->ApplyTempMatrix();  
@@ -37,15 +42,9 @@ void myobject3D::draw(){
 	ofCircle(ofPoint(100,100),5);
 	//temp->Triangulate(SG_VERTEX_TRIANGULATION);
 	temp->SetAttribute(SG_OA_COLOR,2);
-	//sgGetScene()->AttachObject(temp);
-	//reset();
-}
-//--------------------------------------------------------------
-void myobject3D::reset(){  
-	/*	SG_VECTOR rotD = {-500,-500,0};
-	object->InitTempMatrix()->Translate(rotD);
-	object->ApplyTempMatrix();  
-	object->DestroyTempMatrix()*/;
+	//object->SetAttribute(SG_OA_COLOR,2);
+	sgGetScene()->AttachObject(temp);
+	//sgGetScene()->AttachObject(object);
 }
 //--------------------------------------------------------------
 void myobject3D::unDraw(){  

@@ -61,7 +61,7 @@ void testApp::setup(){
 	////////////////////////////////end create cutter///////////////////////////////////
 
 	////////////////////////////////create slicer///////////////////////////////////////
-	mySlicer = new slicer(myCutter);
+	mySlicer = new slicer(myCutter,displayX,displayY);
 	mySlicer->setup();
 	/////////////////////////end create slicer /////////////////////////////////////////
 
@@ -330,7 +330,7 @@ void testApp::exit(){
 		myCutter->exit();
 		mySlicer->exit();
 	}
-	//sgFreeKernel();
+	sgFreeKernel();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------
 //

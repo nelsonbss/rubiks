@@ -28,7 +28,7 @@ void cubie::faceRotate(SG_POINT point, SG_VECTOR axis, float deg,bool di){
 		//build matrix and add it to the vector myMatrix
 		//matrix *m = new matrix(1,point,axis,deg);
 		myMatrix.push_back(matrix(1,point,axis,deg,di));
-		cout << "deg: " << di << endl;
+		//cout << "deg: " << di << endl;
 		//matrix temp = (matrix)myMatrix.at(0);
 		//myMatrix.pop_back(); // for now we only want one element
 
@@ -53,7 +53,7 @@ void cubie::draw(){
 		if(objects != NULL){
 			for (int j=0; j < numObjs; j++){
 				//rotations
-				//use vector with matrix
+				//use vector with matrix..es
 				for(int i=0; i<myMatrix.size();i++){
 					//if(myMatrix.at(i).type==1){
 						//its a rotation

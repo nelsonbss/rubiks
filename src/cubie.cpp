@@ -9,6 +9,7 @@ cubie::cubie(float x, float y){
 	rotV = 0.0;
 	color = rand()%27;
 	okDraw = true;
+	attached = false;
 }
 //--------------------------------------------------------------
 void cubie::setup(){
@@ -19,27 +20,28 @@ void cubie::update(){
 
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
-void cubie::faceRotate(SG_POINT point, SG_VECTOR axis, float deg){
+void cubie::faceRotate(SG_POINT point, SG_VECTOR axis, float deg,bool di){
 	//this function is to handle a face rotation for a cubbie
 	//this function is invoked on a group of cubies determined by the puzzle..??(stil lneeds to be determined)
 	//use this cubies objectList to draw elements without ever loosing them on groupBreaking
 	if(objects != NULL){
 		//build matrix and add it to the vector myMatrix
 		//matrix *m = new matrix(1,point,axis,deg);
-		myMatrix.push_back(matrix(1,point,axis,deg));
-		matrix temp = (matrix)myMatrix.at(0);
-		myMatrix.pop_back(); // for now we only want one element
+		myMatrix.push_back(matrix(1,point,axis,deg,di));
+		cout << "deg: " << di << endl;
+		//matrix temp = (matrix)myMatrix.at(0);
+		//myMatrix.pop_back(); // for now we only want one element
 
-		for (int j=0; j < numObjs; j++){
-			SG_POINT protFace = temp.point;// point;
-			SG_VECTOR vrotFace = temp.vector;//  axis; //rotate to do a face move
-			float d = temp.deg;
-			objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,d);
-			objectList[j]->ApplyTempMatrix();
-			objectList[j]->DestroyTempMatrix();
-		}
+		//for (int j=0; j < numObjs; j++){
+		//	SG_POINT protFace = temp.point;// point;
+		//	SG_VECTOR vrotFace = temp.vector;//  axis; //rotate to do a face move
+		//	float d = temp.deg;
+		//	objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,d);
+		//	objectList[j]->ApplyTempMatrix();
+		//	objectList[j]->DestroyTempMatrix();
+		//}
 	}else{
-		cout << "null at face rotation" << endl;
+		//cout << "null at face rotation" << endl;
 	}
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
@@ -51,6 +53,25 @@ void cubie::draw(){
 		if(objects != NULL){
 			for (int j=0; j < numObjs; j++){
 				//rotations
+				//use vector with matrix
+				for(int i=0; i<myMatrix.size();i++){
+					//if(myMatrix.at(i).type==1){
+						//its a rotation
+						SG_POINT protFace = {0,0,0};//myMatrix.at(0).point;// point;
+						SG_VECTOR vrotFace = myMatrix.at(0).vector;//  axis; //rotate to do a face move
+						float d = myMatrix.at(0).deg;
+						if(myMatrix.at(i).dir == true){
+							//c
+							objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,d);
+						}else{
+							//cc
+							objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,-d);
+						}
+						objectList[j]->ApplyTempMatrix();
+						objectList[j]->DestroyTempMatrix();
+					//}
+				}
+				////
 				SG_VECTOR vrotH = {0,1,0}; //rotate H
 				SG_POINT protH = {0,0,0};
 				objectList[j]->InitTempMatrix()->Rotate(protH,vrotH,rotH);
@@ -65,9 +86,11 @@ void cubie::draw(){
 				objectList[j]->ApplyTempMatrix();
 				objectList[j]->DestroyTempMatrix();
 				objectList[j]->SetAttribute(SG_OA_COLOR,color);
-				//objectList[j]->SetAttribute(SG_OA_DRAW_STATE,SG_DS_FULL);
+				objectList[j]->SetAttribute(SG_OA_DRAW_STATE,SG_DS_FULL);
+				//if(attached == false){
 				sgGetScene()->AttachObject(objectList[j]);
-
+				attached = true;
+				//}
 			}
 		}else{
 			//cout << "null at draw" << endl;

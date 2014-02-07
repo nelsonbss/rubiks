@@ -175,7 +175,7 @@ void puzzle::moveDown(){
 	}
 }
 ////////////////////////////////////////////////////////////////
-void puzzle::faceRotate(SG_POINT point, SG_VECTOR axis, float deg){
+void puzzle::faceRotate(SG_POINT point, SG_VECTOR axis, float deg,bool dir){
 	//this function is to handle a face rotation for a cubbie
 	//this function is invoked on a group of cubies determined by the puzzle..??(stil lneeds to be determined)
 	//use this cubies objectList to draw elements without ever loosing them on groupBreaking
@@ -183,18 +183,18 @@ void puzzle::faceRotate(SG_POINT point, SG_VECTOR axis, float deg){
 	//7-8-9
 	//25-26-27
 	//all numbers -1 because array starts in zero 0
-	//rotation point: 3D-center of cubie 8 [7]
-	myCubies[15]->faceRotate(point,axis,deg);
-	myCubies[16]->faceRotate(point,axis,deg);
-	myCubies[17]->faceRotate(point,axis,deg);
+	//rotation point: 3D-center of puzzle at 0,0,0
+	myCubies[15]->faceRotate(point,axis,deg,dir);
+	myCubies[16]->faceRotate(point,axis,deg,dir);
+	myCubies[17]->faceRotate(point,axis,deg,dir);
 	///
-	myCubies[6]->faceRotate(point,axis,deg);
-	myCubies[7]->faceRotate(point,axis,deg);
-	myCubies[8]->faceRotate(point,axis,deg);
+	myCubies[6]->faceRotate(point,axis,deg,dir);
+	myCubies[7]->faceRotate(point,axis,deg,dir);
+	myCubies[8]->faceRotate(point,axis,deg,dir);
 	///
-	myCubies[24]->faceRotate(point,axis,deg);
-	myCubies[25]->faceRotate(point,axis,deg);
-	myCubies[26]->faceRotate(point,axis,deg);
+	myCubies[24]->faceRotate(point,axis,deg,dir);
+	myCubies[25]->faceRotate(point,axis,deg,dir);
+	myCubies[26]->faceRotate(point,axis,deg,dir);
 
 }
 //----------------------------------------------------------------

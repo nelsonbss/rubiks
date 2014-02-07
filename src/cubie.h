@@ -38,11 +38,13 @@ public:
 	void rotateH(float radH); //rotates the cubie as part of the whole puzzle object NOT as a faceMove rotation
 	void rotateV(float radV);
 
+	bool attached;
+
 	//this is vector of matrix objects that have all the transformations for each cubie.
 	//its a vector since we don't know how many transformations a cubie is going to have
 
 	vector<matrix> myMatrix; 
-	void faceRotate(SG_POINT point, SG_VECTOR axis, float deg);
+	void faceRotate(SG_POINT point, SG_VECTOR axis, float deg, bool dir);
 };
 
 #endif /* defined(__Tcubie__cubie__) */

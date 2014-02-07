@@ -9,46 +9,53 @@ myobject3D::myobject3D(float x, float y){
 void myobject3D::setup(){
 	temp = (sgC3DObject *) object->Clone();
 	SG_VECTOR rotD = {posX,posY,0};
-	temp->InitTempMatrix()->Translate(rotD);
-	temp->ApplyTempMatrix();  
-	temp->DestroyTempMatrix();
-
-	/*SG_VECTOR rotD = {posX,posY,0};
 	object->InitTempMatrix()->Translate(rotD);
 	object->ApplyTempMatrix();  
-	object->DestroyTempMatrix();*/
+	object->DestroyTempMatrix();
 }
 //--------------------------------------------------------------
 void myobject3D::update(){
 	SG_POINT rotP = {posX,posY,0};
-	SG_POINT rotPobject = {0,0,0};
+	SG_POINT rotPobject = {posX,posY,0};
 	SG_VECTOR rotV = {0,1,0};
-	temp->InitTempMatrix()->Rotate(rotP,rotV,0.01);
-	//object->InitTempMatrix()->Rotate(rotPobject,rotV,0.01);
 	SG_VECTOR rotD = {0,0,0};
-	temp->GetTempMatrix()->Translate(rotD);
-	//object->GetTempMatrix()->Translate(rotD);
 	SG_VECTOR rotDobject = {0,0,0};
-	//object->GetTempMatrix()->Translate(rotDobject);
-	temp->ApplyTempMatrix();  
-	//object->ApplyTempMatrix();
-	temp->DestroyTempMatrix();
-	//object->DestroyTempMatrix();
+
+	//temp->InitTempMatrix()->Rotate(rotP,rotV,0.01);
+	//temp->GetTempMatrix()->Translate(rotD);
+	//temp->ApplyTempMatrix();  
+	//temp->DestroyTempMatrix();
+
+	object->DestroyTempMatrix();
+	object->InitTempMatrix()->Rotate(rotPobject,rotV,0.01);
+	object->GetTempMatrix()->Translate(rotD);
+	object->GetTempMatrix()->Translate(rotDobject);
+	object->ApplyTempMatrix();
+	object->DestroyTempMatrix();
+
 }
 //--------------------------------------------------------------
 void myobject3D::draw(){
-	//ofTranslate(0,0);
+	ofTranslate(0,0);
 	ofSetColor(ofColor(255,0,0));
 	ofCircle(ofPoint(100,100),5);
 	//temp->Triangulate(SG_VERTEX_TRIANGULATION);
-	temp->SetAttribute(SG_OA_COLOR,2);
-	//object->SetAttribute(SG_OA_COLOR,2);
-	sgGetScene()->AttachObject(temp);
-	//sgGetScene()->AttachObject(object);
+	/*temp->SetAttribute(SG_OA_COLOR,5);
+	sgGetScene()->AttachObject(temp);*/
+
+
+	object->SetAttribute(SG_OA_COLOR,2);
+	//object->Triangulate(SG_VERTEX_TRIANGULATION);
+	//SG_VECTOR rotD = {posX,posY,0};
+	//object->InitTempMatrix()->Translate(rotD);
+	//object->ApplyTempMatrix();  
+	//object->DestroyTempMatrix();
+	sgGetScene()->AttachObject(object);
 }
 //--------------------------------------------------------------
 void myobject3D::unDraw(){  
 	sgGetScene()->DetachObject(temp);
+	//sgGetScene()->DetachObject(object);
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////
 //--------------------------------------------------------------

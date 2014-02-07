@@ -12,8 +12,6 @@ puzzle::puzzle(float x, float y){
 }
 //--------------------------------------------------------------
 void puzzle::setup(){
-	//create cubies each time loadPieces is called
-	//because thats whe a new boolean occured
 }
 //--------------------------------------------------------------
 void puzzle::update(){

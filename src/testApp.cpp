@@ -56,7 +56,7 @@ void testApp::setup(){
 	//////////////////////////////////////////////////////////////////////////////////
 
 	//////////////////////////////create cutter///////////////////////////////////////
-	myCutter = new cutter(planeThicknes,planeSize,tamCubie,1,0,0); //to make a plane based cutter
+	myCutter = new cutter(planeThicknes,planeSize,tamCubie,1,displayX,displayY); //to make a plane based cutter
 	myCutter->setup();
 	////////////////////////////////end create cutter///////////////////////////////////
 
@@ -330,7 +330,7 @@ void testApp::exit(){
 		myCutter->exit();
 		mySlicer->exit();
 	}
-	sgFreeKernel();
+	//sgFreeKernel();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------
 //

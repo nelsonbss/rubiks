@@ -146,7 +146,7 @@ sgCGroup* cubie::copyObjects(){
 		const int ChCnt = objects->GetChildrenList()->GetCount();
 		sgCObject** allParts = (sgCObject**)malloc(ChCnt*sizeof(sgCObject*));
 		objects->BreakGroup(allParts);
-		//sgCObject::DeleteObject(objects);
+		sgCObject::DeleteObject(objects);
 		for (int j=0; j < ChCnt; j++){
 			//clone each object
 			sgCObject *temp = allParts[j];

@@ -27,9 +27,7 @@ void cubie::faceRotate(SG_POINT point, SG_VECTOR axis, float deg){
 		//build matrix and add it to the vector myMatrix
 		//matrix *m = new matrix(1,point,axis,deg);
 		myMatrix.push_back(matrix(1,point,axis,deg));
-
 		matrix temp = (matrix)myMatrix.at(0);
-
 		myMatrix.pop_back(); // for now we only want one element
 
 		for (int j=0; j < numObjs; j++){
@@ -41,7 +39,7 @@ void cubie::faceRotate(SG_POINT point, SG_VECTOR axis, float deg){
 			objectList[j]->DestroyTempMatrix();
 		}
 	}else{
-		//cout << "null at face rotation" << endl;
+		cout << "null at face rotation" << endl;
 	}
 }
 //------------------------------------------------------------------------------------------------------------------------------------------

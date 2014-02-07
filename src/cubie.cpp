@@ -24,10 +24,19 @@ void cubie::faceRotate(SG_POINT point, SG_VECTOR axis, float deg){
 	//this function is invoked on a group of cubies determined by the puzzle..??(stil lneeds to be determined)
 	//use this cubies objectList to draw elements without ever loosing them on groupBreaking
 	if(objects != NULL){
+		//build matrix and add it to the vector myMatrix
+		//matrix *m = new matrix(1,point,axis,deg);
+		myMatrix.push_back(matrix(1,point,axis,deg));
+
+		matrix temp = (matrix)myMatrix.at(0);
+
+		myMatrix.pop_back(); // for now we only want one element
+
 		for (int j=0; j < numObjs; j++){
-			SG_VECTOR vrotFace = axis; //rotate to do a face move
-			SG_POINT protFace = point;
-			objectList[j]->InitTempMatrix()->Rotate(point,axis,deg);
+			SG_POINT protFace = temp.point;// point;
+			SG_VECTOR vrotFace = temp.vector;//  axis; //rotate to do a face move
+			float d = temp.deg;
+			objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,d);
 			objectList[j]->ApplyTempMatrix();
 			objectList[j]->DestroyTempMatrix();
 		}

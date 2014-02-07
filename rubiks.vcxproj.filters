@@ -70,6 +70,9 @@
     <ClCompile Include="src\cubie.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\matrix.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -273,6 +276,9 @@
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\cubie.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\matrix.h">
       <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>

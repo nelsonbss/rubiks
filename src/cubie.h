@@ -3,6 +3,9 @@
 
 #include "ofMain.h"
 #include "sgCore.h"
+#include "matrix.h"
+
+#include <vector>
 
 class cubie {
 	
@@ -35,6 +38,10 @@ public:
 	void rotateH(float radH); //rotates the cubie as part of the whole puzzle object NOT as a faceMove rotation
 	void rotateV(float radV);
 
+	//this is vector of matrix objects that have all the transformations for each cubie.
+	//its a vector since we don't know how many transformations a cubie is going to have
+
+	vector<matrix> myMatrix; 
 	void faceRotate(SG_POINT point, SG_VECTOR axis, float deg);
 };
 

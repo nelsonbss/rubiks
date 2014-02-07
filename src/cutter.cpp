@@ -6,17 +6,19 @@ cutter::cutter(float thick, float tamPlane, float tamCuby,float numCutr, float x
 	cutterThick = thick;
 	cutterSize = tamPlane;
 	tamCubie = tamCuby;
+	planes = (sgCObject**)malloc(6*sizeof(sgCObject*));
+	cubes = (sgCObject**)malloc(27*sizeof(sgCObject*));
+	////
 	posX = x;
 	posY = y;
-	planes = (sgCObject**)malloc(6*sizeof(sgCObject*));  //allocate memory
-	cubes = (sgCObject**)malloc(27*sizeof(sgCObject*));  //allocate memory
+	rotH = 0;
+	rotV = 0;
 	///
 	centerCube.x = -tamCubie/2;
 	centerCube.y = -tamCubie/2;
 	centerCube.z = tamCubie/2; 
 	infinity = (cutterSize-tamCubie)/2;
 }
-
 //--------------------------------------------------------------
 void cutter::setup(){
 	////////////////////// BOX 1 -> 6////////////////////////////////////
@@ -527,16 +529,14 @@ void cutter::setup(){
 
 //--------------------------------------------------------------
 void cutter::update(){
-	//allPlanes = sgCGroup::CreateGroup(planes,6);
-	//allCubes = sgCGroup::CreateGroup(cubes,27);
 }
 //--------------------------------------------------------------
-void cutter::draw(){  
-	//allPlanes = sgCGroup::CreateGroup(planes,6);
+void cutter::draw(){
+	ofSetColor(ofColor(255,255,0));
 	ofCircle(ofPoint(posX,posY),10);
 	////////////////////////add planes &/or cubies to scene//
 	addGroupToScene(getCutterPlanes());
-	addGroupToScene(getCutterCubes());
+	//addGroupToScene(getCutterCubes());
 }
 //--------------------------------------------------------------
 void cutter::unDraw(){  
@@ -554,8 +554,8 @@ sgCGroup* cutter::getCutterCubes(){
 }
 
 void cutter::exit(){
-	sgCObject::DeleteObject(allPlanes);
-	sgCObject::DeleteObject(allCubes);
+	sgCObject::DeleteObject(allPlanes); //this is a group!!, have to open it and delete each element!
+	sgCObject::DeleteObject(allCubes); //this is a group!!, have to open it and delete each element!
 	free(planes);
 	free(cubes);
 }
@@ -587,9 +587,9 @@ void cutter::deleteGroupFromScene(sgCGroup *group){
 	}  
 }
 
-sgCGroup* cutter::getGroup(){
+//sgCGroup* cutter::getGroup(){
 	//make a copy of the group** to send outside pieces[]
-	sgCGroup *aux;
+	//sgCGroup *aux;
 
 	//sgCGroup **aux = (sgCGroup**)malloc(27*sizeof(sgCGroup*));
 	//sgCObject *objcts[50];  
@@ -622,5 +622,5 @@ sgCGroup* cutter::getGroup(){
 	/////important!!!!!!!!!!!!!!!!important!!!!!!!!!!!///////////important/////////////////////////////
 	//sgCObject::DeleteObject(*objcts); //why if I delete the objects everything goes KAPUT?????
 	///////////////important////////////////////important//////////////important//////////////////////
-	return aux;
-}
+	//return aux;
+//}

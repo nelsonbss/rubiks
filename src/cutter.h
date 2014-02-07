@@ -19,14 +19,25 @@ public:
 	void addGroupToScene(sgCGroup *group);
 	void unDraw();
 	void deleteGroupFromScene(sgCGroup *group);
-	sgCGroup* getGroup();
+	//sgCGroup* getGroup();
 
 	float cutterThick; // ideally it will be 0.1; how thick is the "blade"
 	float cutterSize; //width and height of the "blade"
 	float tamCubie;
-	//whole cutter coordinatespo
+	//whole cutter coordinates
 	float posX;
 	float posY;
+	void moveRight();
+	void moveLeft();
+	void moveUp();
+	void moveDown();
+
+	float rotH;
+	float rotV;
+	void rotateHright();
+	void rotateHleft();
+	void rotateVup();
+	void rotateVdown();
 
 	float numCutter;
 

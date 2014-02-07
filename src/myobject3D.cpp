@@ -33,10 +33,11 @@ void myobject3D::update(){
 //--------------------------------------------------------------
 void myobject3D::draw(){
 	//ofTranslate(0,0);
+	ofSetColor(ofColor(255,0,0));
 	ofCircle(ofPoint(100,100),5);
 	//temp->Triangulate(SG_VERTEX_TRIANGULATION);
 	temp->SetAttribute(SG_OA_COLOR,2);
-	sgGetScene()->AttachObject(temp);
+	//sgGetScene()->AttachObject(temp);
 	//reset();
 }
 //--------------------------------------------------------------

@@ -8,7 +8,7 @@
 #include "Painter.h"
 #include "sgCore.h"
 ///////////////////////////////////////////
-#define planeThicknes 0.1
+#define planeThicknes 0.001
 #define planeSize 300
 #define tamCubie 50
 
@@ -160,7 +160,7 @@ void testApp::draw(){
 
 	if(draw3dObject){
 		objectDisplayed->draw();
-		//myCutter->draw();
+		myCutter->draw();
 	}else{
 		objectDisplayed->unDraw();
 		//myCutter->unDraw();
@@ -176,6 +176,7 @@ void testApp::draw(){
 	//small test of openFrameworks simple drawing embeded with sgCore geometry 
 	ofPushMatrix();
 	ofTranslate(300,300);
+	ofSetColor(ofColor(255,0,255));
 	ofCircle(ofPoint(0,0),5);
 	ofPopMatrix();
 

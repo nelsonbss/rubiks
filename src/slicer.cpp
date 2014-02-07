@@ -2,8 +2,13 @@
 #include "sgCore.h"
 #include "cutter.h"
 
-slicer::slicer(cutter *c){
+slicer::slicer(cutter *c, float x, float y){
 	myCutter = c;
+	////
+	posX = x;
+	posY = y;
+	rotH = 0;
+	rotV = 0;
 	//create & initialize the pieces of the slicer as NULL
 	pieces = (sgCGroup**)malloc(27*sizeof(sgCObject*));
 	for(int i =0; i<27; i ++){

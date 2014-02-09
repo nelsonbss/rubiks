@@ -61,4 +61,10 @@ public:
 	float tempDeg;
 	bool faceRotateC;
 	bool faceRotateCC;
+
+	int randcubie;
+
+	float ct1;
+	float ct2;
+	float deg;
 };

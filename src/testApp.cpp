@@ -10,7 +10,7 @@
 ///////////////////////////////////////////
 #define planeThicknes 0.001
 #define planeSize 300
-#define tamCubie 50
+#define tamCubie 100
 
 #define displayX 500
 #define displayY 500
@@ -35,6 +35,7 @@ void testApp::setup(){
 	rotatePVdown = false;
 	//
 	tempDeg = 0.0;
+	deg = 0.0;
 	faceRotateC = false;
 	faceRotateCC = false;
 	/////initialize sgCore library
@@ -131,22 +132,54 @@ void testApp::update(){
 	}
 	//////////////////////////////////////////////face rotations
 	SG_POINT point = {0,0,0};
-	SG_VECTOR axis = {0,0,-1};
+	SG_VECTOR axis = {1,0,0};
+	float animTime = 500; //mills
+
 	if(faceRotateC == true) {//c
-		tempDeg += 0.1;
+
+		//tempDeg += 0.1;
+		//myPuzzle->unDraw();
+		////myPuzzle->faceRotate(point, axis, tempDeg,true);
+		//myPuzzle->rotateByIDandAxis(7,axis,true,tempDeg);
+		//drawCuts = true;
+
 		myPuzzle->unDraw();
-		//myPuzzle->faceRotate(point, axis, tempDeg,true);
-		myPuzzle->rotateByIDandAxis(8,axis,true,tempDeg);
+		if(tempDeg < 1.57079633){
+			ct2 = ofGetElapsedTimeMillis();
+			deg += ((ct2 - ct1)*(1.57079633))/animTime;
+			tempDeg += ((ct2 - ct1)*(1.57079633))/animTime;
+			myPuzzle->rotateByIDandAxis(randcubie,axis,true,deg);
+			ct1 = ct2;
+		}else{
+			faceRotateC = false;
+		}
+		cout << deg << endl;
 		drawCuts = true;
 	}
 	if(faceRotateCC == true) {//
-		tempDeg -= 0.1;
+		//tempDeg += 0.1;
+		//myPuzzle->unDraw();
+		////myPuzzle->faceRotate(point,axis,tempDeg,false);
+		//myPuzzle->rotateByIDandAxis(7,axis,false,tempDeg);
+		//drawCuts = true;
+
 		myPuzzle->unDraw();
-		//myPuzzle->faceRotate(point,axis,tempDeg,false);
-		myPuzzle->rotateByIDandAxis(8,axis,false,tempDeg);
+		if(tempDeg < 1.57079633){
+			ct2 = ofGetElapsedTimeMillis();
+			deg += ((ct2 - ct1)*(1.57079633))/animTime;
+			tempDeg += ((ct2 - ct1)*(1.57079633))/animTime;
+			myPuzzle->rotateByIDandAxis(7,axis,false,deg);
+			ct1 = ct2;
+		}else{
+			faceRotateCC = false;
+		}
+		cout << deg << endl;
 		drawCuts = true;
 	}
-	objectDisplayed->update(); //rotates the selected object...just for show
+
+	if(draw3dObject){
+		objectDisplayed->update(); //rotates the selected object...just for show
+	}
 }
 
 //--------------------------------------------------------------
@@ -240,8 +273,13 @@ void testApp::keyPressed(int key){
 		//25-26-27
 		//rotation point: 3D-center of cubie 8
 		if(key == 'q') {
+			ct1 = ofGetElapsedTimeMillis();
+			tempDeg = 0.0;
+			randcubie = rand()%26;
 			faceRotateC = true; //clockwise
 		}if(key == 'a') {
+			tempDeg = 0.0;
+			ct1 = ofGetElapsedTimeMillis();
 			faceRotateCC = true; //counter clockwise
 		}
 	}
@@ -277,9 +315,9 @@ void testApp::keyReleased(int key){
 		}
 		/////////////////////FACE ROTATIONS!!!///////////////////////////
 		if(key == 'q') {
-			faceRotateC = false; //clockwise
+			//faceRotateC = false; //clockwise
 		}if(key == 'a') {
-			faceRotateCC = false; //counter clockwise
+			//faceRotateCC = false; //counter clockwise
 		}
 	}
 }

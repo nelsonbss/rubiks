@@ -2,6 +2,13 @@
 #include "sgCore.h"
 #include "cubie.h"
 
+#include <vector>
+#include <iostream>
+
+#define HEIGHT 3
+#define WIDTH 3
+#define DEPTH 3
+
 puzzle::puzzle(float x, float y){
 	numPieces = 27;
 	myCubies = (cubie**)malloc(numPieces*sizeof(cubie*));
@@ -9,6 +16,56 @@ puzzle::puzzle(float x, float y){
 	posY = y;
 	rotH = 0;
 	rotV = 0;
+	//////////
+	// Allocate memory
+	//p3DArray = new double**[HEIGHT];
+	//for (int i = 0; i < HEIGHT; ++i) {
+	//	p3DArray[i] = new double*[WIDTH];
+
+	//	for (int j = 0; j < WIDTH; ++j)
+	//		p3DArray[i][j] = new double[DEPTH];
+	//}
+	//// Assign values
+	//p3DArray[0][0][0] = 3.6;
+	//p3DArray[1][2][4] = 4.0;
+
+
+	/*
+	create 3 * 10 * 25 array filled with '12'
+	*/
+	const size_t NElements1(3);
+	const size_t NElements2(3);
+	const size_t NElements3(3);
+	const int InitialValueForAllEntries(0);
+
+	ThreeDimensions three_dim(NElements3, TwoDimensions(NElements2, OneDimension(NElements1, InitialValueForAllEntries)));
+
+			three_dim[0][0][2] = 13;	three_dim[1][0][2] = 12;	three_dim[2][0][2] = 11;
+			three_dim[0][1][2] = 4;		three_dim[1][1][2] = 3;		three_dim[2][1][2] = 2;
+			three_dim[0][2][2] = 22;	three_dim[1][2][2] = 21;	three_dim[2][2][2] = 20;
+		three_dim[0][0][1] = 14;	three_dim[1][0][1] = 9;		three_dim[2][0][1] = 10;
+		three_dim[0][1][1] = 5;		three_dim[1][1][1] = 0;		three_dim[2][1][1] = 1;
+		three_dim[0][2][1] = 23;	three_dim[1][2][1] = 18;	three_dim[2][2][1] = 19;
+	three_dim[0][0][0] = 15;	three_dim[1][0][0] = 16;	three_dim[2][0][0] = 17;
+	three_dim[0][1][0] = 6;		three_dim[1][1][0] = 7;		three_dim[2][1][0] = 8;
+	three_dim[0][2][0] = 24;	three_dim[1][2][0] = 25;	three_dim[2][2][0] = 26;
+
+	/* now read the value: */
+	std::cout << "It should be 15: " << three_dim[0][0][0] << "\n";
+	std::cout << "It should be 6: " << three_dim[0][1][0] << "\n";
+
+	/* get X slize 1*/
+	TwoDimensions& two_dim(three_dim[1]);
+	/* read it: */
+	std::cout << "It should be 0: " << two_dim[1][1] << "\n";
+
+	/* get Y=2 strip fom  of that X slice 1 */
+	OneDimension& one_dim(two_dim[2]);
+
+	/* read it (this is two_dim[2][1], aka three_dim[1][2][1]): */
+	std::cout << "It should be 18: " << one_dim[1] << "\n";
+	/* or */
+	std::cout << "It should be 21: " << one_dim.at(2) << "\n";
 }
 //--------------------------------------------------------------
 void puzzle::setup(){
@@ -182,25 +239,33 @@ void puzzle::faceRotate(SG_POINT point, SG_VECTOR axis, float deg,bool dir){
 	//25-26-27
 	//all numbers -1 because array starts in zero 0
 	//rotation point: 3D-center of puzzle at 0,0,0
-	myCubies[15]->faceRotate(point,axis,deg,dir);
-	myCubies[16]->faceRotate(point,axis,deg,dir);
-	myCubies[17]->faceRotate(point,axis,deg,dir);
-	///
-	myCubies[6]->faceRotate(point,axis,deg,dir);
-	myCubies[7]->faceRotate(point,axis,deg,dir);
-	myCubies[8]->faceRotate(point,axis,deg,dir);
-	///
-	myCubies[24]->faceRotate(point,axis,deg,dir);
-	myCubies[25]->faceRotate(point,axis,deg,dir);
-	myCubies[26]->faceRotate(point,axis,deg,dir);
+	/////*myCubies[15]->faceRotate(point,axis,deg,dir);
+	////myCubies[16]->faceRotate(point,axis,deg,dir);
+	////myCubies[17]->faceRotate(point,axis,deg,dir);
+	///////
+	////myCubies[6]->faceRotate(point,axis,deg,dir);
+	////myCubies[7]->faceRotate(point,axis,deg,dir);
+	////myCubies[8]->faceRotate(point,axis,deg,dir);
+	///////
+	////myCubies[24]->faceRotate(point,axis,deg,dir);
+	////myCubies[25]->faceRotate(point,axis,deg,dir);
+	////myCubies[26]->faceRotate(point,axis,deg,dir);*/
 
 }
 //----------------------------------------------------------------
 void puzzle::exit(){
 	for(int i=0;i<numPieces;i++){
 		if(myCubies[i] != NULL){
-			//myCubies[i]->exit();
+			myCubies[i]->exit();
 		}
 	}
+	//// De-Allocate memory to prevent memory leak
+	//for (int i = 0; i < HEIGHT; ++i) {
+	//	for (int j = 0; j < WIDTH; ++j){
+	//		delete [] p3DArray[i][j];
+	//	}
+	//	delete [] p3DArray[i];
+	//}
+	//delete [] p3DArray;
 	free(myCubies);
 }

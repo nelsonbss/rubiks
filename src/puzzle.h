@@ -5,6 +5,8 @@
 #include "sgCore.h"
 #include "cubie.h"
 #include "slicer.h"
+#include <vector>
+#include <iostream>
 
 class puzzle {
 
@@ -38,7 +40,14 @@ public:
 	void rotateVup();
 	void rotateVdown();
 
+	double ***p3DArray;
 	void faceRotate(SG_POINT point, SG_VECTOR axis, float deg,bool dir);
+	 /* one-liner */
+    //typedef std::vector<std::vector<std::vector<int> > >ThreeDimensions;
+    /* expanded */
+    typedef std::vector<int>OneDimension;
+    typedef std::vector<OneDimension>TwoDimensions;
+    typedef std::vector<TwoDimensions>ThreeDimensions;
 };
 
 #endif /* defined(__Tpuzzle__puzzle__) */

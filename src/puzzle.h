@@ -48,6 +48,11 @@ public:
     typedef std::vector<int>OneDimension;
     typedef std::vector<OneDimension>TwoDimensions;
     typedef std::vector<TwoDimensions>ThreeDimensions;
+	ThreeDimensions three_dim1;
+
+	
+	//int ***three_dim;
+	void rotateByIDandAxis(int id, SG_VECTOR axis,bool dir,float deg);
 };
 
 #endif /* defined(__Tpuzzle__puzzle__) */

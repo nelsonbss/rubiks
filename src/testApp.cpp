@@ -135,13 +135,15 @@ void testApp::update(){
 	if(faceRotateC == true) {//c
 		tempDeg += 0.1;
 		myPuzzle->unDraw();
-		myPuzzle->faceRotate(point, axis, tempDeg,true);
+		//myPuzzle->faceRotate(point, axis, tempDeg,true);
+		myPuzzle->rotateByIDandAxis(8,axis,true,tempDeg);
 		drawCuts = true;
 	}
 	if(faceRotateCC == true) {//
 		tempDeg -= 0.1;
 		myPuzzle->unDraw();
-		myPuzzle->faceRotate(point,axis,tempDeg,false);
+		//myPuzzle->faceRotate(point,axis,tempDeg,false);
+		myPuzzle->rotateByIDandAxis(8,axis,false,tempDeg);
 		drawCuts = true;
 	}
 	objectDisplayed->update(); //rotates the selected object...just for show

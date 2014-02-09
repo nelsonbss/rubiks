@@ -1,8 +1,9 @@
 #include "cubie.h"
 #include "sgCore.h"
 
-cubie::cubie(float x, float y){
+cubie::cubie(float x, float y,int idi){
 	objects = NULL;
+	id = idi;
 	posX = x;
 	posY = y;
 	rotH = 0.0;

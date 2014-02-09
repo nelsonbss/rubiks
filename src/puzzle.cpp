@@ -40,32 +40,37 @@ puzzle::puzzle(float x, float y){
 
 	ThreeDimensions three_dim(NElements3, TwoDimensions(NElements2, OneDimension(NElements1, InitialValueForAllEntries)));
 
-			three_dim[0][0][2] = 13;	three_dim[1][0][2] = 12;	three_dim[2][0][2] = 11;
-			three_dim[0][1][2] = 4;		three_dim[1][1][2] = 3;		three_dim[2][1][2] = 2;
-			three_dim[0][2][2] = 22;	three_dim[1][2][2] = 21;	three_dim[2][2][2] = 20;
-		three_dim[0][0][1] = 14;	three_dim[1][0][1] = 9;		three_dim[2][0][1] = 10;
-		three_dim[0][1][1] = 5;		three_dim[1][1][1] = 0;		three_dim[2][1][1] = 1;
-		three_dim[0][2][1] = 23;	three_dim[1][2][1] = 18;	three_dim[2][2][1] = 19;
-	three_dim[0][0][0] = 15;	three_dim[1][0][0] = 16;	three_dim[2][0][0] = 17;
-	three_dim[0][1][0] = 6;		three_dim[1][1][0] = 7;		three_dim[2][1][0] = 8;
-	three_dim[0][2][0] = 24;	three_dim[1][2][0] = 25;	three_dim[2][2][0] = 26;
+	three_dim1 = three_dim;
+	//three_dim = (int***)malloc(27*sizeof(int*));
+
+	three_dim1[0][0][2] = 13;	three_dim1[1][0][2] = 12;	three_dim1[2][0][2] = 11;
+	three_dim1[0][1][2] = 4;		three_dim1[1][1][2] = 3;		three_dim1[2][1][2] = 2;
+	three_dim1[0][2][2] = 22;	three_dim1[1][2][2] = 21;	three_dim1[2][2][2] = 20;
+
+	three_dim1[0][0][1] = 14;	three_dim1[1][0][1] = 9;		three_dim1[2][0][1] = 10;
+	three_dim1[0][1][1] = 5;		three_dim1[1][1][1] = 0;		three_dim1[2][1][1] = 1;
+	three_dim1[0][2][1] = 23;	three_dim1[1][2][1] = 18;	three_dim1[2][2][1] = 19;
+
+	three_dim1[0][0][0] = 15;	three_dim1[1][0][0] = 16;	three_dim1[2][0][0] = 17;
+	three_dim1[0][1][0] = 6;		three_dim1[1][1][0] = 7;		three_dim1[2][1][0] = 8;
+	three_dim1[0][2][0] = 24;	three_dim1[1][2][0] = 25;	three_dim1[2][2][0] = 26;
 
 	/* now read the value: */
-	std::cout << "It should be 15: " << three_dim[0][0][0] << "\n";
-	std::cout << "It should be 6: " << three_dim[0][1][0] << "\n";
+	std::cout << "It should be 15: " << three_dim1[0][0][0] << "\n";
+	std::cout << "It should be 6: " << three_dim1[0][1][0] << "\n";
 
 	/* get X slize 1*/
-	TwoDimensions& two_dim(three_dim[1]);
+	//TwoDimensions& two_dim(three_dim[1]);
 	/* read it: */
-	std::cout << "It should be 0: " << two_dim[1][1] << "\n";
+	//std::cout << "It should be 0: " << two_dim[1][1] << "\n";
 
 	/* get Y=2 strip fom  of that X slice 1 */
-	OneDimension& one_dim(two_dim[2]);
+	//OneDimension& one_dim(two_dim[2]);
 
 	/* read it (this is two_dim[2][1], aka three_dim[1][2][1]): */
-	std::cout << "It should be 18: " << one_dim[1] << "\n";
+	//std::cout << "It should be 18: " << one_dim[1] << "\n";
 	/* or */
-	std::cout << "It should be 21: " << one_dim.at(2) << "\n";
+	//std::cout << "It should be 21: " << one_dim.at(2) << "\n";
 }
 //--------------------------------------------------------------
 void puzzle::setup(){
@@ -113,16 +118,14 @@ void puzzle::loadPieces(sgCGroup **pcs){
 	//it loads the pieces that the slicer made, the pieces are in a sgCGroup** pieces[], 
 	//this function receives a copy of that sgCGroup** made by mySlicer->getPieces()
 	//it loads them into its own cubies
-
 	//create cubies
 	//so each time there is a new boolean operation, whole new cubies get created with variables in zero or blank
 	for(int i =0;i<numPieces;i++){
-		cubie *auxCubie = new cubie(posX,posY);// is this really creating independent instances of cubie??
-		auxCubie->setup();
+		cubie *auxCubie = new cubie(posX,posY,i+1);// is this really creating independent instances of cubie??
+		//auxCubie->setup();
 		//add this cubie to mycubies[]
 		myCubies[i] = auxCubie;
 	}
-
 	for(int i=0;i<numPieces;i++){ //this is creating some 2400 ish objects not cleared!
 		//get group from pieces[] copy
 		sgCGroup *part = pcs[i]; //pcs[i] will get destroyed!!!!!!!!!!!!!!!!!
@@ -250,6 +253,61 @@ void puzzle::faceRotate(SG_POINT point, SG_VECTOR axis, float deg,bool dir){
 	////myCubies[24]->faceRotate(point,axis,deg,dir);
 	////myCubies[25]->faceRotate(point,axis,deg,dir);
 	////myCubies[26]->faceRotate(point,axis,deg,dir);*/
+}
+//---------------------------------------------------------------
+void puzzle::rotateByIDandAxis(int id, SG_VECTOR axis, bool dir,float deg){
+	//it receives the id of a cubie,the axis and the direction of rotation
+	//it looks for the other 9 ids, according to the axis
+	//and makes those 9 myCubies[]->faceRotate
+	int selected[9];
+	int counter=0;
+	int selX =0;
+	int selY =0;
+	int selZ =0;
+
+	for(int x=0;x<3;x++){
+		for(int y=0;y<3;y++){
+			for(int z=0;z<3;z++){
+				if(three_dim1[x][y][z] == id){
+					//when selected cubie is found
+					selX = x;
+					selY = y;
+					selZ = z;
+				}
+			}
+		}
+	}
+	//now we ask for the cubies on that axis
+	if(axis.x == 1){
+		for(int y=0;y<3;y++){
+			for(int z=0; z<3;z++){
+				selected[counter] = three_dim1[selX][y][z];
+				counter ++;
+			}
+		}
+	}else if(axis.y == 1){
+		for(int x=0;x<3;x++){
+			for(int z=0; z<3;z++){
+				selected[counter] = three_dim1[x][selY][z];
+				counter ++;
+			}
+		}
+	}else{
+		for(int x=0;x<3;x++){
+			for(int y=0; y<3;y++){
+				selected[counter] = three_dim1[x][y][selZ];
+				counter ++;
+			}
+		}
+	}
+	//now we tell them to rotate
+	SG_POINT point = {0,0,0};
+	for(int i=0;i<9;i++){
+		myCubies[selected[i]]->faceRotate(point,axis,deg,dir);
+	}
+	//now we re-arrange ids on the 3d array
+	//according to axis of rotation
+	//no we do this after we complete 90 deg rotation
 
 }
 //----------------------------------------------------------------
@@ -262,10 +320,10 @@ void puzzle::exit(){
 	//// De-Allocate memory to prevent memory leak
 	//for (int i = 0; i < HEIGHT; ++i) {
 	//	for (int j = 0; j < WIDTH; ++j){
-	//		delete [] p3DArray[i][j];
+	//		delete [] three_dim[i][j];
 	//	}
-	//	delete [] p3DArray[i];
+	//	delete [] three_dim[i];
 	//}
-	//delete [] p3DArray;
+	//delete [] three_dim;
 	free(myCubies);
 }

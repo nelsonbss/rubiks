@@ -10,13 +10,15 @@
 class cubie {
 	
 public:
-	cubie(float x,float y);
+	cubie(float x,float y, int id);
     
 	void setup();
 	void update();
 	void draw();
 	void unDraw();
 	void exit();
+
+	int id;
 
 	sgCGroup *objects;
 	float numObjs;

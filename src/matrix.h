@@ -11,7 +11,7 @@ public:
 	matrix(int type, SG_VECTOR axis, float deg,bool di);
     
 	//int type; //1 for rotation, 2 for translation
-	bool dir;//direction of rotation true-> Clockwise, false->CC
+	//bool dir;//direction of rotation true-> Clockwise, false->CC
 	//SG_POINT point; //rotations YES, translations NO
 	SG_VECTOR vector; //both YES
 	float deg; //both YES

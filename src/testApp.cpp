@@ -7,6 +7,8 @@
 ///////////////////////////////////////////
 #include "Painter.h"
 #include "sgCore.h"
+
+#include <math.h>
 ///////////////////////////////////////////
 #define planeThicknes 0.001
 #define planeSize 300
@@ -14,6 +16,8 @@
 
 #define displayX 500
 #define displayY 500
+
+#define _USE_MATH_DEFINES
 //--------------------------------------------------------------
 void testApp::setup(){
 
@@ -133,38 +137,47 @@ void testApp::update(){
 	//////////////////////////////////////////////face rotations
 	SG_POINT point = {0,0,0};
 	SG_VECTOR axis = {1,0,0};
-	float animTime = 500; //mills
+	float animTime = 300; //mills
 
 	if(faceRotateC == true) {//c
 
-		//tempDeg += 0.1;
-		//myPuzzle->unDraw();
-		////myPuzzle->faceRotate(point, axis, tempDeg,true);
-		//myPuzzle->rotateByIDandAxis(7,axis,true,tempDeg);
-		//drawCuts = true;
+		tempDeg += M_PI_4; //1.57;
+		if(tempDeg >= 6.28){
+			tempDeg = 0.0;
+		}
+		myPuzzle->unDraw();
+		//myPuzzle->faceRotate(point, axis, tempDeg,true);
+		myPuzzle->rotateByIDandAxis(7,axis,true,tempDeg);
+		drawCuts = true;
+		faceRotateC = false;
+		//cout << tempDeg << endl;
 
 		/*myPuzzle->unDraw();
 		if(deg < 1.57079633){
 			ct2 = ofGetElapsedTimeMillis();
-			deg += (ct2 - ct1)*((1.57079633)/animTime);*/
+			deg += (ct2 - ct1)*((1.57079633)/animTime);
 			myPuzzle->rotateByIDandAxis(7,axis,true,deg);
-			/*ct1 = ct2;
-		}else{*/
+			ct1 = ct2;
+		}else{
 			faceRotateC = false;
-			//re-arange order of numbers on 3d vector
-		/*}*/
+
+		}
 		cout << deg << endl;
-		drawCuts = true;
+		drawCuts = true;*/
 	}
 	if(faceRotateCC == true) {//
-		//tempDeg += 0.1;
-		//myPuzzle->unDraw();
-
-		////myPuzzle->faceRotate(point,axis,tempDeg,false);
-		//myPuzzle->rotateByIDandAxis(7,axis,false,tempDeg);
-		//drawCuts = true;
-
+		tempDeg -= 1.57;
+		if(tempDeg <= -6.28){
+			tempDeg = 0.0;
+		}
 		myPuzzle->unDraw();
+		//myPuzzle->faceRotate(point,axis,tempDeg,false);
+		myPuzzle->rotateByIDandAxis(7,axis,false,tempDeg);
+		drawCuts = true;
+		faceRotateCC = false;
+		//cout << tempDeg << endl;
+
+		/*myPuzzle->unDraw();
 		if(deg < 1.57079633){
 			ct2 = ofGetElapsedTimeMillis();
 			deg += ((ct2 - ct1)*(1.57079633))/animTime;
@@ -174,9 +187,8 @@ void testApp::update(){
 			faceRotateCC = false;
 		}
 		cout << deg << endl;
-		drawCuts = true;
+		drawCuts = true;*/
 	}
-
 	if(draw3dObject){
 		objectDisplayed->update(); //rotates the selected object...just for show
 	}
@@ -274,11 +286,11 @@ void testApp::keyPressed(int key){
 		//rotation point: 3D-center of cubie 8
 		if(key == 'q') {
 			ct1 = ofGetElapsedTimeMillis();
-			deg = 0.0;
+			//tempDeg = 0.0;
 			randcubie = rand()%26;
 			faceRotateC = true; //clockwise
 		}if(key == 'a') {
-			deg = 0.0;
+			//tempDeg = 0.0;
 			ct1 = ofGetElapsedTimeMillis();
 			faceRotateCC = true; //counter clockwise
 		}
@@ -370,7 +382,7 @@ void testApp::exit(){
 		myCutter->exit();
 		mySlicer->exit();
 	}
-	//sgFreeKernel();
+	sgFreeKernel();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------
 //

@@ -143,15 +143,16 @@ void testApp::update(){
 		//myPuzzle->rotateByIDandAxis(7,axis,true,tempDeg);
 		//drawCuts = true;
 
-		myPuzzle->unDraw();
+		/*myPuzzle->unDraw();
 		if(deg < 1.57079633){
 			ct2 = ofGetElapsedTimeMillis();
-			deg += (ct2 - ct1)*((1.57079633)/animTime);
+			deg += (ct2 - ct1)*((1.57079633)/animTime);*/
 			myPuzzle->rotateByIDandAxis(7,axis,true,deg);
-			ct1 = ct2;
-		}else{
+			/*ct1 = ct2;
+		}else{*/
 			faceRotateC = false;
-		}
+			//re-arange order of numbers on 3d vector
+		/*}*/
 		cout << deg << endl;
 		drawCuts = true;
 	}
@@ -314,9 +315,9 @@ void testApp::keyReleased(int key){
 		}
 		/////////////////////FACE ROTATIONS!!!///////////////////////////
 		if(key == 'q') {
-			faceRotateC = false; //clockwise
+			//faceRotateC = false; //clockwise
 		}if(key == 'a') {
-			faceRotateCC = false; //counter clockwise
+			//faceRotateCC = false; //counter clockwise
 		}
 	}
 }

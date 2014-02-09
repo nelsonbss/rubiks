@@ -151,6 +151,7 @@ void testApp::update(){
 			ct1 = ct2;
 		}else{
 			faceRotateC = false;
+			//re-arange order of numbers on 3d vector
 		}
 		cout << deg << endl;
 		drawCuts = true;
@@ -314,9 +315,9 @@ void testApp::keyReleased(int key){
 		}
 		/////////////////////FACE ROTATIONS!!!///////////////////////////
 		if(key == 'q') {
-			faceRotateC = false; //clockwise
+			//faceRotateC = false; //clockwise
 		}if(key == 'a') {
-			faceRotateCC = false; //counter clockwise
+			//faceRotateCC = false; //counter clockwise
 		}
 	}
 }

@@ -308,7 +308,6 @@ void puzzle::rotateByIDandAxis(int id, SG_VECTOR axis, bool dir,float deg){
 	//now we re-arrange ids on the 3d array
 	//according to axis of rotation
 	//no we do this after we complete 90 deg rotation
-
 }
 //----------------------------------------------------------------
 void puzzle::exit(){

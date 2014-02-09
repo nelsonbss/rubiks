@@ -60,7 +60,9 @@ void cubie::draw(){
 				//use vector with matrix..es
 				for(int i=0; i<myMatrix.size();i++){
 					//if(myMatrix.at(i).type==1){
-						//its a rotation
+						//it's a rotation
+						//do this 1.57 times??? so that the vecotr only sotres one movement and not one for each angle!!!
+
 						SG_POINT protFace = {0,0,0};//myMatrix.at(0).point;// point;
 						SG_VECTOR vrotFace = myMatrix.at(0).vector;//  axis; //rotate to do a face move
 						float d = myMatrix.at(0).deg;

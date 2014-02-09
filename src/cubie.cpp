@@ -11,6 +11,9 @@ cubie::cubie(float x, float y,int idi){
 	color = rand()%27;
 	okDraw = true;
 	attached = false;
+	rotX = 0.0;
+	rotY = 0.0;
+	rotZ = 0.0;
 }
 //--------------------------------------------------------------
 void cubie::setup(){
@@ -21,14 +24,14 @@ void cubie::update(){
 
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
-void cubie::faceRotate(SG_POINT point, SG_VECTOR axis, float deg,bool di){
+void cubie::faceRotate(SG_VECTOR axis, float deg,bool di){
 	//this function is to handle a face rotation for a cubbie
 	//this function is invoked on a group of cubies determined by the puzzle..??(stil lneeds to be determined)
 	//use this cubies objectList to draw elements without ever loosing them on groupBreaking
 	if(objects != NULL){
 		//build matrix and add it to the vector myMatrix
 		//matrix *m = new matrix(1,point,axis,deg);
-		myMatrix.push_back(matrix(1,point,axis,deg,di));
+		myMatrix.push_back(matrix(1,axis,deg,di));
 		//cout << "deg: " << di << endl;
 		//matrix temp = (matrix)myMatrix.at(0);
 		//myMatrix.pop_back(); // for now we only want one element
@@ -61,9 +64,20 @@ void cubie::draw(){
 						SG_POINT protFace = {0,0,0};//myMatrix.at(0).point;// point;
 						SG_VECTOR vrotFace = myMatrix.at(0).vector;//  axis; //rotate to do a face move
 						float d = myMatrix.at(0).deg;
+						
 						if(myMatrix.at(i).dir == true){
 							//c
-							objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,d);
+							if(myMatrix.at(i).vector.x == 1){
+								rotX = d;
+								objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,rotX);
+							}else if(myMatrix.at(i).vector.y == 1){
+								rotY = d;
+								objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,rotY);
+							}else{
+								rotZ = d;
+								objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,rotZ);
+							}
+							
 						}else{
 							//cc
 							objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,-d);
@@ -72,7 +86,7 @@ void cubie::draw(){
 						objectList[j]->DestroyTempMatrix();
 					//}
 				}
-				////
+				////rotate and move with the whole puzzle
 				SG_VECTOR vrotH = {0,1,0}; //rotate H
 				SG_POINT protH = {0,0,0};
 				objectList[j]->InitTempMatrix()->Rotate(protH,vrotH,rotH);

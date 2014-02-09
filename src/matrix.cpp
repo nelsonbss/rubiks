@@ -1,7 +1,7 @@
 #include "matrix.h"
 #include "sgCore.h"
 
-matrix::matrix(int t,SG_POINT p, SG_VECTOR v, float d,bool di){
+matrix::matrix(int t, SG_VECTOR v, float d,bool di){
 	//type = t;
 	//if(type == 1){
 		//point = p;

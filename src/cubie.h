@@ -46,7 +46,10 @@ public:
 	//its a vector since we don't know how many transformations a cubie is going to have
 
 	vector<matrix> myMatrix; 
-	void faceRotate(SG_POINT point, SG_VECTOR axis, float deg, bool dir);
+	void faceRotate(SG_VECTOR axis, float deg, bool dir);
+	float rotX;
+	float rotY;
+	float rotZ;
 };
 
 #endif /* defined(__Tcubie__cubie__) */

@@ -264,7 +264,7 @@ void puzzle::rotateByIDandAxis(int id, SG_VECTOR axis, bool dir,float deg){
 	int selX =0;
 	int selY =0;
 	int selZ =0;
-
+	//look for positon of cubie on the 3d data structure
 	for(int x=0;x<3;x++){
 		for(int y=0;y<3;y++){
 			for(int z=0;z<3;z++){
@@ -303,7 +303,7 @@ void puzzle::rotateByIDandAxis(int id, SG_VECTOR axis, bool dir,float deg){
 	//now we tell them to rotate
 	SG_POINT point = {0,0,0};
 	for(int i=0;i<9;i++){
-		myCubies[selected[i]]->faceRotate(point,axis,deg,dir);
+		myCubies[selected[i]]->faceRotate(axis,deg,dir);
 	}
 	//now we re-arrange ids on the 3d array
 	//according to axis of rotation

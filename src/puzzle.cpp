@@ -279,35 +279,88 @@ void puzzle::rotateByIDandAxis(int id, SG_VECTOR axis, bool dir,float deg){
 	}
 	//now we ask for the cubies on that axis
 	if(axis.x == 1){
+		//if the move is on an x axis
 		for(int y=0;y<3;y++){
 			for(int z=0; z<3;z++){
 				selected[counter] = three_dim1[selX][y][z];
 				counter ++;
 			}
 		}
+		rearange3dArray(axis,selX);
 	}else if(axis.y == 1){
+		//if the move is on a y axis
 		for(int x=0;x<3;x++){
 			for(int z=0; z<3;z++){
 				selected[counter] = three_dim1[x][selY][z];
 				counter ++;
 			}
 		}
+		rearange3dArray(axis,selY);
 	}else{
+		//if the move is on a z axis
 		for(int x=0;x<3;x++){
 			for(int y=0; y<3;y++){
 				selected[counter] = three_dim1[x][y][selZ];
 				counter ++;
 			}
 		}
+		rearange3dArray(axis,selZ);
 	}
-	//now we tell them to rotate
+	//now we tell the 9 selected cubies to rotate
 	SG_POINT point = {0,0,0};
 	for(int i=0;i<9;i++){
 		myCubies[selected[i]]->faceRotate(axis,deg,dir);
 	}
+
+
 	//now we re-arrange ids on the 3d array
 	//according to axis of rotation
-	//no we do this after we complete 90 deg rotation
+	// and actual selected plane: selX = x; selY = y; selZ = z;
+
+	//rearranging
+	//do we do this after we complete 90 deg rotation???
+	/////it doesnt matter, it can be that instant, since the 3d array is only looked upon before moving
+	/////the animation will lock selection of new cubie, so on ly one movement is done at a time
+	/////so the re-aranging of numbers can happen "during" the animation
+	//if(axis.x == 1){
+	//	//if the move is on an x axis
+	//	rearange3dArray(axis,selX);
+	//}else if(axis.y == 1){
+	//	//if the move is on a y axis
+	//	rearange3dArray(axis,selY);
+	//}else{
+	//	//if the move is on a z axis
+	//	rearange3dArray(axis,selZ);
+	//}
+}
+//----------------------------------------------------------------
+void puzzle::rearange3dArray(SG_VECTOR axis, int plane){
+	int store[9] = {0};
+	int ctr =0;
+	int cnstplane = plane;
+	if(axis.x == 1){
+		//rotation on X
+		//store all the values
+		for(int y=0;y<3;y++){
+			for(int z=0; z<3; z++){
+				store[ctr]=three_dim1[cnstplane][y][z];
+				ctr ++;
+			}
+		}
+		ctr=0;
+		//put values in new places on 3d array
+		for(int z=2; z>-1; z--){
+			for(int y=0; y<3; y++){
+				three_dim1[cnstplane][y][z] = store[ctr];
+				ctr ++;
+			}
+		}
+	}else if(axis.y == 1){
+		//rotation on Y
+	}else{
+		//rotation on Zq
+	}
+
 }
 //----------------------------------------------------------------
 void puzzle::exit(){

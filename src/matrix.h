@@ -8,12 +8,11 @@
 class matrix {
 	
 public:
-	matrix(int type, SG_VECTOR axis, float deg,bool di);
-    
-	//int type; //1 for rotation, 2 for translation
+	matrix(SG_VECTOR axis, float deg,bool di);
+   
 	bool dir;//direction of rotation true-> Clockwise, false->CC
-	//SG_POINT point; //rotations YES, translations NO
-	SG_VECTOR vector; //both YES
+	//SG_POINT point; //rotations
+	SG_VECTOR vector; //YES
 	float deg; //both YES
 };
 

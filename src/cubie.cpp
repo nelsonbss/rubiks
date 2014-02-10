@@ -26,7 +26,7 @@ void cubie::update(){
 //------------------------------------------------------------------------------------------------------------------------------------------
 void cubie::faceRotate(SG_VECTOR axis, float deg,bool di){
 	//this function is to handle a face rotation for a cubbie
-	//this function is invoked on a group of cubies determined by the puzzle..??(stil lneeds to be determined)
+	//its invoked on a group of cubies determined by the puzzle..??(stil lneeds to be determined)
 	//use this cubies objectList to draw elements without ever loosing them on groupBreaking
 	if(objects != NULL){
 		for (int j=0; j < numObjs; j++){
@@ -44,7 +44,7 @@ void cubie::faceRotate(SG_VECTOR axis, float deg,bool di){
 					}
 					//objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,rotX);
 					//build matrix and add it to the vector myMatrix
-					myMatrix.push_back(matrix(1,axis,rotX,di));
+					myMatrix.push_back(matrix(axis,rotX,di));
 					cout << "history: " << myMatrix.size() << endl;
 					cout << rotX << endl;
 				}else if(axis.y == 1){
@@ -53,14 +53,14 @@ void cubie::faceRotate(SG_VECTOR axis, float deg,bool di){
 						rotY = 0.0;
 					}
 					//objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,rotY);
-					myMatrix.push_back(matrix(1,axis,rotY,di));
+					myMatrix.push_back(matrix(axis,rotY,di));
 				}else{
 					rotZ += 1.57;
 					if(rotZ >= 6.28){
 						rotZ = 0.0;
 					}
 					//objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,rotZ);
-					myMatrix.push_back(matrix(1,axis,rotZ,di));
+					myMatrix.push_back(matrix(axis,rotZ,di));
 				}
 			}else{
 				//cc
@@ -70,7 +70,7 @@ void cubie::faceRotate(SG_VECTOR axis, float deg,bool di){
 						rotX = 0.0;
 					}
 					//objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,rotX);
-					myMatrix.push_back(matrix(1,axis,rotX,di));
+					myMatrix.push_back(matrix(axis,rotX,di));
 					cout << rotX << endl;
 				}else if(axis.y == 1){
 					rotY -= 1.57;
@@ -78,14 +78,14 @@ void cubie::faceRotate(SG_VECTOR axis, float deg,bool di){
 						rotY = 0.0;
 					}
 					//objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,rotY);
-					myMatrix.push_back(matrix(1,axis,rotY,di));
+					myMatrix.push_back(matrix(axis,rotY,di));
 				}else{
 					rotZ -= 1.57;
 					if(rotZ <= -6.28){
 						rotZ = 0.0;
 					}
 					//objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,rotZ);
-					myMatrix.push_back(matrix(1,axis,rotZ,di));
+					myMatrix.push_back(matrix(axis,rotZ,di));
 				}
 			}
 

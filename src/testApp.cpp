@@ -15,7 +15,7 @@
 #define tamCubie 100
 
 #define displayX 500
-#define displayY 500
+#define displayY 400
 
 #define _USE_MATH_DEFINES
 //--------------------------------------------------------------
@@ -53,6 +53,7 @@ void testApp::setup(){
 	objectDisplayed = new myobject3D(displayX,displayY);
 	objectDisplayed->loadObject(sgCreateTorus(100,80,34,34));
 	//objectDisplayed->loadObject(sgCreateCone(200,1,300.0, 3));
+	//objectDisplayed->loadObject(sgCreateBox(300,300,300));
 
 	////////////////////// from STL file
 	/*const char* nel =  ofToDataPath("cube.stl",false).c_str();

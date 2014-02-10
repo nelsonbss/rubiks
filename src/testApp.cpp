@@ -141,7 +141,7 @@ void testApp::update(){
 
 	if(faceRotateC == true) {//c
 
-		tempDeg += M_PI_4; //1.57;
+		tempDeg += 1.57;
 		if(tempDeg >= 6.28){
 			tempDeg = 0.0;
 		}
@@ -160,7 +160,11 @@ void testApp::update(){
 			ct1 = ct2;
 		}else{
 			faceRotateC = false;
+<<<<<<< HEAD
 
+=======
+			//re-arange order of numbers on 3d vector
+>>>>>>> 737a9554e3224e5ea9e447bfc2038143e74a1af4
 		}
 		cout << deg << endl;
 		drawCuts = true;*/

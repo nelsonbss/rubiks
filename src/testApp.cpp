@@ -159,15 +159,8 @@ void testApp::update(){
 		myPuzzle->rotateByIDandAxis(7,axis,true,deg);
 		ct1 = ct2;
 		}else{
-<<<<<<< HEAD
 		faceRotateC = false;
 		//re-arange order of numbers on 3d vector
-
-=======
-			faceRotateC = false;
-			//re-arange order of numbers on 3d vector
-		}
->>>>>>> 737a9554e3224e5ea9e447bfc2038143e74a1af4
 		cout << deg << endl;
 		drawCuts = true;*/
 	}

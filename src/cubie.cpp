@@ -76,7 +76,6 @@ void cubie::draw(){
 			for (int j=0; j < numObjs; j++){
 				//rotations
 				//use vector with matrix..es
-<<<<<<< HEAD
 				//for(int i=0; i<myMatrix.size();i++){
 				//	//if(myMatrix.at(i).type==1){
 				//	//its a rotation
@@ -106,38 +105,6 @@ void cubie::draw(){
 				//	objectList[j]->DestroyTempMatrix();
 				//	//}
 				//}
-=======
-				for(int i=0; i<myMatrix.size();i++){
-					//if(myMatrix.at(i).type==1){
-						//it's a rotation
-						//do this 1.57 times??? so that the vecotr only sotres one movement and not one for each angle!!!
-
-						SG_POINT protFace = {0,0,0};//myMatrix.at(0).point;// point;
-						SG_VECTOR vrotFace = myMatrix.at(0).vector;//  axis; //rotate to do a face move
-						float d = myMatrix.at(0).deg;
-						
-						if(myMatrix.at(i).dir == true){
-							//c
-							if(myMatrix.at(i).vector.x == 1){
-								rotX = d;
-								objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,rotX);
-							}else if(myMatrix.at(i).vector.y == 1){
-								rotY = d;
-								objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,rotY);
-							}else{
-								rotZ = d;
-								objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,rotZ);
-							}
-							
-						}else{
-							//cc
-							objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,-d);
-						}
-						objectList[j]->ApplyTempMatrix();
-						objectList[j]->DestroyTempMatrix();
-					//}
-				}
->>>>>>> 737a9554e3224e5ea9e447bfc2038143e74a1af4
 				////rotate and move with the whole puzzle
 				SG_VECTOR vrotH = {0,1,0}; //rotate H
 				SG_POINT protH = {0,0,0};

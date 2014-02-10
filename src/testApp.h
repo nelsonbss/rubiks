@@ -61,6 +61,10 @@ public:
 	float tempDeg;
 	bool faceRotateC;
 	bool faceRotateCC;
+	bool faceRotateCy;
+	bool faceRotateCCy;
+	bool faceRotateCz;
+	bool faceRotateCCz;
 
 	int randcubie;
 

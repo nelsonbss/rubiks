@@ -141,10 +141,10 @@ void testApp::update(){
 
 	if(faceRotateC == true) {//c
 
-		tempDeg += 1.57;
+		/*tempDeg += 1.57;
 		if(tempDeg >= 6.28){
 			tempDeg = 0.0;
-		}
+		}*/
 		myPuzzle->unDraw();
 		//myPuzzle->faceRotate(point, axis, tempDeg,true);
 		myPuzzle->rotateByIDandAxis(7,axis,true,tempDeg);
@@ -165,10 +165,10 @@ void testApp::update(){
 		drawCuts = true;*/
 	}
 	if(faceRotateCC == true) {//
-		tempDeg -= 1.57;
-		if(tempDeg <= -6.28){
-			tempDeg = 0.0;
-		}
+		//tempDeg -= 1.57;
+		//if(tempDeg <= -6.28){
+		//	tempDeg = 0.0;
+		//}
 		myPuzzle->unDraw();
 		//myPuzzle->faceRotate(point,axis,tempDeg,false);
 		myPuzzle->rotateByIDandAxis(7,axis,false,tempDeg);
@@ -187,6 +187,42 @@ void testApp::update(){
 		}
 		cout << deg << endl;
 		drawCuts = true;*/
+	}
+
+	SG_VECTOR axisy = {0,1,0};
+	if(faceRotateCy == true) {//c
+		myPuzzle->unDraw();
+		//myPuzzle->faceRotate(point, axis, tempDeg,true);
+		myPuzzle->rotateByIDandAxis(7,axisy,true,tempDeg);
+		drawCuts = true;
+		faceRotateCy = false;
+		//cout << tempDeg << endl;
+	}
+	if(faceRotateCCy == true) {//
+		myPuzzle->unDraw();
+		//myPuzzle->faceRotate(point,axis,tempDeg,false);
+		myPuzzle->rotateByIDandAxis(7,axisy,false,tempDeg);
+		drawCuts = true;
+		faceRotateCCy = false;
+		//cout << tempDeg << endl;
+	}
+
+	SG_VECTOR axisz = {0,0,1};
+	if(faceRotateCz == true) {//c
+		myPuzzle->unDraw();
+		//myPuzzle->faceRotate(point, axis, tempDeg,true);
+		myPuzzle->rotateByIDandAxis(7,axisz,true,tempDeg);
+		drawCuts = true;
+		faceRotateCz = false;
+		//cout << tempDeg << endl;
+	}
+	if(faceRotateCCz == true) {//
+		myPuzzle->unDraw();
+		//myPuzzle->faceRotate(point,axis,tempDeg,false);
+		myPuzzle->rotateByIDandAxis(7,axisz,false,tempDeg);
+		drawCuts = true;
+		faceRotateCCz = false;
+		//cout << tempDeg << endl;
 	}
 	if(draw3dObject){
 		objectDisplayed->update(); //rotates the selected object...just for show
@@ -293,6 +329,27 @@ void testApp::keyPressed(int key){
 			ct1 = ofGetElapsedTimeMillis();
 			faceRotateCC = true; //counter clockwise
 		}
+
+		if(key == 'w') {
+			ct1 = ofGetElapsedTimeMillis();
+			//tempDeg = 0.0;
+			randcubie = rand()%26;
+			faceRotateCy = true; //clockwise
+		}if(key == 's') {
+			//tempDeg = 0.0;
+			ct1 = ofGetElapsedTimeMillis();
+			faceRotateCCy = true; //counter clockwise
+		}
+		if(key == 'e') {
+			ct1 = ofGetElapsedTimeMillis();
+			//tempDeg = 0.0;
+			randcubie = rand()%26;
+			faceRotateCz = true; //clockwise
+		}if(key == 'd') {
+			//tempDeg = 0.0;
+			ct1 = ofGetElapsedTimeMillis();
+			faceRotateCCz = true; //counter clockwise
+		}
 	}
 }
 //--------------------------------------------------------------
@@ -381,7 +438,7 @@ void testApp::exit(){
 		myCutter->exit();
 		mySlicer->exit();
 	}
-	sgFreeKernel();
+	//sgFreeKernel();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------
 //

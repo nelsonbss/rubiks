@@ -30,36 +30,67 @@ void cubie::faceRotate(SG_VECTOR axis, float deg,bool di){
 	//use this cubies objectList to draw elements without ever loosing them on groupBreaking
 	if(objects != NULL){
 		for (int j=0; j < numObjs; j++){
-			//build matrix and add it to the vector myMatrix
-			//matrix *m = new matrix(1,point,axis,deg);
-			myMatrix.push_back(matrix(1,axis,deg,di));
-			cout << "history: " << myMatrix.size() << endl;
-			//matrix temp = (matrix)myMatrix.at(0);
-			//myMatrix.pop_back(); // for now we only want one element
 			SG_POINT protFace = {0,0,0};
 			SG_VECTOR vrotFace = axis;
-			if(axis.x == 1){
-				rotX = deg;
-				objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,rotX);
-				cout << rotX << endl;
-			}else if(axis.y == 1){
-				rotY = deg;
-				objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,rotY);
+			rotX=0;
+			rotY=0;
+			rotZ=0;
+			if(di == true){
+				//c
+				if(axis.x == 1){
+					rotX += 1.57;
+					if(rotX >= 6.28){
+						//rotX = 0.0;
+					}
+					//objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,rotX);
+					//build matrix and add it to the vector myMatrix
+					myMatrix.push_back(matrix(1,axis,rotX,di));
+					cout << "history: " << myMatrix.size() << endl;
+					cout << rotX << endl;
+				}else if(axis.y == 1){
+					rotY += 1.57;
+					if(rotY >= 6.28){
+						rotY = 0.0;
+					}
+					//objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,rotY);
+					myMatrix.push_back(matrix(1,axis,rotY,di));
+				}else{
+					rotZ += 1.57;
+					if(rotZ >= 6.28){
+						rotZ = 0.0;
+					}
+					//objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,rotZ);
+					myMatrix.push_back(matrix(1,axis,rotZ,di));
+				}
 			}else{
-				rotZ = deg;
-				objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,rotZ);
+				//cc
+				if(axis.x == 1){
+					rotX -= 1.57;
+					if(rotX <= -6.28){
+						rotX = 0.0;
+					}
+					//objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,rotX);
+					myMatrix.push_back(matrix(1,axis,rotX,di));
+					cout << rotX << endl;
+				}else if(axis.y == 1){
+					rotY -= 1.57;
+					if(rotY <= -6.28){
+						rotY = 0.0;
+					}
+					//objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,rotY);
+					myMatrix.push_back(matrix(1,axis,rotY,di));
+				}else{
+					rotZ -= 1.57;
+					if(rotZ <= -6.28){
+						rotZ = 0.0;
+					}
+					//objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,rotZ);
+					myMatrix.push_back(matrix(1,axis,rotZ,di));
+				}
 			}
 
-			objectList[j]->ApplyTempMatrix();
-			objectList[j]->DestroyTempMatrix();
-			//for (int j=0; j < numObjs; j++){
-			//	SG_POINT protFace = temp.point;// point;
-			//	SG_VECTOR vrotFace = temp.vector;//  axis; //rotate to do a face move
-			//	float d = temp.deg;
-			//	objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,d);
-			//	objectList[j]->ApplyTempMatrix();
-			//	objectList[j]->DestroyTempMatrix();
-			//}
+			//objectList[j]->ApplyTempMatrix();
+			//objectList[j]->DestroyTempMatrix();
 		}
 	}else{
 		//cout << "null at face rotation" << endl;
@@ -76,35 +107,58 @@ void cubie::draw(){
 			for (int j=0; j < numObjs; j++){
 				//rotations
 				//use vector with matrix..es
-				//for(int i=0; i<myMatrix.size();i++){
-				//	//if(myMatrix.at(i).type==1){
-				//	//its a rotation
-				//	//do this # of t
-				//	SG_POINT protFace = {0,0,0};//myMatrix.at(0).point;// point;
-				//	SG_VECTOR vrotFace = myMatrix.at(0).vector;//  axis; //rotate to do a face move
-				//	float d = myMatrix.at(0).deg;
+				for(int i=0; i<myMatrix.size();i++){
+				//if(myMatrix.at(i).type==1){
+				//its a rotation
+				//do this # of t
+				//int tam = myMatrix.size();
+				//if(tam >0){
+					SG_POINT protFace = {0,0,0};//myMatrix.at(0).point;// point;
+					SG_VECTOR vrotFace = myMatrix.at(i).vector;//  axis; //rotate to do a face move
+					float d = myMatrix.at(i).deg;
 
-				//	if(myMatrix.at(i).dir == true){
-				//		//c
-				//		if(myMatrix.at(i).vector.x == 1){
-				//			rotX = d;
-				//			objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,rotX);
-				//		}else if(myMatrix.at(i).vector.y == 1){
-				//			rotY = d;
-				//			objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,rotY);
-				//		}else{
-				//			rotZ = d;
-				//			objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,rotZ);
-				//		}
+					if(myMatrix.at(i).dir == true){
+						//c
+						if(myMatrix.at(i).vector.x == 1){
+							objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,d);
+						}else if(myMatrix.at(i).vector.y == 1){
+							//rotY = d;
+							objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,d);
+						}else{
+							//rotZ = d;
+							objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,d);
+						}
 
-				//	}else{
-				//		//cc
-				//		objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,-d);
-				//	}
-				//	objectList[j]->ApplyTempMatrix();
-				//	objectList[j]->DestroyTempMatrix();
-				//	//}
+					}else{
+						//cc
+						if(myMatrix.at(i).vector.x == 1){
+							objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,d);
+						}else if(myMatrix.at(i).vector.y == 1){
+							//rotY = d;
+							objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,d);
+						}else{
+							//rotZ = d;
+							objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,d);
+						}
+					}
+					objectList[j]->ApplyTempMatrix();
+					objectList[j]->DestroyTempMatrix();
+				}
 				//}
+				//}
+
+				//if(myMatrix[myMatrix.size()-1].vector.x == 1){
+				//	rotX = myMatrix[myMatrix.size()-1].deg;
+				//}else if(myMatrix[myMatrix.size()-1].vector.y == 1){
+				//	//rotY = d;
+				//	rotY = myMatrix[myMatrix.size()-1].deg;
+				//}else{
+				//	//rotZ = d;
+				//	rotZ = myMatrix[myMatrix.size()-1].deg;
+				//}
+
+
+
 				////rotate and move with the whole puzzle
 				SG_VECTOR vrotH = {0,1,0}; //rotate H
 				SG_POINT protH = {0,0,0};

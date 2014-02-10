@@ -154,18 +154,14 @@ void testApp::update(){
 
 		/*myPuzzle->unDraw();
 		if(deg < 1.57079633){
-			ct2 = ofGetElapsedTimeMillis();
-			deg += (ct2 - ct1)*((1.57079633)/animTime);
-			myPuzzle->rotateByIDandAxis(7,axis,true,deg);
-			ct1 = ct2;
+		ct2 = ofGetElapsedTimeMillis();
+		deg += (ct2 - ct1)*((1.57079633)/animTime);
+		myPuzzle->rotateByIDandAxis(7,axis,true,deg);
+		ct1 = ct2;
 		}else{
-			faceRotateC = false;
-<<<<<<< HEAD
+		faceRotateC = false;
+		//re-arange order of numbers on 3d vector
 
-=======
-			//re-arange order of numbers on 3d vector
->>>>>>> 737a9554e3224e5ea9e447bfc2038143e74a1af4
-		}
 		cout << deg << endl;
 		drawCuts = true;*/
 	}
@@ -183,12 +179,12 @@ void testApp::update(){
 
 		/*myPuzzle->unDraw();
 		if(deg < 1.57079633){
-			ct2 = ofGetElapsedTimeMillis();
-			deg += ((ct2 - ct1)*(1.57079633))/animTime;
-			myPuzzle->rotateByIDandAxis(7,axis,false,deg);
-			ct1 = ct2;
+		ct2 = ofGetElapsedTimeMillis();
+		deg += ((ct2 - ct1)*(1.57079633))/animTime;
+		myPuzzle->rotateByIDandAxis(7,axis,false,deg);
+		ct1 = ct2;
 		}else{
-			faceRotateCC = false;
+		faceRotateCC = false;
 		}
 		cout << deg << endl;
 		drawCuts = true;*/

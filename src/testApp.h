@@ -71,4 +71,20 @@ public:
 	float ct1;
 	float ct2;
 	float deg;
+	////////////////rendering  and textures
+	ofLight pointLight;
+	ofLight spotLight;
+	ofLight directionalLight;
+
+	ofMaterial material;
+	ofImage ofLogoImage;
+
+	float radius;
+	ofVec3f center;
+	bool bShiny;
+	bool bSmoothLighting;
+	bool bPointLight, bSpotLight, bDirLight;
+	bool bUseTexture;
+	//Universal function which sets normals for the triangle mesh
+	void setNormals( ofMesh &mesh );
 };

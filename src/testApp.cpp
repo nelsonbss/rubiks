@@ -20,13 +20,71 @@
 #define _USE_MATH_DEFINES
 //--------------------------------------------------------------
 void testApp::setup(){
-	//ofSetVerticalSync(true);
-	//ofEnableDepthTest();
-	//ofBackground(10, 10, 10, 0);
+	ofSetVerticalSync(true);
+	ofEnableDepthTest();
+	ofBackground(10, 10, 10, 0);
 	// turn on smooth lighting //
-   // bSmoothLighting     = true;
-    ofSetSmoothLighting(true);
-	///////////////////////////////////////////////////////////////
+	bSmoothLighting = true;
+	ofSetSmoothLighting(true);
+
+	// lets make a high-res sphere //
+	// default is 20 //
+	ofSetSphereResolution(128);
+
+	// radius of the sphere //
+	radius		= 180.f;
+	center.set(ofGetWidth()*.5, ofGetHeight()*.5, 0);
+
+	// Point lights emit light in all directions //
+	// set the diffuse color, color reflected from the light source //
+	pointLight.setDiffuseColor( ofColor(0.f, 255.f, 0.f));
+
+	// specular color, the highlight/shininess color //
+	pointLight.setSpecularColor( ofColor(255.f, 255.f, 0.f));
+	pointLight.setPointLight();
+
+
+
+	spotLight.setDiffuseColor( ofColor(255.f, 0.f, 0.f));
+	spotLight.setSpecularColor( ofColor(255.f, 255.f, 255.f));
+
+	// turn the light into spotLight, emit a cone of light //
+	spotLight.setSpotlight();
+
+	// size of the cone of emitted light, angle between light axis and side of cone //
+	// angle range between 0 - 90 in degrees //
+	spotLight.setSpotlightCutOff( 50 );
+
+	// rate of falloff, illumitation decreases as the angle from the cone axis increases //
+	// range 0 - 128, zero is even illumination, 128 is max falloff //
+	spotLight.setSpotConcentration( 45 );
+
+
+	// Directional Lights emit light based on their orientation, regardless of their position //
+	directionalLight.setDiffuseColor(ofColor(0.f, 0.f, 255.f));
+	directionalLight.setSpecularColor(ofColor(255.f, 255.f, 255.f));
+	directionalLight.setDirectional();
+
+	// set the direction of the light
+	// set it pointing from left to right -> //
+	directionalLight.setOrientation( ofVec3f(0, 90, 0) );
+
+
+	bShiny = true;
+	// shininess is a value between 0 - 128, 128 being the most shiny //
+	material.setShininess( 120 );
+	// the light highlight of the material //
+	material.setSpecularColor(ofColor(255, 255, 255, 255));
+
+	bPointLight = bSpotLight = bDirLight = true;
+
+	// tex coords for 3D objects in OF are from 0 -> 1, not 0 -> image.width
+	// so we must disable the arb rectangle call to allow 0 -> 1
+	//ofDisableArbTex();
+	//// load an image to use as the texture //
+	ofLogoImage.loadImage("of.png");
+	bUseTexture = true;
+	/////////////////////////////////////////PUZzLE //////////
 	puzzleExists = false;
 	makeCut = false;
 	drawCuts = false;
@@ -47,10 +105,10 @@ void testApp::setup(){
 	deg = 0.0;
 	faceRotateC = false;
 	faceRotateCC = false;
-	/////initialize sgCore library
+	///////////////////////////////////////////////////initialize sgCore library
 	sgInitKernel();  
 	initScene();
-	sgC3DObject::AutoTriangulate(false, SG_DELAUNAY_TRIANGULATION);
+	//sgC3DObject::AutoTriangulate(false, SG_DELAUNAY_TRIANGULATION);
 
 	//////////////////////////////////////////////////////////////////////////////////
 	///////////////////////////3D OBJECT LOADING//////////////////////////////////////
@@ -80,6 +138,13 @@ void testApp::setup(){
 //--------------------------------------------------------------
 void testApp::update(){
 
+	pointLight.setPosition(cos(ofGetElapsedTimef()*.6f) * radius * 2 + center.x, 
+		sin(ofGetElapsedTimef()*.8f) * radius * 2 + center.y, 
+		-cos(ofGetElapsedTimef()*.8f) * radius * 2 + center.z);
+
+	spotLight.setOrientation( ofVec3f( 0, cos(ofGetElapsedTimef()) * RAD_TO_DEG, 0) );
+	spotLight.setPosition( mouseX, mouseY, 200);
+	/////////////////////////////////////////////////////////////PUZZLE
 	if(makeCut==true){
 		////////////////////////////////create puzzle///////////////////////////////////////
 		myPuzzle = new puzzle(displayX,displayY);
@@ -149,7 +214,7 @@ void testApp::update(){
 
 		/*tempDeg += 1.57;
 		if(tempDeg >= 6.28){
-			tempDeg = 0.0;
+		tempDeg = 0.0;
 		}*/
 		myPuzzle->unDraw();
 		//myPuzzle->faceRotate(point, axis, tempDeg,true);
@@ -237,7 +302,9 @@ void testApp::update(){
 
 //--------------------------------------------------------------
 void testApp::draw(){
-	
+	// enable lighting //
+	//ofEnableLighting();
+
 	////////////////////////////////Draw the pieces////////////////////////////////////
 	if(drawCuts1==true){
 		//mySlicer->draw();
@@ -502,12 +569,12 @@ void testApp::drawElements(){
 		{
 			Painter::DrawObject(GL_RENDER,curObj,false);
 
-			if ((curObj->GetAttribute(SG_OA_DRAW_STATE) & SG_DS_GABARITE))
+			/*if ((curObj->GetAttribute(SG_OA_DRAW_STATE) & SG_DS_GABARITE))
 			{
-				SG_POINT a1,a2;
-				curObj->GetGabarits(a1,a2);
-				Painter::DrawGabariteBox(a1,a2);
-			}
+			SG_POINT a1,a2;
+			curObj->GetGabarits(a1,a2);
+			Painter::DrawGabariteBox(a1,a2);
+			}*/
 		}
 		curObj = sgGetScene()->GetObjectsList()->GetNext(curObj);
 	}
@@ -524,4 +591,47 @@ void testApp::drawElements(){
 	//		}
 	//	}
 	//}
+}
+//-----------------------------------------------------------------------------------------------------------------------------------------
+//Universal function which sets normals for the triangle mesh
+void testApp::setNormals( ofMesh &mesh ){
+
+	//The number of the vertices
+	int nV = mesh.getNumVertices();
+
+	//The number of the triangles
+	int nT = mesh.getNumIndices() / 3;
+
+	vector<ofPoint> norm( nV ); //Array for the normals
+
+	//Scan all the triangles. For each triangle add its
+	//normal to norm's vectors of triangle's vertices
+	for (int t=0; t<nT; t++) {
+		//Get indices of the triangle t
+		int i1 = mesh.getIndex( 3 * t );
+		int i2 = mesh.getIndex( 3 * t + 1 );
+		int i3 = mesh.getIndex( 3 * t + 2 );
+
+		//Get vertices of the triangle
+		const ofPoint &v1 = mesh.getVertex( i1 );
+		const ofPoint &v2 = mesh.getVertex( i2 );
+		const ofPoint &v3 = mesh.getVertex( i3 );
+
+		//Compute the triangle's normal
+		ofPoint dir = ( (v2 - v1).crossed( v3 - v1 ) ).normalized();
+
+		//Accumulate it to norm array for i1, i2, i3
+		norm[ i1 ] += dir;
+		norm[ i2 ] += dir;
+		norm[ i3 ] += dir;
+	}
+
+	//Normalize the normal's length
+	for (int i=0; i<nV; i++) {
+		norm[i].normalize();
+	}
+
+	//Set the normals to mesh
+	mesh.clearNormals();
+	mesh.addNormals( norm );
 }

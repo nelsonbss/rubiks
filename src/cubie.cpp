@@ -156,9 +156,6 @@ void cubie::draw(){
 				//	//rotZ = d;
 				//	rotZ = myMatrix[myMatrix.size()-1].deg;
 				//}
-
-
-
 				////rotate and move with the whole puzzle
 				SG_VECTOR vrotH = {0,1,0}; //rotate H
 				SG_POINT protH = {0,0,0};
@@ -174,6 +171,7 @@ void cubie::draw(){
 				objectList[j]->ApplyTempMatrix();
 				objectList[j]->DestroyTempMatrix();
 				objectList[j]->SetAttribute(SG_OA_COLOR,color);
+				objectList[j]->Triangulate(SG_VERTEX_TRIANGULATION);
 				objectList[j]->SetAttribute(SG_OA_DRAW_STATE,SG_DS_FULL);
 				//if(attached == false){
 				sgGetScene()->AttachObject(objectList[j]);
@@ -206,14 +204,14 @@ void cubie::unDraw(){
 		const int ChCnt = objects2->GetChildrenList()->GetCount();
 		numObjs = ChCnt;
 		//give this cubies list some memory
-		objectList = (sgCObject**)malloc(ChCnt*sizeof(sgCObject*));
+		objectList = (sgC3DObject**)malloc(ChCnt*sizeof(sgC3DObject*));
 		//start breaking incoming group
 		sgCObject** allParts = (sgCObject**)malloc(ChCnt*sizeof(sgCObject*));
 		objects2->BreakGroup(allParts);
 		sgCObject::DeleteObject(objects2);
 
 		for (int j=0; j < ChCnt; j++){
-			objectList[j] = allParts[j];
+			objectList[j] = (sgC3DObject*)allParts[j];
 		}
 		free(allParts);
 	}else{
@@ -267,7 +265,7 @@ void cubie::setObjects(sgCGroup *objs){
 		const int ChCnt = objs->GetChildrenList()->GetCount();
 		numObjs = ChCnt;
 		//give this cubies list some memory
-		objectList = (sgCObject**)malloc(ChCnt*sizeof(sgCObject*));
+		objectList = (sgC3DObject**)malloc(ChCnt*sizeof(sgC3DObject*));
 		//start breaking incoming group
 		sgCObject** allParts = (sgCObject**)malloc(ChCnt*sizeof(sgCObject*));
 		objs->BreakGroup(allParts);
@@ -277,8 +275,8 @@ void cubie::setObjects(sgCGroup *objs){
 			//clone each object
 			sgCObject *temp = allParts[j];
 			//put clone on *[] tomake new group
-			objectList[j] = temp->Clone();
-			objcts[objctr] = temp->Clone();
+			objectList[j] = (sgC3DObject*)temp->Clone();
+			objcts[objctr] = (sgC3DObject*)temp->Clone();
 			objctr ++;
 		}
 		free(allParts);

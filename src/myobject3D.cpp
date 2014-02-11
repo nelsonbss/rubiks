@@ -12,6 +12,8 @@ void myobject3D::setup(){
 	temp->InitTempMatrix()->Translate(rotD);
 	temp->ApplyTempMatrix();  
 	temp->DestroyTempMatrix();
+
+	object->Triangulate(SG_VERTEX_TRIANGULATION);
 }
 //--------------------------------------------------------------
 void myobject3D::update(){
@@ -39,7 +41,7 @@ void myobject3D::draw(){
 	ofTranslate(0,0);
 	ofSetColor(ofColor(255,0,0));
 	ofCircle(ofPoint(100,100),5);
-	//temp->Triangulate(SG_VERTEX_TRIANGULATION);
+	temp->Triangulate(SG_VERTEX_TRIANGULATION);
 	temp->SetAttribute(SG_OA_COLOR,2);
 	sgGetScene()->AttachObject(temp);
 
@@ -65,7 +67,7 @@ void myobject3D::loadObjectFromFile(const char* pathTofile){
 	cout << "draw: " << sgGetScene()->GetObjectsList()->GetCount() << endl;
 }
 //----------------------------------------------------------------
-void myobject3D::loadObject(sgCObject *obj){
+void myobject3D::loadObject(sgC3DObject *obj){
 	//it will load a sgCore lib object: torus, box
 	object = obj;
 }

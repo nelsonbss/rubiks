@@ -22,7 +22,7 @@ public:
 
 	sgCGroup *objects;
 	float numObjs;
-	sgCObject **objectList;
+	sgC3DObject **objectList;
 
 	float color;
 	bool okDraw;

@@ -20,7 +20,12 @@
 #define _USE_MATH_DEFINES
 //--------------------------------------------------------------
 void testApp::setup(){
-
+	ofSetVerticalSync(true);
+	ofEnableDepthTest();
+	ofBackground(10, 10, 10, 0);
+	// turn on smooth lighting //
+   // bSmoothLighting     = true;
+    ofSetSmoothLighting(true);
 	///////////////////////////////////////////////////////////////
 	puzzleExists = false;
 	makeCut = false;
@@ -232,7 +237,7 @@ void testApp::update(){
 
 //--------------------------------------------------------------
 void testApp::draw(){
-	ofBackground(10, 10, 10, 0);
+	
 	////////////////////////////////Draw the pieces////////////////////////////////////
 	if(drawCuts1==true){
 		//mySlicer->draw();
@@ -351,6 +356,9 @@ void testApp::keyPressed(int key){
 			//tempDeg = 0.0;
 			ct1 = ofGetElapsedTimeMillis();
 			faceRotateCCz = true; //counter clockwise
+		}
+		if(OF_KEY_DOWN){
+			cout << "space" << endl;
 		}
 	}
 }

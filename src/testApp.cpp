@@ -20,9 +20,9 @@
 #define _USE_MATH_DEFINES
 //--------------------------------------------------------------
 void testApp::setup(){
-	ofSetVerticalSync(true);
-	ofEnableDepthTest();
-	ofBackground(10, 10, 10, 0);
+	//ofSetVerticalSync(true);
+	//ofEnableDepthTest();
+	//ofBackground(10, 10, 10, 0);
 	// turn on smooth lighting //
    // bSmoothLighting     = true;
     ofSetSmoothLighting(true);

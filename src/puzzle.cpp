@@ -286,6 +286,9 @@ void puzzle::rotateByIDandAxis(int id, SG_VECTOR axis, bool dir,float deg){
 				counter ++;
 			}
 		}
+		//now we re-arrange ids on the 3d array
+		//according to axis of rotation
+		// and actual selected plane: selX = x; selY = y; selZ = z;
 		rearange3dArray(axis,selX,dir);
 	}else if(axis.y == 1){
 		//if the move is on a y axis
@@ -313,25 +316,13 @@ void puzzle::rotateByIDandAxis(int id, SG_VECTOR axis, bool dir,float deg){
 	}
 
 
-	//now we re-arrange ids on the 3d array
-	//according to axis of rotation
-	// and actual selected plane: selX = x; selY = y; selZ = z;
+
 
 	//rearranging
 	//do we do this after we complete 90 deg rotation???
 	/////it doesnt matter, it can be that instant, since the 3d array is only looked upon before moving
 	/////the animation will lock selection of new cubie, so on ly one movement is done at a time
 	/////so the re-aranging of numbers can happen "during" the animation
-	//if(axis.x == 1){
-	//	//if the move is on an x axis
-	//	rearange3dArray(axis,selX);
-	//}else if(axis.y == 1){
-	//	//if the move is on a y axis
-	//	rearange3dArray(axis,selY);
-	//}else{
-	//	//if the move is on a z axis
-	//	rearange3dArray(axis,selZ);
-	//}
 }
 //----------------------------------------------------------------
 void puzzle::rearange3dArray(SG_VECTOR axis, int plane, bool dir){
@@ -414,7 +405,7 @@ void puzzle::rearange3dArray(SG_VECTOR axis, int plane, bool dir){
 					ctr ++;
 				}
 			}
-			
+
 		}else if(axis.y == 1){
 			//rotation on Y
 			//store all the values
@@ -432,7 +423,7 @@ void puzzle::rearange3dArray(SG_VECTOR axis, int plane, bool dir){
 					ctr ++;
 				}
 			}
-		
+
 		}else{
 			//rotation on Z
 			//store all the values
@@ -458,7 +449,7 @@ void puzzle::rearange3dArray(SG_VECTOR axis, int plane, bool dir){
 void puzzle::unDo(){
 	//takes the puzzle one step back on its history
 	//it removes the las element on the vector with the history
-	
+
 	//unDraw
 	//draw
 }

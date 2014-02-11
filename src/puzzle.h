@@ -50,8 +50,9 @@ public:
     typedef std::vector<TwoDimensions>ThreeDimensions;
 	ThreeDimensions three_dim1;
 	void rotateByIDandAxis(int id, SG_VECTOR axis,bool dir,float deg);
+	void rearange3dArray(SG_VECTOR axis, int plane, bool dir);
 
-	void rearange3dArray(SG_VECTOR axis, int plane);
+	void unDo();
 
 };
 

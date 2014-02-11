@@ -286,7 +286,7 @@ void puzzle::rotateByIDandAxis(int id, SG_VECTOR axis, bool dir,float deg){
 				counter ++;
 			}
 		}
-		rearange3dArray(axis,selX);
+		rearange3dArray(axis,selX,dir);
 	}else if(axis.y == 1){
 		//if the move is on a y axis
 		for(int x=0;x<3;x++){
@@ -295,7 +295,7 @@ void puzzle::rotateByIDandAxis(int id, SG_VECTOR axis, bool dir,float deg){
 				counter ++;
 			}
 		}
-		rearange3dArray(axis,selY);
+		rearange3dArray(axis,selY,dir);
 	}else{
 		//if the move is on a z axis
 		for(int x=0;x<3;x++){
@@ -304,7 +304,7 @@ void puzzle::rotateByIDandAxis(int id, SG_VECTOR axis, bool dir,float deg){
 				counter ++;
 			}
 		}
-		rearange3dArray(axis,selZ);
+		rearange3dArray(axis,selZ,dir);
 	}
 	//now we tell the 9 selected cubies to rotate
 	SG_POINT point = {0,0,0};
@@ -334,63 +334,133 @@ void puzzle::rotateByIDandAxis(int id, SG_VECTOR axis, bool dir,float deg){
 	//}
 }
 //----------------------------------------------------------------
-void puzzle::rearange3dArray(SG_VECTOR axis, int plane){
+void puzzle::rearange3dArray(SG_VECTOR axis, int plane, bool dir){
+	//rearanges ids of cubies inside the 3d array
+	//it deppends on the axis, plane on that axis, and the direction of rotation!!
+
 	int store[9] = {0};
 	int ctr =0;
 	int cnstplane = plane;
-	if(axis.x == 1){
-		//rotation on X
-		//store all the values
-		for(int y=0;y<3;y++){
-			for(int z=0; z<3; z++){
-				store[ctr]=three_dim1[cnstplane][y][z];
-				ctr ++;
+	if(dir == true){
+		//clockwise rotations
+		if(axis.x == 1){
+			//rotation on X
+			//store all the values
+			for(int y=0;y<3;y++){
+				for(int z=0; z<3; z++){
+					store[ctr]=three_dim1[cnstplane][y][z];
+					ctr ++;
+				}
 			}
-		}
-		ctr=0;
-		//put values in new places on 3d array
-		for(int z=2; z>-1; z--){
-			for(int y=0; y<3; y++){
-				three_dim1[cnstplane][y][z] = store[ctr];
-				ctr ++;
+			ctr=0;
+			//put values in new places on 3d array
+			for(int z=2; z>-1; z--){
+				for(int y=0; y<3; y++){
+					three_dim1[cnstplane][y][z] = store[ctr];
+					ctr ++;
+				}
 			}
-		}
-	}else if(axis.y == 1){
-		//rotation on Y
-		//store all the values
-		for(int x=0;x<3;x++){
-			for(int z=0; z<3; z++){
-				store[ctr]=three_dim1[x][cnstplane][z];
-				ctr ++;
+		}else if(axis.y == 1){
+			//rotation on Y
+			//store all the values
+			for(int x=0;x<3;x++){
+				for(int z=0; z<3; z++){
+					store[ctr]=three_dim1[x][cnstplane][z];
+					ctr ++;
+				}
 			}
-		}
-		ctr=0;
-		//put values in new places on 3d array
-		for(int z=2; z>-1; z--){
-			for(int x=0; x<3; x++){
-				three_dim1[x][cnstplane][z] = store[ctr];
-				ctr ++;
+			ctr=0;
+			//put values in new places on 3d array
+			for(int z=2; z>-1; z--){
+				for(int x=0; x<3; x++){
+					three_dim1[x][cnstplane][z] = store[ctr];
+					ctr ++;
+				}
+			}
+		}else{
+			//rotation on Z
+			//store all the values
+			for(int x=0;x<3;x++){
+				for(int y=0; y<3; y++){
+					store[ctr]=three_dim1[x][y][cnstplane];
+					ctr ++;
+				}
+			}
+			ctr=0;
+			//put values in new places on 3d array
+			for(int y=0; y < 3; y++){
+				for(int x=2 ; x>-1; x--){
+					three_dim1[x][y][cnstplane] = store[ctr];
+					ctr ++;
+				}
 			}
 		}
 	}else{
-		//rotation on Z
-		//store all the values
-		for(int x=0;x<3;x++){
-			for(int y=0; y<3; y++){
-				store[ctr]=three_dim1[x][y][cnstplane];
-				ctr ++;
+		//counter clockwise rotations
+		if(axis.x == 1){
+			//rotation on X
+			//store all the values
+			for(int y=0;y<3;y++){
+				for(int z=0; z<3; z++){
+					store[ctr]=three_dim1[cnstplane][y][z];
+					ctr ++;
+				}
 			}
-		}
-		ctr=0;
-		//put values in new places on 3d array
-		for(int y=0; y < 3; y++){
-			for(int x=2 ; x>-1; x--){
-				three_dim1[x][y][cnstplane] = store[ctr];
-				ctr ++;
+			ctr=0;
+			//put values in new places on 3d array
+			for(int z=0; z<3; z++){
+				for(int y=2; y>-1; y--){
+					three_dim1[cnstplane][y][z] = store[ctr];
+					ctr ++;
+				}
+			}
+			
+		}else if(axis.y == 1){
+			//rotation on Y
+			//store all the values
+			for(int x=0;x<3;x++){
+				for(int z=0; z<3; z++){
+					store[ctr]=three_dim1[x][cnstplane][z];
+					ctr ++;
+				}
+			}
+			ctr=0;
+			//put values in new places on 3d array
+			for(int z=0; z<3; z++){
+				for(int x=2; x>-1; x--){
+					three_dim1[x][cnstplane][z] = store[ctr];
+					ctr ++;
+				}
+			}
+		
+		}else{
+			//rotation on Z
+			//store all the values
+			for(int x=0;x<3;x++){
+				for(int y=0; y<3; y++){
+					store[ctr]=three_dim1[x][y][cnstplane];
+					ctr ++;
+				}
+			}
+			ctr=0;
+			//put values in new places on 3d array
+			for(int y=2; y>-1; y--){
+				for(int x=0 ; x<3; x++){
+					three_dim1[x][y][cnstplane] = store[ctr];
+					ctr ++;
+				}
 			}
 		}
 	}
 
+}
+//----------------------------------------------------------------
+void puzzle::unDo(){
+	//takes the puzzle one step back on its history
+	//it removes the las element on the vector with the history
+	
+	//unDraw
+	//draw
 }
 //----------------------------------------------------------------
 void puzzle::exit(){

@@ -312,7 +312,8 @@ void testApp::keyPressed(int key){
 		}
 		////////////erase object ///////////
 		if(key == 'u') {
-			myPuzzle->unDraw();
+			//myPuzzle->unDraw();
+			myPuzzle->unDo();
 		}
 		/////////////////////FACE ROTATIONS!!!///////////////////////////
 		////rotate "FRONT" face original cubie #s:

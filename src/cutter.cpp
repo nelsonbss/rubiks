@@ -535,7 +535,7 @@ void cutter::draw(){
 	ofSetColor(ofColor(255,255,0));
 	ofCircle(ofPoint(posX,posY),10);
 	////////////////////////add planes &/or cubies to scene//
-	addGroupToScene(getCutterPlanes());
+	//addGroupToScene(getCutterPlanes());
 	//addGroupToScene(getCutterCubes());
 }
 //--------------------------------------------------------------

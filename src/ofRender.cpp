@@ -7,6 +7,7 @@ ofRender::ofRender(){
 
 void ofRender::sgCoretoOFmesh(sgC3DObject *obj, ofMesh &mesh){
 	//convert to of mesh and draw as of
+	mesh.setMode(OF_PRIMITIVE_TRIANGLES);
 	int numTriangles =0;
 	const SG_POINT *vertex;
 	vector< ofVec3f > vert;
@@ -31,7 +32,7 @@ void ofRender::sgCoretoOFmesh(sgC3DObject *obj, ofMesh &mesh){
 }
 //----------------------------------------------------------------------------------------------------------------
 void ofRender::setNormals( ofMesh &mesh ){
-	//this function is to normals for the triangle mesh
+	//this function is to produce normals for the triangle mesh
 	//The number of the vertices
 	int nV = mesh.getNumVertices();
 
@@ -42,6 +43,8 @@ void ofRender::setNormals( ofMesh &mesh ){
 
 	//Scan all the triangles. For each triangle add its
 	//normal to norm's vectors of triangle's vertices
+	cout << "num triangles:" << nT << endl;
+
 	for (int t=0; t<nT; t++) {
 		//Get indices of the triangle t
 		int i1 = mesh.getIndex( 3 * t );
@@ -55,6 +58,27 @@ void ofRender::setNormals( ofMesh &mesh ){
 
 		//Compute the triangle's normal
 		ofPoint dir = ( (v2 - v1).crossed( v3 - v1 ) ).normalized();
+		
+		ofPoint x = ofPoint(1,0,0);
+		ofPoint y = ofPoint(0,1,0);
+		ofPoint z = ofPoint(0,0,1);
+		ofPoint xn = ofPoint(-1,0,0);
+		ofPoint yn = ofPoint(0,-1,0);
+		ofPoint zn = ofPoint(0,0,-1);
+
+		if(dir==x){
+			cout << "x axis normal " << t << endl;
+		}else if(dir==y){
+			cout << "y axis normal " << t<< endl;
+		}else if(dir==z){
+			cout << "z axis normal "<< t << endl;
+		}else if(dir==xn){
+			cout << "xn axis normal "<< t << endl;
+		}else if(dir==yn){
+			cout << "yn axis normal " << t<< endl;
+		}else if(dir==zn){
+			cout << "zn axis normal " << t << endl;
+		}
 
 		//Accumulate it to norm array for i1, i2, i3
 		norm[ i1 ] += dir;

@@ -43,7 +43,7 @@ void slicer::draw(){
 				//aux->DestroyTempMatrix();
 				aux->Triangulate(SG_VERTEX_TRIANGULATION);
 				aux->SetAttribute(SG_OA_COLOR,rand()%50);
-				sgGetScene()->AttachObject(allChilds3a[j]);
+				//sgGetScene()->AttachObject(allChilds3a[j]);
 			}
 			free(allChilds3a);
 		}

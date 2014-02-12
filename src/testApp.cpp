@@ -44,14 +44,14 @@ void testApp::setup(){
 	faceRotateCC = false;
 	///////////////////////////////////////////////////initialize sgCore library
 	sgInitKernel();  
-	initScene();
+	//initScene();//this function was from openGL initial drawing
 	//sgC3DObject::AutoTriangulate(false, SG_DELAUNAY_TRIANGULATION);
 
 	//////////////////////////////////////////////////////////////////////////////////
 	///////////////////////////3D OBJECT LOADING//////////////////////////////////////
 	////////////////////// create primitive torus
 	objectDisplayed = new myobject3D(displayX,displayY);
-	objectDisplayed->loadObject(sgCreateTorus(100,80,4,4));
+	objectDisplayed->loadObject(sgCreateTorus(100,80,34,34));
 	//objectDisplayed->loadObject(sgCreateCone(200,1,300.0, 3));
 	//objectDisplayed->loadObject(sgCreateBox(300,300,300));
 
@@ -62,13 +62,13 @@ void testApp::setup(){
 	////////////////////////////////////////////////////////////////////////////////////
 
 	////////////////////////////////create cutter///////////////////////////////////////
-	//myCutter = new cutter(planeThicknes,planeSize,tamCubie,1,0,0); //to make a plane based cutter
-	//myCutter->setup();
+	myCutter = new cutter(planeThicknes,planeSize,tamCubie,1,0,0); //to make a plane based cutter
+	myCutter->setup();
 	//////////////////////////////////end create cutter///////////////////////////////////
 
 	//////////////////////////////////create slicer///////////////////////////////////////
-	//mySlicer = new slicer(myCutter,displayX,displayY);
-	//mySlicer->setup();
+	mySlicer = new slicer(myCutter,displayX,displayY);
+	mySlicer->setup();
 	///////////////////////////end create slicer /////////////////////////////////////////
 
 }
@@ -240,22 +240,68 @@ void testApp::update(){
 //--------------------------------------------------------------
 void testApp::draw(){
 	// enable lighting //
-	ofEnableLighting();
+    ofEnableLighting();
+    // enable the material, so that it applies to all 3D objects before material.end() call //
+	material.begin();
+    // activate the lights //
+	if (bPointLight) pointLight.enable();
+	if (bSpotLight) spotLight.enable();
+	if (bDirLight) directionalLight.enable();
+    
+    // grab the texture reference and bind it //
+    // this will apply the texture to all drawing (vertex) calls before unbind() //
+    if(bUseTexture) ofLogoImage.getTextureReference().bind();
+    
+	ofSetColor(255, 255, 255, 255);
+    ofPushMatrix();
+    ofTranslate(center.x, center.y, center.z-300);
+    ofRotate(ofGetElapsedTimef() * .8 * RAD_TO_DEG, 0, 1, 0);
+	ofDrawSphere( 0,0,0, radius);
+    ofPopMatrix();
+	
+	ofPushMatrix();
+	ofTranslate(300, 300, cos(ofGetElapsedTimef()*1.4) * 300.f);
+	ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 1, 0, 0);
+	ofRotate(ofGetElapsedTimef()*.8 * RAD_TO_DEG, 0, 1, 0);
+	ofDrawBox(0, 0, 0, 60);
+	ofPopMatrix();
+	
+	ofPushMatrix();
+	ofTranslate(center.x, center.y, -900);
+	ofRotate(ofGetElapsedTimef() * .2 * RAD_TO_DEG, 0, 1, 0);
+	ofDrawBox( 0, 0, 0, 850);
+	ofPopMatrix();
+    
+    if(bUseTexture) ofLogoImage.getTextureReference().unbind();
+	
+	if (!bPointLight) pointLight.disable();
+	if (!bSpotLight) spotLight.disable();
+	if (!bDirLight) directionalLight.disable();
+	
+   
 
+
+
+
+
+
+
+
+	////////////////////////////////////////////////////////////////////////////PUZZLE !!!!//////////////////////////////////////
 	////////////////////////////////Draw the pieces////////////////////////////////////
 	if(drawCuts1==true){
 		//made the cuts
 		//mySlicer->draw();
 		drawCuts1 = false;
 		draw3dObject = false;
-		drawCuts = true;
+		//drawCuts = true;///////////////////////////////////////////turn this ON!!! to keep working on ofMesh render of puzzle, like on the 3dObject
 	}
 
 	if(draw3dObject){
 		objectDisplayed->draw();
 		//myCutter->draw();
 	}else{
-		objectDisplayed->unDraw();
+		objectDisplayed->unDraw();//now its not doing anything
 		//myCutter->unDraw();
 	}
 
@@ -269,14 +315,40 @@ void testApp::draw(){
 	//small test of openFrameworks simple drawing embeded with sgCore geometry 
 	ofPushMatrix();
 	ofTranslate(300,300);
-	ofSetColor(ofColor(255,0,255));
-	ofCircle(ofPoint(0,0),5);
+		//ofSetColor(ofColor(255,0,255));
+		ofCircle(ofPoint(0,0),5);
+		ofRotate(ofGetElapsedTimef() * .2 * RAD_TO_DEG, 0, 1, 0);
+		ofDrawBox( 0, 0, 0, 50);
 	ofPopMatrix();
 
 	///use openGL do draw elements taht are on the sgCore Scene object
 	//drawElements();
 	//drawElements2();
 
+
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////////
+	 material.end();
+	// turn off lighting //
+    ofDisableLighting();
+    
+	ofSetColor( pointLight.getDiffuseColor() );
+	if(bPointLight) pointLight.draw();
+    
+    ofSetColor(255, 255, 255);
+	ofSetColor( spotLight.getDiffuseColor() );
+	if(bSpotLight) spotLight.draw();
+	
+	ofSetColor(255, 255, 255);
+	ofDrawBitmapString("Point Light On (1) : "+ofToString(bPointLight) +"\n"+
+					   "Spot Light On (2) : "+ofToString(bSpotLight) +"\n"+
+					   "Directional Light On (3) : "+ofToString(bDirLight)+"\n"+
+					   "Shiny Objects On (s) : "+ofToString(bShiny)+"\n"+
+                       "Spot Light Cutoff (up/down) : "+ofToString(spotLight.getSpotlightCutOff(),0)+"\n"+
+                       "Spot Light Concentration (right/left) : " + ofToString(spotLight.getSpotConcentration(),0)+"\n"+
+                       "Smooth Lighting enabled (x) : "+ofToString(bSmoothLighting,0)+"\n"+
+                       "Textured (t) : "+ofToString(bUseTexture,0),
+					   20, 20);
 }
 //--------------------------------------------------------------
 void testApp::keyPressed(int key){
@@ -451,8 +523,8 @@ void testApp::exit(){
 		mySlicer->exit();
 	}else{
 		objectDisplayed->exit();
-		/*myCutter->exit();
-		mySlicer->exit();*/
+		myCutter->exit();
+		mySlicer->exit();
 	}
 	sgFreeKernel();
 }
@@ -621,7 +693,8 @@ void testApp::setNormals( ofMesh &mesh ){
 }
 //-----------------------------------------------------------------------------
 void testApp::initOFRender(){
-	myMesh.setMode(OF_PRIMITIVE_TRIANGLES);
+	ofGLRenderer(true);
+	//myMesh.setMode(OF_PRIMITIVE_TRIANGLES);
 	//myMesh.setFromTriangles(
 
 	ofSetVerticalSync(true);
@@ -681,7 +754,7 @@ void testApp::initOFRender(){
 
 	// tex coords for 3D objects in OF are from 0 -> 1, not 0 -> image.width
 	// so we must disable the arb rectangle call to allow 0 -> 1
-	//ofDisableArbTex();
+	ofDisableArbTex();
 	//// load an image to use as the texture //
 	ofLogoImage.loadImage("of.png");
 	bUseTexture = true;

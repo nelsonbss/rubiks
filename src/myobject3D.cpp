@@ -47,15 +47,17 @@ void myobject3D::update(){
 //--------------------------------------------------------------
 void myobject3D::draw(){
 	//ofTranslate(0,0);
-	ofSetColor(ofColor(255,0,0));
+	//ofSetColor(ofColor(255,0,0));
 	ofCircle(ofPoint(100,100),5);
 	//sgGetScene()->AttachObject(temp);
 	//instead of attaching to scene
+
 	ofPushMatrix();
-	//ofTranslate(posX,posY);
-	glMultMatrixd(temp->GetTempMatrix()->GetTransparentData());
-	myMesh.draw();
-	ofPopMatrix();
+		//ofTranslate(posX,posY);
+		glMultMatrixd(temp->GetTempMatrix()->GetTransparentData());
+		
+		myMesh.draw();
+		ofPopMatrix();
 	temp->DestroyTempMatrix();
 
 	//object->SetAttribute(SG_OA_COLOR,5);

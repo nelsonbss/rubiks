@@ -20,70 +20,7 @@
 #define _USE_MATH_DEFINES
 //--------------------------------------------------------------
 void testApp::setup(){
-	myMesh.setMode(OF_PRIMITIVE_TRIANGLES);
-	//myMesh.setFromTriangles(
-
-	ofSetVerticalSync(true);
-	ofEnableDepthTest();
-	ofBackground(10, 10, 10, 0);
-	// turn on smooth lighting //
-	bSmoothLighting = true;
-	ofSetSmoothLighting(true);
-
-	// lets make a high-res sphere //
-	// default is 20 //
-	ofSetSphereResolution(128);
-
-	// radius of the sphere //
-	radius		= 180.f;
-	center.set(ofGetWidth()*.5, ofGetHeight()*.5, 0);
-
-	// Point lights emit light in all directions //
-	// set the diffuse color, color reflected from the light source //
-	pointLight.setDiffuseColor( ofColor(0.f, 255.f, 0.f));
-
-	// specular color, the highlight/shininess color //
-	pointLight.setSpecularColor( ofColor(255.f, 255.f, 0.f));
-	pointLight.setPointLight();
-
-	spotLight.setDiffuseColor( ofColor(255.f, 0.f, 0.f));
-	spotLight.setSpecularColor( ofColor(255.f, 255.f, 255.f));
-
-	// turn the light into spotLight, emit a cone of light //
-	spotLight.setSpotlight();
-
-	// size of the cone of emitted light, angle between light axis and side of cone //
-	// angle range between 0 - 90 in degrees //
-	spotLight.setSpotlightCutOff( 50 );
-
-	// rate of falloff, illumitation decreases as the angle from the cone axis increases //
-	// range 0 - 128, zero is even illumination, 128 is max falloff //
-	spotLight.setSpotConcentration( 45 );
-
-	// Directional Lights emit light based on their orientation, regardless of their position //
-	directionalLight.setDiffuseColor(ofColor(0.f, 0.f, 255.f));
-	directionalLight.setSpecularColor(ofColor(255.f, 255.f, 255.f));
-	directionalLight.setDirectional();
-
-	// set the direction of the light
-	// set it pointing from left to right -> //
-	directionalLight.setOrientation( ofVec3f(0, 90, 0) );
-
-
-	bShiny = true;
-	// shininess is a value between 0 - 128, 128 being the most shiny //
-	material.setShininess( 120 );
-	// the light highlight of the material //
-	material.setSpecularColor(ofColor(255, 255, 255, 255));
-
-	bPointLight = bSpotLight = bDirLight = true;
-
-	// tex coords for 3D objects in OF are from 0 -> 1, not 0 -> image.width
-	// so we must disable the arb rectangle call to allow 0 -> 1
-	//ofDisableArbTex();
-	//// load an image to use as the texture //
-	ofLogoImage.loadImage("of.png");
-	bUseTexture = true;
+	initOFRender();
 	/////////////////////////////////////////PUZzLE //////////
 	puzzleExists = false;
 	makeCut = false;
@@ -114,7 +51,7 @@ void testApp::setup(){
 	///////////////////////////3D OBJECT LOADING//////////////////////////////////////
 	////////////////////// create primitive torus
 	objectDisplayed = new myobject3D(displayX,displayY);
-	objectDisplayed->loadObject(sgCreateTorus(100,80,34,34));
+	objectDisplayed->loadObject(sgCreateTorus(100,80,4,4));
 	//objectDisplayed->loadObject(sgCreateCone(200,1,300.0, 3));
 	//objectDisplayed->loadObject(sgCreateBox(300,300,300));
 
@@ -122,17 +59,17 @@ void testApp::setup(){
 	/*const char* nel =  ofToDataPath("cube.stl",false).c_str();
 	objectDisplayed.loadObjectFromFile(nel);*/
 	objectDisplayed->setup();
-	//////////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////////
 
-	//////////////////////////////create cutter///////////////////////////////////////
-	myCutter = new cutter(planeThicknes,planeSize,tamCubie,1,0,0); //to make a plane based cutter
-	myCutter->setup();
-	////////////////////////////////end create cutter///////////////////////////////////
+	////////////////////////////////create cutter///////////////////////////////////////
+	//myCutter = new cutter(planeThicknes,planeSize,tamCubie,1,0,0); //to make a plane based cutter
+	//myCutter->setup();
+	//////////////////////////////////end create cutter///////////////////////////////////
 
-	////////////////////////////////create slicer///////////////////////////////////////
-	mySlicer = new slicer(myCutter,displayX,displayY);
-	mySlicer->setup();
-	/////////////////////////end create slicer /////////////////////////////////////////
+	//////////////////////////////////create slicer///////////////////////////////////////
+	//mySlicer = new slicer(myCutter,displayX,displayY);
+	//mySlicer->setup();
+	///////////////////////////end create slicer /////////////////////////////////////////
 
 }
 //--------------------------------------------------------------
@@ -303,10 +240,11 @@ void testApp::update(){
 //--------------------------------------------------------------
 void testApp::draw(){
 	// enable lighting //
-	//ofEnableLighting();
+	ofEnableLighting();
 
 	////////////////////////////////Draw the pieces////////////////////////////////////
 	if(drawCuts1==true){
+		//made the cuts
 		//mySlicer->draw();
 		drawCuts1 = false;
 		draw3dObject = false;
@@ -337,7 +275,7 @@ void testApp::draw(){
 
 	///use openGL do draw elements taht are on the sgCore Scene object
 	//drawElements();
-	drawElements2();
+	//drawElements2();
 
 }
 //--------------------------------------------------------------
@@ -513,10 +451,10 @@ void testApp::exit(){
 		mySlicer->exit();
 	}else{
 		objectDisplayed->exit();
-		myCutter->exit();
-		mySlicer->exit();
+		/*myCutter->exit();
+		mySlicer->exit();*/
 	}
-	//sgFreeKernel();
+	sgFreeKernel();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------
 //
@@ -605,43 +543,40 @@ void testApp::drawElements2(){
 
 	while (curObj)
 	{
-		Painter::DrawObject(GL_RENDER,curObj,false);
+		//Painter::DrawObject(GL_RENDER,curObj,false);
 
-		//sgC3DObject *temp = (sgC3DObject*) curObj;
-		//const SG_ALL_TRIANGLES* trngls = temp->GetTriangles();
-		//numTriangles = trngls->nTr;
-		////vertex = (SG_POINT*)malloc((numTriangles*3)*sizeof(SG_POINT*));
-		////sgDeleteObject(temp);
+		sgC3DObject *temp = (sgC3DObject*) curObj;
+		const SG_ALL_TRIANGLES* trngls = temp->GetTriangles();
+		numTriangles = trngls->nTr;
+		//vertex = (SG_POINT*)malloc((numTriangles*3)*sizeof(SG_POINT*));
+		//sgDeleteObject(temp);
 
-		//vertex = trngls->allVertex;
-		//// build vector of vertices from allthe vertices
-		//for (int i=0; i<(numTriangles*3);i++){ //each triangle has three vertices
-		//	ofVec3f aux;
-		//	aux.x = vertex[i].x;
-		//	aux.y = vertex[i].y;
-		//	aux.z =vertex[i].z;
-		//	vert.push_back(aux);
-		//}
-		////generate ofMesh
+		vertex = trngls->allVertex;
+		// build vector of vertices from allthe vertices
+		for (int i=0; i<(numTriangles*3);i++){ //each triangle has three vertices
+			ofVec3f aux;
+			aux.x = vertex[i].x;
+			aux.y = vertex[i].y;
+			aux.z =vertex[i].z;
+			vert.push_back(aux);
+		}
+		//generate ofMesh
 
-		////add vertices
-		//myMesh.addVertices(vert);
-		////setup indices
-		//myMesh.setupIndicesAuto();
-		//setNormals(myMesh);
-		//ofPushMatrix();
-		//	//ofTranslate(500,400);
-		//	glMultMatrixd(temp->GetWorldMatrixData());
-		//	myMesh.draw();
-		//ofPopMatrix();
+		//add vertices
+		myMesh.addVertices(vert);
+		//setup indices
+		myMesh.setupIndicesAuto();
+		setNormals(myMesh);
+		ofPushMatrix();
+			//ofTranslate(500,400);
+			glMultMatrixd(temp->GetWorldMatrixData());
+			myMesh.draw();
+		ofPopMatrix();
 
-		
+
 		curObj = sgGetScene()->GetObjectsList()->GetNext(curObj);
 	}
 }
-
-
-
 //-----------------------------------------------------------------------------------------------------------------------------------------
 void testApp::setNormals( ofMesh &mesh ){
 	//this function is to normals for the triangle mesh
@@ -683,4 +618,71 @@ void testApp::setNormals( ofMesh &mesh ){
 	//Set the normals to mesh
 	mesh.clearNormals();
 	mesh.addNormals( norm );
+}
+//-----------------------------------------------------------------------------
+void testApp::initOFRender(){
+	myMesh.setMode(OF_PRIMITIVE_TRIANGLES);
+	//myMesh.setFromTriangles(
+
+	ofSetVerticalSync(true);
+	ofEnableDepthTest();
+	ofBackground(10, 10, 10, 0);
+	// turn on smooth lighting //
+	bSmoothLighting = true;
+	ofSetSmoothLighting(true);
+
+	// lets make a high-res sphere //
+	// default is 20 //
+	ofSetSphereResolution(128);
+
+	// radius of the sphere //
+	radius		= 180.f;
+	center.set(ofGetWidth()*.5, ofGetHeight()*.5, 0);
+
+	// Point lights emit light in all directions //
+	// set the diffuse color, color reflected from the light source //
+	pointLight.setDiffuseColor( ofColor(0.f, 255.f, 0.f));
+
+	// specular color, the highlight/shininess color //
+	pointLight.setSpecularColor( ofColor(255.f, 255.f, 0.f));
+	pointLight.setPointLight();
+
+	spotLight.setDiffuseColor( ofColor(255.f, 0.f, 0.f));
+	spotLight.setSpecularColor( ofColor(255.f, 255.f, 255.f));
+
+	// turn the light into spotLight, emit a cone of light //
+	spotLight.setSpotlight();
+
+	// size of the cone of emitted light, angle between light axis and side of cone //
+	// angle range between 0 - 90 in degrees //
+	spotLight.setSpotlightCutOff( 50 );
+
+	// rate of falloff, illumitation decreases as the angle from the cone axis increases //
+	// range 0 - 128, zero is even illumination, 128 is max falloff //
+	spotLight.setSpotConcentration( 45 );
+
+	// Directional Lights emit light based on their orientation, regardless of their position //
+	directionalLight.setDiffuseColor(ofColor(0.f, 0.f, 255.f));
+	directionalLight.setSpecularColor(ofColor(255.f, 255.f, 255.f));
+	directionalLight.setDirectional();
+
+	// set the direction of the light
+	// set it pointing from left to right -> //
+	directionalLight.setOrientation( ofVec3f(0, 90, 0) );
+
+
+	bShiny = true;
+	// shininess is a value between 0 - 128, 128 being the most shiny //
+	material.setShininess( 120 );
+	// the light highlight of the material //
+	material.setSpecularColor(ofColor(255, 255, 255, 255));
+
+	bPointLight = bSpotLight = bDirLight = true;
+
+	// tex coords for 3D objects in OF are from 0 -> 1, not 0 -> image.width
+	// so we must disable the arb rectangle call to allow 0 -> 1
+	//ofDisableArbTex();
+	//// load an image to use as the texture //
+	ofLogoImage.loadImage("of.png");
+	bUseTexture = true;
 }

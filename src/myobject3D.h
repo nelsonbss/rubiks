@@ -20,9 +20,12 @@ public:
 	void unDraw();
 
 	sgC3DObject *object;
-	sgC3DObject *temp;// this will be used to draw the object, the original will be in 0,0,0 to be cut. the temp will be moved around and be drawn.
+	sgC3DObject *temp;//the original will be in 0,0,0 to be cut. the temp will be moved around and be drawn.
+	ofMesh myMesh;// this will be used to draw the object, 
+	void setNormals( ofMesh &mesh );
 	float posX;
 	float posY;
+	float deg;
 
 	string name; // may be usefull to call by first name
 };

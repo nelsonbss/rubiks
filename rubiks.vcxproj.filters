@@ -73,6 +73,9 @@
     <ClCompile Include="src\matrix.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\ofRender.cpp">
+      <Filter>src\OFrender</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -110,6 +113,9 @@
     </Filter>
     <Filter Include="src\sgCore">
       <UniqueIdentifier>{c68b5e64-43d2-4657-b1ff-039ef540f84e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\OFrender">
+      <UniqueIdentifier>{50ea2314-87aa-4a2a-a39f-98fe8dcfb804}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -280,6 +286,9 @@
     </ClInclude>
     <ClInclude Include="src\matrix.h">
       <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ofRender.h">
+      <Filter>src\OFrender</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

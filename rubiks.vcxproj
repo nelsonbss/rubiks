@@ -98,6 +98,7 @@
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\matrix.cpp" />
     <ClCompile Include="src\myobject3D.cpp" />
+    <ClCompile Include="src\ofRender.cpp" />
     <ClCompile Include="src\Painter.cpp" />
     <ClCompile Include="src\puzzle.cpp" />
     <ClCompile Include="src\slicer.cpp" />
@@ -123,6 +124,7 @@
     <ClInclude Include="src\cutter.h" />
     <ClInclude Include="src\matrix.h" />
     <ClInclude Include="src\myobject3D.h" />
+    <ClInclude Include="src\ofRender.h" />
     <ClInclude Include="src\Painter.h" />
     <ClInclude Include="src\puzzle.h" />
     <ClInclude Include="src\slicer.h" />

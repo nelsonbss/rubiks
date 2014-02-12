@@ -72,6 +72,9 @@ public:
 	float ct2;
 	float deg;
 	////////////////rendering  and textures
+	ofMesh myMesh;
+
+
 	ofLight pointLight;
 	ofLight spotLight;
 	ofLight directionalLight;
@@ -87,4 +90,5 @@ public:
 	bool bUseTexture;
 	//Universal function which sets normals for the triangle mesh
 	void setNormals( ofMesh &mesh );
+	void drawElements2();
 };

@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Painter.h"
 
+
 static float SYSTEM_COLORS[1024] =
 //              0               1               2               3
 {
@@ -450,8 +451,10 @@ bool  Painter::Draw3D(GLenum mode, sgC3DObject* obj3D,bool selSubObjects,bool as
 		glPushAttrib(GL_ENABLE_BIT|GL_LINE_BIT|GL_CURRENT_BIT|GL_LIGHTING_BIT|GL_TEXTURE_BIT);
 
 		glPushMatrix();
+
 		if (obj3D->GetTempMatrix()!=0)
 			glMultMatrixd(obj3D->GetTempMatrix()->GetTransparentData());
+
 		glMultMatrixd(obj3D->GetWorldMatrixData());
 
 		if ( trngls && 

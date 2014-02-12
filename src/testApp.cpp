@@ -20,6 +20,9 @@
 #define _USE_MATH_DEFINES
 //--------------------------------------------------------------
 void testApp::setup(){
+	myMesh.setMode(OF_PRIMITIVE_TRIANGLES);
+	//myMesh.setFromTriangles(
+
 	ofSetVerticalSync(true);
 	ofEnableDepthTest();
 	ofBackground(10, 10, 10, 0);
@@ -43,8 +46,6 @@ void testApp::setup(){
 	pointLight.setSpecularColor( ofColor(255.f, 255.f, 0.f));
 	pointLight.setPointLight();
 
-
-
 	spotLight.setDiffuseColor( ofColor(255.f, 0.f, 0.f));
 	spotLight.setSpecularColor( ofColor(255.f, 255.f, 255.f));
 
@@ -58,7 +59,6 @@ void testApp::setup(){
 	// rate of falloff, illumitation decreases as the angle from the cone axis increases //
 	// range 0 - 128, zero is even illumination, 128 is max falloff //
 	spotLight.setSpotConcentration( 45 );
-
 
 	// Directional Lights emit light based on their orientation, regardless of their position //
 	directionalLight.setDiffuseColor(ofColor(0.f, 0.f, 255.f));
@@ -315,7 +315,7 @@ void testApp::draw(){
 
 	if(draw3dObject){
 		objectDisplayed->draw();
-		myCutter->draw();
+		//myCutter->draw();
 	}else{
 		objectDisplayed->unDraw();
 		//myCutter->unDraw();
@@ -336,7 +336,8 @@ void testApp::draw(){
 	ofPopMatrix();
 
 	///use openGL do draw elements taht are on the sgCore Scene object
-	drawElements();
+	//drawElements();
+	drawElements2();
 
 }
 //--------------------------------------------------------------
@@ -592,10 +593,58 @@ void testApp::drawElements(){
 	//	}
 	//}
 }
-//-----------------------------------------------------------------------------------------------------------------------------------------
-//Universal function which sets normals for the triangle mesh
-void testApp::setNormals( ofMesh &mesh ){
+//---------------------------------------------------------------------------------------------------------------------------------------------------
+void testApp::drawElements2(){
+	int numTriangles =0;
+	const SG_POINT *vertex;
+	vector< ofVec3f > vert;
+	//////////////////////////////////////////////////////////////
+	////draw the elements of the scene
+	sgCObject*  curObj = sgGetScene()->GetObjectsList()->GetHead();
+	int tt = sgGetScene()->GetObjectsList()->GetCount();
 
+	while (curObj)
+	{
+		Painter::DrawObject(GL_RENDER,curObj,false);
+
+		//sgC3DObject *temp = (sgC3DObject*) curObj;
+		//const SG_ALL_TRIANGLES* trngls = temp->GetTriangles();
+		//numTriangles = trngls->nTr;
+		////vertex = (SG_POINT*)malloc((numTriangles*3)*sizeof(SG_POINT*));
+		////sgDeleteObject(temp);
+
+		//vertex = trngls->allVertex;
+		//// build vector of vertices from allthe vertices
+		//for (int i=0; i<(numTriangles*3);i++){ //each triangle has three vertices
+		//	ofVec3f aux;
+		//	aux.x = vertex[i].x;
+		//	aux.y = vertex[i].y;
+		//	aux.z =vertex[i].z;
+		//	vert.push_back(aux);
+		//}
+		////generate ofMesh
+
+		////add vertices
+		//myMesh.addVertices(vert);
+		////setup indices
+		//myMesh.setupIndicesAuto();
+		//setNormals(myMesh);
+		//ofPushMatrix();
+		//	//ofTranslate(500,400);
+		//	glMultMatrixd(temp->GetWorldMatrixData());
+		//	myMesh.draw();
+		//ofPopMatrix();
+
+		
+		curObj = sgGetScene()->GetObjectsList()->GetNext(curObj);
+	}
+}
+
+
+
+//-----------------------------------------------------------------------------------------------------------------------------------------
+void testApp::setNormals( ofMesh &mesh ){
+	//this function is to normals for the triangle mesh
 	//The number of the vertices
 	int nV = mesh.getNumVertices();
 

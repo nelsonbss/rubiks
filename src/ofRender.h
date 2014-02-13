@@ -10,7 +10,7 @@ public:
 	ofRender();
 	void sgCoretoOFmesh(sgC3DObject *obj, ofMesh &mesh);
 	void setNormals( ofMesh &mesh );
-	void decideAxis();
+	ofPoint decideAxis(ofPoint dir);
 };
 
 #endif /* defined(__TofRender__ofRender__) */

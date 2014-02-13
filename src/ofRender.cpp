@@ -8,31 +8,158 @@ ofRender::ofRender(){
 void ofRender::sgCoretoOFmesh(sgC3DObject *obj, ofMesh &mesh){
 	//convert to of mesh and draw as of
 	mesh.setMode(OF_PRIMITIVE_TRIANGLES);
+
 	int numTriangles =0;
 	const SG_POINT *vertex;
-	vector< ofVec3f > vert;
+	//vector< ofVec3f > vert;
 	const SG_ALL_TRIANGLES* trngls = obj->GetTriangles();
 	numTriangles = trngls->nTr;
 	vertex = trngls->allVertex;
-	// build vector of vertices from allthe vertices
-	for (int i=0; i<(numTriangles*3);i++){ //each triangle has three vertices
-		ofVec3f aux;
-		aux.x = vertex[i].x;
-		aux.y = vertex[i].y;
-		aux.z =vertex[i].z;
-		vert.push_back(aux);
-		//mesh.addColor(ofFloatColor(0.5,0,0.5));
-		mesh.addColor(ofFloatColor(ofRandom(0,1),ofRandom(0,1),ofRandom(0,1)));
-		mesh.addVertex(aux);// .addVertices(vert);
-	}
+
+	//vector<ofPoint> norm(numTriangles*3); //Array for the normals
+
 	//generate ofMesh
+	// build vector of vertices from allthe vertices
+	for (int i=0; i<(numTriangles*3);i+=3){ //each triangle has three vertices
+		ofVec3f auxV1;
+		ofVec3f auxV2;
+		ofVec3f auxV3;
+
+
+		auxV1.x = vertex[i].x;
+		auxV1.y = vertex[i].y;
+		auxV1.z =vertex[i].z;
+		//vert.push_back(aux);
+		//
+		auxV2.x = vertex[i+1].x;
+		auxV2.y = vertex[i+1].y;
+		auxV2.z =vertex[i+1].z;
+		//
+		auxV3.x = vertex[i+2].x;
+		auxV3.y = vertex[i+2].y;
+		auxV3.z =vertex[i+2].z;
+		//look at normal
+		////Compute the triangle's normal
+		ofPoint dir = ( (auxV2 - auxV1).crossed( auxV3 - auxV1 ) ).normalized();
+		ofPoint myNormal = decideAxis(dir);
+		ofPoint x = ofPoint(1,0,0);
+		ofPoint y = ofPoint(0,1,0);
+		ofPoint z = ofPoint(0,0,1);
+		ofPoint xn = ofPoint(-1,0,0);
+		ofPoint yn = ofPoint(0,-1,0);
+		ofPoint zn = ofPoint(0,0,-1);
+		ofFloatColor c;
+
+		if(myNormal==x){
+			c = ofFloatColor(0,1,0);
+			//cout << "x axis normal " << c << endl;
+		}else if(myNormal==y){
+			c = ofFloatColor(1.000, 0.549, 0.000);
+			//cout << "y axis normal " << c<< endl;
+		}else if(myNormal==z){
+			c = ofFloatColor(1,1,1);
+			//cout << "z axis normal "<< c << endl;
+		}else if(myNormal==xn){
+			c = ofFloatColor(0,0,1);
+			//cout << "xn axis normal "<< c << endl;
+		}else if(myNormal==yn){
+			c = ofFloatColor(1,0,0);
+			
+			//cout << "yn axis normal " << c << endl;
+		}else if(myNormal==zn){
+			c = ofFloatColor(1,1,0);
+			//cout << "zn axis normal " << c << endl;
+		}
+
+
+		mesh.addColor(c);
+		mesh.addVertex(auxV1);
+		mesh.addColor(c);
+		mesh.addVertex(auxV2);
+		mesh.addColor(c);
+		mesh.addVertex(auxV3);
+
+	}
 	//add vertices
-	//mesh.addColor(ofFloatColor(ofRandom(0,255),ofRandom(0,255),ofRandom(0,255)));
 	//mesh.addVertices(vert);
 	//setup indices
 	mesh.setupIndicesAuto();
 	//set normals.. for lighting 
-	setNormals(mesh);
+	setNormals(mesh);//before normals were done at the end, now they are done for each created triangle, so we can color it according to the normal
+}
+//----------------------------------------------------------------------------------------------------------------
+ofPoint ofRender::decideAxis(ofPoint dir){
+	//looks at a point (normal vector) and decides which axis is closer to the most prominent component of the vector
+
+	ofPoint simple = ofPoint(0,0,0);
+	int chosen=0;//1=x, 2=y, 3=z
+	float absX;
+	bool sx = false;
+	float absY;
+	bool sy = false;
+	float absZ;
+	bool sz = false;
+	//take abs of all
+	if(ofSign(dir.x)==-1){
+			absX = (dir.x)*(-1);
+	}else{
+		absX = dir.x;
+	}
+	if(ofSign(dir.y)==-1){
+			absY = (dir.y)*(-1);
+	}else{
+		absY = dir.y;
+	}
+	if(ofSign(dir.z)==-1){
+			absZ = (dir.z)*(-1);
+	}else{
+		absZ = dir.z;
+	}
+	//look at the highest, and choose that one as the axis
+	if((absX > absY)&& (absX > absZ)){
+		chosen =1;
+	}else if((absY > absX)&& (absY > absZ)){
+		chosen =2;
+	}else{
+		chosen = 3;
+	}
+	//ask if its positive or negative
+	if(chosen == 1){
+		//x is chosen
+		if(ofSign(dir.x)==1){
+			//positive
+			simple = ofPoint(1,0,0);
+		}else if(ofSign(dir.x)==-1){
+			//negative
+			simple = ofPoint(-1,0,0);
+		}else{
+			//zero
+		}
+	}else if (chosen==2){
+	//its y
+		if(ofSign(dir.y)==1){
+			//positive
+			simple = ofPoint(0,1,0);
+		}else if(ofSign(dir.y)==-1){
+			//negative
+			simple = ofPoint(0,-1,0);
+		}else{
+			//zero
+		}
+	}else{
+		//its z
+		if(ofSign(dir.z)==1){
+			//positive
+			simple = ofPoint(0,0,1);
+		}else if(ofSign(dir.z)==-1){
+			//negative
+			simple = ofPoint(0,0,-1);
+		}else{
+			//zero
+		}
+	}
+
+	return simple;
 }
 //----------------------------------------------------------------------------------------------------------------
 void ofRender::setNormals( ofMesh &mesh ){
@@ -62,33 +189,6 @@ void ofRender::setNormals( ofMesh &mesh ){
 
 		//Compute the triangle's normal
 		ofPoint dir = ( (v2 - v1).crossed( v3 - v1 ) ).normalized();
-		
-		//have to do a range function because normals are rearly directly on the axis direction
-
-		//take abs of all, look at the highest, and choose that one as the axis
-		//ask if its positive or negative
-
-		/*ofPoint dirColor = decideAxis();
-		ofPoint x = ofPoint(1,0,0);
-		ofPoint y = ofPoint(0,1,0);
-		ofPoint z = ofPoint(0,0,1);
-		ofPoint xn = ofPoint(-1,0,0);
-		ofPoint yn = ofPoint(0,-1,0);
-		ofPoint zn = ofPoint(0,0,-1);
-
-		if(dirColor==x){
-			cout << "x axis normal " << t << endl;
-		}else if(dirColor==y){
-			cout << "y axis normal " << t<< endl;
-		}else if(dirColor==z){
-			cout << "z axis normal "<< t << endl;
-		}else if(dirColor==xn){
-			cout << "xn axis normal "<< t << endl;
-		}else if(dirColor==yn){
-			cout << "yn axis normal " << t<< endl;
-		}else if(dirColor==zn){
-			cout << "zn axis normal " << t << endl;
-		}*/
 
 		//Accumulate it to norm array for i1, i2, i3
 		norm[ i1 ] += dir;
@@ -104,7 +204,4 @@ void ofRender::setNormals( ofMesh &mesh ){
 	//Set the normals to mesh
 	mesh.clearNormals();
 	mesh.addNormals( norm );
-}
-//----------------------------------------------------------------------------------
-void ofRender::decideAxis(){
 }

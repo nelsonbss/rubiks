@@ -98,7 +98,7 @@ void testApp::update(){
 		myPuzzle->loadPieces(mySlicer->getPieces());
 		puzzleExists = true;
 		//////////////////////////////end create puzzle////////////////////////////////////
-		//makeCut = false;
+		makeCut = false;
 		drawCuts1 = true;
 		//cout << "end cut:" << ofGetElapsedTimeMillis() << endl;
 		///////////////////////////////////////////////////////////////////////////////////
@@ -253,7 +253,7 @@ void testApp::draw(){
     if(bUseTexture) ofLogoImage.getTextureReference().bind();
     
 	ofSetColor(255, 255, 255, 255);
-    ofPushMatrix();
+    /*ofPushMatrix();
     ofTranslate(center.x, center.y, center.z-300);
     ofRotate(ofGetElapsedTimef() * .8 * RAD_TO_DEG, 0, 1, 0);
 	ofDrawSphere( 0,0,0, radius);
@@ -270,7 +270,7 @@ void testApp::draw(){
 	ofTranslate(center.x, center.y, -900);
 	ofRotate(ofGetElapsedTimef() * .2 * RAD_TO_DEG, 0, 1, 0);
 	ofDrawBox( 0, 0, 0, 850);
-	ofPopMatrix();
+	ofPopMatrix();*/
     
     if(bUseTexture) ofLogoImage.getTextureReference().unbind();
 	
@@ -307,7 +307,7 @@ void testApp::draw(){
 
 	if(drawCuts==true){
 		if(puzzleExists == true){
-			myPuzzle->draw();
+			//myPuzzle->draw();
 		}
 		drawCuts = false;
 	}
@@ -318,7 +318,6 @@ void testApp::draw(){
 		//ofSetColor(ofColor(255,0,255));
 		ofCircle(ofPoint(0,0),5);
 		ofRotate(ofGetElapsedTimef() * .2 * RAD_TO_DEG, 0, 1, 0);
-		ofDrawBox( 0, 0, 0, 50);
 	ofPopMatrix();
 
 	///use openGL do draw elements taht are on the sgCore Scene object
@@ -340,7 +339,7 @@ void testApp::draw(){
 	if(bSpotLight) spotLight.draw();
 	
 	ofSetColor(255, 255, 255);
-	ofDrawBitmapString("Point Light On (1) : "+ofToString(bPointLight) +"\n"+
+	/*ofDrawBitmapString("Point Light On (1) : "+ofToString(bPointLight) +"\n"+
 					   "Spot Light On (2) : "+ofToString(bSpotLight) +"\n"+
 					   "Directional Light On (3) : "+ofToString(bDirLight)+"\n"+
 					   "Shiny Objects On (s) : "+ofToString(bShiny)+"\n"+
@@ -348,7 +347,7 @@ void testApp::draw(){
                        "Spot Light Concentration (right/left) : " + ofToString(spotLight.getSpotConcentration(),0)+"\n"+
                        "Smooth Lighting enabled (x) : "+ofToString(bSmoothLighting,0)+"\n"+
                        "Textured (t) : "+ofToString(bUseTexture,0),
-					   20, 20);
+					   20, 20);*/
 }
 //--------------------------------------------------------------
 void testApp::keyPressed(int key){
@@ -714,7 +713,7 @@ void testApp::initOFRender(){
 
 	// Point lights emit light in all directions //
 	// set the diffuse color, color reflected from the light source //
-	pointLight.setDiffuseColor( ofColor(0.f, 255.f, 0.f));
+	pointLight.setDiffuseColor( ofColor(255.f, 255.f, 255.f));
 
 	// specular color, the highlight/shininess color //
 	pointLight.setSpecularColor( ofColor(255.f, 255.f, 0.f));

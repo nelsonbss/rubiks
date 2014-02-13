@@ -1,5 +1,6 @@
 #include "cubie.h"
 #include "sgCore.h"
+#include "ofRender.h"
 
 cubie::cubie(float x, float y,int idi){
 	objects = NULL;
@@ -10,7 +11,6 @@ cubie::cubie(float x, float y,int idi){
 	rotV = 0.0;
 	color = rand()%27;
 	okDraw = true;
-	attached = false;
 	rotX = 0.0;
 	rotY = 0.0;
 	rotZ = 0.0;
@@ -108,11 +108,11 @@ void cubie::draw(){
 				//rotations
 				//use vector with matrix..es
 				for(int i=0; i<myMatrix.size();i++){
-				//if(myMatrix.at(i).type==1){
-				//its a rotation
-				//do this # of t
-				//int tam = myMatrix.size();
-				//if(tam >0){
+					//if(myMatrix.at(i).type==1){
+					//its a rotation
+					//do this # of t
+					//int tam = myMatrix.size();
+					//if(tam >0){
 					SG_POINT protFace = {0,0,0};//myMatrix.at(0).point;// point;
 					SG_VECTOR vrotFace = myMatrix.at(i).vector;//  axis; //rotate to do a face move
 					float d = myMatrix.at(i).deg;
@@ -173,10 +173,9 @@ void cubie::draw(){
 				objectList[j]->SetAttribute(SG_OA_COLOR,color);
 				objectList[j]->Triangulate(SG_VERTEX_TRIANGULATION);
 				objectList[j]->SetAttribute(SG_OA_DRAW_STATE,SG_DS_FULL);
-				//if(attached == false){
-				sgGetScene()->AttachObject(objectList[j]);
-				attached = true;
-				//}
+
+				//sgGetScene()->AttachObject(objectList[j]);
+
 			}
 		}else{
 			//cout << "null at draw" << endl;
@@ -191,8 +190,8 @@ void cubie::unDraw(){
 	if(objects != NULL){
 		for (int j=0; j < numObjs; j++){
 			//objectList[j]->SetAttribute(SG_OA_DRAW_STATE,SG_DS_HIDE);
-			sgGetScene()->DetachObject(objectList[j]);
-			sgCObject::DeleteObject(objectList[j]);
+			//sgGetScene()->DetachObject(objectList[j]);
+			//sgCObject::DeleteObject(objectList[j]);
 			okDraw = true;
 		}
 		////////////////////////////////////IMPORTANT!!!!!!!!///////////////////////////////////
@@ -273,11 +272,27 @@ void cubie::setObjects(sgCGroup *objs){
 
 		for (int j=0; j < ChCnt; j++){
 			//clone each object
-			sgCObject *temp = allParts[j];
+			sgC3DObject *temp = (sgC3DObject*) allParts[j];
 			//put clone on *[] tomake new group
-			objectList[j] = (sgC3DObject*)temp->Clone();
+
+			objectList[objctr] = (sgC3DObject*)temp->Clone();
 			objcts[objctr] = (sgC3DObject*)temp->Clone();
 			objctr ++;
+			//make ofMEsh
+			//ofMesh tempMesh;
+			//ofRender *ofr = new ofRender(); //class that has the metods to transform sgCore to OF mesh and set the normals (in one function)
+			//sgC3DObject *o = (sgC3DObject*)temp->Clone();
+			//cout << o->GetType() << endl;
+
+			//ofr->sgCoretoOFmesh(o,tempMesh);
+			//
+			//myMeshs.push_back(tempMesh);
+			//ofVbo tempVbo;
+			//tempVbo.setMesh(tempMesh, GL_STATIC_DRAW);
+			//myVbos.push_back(tempVbo);
+			//free(ofr);
+
+
 		}
 		free(allParts);
 		//put that new group inside *objects of this class, of every cubie

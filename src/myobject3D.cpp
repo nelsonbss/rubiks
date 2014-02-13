@@ -9,7 +9,11 @@ myobject3D::myobject3D(float x, float y){
 }
 //--------------------------------------------------------------
 void myobject3D::setup(){
+	//the real object is never rendered or moved::::it is used to make the boolean intersection
+	//the rendered and animated object is temp
 	temp = (sgC3DObject *) object->Clone();
+
+
 	/*SG_VECTOR rotD = {posX,posY,0};
 	temp->InitTempMatrix()->Translate(rotD);
 	temp->ApplyTempMatrix();  */

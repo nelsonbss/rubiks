@@ -23,6 +23,8 @@ public:
 	sgCGroup *objects;
 	float numObjs;
 	sgC3DObject **objectList;
+	vector<ofMesh> myMeshs; // this will be used to store the objet to be drawn 
+	vector<ofVbo>  myVbos;
 
 	float color;
 	bool okDraw;
@@ -37,10 +39,8 @@ public:
 	
 	float rotH;
 	float rotV;
-	void rotateH(float radH); //rotates the cubie as part of the whole puzzle object NOT as a faceMove rotation
+	void rotateH(float radH); //rotates the cubie as part of the whole puzzle object, NOT as a faceMove rotation
 	void rotateV(float radV);
-
-	bool attached;
 
 	//this is vector of matrix objects that have all the transformations for each cubie.
 	//its a vector since we don't know how many transformations a cubie is going to have

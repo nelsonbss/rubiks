@@ -11,11 +11,12 @@ void ofRender::sgCoretoOFmesh(sgC3DObject *obj, ofMesh &mesh){
 
 	int numTriangles =0;
 	const SG_POINT *vertex;
+	const SG_POINT *normals;
 	//vector< ofVec3f > vert;
 	const SG_ALL_TRIANGLES* trngls = obj->GetTriangles();
 	numTriangles = trngls->nTr;
 	vertex = trngls->allVertex;
-
+	normals = trngls->allNormals;
 	//vector<ofPoint> norm(numTriangles*3); //Array for the normals
 
 	//generate ofMesh

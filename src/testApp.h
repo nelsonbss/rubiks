@@ -89,5 +89,4 @@ public:
 	bool bUseTexture;
 	/////function to sets normals for the triangle mesh
 	void setNormals( ofMesh &mesh );
-	void drawElements2();
 };

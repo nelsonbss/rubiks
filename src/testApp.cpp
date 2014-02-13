@@ -279,14 +279,6 @@ void testApp::draw(){
 	if (!bDirLight) directionalLight.disable();
 	
    
-
-
-
-
-
-
-
-
 	////////////////////////////////////////////////////////////////////////////PUZZLE !!!!//////////////////////////////////////
 	////////////////////////////////Draw the pieces////////////////////////////////////
 	if(drawCuts1==true){
@@ -317,16 +309,13 @@ void testApp::draw(){
 	ofTranslate(300,300);
 		//ofSetColor(ofColor(255,0,255));
 		ofCircle(ofPoint(0,0),5);
-		ofRotate(ofGetElapsedTimef() * .2 * RAD_TO_DEG, 0, 1, 0);
+		//ofRotate(ofGetElapsedTimef() * .2 * RAD_TO_DEG, 0, 1, 0);
 	ofPopMatrix();
 
 	///use openGL do draw elements taht are on the sgCore Scene object
 	//drawElements();
-	//drawElements2();
 
-
-
-	///////////////////////////////////////////////////////////////////////////////////////////////////////
+	//////////////////////////////////////////////////////////////////////////END OF RENDERING////////////////////
 	 material.end();
 	// turn off lighting //
     ofDisableLighting();
@@ -601,52 +590,6 @@ void testApp::drawElements(){
 	//		}
 	//	}
 	//}
-}
-//---------------------------------------------------------------------------------------------------------------------------------------------------
-void testApp::drawElements2(){
-	int numTriangles =0;
-	const SG_POINT *vertex;
-	vector< ofVec3f > vert;
-	//////////////////////////////////////////////////////////////
-	////draw the elements of the scene
-	sgCObject*  curObj = sgGetScene()->GetObjectsList()->GetHead();
-	int tt = sgGetScene()->GetObjectsList()->GetCount();
-
-	while (curObj)
-	{
-		//Painter::DrawObject(GL_RENDER,curObj,false);
-
-		sgC3DObject *temp = (sgC3DObject*) curObj;
-		const SG_ALL_TRIANGLES* trngls = temp->GetTriangles();
-		numTriangles = trngls->nTr;
-		//vertex = (SG_POINT*)malloc((numTriangles*3)*sizeof(SG_POINT*));
-		//sgDeleteObject(temp);
-
-		vertex = trngls->allVertex;
-		// build vector of vertices from allthe vertices
-		for (int i=0; i<(numTriangles*3);i++){ //each triangle has three vertices
-			ofVec3f aux;
-			aux.x = vertex[i].x;
-			aux.y = vertex[i].y;
-			aux.z =vertex[i].z;
-			vert.push_back(aux);
-		}
-		//generate ofMesh
-
-		//add vertices
-		myMesh.addVertices(vert);
-		//setup indices
-		myMesh.setupIndicesAuto();
-		setNormals(myMesh);
-		ofPushMatrix();
-			//ofTranslate(500,400);
-			glMultMatrixd(temp->GetWorldMatrixData());
-			myMesh.draw();
-		ofPopMatrix();
-
-
-		curObj = sgGetScene()->GetObjectsList()->GetNext(curObj);
-	}
 }
 //-----------------------------------------------------------------------------------------------------------------------------------------
 void testApp::setNormals( ofMesh &mesh ){

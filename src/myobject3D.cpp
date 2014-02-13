@@ -56,7 +56,6 @@ void myobject3D::draw(){
 	ofPushMatrix();
 		//ofTranslate(posX,posY);
 		glMultMatrixd(temp->GetTempMatrix()->GetTransparentData());
-		
 		//myMesh.draw();
 		myVbo.draw(GL_TRIANGLES, 0,myMesh.getNumIndices());
 		ofPopMatrix();

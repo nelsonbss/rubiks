@@ -21,6 +21,7 @@ void ofRender::sgCoretoOFmesh(sgC3DObject *obj, ofMesh &mesh){
 		aux.y = vertex[i].y;
 		aux.z =vertex[i].z;
 		vert.push_back(aux);
+		//mesh.addColor(ofFloatColor(0.5,0,0.5));
 		mesh.addColor(ofFloatColor(ofRandom(0,1),ofRandom(0,1),ofRandom(0,1)));
 		mesh.addVertex(aux);// .addVertices(vert);
 	}

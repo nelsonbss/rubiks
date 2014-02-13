@@ -98,7 +98,7 @@ void testApp::update(){
 		myPuzzle->loadPieces(mySlicer->getPieces());
 		puzzleExists = true;
 		//////////////////////////////end create puzzle////////////////////////////////////
-		makeCut = false;
+		//makeCut = false;
 		drawCuts1 = true;
 		//cout << "end cut:" << ofGetElapsedTimeMillis() << endl;
 		///////////////////////////////////////////////////////////////////////////////////

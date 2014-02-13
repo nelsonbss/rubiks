@@ -20,6 +20,7 @@ void myobject3D::setup(){
 	temp->SetAttribute(SG_OA_COLOR,2);
 	ofRender *ofr = new ofRender(); //class that has the metods to transform sgCore to OF mesh and set the normals (in one function)
 	ofr->sgCoretoOFmesh(temp,myMesh);
+	myVbo.setMesh(myMesh, GL_STATIC_DRAW);
 	free(ofr);
 }
 //--------------------------------------------------------------
@@ -56,7 +57,8 @@ void myobject3D::draw(){
 		//ofTranslate(posX,posY);
 		glMultMatrixd(temp->GetTempMatrix()->GetTransparentData());
 		
-		myMesh.draw();
+		//myMesh.draw();
+		myVbo.draw(GL_TRIANGLES, 0,myMesh.getNumIndices());
 		ofPopMatrix();
 	temp->DestroyTempMatrix();
 

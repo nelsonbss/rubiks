@@ -21,7 +21,205 @@ void cubie::setup(){
 }
 //--------------------------------------------------------------
 void cubie::update(){
+	if(objects != NULL){
+		for (int j=0; j < numObjs; j++){
+			//rotations
+			//use vector with matrix(s)
+			//for(int i=0; i<myMatrix.size();i++){
+			//	SG_POINT protFace = {0,0,0};//myMatrix.at(0).point;// point;
+			//	SG_VECTOR vrotFace = myMatrix.at(i).vector;//  axis; //rotate to do a face move
+			//	float d = myMatrix.at(i).deg;
 
+			//	if(myMatrix.at(i).dir == true){
+			//		//c
+			//		if(myMatrix.at(i).vector.x == 1){
+			//			objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,d);
+			//		}else if(myMatrix.at(i).vector.y == 1){
+			//			//rotY = d;
+			//			objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,d);
+			//		}else{
+			//			//rotZ = d;
+			//			objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,d);
+			//		}
+
+			//	}else{
+			//		//cc
+			//		if(myMatrix.at(i).vector.x == 1){
+			//			objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,d);
+			//		}else if(myMatrix.at(i).vector.y == 1){
+			//			//rotY = d;
+			//			objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,d);
+			//		}else{
+			//			//rotZ = d;
+			//			objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,d);
+			//		}
+			//	}
+			//	objectList[j]->ApplyTempMatrix();
+			//	objectList[j]->DestroyTempMatrix();
+			//}
+
+			//if(myMatrix[myMatrix.size()-1].vector.x == 1){
+			//	rotX = myMatrix[myMatrix.size()-1].deg;
+			//}else if(myMatrix[myMatrix.size()-1].vector.y == 1){
+			//	//rotY = d;
+			//	rotY = myMatrix[myMatrix.size()-1].deg;
+			//}else{
+			//	//rotZ = d;
+			//	rotZ = myMatrix[myMatrix.size()-1].deg;
+			//}
+
+			//rotate and move with the whole puzzle
+			SG_VECTOR vrotH = {0,1,0}; //rotate H
+			SG_POINT protH = {0,0,0};
+			//objectList[j]->InitTempMatrix()->Rotate(protH,vrotH,rotH);
+			SG_VECTOR vrotV = {1,0,0}; //rotate V
+			SG_POINT protV = {0,0,0};
+			//objectList[j]->GetTempMatrix()->Rotate(protV,vrotV,rotV);
+			//translations
+			SG_VECTOR transBox11 = {posX,0,0}; 
+			objectList[j]->InitTempMatrix()->Translate(transBox11);
+			SG_VECTOR transBox121 = {0,posY,0}; 
+			objectList[j]->GetTempMatrix()->Translate(transBox121);
+			objectList[j]->ApplyTempMatrix();
+			//objectList[j]->DestroyTempMatrix();
+			//objectList[j]->SetAttribute(SG_OA_COLOR,color);
+			objectList[j]->Triangulate(SG_VERTEX_TRIANGULATION);
+			//objectList[j]->SetAttribute(SG_OA_DRAW_STATE,SG_DS_FULL);
+			//sgGetScene()->AttachObject(objectList[j]);
+		}
+	}
+}
+//------------------------------------------------------------------------------------------------------------------------------------------
+void cubie::draw(){  
+	//each cubie draws its own sgCGroup *objects;
+	//now it draws its vector of Vbos, myVbos
+
+	// it attaches to scene
+	//now its not attaching to scene
+
+	//use this cubies objectList[] to draw elements without ever loosing them on groupBreaking on undraw
+	//now there is no group breaking, there will be no need for an undraw
+
+	//if(okDraw == true){
+	if(objects != NULL){
+		for (int j=0; j < numObjs; j++){
+			//			//rotations
+			//			//use vector with matrix(s)
+			//			//for(int i=0; i<myMatrix.size();i++){
+			//			//	SG_POINT protFace = {0,0,0};//myMatrix.at(0).point;// point;
+			//			//	SG_VECTOR vrotFace = myMatrix.at(i).vector;//  axis; //rotate to do a face move
+			//			//	float d = myMatrix.at(i).deg;
+
+			//			//	if(myMatrix.at(i).dir == true){
+			//			//		//c
+			//			//		if(myMatrix.at(i).vector.x == 1){
+			//			//			objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,d);
+			//			//		}else if(myMatrix.at(i).vector.y == 1){
+			//			//			//rotY = d;
+			//			//			objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,d);
+			//			//		}else{
+			//			//			//rotZ = d;
+			//			//			objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,d);
+			//			//		}
+
+			//			//	}else{
+			//			//		//cc
+			//			//		if(myMatrix.at(i).vector.x == 1){
+			//			//			objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,d);
+			//			//		}else if(myMatrix.at(i).vector.y == 1){
+			//			//			//rotY = d;
+			//			//			objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,d);
+			//			//		}else{
+			//			//			//rotZ = d;
+			//			//			objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,d);
+			//			//		}
+			//			//	}
+			//			//	objectList[j]->ApplyTempMatrix();
+			//			//	objectList[j]->DestroyTempMatrix();
+			//			//}
+
+			//			//if(myMatrix[myMatrix.size()-1].vector.x == 1){
+			//			//	rotX = myMatrix[myMatrix.size()-1].deg;
+			//			//}else if(myMatrix[myMatrix.size()-1].vector.y == 1){
+			//			//	//rotY = d;
+			//			//	rotY = myMatrix[myMatrix.size()-1].deg;
+			//			//}else{
+			//			//	//rotZ = d;
+			//			//	rotZ = myMatrix[myMatrix.size()-1].deg;
+			//			//}
+
+			//			////rotate and move with the whole puzzle
+			//			//SG_VECTOR vrotH = {0,1,0}; //rotate H
+			//			//SG_POINT protH = {0,0,0};
+			//			//objectList[j]->InitTempMatrix()->Rotate(protH,vrotH,rotH);
+			//			//SG_VECTOR vrotV = {1,0,0}; //rotate V
+			//			//SG_POINT protV = {0,0,0};
+			//			//objectList[j]->GetTempMatrix()->Rotate(protV,vrotV,rotV);
+			//			////translations
+			//			//SG_VECTOR transBox11 = {posX,0,0}; 
+			//			//objectList[j]->GetTempMatrix()->Translate(transBox11);
+			//			//SG_VECTOR transBox121 = {0,posY,0}; 
+			//			//objectList[j]->GetTempMatrix()->Translate(transBox121);
+			//			//objectList[j]->ApplyTempMatrix();
+			//			//objectList[j]->DestroyTempMatrix();
+			//			//objectList[j]->SetAttribute(SG_OA_COLOR,color);
+			//			//objectList[j]->Triangulate(SG_VERTEX_TRIANGULATION);
+			//			//objectList[j]->SetAttribute(SG_OA_DRAW_STATE,SG_DS_FULL);
+			//			//sgGetScene()->AttachObject(objectList[j]);
+
+			//			/////OF
+			//			//go through vector of vbo
+
+			//			
+			//			//objectList[j]->DestroyTempMatrix();
+
+			//		}
+			//	}else{
+			//		//cout << "null at draw" << endl;
+			ofPushMatrix();
+			if (objectList[j]->GetTempMatrix()!=0)
+				glMultMatrixd(objectList[j]->GetTempMatrix()->GetTransparentData());
+			myVbos[j].draw(GL_TRIANGLES, 0,myMeshs[j].getNumIndices());
+			ofPopMatrix();
+		}
+	}
+	//	okDraw = false;
+	//}
+
+}
+//--------------------------------------------------------------
+void cubie::unDraw(){  
+	//sgGetScene()->Clear();
+	//detach from scene
+	//if(objects != NULL){
+	//	for (int j=0; j < numObjs; j++){
+	//		//objectList[j]->SetAttribute(SG_OA_DRAW_STATE,SG_DS_HIDE);
+	//		//sgGetScene()->DetachObject(objectList[j]);
+	//		//sgCObject::DeleteObject(objectList[j]);
+	//		okDraw = true;
+	//	}
+	//	////////////////////////////////////IMPORTANT!!!!!!!!///////////////////////////////////
+	//	////remake objectList for next drawing
+	//	////there is somememory leakage here!!!!! even after sgCObject::DeleteObject(objectList[j]);
+	//	/////////////////////////////////////////////////////////////////////////////////////////////
+
+	//	sgCGroup *objects2 = copyObjects(); 
+	//	const int ChCnt = objects2->GetChildrenList()->GetCount();
+	//	numObjs = ChCnt;
+	//	//give this cubies list some memory
+	//	objectList = (sgC3DObject**)malloc(ChCnt*sizeof(sgC3DObject*));
+	//	//start breaking incoming group
+	//	sgCObject** allParts = (sgCObject**)malloc(ChCnt*sizeof(sgCObject*));
+	//	objects2->BreakGroup(allParts);
+	//	sgCObject::DeleteObject(objects2);
+
+	//	for (int j=0; j < ChCnt; j++){
+	//		objectList[j] = (sgC3DObject*)allParts[j];
+	//	}
+	//	free(allParts);
+	//}else{
+	//	//cout << "null at undraw" << endl;
+	//}
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 void cubie::faceRotate(SG_VECTOR axis, float deg,bool di){
@@ -97,126 +295,6 @@ void cubie::faceRotate(SG_VECTOR axis, float deg,bool di){
 	}
 }
 
-//------------------------------------------------------------------------------------------------------------------------------------------
-void cubie::draw(){  
-	//each cubie draws its own sgCGroup *objects;
-	// it attaches to scene
-	//use this cubies objectList to draw elements without ever loosing them on groupBreaking
-	if(okDraw == true){
-		if(objects != NULL){
-			for (int j=0; j < numObjs; j++){
-				//rotations
-				//use vector with matrix..es
-				for(int i=0; i<myMatrix.size();i++){
-					//if(myMatrix.at(i).type==1){
-					//its a rotation
-					//do this # of t
-					//int tam = myMatrix.size();
-					//if(tam >0){
-					SG_POINT protFace = {0,0,0};//myMatrix.at(0).point;// point;
-					SG_VECTOR vrotFace = myMatrix.at(i).vector;//  axis; //rotate to do a face move
-					float d = myMatrix.at(i).deg;
-
-					if(myMatrix.at(i).dir == true){
-						//c
-						if(myMatrix.at(i).vector.x == 1){
-							objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,d);
-						}else if(myMatrix.at(i).vector.y == 1){
-							//rotY = d;
-							objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,d);
-						}else{
-							//rotZ = d;
-							objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,d);
-						}
-
-					}else{
-						//cc
-						if(myMatrix.at(i).vector.x == 1){
-							objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,d);
-						}else if(myMatrix.at(i).vector.y == 1){
-							//rotY = d;
-							objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,d);
-						}else{
-							//rotZ = d;
-							objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,d);
-						}
-					}
-					objectList[j]->ApplyTempMatrix();
-					objectList[j]->DestroyTempMatrix();
-				}
-				//}
-				//}
-
-				//if(myMatrix[myMatrix.size()-1].vector.x == 1){
-				//	rotX = myMatrix[myMatrix.size()-1].deg;
-				//}else if(myMatrix[myMatrix.size()-1].vector.y == 1){
-				//	//rotY = d;
-				//	rotY = myMatrix[myMatrix.size()-1].deg;
-				//}else{
-				//	//rotZ = d;
-				//	rotZ = myMatrix[myMatrix.size()-1].deg;
-				//}
-				////rotate and move with the whole puzzle
-				SG_VECTOR vrotH = {0,1,0}; //rotate H
-				SG_POINT protH = {0,0,0};
-				objectList[j]->InitTempMatrix()->Rotate(protH,vrotH,rotH);
-				SG_VECTOR vrotV = {1,0,0}; //rotate V
-				SG_POINT protV = {0,0,0};
-				objectList[j]->GetTempMatrix()->Rotate(protV,vrotV,rotV);
-				//translations
-				SG_VECTOR transBox11 = {posX,0,0}; 
-				objectList[j]->GetTempMatrix()->Translate(transBox11);
-				SG_VECTOR transBox121 = {0,posY,0}; 
-				objectList[j]->GetTempMatrix()->Translate(transBox121);
-				objectList[j]->ApplyTempMatrix();
-				objectList[j]->DestroyTempMatrix();
-				objectList[j]->SetAttribute(SG_OA_COLOR,color);
-				objectList[j]->Triangulate(SG_VERTEX_TRIANGULATION);
-				objectList[j]->SetAttribute(SG_OA_DRAW_STATE,SG_DS_FULL);
-
-				//sgGetScene()->AttachObject(objectList[j]);
-
-			}
-		}else{
-			//cout << "null at draw" << endl;
-		}
-		okDraw = false;
-	}
-}
-//--------------------------------------------------------------
-void cubie::unDraw(){  
-	//sgGetScene()->Clear();
-	//detach from scene
-	if(objects != NULL){
-		for (int j=0; j < numObjs; j++){
-			//objectList[j]->SetAttribute(SG_OA_DRAW_STATE,SG_DS_HIDE);
-			//sgGetScene()->DetachObject(objectList[j]);
-			//sgCObject::DeleteObject(objectList[j]);
-			okDraw = true;
-		}
-		////////////////////////////////////IMPORTANT!!!!!!!!///////////////////////////////////
-		////remake objectList for next drawing
-		////there is somememory leakage here!!!!! even after sgCObject::DeleteObject(objectList[j]);
-		/////////////////////////////////////////////////////////////////////////////////////////////
-
-		sgCGroup *objects2 = copyObjects(); 
-		const int ChCnt = objects2->GetChildrenList()->GetCount();
-		numObjs = ChCnt;
-		//give this cubies list some memory
-		objectList = (sgC3DObject**)malloc(ChCnt*sizeof(sgC3DObject*));
-		//start breaking incoming group
-		sgCObject** allParts = (sgCObject**)malloc(ChCnt*sizeof(sgCObject*));
-		objects2->BreakGroup(allParts);
-		sgCObject::DeleteObject(objects2);
-
-		for (int j=0; j < ChCnt; j++){
-			objectList[j] = (sgC3DObject*)allParts[j];
-		}
-		free(allParts);
-	}else{
-		//cout << "null at undraw" << endl;
-	}
-}
 //-------------------------------------------------------------------------------------------------------------------------------------------
 sgCGroup* cubie::copyObjects(){
 	//make a copy of *objects send outside cubie
@@ -275,24 +353,20 @@ void cubie::setObjects(sgCGroup *objs){
 			sgC3DObject *temp = (sgC3DObject*) allParts[j];
 			//put clone on *[] tomake new group
 
-			objectList[objctr] = (sgC3DObject*)temp->Clone();
+			objectList[j] = (sgC3DObject*)temp->Clone();
 			objcts[objctr] = (sgC3DObject*)temp->Clone();
 			objctr ++;
-			//make ofMEsh
-			//ofMesh tempMesh;
-			//ofRender *ofr = new ofRender(); //class that has the metods to transform sgCore to OF mesh and set the normals (in one function)
-			//sgC3DObject *o = (sgC3DObject*)temp->Clone();
-			//cout << o->GetType() << endl;
-
-			//ofr->sgCoretoOFmesh(o,tempMesh);
-			//
-			//myMeshs.push_back(tempMesh);
-			//ofVbo tempVbo;
-			//tempVbo.setMesh(tempMesh, GL_STATIC_DRAW);
-			//myVbos.push_back(tempVbo);
-			//free(ofr);
-
-
+			//////////////////////create ofMEsh
+			ofMesh tempMesh;
+			ofRender *ofr = new ofRender(); //class that has the metods to transform sgCore to OF mesh and set the normals (in one function)
+			sgC3DObject *o = (sgC3DObject*)temp->Clone();
+			o->Triangulate(SG_VERTEX_TRIANGULATION);
+			ofr->sgCoretoOFmesh(o,tempMesh);
+			myMeshs.push_back(tempMesh);
+			ofVbo tempVbo;
+			tempVbo.setMesh(tempMesh, GL_STATIC_DRAW);
+			myVbos.push_back(tempVbo);
+			free(ofr);
 		}
 		free(allParts);
 		//put that new group inside *objects of this class, of every cubie
@@ -322,6 +396,9 @@ void cubie::moveV(float posy){
 //----------------------------------------------------------------
 void cubie::exit(){
 	if(objects != NULL){
+		for (int j=0; j < numObjs; j++){
+			sgCObject::DeleteObject(objectList[j]);
+		}
 		free(objectList);
 		sgCObject::DeleteObject(objects);
 	}

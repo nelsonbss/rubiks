@@ -175,7 +175,7 @@ void ofRender::setNormals( ofMesh &mesh ){
 
 	//Scan all the triangles. For each triangle add its
 	//normal to norm's vectors of triangle's vertices
-	cout << "num triangles:" << nT << endl;
+	//cout << "num triangles:" << nT << endl;
 
 	for (int t=0; t<nT; t++) {
 		//Get indices of the triangle t

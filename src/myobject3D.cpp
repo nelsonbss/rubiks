@@ -62,7 +62,7 @@ void myobject3D::draw(){
 		glMultMatrixd(temp->GetTempMatrix()->GetTransparentData());
 		//myMesh.draw();
 		myVbo.draw(GL_TRIANGLES, 0,myMesh.getNumIndices());
-		ofPopMatrix();
+	ofPopMatrix();
 	temp->DestroyTempMatrix();
 
 	//object->SetAttribute(SG_OA_COLOR,5);

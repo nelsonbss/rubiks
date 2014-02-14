@@ -42,6 +42,8 @@ public:
 
 	bool puzzleExists;
 
+	bool updatePuzzle;
+
 	bool makeCut;
 	bool drawCuts;
 	bool drawCuts1;

@@ -23,6 +23,7 @@ void testApp::setup(){
 	initOFRender();
 	/////////////////////////////////////////PUZzLE //////////
 	puzzleExists = false;
+	updatePuzzle = false;
 	makeCut = false;
 	drawCuts = false;
 	drawCuts1 = false;
@@ -51,7 +52,7 @@ void testApp::setup(){
 	///////////////////////////3D OBJECT LOADING//////////////////////////////////////
 	////////////////////// create primitive torus
 	objectDisplayed = new myobject3D(displayX,displayY);
-	objectDisplayed->loadObject(sgCreateTorus(100,80,34,34));
+	objectDisplayed->loadObject(sgCreateTorus(100,80,50,50));
 	//objectDisplayed->loadObject(sgCreateCone(200,1,300.0, 3));
 	//objectDisplayed->loadObject(sgCreateBox(300,300,300));
 
@@ -101,6 +102,7 @@ void testApp::update(){
 		makeCut = false;
 		drawCuts1 = true;
 		//cout << "end cut:" << ofGetElapsedTimeMillis() << endl;
+		updatePuzzle = true;
 		///////////////////////////////////////////////////////////////////////////////////
 	}
 	///move all puzzle
@@ -232,8 +234,18 @@ void testApp::update(){
 		faceRotateCCz = false;
 		//cout << tempDeg << endl;
 	}
+
+
+	///////////////////////////////////////////////////////////////////////update objects OF
 	if(draw3dObject){
 		objectDisplayed->update(); //rotates the selected object...just for show
+	}
+
+	if(updatePuzzle){
+		if(puzzleExists){
+			myPuzzle->update();
+			//updatePuzzle = false;
+		}
 	}
 }
 
@@ -286,28 +298,28 @@ void testApp::draw(){
 		//mySlicer->draw();
 		drawCuts1 = false;
 		draw3dObject = false;
-		//drawCuts = true;///////////////////////////////////////////turn this ON!!! to keep working on ofMesh render of puzzle, like on the 3dObject
+		drawCuts = true;///////////////////////////////////////////turn this ON!!! to keep working on ofMesh render of puzzle, like on the 3dObject
 	}
 
 	if(draw3dObject){
 		objectDisplayed->draw();
 		//myCutter->draw();
 	}else{
-		objectDisplayed->unDraw();//now its not doing anything
+		//objectDisplayed->unDraw();//now its not doing anything
 		//myCutter->unDraw();
 	}
 
 	if(drawCuts==true){
 		if(puzzleExists == true){
-			//myPuzzle->draw();
+			myPuzzle->draw();
 		}
-		drawCuts = false;
+		//drawCuts = false;
 	}
 
 	//small test of openFrameworks simple drawing embeded with sgCore geometry 
 	ofPushMatrix();
-	ofTranslate(300,300);
-		//ofSetColor(ofColor(255,0,255));
+		ofTranslate(300,300);
+		ofSetColor(ofColor(255,0,255));
 		ofCircle(ofPoint(0,0),5);
 		//ofRotate(ofGetElapsedTimef() * .2 * RAD_TO_DEG, 0, 1, 0);
 	ofPopMatrix();
@@ -383,8 +395,9 @@ void testApp::keyPressed(int key){
 		}
 		////////////erase object ///////////
 		if(key == 'u') {
+			//drawCuts =false;
 			//myPuzzle->unDraw();
-			myPuzzle->unDo();
+			//myPuzzle->unDo();
 		}
 		/////////////////////FACE ROTATIONS!!!///////////////////////////
 		////rotate "FRONT" face original cubie #s:

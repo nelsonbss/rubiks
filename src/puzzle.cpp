@@ -16,20 +16,6 @@ puzzle::puzzle(float x, float y){
 	posY = y;
 	rotH = 0;
 	rotV = 0;
-	//////////
-	// Allocate memory
-	//p3DArray = new double**[HEIGHT];
-	//for (int i = 0; i < HEIGHT; ++i) {
-	//	p3DArray[i] = new double*[WIDTH];
-
-	//	for (int j = 0; j < WIDTH; ++j)
-	//		p3DArray[i][j] = new double[DEPTH];
-	//}
-	//// Assign values
-	//p3DArray[0][0][0] = 3.6;
-	//p3DArray[1][2][4] = 4.0;
-
-
 	/*
 	create 3 * 10 * 25 array filled with '12'
 	*/
@@ -41,7 +27,6 @@ puzzle::puzzle(float x, float y){
 	ThreeDimensions three_dim(NElements3, TwoDimensions(NElements2, OneDimension(NElements1, InitialValueForAllEntries)));
 
 	three_dim1 = three_dim;
-	//three_dim = (int***)malloc(27*sizeof(int*));
 
 	three_dim1[0][0][2] = 13;	three_dim1[1][0][2] = 12;	three_dim1[2][0][2] = 11;
 	three_dim1[0][1][2] = 4;		three_dim1[1][1][2] = 3;		three_dim1[2][1][2] = 2;
@@ -148,14 +133,14 @@ void puzzle::loadPieces(sgCGroup **pcs){
 			//make them a group
 			sgCGroup* cubieGroup = sgCGroup::CreateGroup(obj,realNumPieces);  
 			//put that gorup inside temp cubie
-			myCubies[i]->setObjects(cubieGroup);//here goes the group of clones from the iriginal slicing pieces[]
+			myCubies[i]->setObjects(cubieGroup,i);//here goes the group of clones from the iriginal slicing pieces[]
 			//put that cubie on the cubies[]
 			//myCubies[i] = auxCubie; //am I loosing whtas inside auxCubie here?
 
 			free(obj);
 			free(allParts);
 		}else{
-			myCubies[i]->setObjects(NULL);
+			myCubies[i]->setObjects(NULL,i);
 		}
 	}
 	//sgCObject::DeleteObject(*pcs);

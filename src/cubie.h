@@ -29,7 +29,7 @@ public:
 	float color;
 	bool okDraw;
 
-	void setObjects(sgCGroup *objs);
+	void setObjects(sgCGroup *objs,int cubieId);
 	sgCGroup* copyObjects();
 
 	float posX;

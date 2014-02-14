@@ -11,7 +11,7 @@
 #include <math.h>
 ///////////////////////////////////////////
 #define planeThicknes 0.001
-#define planeSize 300
+#define planeSize 400
 #define tamCubie 100
 
 #define displayX 500
@@ -52,7 +52,7 @@ void testApp::setup(){
 	///////////////////////////3D OBJECT LOADING//////////////////////////////////////
 	////////////////////// create primitive torus
 	objectDisplayed = new myobject3D(displayX,displayY);
-	objectDisplayed->loadObject(sgCreateTorus(100,80,30,30));
+	objectDisplayed->loadObject(sgCreateTorus(100,80,50,50));
 	//objectDisplayed->loadObject(sgCreateCone(200,1,300.0, 3));
 	//objectDisplayed->loadObject(sgCreateBox(300,300,300));
 

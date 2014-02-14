@@ -8,10 +8,11 @@ class ofRender{
 
 public:
 	ofRender();
-	void sgCoretoOFmesh(sgC3DObject *obj, ofMesh &mesh);
-	//void sgCoretoOFmeshCubie(sgC3DObject *obj, ofMesh &mesh,int numCubie);
+	void sgCoretoOFmesh(sgC3DObject *obj, ofMesh &mesh,int numCubie);
 	void setNormals( ofMesh &mesh );
 	ofPoint decideAxis(ofPoint dir);
+	ofColor decideColor(ofPoint normal);
+	ofColor decideColorCubie(ofPoint normal,int numCubie);
 };
 
 #endif /* defined(__TofRender__ofRender__) */

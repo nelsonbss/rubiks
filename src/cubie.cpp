@@ -26,7 +26,7 @@ void cubie::update(){
 			//rotations
 			//use vector with matrix(s)
 			for(int i=0; i<myMatrix.size();i++){
-				SG_POINT protFace = {0,0,0};//myMatrix.at(0).point;// point;
+				SG_POINT protFace = {0,0,100};//myMatrix.at(0).point;// point;
 				SG_VECTOR vrotFace = myMatrix.at(i).vector;//  axis; //rotate to do a face move
 				float d = myMatrix.at(i).deg;
 
@@ -70,14 +70,14 @@ void cubie::update(){
 
 			//rotate and move with the whole puzzle
 			SG_VECTOR vrotH = {0,1,0}; //rotate H
-			SG_POINT protH = {0,0,0};
+			SG_POINT protH = {0,0,100};                                             ////this is a 100 just because of torus example
 			if (objectList[j]->GetTempMatrix()==0){
 				objectList[j]->InitTempMatrix()->Rotate(protH,vrotH,rotH);
 			}else{
 				objectList[j]->GetTempMatrix()->Rotate(protH,vrotH,rotH);
 			}
 			SG_VECTOR vrotV = {1,0,0}; //rotate V
-			SG_POINT protV = {0,0,0};
+			SG_POINT protV = {0,0,100};												 ////this is a 100 just because of torus example
 			objectList[j]->GetTempMatrix()->Rotate(protV,vrotV,rotV);
 			//translations
 			SG_VECTOR transBox11 = {posX,0,0}; 
@@ -336,7 +336,7 @@ sgCGroup* cubie::copyObjects(){
 	return aux;
 }
 //-------------------------------------------------------------------------------------------------------------------------------------------
-void cubie::setObjects(sgCGroup *objs){
+void cubie::setObjects(sgCGroup *objs,int cubieId){
 	//it receives a group, when Puzzle loadsPieces(ySlicer->getPieces())  on main
 	//it takes the input group and breaks it, to put parts on cubie group "objects"
 	if(objs != NULL){
@@ -357,7 +357,6 @@ void cubie::setObjects(sgCGroup *objs){
 			//clone each object
 			sgC3DObject *temp = (sgC3DObject*) allParts[j];
 			//put clone on *[] tomake new group
-
 			objectList[j] = (sgC3DObject*)temp->Clone();
 			objcts[objctr] = (sgC3DObject*)temp->Clone();
 			objctr ++;
@@ -366,7 +365,8 @@ void cubie::setObjects(sgCGroup *objs){
 			ofRender *ofr = new ofRender(); //class that has the metods to transform sgCore to OF mesh and set the normals (in one function)
 			sgC3DObject *o = (sgC3DObject*)temp->Clone();
 			o->Triangulate(SG_VERTEX_TRIANGULATION);
-			ofr->sgCoretoOFmesh(o,tempMesh);
+			//convert to ofMEsh with cubie ID!!!
+			ofr->sgCoretoOFmesh(o,tempMesh,cubieId); //give cubie id!!
 			myMeshs.push_back(tempMesh);
 			ofVbo tempVbo;
 			tempVbo.setMesh(tempMesh, GL_STATIC_DRAW);

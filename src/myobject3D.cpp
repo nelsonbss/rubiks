@@ -14,6 +14,11 @@ void myobject3D::setup(){
 	temp = (sgC3DObject *) object->Clone();
 
 
+	SG_VECTOR transP = {0,0,100};
+	object->InitTempMatrix()->Translate(transP);
+	object->ApplyTempMatrix();  
+	object->DestroyTempMatrix();
+
 	/*SG_VECTOR rotD = {posX,posY,0};
 	temp->InitTempMatrix()->Translate(rotD);
 	temp->ApplyTempMatrix();  */
@@ -23,7 +28,7 @@ void myobject3D::setup(){
 	temp->Triangulate(SG_VERTEX_TRIANGULATION);
 	temp->SetAttribute(SG_OA_COLOR,2);
 	ofRender *ofr = new ofRender(); //class that has the metods to transform sgCore to OF mesh and set the normals (in one function)
-	ofr->sgCoretoOFmesh(temp,myMesh);
+	ofr->sgCoretoOFmesh(temp,myMesh,-1); //-1 because its not a cubie
 	myVbo.setMesh(myMesh, GL_STATIC_DRAW);
 	free(ofr);
 }

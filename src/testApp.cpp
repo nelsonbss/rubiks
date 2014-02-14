@@ -398,11 +398,8 @@ void testApp::keyPressed(int key){
 			//myPuzzle->unDraw();
 			//myPuzzle->unDo();
 		}
-		/////////////////////FACE ROTATIONS!!!///////////////////////////
-		////rotate "FRONT" face original cubie #s:
-		//16-17-18
-		//7-8-9
-		//25-26-27
+
+		/////////////////////FACE ROTATIONS!!!//////////////////////////////
 		//rotation point: 3D-center of cubie 7 (8 in the original numbering)
 		if(key == 'q') {
 			ct1 = ofGetElapsedTimeMillis();
@@ -434,9 +431,6 @@ void testApp::keyPressed(int key){
 			//tempDeg = 0.0;
 			ct1 = ofGetElapsedTimeMillis();
 			faceRotateCCz = true; //counter clockwise
-		}
-		if(OF_KEY_DOWN){
-			cout << "space" << endl;
 		}
 	}
 }
@@ -506,73 +500,9 @@ void testApp::exit(){
 	}
 	//sgFreeKernel();
 }
-//--------------------------------------------------------------------------------------------------------------------------------------------------------
-//
-// InitScene()
-// Called when the OpenGL RC has been created. Sets initial state for the OpenGL scene.
-//
-void testApp::initScene(){
-	// Lights properties
-	float ambientProperties[]  = {0.1f, 0.1f, 0.1f, 1.0f};
-	float diffuseProperties[]  = {1.0f, 1.0f, 1.0f, 1.0f};
-	float specularProperties[] = {1.0f, 1.0f, 1.0f, 1.0f};
-
-	glLightfv( GL_LIGHT0, GL_AMBIENT, ambientProperties);
-	glLightfv( GL_LIGHT0, GL_DIFFUSE,diffuseProperties);
-	glLightfv( GL_LIGHT0, GL_SPECULAR, specularProperties);
-	//glLightModelf(GL_LIGHT_MODEL_TWO_SIDE, 1.0);
-
-	glClearColor(1.0,1.0,1.0,1.0f);
-
-	glHint(GL_LINE_SMOOTH_HINT,GL_FASTEST);
-
-	//// Texture
-	glEnable(GL_TEXTURE_2D);
-	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
-
-
-	// Default : lighting
-
-	//glEnable(GL_LIGHTING);
-	glEnable(GL_LIGHT0);
-
-
-	// Default : blending
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-	glEnable(GL_DEPTH_TEST);
-
-	//glEnable(GL_CULL_FACE);
-}
-//---------------------------------------------------------------------------------------------------------------------------------------------------
-void testApp::drawElements(){
-	//////////////////////////////////////////////////////////////
-	////draw the elements of the scene
-	sgCObject*  curObj = sgGetScene()->GetObjectsList()->GetHead();
-
-	while (curObj)
-	{
-		if (true)
-		{
-			Painter::DrawObject(GL_RENDER,curObj,false);
-
-			/*if ((curObj->GetAttribute(SG_OA_DRAW_STATE) & SG_DS_GABARITE))
-			{
-			SG_POINT a1,a2;
-			curObj->GetGabarits(a1,a2);
-			Painter::DrawGabariteBox(a1,a2);
-			}*/
-		}
-		curObj = sgGetScene()->GetObjectsList()->GetNext(curObj);
-	}
-}
 //-----------------------------------------------------------------------------
 void testApp::initOFRender(){
 	ofGLRenderer(true);
-	//myMesh.setMode(OF_PRIMITIVE_TRIANGLES);
-	//myMesh.setFromTriangles(
 
 	ofSetVerticalSync(true);
 	ofEnableDepthTest();
@@ -586,7 +516,7 @@ void testApp::initOFRender(){
 	ofSetSphereResolution(128);
 
 	// radius of the sphere //
-	radius		= 180.f;
+	radius = 180.f;
 	center.set(ofGetWidth()*.5, ofGetHeight()*.5, 0);
 
 	// Point lights emit light in all directions //
@@ -635,4 +565,68 @@ void testApp::initOFRender(){
 	//// load an image to use as the texture //
 	ofLogoImage.loadImage("of.png");
 	bUseTexture = true;
+}
+
+
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////
+// openGL rendering
+void testApp::initScene(){
+	// Lights properties
+	float ambientProperties[]  = {0.1f, 0.1f, 0.1f, 1.0f};
+	float diffuseProperties[]  = {1.0f, 1.0f, 1.0f, 1.0f};
+	float specularProperties[] = {1.0f, 1.0f, 1.0f, 1.0f};
+
+	glLightfv( GL_LIGHT0, GL_AMBIENT, ambientProperties);
+	glLightfv( GL_LIGHT0, GL_DIFFUSE,diffuseProperties);
+	glLightfv( GL_LIGHT0, GL_SPECULAR, specularProperties);
+	//glLightModelf(GL_LIGHT_MODEL_TWO_SIDE, 1.0);
+
+	glClearColor(1.0,1.0,1.0,1.0f);
+
+	glHint(GL_LINE_SMOOTH_HINT,GL_FASTEST);
+
+	//// Texture
+	glEnable(GL_TEXTURE_2D);
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
+
+
+	// Default : lighting
+
+	//glEnable(GL_LIGHTING);
+	glEnable(GL_LIGHT0);
+
+
+	// Default : blending
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	glEnable(GL_DEPTH_TEST);
+
+	//glEnable(GL_CULL_FACE);
+}
+//-----------------------------------------------------------------------------------
+void testApp::drawElements(){
+	//////////////////////////////////////////////////////////////
+	////draw the elements of the scene
+	sgCObject*  curObj = sgGetScene()->GetObjectsList()->GetHead();
+
+	while (curObj)
+	{
+		if (true)
+		{
+			Painter::DrawObject(GL_RENDER,curObj,false);
+
+			/*if ((curObj->GetAttribute(SG_OA_DRAW_STATE) & SG_DS_GABARITE))
+			{
+			SG_POINT a1,a2;
+			curObj->GetGabarits(a1,a2);
+			Painter::DrawGabariteBox(a1,a2);
+			}*/
+		}
+		curObj = sgGetScene()->GetObjectsList()->GetNext(curObj);
+	}
 }

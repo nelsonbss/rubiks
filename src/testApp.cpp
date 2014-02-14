@@ -55,7 +55,6 @@ void testApp::setup(){
 	objectDisplayed->loadObject(sgCreateTorus(100,80,50,50));
 	//objectDisplayed->loadObject(sgCreateCone(200,1,300.0, 3));
 	//objectDisplayed->loadObject(sgCreateBox(300,300,300));
-
 	////////////////////// from STL file
 	/*const char* nel =  ofToDataPath("cube.stl",false).c_str();
 	objectDisplayed.loadObjectFromFile(nel);*/
@@ -577,7 +576,7 @@ void testApp::initOFRender(){
 
 	ofSetVerticalSync(true);
 	ofEnableDepthTest();
-	ofBackground(10, 10, 10, 0);
+	ofBackground(100, 100, 100, 0);
 	// turn on smooth lighting //
 	bSmoothLighting = true;
 	ofSetSmoothLighting(true);

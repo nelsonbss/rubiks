@@ -26,7 +26,7 @@ void cubie::update(){
 			//rotations
 			//use vector with matrix(s)
 			for(int i=0; i<myMatrix.size();i++){
-				SG_POINT protFace = {0,0,100};//myMatrix.at(0).point;// point;
+				SG_POINT protFace = {0,0,100};										 ////this is a 100 just because of torus example
 				SG_VECTOR vrotFace = myMatrix.at(i).vector;//  axis; //rotate to do a face move
 				float d = myMatrix.at(i).deg;
 

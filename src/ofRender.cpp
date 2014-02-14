@@ -11,13 +11,12 @@ void ofRender::sgCoretoOFmesh(sgC3DObject *obj, ofMesh &mesh){
 
 	int numTriangles =0;
 	const SG_POINT *vertex;
-	const SG_POINT *normals;
+	const SG_VECTOR *normals;
 	//vector< ofVec3f > vert;
 	const SG_ALL_TRIANGLES* trngls = obj->GetTriangles();
 	numTriangles = trngls->nTr;
 	vertex = trngls->allVertex;
 	normals = trngls->allNormals;
-	//vector<ofPoint> norm(numTriangles*3); //Array for the normals
 
 	//generate ofMesh
 	// build vector of vertices from allthe vertices
@@ -25,7 +24,6 @@ void ofRender::sgCoretoOFmesh(sgC3DObject *obj, ofMesh &mesh){
 		ofVec3f auxV1;
 		ofVec3f auxV2;
 		ofVec3f auxV3;
-
 
 		auxV1.x = vertex[i].x;
 		auxV1.y = vertex[i].y;
@@ -42,6 +40,7 @@ void ofRender::sgCoretoOFmesh(sgC3DObject *obj, ofMesh &mesh){
 		//look at normal
 		////Compute the triangle's normal
 		ofPoint dir = ( (auxV2 - auxV1).crossed( auxV3 - auxV1 ) ).normalized();
+		
 		ofPoint myNormal = decideAxis(dir);
 		ofPoint x = ofPoint(1,0,0);
 		ofPoint y = ofPoint(0,1,0);
@@ -71,8 +70,6 @@ void ofRender::sgCoretoOFmesh(sgC3DObject *obj, ofMesh &mesh){
 			c = ofFloatColor(1,1,0);
 			//cout << "zn axis normal " << c << endl;
 		}
-
-
 		mesh.addColor(c);
 		mesh.addVertex(auxV1);
 		mesh.addColor(c);
@@ -80,13 +77,19 @@ void ofRender::sgCoretoOFmesh(sgC3DObject *obj, ofMesh &mesh){
 		mesh.addColor(c);
 		mesh.addVertex(auxV3);
 
+		//make indices & add normals to each index
+		mesh.addIndex(i);
+		mesh.addNormal(ofVec3f(normals[i].x,normals[i].y,normals[i].z));
+		mesh.addIndex(i + 1);
+		mesh.addNormal(ofVec3f(normals[i+1].x,normals[i+1].y,normals[i+1].z));
+		mesh.addIndex(i + 2);
+		mesh.addNormal(ofVec3f(normals[i+2].x,normals[i+2].y,normals[i+2].z));
 	}
-	//add vertices
-	//mesh.addVertices(vert);
-	//setup indices
-	mesh.setupIndicesAuto();
-	//set normals.. for lighting 
-	setNormals(mesh);//before normals were done at the end, now they are done for each created triangle, so we can color it according to the normal
+
+	//////////setup indices
+	////////mesh.setupIndicesAuto();
+	//////////set normals.. for lighting 
+	////////setNormals(mesh);//before normals were done at the end, now they are done for each created triangle, so we can color it according to the normal
 }
 //----------------------------------------------------------------------------------------------------------------
 ofPoint ofRender::decideAxis(ofPoint dir){

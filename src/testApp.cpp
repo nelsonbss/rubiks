@@ -52,7 +52,7 @@ void testApp::setup(){
 	///////////////////////////3D OBJECT LOADING//////////////////////////////////////
 	////////////////////// create primitive torus
 	objectDisplayed = new myobject3D(displayX,displayY);
-	objectDisplayed->loadObject(sgCreateTorus(100,80,50,50));
+	objectDisplayed->loadObject(sgCreateTorus(100,80,30,30));
 	//objectDisplayed->loadObject(sgCreateCone(200,1,300.0, 3));
 	//objectDisplayed->loadObject(sgCreateBox(300,300,300));
 
@@ -240,7 +240,7 @@ void testApp::update(){
 	if(draw3dObject){
 		objectDisplayed->update(); //rotates the selected object...just for show
 	}
-
+	///////////////////////////////////////update cubies
 	if(updatePuzzle){
 		if(puzzleExists){
 			myPuzzle->update();
@@ -404,7 +404,7 @@ void testApp::keyPressed(int key){
 		//16-17-18
 		//7-8-9
 		//25-26-27
-		//rotation point: 3D-center of cubie 8
+		//rotation point: 3D-center of cubie 7 (8 in the original numbering)
 		if(key == 'q') {
 			ct1 = ofGetElapsedTimeMillis();
 			//tempDeg = 0.0;
@@ -469,12 +469,6 @@ void testApp::keyReleased(int key){
 		}
 		if(key == 'h') {
 			rotatePVdown = false;
-		}
-		/////////////////////FACE ROTATIONS!!!///////////////////////////
-		if(key == 'q') {
-			//faceRotateC = false; //clockwise
-		}if(key == 'a') {
-			//faceRotateCC = false; //counter clockwise
 		}
 	}
 }

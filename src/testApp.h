@@ -27,7 +27,6 @@ public:
 
 	////////////////
 	void initScene();
-	void addGroupToScene(sgCGroup *group);
 	void drawElements();
 	////////////////
 
@@ -89,6 +88,4 @@ public:
 	bool bSmoothLighting;
 	bool bPointLight, bSpotLight, bDirLight;
 	bool bUseTexture;
-	/////function to sets normals for the triangle mesh
-	void setNormals( ofMesh &mesh );
 };

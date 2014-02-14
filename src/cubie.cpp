@@ -71,18 +71,17 @@ void cubie::update(){
 			//rotate and move with the whole puzzle
 			SG_VECTOR vrotH = {0,1,0}; //rotate H
 			SG_POINT protH = {0,0,0};
-			//objectList[j]->InitTempMatrix()->Rotate(protH,vrotH,rotH);
+			if (objectList[j]->GetTempMatrix()==0){
+				objectList[j]->InitTempMatrix()->Rotate(protH,vrotH,rotH);
+			}else{
+				objectList[j]->GetTempMatrix()->Rotate(protH,vrotH,rotH);
+			}
 			SG_VECTOR vrotV = {1,0,0}; //rotate V
 			SG_POINT protV = {0,0,0};
-			//objectList[j]->GetTempMatrix()->Rotate(protV,vrotV,rotV);
+			objectList[j]->GetTempMatrix()->Rotate(protV,vrotV,rotV);
 			//translations
 			SG_VECTOR transBox11 = {posX,0,0}; 
-			if (objectList[j]->GetTempMatrix()==0){
-				objectList[j]->InitTempMatrix()->Translate(transBox11);
-			}else{
-				objectList[j]->GetTempMatrix()->Translate(transBox11);
-			}
-
+			objectList[j]->GetTempMatrix()->Translate(transBox11);
 			SG_VECTOR transBox121 = {0,posY,0}; 
 			objectList[j]->GetTempMatrix()->Translate(transBox121);
 			objectList[j]->ApplyTempMatrix();
@@ -110,38 +109,38 @@ void cubie::draw(){
 		for (int j=0; j < numObjs; j++){
 			//			//rotations
 			//			//use vector with matrix(s)
-						//for(int i=0; i<myMatrix.size();i++){
-						//	SG_POINT protFace = {0,0,0};//myMatrix.at(0).point;// point;
-						//	SG_VECTOR vrotFace = myMatrix.at(i).vector;//  axis; //rotate to do a face move
-						//	float d = myMatrix.at(i).deg;
+			//for(int i=0; i<myMatrix.size();i++){
+			//	SG_POINT protFace = {0,0,0};//myMatrix.at(0).point;// point;
+			//	SG_VECTOR vrotFace = myMatrix.at(i).vector;//  axis; //rotate to do a face move
+			//	float d = myMatrix.at(i).deg;
 
-						//	if(myMatrix.at(i).dir == true){
-						//		//c
-						//		if(myMatrix.at(i).vector.x == 1){
-						//			objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,d);
-						//		}else if(myMatrix.at(i).vector.y == 1){
-						//			//rotY = d;
-						//			objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,d);
-						//		}else{
-						//			//rotZ = d;
-						//			objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,d);
-						//		}
+			//	if(myMatrix.at(i).dir == true){
+			//		//c
+			//		if(myMatrix.at(i).vector.x == 1){
+			//			objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,d);
+			//		}else if(myMatrix.at(i).vector.y == 1){
+			//			//rotY = d;
+			//			objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,d);
+			//		}else{
+			//			//rotZ = d;
+			//			objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,d);
+			//		}
 
-						//	}else{
-						//		//cc
-						//		if(myMatrix.at(i).vector.x == 1){
-						//			objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,d);
-						//		}else if(myMatrix.at(i).vector.y == 1){
-						//			//rotY = d;
-						//			objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,d);
-						//		}else{
-						//			//rotZ = d;
-						//			objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,d);
-						//		}
-						//	}
-						//	objectList[j]->ApplyTempMatrix();
-						//	objectList[j]->DestroyTempMatrix();
-						//}
+			//	}else{
+			//		//cc
+			//		if(myMatrix.at(i).vector.x == 1){
+			//			objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,d);
+			//		}else if(myMatrix.at(i).vector.y == 1){
+			//			//rotY = d;
+			//			objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,d);
+			//		}else{
+			//			//rotZ = d;
+			//			objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,d);
+			//		}
+			//	}
+			//	objectList[j]->ApplyTempMatrix();
+			//	objectList[j]->DestroyTempMatrix();
+			//}
 
 			//			//if(myMatrix[myMatrix.size()-1].vector.x == 1){
 			//			//	rotX = myMatrix[myMatrix.size()-1].deg;
@@ -182,10 +181,10 @@ void cubie::draw(){
 			//	}else{
 			//		//cout << "null at draw" << endl;
 			ofPushMatrix();
-			if (objectList[j]->GetTempMatrix()!=0)
-				glMultMatrixd(objectList[j]->GetTempMatrix()->GetTransparentData());
-			objectList[j]->DestroyTempMatrix();
-			myVbos[j].draw(GL_TRIANGLES, 0,myMeshs[j].getNumIndices());
+				if (objectList[j]->GetTempMatrix()!=0)
+					glMultMatrixd(objectList[j]->GetTempMatrix()->GetTransparentData());
+				objectList[j]->DestroyTempMatrix();
+				myVbos[j].draw(GL_TRIANGLES, 0,myMeshs[j].getNumIndices());
 			ofPopMatrix();
 		}
 	}

@@ -16,6 +16,7 @@
 
 #define displayX 500
 #define displayY 400
+#define posZ 100
 
 #define _USE_MATH_DEFINES
 //--------------------------------------------------------------
@@ -52,7 +53,8 @@ void testApp::setup(){
 	///////////////////////////3D OBJECT LOADING//////////////////////////////////////
 	////////////////////// create primitive torus
 	objectDisplayed = new myobject3D(displayX,displayY);
-	objectDisplayed->loadObject(sgCreateTorus(100,80,50,50));
+	objectDisplayed->loadObject(sgCreateTorus(posZ,80,50,50));
+
 	//objectDisplayed->loadObject(sgCreateCone(200,1,300.0, 3));
 	//objectDisplayed->loadObject(sgCreateBox(300,300,300));
 	////////////////////// from STL file
@@ -62,7 +64,7 @@ void testApp::setup(){
 	////////////////////////////////////////////////////////////////////////////////////
 
 	////////////////////////////////create cutter///////////////////////////////////////
-	myCutter = new cutter(planeThicknes,planeSize,tamCubie,1,0,0); //to make a plane based cutter
+	myCutter = new cutter(planeThicknes,planeSize,tamCubie,1,0,0,-posZ); //to make a plane based cutter
 	myCutter->setup();
 	//////////////////////////////////end create cutter///////////////////////////////////
 
@@ -143,6 +145,8 @@ void testApp::update(){
 		myPuzzle->rotateVdown();
 		drawCuts = true;
 	}
+
+	//////////////////////////////////////////////////////////////////
 	//////////////////////////////////////////////face rotations
 	SG_POINT point = {0,0,0};
 	SG_VECTOR axis = {1,0,0};
@@ -154,10 +158,10 @@ void testApp::update(){
 		if(tempDeg >= 6.28){
 		tempDeg = 0.0;
 		}*/
-		myPuzzle->unDraw();
+		//myPuzzle->unDraw();
 		//myPuzzle->faceRotate(point, axis, tempDeg,true);
 		myPuzzle->rotateByIDandAxis(7,axis,true,tempDeg);
-		drawCuts = true;
+		//drawCuts = true;
 		faceRotateC = false;
 		//cout << tempDeg << endl;
 
@@ -178,10 +182,10 @@ void testApp::update(){
 		//if(tempDeg <= -6.28){
 		//	tempDeg = 0.0;
 		//}
-		myPuzzle->unDraw();
+		//myPuzzle->unDraw();
 		//myPuzzle->faceRotate(point,axis,tempDeg,false);
 		myPuzzle->rotateByIDandAxis(7,axis,false,tempDeg);
-		drawCuts = true;
+		//drawCuts = true;
 		faceRotateCC = false;
 		//cout << tempDeg << endl;
 
@@ -200,36 +204,36 @@ void testApp::update(){
 
 	SG_VECTOR axisy = {0,1,0};
 	if(faceRotateCy == true) {//c
-		myPuzzle->unDraw();
+		//myPuzzle->unDraw();
 		//myPuzzle->faceRotate(point, axis, tempDeg,true);
 		myPuzzle->rotateByIDandAxis(7,axisy,true,tempDeg);
-		drawCuts = true;
+		//drawCuts = true;
 		faceRotateCy = false;
 		//cout << tempDeg << endl;
 	}
 	if(faceRotateCCy == true) {//
-		myPuzzle->unDraw();
+		//myPuzzle->unDraw();
 		//myPuzzle->faceRotate(point,axis,tempDeg,false);
 		myPuzzle->rotateByIDandAxis(7,axisy,false,tempDeg);
-		drawCuts = true;
+		//drawCuts = true;
 		faceRotateCCy = false;
 		//cout << tempDeg << endl;
 	}
 
 	SG_VECTOR axisz = {0,0,1};
 	if(faceRotateCz == true) {//c
-		myPuzzle->unDraw();
+		//myPuzzle->unDraw();
 		//myPuzzle->faceRotate(point, axis, tempDeg,true);
 		myPuzzle->rotateByIDandAxis(7,axisz,true,tempDeg);
-		drawCuts = true;
+		//drawCuts = true;
 		faceRotateCz = false;
 		//cout << tempDeg << endl;
 	}
 	if(faceRotateCCz == true) {//
-		myPuzzle->unDraw();
+		//myPuzzle->unDraw();
 		//myPuzzle->faceRotate(point,axis,tempDeg,false);
 		myPuzzle->rotateByIDandAxis(7,axisz,false,tempDeg);
-		drawCuts = true;
+		//drawCuts = true;
 		faceRotateCCz = false;
 		//cout << tempDeg << endl;
 	}
@@ -401,6 +405,8 @@ void testApp::keyPressed(int key){
 
 		/////////////////////FACE ROTATIONS!!!//////////////////////////////
 		//rotation point: 3D-center of cubie 7 (8 in the original numbering)
+
+		///x axis
 		if(key == 'q') {
 			ct1 = ofGetElapsedTimeMillis();
 			//tempDeg = 0.0;
@@ -411,7 +417,7 @@ void testApp::keyPressed(int key){
 			ct1 = ofGetElapsedTimeMillis();
 			faceRotateCC = true; //counter clockwise
 		}
-
+		//y axis
 		if(key == 'w') {
 			ct1 = ofGetElapsedTimeMillis();
 			//tempDeg = 0.0;
@@ -422,6 +428,7 @@ void testApp::keyPressed(int key){
 			ct1 = ofGetElapsedTimeMillis();
 			faceRotateCCy = true; //counter clockwise
 		}
+		//z axis
 		if(key == 'e') {
 			ct1 = ofGetElapsedTimeMillis();
 			//tempDeg = 0.0;

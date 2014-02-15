@@ -108,10 +108,7 @@ void slicer::intersectCubes(sgCObject *obj){
 	for(int i =0; i<27; i ++){
 		sgCObject *tempObj = obj->Clone();
 		sgCObject *tempCutter = myCutter->cubes[i]->Clone();
-
-		//INTERSECTION IS BEING DONE ON THE ORIGIN!!!
-
-		//do intersecton
+		//do intersecton at origin
 		pieces[i] = sgBoolean::Intersection(*(sgC3DObject*)tempObj,*(sgC3DObject*)tempCutter); 
 		//one of this operations.. is creating 53 objects!! that are not being released on exit!!!!
 		//now we have the whole piece that goes into a cubie for that cube

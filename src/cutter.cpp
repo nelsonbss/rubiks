@@ -1,7 +1,7 @@
 #include "cutter.h"
 #include "sgCore.h"
 
-cutter::cutter(float thick, float tamPlane, float tamCuby,float numCutr, float x, float y){
+cutter::cutter(float thick, float tamPlane, float tamCuby,float numCutr, float x, float y, float z){
 	numCutter = numCutr;
 	cutterThick = thick;
 	cutterSize = tamPlane;
@@ -11,6 +11,7 @@ cutter::cutter(float thick, float tamPlane, float tamCuby,float numCutr, float x
 	////
 	posX = x;
 	posY = y;
+	posZ = z;
 	rotH = 0;
 	rotV = 0;
 	///
@@ -180,7 +181,7 @@ void cutter::setup(){
 	//////create group////////////////////////////////////////////////
 	allPlanes = sgCGroup::CreateGroup(planes,6);
 	//move planes to display position, where cuts are going to be made
-	SG_VECTOR transPlanes = {posX,posY,0};
+	SG_VECTOR transPlanes = {posX,posY,posZ};
 	allPlanes->InitTempMatrix()->Translate(transPlanes);
 	allPlanes->ApplyTempMatrix();  
 	allPlanes->DestroyTempMatrix();

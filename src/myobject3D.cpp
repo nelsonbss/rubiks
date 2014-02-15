@@ -14,7 +14,7 @@ void myobject3D::setup(){
 	temp = (sgC3DObject *) object->Clone();
 
 
-	SG_VECTOR transP = {0,0,100};
+	SG_VECTOR transP = {0,0,0};
 	object->InitTempMatrix()->Translate(transP);
 	object->ApplyTempMatrix();  
 	object->DestroyTempMatrix();

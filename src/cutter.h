@@ -6,7 +6,7 @@
 
 class cutter {
 public:
-	cutter(float thick, float tam, float tamPiece,float numCutrc, float x, float y);
+	cutter(float thick, float tam, float tamPiece,float numCutrc, float x, float y,float z);
     
 	void setup();
 	void update();
@@ -27,6 +27,7 @@ public:
 	//whole cutter coordinates
 	float posX;
 	float posY;
+	float posZ;
 	void moveRight();
 	void moveLeft();
 	void moveUp();

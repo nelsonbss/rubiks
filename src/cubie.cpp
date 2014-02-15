@@ -26,7 +26,7 @@ void cubie::update(){
 			//rotations
 			//use vector with matrix(s)
 			for(int i=0; i<myMatrix.size();i++){
-				SG_POINT protFace = {0,0,100};										 ////this is a 100 just because of torus example
+				SG_POINT protFace = {0,0,0};										 
 				SG_VECTOR vrotFace = myMatrix.at(i).vector;//  axis; //rotate to do a face move
 				float d = myMatrix.at(i).deg;
 
@@ -70,14 +70,14 @@ void cubie::update(){
 
 			//rotate and move with the whole puzzle
 			SG_VECTOR vrotH = {0,1,0}; //rotate H
-			SG_POINT protH = {0,0,100};                                             ////this is a 100 just because of torus example
+			SG_POINT protH = {0,0,100};                                             
 			if (objectList[j]->GetTempMatrix()==0){
 				objectList[j]->InitTempMatrix()->Rotate(protH,vrotH,rotH);
 			}else{
 				objectList[j]->GetTempMatrix()->Rotate(protH,vrotH,rotH);
 			}
 			SG_VECTOR vrotV = {1,0,0}; //rotate V
-			SG_POINT protV = {0,0,100};												 ////this is a 100 just because of torus example
+			SG_POINT protV = {0,0,100};												 
 			objectList[j]->GetTempMatrix()->Rotate(protV,vrotV,rotV);
 			//translations
 			SG_VECTOR transBox11 = {posX,0,0}; 
@@ -180,12 +180,24 @@ void cubie::draw(){
 			//		}
 			//	}else{
 			//		//cout << "null at draw" << endl;
-			ofPushMatrix();
-				if (objectList[j]->GetTempMatrix()!=0)
-					glMultMatrixd(objectList[j]->GetTempMatrix()->GetTransparentData());
-				objectList[j]->DestroyTempMatrix();
-				myVbos[j].draw(GL_TRIANGLES, 0,myMeshs[j].getNumIndices());
-			ofPopMatrix();
+
+			//ofPushMatrix();	 
+			glPushMatrix();
+			glTranslatef(500,400,0);
+			//glPushMatrix();
+			ofRotateX(rotX);
+			//glPopMatrix();
+			//glRotated(rotX,1,0,0);
+			//ofTranslate(500,400,0);
+			//ofRotateX(rotX);
+			//ofRotate(rotX,1,0,0);
+			//ofRotate(rotH,0,0.5,0);
+			/*	if (objectList[j]->GetTempMatrix()!=0)
+			glMultMatrixd(objectList[j]->GetTempMatrix()->GetTransparentData());
+			objectList[j]->DestroyTempMatrix();*/
+			myVbos[j].draw(GL_TRIANGLES, 0,myMeshs[j].getNumIndices());
+			//ofPopMatrix();
+			glPopMatrix();
 		}
 	}
 	//	okDraw = false;
@@ -241,8 +253,12 @@ void cubie::faceRotate(SG_VECTOR axis, float deg,bool di){
 			if(di == true){
 				//c
 				if(axis.x == 1){
-					rotX += 1.57;
+					/*rotX += 1.57;
 					if(rotX >= 6.28){
+					rotX = 0.0;
+					}*/
+					rotX += 90;
+					if(rotX >= 360){
 						rotX = 0.0;
 					}
 					//objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,rotX);
@@ -364,6 +380,12 @@ void cubie::setObjects(sgCGroup *objs,int cubieId){
 			ofMesh tempMesh;
 			ofRender *ofr = new ofRender(); //class that has the metods to transform sgCore to OF mesh and set the normals (in one function)
 			sgC3DObject *o = (sgC3DObject*)temp->Clone();
+
+			SG_VECTOR transP = {0,0,0};
+			o->InitTempMatrix()->Translate(transP);
+			o->ApplyTempMatrix();  
+			o->DestroyTempMatrix();
+
 			o->Triangulate(SG_VERTEX_TRIANGULATION);
 			//convert to ofMEsh with cubie ID!!!
 			ofr->sgCoretoOFmesh(o,tempMesh,cubieId); //give cubie id!!

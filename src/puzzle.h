@@ -11,7 +11,7 @@
 class puzzle {
 
 public:
-	puzzle(float x, float y);
+	puzzle(float x, float y, float z);
 
 	void setup();
 	void update();
@@ -28,6 +28,7 @@ public:
 
 	float posX;
 	float posY;
+	float posZ;
 	void moveRight();
 	void moveLeft();
 	void moveUp();

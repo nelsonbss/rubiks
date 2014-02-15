@@ -2,11 +2,12 @@
 #include "sgCore.h"
 #include "ofRender.h"
 
-cubie::cubie(float x, float y,int idi){
+cubie::cubie(float x, float y,float z, int idi){
 	objects = NULL;
 	id = idi;
 	posX = x;
 	posY = y;
+	posZ = z;
 	rotH = 0.0;
 	rotV = 0.0;
 	color = rand()%27;
@@ -23,7 +24,7 @@ void cubie::setup(){
 void cubie::update(){
 	if(objects != NULL){
 		for (int j=0; j < numObjs; j++){
-			//rotations
+			///////////////////////////////////////////////////rotations
 			//use vector with matrix(s)
 			for(int i=0; i<myMatrix.size();i++){
 				SG_POINT protFace = {0,0,0};										 
@@ -33,31 +34,32 @@ void cubie::update(){
 				if(myMatrix.at(i).dir == true){
 					//c
 					if(myMatrix.at(i).vector.x == 1){
-						objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,d);
+						//objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,d);
 					}else if(myMatrix.at(i).vector.y == 1){
 						//rotY = d;
-						objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,d);
+						//objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,d);
 					}else{
 						//rotZ = d;
-						objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,d);
+						//objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,d);
 					}
 
 				}else{
 					//cc
 					if(myMatrix.at(i).vector.x == 1){
-						objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,d);
+						//objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,d);
 					}else if(myMatrix.at(i).vector.y == 1){
 						//rotY = d;
-						objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,d);
+						//objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,d);
 					}else{
 						//rotZ = d;
-						objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,d);
+						//objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,d);
 					}
 				}
-				objectList[j]->ApplyTempMatrix();
+				//objectList[j]->ApplyTempMatrix();
 				//objectList[j]->DestroyTempMatrix();
 			}
 
+			/////////////////////////////////////////////////////////////
 			//if(myMatrix[myMatrix.size()-1].vector.x == 1){
 			//	rotX = myMatrix[myMatrix.size()-1].deg;
 			//}else if(myMatrix[myMatrix.size()-1].vector.y == 1){
@@ -68,24 +70,30 @@ void cubie::update(){
 			//	rotZ = myMatrix[myMatrix.size()-1].deg;
 			//}
 
+
+			/////////////////////////////////////////////////////////////
 			//rotate and move with the whole puzzle
-			SG_VECTOR vrotH = {0,1,0}; //rotate H
-			SG_POINT protH = {0,0,100};                                             
-			if (objectList[j]->GetTempMatrix()==0){
-				objectList[j]->InitTempMatrix()->Rotate(protH,vrotH,rotH);
-			}else{
-				objectList[j]->GetTempMatrix()->Rotate(protH,vrotH,rotH);
-			}
-			SG_VECTOR vrotV = {1,0,0}; //rotate V
-			SG_POINT protV = {0,0,100};												 
-			objectList[j]->GetTempMatrix()->Rotate(protV,vrotV,rotV);
-			//translations
-			SG_VECTOR transBox11 = {posX,0,0}; 
-			objectList[j]->GetTempMatrix()->Translate(transBox11);
-			SG_VECTOR transBox121 = {0,posY,0}; 
-			objectList[j]->GetTempMatrix()->Translate(transBox121);
-			objectList[j]->ApplyTempMatrix();
-			objectList[j]->Triangulate(SG_VERTEX_TRIANGULATION);
+			//SG_VECTOR vrotH = {0,1,0}; //rotate H
+			//SG_POINT protH = {0,0,0};                                             
+			//if (objectList[j]->GetTempMatrix()==0){
+			//	objectList[j]->InitTempMatrix()->Rotate(protH,vrotH,rotH);
+			//}else{
+			//	objectList[j]->GetTempMatrix()->Rotate(protH,vrotH,rotH);
+			//}
+			//SG_VECTOR vrotV = {1,0,0}; //rotate V
+			//SG_POINT protV = {0,0,0};												 
+			//objectList[j]->GetTempMatrix()->Rotate(protV,vrotV,rotV);
+			////translations
+			//SG_VECTOR transBox11 = {posX,0,0}; 
+			//objectList[j]->GetTempMatrix()->Translate(transBox11);
+			//SG_VECTOR transBox121 = {0,posY,0}; 
+			//objectList[j]->GetTempMatrix()->Translate(transBox121);
+			//objectList[j]->ApplyTempMatrix();
+			//objectList[j]->Triangulate(SG_VERTEX_TRIANGULATION);
+
+
+
+
 			//objectList[j]->DestroyTempMatrix();
 			//objectList[j]->SetAttribute(SG_OA_COLOR,color);
 			//objectList[j]->SetAttribute(SG_OA_DRAW_STATE,SG_DS_FULL);
@@ -180,23 +188,21 @@ void cubie::draw(){
 			//		}
 			//	}else{
 			//		//cout << "null at draw" << endl;
-
-			//ofPushMatrix();	 
+ 
 			glPushMatrix();
-			glTranslatef(500,400,0);
-			//glPushMatrix();
-			ofRotateX(rotX);
-			//glPopMatrix();
-			//glRotated(rotX,1,0,0);
-			//ofTranslate(500,400,0);
-			//ofRotateX(rotX);
-			//ofRotate(rotX,1,0,0);
-			//ofRotate(rotH,0,0.5,0);
+			//all puzzle
+			glTranslatef(posX,posY,posZ);
+			glRotatef(rotH,0,1,0);
+			glRotatef(rotV,1,0,0);
+			//this cubie
+			glRotatef(rotX,1,0,0);
+			glRotatef(rotY,0,1,0);
+			glRotatef(rotZ,0,0,1);
 			/*	if (objectList[j]->GetTempMatrix()!=0)
 			glMultMatrixd(objectList[j]->GetTempMatrix()->GetTransparentData());
 			objectList[j]->DestroyTempMatrix();*/
+			//myMeshs[j].draw();
 			myVbos[j].draw(GL_TRIANGLES, 0,myMeshs[j].getNumIndices());
-			//ofPopMatrix();
 			glPopMatrix();
 		}
 	}
@@ -267,15 +273,23 @@ void cubie::faceRotate(SG_VECTOR axis, float deg,bool di){
 					cout << "history: " << myMatrix.size() << endl;
 					cout << rotX << endl;
 				}else if(axis.y == 1){
-					rotY += 1.57;
+					/*rotY += 1.57;
 					if(rotY >= 6.28){
+						rotY = 0.0;
+					}*/
+					rotY += 90;
+					if(rotY >= 360){
 						rotY = 0.0;
 					}
 					//objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,rotY);
 					myMatrix.push_back(matrix(axis,rotY,di));
 				}else{
-					rotZ += 1.57;
+					/*rotZ += 1.57;
 					if(rotZ >= 6.28){
+						rotZ = 0.0;
+					}*/
+					rotZ += 90;
+					if(rotZ >= 360){
 						rotZ = 0.0;
 					}
 					//objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,rotZ);
@@ -284,23 +298,35 @@ void cubie::faceRotate(SG_VECTOR axis, float deg,bool di){
 			}else{
 				//cc
 				if(axis.x == 1){
-					rotX -= 1.57;
+					/*rotX -= 1.57;
 					if(rotX <= -6.28){
+						rotX = 0.0;
+					}*/
+					rotX -= 90;
+					if(rotX <= -360){
 						rotX = 0.0;
 					}
 					//objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,rotX);
 					myMatrix.push_back(matrix(axis,rotX,di));
 					cout << rotX << endl;
 				}else if(axis.y == 1){
-					rotY -= 1.57;
+					/*rotY -= 1.57;
 					if(rotY <= -6.28){
+						rotY = 0.0;
+					}*/
+					rotY -= 90;
+					if(rotY <= -360){
 						rotY = 0.0;
 					}
 					//objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,rotY);
 					myMatrix.push_back(matrix(axis,rotY,di));
 				}else{
-					rotZ -= 1.57;
+					/*rotZ -= 1.57;
 					if(rotZ <= -6.28){
+						rotZ = 0.0;
+					}*/
+					rotZ -= 90;
+					if(rotZ <= -360){
 						rotZ = 0.0;
 					}
 					//objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,rotZ);
@@ -358,7 +384,6 @@ void cubie::setObjects(sgCGroup *objs,int cubieId){
 	if(objs != NULL){
 		sgCObject **objcts = (sgCObject**)malloc(50*sizeof(sgCObject*));
 		int objctr = 0;
-
 		//break incomming group
 		const int ChCnt = objs->GetChildrenList()->GetCount();
 		numObjs = ChCnt;
@@ -380,12 +405,6 @@ void cubie::setObjects(sgCGroup *objs,int cubieId){
 			ofMesh tempMesh;
 			ofRender *ofr = new ofRender(); //class that has the metods to transform sgCore to OF mesh and set the normals (in one function)
 			sgC3DObject *o = (sgC3DObject*)temp->Clone();
-
-			SG_VECTOR transP = {0,0,0};
-			o->InitTempMatrix()->Translate(transP);
-			o->ApplyTempMatrix();  
-			o->DestroyTempMatrix();
-
 			o->Triangulate(SG_VERTEX_TRIANGULATION);
 			//convert to ofMEsh with cubie ID!!!
 			ofr->sgCoretoOFmesh(o,tempMesh,cubieId); //give cubie id!!
@@ -394,15 +413,16 @@ void cubie::setObjects(sgCGroup *objs,int cubieId){
 			tempVbo.setMesh(tempMesh, GL_STATIC_DRAW);
 			myVbos.push_back(tempVbo);
 			free(ofr);
+			sgDeleteObject(o);
 		}
 		free(allParts);
 		//put that new group inside *objects of this class, of every cubie
 		objects = sgCGroup::CreateGroup(objcts,objctr);
 		free(objcts);
 	}else{
+		numObjs = 0;
 		objects = NULL;
 	}
-
 }
 //-------------------------------------------------------------------------------------------------------------------------------------------
 void cubie::rotateH(float rad){

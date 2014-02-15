@@ -10,7 +10,7 @@
 class cubie {
 	
 public:
-	cubie(float x,float y, int id);
+	cubie(float x,float y,float z,int id);
     
 	void setup();
 	void update();
@@ -34,6 +34,7 @@ public:
 
 	float posX;
 	float posY;
+	float posZ;
 	void moveH(float px);
 	void moveV(float py);
 	

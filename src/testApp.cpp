@@ -16,7 +16,7 @@
 
 #define displayX 500
 #define displayY 400
-#define posZ 100
+#define displayZ 100
 
 #define _USE_MATH_DEFINES
 //--------------------------------------------------------------
@@ -53,7 +53,7 @@ void testApp::setup(){
 	///////////////////////////3D OBJECT LOADING//////////////////////////////////////
 	////////////////////// create primitive torus
 	objectDisplayed = new myobject3D(displayX,displayY);
-	objectDisplayed->loadObject(sgCreateTorus(posZ,80,50,50));
+	objectDisplayed->loadObject(sgCreateTorus(displayZ,80,50,50));
 
 	//objectDisplayed->loadObject(sgCreateCone(200,1,300.0, 3));
 	//objectDisplayed->loadObject(sgCreateBox(300,300,300));
@@ -64,7 +64,7 @@ void testApp::setup(){
 	////////////////////////////////////////////////////////////////////////////////////
 
 	////////////////////////////////create cutter///////////////////////////////////////
-	myCutter = new cutter(planeThicknes,planeSize,tamCubie,1,0,0,-posZ); //to make a plane based cutter
+	myCutter = new cutter(planeThicknes,planeSize,tamCubie,1,0,0,-displayZ); //to make a plane based cutter
 	myCutter->setup();
 	//////////////////////////////////end create cutter///////////////////////////////////
 
@@ -86,7 +86,7 @@ void testApp::update(){
 	/////////////////////////////////////////////////////////////PUZZLE
 	if(makeCut==true){
 		////////////////////////////////create puzzle///////////////////////////////////////
-		myPuzzle = new puzzle(displayX,displayY);
+		myPuzzle = new puzzle(displayX,displayY,displayZ);
 		myPuzzle->setup();
 		//////////////////////////////end create puzzle////////////////////////////////////
 
@@ -95,15 +95,13 @@ void testApp::update(){
 		///boolean INTERSECTION///////////////////////////////////////////////////////////
 		mySlicer->intersectCubes(objectDisplayed->getObject()); 
 		//now slicer has all the parts inside sgCGroup ** = pieces[]
-
 		//////////////////////////////create puzzle///////////////////////////////////////
 		myPuzzle->loadPieces(mySlicer->getPieces());
 		puzzleExists = true;
-		//////////////////////////////end create puzzle////////////////////////////////////
-		makeCut = false;
+		////////////////////////////////end create puzzle////////////////////////////////////
 		drawCuts1 = true;
-		//cout << "end cut:" << ofGetElapsedTimeMillis() << endl;
 		updatePuzzle = true;
+		makeCut = false;
 		///////////////////////////////////////////////////////////////////////////////////
 	}
 	///move all puzzle

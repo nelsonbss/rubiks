@@ -9,11 +9,12 @@
 #define WIDTH 3
 #define DEPTH 3
 
-puzzle::puzzle(float x, float y){
+puzzle::puzzle(float x, float y, float z){
 	numPieces = 27;
 	myCubies = (cubie**)malloc(numPieces*sizeof(cubie*));
 	posX = x;
 	posY = y;
+	posZ = z;
 	rotH = 0;
 	rotV = 0;
 	/*
@@ -106,7 +107,7 @@ void puzzle::loadPieces(sgCGroup **pcs){
 	//create cubies
 	//so each time there is a new boolean operation, whole new cubies get created with variables in zero or blank
 	for(int i =0;i<numPieces;i++){
-		cubie *auxCubie = new cubie(posX,posY,i+1);// is this really creating independent instances of cubie??
+		cubie *auxCubie = new cubie(posX,posY,posZ,i+1);// is this really creating independent instances of cubie??
 		//auxCubie->setup();
 		//add this cubie to mycubies[]
 		myCubies[i] = auxCubie;
@@ -148,7 +149,7 @@ void puzzle::loadPieces(sgCGroup **pcs){
 ////////////////////////////////////////////////////////////////
 void puzzle::rotateHright(){  
 	//puzzle tells every cubie to rotate
-	rotH += 0.1;
+	rotH += 1;
 	for(int i=0;i<numPieces;i++){
 		myCubies[i]->rotateH(rotH);
 	}
@@ -156,7 +157,7 @@ void puzzle::rotateHright(){
 //--------------------------------------------------------------
 void puzzle::rotateHleft(){  
 	//puzzle tells every cubie to rotate
-	rotH -= 0.1;
+	rotH -= 1;
 	for(int i=0;i<numPieces;i++){
 		myCubies[i]->rotateH(rotH);
 	}
@@ -164,7 +165,7 @@ void puzzle::rotateHleft(){
 //--------------------------------------------------------------
 void puzzle::rotateVup(){  
 	//puzzle tells every cubie to rotate
-	rotV += 0.1;
+	rotV += 1;
 	for(int i=0;i<numPieces;i++){
 		myCubies[i]->rotateV(rotV);
 	}
@@ -172,7 +173,7 @@ void puzzle::rotateVup(){
 //--------------------------------------------------------------
 void puzzle::rotateVdown(){  
 	//puzzle tells every cubie to rotate
-	rotV -= 0.1;
+	rotV -= 1;
 	for(int i=0;i<numPieces;i++){
 		myCubies[i]->rotateV(rotV);
 	}

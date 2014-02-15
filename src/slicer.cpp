@@ -121,6 +121,10 @@ void slicer::intersectCubes(sgCObject *obj){
 void slicer::exit(){
 	sgCObject::DeleteObject(*pieces); //break and delete all objects!!
 	free(myCutter);
+	for (int j=0; j < 27; j++){
+		sgCObject::DeleteObject(pieces[j]);
+	}
+	free(pieces);
 	//free(aux);//this is generating conflict on adding group to scene on cutter.cpp
 }
 

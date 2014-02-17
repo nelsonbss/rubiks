@@ -77,12 +77,15 @@ void testApp::setup(){
 //--------------------------------------------------------------
 void testApp::update(){
 
+	//////////////////////////////open frameworks lights /////////////////////////////////
 	pointLight.setPosition(cos(ofGetElapsedTimef()*.6f) * radius * 2 + center.x, 
 		sin(ofGetElapsedTimef()*.8f) * radius * 2 + center.y, 
 		-cos(ofGetElapsedTimef()*.8f) * radius * 2 + center.z);
 
 	spotLight.setOrientation( ofVec3f( 0, cos(ofGetElapsedTimef()) * RAD_TO_DEG, 0) );
 	spotLight.setPosition( mouseX, mouseY, 200);
+
+	////////////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////////////////////////////////PUZZLE
 	if(makeCut==true){
 		////////////////////////////////create puzzle///////////////////////////////////////
@@ -148,8 +151,8 @@ void testApp::update(){
 	//////////////////////////////////////////////face rotations
 	SG_POINT point = {0,0,0};
 	SG_VECTOR axis = {1,0,0};
-	int idcubie = 1;
-
+	int idcubie = 11;
+	tempDeg =0;
 	if(faceRotateC == true) {//c
 		//myPuzzle->faceRotate(point, axis, tempDeg,true);
 		myPuzzle->rotateByIDandAxis(idcubie,axis,true,tempDeg);

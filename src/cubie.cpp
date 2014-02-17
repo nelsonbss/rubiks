@@ -356,120 +356,120 @@ void cubie::faceRotate(SG_VECTOR axis, float deg,bool di){
 	//this function is to handle a face rotation for a cubbie
 	//its invoked on a group of cubies determined by the puzzle..??(stil lneeds to be determined)
 	//use this cubies objectList to draw elements without ever loosing them on groupBreaking
-	//if(objects != NULL){
-	if(moving == false){
-		for (int j=0; j < numObjs; j++){
-			SG_POINT protFace = {0,0,0};
-			SG_VECTOR vrotFace = axis;
-			/*rotX=0;
-			rotY=0;
-			rotZ=0;*/
-			moving = true;
-			//tempDeg = 0.0;
-			ct1 = ofGetElapsedTimeMillis();
-			if(di == true){
-				//c
-				if(axis.x == 1){
-					/*rotX += 1.57;
-					if(rotX >= 6.28){
-					rotX = 0.0;
-					}*/
-					movingXC = true;
-					tempDeg = rotX;
-					tempDeg += 90;
-					//rotX += 90;
-					/*if(tempDeg >= 360){
-					tempDeg = 0.0;
-					}*/
-					//objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,rotX);
-					//build matrix and add it to the vector myMatrix
-					/*myMatrix.push_back(matrix(axis,tempDeg,di));*/
-					cout << "history: " << myMatrix.size() << endl;
-					cout << rotX << endl;
-				}else if(axis.y == 1){
-					/*rotY += 1.57;
-					if(rotY >= 6.28){
-					rotY = 0.0;
-					}*/
-					movingYC = true;
-					tempDeg = rotY;
-					tempDeg += 90;
-					/*rotY += 90;
-					if(rotY >= 360){
-					rotY = 0.0;
-					}*/
-					//objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,rotY);
-					//myMatrix.push_back(matrix(axis,tempDeg,di));
-				}else{
-					/*rotZ += 1.57;
-					if(rotZ >= 6.28){
-					rotZ = 0.0;
-					}*/
-					movingZC = true;
-					tempDeg = rotZ;
-					tempDeg += 90;
-					/*rotZ += 90;
-					if(rotZ >= 360){
-						rotZ = 0.0;
-					}*/
-					//objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,rotZ);
-					//myMatrix.push_back(matrix(axis,tempDeg,di));
-				}
-			}else{
-				//cc
-				if(axis.x == 1){
-					/*rotX -= 1.57;
-					if(rotX <= -6.28){
-					rotX = 0.0;
-					}*/
-					movingXCC = true;
-					tempDeg = rotX;
-					tempDeg -= 90;
-					/*rotX -= 90;
-					if(rotX <= -360){
-					rotX = 0.0;
-					}*/
-					//objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,rotX);
-					//myMatrix.push_back(matrix(axis,tempDeg,di));
-					cout << rotX << endl;
-				}else if(axis.y == 1){
-					/*rotY -= 1.57;
-					if(rotY <= -6.28){
-					rotY = 0.0;
-					}*/
-					movingYCC = true;
-					tempDeg = rotY;
-					tempDeg -= 90;
-					/*rotY -= 90;
-					if(rotY <= -360){
+	if(objects != NULL){
+		//if(moving == false){
+			for (int j=0; j < numObjs; j++){
+				SG_POINT protFace = {0,0,0};
+				SG_VECTOR vrotFace = axis;
+				/*rotX=0;
+				rotY=0;
+				rotZ=0;*/
+				moving = true;
+				//tempDeg = 0.0;
+				ct1 = ofGetElapsedTimeMillis();
+				if(di == true){
+					//c
+					if(axis.x == 1){
+						/*rotX += 1.57;
+						if(rotX >= 6.28){
+						rotX = 0.0;
+						}*/
+						movingXC = true;
+						tempDeg = rotX;
+						tempDeg += 90;
+						//rotX += 90;
+						/*if(tempDeg >= 360){
+						tempDeg = 0.0;
+						}*/
+						//objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,rotX);
+						//build matrix and add it to the vector myMatrix
+						/*myMatrix.push_back(matrix(axis,tempDeg,di));*/
+						cout << "history: " << myMatrix.size() << endl;
+						cout << rotX << endl;
+					}else if(axis.y == 1){
+						/*rotY += 1.57;
+						if(rotY >= 6.28){
 						rotY = 0.0;
-					}*/
-					//objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,rotY);
-					//myMatrix.push_back(matrix(axis,tempDeg,di));
-				}else{
-					/*rotZ -= 1.57;
-					if(rotZ <= -6.28){
-					rotZ = 0.0;
-					}*/
-					movingZCC = true;
-					tempDeg = rotZ;
-					tempDeg -= 90;
-					/*rotZ -= 90;
-					if(rotZ <= -360){
+						}*/
+						movingYC = true;
+						tempDeg = rotY;
+						tempDeg += 90;
+						/*rotY += 90;
+						if(rotY >= 360){
+						rotY = 0.0;
+						}*/
+						//objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,rotY);
+						//myMatrix.push_back(matrix(axis,tempDeg,di));
+					}else{
+						/*rotZ += 1.57;
+						if(rotZ >= 6.28){
 						rotZ = 0.0;
-					}*/
-					//objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,rotZ);
-					//myMatrix.push_back(matrix(axis,tempDeg,di));
+						}*/
+						movingZC = true;
+						tempDeg = rotZ;
+						tempDeg += 90;
+						/*rotZ += 90;
+						if(rotZ >= 360){
+						rotZ = 0.0;
+						}*/
+						//objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,rotZ);
+						//myMatrix.push_back(matrix(axis,tempDeg,di));
+					}
+				}else{
+					//cc
+					if(axis.x == 1){
+						/*rotX -= 1.57;
+						if(rotX <= -6.28){
+						rotX = 0.0;
+						}*/
+						movingXCC = true;
+						tempDeg = rotX;
+						tempDeg -= 90;
+						/*rotX -= 90;
+						if(rotX <= -360){
+						rotX = 0.0;
+						}*/
+						//objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,rotX);
+						//myMatrix.push_back(matrix(axis,tempDeg,di));
+						cout << rotX << endl;
+					}else if(axis.y == 1){
+						/*rotY -= 1.57;
+						if(rotY <= -6.28){
+						rotY = 0.0;
+						}*/
+						movingYCC = true;
+						tempDeg = rotY;
+						tempDeg -= 90;
+						/*rotY -= 90;
+						if(rotY <= -360){
+						rotY = 0.0;
+						}*/
+						//objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,rotY);
+						//myMatrix.push_back(matrix(axis,tempDeg,di));
+					}else{
+						/*rotZ -= 1.57;
+						if(rotZ <= -6.28){
+						rotZ = 0.0;
+						}*/
+						movingZCC = true;
+						tempDeg = rotZ;
+						tempDeg -= 90;
+						/*rotZ -= 90;
+						if(rotZ <= -360){
+						rotZ = 0.0;
+						}*/
+						//objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,rotZ);
+						//myMatrix.push_back(matrix(axis,tempDeg,di));
+					}
 				}
+				myMatrix.push_back(matrix(axis,tempDeg,di));
+				//objectList[j]->ApplyTempMatrix();
+				//objectList[j]->DestroyTempMatrix();
 			}
-			myMatrix.push_back(matrix(axis,tempDeg,di));
-			//objectList[j]->ApplyTempMatrix();
-			//objectList[j]->DestroyTempMatrix();
-		}
+		//}
+	}else{
+		//cout << "null at face rotation" << endl;
 	}
-	//}else{
-	//	//cout << "null at face rotation" << endl;
-	//}
 }
 //-------------------------------------------------------------------------------------------------------------------------------------------
 sgCGroup* cubie::copyObjects(){

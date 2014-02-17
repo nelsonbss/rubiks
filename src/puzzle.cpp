@@ -29,21 +29,21 @@ puzzle::puzzle(float x, float y, float z){
 
 	three_dim1 = three_dim;
 
-	three_dim1[0][0][2] = 13;	three_dim1[1][0][2] = 12;	three_dim1[2][0][2] = 11;
-	three_dim1[0][1][2] = 4;		three_dim1[1][1][2] = 3;		three_dim1[2][1][2] = 2;
-	three_dim1[0][2][2] = 22;	three_dim1[1][2][2] = 21;	three_dim1[2][2][2] = 20;
+	three_dim1[0][0][2] = 15;	three_dim1[1][0][2] = 16;	three_dim1[2][0][2] = 17;
+	three_dim1[0][1][2] = 6;		three_dim1[1][1][2] = 7;		three_dim1[2][1][2] = 8;
+	three_dim1[0][2][2] = 24;	three_dim1[1][2][2] = 25;	three_dim1[2][2][2] = 26;
 
 	three_dim1[0][0][1] = 14;	three_dim1[1][0][1] = 9;		three_dim1[2][0][1] = 10;
 	three_dim1[0][1][1] = 5;		three_dim1[1][1][1] = 0;		three_dim1[2][1][1] = 1;
 	three_dim1[0][2][1] = 23;	three_dim1[1][2][1] = 18;	three_dim1[2][2][1] = 19;
 
-	three_dim1[0][0][0] = 15;	three_dim1[1][0][0] = 16;	three_dim1[2][0][0] = 17;
-	three_dim1[0][1][0] = 6;		three_dim1[1][1][0] = 7;		three_dim1[2][1][0] = 8;
-	three_dim1[0][2][0] = 24;	three_dim1[1][2][0] = 25;	three_dim1[2][2][0] = 26;
+	three_dim1[0][0][0] = 13;	three_dim1[1][0][0] = 12;	three_dim1[2][0][0] = 11;
+	three_dim1[0][1][0] = 4;		three_dim1[1][1][0] = 3;		three_dim1[2][1][0] = 2;
+	three_dim1[0][2][0] = 22;	three_dim1[1][2][0] = 21;	three_dim1[2][2][0] = 20;
 
 	/* now read the value: */
-	std::cout << "It should be 15: " << three_dim1[0][0][0] << "\n";
-	std::cout << "It should be 6: " << three_dim1[0][1][0] << "\n";
+	std::cout << "It should be 13: " << three_dim1[0][0][0] << "\n";
+	std::cout << "It should be 4: " << three_dim1[0][1][0] << "\n";
 
 	/* get X slize 1*/
 	//TwoDimensions& two_dim(three_dim[1]);

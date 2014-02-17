@@ -471,7 +471,6 @@ void cubie::faceRotate(SG_VECTOR axis, float deg,bool di){
 	//	//cout << "null at face rotation" << endl;
 	//}
 }
-
 //-------------------------------------------------------------------------------------------------------------------------------------------
 sgCGroup* cubie::copyObjects(){
 	//make a copy of *objects send outside cubie

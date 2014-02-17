@@ -148,10 +148,11 @@ void testApp::update(){
 	//////////////////////////////////////////////face rotations
 	SG_POINT point = {0,0,0};
 	SG_VECTOR axis = {1,0,0};
+	int idcubie = 1;
 
 	if(faceRotateC == true) {//c
 		//myPuzzle->faceRotate(point, axis, tempDeg,true);
-		myPuzzle->rotateByIDandAxis(7,axis,true,tempDeg);
+		myPuzzle->rotateByIDandAxis(idcubie,axis,true,tempDeg);
 		//drawCuts = true;
 		faceRotateC = false;
 		//cout << tempDeg << endl;
@@ -159,7 +160,7 @@ void testApp::update(){
 	if(faceRotateCC == true) {//
 		
 		//myPuzzle->faceRotate(point,axis,tempDeg,false);
-		myPuzzle->rotateByIDandAxis(7,axis,false,tempDeg);
+		myPuzzle->rotateByIDandAxis(idcubie,axis,false,tempDeg);
 		//drawCuts = true;
 		faceRotateCC = false;
 		//drawCuts = true;
@@ -169,7 +170,7 @@ void testApp::update(){
 	if(faceRotateCy == true) {//c
 		//myPuzzle->unDraw();
 		//myPuzzle->faceRotate(point, axis, tempDeg,true);
-		myPuzzle->rotateByIDandAxis(7,axisy,true,tempDeg);
+		myPuzzle->rotateByIDandAxis(idcubie,axisy,true,tempDeg);
 		//drawCuts = true;
 		faceRotateCy = false;
 		//cout << tempDeg << endl;
@@ -177,7 +178,7 @@ void testApp::update(){
 	if(faceRotateCCy == true) {//
 		//myPuzzle->unDraw();
 		//myPuzzle->faceRotate(point,axis,tempDeg,false);
-		myPuzzle->rotateByIDandAxis(7,axisy,false,tempDeg);
+		myPuzzle->rotateByIDandAxis(idcubie,axisy,false,tempDeg);
 		//drawCuts = true;
 		faceRotateCCy = false;
 		//cout << tempDeg << endl;
@@ -187,7 +188,7 @@ void testApp::update(){
 	if(faceRotateCz == true) {//c
 		//myPuzzle->unDraw();
 		//myPuzzle->faceRotate(point, axis, tempDeg,true);
-		myPuzzle->rotateByIDandAxis(7,axisz,true,tempDeg);
+		myPuzzle->rotateByIDandAxis(idcubie,axisz,true,tempDeg);
 		//drawCuts = true;
 		faceRotateCz = false;
 		//cout << tempDeg << endl;
@@ -195,7 +196,7 @@ void testApp::update(){
 	if(faceRotateCCz == true) {//
 		//myPuzzle->unDraw();
 		//myPuzzle->faceRotate(point,axis,tempDeg,false);
-		myPuzzle->rotateByIDandAxis(7,axisz,false,tempDeg);
+		myPuzzle->rotateByIDandAxis(idcubie,axisz,false,tempDeg);
 		//drawCuts = true;
 		faceRotateCCz = false;
 		//cout << tempDeg << endl;

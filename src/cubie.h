@@ -51,6 +51,17 @@ public:
 	float rotX;
 	float rotY;
 	float rotZ;
+	bool moving;
+	bool movingXC;
+	bool movingXCC;
+	bool movingYC;
+	bool movingYCC;
+	bool movingZC;
+	bool movingZCC;
+	float ct1;
+	float ct2;
+	float animTime;
+	float tempDeg;
 };
 
 #endif /* defined(__Tcubie__cubie__) */

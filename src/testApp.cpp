@@ -106,40 +106,40 @@ void testApp::update(){
 	}
 	///move all puzzle
 	if(movePRight){
-		myPuzzle->unDraw();
+		//myPuzzle->unDraw();
 		myPuzzle->moveRight();
 		drawCuts = true;
 	}else if(movePLeft){
-		myPuzzle->unDraw();
+		//myPuzzle->unDraw();
 		myPuzzle->moveLeft();
 		drawCuts = true;
 	}else if(movePUp){
-		myPuzzle->unDraw();
+		//myPuzzle->unDraw();
 		myPuzzle->moveUp();
 		drawCuts = true;
 	}else if(movePDown){
-		myPuzzle->unDraw();
+		//myPuzzle->unDraw();
 		myPuzzle->moveDown();
 		drawCuts = true;
 	}
 	////////////////////////////////////////////rotate all puzzle
 	if(rotatePHright == true) {//rotate right
-		myPuzzle->unDraw();
+		//myPuzzle->unDraw();
 		myPuzzle->rotateHright();
 		drawCuts = true;
 	}
 	if(rotatePHleft == true) {//rotate left
-		myPuzzle->unDraw();
+		//myPuzzle->unDraw();
 		myPuzzle->rotateHleft();
 		drawCuts = true;
 	}
 	if(rotatePVup == true) {//rotate up
-		myPuzzle->unDraw();
+		//myPuzzle->unDraw();
 		myPuzzle->rotateVup();
 		drawCuts = true;
 	}
 	if(rotatePVdown == true) {//rotate down
-		myPuzzle->unDraw();
+		//myPuzzle->unDraw();
 		myPuzzle->rotateVdown();
 		drawCuts = true;
 	}
@@ -148,56 +148,21 @@ void testApp::update(){
 	//////////////////////////////////////////////face rotations
 	SG_POINT point = {0,0,0};
 	SG_VECTOR axis = {1,0,0};
-	float animTime = 300; //mills
 
 	if(faceRotateC == true) {//c
-
-		/*tempDeg += 1.57;
-		if(tempDeg >= 6.28){
-		tempDeg = 0.0;
-		}*/
-		//myPuzzle->unDraw();
 		//myPuzzle->faceRotate(point, axis, tempDeg,true);
 		myPuzzle->rotateByIDandAxis(7,axis,true,tempDeg);
 		//drawCuts = true;
 		faceRotateC = false;
 		//cout << tempDeg << endl;
-
-		/*myPuzzle->unDraw();
-		if(deg < 1.57079633){
-		ct2 = ofGetElapsedTimeMillis();
-		deg += (ct2 - ct1)*((1.57079633)/animTime);
-		myPuzzle->rotateByIDandAxis(7,axis,true,deg);
-		ct1 = ct2;
-		}else{
-		faceRotateC = false;
-		//re-arange order of numbers on 3d vector
-		cout << deg << endl;
-		drawCuts = true;*/
 	}
 	if(faceRotateCC == true) {//
-		//tempDeg -= 1.57;
-		//if(tempDeg <= -6.28){
-		//	tempDeg = 0.0;
-		//}
-		//myPuzzle->unDraw();
+		
 		//myPuzzle->faceRotate(point,axis,tempDeg,false);
 		myPuzzle->rotateByIDandAxis(7,axis,false,tempDeg);
 		//drawCuts = true;
 		faceRotateCC = false;
-		//cout << tempDeg << endl;
-
-		/*myPuzzle->unDraw();
-		if(deg < 1.57079633){
-		ct2 = ofGetElapsedTimeMillis();
-		deg += ((ct2 - ct1)*(1.57079633))/animTime;
-		myPuzzle->rotateByIDandAxis(7,axis,false,deg);
-		ct1 = ct2;
-		}else{
-		faceRotateCC = false;
-		}
-		cout << deg << endl;
-		drawCuts = true;*/
+		//drawCuts = true;
 	}
 
 	SG_VECTOR axisy = {0,1,0};

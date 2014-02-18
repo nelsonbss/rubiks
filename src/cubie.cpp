@@ -130,7 +130,7 @@ void cubie::update(){
 	//if(objects != NULL){
 	for (int j=0; j < numObjs; j++){
 
-		///////////////////////////////////////////////////rotations HISTORY
+		///////////////////////////////////applying rotations matrix HISTORY
 		//use vector with matrix(s)
 		//for(int i=0; i<myMatrix.size();i++){
 		//	SG_POINT protFace = {0,0,0};										 

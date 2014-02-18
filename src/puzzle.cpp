@@ -184,7 +184,7 @@ void puzzle::moveRight(){
 	pos.x += 10;
 	for(int i=0;i<numPieces;i++){
 		if(myCubies[i] != NULL){
-			myCubies[i]->moveH(pos.x);
+			myCubies[i]->move(pos);
 		}
 	}
 }
@@ -194,7 +194,7 @@ void puzzle::moveLeft(){
 	pos.x -= 10;
 	for(int i=0;i<numPieces;i++){
 		if(myCubies[i] != NULL){
-			myCubies[i]->moveH(pos.x);
+			myCubies[i]->move(pos);
 		}
 	}
 }
@@ -204,7 +204,7 @@ void puzzle::moveUp(){
 	pos.y -= 10;
 	for(int i=0;i<numPieces;i++){
 		if(myCubies[i] != NULL){
-			myCubies[i]->moveV(pos.y);
+			myCubies[i]->move(pos);
 		}
 	}
 }
@@ -214,7 +214,7 @@ void puzzle::moveDown(){
 	pos.y += 10;
 	for(int i=0;i<numPieces;i++){
 		if(myCubies[i] != NULL){
-			myCubies[i]->moveV(pos.y);
+			myCubies[i]->move(pos);
 		}
 	}
 }

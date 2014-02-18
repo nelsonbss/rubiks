@@ -12,6 +12,9 @@ cubie::cubie(float x, float y,float z, int idi){
 	rotV = 0.0;
 	color = rand()%27;
 	okDraw = true;
+	pointRotate.x = 0;
+	pointRotate.y = 0;
+	pointRotate.z = 0;
 	rotX = 0.0;
 	rotY = 0.0;
 	rotZ = 0.0;
@@ -208,14 +211,13 @@ void cubie::update(){
 		//	//objectList[j]->DestroyTempMatrix();
 		//}
 
-		/////////////////////////////////////////////////////////////////
-		SG_POINT protFace = {0,0,0};										 
+		/////////////////////////////////////////////////////////////////	 
 		SG_VECTOR vrotFaceX ={1,0,0};
 		SG_VECTOR vrotFaceY ={0,1,0};
 		SG_VECTOR vrotFaceZ ={0,0,1};
-		objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFaceX,rotX);
-		objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFaceY,rotY);
-		objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFaceZ,rotZ);
+		objectList[j]->InitTempMatrix()->Rotate(pointRotate,vrotFaceX,rotX);
+		objectList[j]->GetTempMatrix()->Rotate(pointRotate,vrotFaceY,rotY);
+		objectList[j]->GetTempMatrix()->Rotate(pointRotate,vrotFaceZ,rotZ);
 		/////////////////////////////////////////////////////////////////
 
 		//	/////////////////////////////////////////////////////////////
@@ -231,21 +233,17 @@ void cubie::update(){
 
 		///////////////////////////////////////////////////////////
 		////////rotate and move with the whole puzzle
-		SG_VECTOR vrotH = {0,1,0}; //rotate H
-		SG_POINT protH = {0,0,0};                                             
+		SG_VECTOR vrotH = {0,1,0}; //rotate H                            
 		/*if (objectList[j]->GetTempMatrix()==0){
-		objectList[j]->InitTempMatrix()->Rotate(protH,vrotH,rotH);
+		objectList[j]->InitTempMatrix()->Rotate(pointRotate,vrotH,rotH);
 		}else{*/
-		objectList[j]->GetTempMatrix()->Rotate(protH,vrotH,rotH);
+		objectList[j]->GetTempMatrix()->Rotate(pointRotate,vrotH,rotH);
 		//}
-		SG_VECTOR vrotV = {1,0,0}; //rotate V
-		SG_POINT protV = {0,0,0};												 
-		objectList[j]->GetTempMatrix()->Rotate(protV,vrotV,rotV);
+		SG_VECTOR vrotV = {1,0,0}; //rotate V								 
+		objectList[j]->GetTempMatrix()->Rotate(pointRotate,vrotV,rotV);
 		//translations
-		SG_VECTOR transBox11 = {pos.x,0,0}; 
+		SG_VECTOR transBox11 = {pos.x,pos.y,pos.z}; 
 		objectList[j]->GetTempMatrix()->Translate(transBox11);
-		SG_VECTOR transBox121 = {0,pos.y,0}; 
-		objectList[j]->GetTempMatrix()->Translate(transBox121);
 		objectList[j]->ApplyTempMatrix();
 
 
@@ -583,18 +581,8 @@ void cubie::rotateV(float rad){
 	//movePuzzle = true;
 }
 //--------------------------------------------------------------
-void cubie::moveH(float posx){
-	pos.x = posx;
-	//movePuzzle = true;
-}
-//--------------------------------------------------------------
-void cubie::moveV(float posy){
-	pos.y = posy;
-	//movePuzzle = true;
-}
-//--------------------------------------------------------------
-void cubie::moveD(float posz){
-	pos.z = posz;
+void cubie::move(SG_VECTOR p){
+	pos = p;
 	//movePuzzle = true;
 }
 //----------------------------------------------------------------

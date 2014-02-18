@@ -33,10 +33,9 @@ public:
 	sgCGroup* copyObjects();
 
 	SG_VECTOR pos;
-	void moveH(float px);
-	void moveV(float py);
-	void moveD(float pz);
+	void move(SG_VECTOR p);
 	
+	SG_POINT pointRotate;
 	float rotH;
 	float rotV;
 	void rotateH(float radH); //rotates the cubie as part of the whole puzzle object, NOT as a faceMove rotation

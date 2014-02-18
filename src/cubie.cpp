@@ -52,83 +52,98 @@ void cubie::update(){
 				movingXC = false;
 			}
 		}
-		//	//xcc
-		//	if(movingXCC == true){
-		//		if(rotX > tempDeg){
-		//			ct2 = ofGetElapsedTimeMillis();
-		//			rotX -= (ct2 - ct1)*((90)/animTime);
-		//			ct1 = ct2;
-		//		}else{
-		//			rotX = tempDeg;
-		//			if(rotX <= -360){
-		//				rotX = 0.0;
-		//			}
-		//			moving = false;
-		//			movingXCC = false;
-		//		}
-		//	}
-		//	////////////   Y
-		//	//animate rotation yc
-		//	if(movingYC == true){
-		//		if(rotY < tempDeg){
-		//			ct2 = ofGetElapsedTimeMillis();
-		//			rotY += (ct2 - ct1)*((90)/animTime);
-		//			ct1 = ct2;
-		//		}else{
-		//			rotY = tempDeg;
-		//			if(rotY >= 360){
-		//				rotY = 0.0;
-		//			}
-		//			moving = false;
-		//			movingYC = false;
-		//		}
-		//	}
-		//	//ycc
-		//	if(movingYCC == true){
-		//		if(rotY > tempDeg){
-		//			ct2 = ofGetElapsedTimeMillis();
-		//			rotY -= (ct2 - ct1)*((90)/animTime);
-		//			ct1 = ct2;
-		//		}else{
-		//			rotY = tempDeg;
-		//			if(rotY <= -360){
-		//				rotY = 0.0;
-		//			}
-		//			moving = false;
-		//			movingYCC = false;
-		//		}
-		//	}
-		//	////////////  Z
-		//	//animate rotation zc
-		//	if(movingZC == true){
-		//		if(rotZ < tempDeg){
-		//			ct2 = ofGetElapsedTimeMillis();
-		//			rotZ += (ct2 - ct1)*((90)/animTime);
-		//			ct1 = ct2;
-		//		}else{
-		//			rotZ = tempDeg;
-		//			if(rotZ >= 360){
-		//				rotZ = 0.0;
-		//			}
-		//			moving = false;
-		//			movingZC = false;
-		//		}
-		//	}
-		//	//zcc
-		//	if(movingZCC == true){
-		//		if(rotZ > tempDeg){
-		//			ct2 = ofGetElapsedTimeMillis();
-		//			rotZ -= (ct2 - ct1)*((90)/animTime);
-		//			ct1 = ct2;
-		//		}else{
-		//			rotZ = tempDeg;
-		//			if(rotZ <= -360){
-		//				rotZ = 0.0;
-		//			}
-		//			moving = false;
-		//			movingZCC = false;
-		//		}
-		//	}
+		//xcc
+		if(movingXCC == true){
+			if(rotX > tempDeg){
+				ct2 = ofGetElapsedTimeMillis();
+				rotX -= (ct2 - ct1)*((1.57)/animTime);
+				ct1 = ct2;
+			}else{
+				rotX = tempDeg;
+				/*if(rotX <= -360){
+				rotX = 0.0;
+				}*/
+				if(rotX <= -6.28){
+					rotX = 0.0;
+				}
+				moving = false;
+				movingXCC = false;
+			}
+		}
+		////////////   Y
+		//animate rotation yc
+		if(movingYC == true){
+			if(rotY < tempDeg){
+				ct2 = ofGetElapsedTimeMillis();
+				rotY += (ct2 - ct1)*((1.57)/animTime);
+				ct1 = ct2;
+			}else{
+				rotY = tempDeg;
+				/*if(rotY >= 360){
+				rotY = 0.0;
+				}*/
+				if(rotY >= 6.28){
+					rotY = 0.0;
+				}
+				moving = false;
+				movingYC = false;
+			}
+		}
+		//ycc
+		if(movingYCC == true){
+			if(rotY > tempDeg){
+				ct2 = ofGetElapsedTimeMillis();
+				rotY -= (ct2 - ct1)*((1.57)/animTime);
+				ct1 = ct2;
+			}else{
+				rotY = tempDeg;
+				/*if(rotY <= -360){
+				rotY = 0.0;
+				}*/
+				if(rotY <= -6.28){
+					rotY = 0.0;
+				}
+				moving = false;
+				movingYCC = false;
+			}
+		}
+		////////////  Z
+		//animate rotation zc
+		if(movingZC == true){
+			if(rotZ < tempDeg){
+				ct2 = ofGetElapsedTimeMillis();
+				rotZ += (ct2 - ct1)*((1.57)/animTime);
+				ct1 = ct2;
+			}else{
+				rotZ = tempDeg;
+				/*if(rotZ >= 360){
+					rotZ = 0.0;
+				}*/
+				if(rotZ >= 6.28){
+					rotZ = 0.0;
+				}
+				moving = false;
+				movingZC = false;
+			}
+		}
+		//zcc
+		if(movingZCC == true){
+			if(rotZ > tempDeg){
+				ct2 = ofGetElapsedTimeMillis();
+				rotZ -= (ct2 - ct1)*((1.57)/animTime); //////////////////////90 on OF rotations
+				ct1 = ct2;
+			}else{
+				rotZ = tempDeg;
+				/*if(rotZ <= -360){
+					rotZ = 0.0;
+				}*/
+				if(rotZ <= -6.28){
+					rotZ = 0.0;
+				}
+				moving = false;
+				movingZCC = false;
+			}
+		}
 	}
 
 	//if(objects != NULL){
@@ -235,7 +250,6 @@ void cubie::update(){
 
 
 		//	//objectList[j]->Triangulate(SG_VERTEX_TRIANGULATION);
-
 		//	//objectList[j]->DestroyTempMatrix();
 		//	//objectList[j]->SetAttribute(SG_OA_COLOR,color);
 		//	//objectList[j]->SetAttribute(SG_OA_DRAW_STATE,SG_DS_FULL);
@@ -352,13 +366,19 @@ void cubie::faceRotate(SG_VECTOR axis, float deg,bool di){
 						cout << "history: " << myMatrix.size() << endl;
 						cout << "X: " << rotX << endl;
 					}else if(axis.y == 1){
-						rotY += 1.57;
-						/*if(rotY >= 6.28){
+						movingYC = true;
+						tempDeg = rotY;
+						tempDeg += 1.57;
+
+						/*rotY += 1.57;
+						if(rotY >= 6.28){
 						rotY = 0.0;
 						}*/
+
 						/*movingYC = true;
 						tempDeg = rotY;
 						tempDeg += 90;*/
+
 						/*rotY += 90;
 						if(rotY >= 360){
 						rotY = 0.0;
@@ -368,13 +388,18 @@ void cubie::faceRotate(SG_VECTOR axis, float deg,bool di){
 						cout << "history: " << myMatrix.size() << endl;
 						cout << "Y: " << rotY << endl;
 					}else{
-						rotZ += 1.57;
-						/*if(rotZ >= 6.28){
+						movingZC = true;
+						tempDeg = rotZ;
+						tempDeg += 1.57;
+						/*rotZ += 1.57;
+						if(rotZ >= 6.28){
 						rotZ = 0.0;
 						}*/
+
 						/*movingZC = true;
 						tempDeg = rotZ;
 						tempDeg += 90;*/
+
 						/*rotZ += 90;
 						if(rotZ >= 360){
 						rotZ = 0.0;
@@ -387,13 +412,18 @@ void cubie::faceRotate(SG_VECTOR axis, float deg,bool di){
 				}else{
 					//cc
 					if(axis.x == 1){
-						rotX -= 1.57;
-						/*if(rotX <= -6.28){
+						movingXCC = true;
+						tempDeg = rotX;
+						tempDeg -= 1.57;
+						/*rotX -= 1.57;
+						if(rotX <= -6.28){
 						rotX = 0.0;
 						}*/
+
 						/*ovingXCC = true;
 						tempDeg = rotX;
 						tempDeg -= 90;*/
+
 						/*rotX -= 90;
 						if(rotX <= -360){
 						rotX = 0.0;
@@ -403,13 +433,19 @@ void cubie::faceRotate(SG_VECTOR axis, float deg,bool di){
 						cout << "history: " << myMatrix.size() << endl;
 						cout << "X: " << rotX << endl;
 					}else if(axis.y == 1){
-						rotY -= 1.57;
-						/*if(rotY <= -6.28){
+						movingYCC = true;
+						tempDeg = rotY;
+						tempDeg -= 1.57;
+
+						/*rotY -= 1.57;
+						if(rotY <= -6.28){
 						rotY = 0.0;
 						}*/
+
 						/*movingYCC = true;
 						tempDeg = rotY;
 						tempDeg -= 90;*/
+
 						/*rotY -= 90;
 						if(rotY <= -360){
 						rotY = 0.0;
@@ -419,13 +455,19 @@ void cubie::faceRotate(SG_VECTOR axis, float deg,bool di){
 						cout << "history: " << myMatrix.size() << endl;
 						cout << "Y: " << rotY << endl;
 					}else{
-						rotZ -= 1.57;
-						/*if(rotZ <= -6.28){
+						movingZCC = true;
+						tempDeg = rotZ;
+						tempDeg -= 1.57;
+
+						/*rotZ -= 1.57;
+						if(rotZ <= -6.28){
 						rotZ = 0.0;
 						}*/
+
 						/*movingZCC = true;
 						tempDeg = rotZ;
-						tempDeg -= 90*/;
+						tempDeg -= 90;*/
+
 						/*rotZ -= 90;
 						if(rotZ <= -360){
 						rotZ = 0.0;
@@ -437,7 +479,7 @@ void cubie::faceRotate(SG_VECTOR axis, float deg,bool di){
 					}
 				}
 				//myMatrix.push_back(matrix(axis,tempDeg,di));
-				objectList[j]->ApplyTempMatrix();
+				//objectList[j]->ApplyTempMatrix();
 				//objectList[j]->DestroyTempMatrix();
 			}
 		}

@@ -7,7 +7,7 @@
 class myobject3D {
 	
 public:
-	myobject3D (float x,float y);
+	myobject3D (SG_VECTOR pos);
     
 	void setup();
 	void update();
@@ -24,8 +24,7 @@ public:
 	ofMesh myMesh;// this will be used to draw the object, 
 	ofVbo myVbo;
 
-	float posX;
-	float posY;
+	SG_VECTOR pos;
 	float deg;
 
 	string name; // may be usefull to call by first name

@@ -32,16 +32,16 @@ public:
 	void setObjects(sgCGroup *objs,int cubieId);
 	sgCGroup* copyObjects();
 
-	float posX;
-	float posY;
-	float posZ;
+	SG_VECTOR pos;
 	void moveH(float px);
 	void moveV(float py);
+	void moveD(float pz);
 	
 	float rotH;
 	float rotV;
 	void rotateH(float radH); //rotates the cubie as part of the whole puzzle object, NOT as a faceMove rotation
 	void rotateV(float radV);
+
 
 	//this is vector of matrix objects that have all the transformations for each cubie.
 	//its a vector since we don't know how many transformations a cubie is going to have

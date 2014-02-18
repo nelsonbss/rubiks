@@ -5,9 +5,9 @@
 cubie::cubie(float x, float y,float z, int idi){
 	objects = NULL;
 	id = idi;
-	posX = x;
-	posY = y;
-	posZ = z;
+	pos.x = x;
+	pos.y = y;
+	pos.z = z;
 	rotH = 0.0;
 	rotV = 0.0;
 	color = rand()%27;
@@ -242,9 +242,9 @@ void cubie::update(){
 		SG_POINT protV = {0,0,0};												 
 		objectList[j]->GetTempMatrix()->Rotate(protV,vrotV,rotV);
 		//translations
-		SG_VECTOR transBox11 = {posX,0,0}; 
+		SG_VECTOR transBox11 = {pos.x,0,0}; 
 		objectList[j]->GetTempMatrix()->Translate(transBox11);
-		SG_VECTOR transBox121 = {0,posY,0}; 
+		SG_VECTOR transBox121 = {0,pos.y,0}; 
 		objectList[j]->GetTempMatrix()->Translate(transBox121);
 		objectList[j]->ApplyTempMatrix();
 
@@ -331,7 +331,7 @@ void cubie::faceRotate(SG_VECTOR axis, float deg,bool di){
 	//its invoked on a group of cubies determined by the puzzle..??(stil lneeds to be determined)
 	//use this cubies objectList to draw elements without ever loosing them on groupBreaking
 	if(objects != NULL){
-		if(moving == false){
+		//if(moving == false){
 			for (int j=0; j < numObjs; j++){
 				SG_POINT protFace = {0,0,0};
 				SG_VECTOR vrotFace = axis;
@@ -339,7 +339,7 @@ void cubie::faceRotate(SG_VECTOR axis, float deg,bool di){
 				rotY=0;
 				rotZ=0;*/
 				moving = true;
-				tempDeg = 0.0;
+				//tempDeg = 0.0;
 				ct1 = ofGetElapsedTimeMillis();
 				if(di == true){
 					//c
@@ -347,9 +347,10 @@ void cubie::faceRotate(SG_VECTOR axis, float deg,bool di){
 						movingXC = true;
 						tempDeg = rotX;
 						tempDeg += 1.57;
+
 						/*rotX += 1.57;
 						if(rotX >= 6.28){
-						rotX = 0.0;
+							rotX = 0.0;
 						}*/
 
 						/*movingXC = true;
@@ -391,6 +392,7 @@ void cubie::faceRotate(SG_VECTOR axis, float deg,bool di){
 						movingZC = true;
 						tempDeg = rotZ;
 						tempDeg += 1.57;
+
 						/*rotZ += 1.57;
 						if(rotZ >= 6.28){
 						rotZ = 0.0;
@@ -415,6 +417,7 @@ void cubie::faceRotate(SG_VECTOR axis, float deg,bool di){
 						movingXCC = true;
 						tempDeg = rotX;
 						tempDeg -= 1.57;
+
 						/*rotX -= 1.57;
 						if(rotX <= -6.28){
 						rotX = 0.0;
@@ -482,7 +485,7 @@ void cubie::faceRotate(SG_VECTOR axis, float deg,bool di){
 				//objectList[j]->ApplyTempMatrix();
 				//objectList[j]->DestroyTempMatrix();
 			}
-		}
+		//}
 	}else{
 		//cout << "null at face rotation" << endl;
 	}
@@ -581,12 +584,17 @@ void cubie::rotateV(float rad){
 }
 //--------------------------------------------------------------
 void cubie::moveH(float posx){
-	posX = posx;
+	pos.x = posx;
 	//movePuzzle = true;
 }
 //--------------------------------------------------------------
 void cubie::moveV(float posy){
-	posY = posy;
+	pos.y = posy;
+	//movePuzzle = true;
+}
+//--------------------------------------------------------------
+void cubie::moveD(float posz){
+	pos.z = posz;
 	//movePuzzle = true;
 }
 //----------------------------------------------------------------

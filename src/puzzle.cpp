@@ -12,9 +12,9 @@
 puzzle::puzzle(float x, float y, float z){
 	numPieces = 27;
 	myCubies = (cubie**)malloc(numPieces*sizeof(cubie*));
-	posX = x;
-	posY = y;
-	posZ = z;
+	pos.x = x;
+	pos.y = y;
+	pos.z = z;
 	rotH = 0;
 	rotV = 0;
 	/*
@@ -107,7 +107,7 @@ void puzzle::loadPieces(sgCGroup **pcs){
 	//create cubies
 	//so each time there is a new boolean operation, whole new cubies get created with variables in zero or blank
 	for(int i =0;i<numPieces;i++){
-		cubie *auxCubie = new cubie(posX,posY,posZ,i+1);// is this really creating independent instances of cubie??
+		cubie *auxCubie = new cubie(pos.x,pos.y,pos.z,i+1);// is this really creating independent instances of cubie??
 		//auxCubie->setup();
 		//add this cubie to mycubies[]
 		myCubies[i] = auxCubie;
@@ -181,40 +181,40 @@ void puzzle::rotateVdown(){
 ////////////////////////////////////////////////////////////////
 void puzzle::moveRight(){
 	//iterate through cubies
-	posX += 10;
+	pos.x += 10;
 	for(int i=0;i<numPieces;i++){
 		if(myCubies[i] != NULL){
-			myCubies[i]->moveH(posX);
+			myCubies[i]->moveH(pos.x);
 		}
 	}
 }
 //--------------------------------------------------------------
 void puzzle::moveLeft(){
 	//iterate through cubies
-	posX -= 10;
+	pos.x -= 10;
 	for(int i=0;i<numPieces;i++){
 		if(myCubies[i] != NULL){
-			myCubies[i]->moveH(posX);
+			myCubies[i]->moveH(pos.x);
 		}
 	}
 }
 //--------------------------------------------------------------
 void puzzle::moveUp(){
 	//iterate through cubies
-	posY -= 10;
+	pos.y -= 10;
 	for(int i=0;i<numPieces;i++){
 		if(myCubies[i] != NULL){
-			myCubies[i]->moveV(posY);
+			myCubies[i]->moveV(pos.y);
 		}
 	}
 }
 //--------------------------------------------------------------
 void puzzle::moveDown(){
 	//iterate through cubies
-	posY += 10;
+	pos.y += 10;
 	for(int i=0;i<numPieces;i++){
 		if(myCubies[i] != NULL){
-			myCubies[i]->moveV(posY);
+			myCubies[i]->moveV(pos.y);
 		}
 	}
 }
@@ -300,6 +300,7 @@ void puzzle::rotateByIDandAxis(int id, SG_VECTOR axis, bool dir,float deg){
 	for(int i=0;i<9;i++){
 		myCubies[selected[i]]->faceRotate(axis,deg,dir);
 	}
+	//myCubies[11]->faceRotate(axis,deg,dir);
 
 	//rearranging
 	//do we do this after we complete 90 deg rotation???

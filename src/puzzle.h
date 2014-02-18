@@ -26,9 +26,7 @@ public:
 	float numPieces;
 	cubie **myCubies; //malloc numPieces of these
 
-	float posX;
-	float posY;
-	float posZ;
+	SG_VECTOR pos;
 
 	void moveRight();
 	void moveLeft();

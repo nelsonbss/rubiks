@@ -52,8 +52,9 @@ void testApp::setup(){
 	//////////////////////////////////////////////////////////////////////////////////
 	///////////////////////////3D OBJECT LOADING//////////////////////////////////////
 	////////////////////// create primitive torus
-	objectDisplayed = new myobject3D(displayX,displayY);
-	objectDisplayed->loadObject(sgCreateTorus(displayZ,80,50,50));
+	SG_VECTOR pos = {displayX,displayY,displayZ};
+	objectDisplayed = new myobject3D(pos);
+	objectDisplayed->loadObject(sgCreateTorus(pos.z,80,50,50));
 
 	//objectDisplayed->loadObject(sgCreateCone(200,1,300.0, 3));
 	//objectDisplayed->loadObject(sgCreateBox(300,300,300));
@@ -268,7 +269,7 @@ void testApp::draw(){
 		//mySlicer->draw();
 		drawCuts1 = false;
 		draw3dObject = false;
-		drawCuts = true;///////////////////////////////////////////turn this ON!!! to keep working on ofMesh render of puzzle, like on the 3dObject
+		drawCuts = true;
 	}
 
 	if(draw3dObject){

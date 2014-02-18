@@ -2,9 +2,10 @@
 #include "sgCore.h"
 #include "ofRender.h"
 
-myobject3D::myobject3D(float x, float y){
-	posX = x;
-	posY = y;
+myobject3D::myobject3D(SG_VECTOR p){
+	pos.x = p.x;
+	pos.y = p.y;
+	pos.z = p.z;
 	deg = 0.0;
 }
 //--------------------------------------------------------------
@@ -34,17 +35,13 @@ void myobject3D::setup(){
 }
 //--------------------------------------------------------------
 void myobject3D::update(){
-	//SG_POINT rotP = {posX,posY,0};
 	SG_POINT rotP = {0,0,0};
 	SG_VECTOR rotV = {0,1,0};
-	//SG_POINT rotPobject = {posX,posY,0};
-	//SG_VECTOR rotDobject = {0,0,0};
 	deg += 0.01;
 	temp->InitTempMatrix()->Rotate(rotP,rotV,deg);
-	SG_VECTOR transP = {posX,posY,0};
+	SG_VECTOR transP = {pos.x,pos.y,pos.z};
 	temp->GetTempMatrix()->Translate(transP);
 	temp->ApplyTempMatrix();  
-	//temp->DestroyTempMatrix();
 
 	//object->DestroyTempMatrix();
 	//object->InitTempMatrix()->Rotate(rotPobject,rotV,0.01);
@@ -63,12 +60,11 @@ void myobject3D::draw(){
 	//instead of attaching to scene
 
 	ofPushMatrix();
-		//ofTranslate(posX,posY);
 		glMultMatrixd(temp->GetTempMatrix()->GetTransparentData());
-		//myMesh.draw();
+		temp->DestroyTempMatrix();
 		myVbo.draw(GL_TRIANGLES, 0,myMesh.getNumIndices());
 	ofPopMatrix();
-	temp->DestroyTempMatrix();
+	
 
 	//object->SetAttribute(SG_OA_COLOR,5);
 	////object->Triangulate(SG_VERTEX_TRIANGULATION);

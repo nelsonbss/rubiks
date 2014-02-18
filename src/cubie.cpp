@@ -361,6 +361,9 @@ void cubie::faceRotate(SG_VECTOR axis, float deg,bool di){
 						}*/
 						//objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,rotX);
 						//build matrix and add it to the vector myMatrix
+
+						const double * aux = objectList[j]->GetWorldMatrixData();
+
 						myMatrix.push_back(matrix(axis,rotX,di));
 						cout << "history: " << myMatrix.size() << endl;
 						cout << "X: " << rotX << endl;
@@ -383,6 +386,9 @@ void cubie::faceRotate(SG_VECTOR axis, float deg,bool di){
 						rotY = 0.0;
 						}*/
 						//objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,rotY);
+
+						const double * aux = objectList[j]->GetWorldMatrixData();
+
 						myMatrix.push_back(matrix(axis,rotY,di));
 						cout << "history: " << myMatrix.size() << endl;
 						cout << "Y: " << rotY << endl;

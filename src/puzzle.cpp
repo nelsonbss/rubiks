@@ -287,7 +287,6 @@ void puzzle::rotateByIDandAxis(int id, SG_VECTOR axis, bool dir,float deg){
 		rearange3dArray(axis,selZ,dir);
 	}
 	//now we tell the 9 selected cubies to rotate
-	SG_POINT point = {0,0,0};
 	for(int i=0;i<9;i++){
 		myCubies[selected[i]]->faceRotate(axis,deg,dir);
 	}

@@ -33,180 +33,180 @@ void cubie::setup(){
 }
 //--------------------------------------------------------------
 void cubie::update(){
-	if(moving==true){
-		//animate rotation xc
-		if(movingXC == true){
-			if(rotX < tempDeg){
-				ct2 = ofGetElapsedTimeMillis();
-				rotX += (ct2 - ct1)*((90)/animTime);
-				ct1 = ct2;
-			}else{
-				rotX = tempDeg;
-				if(rotX >= 360){
-					rotX = 0.0;
-				}
-				moving = false;
-				movingXC = false;
-			}
-		}
-		//xcc
-		if(movingXCC == true){
-			if(rotX > tempDeg){
-				ct2 = ofGetElapsedTimeMillis();
-				rotX -= (ct2 - ct1)*((90)/animTime);
-				ct1 = ct2;
-			}else{
-				rotX = tempDeg;
-				if(rotX <= -360){
-					rotX = 0.0;
-				}
-				moving = false;
-				movingXCC = false;
-			}
-		}
-		////////////   Y
-		//animate rotation yc
-		if(movingYC == true){
-			if(rotY < tempDeg){
-				ct2 = ofGetElapsedTimeMillis();
-				rotY += (ct2 - ct1)*((90)/animTime);
-				ct1 = ct2;
-			}else{
-				rotY = tempDeg;
-				if(rotY >= 360){
-					rotY = 0.0;
-				}
-				moving = false;
-				movingYC = false;
-			}
-		}
-		//ycc
-		if(movingYCC == true){
-			if(rotY > tempDeg){
-				ct2 = ofGetElapsedTimeMillis();
-				rotY -= (ct2 - ct1)*((90)/animTime);
-				ct1 = ct2;
-			}else{
-				rotY = tempDeg;
-				if(rotY <= -360){
-					rotY = 0.0;
-				}
-				moving = false;
-				movingYCC = false;
-			}
-		}
-		////////////  Z
-		//animate rotation zc
-		if(movingZC == true){
-			if(rotZ < tempDeg){
-				ct2 = ofGetElapsedTimeMillis();
-				rotZ += (ct2 - ct1)*((90)/animTime);
-				ct1 = ct2;
-			}else{
-				rotZ = tempDeg;
-				if(rotZ >= 360){
-					rotZ = 0.0;
-				}
-				moving = false;
-				movingZC = false;
-			}
-		}
-		//zcc
-		if(movingZCC == true){
-			if(rotZ > tempDeg){
-				ct2 = ofGetElapsedTimeMillis();
-				rotZ -= (ct2 - ct1)*((90)/animTime);
-				ct1 = ct2;
-			}else{
-				rotZ = tempDeg;
-				if(rotZ <= -360){
-					rotZ = 0.0;
-				}
-				moving = false;
-				movingZCC = false;
-			}
-		}
-	}
+	//if(moving==true){
+	//	//animate rotation xc
+	//	if(movingXC == true){
+	//		if(rotX < tempDeg){
+	//			ct2 = ofGetElapsedTimeMillis();
+	//			rotX += (ct2 - ct1)*((90)/animTime);
+	//			ct1 = ct2;
+	//		}else{
+	//			rotX = tempDeg;
+	//			if(rotX >= 360){
+	//				rotX = 0.0;
+	//			}
+	//			moving = false;
+	//			movingXC = false;
+	//		}
+	//	}
+	//	//xcc
+	//	if(movingXCC == true){
+	//		if(rotX > tempDeg){
+	//			ct2 = ofGetElapsedTimeMillis();
+	//			rotX -= (ct2 - ct1)*((90)/animTime);
+	//			ct1 = ct2;
+	//		}else{
+	//			rotX = tempDeg;
+	//			if(rotX <= -360){
+	//				rotX = 0.0;
+	//			}
+	//			moving = false;
+	//			movingXCC = false;
+	//		}
+	//	}
+	//	////////////   Y
+	//	//animate rotation yc
+	//	if(movingYC == true){
+	//		if(rotY < tempDeg){
+	//			ct2 = ofGetElapsedTimeMillis();
+	//			rotY += (ct2 - ct1)*((90)/animTime);
+	//			ct1 = ct2;
+	//		}else{
+	//			rotY = tempDeg;
+	//			if(rotY >= 360){
+	//				rotY = 0.0;
+	//			}
+	//			moving = false;
+	//			movingYC = false;
+	//		}
+	//	}
+	//	//ycc
+	//	if(movingYCC == true){
+	//		if(rotY > tempDeg){
+	//			ct2 = ofGetElapsedTimeMillis();
+	//			rotY -= (ct2 - ct1)*((90)/animTime);
+	//			ct1 = ct2;
+	//		}else{
+	//			rotY = tempDeg;
+	//			if(rotY <= -360){
+	//				rotY = 0.0;
+	//			}
+	//			moving = false;
+	//			movingYCC = false;
+	//		}
+	//	}
+	//	////////////  Z
+	//	//animate rotation zc
+	//	if(movingZC == true){
+	//		if(rotZ < tempDeg){
+	//			ct2 = ofGetElapsedTimeMillis();
+	//			rotZ += (ct2 - ct1)*((90)/animTime);
+	//			ct1 = ct2;
+	//		}else{
+	//			rotZ = tempDeg;
+	//			if(rotZ >= 360){
+	//				rotZ = 0.0;
+	//			}
+	//			moving = false;
+	//			movingZC = false;
+	//		}
+	//	}
+	//	//zcc
+	//	if(movingZCC == true){
+	//		if(rotZ > tempDeg){
+	//			ct2 = ofGetElapsedTimeMillis();
+	//			rotZ -= (ct2 - ct1)*((90)/animTime);
+	//			ct1 = ct2;
+	//		}else{
+	//			rotZ = tempDeg;
+	//			if(rotZ <= -360){
+	//				rotZ = 0.0;
+	//			}
+	//			moving = false;
+	//			movingZCC = false;
+	//		}
+	//	}
+	//}
 
 
 	//if(objects != NULL){
-	//for (int j=0; j < numObjs; j++){
-	//	///////////////////////////////////////////////////rotations
-	//	//use vector with matrix(s)
-	//	for(int i=0; i<myMatrix.size();i++){
-	//		SG_POINT protFace = {0,0,0};										 
-	//		SG_VECTOR vrotFace = myMatrix.at(i).vector;//  axis; //rotate to do a face move
-	//		float d = myMatrix.at(i).deg;
+	for (int j=0; j < numObjs; j++){
+		///////////////////////////////////////////////////rotations
+		//use vector with matrix(s)
+		for(int i=0; i<myMatrix.size();i++){
+			SG_POINT protFace = {0,0,0};										 
+			SG_VECTOR vrotFace = myMatrix.at(i).vector;//  axis; //rotate to do a face move
+			float d = myMatrix.at(i).deg;
 
-	//		if(myMatrix.at(i).dir == true){
-	//			//c
-	//			if(myMatrix.at(i).vector.x == 1){
-	//				//objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,d);
-	//			}else if(myMatrix.at(i).vector.y == 1){
-	//				//rotY = d;
-	//				//objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,d);
-	//			}else{
-	//				//rotZ = d;
-	//				//objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,d);
-	//			}
+			if(myMatrix.at(i).dir == true){
+				//c
+				if(myMatrix.at(i).vector.x == 1){
+					objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,d);
+				}else if(myMatrix.at(i).vector.y == 1){
+					//rotY = d;
+					objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,d);
+				}else{
+					//rotZ = d;
+					objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,d);
+				}
 
-	//		}else{
-	//			//cc
-	//			if(myMatrix.at(i).vector.x == 1){
-	//				//objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,d);
-	//			}else if(myMatrix.at(i).vector.y == 1){
-	//				//rotY = d;
-	//				//objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,d);
-	//			}else{
-	//				//rotZ = d;
-	//				//objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,d);
-	//			}
-	//		}
-	//		//objectList[j]->ApplyTempMatrix();
-	//		//objectList[j]->DestroyTempMatrix();
-	//	}
+			}else{
+				//cc
+				if(myMatrix.at(i).vector.x == 1){
+					objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,d);
+				}else if(myMatrix.at(i).vector.y == 1){
+					//rotY = d;
+					objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,d);
+				}else{
+					//rotZ = d;
+					objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,d);
+				}
+			}
+			objectList[j]->ApplyTempMatrix();
+			//objectList[j]->DestroyTempMatrix();
+		}
 
-	//	/////////////////////////////////////////////////////////////
-	//	//if(myMatrix[myMatrix.size()-1].vector.x == 1){
-	//	//	rotX = myMatrix[myMatrix.size()-1].deg;
-	//	//}else if(myMatrix[myMatrix.size()-1].vector.y == 1){
-	//	//	//rotY = d;
-	//	//	rotY = myMatrix[myMatrix.size()-1].deg;
-	//	//}else{
-	//	//	//rotZ = d;
-	//	//	rotZ = myMatrix[myMatrix.size()-1].deg;
-	//	//}
-
-
-	//	/////////////////////////////////////////////////////////////
-	//	//rotate and move with the whole puzzle
-	//	//SG_VECTOR vrotH = {0,1,0}; //rotate H
-	//	//SG_POINT protH = {0,0,0};                                             
-	//	//if (objectList[j]->GetTempMatrix()==0){
-	//	//	objectList[j]->InitTempMatrix()->Rotate(protH,vrotH,rotH);
-	//	//}else{
-	//	//	objectList[j]->GetTempMatrix()->Rotate(protH,vrotH,rotH);
-	//	//}
-	//	//SG_VECTOR vrotV = {1,0,0}; //rotate V
-	//	//SG_POINT protV = {0,0,0};												 
-	//	//objectList[j]->GetTempMatrix()->Rotate(protV,vrotV,rotV);
-	//	////translations
-	//	//SG_VECTOR transBox11 = {posX,0,0}; 
-	//	//objectList[j]->GetTempMatrix()->Translate(transBox11);
-	//	//SG_VECTOR transBox121 = {0,posY,0}; 
-	//	//objectList[j]->GetTempMatrix()->Translate(transBox121);
-	//	//objectList[j]->ApplyTempMatrix();
-	//	//objectList[j]->Triangulate(SG_VERTEX_TRIANGULATION);
+		//	/////////////////////////////////////////////////////////////
+		//	//if(myMatrix[myMatrix.size()-1].vector.x == 1){
+		//	//	rotX = myMatrix[myMatrix.size()-1].deg;
+		//	//}else if(myMatrix[myMatrix.size()-1].vector.y == 1){
+		//	//	//rotY = d;
+		//	//	rotY = myMatrix[myMatrix.size()-1].deg;
+		//	//}else{
+		//	//	//rotZ = d;
+		//	//	rotZ = myMatrix[myMatrix.size()-1].deg;
+		//	//}
 
 
+			///////////////////////////////////////////////////////////
+			////////rotate and move with the whole puzzle
+			SG_VECTOR vrotH = {0,1,0}; //rotate H
+			SG_POINT protH = {0,0,0};                                             
+			if (objectList[j]->GetTempMatrix()==0){
+				objectList[j]->InitTempMatrix()->Rotate(protH,vrotH,rotH);
+			}else{
+				objectList[j]->GetTempMatrix()->Rotate(protH,vrotH,rotH);
+			}
+			SG_VECTOR vrotV = {1,0,0}; //rotate V
+			SG_POINT protV = {0,0,0};												 
+			objectList[j]->GetTempMatrix()->Rotate(protV,vrotV,rotV);
+			//translations
+			SG_VECTOR transBox11 = {posX,0,0}; 
+			objectList[j]->GetTempMatrix()->Translate(transBox11);
+			SG_VECTOR transBox121 = {0,posY,0}; 
+			objectList[j]->GetTempMatrix()->Translate(transBox121);
+			objectList[j]->ApplyTempMatrix();
+		//	//objectList[j]->Triangulate(SG_VERTEX_TRIANGULATION);
 
 
-	//	//objectList[j]->DestroyTempMatrix();
-	//	//objectList[j]->SetAttribute(SG_OA_COLOR,color);
-	//	//objectList[j]->SetAttribute(SG_OA_DRAW_STATE,SG_DS_FULL);
-	//	//sgGetScene()->AttachObject(objectList[j]);
-	//}
-	//}
+
+
+		//	//objectList[j]->DestroyTempMatrix();
+		//	//objectList[j]->SetAttribute(SG_OA_COLOR,color);
+		//	//objectList[j]->SetAttribute(SG_OA_DRAW_STATE,SG_DS_FULL);
+		//	//sgGetScene()->AttachObject(objectList[j]);
+		//}
+	}
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 void cubie::draw(){  
@@ -297,18 +297,17 @@ void cubie::draw(){
 			//		//cout << "null at draw" << endl;
 
 			glPushMatrix();
-			//all puzzle
-			glTranslatef(posX,posY,posZ);
-			glRotatef(rotH,0,1,0);
-			glRotatef(rotV,1,0,0);
-			//this cubie
-			glRotatef(rotX,1,0,0);
-			glRotatef(rotY,0,1,0);
-			glRotatef(rotZ,0,0,1);
-			/*	if (objectList[j]->GetTempMatrix()!=0)
-			glMultMatrixd(objectList[j]->GetTempMatrix()->GetTransparentData());
-			objectList[j]->DestroyTempMatrix();*/
-			//myMeshs[j].draw();
+			////all puzzle
+			//glTranslatef(posX,posY,posZ);
+			//glRotatef(rotH,0,1,0);
+			//glRotatef(rotV,1,0,0);
+			////this cubie
+			//glRotatef(rotX,1,0,0);
+			//glRotatef(rotY,0,1,0);
+			//glRotatef(rotZ,0,0,1);
+			if (objectList[j]->GetTempMatrix()!=0)
+				glMultMatrixd(objectList[j]->GetTempMatrix()->GetTransparentData());
+			objectList[j]->DestroyTempMatrix();
 			myVbos[j].draw(GL_TRIANGLES, 0,myMeshs[j].getNumIndices());
 			glPopMatrix();
 		}
@@ -358,114 +357,114 @@ void cubie::faceRotate(SG_VECTOR axis, float deg,bool di){
 	//use this cubies objectList to draw elements without ever loosing them on groupBreaking
 	if(objects != NULL){
 		//if(moving == false){
-			for (int j=0; j < numObjs; j++){
-				SG_POINT protFace = {0,0,0};
-				SG_VECTOR vrotFace = axis;
-				/*rotX=0;
-				rotY=0;
-				rotZ=0;*/
-				moving = true;
-				//tempDeg = 0.0;
-				ct1 = ofGetElapsedTimeMillis();
-				if(di == true){
-					//c
-					if(axis.x == 1){
-						/*rotX += 1.57;
-						if(rotX >= 6.28){
-						rotX = 0.0;
-						}*/
-						movingXC = true;
-						tempDeg = rotX;
-						tempDeg += 90;
-						//rotX += 90;
-						/*if(tempDeg >= 360){
-						tempDeg = 0.0;
-						}*/
-						//objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,rotX);
-						//build matrix and add it to the vector myMatrix
-						/*myMatrix.push_back(matrix(axis,tempDeg,di));*/
-						cout << "history: " << myMatrix.size() << endl;
-						cout << rotX << endl;
-					}else if(axis.y == 1){
-						/*rotY += 1.57;
-						if(rotY >= 6.28){
-						rotY = 0.0;
-						}*/
-						movingYC = true;
-						tempDeg = rotY;
-						tempDeg += 90;
-						/*rotY += 90;
-						if(rotY >= 360){
-						rotY = 0.0;
-						}*/
-						//objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,rotY);
-						//myMatrix.push_back(matrix(axis,tempDeg,di));
-					}else{
-						/*rotZ += 1.57;
-						if(rotZ >= 6.28){
-						rotZ = 0.0;
-						}*/
-						movingZC = true;
-						tempDeg = rotZ;
-						tempDeg += 90;
-						/*rotZ += 90;
-						if(rotZ >= 360){
-						rotZ = 0.0;
-						}*/
-						//objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,rotZ);
-						//myMatrix.push_back(matrix(axis,tempDeg,di));
+		for (int j=0; j < numObjs; j++){
+			SG_POINT protFace = {0,0,0};
+			SG_VECTOR vrotFace = axis;
+			/*rotX=0;
+			rotY=0;
+			rotZ=0;*/
+			moving = true;
+			//tempDeg = 0.0;
+			ct1 = ofGetElapsedTimeMillis();
+			if(di == true){
+				//c
+				if(axis.x == 1){
+					rotX += 1.57;
+					if(rotX >= 6.28){
+					rotX = 0.0;
 					}
+					/*movingXC = true;
+					tempDeg = rotX;
+					tempDeg += 90;*/
+					/*rotX += 90;
+					if(rotX >= 360){
+					rotX = 0.0;
+					}*/
+					objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,rotX);
+					//build matrix and add it to the vector myMatrix
+					myMatrix.push_back(matrix(axis,rotX,di));
+					cout << "history: " << myMatrix.size() << endl;
+					cout << rotX << endl;
+				}else if(axis.y == 1){
+					/*rotY += 1.57;
+					if(rotY >= 6.28){
+					rotY = 0.0;
+					}*/
+					movingYC = true;
+					tempDeg = rotY;
+					tempDeg += 90;
+					/*rotY += 90;
+					if(rotY >= 360){
+					rotY = 0.0;
+					}*/
+					//objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,rotY);
+					//myMatrix.push_back(matrix(axis,tempDeg,di));
 				}else{
-					//cc
-					if(axis.x == 1){
-						/*rotX -= 1.57;
-						if(rotX <= -6.28){
-						rotX = 0.0;
-						}*/
-						movingXCC = true;
-						tempDeg = rotX;
-						tempDeg -= 90;
-						/*rotX -= 90;
-						if(rotX <= -360){
-						rotX = 0.0;
-						}*/
-						//objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,rotX);
-						//myMatrix.push_back(matrix(axis,tempDeg,di));
-						cout << rotX << endl;
-					}else if(axis.y == 1){
-						/*rotY -= 1.57;
-						if(rotY <= -6.28){
-						rotY = 0.0;
-						}*/
-						movingYCC = true;
-						tempDeg = rotY;
-						tempDeg -= 90;
-						/*rotY -= 90;
-						if(rotY <= -360){
-						rotY = 0.0;
-						}*/
-						//objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,rotY);
-						//myMatrix.push_back(matrix(axis,tempDeg,di));
-					}else{
-						/*rotZ -= 1.57;
-						if(rotZ <= -6.28){
-						rotZ = 0.0;
-						}*/
-						movingZCC = true;
-						tempDeg = rotZ;
-						tempDeg -= 90;
-						/*rotZ -= 90;
-						if(rotZ <= -360){
-						rotZ = 0.0;
-						}*/
-						//objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,rotZ);
-						//myMatrix.push_back(matrix(axis,tempDeg,di));
-					}
+					/*rotZ += 1.57;
+					if(rotZ >= 6.28){
+					rotZ = 0.0;
+					}*/
+					movingZC = true;
+					tempDeg = rotZ;
+					tempDeg += 90;
+					/*rotZ += 90;
+					if(rotZ >= 360){
+					rotZ = 0.0;
+					}*/
+					//objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,rotZ);
+					//myMatrix.push_back(matrix(axis,tempDeg,di));
 				}
-				myMatrix.push_back(matrix(axis,tempDeg,di));
-				//objectList[j]->ApplyTempMatrix();
-				//objectList[j]->DestroyTempMatrix();
+			}else{
+				//cc
+				if(axis.x == 1){
+					/*rotX -= 1.57;
+					if(rotX <= -6.28){
+					rotX = 0.0;
+					}*/
+					movingXCC = true;
+					tempDeg = rotX;
+					tempDeg -= 90;
+					/*rotX -= 90;
+					if(rotX <= -360){
+					rotX = 0.0;
+					}*/
+					//objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,rotX);
+					//myMatrix.push_back(matrix(axis,tempDeg,di));
+					cout << rotX << endl;
+				}else if(axis.y == 1){
+					/*rotY -= 1.57;
+					if(rotY <= -6.28){
+					rotY = 0.0;
+					}*/
+					movingYCC = true;
+					tempDeg = rotY;
+					tempDeg -= 90;
+					/*rotY -= 90;
+					if(rotY <= -360){
+					rotY = 0.0;
+					}*/
+					//objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,rotY);
+					//myMatrix.push_back(matrix(axis,tempDeg,di));
+				}else{
+					/*rotZ -= 1.57;
+					if(rotZ <= -6.28){
+					rotZ = 0.0;
+					}*/
+					movingZCC = true;
+					tempDeg = rotZ;
+					tempDeg -= 90;
+					/*rotZ -= 90;
+					if(rotZ <= -360){
+					rotZ = 0.0;
+					}*/
+					//objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,rotZ);
+					//myMatrix.push_back(matrix(axis,tempDeg,di));
+				}
 			}
+			//myMatrix.push_back(matrix(axis,tempDeg,di));
+			//objectList[j]->ApplyTempMatrix();
+			//objectList[j]->DestroyTempMatrix();
+		}
 		//}
 	}else{
 		//cout << "null at face rotation" << endl;

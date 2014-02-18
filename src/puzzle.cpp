@@ -149,7 +149,7 @@ void puzzle::loadPieces(sgCGroup **pcs){
 ////////////////////////////////////////////////////////////////
 void puzzle::rotateHright(){  
 	//puzzle tells every cubie to rotate
-	rotH += 1;
+	rotH +=  0.1;
 	for(int i=0;i<numPieces;i++){
 		myCubies[i]->rotateH(rotH);
 	}
@@ -157,7 +157,7 @@ void puzzle::rotateHright(){
 //--------------------------------------------------------------
 void puzzle::rotateHleft(){  
 	//puzzle tells every cubie to rotate
-	rotH -= 1;
+	rotH -= 0.1;
 	for(int i=0;i<numPieces;i++){
 		myCubies[i]->rotateH(rotH);
 	}
@@ -165,7 +165,7 @@ void puzzle::rotateHleft(){
 //--------------------------------------------------------------
 void puzzle::rotateVup(){  
 	//puzzle tells every cubie to rotate
-	rotV += 1;
+	rotV += 0.1;
 	for(int i=0;i<numPieces;i++){
 		myCubies[i]->rotateV(rotV);
 	}
@@ -173,7 +173,7 @@ void puzzle::rotateVup(){
 //--------------------------------------------------------------
 void puzzle::rotateVdown(){  
 	//puzzle tells every cubie to rotate
-	rotV -= 1;
+	rotV -= 0.1;
 	for(int i=0;i<numPieces;i++){
 		myCubies[i]->rotateV(rotV);
 	}

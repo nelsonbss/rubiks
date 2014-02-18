@@ -1,0 +1,30 @@
+<gui>
+	<sheet name="attract">
+		<!--
+    <node type="image" name="background" image="cuts/pb_main_bg_new.png" arabic="cuts/pb_bg_arabic.png">
+			<pos>0,0</pos>
+			<size>200,200</size>
+		</node>
+		-->
+    <node type="button" name="scissors" action="control" target="none" message="cut" image="scissors_sm.png" clicked="none">
+			<pos>20,80</pos>
+			<size>150,150</size>
+		</node>
+    <node type="button" name="arrow-left" action="control" target="none" message="rotate-left" image="arrow-left.png" clicked="none">
+      <pos>170,70</pos>
+      <size>150,150</size>
+    </node>
+    <node type="button" name="arrow-up" action="control" target="none" message="rotate-up" image="arrow-up.png" clicked="none">
+      <pos>280,-35</pos>
+      <size>150,150</size>
+    </node>
+    <node type="button" name="arrow-right" action="control" target="none" message="rotate-right" image="arrow-right.png" clicked="none">
+      <pos>390,70</pos>
+      <size>150,150</size>
+    </node>
+    <node type="button" name="arrow-down" action="control" target="none" message="rotate-down" image="arrow-down.png" clicked="none">
+      <pos>280,165</pos>
+      <size>150,150</size>
+    </node>
+	</sheet>
+</gui>

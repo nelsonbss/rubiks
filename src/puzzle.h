@@ -29,6 +29,7 @@ public:
 	float posX;
 	float posY;
 	float posZ;
+
 	void moveRight();
 	void moveLeft();
 	void moveUp();

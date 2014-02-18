@@ -299,6 +299,7 @@ void puzzle::rotateByIDandAxis(int id, SG_VECTOR axis, bool dir,float deg){
 	SG_POINT point = {0,0,0};
 	for(int i=0;i<9;i++){
 		myCubies[selected[i]]->faceRotate(axis,deg,dir);
+		//myCubies[11]->faceRotate(axis,deg,dir);//this is to do rotation test with only one piece
 	}
 
 

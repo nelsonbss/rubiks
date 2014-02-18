@@ -299,11 +299,7 @@ void puzzle::rotateByIDandAxis(int id, SG_VECTOR axis, bool dir,float deg){
 	SG_POINT point = {0,0,0};
 	for(int i=0;i<9;i++){
 		myCubies[selected[i]]->faceRotate(axis,deg,dir);
-		//myCubies[11]->faceRotate(axis,deg,dir);//this is to do rotation test with only one piece
 	}
-
-
-
 
 	//rearranging
 	//do we do this after we complete 90 deg rotation???
@@ -316,7 +312,7 @@ void puzzle::rearange3dArray(SG_VECTOR axis, int plane, bool dir){
 	//rearanges ids of cubies inside the 3d array
 	//it deppends on the axis, plane on that axis, and the direction of rotation!!
 
-	int store[9] = {0};
+	int store[9] = {0,0,0,0,0,0,0,0,0};
 	int ctr =0;
 	int cnstplane = plane;
 	if(dir == true){
@@ -349,12 +345,13 @@ void puzzle::rearange3dArray(SG_VECTOR axis, int plane, bool dir){
 			}
 			ctr=0;
 			//put values in new places on 3d array
-			for(int z=2; z>-1; z--){
-				for(int x=0; x<3; x++){
+			for(int z=0; z<3; z++){
+				for(int x=2; x>-1; x--){
 					three_dim1[x][cnstplane][z] = store[ctr];
 					ctr ++;
 				}
 			}
+
 		}else{
 			//rotation on Z
 			//store all the values
@@ -404,13 +401,12 @@ void puzzle::rearange3dArray(SG_VECTOR axis, int plane, bool dir){
 			}
 			ctr=0;
 			//put values in new places on 3d array
-			for(int z=0; z<3; z++){
-				for(int x=2; x>-1; x--){
+			for(int z=2; z>-1; z--){
+				for(int x=0; x<3; x++){
 					three_dim1[x][cnstplane][z] = store[ctr];
 					ctr ++;
 				}
 			}
-
 		}else{
 			//rotation on Z
 			//store all the values

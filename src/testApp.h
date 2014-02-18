@@ -6,8 +6,13 @@
 #include "cutter.h"
 #include "slicer.h"
 #include "puzzle.h"
+#include "GuiConfigurator.h"
+#include "Observer.h"
+#include "Subject.h"
+#include "SubObMediator.h"
+#include "SceneManager.h"
 
-class testApp : public ofBaseApp{
+class testApp : public ofBaseApp, public Observer, public Subject{
 
 public:
 	void setup();
@@ -21,6 +26,7 @@ public:
 	void mouseDragged(int x, int y, int button);
 	void mousePressed(int x, int y, int button);
 	void mouseReleased(int x, int y, int button);
+	void updateMouseState(const char * _state, int _x, int _y, int _button);
 	void windowResized(int w, int h);
 	void dragEvent(ofDragInfo dragInfo);
 	void gotMessage(ofMessage msg);
@@ -61,4 +67,14 @@ public:
 	float tempDeg;
 	bool faceRotateC;
 	bool faceRotateCC;
+
+	//subob stuff
+	map<string,string> attrs;
+	void update(string _subName, Subject* _sub);
+    string getAttr(const char* _key){return attrs[_key];}
+
+	float timeOfLastInteraction;
+    float timeOutCounter;
+	float timeOfLastInput;
+    float inputDelayTime;
 };

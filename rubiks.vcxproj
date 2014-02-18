@@ -59,7 +59,7 @@
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
-      <AdditionalIncludeDirectories>sgCore;%(AdditionalIncludeDirectories);..\..\..\addons\ofxAssimpModelLoader\libs;..\..\..\addons\ofxAssimpModelLoader\src;..\..\..\addons\ofxAssimpModelLoader\libs\assimp;..\..\..\addons\ofxAssimpModelLoader\libs\assimp\include;..\..\..\addons\ofxAssimpModelLoader\libs\assimp\include\Compiler;..\..\..\addons\ofxAssimpModelLoader\libs\assimp\lib;..\..\..\addons\ofxAssimpModelLoader\libs\assimp\lib\vs;..\..\..\addons\ofxGui\libs;..\..\..\addons\ofxGui\src</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\pp\dev\of_v0.8.0_vs_release\apps\myApps\rubiks\src;C:\Users\pp\dev\of_v0.8.0_vs_release\addons\ofxXmlSettings\src;C:\Users\pp\dev\of_v0.8.0_vs_release\addons\ofxXmlSettings\libs;C:\Users\pp\dev\of_v0.8.0_vs_release\apps\myApps\rubiks\src\subob;C:\Users\pp\dev\of_v0.8.0_vs_release\apps\myApps\rubiks\src\gui;sgCore;%(AdditionalIncludeDirectories);..\..\..\addons\ofxAssimpModelLoader\libs;..\..\..\addons\ofxAssimpModelLoader\src;..\..\..\addons\ofxAssimpModelLoader\libs\assimp;..\..\..\addons\ofxAssimpModelLoader\libs\assimp\include;..\..\..\addons\ofxAssimpModelLoader\libs\assimp\include\Compiler;..\..\..\addons\ofxAssimpModelLoader\libs\assimp\lib;..\..\..\addons\ofxAssimpModelLoader\libs\assimp\lib\vs;..\..\..\addons\ofxGui\libs;..\..\..\addons\ofxGui\src</AdditionalIncludeDirectories>
       <CompileAs>CompileAsCpp</CompileAs>
     </ClCompile>
     <Link>
@@ -91,17 +91,32 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\addons\ofxXmlSettings\libs\tinyxml.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxXmlSettings\libs\tinyxmlerror.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxXmlSettings\libs\tinyxmlparser.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxXmlSettings\src\ofxXmlSettings.cpp" />
     <ClCompile Include="src\3DCamera.cpp" />
     <ClCompile Include="src\armature.cpp" />
     <ClCompile Include="src\cubie.cpp" />
     <ClCompile Include="src\cutter.cpp" />
+    <ClCompile Include="src\gui\GuiButton.cpp" />
+    <ClCompile Include="src\gui\GuiConfigurator.cpp" />
+    <ClCompile Include="src\gui\GuiImage.cpp" />
+    <ClCompile Include="src\gui\GuiNode.cpp" />
+    <ClCompile Include="src\gui\GuiSheet.cpp" />
+    <ClCompile Include="src\gui\GuiVideo.cpp" />
+    <ClCompile Include="src\gui\Utils.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\matrix.cpp" />
     <ClCompile Include="src\myobject3D.cpp" />
     <ClCompile Include="src\Painter.cpp" />
     <ClCompile Include="src\puzzle.cpp" />
+    <ClCompile Include="src\SceneManager.cpp" />
     <ClCompile Include="src\slicer.cpp" />
     <ClCompile Include="src\StdAfx.cpp" />
+    <ClCompile Include="src\subob\Observer.cpp" />
+    <ClCompile Include="src\subob\Subject.cpp" />
+    <ClCompile Include="src\subob\SubObMediator.cpp" />
     <ClCompile Include="src\testApp.cpp" />
     <ClCompile Include="..\..\..\addons\ofxAssimpModelLoader\src\ofxAssimpAnimation.cpp" />
     <ClCompile Include="..\..\..\addons\ofxAssimpModelLoader\src\ofxAssimpMeshHelper.cpp" />
@@ -117,16 +132,29 @@
     <ClCompile Include="..\..\..\addons\ofxGui\src\ofxToggle.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\addons\ofxXmlSettings\libs\tinyxml.h" />
+    <ClInclude Include="..\..\..\addons\ofxXmlSettings\src\ofxXmlSettings.h" />
     <ClInclude Include="src\3DCamera.h" />
     <ClInclude Include="src\armature.h" />
     <ClInclude Include="src\cubie.h" />
     <ClInclude Include="src\cutter.h" />
+    <ClInclude Include="src\gui\GuiButton.h" />
+    <ClInclude Include="src\gui\GuiConfigurator.h" />
+    <ClInclude Include="src\gui\GuiImage.h" />
+    <ClInclude Include="src\gui\GuiNode.h" />
+    <ClInclude Include="src\gui\GuiSheet.h" />
+    <ClInclude Include="src\gui\GuiVideo.h" />
+    <ClInclude Include="src\gui\Utils.h" />
     <ClInclude Include="src\matrix.h" />
     <ClInclude Include="src\myobject3D.h" />
     <ClInclude Include="src\Painter.h" />
     <ClInclude Include="src\puzzle.h" />
+    <ClInclude Include="src\SceneManager.h" />
     <ClInclude Include="src\slicer.h" />
     <ClInclude Include="src\StdAfx.h" />
+    <ClInclude Include="src\subob\Observer.h" />
+    <ClInclude Include="src\subob\Subject.h" />
+    <ClInclude Include="src\subob\SubObMediator.h" />
     <ClInclude Include="src\testApp.h" />
     <ClInclude Include="..\..\..\addons\ofxAssimpModelLoader\src\ofxAssimpAnimation.h" />
     <ClInclude Include="..\..\..\addons\ofxAssimpModelLoader\src\ofxAssimpMeshHelper.h" />

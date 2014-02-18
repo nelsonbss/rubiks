@@ -73,6 +73,49 @@
     <ClCompile Include="src\matrix.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\gui\GuiButton.cpp">
+      <Filter>src\gui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gui\GuiConfigurator.cpp">
+      <Filter>src\gui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gui\GuiImage.cpp">
+      <Filter>src\gui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gui\GuiNode.cpp">
+      <Filter>src\gui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gui\GuiSheet.cpp">
+      <Filter>src\gui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gui\GuiVideo.cpp">
+      <Filter>src\gui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\subob\Observer.cpp">
+      <Filter>src\subob</Filter>
+    </ClCompile>
+    <ClCompile Include="src\subob\Subject.cpp">
+      <Filter>src\subob</Filter>
+    </ClCompile>
+    <ClCompile Include="src\subob\SubObMediator.cpp">
+      <Filter>src\subob</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxXmlSettings\libs\tinyxml.cpp">
+      <Filter>addons\ofxXmlSettings\libs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxXmlSettings\libs\tinyxmlerror.cpp">
+      <Filter>addons\ofxXmlSettings\libs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxXmlSettings\libs\tinyxmlparser.cpp">
+      <Filter>addons\ofxXmlSettings\libs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxXmlSettings\src\ofxXmlSettings.cpp">
+      <Filter>addons\ofxXmlSettings\src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SceneManager.cpp" />
+    <ClCompile Include="src\gui\Utils.cpp">
+      <Filter>src\gui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -110,6 +153,21 @@
     </Filter>
     <Filter Include="src\sgCore">
       <UniqueIdentifier>{c68b5e64-43d2-4657-b1ff-039ef540f84e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\subob">
+      <UniqueIdentifier>{9164d26f-02d8-44b6-8e9d-0569240ae534}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\gui">
+      <UniqueIdentifier>{ce34ef94-7c88-4c8c-befd-717b3d2d8764}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxXmlSettings">
+      <UniqueIdentifier>{836362c4-1565-4203-8a6a-49017c29842b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxXmlSettings\libs">
+      <UniqueIdentifier>{afa425e3-0cdb-4e1f-a204-7fd74d4c43a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxXmlSettings\src">
+      <UniqueIdentifier>{4a8e9d2e-28ca-4ed1-9cbf-ea0f07bdc01e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -280,6 +338,43 @@
     </ClInclude>
     <ClInclude Include="src\matrix.h">
       <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gui\GuiButton.h">
+      <Filter>src\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gui\GuiConfigurator.h">
+      <Filter>src\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gui\GuiImage.h">
+      <Filter>src\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gui\GuiNode.h">
+      <Filter>src\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gui\GuiSheet.h">
+      <Filter>src\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gui\GuiVideo.h">
+      <Filter>src\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\subob\Observer.h">
+      <Filter>src\subob</Filter>
+    </ClInclude>
+    <ClInclude Include="src\subob\Subject.h">
+      <Filter>src\subob</Filter>
+    </ClInclude>
+    <ClInclude Include="src\subob\SubObMediator.h">
+      <Filter>src\subob</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxXmlSettings\libs\tinyxml.h">
+      <Filter>addons\ofxXmlSettings\libs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxXmlSettings\src\ofxXmlSettings.h">
+      <Filter>addons\ofxXmlSettings\src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SceneManager.h" />
+    <ClInclude Include="src\gui\Utils.h">
+      <Filter>src\gui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

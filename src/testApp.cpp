@@ -65,6 +65,14 @@ void testApp::setup(){
 	mySlicer->setup();
 	/////////////////////////end create slicer /////////////////////////////////////////
 
+	//////setup GUI/////////////
+	string guiFile = "sheets.xml";
+	GuiConfigurator::Instance()->addFile(guiFile);
+	GuiConfigurator::Instance()->getTags();
+	GuiConfigurator::Instance()->makeGUI();
+
+	SubObMediator::Instance()->addObserver("button", this);
+
 }
 //--------------------------------------------------------------
 void testApp::update(){
@@ -149,7 +157,7 @@ void testApp::update(){
 
 //--------------------------------------------------------------
 void testApp::draw(){
-	ofBackground(10, 10, 10, 0);
+	ofBackground(255, 255, 255, 0);
 	////////////////////////////////Draw the pieces////////////////////////////////////
 	if(drawCuts1==true){
 		//mySlicer->draw();
@@ -182,12 +190,17 @@ void testApp::draw(){
 	///use openGL do draw elements taht are on the sgCore Scene object
 	drawElements();
 
+	SceneManager::Instance()->draw();
 }
+
 //--------------------------------------------------------------
 void testApp::keyPressed(int key){
 	if(key == 'c') {
 		//cout << "init cut: " << ofGetElapsedTimeMillis() << endl;
 		makeCut = true;
+	}
+	if(key == 's'){
+		ofToggleFullscreen();
 	}
 	if(puzzleExists == true){
 		if(key == 'd') {
@@ -288,12 +301,50 @@ void testApp::mouseDragged(int x, int y, int button){
 }
 //--------------------------------------------------------------
 void testApp::mousePressed(int x, int y, int button){
+	if(ofGetElapsedTimef() - timeOfLastInput > inputDelayTime){
+        updateMouseState("down", x, y, button);
+        timeOfLastInteraction = ofGetElapsedTimef();
+        timeOfLastInput = ofGetElapsedTimef();
+    }
 }
 //--------------------------------------------------------------
 void testApp::mouseReleased(int x, int y, int button){
+	updateMouseState("up", x, y, button);
+    timeOfLastInteraction = ofGetElapsedTimef();
 }
+
+void testApp::updateMouseState(const char * _state, int _x, int _y, int _button){
+    attrs["mouseX"] = ofToString(_x);
+    attrs["mouseY"] = ofToString(_y);
+    attrs["mouseButton"] = ofToString(_button);
+    attrs["mouseState"] = _state;
+    SubObMediator::Instance()->update("mouse-changed",this);
+}
+
 //--------------------------------------------------------------
 void testApp::windowResized(int w, int h){
+}
+
+void testApp::update(string _subName, Subject *_sub){
+	if(_subName == "button"){
+		string msg = _sub->getAttr("message");
+		cout << "got message - " << msg << endl;
+		if(msg == "cut"){
+			makeCut = true;
+		}
+		if(msg == "rotate-right") {//rotate right
+			rotatePHright = true;
+		}
+		if(msg == "rotate-left") {//rotate left
+			rotatePHleft = true;
+		}
+		if(msg == "rotate-up") {//rotate up
+			rotatePVup = true;
+		}
+		if(msg == "rotate-down") {//rotate down
+			rotatePVdown = true;
+		}
+	}
 }
 //--------------------------------------------------------------
 void testApp::gotMessage(ofMessage msg){

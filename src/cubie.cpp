@@ -290,7 +290,7 @@ void cubie::draw(){
 
 }
 //--------------------------------------------------------------
-void cubie::unDraw(){  
+//void cubie::unDraw(){  
 	//sgGetScene()->Clear();
 	//detach from scene
 	//if(objects != NULL){
@@ -322,7 +322,7 @@ void cubie::unDraw(){
 	//}else{
 	//	//cout << "null at undraw" << endl;
 	//}
-}
+//}
 //------------------------------------------------------------------------------------------------------------------------------------------
 void cubie::faceRotate(SG_VECTOR axis, float deg,bool di){
 	//this function is to handle a face rotation for a cubbie
@@ -489,41 +489,6 @@ void cubie::faceRotate(SG_VECTOR axis, float deg,bool di){
 	}
 }
 //-------------------------------------------------------------------------------------------------------------------------------------------
-sgCGroup* cubie::copyObjects(){
-	//make a copy of *objects send outside cubie
-	//so originals dont get messed up, and cubies can draw every time without making a the boolean first
-
-	sgCGroup* aux;
-	//sgCObject **objcts = (sgCObject**)malloc(50*sizeof(sgCObject*));
-	//sgCObject **objcts1 = (sgCObject**)malloc(50*sizeof(sgCObject*));
-	//int objctr = 0;
-
-	//if(objects != NULL){
-	//	const int ChCnt = objects->GetChildrenList()->GetCount();
-	//	sgCObject** allParts = (sgCObject**)malloc(ChCnt*sizeof(sgCObject*));
-	//	objects->BreakGroup(allParts);
-	//	sgCObject::DeleteObject(objects);
-	//	for (int j=0; j < ChCnt; j++){
-	//		//clone each object
-	//		sgCObject *temp = allParts[j];
-	//		//put clone on *[] tomake new group
-	//		objcts[objctr] = temp->Clone();
-	//		objcts1[objctr] = temp->Clone();
-	//		objctr ++;
-	//		sgCObject::DeleteObject(temp);
-	//	}
-	//	free(allParts);
-	//	//put that new group inside aux**[]
-	//	objects = sgCGroup::CreateGroup(objcts,objctr); //so objects[] has the data again, and keeps it for future requests
-	//	aux = sgCGroup::CreateGroup(objcts1,objctr);  
-	//}else{
-	//	return NULL;
-	//}
-	//free(objcts);
-	//free(objcts1);
-	return aux;
-}
-//-------------------------------------------------------------------------------------------------------------------------------------------
 void cubie::setObjects(sgCGroup *objs,int cubieId){
 	//it receives a group, when Puzzle loadsPieces(ySlicer->getPieces())  on main
 	//it takes the input group and breaks it, to put parts on cubie group "objects"
@@ -573,17 +538,14 @@ void cubie::setObjects(sgCGroup *objs,int cubieId){
 //-------------------------------------------------------------------------------------------------------------------------------------------
 void cubie::rotateH(float rad){
 	rotH = rad;
-	//movePuzzle = true;
 }
 //-------------------------------------------------------------------------------------------------------------------------------------------
 void cubie::rotateV(float rad){
 	rotV = rad;
-	//movePuzzle = true;
 }
 //--------------------------------------------------------------
 void cubie::move(SG_VECTOR p){
 	pos = p;
-	//movePuzzle = true;
 }
 //----------------------------------------------------------------
 void cubie::exit(){
@@ -594,4 +556,39 @@ void cubie::exit(){
 		free(objectList);
 		sgCObject::DeleteObject(objects);
 	}
+}
+//-------------------------------------------------------------------------------------------------------------------------------------------
+sgCGroup* cubie::copyObjects(){
+	//make a copy of *objects send outside cubie
+	//so originals dont get messed up, and cubies can draw every time without making a the boolean first
+
+	sgCGroup* aux;
+	//sgCObject **objcts = (sgCObject**)malloc(50*sizeof(sgCObject*));
+	//sgCObject **objcts1 = (sgCObject**)malloc(50*sizeof(sgCObject*));
+	//int objctr = 0;
+
+	//if(objects != NULL){
+	//	const int ChCnt = objects->GetChildrenList()->GetCount();
+	//	sgCObject** allParts = (sgCObject**)malloc(ChCnt*sizeof(sgCObject*));
+	//	objects->BreakGroup(allParts);
+	//	sgCObject::DeleteObject(objects);
+	//	for (int j=0; j < ChCnt; j++){
+	//		//clone each object
+	//		sgCObject *temp = allParts[j];
+	//		//put clone on *[] tomake new group
+	//		objcts[objctr] = temp->Clone();
+	//		objcts1[objctr] = temp->Clone();
+	//		objctr ++;
+	//		sgCObject::DeleteObject(temp);
+	//	}
+	//	free(allParts);
+	//	//put that new group inside aux**[]
+	//	objects = sgCGroup::CreateGroup(objcts,objctr); //so objects[] has the data again, and keeps it for future requests
+	//	aux = sgCGroup::CreateGroup(objcts1,objctr);  
+	//}else{
+	//	return NULL;
+	//}
+	//free(objcts);
+	//free(objcts1);
+	return aux;
 }

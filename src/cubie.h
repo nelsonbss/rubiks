@@ -15,7 +15,7 @@ public:
 	void setup();
 	void update();
 	void draw();
-	void unDraw();
+	//void unDraw();// has legacy of how to detach from scene
 	void exit();
 
 	int id;
@@ -30,7 +30,7 @@ public:
 	bool okDraw;
 
 	void setObjects(sgCGroup *objs,int cubieId);
-	sgCGroup* copyObjects();
+	sgCGroup* copyObjects();   //this is no longer needed
 
 	SG_VECTOR pos;
 	void move(SG_VECTOR p);

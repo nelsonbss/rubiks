@@ -80,15 +80,6 @@ void puzzle::draw(){
 	}
 }
 //--------------------------------------------------------------
-void puzzle::unDraw(){  
-	//puzzle tells every cubie to detach its objects from scene
-	for(int i=0;i<numPieces;i++){
-		if(myCubies[i] != NULL){
-			myCubies[i]->unDraw();
-		}
-	}
-}
-//--------------------------------------------------------------
 int puzzle::giveNumCubies(){
 	//tell how many cubies we have with objects inside
 	int aux=0;

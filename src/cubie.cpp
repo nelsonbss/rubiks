@@ -212,12 +212,12 @@ void cubie::update(){
 		//}
 
 		/////////////////////////////////////////////////////////////////	 
-		SG_VECTOR vrotFaceX ={1,0,0};
+		/*SG_VECTOR vrotFaceX ={1,0,0};
 		SG_VECTOR vrotFaceY ={0,1,0};
 		SG_VECTOR vrotFaceZ ={0,0,1};
 		objectList[j]->InitTempMatrix()->Rotate(pointRotate,vrotFaceX,rotX);
 		objectList[j]->GetTempMatrix()->Rotate(pointRotate,vrotFaceY,rotY);
-		objectList[j]->GetTempMatrix()->Rotate(pointRotate,vrotFaceZ,rotZ);
+		objectList[j]->GetTempMatrix()->Rotate(pointRotate,vrotFaceZ,rotZ);*/
 		/////////////////////////////////////////////////////////////////
 
 		//	/////////////////////////////////////////////////////////////

@@ -1,8 +1,5 @@
 #include "testApp.h"
-#include "myobject3D.h"
-#include "slicer.h"
-#include "cutter.h"
-#include "puzzle.h"
+#include <vector>
 
 ///////////////////////////////////////////
 #include "Painter.h"

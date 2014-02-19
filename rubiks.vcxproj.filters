@@ -76,6 +76,9 @@
     <ClCompile Include="src\ofRender.cpp">
       <Filter>src\OFrender</Filter>
     </ClCompile>
+    <ClCompile Include="src\game.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -289,6 +292,9 @@
     </ClInclude>
     <ClInclude Include="src\ofRender.h">
       <Filter>src\OFrender</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game.h">
+      <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

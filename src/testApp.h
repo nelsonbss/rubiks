@@ -2,10 +2,8 @@
 
 #include "ofMain.h"
 #include "sgCore.h"
-#include "myobject3D.h"
-#include "cutter.h"
-#include "slicer.h"
-#include "puzzle.h"
+#include "game.h"
+#include <vector>
 
 class testApp : public ofBaseApp{
 
@@ -31,13 +29,12 @@ public:
 	////////////////
 
 	////////////////
+	vector<game> myGames;
 	myobject3D *objectDisplayed;
 	cutter *myCutter;
 	slicer *mySlicer;
 	puzzle *myPuzzle;
 	////////////////
-
-	sgCGroup* add;
 
 	bool puzzleExists;
 

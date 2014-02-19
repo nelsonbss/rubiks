@@ -31,6 +31,8 @@ public:
 	void createSlicer();
 	void createPuzzle(SG_VECTOR p);
 
+	void restart();
+
 	void rotatePuzzleH();
 	void rotatePuzzleV();
 

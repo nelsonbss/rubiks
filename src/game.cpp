@@ -38,7 +38,7 @@ void game::setup(){
 	faceRotateCz = false;
 	faceRotateCCz = false;
 
-	createSlicer();
+
 }
 //--------------------------------------------------------------
 void game::update(){
@@ -168,11 +168,9 @@ void game::loadObject (int objID,SG_VECTOR p,SG_VECTOR t){
 			objectDisplayed->loadObject(sgCreateCone(200,1,300.0, 3));
 		}
 		objectDisplayed->setup();
+		createSlicer();
 		step = 1;
 	}
-
-
-
 	////////////////////// from STL file
 	/*const char* nel =  ofToDataPath("cube.stl",false).c_str();
 	objectDisplayed.loadObjectFromFile(nel);*/
@@ -180,7 +178,7 @@ void game::loadObject (int objID,SG_VECTOR p,SG_VECTOR t){
 //--------------------------------------------
 void game::createSlicer(){
 	////////////////////////////////create cutter///////////////////////////////////////
-	myCutter = new cutter(planeThicknes,planeSize,tamCubie,1,0,0,-100); 
+	myCutter = new cutter(planeThicknes,planeSize,tamCubie,1,0,0,-100);							//this -100 if because of torus radious!!! have to fix this!! to adapt to other selected shapes!!
 	myCutter->setup();
 	//////////////////////////////////end create cutter///////////////////////////////////
 
@@ -191,20 +189,39 @@ void game::createSlicer(){
 }
 //---------------------------------------------
 void game::createPuzzle(SG_VECTOR p){
-	////////////////////////////////create puzzle///////////////////////////////////////
-	myPuzzle = new puzzle(p.x,p.y,p.z);
-	myPuzzle->setup();
-	//////////////////////////////end create puzzle////////////////////////////////////
+	if((step == 1) || (step ==2)){
+		////////////////////////////////create puzzle///////////////////////////////////////
+		myPuzzle = new puzzle(p.x,p.y,p.z);
+		myPuzzle->setup();
+		//////////////////////////////end create puzzle////////////////////////////////////
 
-	////BOOLEAN SUBSTRACTION//////////////////////////////////////////////////////////
-	//mySlicer->xSlicing(*mySlicer->myCutter,objectDisplayed->getObject(),1,1);
-	///boolean INTERSECTION///////////////////////////////////////////////////////////
-	mySlicer->intersectCubes(objectDisplayed->getObject()); 
-	//now slicer has all the parts inside sgCGroup ** = pieces[]
-	//////////////////////////////create puzzle////////////////////////////////////////
-	myPuzzle->loadPieces(mySlicer->getPieces());
-	////////////////////////////////end create puzzle//////////////////////////////////
+		////BOOLEAN SUBSTRACTION//////////////////////////////////////////////////////////
+		//mySlicer->xSlicing(*mySlicer->myCutter,objectDisplayed->getObject(),1,1);
+		///boolean INTERSECTION///////////////////////////////////////////////////////////
+		mySlicer->intersectCubes(objectDisplayed->getObject()); 
+		//now slicer has all the parts inside sgCGroup ** = pieces[]
+		//////////////////////////////create puzzle////////////////////////////////////////
+		myPuzzle->loadPieces(mySlicer->getPieces());
+		////////////////////////////////end create puzzle//////////////////////////////////
 
-	updatePuzzle = true;
-	step = 3;
+		updatePuzzle = true;
+		step = 3;
+	}
+}
+//----------------------------------------------
+void game::restart(){
+	//go to step 1, clear puzzle, , clear pieces, clear object
+
+	if(step==3 || step==4){
+		myPuzzle->exit();
+		objectDisplayed->exit();
+		myCutter->exit();
+		mySlicer->exit();
+		step = 0;
+	}else if (step==1 || step==2){
+		objectDisplayed->exit();
+		myCutter->exit();
+		mySlicer->exit();
+		step = 0;
+	}
 }

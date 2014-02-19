@@ -147,8 +147,10 @@ void testApp::keyPressed(int key){
 		myGames[0]->createPuzzle(v);
 	}
 
-
-
+	if(key == 'r'){
+		//tell a game to restart 
+		myGames[0]->restart();
+	}
 
 
 	//if(puzzleExists == true){
@@ -297,6 +299,7 @@ void testApp::exit(){
 	myCutter->exit();
 	mySlicer->exit();
 	}*/
+	myGames[0]->restart();
 	//sgFreeKernel();
 }
 //-----------------------------------------------------------------------------

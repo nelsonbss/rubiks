@@ -15,11 +15,6 @@ game::game(SG_VECTOR p, float w, float h){
 #define planeSize 400
 #define tamCubie 100
 
-#define displayX 500
-#define displayY 400
-#define displayZ 100
-
-
 void game::setup(){
 	step = 0;
 	/////////////////////////////////////////PUZzLE //////////
@@ -159,23 +154,24 @@ void game::draw(){
 }
 //----------------------------------------------------------------
 void game::loadObject (int objID,SG_VECTOR p,SG_VECTOR t){
-	objectDisplayed = new myobject3D(p,t);
-	if(objID == 1){
-		//torus
-		objectDisplayed->loadObject(sgCreateTorus(100,80,50,50));//pos.z is radius, thicknes, meridians
-	}
-	if(objID == 2){
-		//cube
-		objectDisplayed->loadObject(sgCreateBox(300,300,300));
-	}if(objID == 3){
-		//cone
-		objectDisplayed->loadObject(sgCreateCone(200,1,300.0, 3));
+	if(step == 0){
+		objectDisplayed = new myobject3D(p,t);
+		if(objID == 1){
+			//torus
+			objectDisplayed->loadObject(sgCreateTorus(100,80,50,50));//pos.z is radius, thicknes, meridians
+		}
+		if(objID == 2){
+			//cube
+			objectDisplayed->loadObject(sgCreateBox(300,300,300));
+		}if(objID == 3){
+			//cone
+			objectDisplayed->loadObject(sgCreateCone(200,1,300.0, 3));
+		}
+		objectDisplayed->setup();
+		step = 1;
 	}
 
-	step = 1;
-	objectDisplayed->setup(pos);
 
-	
 
 	////////////////////// from STL file
 	/*const char* nel =  ofToDataPath("cube.stl",false).c_str();

@@ -14,7 +14,7 @@ myobject3D::myobject3D(SG_VECTOR p, SG_VECTOR t){
 	deg = 0.0;
 }
 //--------------------------------------------------------------
-void myobject3D::setup(SG_VECTOR pos){
+void myobject3D::setup(){
 	//the real object is never rendered or moved::::it is used to make the boolean intersection
 	//the rendered and animated object is temp
 

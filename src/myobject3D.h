@@ -9,7 +9,7 @@ class myobject3D {
 public:
 	myobject3D (SG_VECTOR pos, SG_VECTOR t);
     
-	void setup(SG_VECTOR pos);
+	void setup();
 	void update();
 	void draw();
 	void exit();

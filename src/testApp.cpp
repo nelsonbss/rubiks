@@ -9,6 +9,9 @@
 #include <math.h>
 #define _USE_MATH_DEFINES
 
+#define displayX 500
+#define displayY 400
+#define displayZ 100
 //--------------------------------------------------------------
 void testApp::setup(){
 	/////////////////////////////initialize sgCore library
@@ -129,7 +132,7 @@ void testApp::keyPressed(int key){
 	//load objects for a game
 	//right now we only have one game, ideal: the master gui will tell a game wich object to load on drag and drop gestures
 	SG_VECTOR objectPos = {0,0,0}; 
-	SG_VECTOR tempPos = {500,400,100};
+	SG_VECTOR tempPos = {displayX,displayY,displayZ};
 	if(key == '1') {
 		myGames[0]->loadObject(1,objectPos,tempPos); //pos.z its the torus radious
 	}

@@ -5,9 +5,10 @@
 #include "Painter.h"
 #include "sgCore.h"
 
-#include <math.h>
 ///////////////////////////////////////////
+#include <math.h>
 #define _USE_MATH_DEFINES
+
 //--------------------------------------------------------------
 void testApp::setup(){
 	/////////////////////////////initialize sgCore library
@@ -38,14 +39,11 @@ void testApp::update(){
 	spotLight.setOrientation( ofVec3f( 0, cos(ofGetElapsedTimef()) * RAD_TO_DEG, 0) );
 	spotLight.setPosition( mouseX, mouseY, 200);
 
-	////////////////////////////////////////////////////////////////////////////////////////
-	///////////////////////////////update games
+	/////////////////////////////////////////////////////update games
 	for(int i = 0; i < myGames.size(); i++){
 		myGames[i]->update();
 	}
-
 }
-
 //--------------------------------------------------------------
 void testApp::draw(){
 	// enable lighting //
@@ -81,6 +79,14 @@ void testApp::draw(){
 	ofDrawBox( 0, 0, 0, 850);
 	ofPopMatrix();*/
 
+	//small test of openFrameworks drawing embeded with sgCore geometry 
+	ofPushMatrix();
+	ofTranslate(300,300);
+	ofSetColor(ofColor(255,0,255));
+	ofCircle(ofPoint(0,0),5);
+	//ofRotate(ofGetElapsedTimef() * .2 * RAD_TO_DEG, 0, 1, 0);
+	ofPopMatrix();
+
 	if(bUseTexture) ofLogoImage.getTextureReference().unbind();
 
 	if (!bPointLight) pointLight.disable();
@@ -94,16 +100,6 @@ void testApp::draw(){
 		myGames[i]->draw();
 	}
 
-
-	
-
-	//small test of openFrameworks drawing embeded with sgCore geometry 
-	ofPushMatrix();
-	ofTranslate(300,300);
-	ofSetColor(ofColor(255,0,255));
-	ofCircle(ofPoint(0,0),5);
-	//ofRotate(ofGetElapsedTimef() * .2 * RAD_TO_DEG, 0, 1, 0);
-	ofPopMatrix();
 
 	//////////////////////////////////////////////////////////////////////////END OF RENDERING////////////////////
 	material.end();
@@ -131,28 +127,26 @@ void testApp::draw(){
 //--------------------------------------------------------------
 void testApp::keyPressed(int key){
 	//load objects for a game
-	 
+	//right now we only have one game, ideal: the master gui will tell a game wich object to load.
 	if(key == '1') {
 		SG_VECTOR v = {500,400,100}; 
-		for(int i = 0; i < myGames.size(); i++){
-			myGames[i]->loadObject(1,v);
-		}
+		myGames[0]->loadObject(1,v);
 	}
 	if(key == '2') {
 		SG_VECTOR v = {500,400,100}; 
-		for(int i = 0; i < myGames.size(); i++){
-			myGames[i]->loadObject(2,v);
-		}
+		myGames[0]->loadObject(2,v);
+	}
+
+	if(key == 'c') {
+		//tell a game to make a cut
+		SG_VECTOR v = {500,400,100};
+		myGames[0]->createPuzzle(v);
 	}
 
 
 
 
-
-
-	//if(key == 'c') {
-	//	makeCut = true;
-	//}
+	
 	//if(puzzleExists == true){
 	//	if(key == 'd') {
 	//		cout << "manualDRAW" << endl;
@@ -290,14 +284,14 @@ void testApp::dragEvent(ofDragInfo dragInfo){
 //--------------------------------------------------------------------------------------------------------------------------------------------------------
 void testApp::exit(){
 	/*if(puzzleExists == true){
-		myPuzzle->exit();
-		objectDisplayed->exit();
-		myCutter->exit();
-		mySlicer->exit();
+	myPuzzle->exit();
+	objectDisplayed->exit();
+	myCutter->exit();
+	mySlicer->exit();
 	}else{
-		objectDisplayed->exit();
-		myCutter->exit();
-		mySlicer->exit();
+	objectDisplayed->exit();
+	myCutter->exit();
+	mySlicer->exit();
 	}*/
 	//sgFreeKernel();
 }

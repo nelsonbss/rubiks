@@ -23,11 +23,7 @@ game::game(SG_VECTOR p, float w, float h){
 void game::setup(){
 	step = 0;
 	/////////////////////////////////////////PUZzLE //////////
-	puzzleExists = false;
 	updatePuzzle = false;
-	makeCut = false;
-	drawCuts = false;
-	drawCuts1 = false;
 	//
 	movePRight = false;
 	movePLeft = false;
@@ -51,68 +47,28 @@ void game::setup(){
 }
 //--------------------------------------------------------------
 void game::update(){
-	///////////////////////////////////////BUILD PUZZLE ////////////////////////////////////
-	if(makeCut==true){
-		////////////////////////////////create puzzle///////////////////////////////////////
-		myPuzzle = new puzzle(displayX,displayY,displayZ);
-		myPuzzle->setup();
-		//////////////////////////////end create puzzle////////////////////////////////////
-
-		////BOOLEAN SUBSTRACTION//////////////////////////////////////////////////////////
-		//mySlicer->xSlicing(*mySlicer->myCutter,objectDisplayed->getObject(),1,1);
-		///boolean INTERSECTION///////////////////////////////////////////////////////////
-		mySlicer->intersectCubes(objectDisplayed->getObject()); 
-		//now slicer has all the parts inside sgCGroup ** = pieces[]
-		//////////////////////////////create puzzle////////////////////////////////////////
-		myPuzzle->loadPieces(mySlicer->getPieces());
-		puzzleExists = true;
-		////////////////////////////////end create puzzle//////////////////////////////////
-		drawCuts1 = true;
-		updatePuzzle = true;
-		makeCut = false;
-		///////////////////////////////////////////////////////////////////////////////////
-	}
-	/////////////////////////////////////BUILD PUZZLE ENDS ////////////////////////////////
-
-
 	////////////////////////////////////////////////////move all puzzle
 	if(movePRight){
-		//myPuzzle->unDraw();
 		myPuzzle->moveRight();
-		drawCuts = true;
 	}else if(movePLeft){
-		//myPuzzle->unDraw();
 		myPuzzle->moveLeft();
-		drawCuts = true;
 	}else if(movePUp){
-		//myPuzzle->unDraw();
 		myPuzzle->moveUp();
-		drawCuts = true;
 	}else if(movePDown){
-		//myPuzzle->unDraw();
 		myPuzzle->moveDown();
-		drawCuts = true;
 	}
 	////////////////////////////////////////////rotate all puzzle
 	if(rotatePHright == true) {//rotate right
-		//myPuzzle->unDraw();
 		myPuzzle->rotateHright();
-		drawCuts = true;
 	}
 	if(rotatePHleft == true) {//rotate left
-		//myPuzzle->unDraw();
 		myPuzzle->rotateHleft();
-		drawCuts = true;
 	}
 	if(rotatePVup == true) {//rotate up
-		//myPuzzle->unDraw();
 		myPuzzle->rotateVup();
-		drawCuts = true;
 	}
 	if(rotatePVdown == true) {//rotate down
-		//myPuzzle->unDraw();
 		myPuzzle->rotateVdown();
-		drawCuts = true;
 	}
 
 	//////////////////////////////////////////////////////////////////
@@ -179,7 +135,7 @@ void game::update(){
 	}
 	///////////////////////////////////////update cubies
 	if(updatePuzzle){
-		if(puzzleExists){
+		if(step == 3){
 			myPuzzle->update();
 			//updatePuzzle = false;
 		}
@@ -188,24 +144,19 @@ void game::update(){
 //--------------------------------------------------------------
 void game::draw(){  
 	////////////////////////////////Draw the pieces////////////////////////////////////
-	if(drawCuts1==true){
-		//made the cuts
-		//mySlicer->draw();
-		drawCuts1 = false;
-		drawCuts = true;
-	}
 
-	if(step == 1){
+
+	if((step == 1) || (step ==2)){
 		objectDisplayed->draw();
 		//myCutter->draw();
 		//myCutter->unDraw();
 	}
 
-	if(drawCuts==true){
-		if(puzzleExists == true){
-			myPuzzle->draw();
-		}
-		//drawCuts = false;
+	if(step == 3){
+		//made the cuts
+		//mySlicer->draw();
+		//drawCuts1 = false;
+		myPuzzle->draw();
 	}
 }
 //----------------------------------------------------------------
@@ -243,4 +194,23 @@ void game::createSlicer(){
 	mySlicer = new slicer(myCutter,pos.x,pos.y);
 	mySlicer->setup();
 	///////////////////////////end create slicer /////////////////////////////////////////
+}
+//---------------------------------------------
+void game::createPuzzle(SG_VECTOR p){
+	////////////////////////////////create puzzle///////////////////////////////////////
+	myPuzzle = new puzzle(p.x,p.y,p.z);
+	myPuzzle->setup();
+	//////////////////////////////end create puzzle////////////////////////////////////
+
+	////BOOLEAN SUBSTRACTION//////////////////////////////////////////////////////////
+	//mySlicer->xSlicing(*mySlicer->myCutter,objectDisplayed->getObject(),1,1);
+	///boolean INTERSECTION///////////////////////////////////////////////////////////
+	mySlicer->intersectCubes(objectDisplayed->getObject()); 
+	//now slicer has all the parts inside sgCGroup ** = pieces[]
+	//////////////////////////////create puzzle////////////////////////////////////////
+	myPuzzle->loadPieces(mySlicer->getPieces());
+	////////////////////////////////end create puzzle//////////////////////////////////
+
+	updatePuzzle = true;
+	step = 3;
 }

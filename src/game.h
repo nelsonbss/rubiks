@@ -35,17 +35,8 @@ public:
 	void rotatePuzzleV();
 
 
-
-
 	////////////////
-
-	bool puzzleExists;
-
 	bool updatePuzzle;
-
-	bool makeCut;
-	bool drawCuts;
-	bool drawCuts1;
 	//move all puzzle: every cubbie moves the same way
 	bool movePRight;
 	bool movePLeft;

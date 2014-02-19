@@ -27,7 +27,7 @@ public:
 	slicer *mySlicer;
 	puzzle *myPuzzle;
 
-	void loadObject (int objID,SG_VECTOR p);
+	void loadObject (int objID,SG_VECTOR p,SG_VECTOR t);
 	void createSlicer();
 	void createPuzzle(SG_VECTOR p);
 

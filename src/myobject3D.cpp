@@ -2,21 +2,26 @@
 #include "sgCore.h"
 #include "ofRender.h"
 
-myobject3D::myobject3D(SG_VECTOR p){
+myobject3D::myobject3D(SG_VECTOR p, SG_VECTOR t){
 	pos.x = p.x;
 	pos.y = p.y;
 	pos.z = p.z;
+
+	tempPos.x = t.x;
+	tempPos.y = t.y;
+	tempPos.z = t.z;
+
 	deg = 0.0;
 }
 //--------------------------------------------------------------
-void myobject3D::setup(){
+void myobject3D::setup(SG_VECTOR pos){
 	//the real object is never rendered or moved::::it is used to make the boolean intersection
 	//the rendered and animated object is temp
-	temp = (sgC3DObject *) object->Clone();
-	deg = 0.0;
 
-	SG_VECTOR transP = {0,0,0};
-	object->InitTempMatrix()->Translate(transP);
+	temp = (sgC3DObject *) object->Clone();
+
+	SG_VECTOR transP = {pos.x,pos.y,pos.z};
+	object->InitTempMatrix()->Translate(transP);//this translates the object to be cut!!
 	object->ApplyTempMatrix();  
 	object->DestroyTempMatrix();
 
@@ -35,11 +40,12 @@ void myobject3D::setup(){
 }
 //--------------------------------------------------------------
 void myobject3D::update(){
+
 	SG_POINT rotP = {0,0,0};
 	SG_VECTOR rotV = {0,1,0};
 	deg += 0.01;
 	temp->InitTempMatrix()->Rotate(rotP,rotV,deg);
-	SG_VECTOR transP = {pos.x,pos.y,pos.z};
+	SG_VECTOR transP = {tempPos.x,tempPos.y,tempPos.z};
 	temp->GetTempMatrix()->Translate(transP);
 	temp->ApplyTempMatrix();  
 

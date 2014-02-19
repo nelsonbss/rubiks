@@ -133,6 +133,7 @@ void game::update(){
 		//if there is an object selected
 		objectDisplayed->update(); //rotates the selected object...just for show
 	}
+
 	///////////////////////////////////////update cubies
 	if(updatePuzzle){
 		if(step == 3){
@@ -144,14 +145,11 @@ void game::update(){
 //--------------------------------------------------------------
 void game::draw(){  
 	////////////////////////////////Draw the pieces////////////////////////////////////
-
-
 	if((step == 1) || (step ==2)){
 		objectDisplayed->draw();
 		//myCutter->draw();
 		//myCutter->unDraw();
 	}
-
 	if(step == 3){
 		//made the cuts
 		//mySlicer->draw();
@@ -160,12 +158,11 @@ void game::draw(){
 	}
 }
 //----------------------------------------------------------------
-void game::loadObject (int objID,SG_VECTOR p){
-	SG_VECTOR pos = {p.x,p.y,p.z};
-	objectDisplayed = new myobject3D(pos);
+void game::loadObject (int objID,SG_VECTOR p,SG_VECTOR t){
+	objectDisplayed = new myobject3D(p,t);
 	if(objID == 1){
 		//torus
-		objectDisplayed->loadObject(sgCreateTorus(pos.z,80,50,50));
+		objectDisplayed->loadObject(sgCreateTorus(100,80,50,50));//pos.z is radius, thicknes, meridians
 	}
 	if(objID == 2){
 		//cube
@@ -175,9 +172,10 @@ void game::loadObject (int objID,SG_VECTOR p){
 		objectDisplayed->loadObject(sgCreateCone(200,1,300.0, 3));
 	}
 
-	objectDisplayed->setup();
-
 	step = 1;
+	objectDisplayed->setup(pos);
+
+	
 
 	////////////////////// from STL file
 	/*const char* nel =  ofToDataPath("cube.stl",false).c_str();
@@ -186,7 +184,7 @@ void game::loadObject (int objID,SG_VECTOR p){
 //--------------------------------------------
 void game::createSlicer(){
 	////////////////////////////////create cutter///////////////////////////////////////
-	myCutter = new cutter(planeThicknes,planeSize,tamCubie,1,0,0,-pos.z); 
+	myCutter = new cutter(planeThicknes,planeSize,tamCubie,1,0,0,-100); 
 	myCutter->setup();
 	//////////////////////////////////end create cutter///////////////////////////////////
 

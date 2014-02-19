@@ -7,9 +7,9 @@
 class myobject3D {
 	
 public:
-	myobject3D (SG_VECTOR pos);
+	myobject3D (SG_VECTOR pos, SG_VECTOR t);
     
-	void setup();
+	void setup(SG_VECTOR pos);
 	void update();
 	void draw();
 	void exit();
@@ -25,6 +25,7 @@ public:
 	ofVbo myVbo;
 
 	SG_VECTOR pos;
+	SG_VECTOR tempPos;
 	float deg;
 
 	string name; // may be usefull to call by first name

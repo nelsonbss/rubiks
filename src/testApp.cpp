@@ -127,14 +127,15 @@ void testApp::draw(){
 //--------------------------------------------------------------
 void testApp::keyPressed(int key){
 	//load objects for a game
-	//right now we only have one game, ideal: the master gui will tell a game wich object to load.
+	//right now we only have one game, ideal: the master gui will tell a game wich object to load on drag and drop gestures
+	SG_VECTOR objectPos = {0,0,0}; 
+	SG_VECTOR tempPos = {500,400,100};
 	if(key == '1') {
-		SG_VECTOR v = {500,400,100}; 
-		myGames[0]->loadObject(1,v);
+		myGames[0]->loadObject(1,objectPos,tempPos); //pos.z its the torus radious
 	}
 	if(key == '2') {
 		SG_VECTOR v = {500,400,100}; 
-		myGames[0]->loadObject(2,v);
+		myGames[0]->loadObject(2,objectPos,tempPos);
 	}
 
 	if(key == 'c') {
@@ -146,7 +147,7 @@ void testApp::keyPressed(int key){
 
 
 
-	
+
 	//if(puzzleExists == true){
 	//	if(key == 'd') {
 	//		cout << "manualDRAW" << endl;

@@ -142,7 +142,10 @@ void testApp::keyPressed(int key){
 		SG_VECTOR v = {500,400,100}; 
 		myGames[0]->loadObject(2,objectPos,tempPos);
 	}
-
+	if(key == '3') {
+		SG_VECTOR v = {500,400,100}; 
+		myGames[0]->loadObject(3,objectPos,tempPos);
+	}
 	////////////////////////////////////////////////////////////////
 	//////////make a cut//NEXT button action on step 2 of experience .. now its step 1..because we dont have armature yet
 	if(key == 'c') {
@@ -156,7 +159,32 @@ void testApp::keyPressed(int key){
 		//tell a game to restart 
 		myGames[0]->restart();
 	}
-
+	//////////////////////////////move all puzzle
+	if(key == 'l') {
+		myGames[0]->movePRightF(true);
+	}
+	if(key == 'j') {
+		myGames[0]->movePLeftF(true);
+	}
+	if(key == 'i') {
+		myGames[0]->movePUpF(true);
+	}
+	if(key == 'k') {
+		myGames[0]->movePDownF(true);
+	}
+	/////////////////////////////rotate all puzzle
+	if(key == 'm') {//rotate right
+		myGames[0]->rotatePHrightF(true);
+	}
+	if(key == 'n') {//rotate left
+		myGames[0]->rotatePHleftF(true);
+	}
+	if(key == 'y') {//rotate up
+		myGames[0]->rotatePVupF(true);
+	}
+	if(key == 'h') {//rotate down
+		myGames[0]->rotatePVdownF(true);
+	}
 
 	//if(puzzleExists == true){
 	//	if(key == 'd') {
@@ -168,38 +196,6 @@ void testApp::keyPressed(int key){
 	//	}
 	//	if(key == 'g') {
 	//		cout << "nu pieces " << mySlicer->countPieces() << endl;
-	//	}
-	//	//////////////////////////////move all puzzle
-	//	if(key == 'l') {
-	//		movePRight = true;
-	//	}
-	//	if(key == 'j') {
-	//		movePLeft= true;
-	//	}
-	//	if(key == 'i') {
-	//		movePUp= true;
-	//	}
-	//	if(key == 'k') {
-	//		movePDown= true;
-	//	}
-	//	/////////////////////////////rotate all puzzle
-	//	if(key == 'm') {//rotate right
-	//		rotatePHright = true;
-	//	}
-	//	if(key == 'n') {//rotate left
-	//		rotatePHleft = true;
-	//	}
-	//	if(key == 'y') {//rotate up
-	//		rotatePVup = true;
-	//	}
-	//	if(key == 'h') {//rotate down
-	//		rotatePVdown = true;
-	//	}
-	//	////////////erase object ///////////
-	//	if(key == 'u') {
-	//		//drawCuts =false;
-	//		//myPuzzle->unDraw();
-	//		//myPuzzle->unDo();
 	//	}
 
 	//	/////////////////////FACE ROTATIONS!!!//////////////////////////////
@@ -242,34 +238,32 @@ void testApp::keyPressed(int key){
 }
 //--------------------------------------------------------------
 void testApp::keyReleased(int key){
-	//if(puzzleExists == true){
-	//	///////////////////////////move all puzzle
-	//	if(key == 'l') {
-	//		movePRight = false;
-	//	}
-	//	if(key == 'j') {
-	//		movePLeft = false;
-	//	}
-	//	if(key == 'i') {
-	//		movePUp = false;
-	//	}
-	//	if(key == 'k') {
-	//		movePDown = false;
-	//	}
-	//	/////////////////////////////rotate all puzzle
-	//	if(key == 'm') {
-	//		rotatePHright = false;
-	//	}
-	//	if(key == 'n') {
-	//		rotatePHleft = false;
-	//	}
-	//	if(key == 'y') {
-	//		rotatePVup = false;
-	//	}
-	//	if(key == 'h') {
-	//		rotatePVdown = false;
-	//	}
-	//}
+	/////////////////////////////move all puzzle
+	if(key == 'l') {
+		myGames[0]->movePRightF(false);
+	}
+	if(key == 'j') {
+		myGames[0]->movePLeftF(false);
+	}
+	if(key == 'i') {
+		myGames[0]->movePUpF(false);
+	}
+	if(key == 'k') {
+		myGames[0]->movePDownF(false);
+	}
+	/////////////////////////////rotate all puzzle
+	if(key == 'm') {//rotate right
+		myGames[0]->rotatePHrightF(false);
+	}
+	if(key == 'n') {//rotate left
+		myGames[0]->rotatePHleftF(false);
+	}
+	if(key == 'y') {//rotate up
+		myGames[0]->rotatePVupF(false);
+	}
+	if(key == 'h') {//rotate down
+		myGames[0]->rotatePVdownF(false);
+	}
 }
 //--------------------------------------------------------------
 void testApp::mouseMoved(int x, int y ){

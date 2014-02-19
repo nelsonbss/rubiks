@@ -36,19 +36,31 @@ public:
 	void rotatePuzzleH();
 	void rotatePuzzleV();
 
-
-	////////////////
-	bool updatePuzzle;
-	//move all puzzle: every cubbie moves the same way
+	////////////move all puzzle: every cubbie moves the same way
+	void movePRightF(bool active);
+	void movePLeftF(bool active);
+	void movePUpF(bool active);
+	void movePDownF(bool active);
+	//
 	bool movePRight;
 	bool movePLeft;
 	bool movePUp;
 	bool movePDown;
+	/////////////////////////////rotate all puzzle
+	void rotatePHrightF(bool active);
+	void rotatePHleftF(bool active);
+	void rotatePVupF(bool active);
+	void rotatePVdownF(bool active);
 	//rotate all puzzlw: every cubbie rotates the same way
 	bool rotatePHright;
 	bool rotatePHleft;
 	bool rotatePVup;
 	bool rotatePVdown;
+
+	////////////////
+	bool updatePuzzle;
+
+	
 
 	//face rotations
 	float tempDeg;

@@ -42,28 +42,30 @@ void game::setup(){
 }
 //--------------------------------------------------------------
 void game::update(){
-	////////////////////////////////////////////////////move all puzzle
-	if(movePRight){
-		myPuzzle->moveRight();
-	}else if(movePLeft){
-		myPuzzle->moveLeft();
-	}else if(movePUp){
-		myPuzzle->moveUp();
-	}else if(movePDown){
-		myPuzzle->moveDown();
-	}
-	////////////////////////////////////////////rotate all puzzle
-	if(rotatePHright == true) {//rotate right
-		myPuzzle->rotateHright();
-	}
-	if(rotatePHleft == true) {//rotate left
-		myPuzzle->rotateHleft();
-	}
-	if(rotatePVup == true) {//rotate up
-		myPuzzle->rotateVup();
-	}
-	if(rotatePVdown == true) {//rotate down
-		myPuzzle->rotateVdown();
+	if(step==3){
+		////////////////////////////////////////////////////move all puzzle
+		if(movePRight){
+			myPuzzle->moveRight();
+		}else if(movePLeft){
+			myPuzzle->moveLeft();
+		}else if(movePUp){
+			myPuzzle->moveUp();
+		}else if(movePDown){
+			myPuzzle->moveDown();
+		}
+		////////////////////////////////////////////rotate all puzzle
+		if(rotatePHright == true) {//rotate right
+			myPuzzle->rotateHright();
+		}
+		if(rotatePHleft == true) {//rotate left
+			myPuzzle->rotateHleft();
+		}
+		if(rotatePVup == true) {//rotate up
+			myPuzzle->rotateVup();
+		}
+		if(rotatePVdown == true) {//rotate down
+			myPuzzle->rotateVdown();
+		}
 	}
 
 	//////////////////////////////////////////////////////////////////
@@ -79,7 +81,6 @@ void game::update(){
 		//cout << tempDeg << endl;
 	}
 	if(faceRotateCCx == true) {//
-
 		//myPuzzle->faceRotate(point,axis,tempDeg,false);
 		myPuzzle->rotateByIDandAxis(idcubie,axis,false);
 		//drawCuts = true;
@@ -152,6 +153,33 @@ void game::draw(){
 		myPuzzle->draw();
 	}
 }
+//----------------------------------------------------------------
+void game::movePRightF(bool active){
+	movePRight = active;
+}
+void game::movePLeftF(bool active){
+	movePLeft= active;
+}
+void game::movePUpF(bool active){
+	movePUp= active;
+}
+void game::movePDownF(bool active){
+	movePDown= active;
+}
+//---------------------------------------------------------------
+void game::rotatePHrightF(bool active){
+	rotatePHright = active;
+}
+void game::rotatePHleftF(bool active){
+	rotatePHleft = active;
+}
+void game::rotatePVupF(bool active){
+	rotatePVup = active;
+}
+void game::rotatePVdownF(bool active){
+	rotatePVdown = active;
+}
+
 //----------------------------------------------------------------
 void game::loadObject (int objID,SG_VECTOR p,SG_VECTOR t){
 	if(step == 0 || step==1){

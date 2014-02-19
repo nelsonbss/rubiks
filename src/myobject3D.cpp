@@ -13,7 +13,7 @@ void myobject3D::setup(){
 	//the real object is never rendered or moved::::it is used to make the boolean intersection
 	//the rendered and animated object is temp
 	temp = (sgC3DObject *) object->Clone();
-
+	deg = 0.0;
 
 	SG_VECTOR transP = {0,0,0};
 	object->InitTempMatrix()->Translate(transP);

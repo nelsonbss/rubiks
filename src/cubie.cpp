@@ -324,7 +324,7 @@ void cubie::draw(){
 	//}
 //}
 //------------------------------------------------------------------------------------------------------------------------------------------
-void cubie::faceRotate(SG_VECTOR axis, float deg,bool di){
+void cubie::faceRotate(SG_VECTOR axis,bool di){
 	//this function is to handle a face rotation for a cubbie
 	//its invoked on a group of cubies determined by the puzzle..??(stil lneeds to be determined)
 	//use this cubies objectList to draw elements without ever loosing them on groupBreaking

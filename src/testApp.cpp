@@ -1,80 +1,35 @@
 #include "testApp.h"
 #include <vector>
-
+#include "game.h"
 ///////////////////////////////////////////
 #include "Painter.h"
 #include "sgCore.h"
 
 #include <math.h>
 ///////////////////////////////////////////
-#define planeThicknes 0.001
-#define planeSize 400
-#define tamCubie 100
-
-#define displayX 500
-#define displayY 400
-#define displayZ 100
-
 #define _USE_MATH_DEFINES
 //--------------------------------------------------------------
 void testApp::setup(){
-	initOFRender();
-	/////////////////////////////////////////PUZzLE //////////
-	puzzleExists = false;
-	updatePuzzle = false;
-	makeCut = false;
-	drawCuts = false;
-	drawCuts1 = false;
-	draw3dObject = true;
-	//
-	movePRight = false;
-	movePLeft = false;
-	movePUp = false;
-	movePDown = false;
-	//
-	rotatePHright = false;
-	rotatePHleft = false;
-	rotatePVup = false;
-	rotatePVdown = false;
-	//
-	tempDeg = 0.0;
-	deg = 0.0;
-	faceRotateC = false;
-	faceRotateCC = false;
-	///////////////////////////////////////////////////initialize sgCore library
+	/////////////////////////////initialize sgCore library
 	sgInitKernel();  
 	//initScene();//this function was from openGL initial drawing
-	//sgC3DObject::AutoTriangulate(false, SG_DELAUNAY_TRIANGULATION);
 
-	//////////////////////////////////////////////////////////////////////////////////
-	///////////////////////////3D OBJECT LOADING//////////////////////////////////////
-	////////////////////// create primitive torus
-	SG_VECTOR pos = {displayX,displayY,displayZ};
-	objectDisplayed = new myobject3D(pos);
-	objectDisplayed->loadObject(sgCreateTorus(pos.z,80,50,50));
+	/////////////////////////////initialize openFrameworks rendering
+	initOFRender();
 
-	//objectDisplayed->loadObject(sgCreateCone(200,1,300.0, 3));
-	//objectDisplayed->loadObject(sgCreateBox(300,300,300));
-	////////////////////// from STL file
-	/*const char* nel =  ofToDataPath("cube.stl",false).c_str();
-	objectDisplayed.loadObjectFromFile(nel);*/
-	objectDisplayed->setup();
-	////////////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////create games
+	//one game for now
+	SG_VECTOR p = {0,0,0};
+	game *tempGame = new game(p, 1024, 768);
+	myGames.push_back(tempGame);
 
-	////////////////////////////////create cutter///////////////////////////////////////
-	myCutter = new cutter(planeThicknes,planeSize,tamCubie,1,0,0,-displayZ); //to make a plane based cutter
-	myCutter->setup();
-	//////////////////////////////////end create cutter///////////////////////////////////
-
-	//////////////////////////////////create slicer///////////////////////////////////////
-	mySlicer = new slicer(myCutter,displayX,displayY);
-	mySlicer->setup();
-	///////////////////////////end create slicer /////////////////////////////////////////
-
+	///////////////////////////////setup games
+	for(int i = 0; i < myGames.size(); i++){
+		myGames[i]->setup();
+	}
 }
 //--------------------------------------------------------------
 void testApp::update(){
-
 	//////////////////////////////open frameworks lights /////////////////////////////////
 	pointLight.setPosition(cos(ofGetElapsedTimef()*.6f) * radius * 2 + center.x, 
 		sin(ofGetElapsedTimef()*.8f) * radius * 2 + center.y, 
@@ -84,362 +39,232 @@ void testApp::update(){
 	spotLight.setPosition( mouseX, mouseY, 200);
 
 	////////////////////////////////////////////////////////////////////////////////////////
-	///////////////////////////////////////BUILD PUZZLE ////////////////////////////////////
-	if(makeCut==true){
-		////////////////////////////////create puzzle///////////////////////////////////////
-		myPuzzle = new puzzle(displayX,displayY,displayZ);
-		myPuzzle->setup();
-		//////////////////////////////end create puzzle////////////////////////////////////
-
-		////BOOLEAN SUBSTRACTION//////////////////////////////////////////////////////////
-		//mySlicer->xSlicing(*mySlicer->myCutter,objectDisplayed->getObject(),1,1);
-		///boolean INTERSECTION///////////////////////////////////////////////////////////
-		mySlicer->intersectCubes(objectDisplayed->getObject()); 
-		//now slicer has all the parts inside sgCGroup ** = pieces[]
-		//////////////////////////////create puzzle////////////////////////////////////////
-		myPuzzle->loadPieces(mySlicer->getPieces());
-		puzzleExists = true;
-		////////////////////////////////end create puzzle//////////////////////////////////
-		drawCuts1 = true;
-		updatePuzzle = true;
-		makeCut = false;
-		///////////////////////////////////////////////////////////////////////////////////
-	}
-	/////////////////////////////////////BUILD PUZZLE ENDS ////////////////////////////////
-	///////////////////////////////////////////////////////////////////////////////////////
-
-
-	////////////////////////////////////////////////////move all puzzle
-	if(movePRight){
-		//myPuzzle->unDraw();
-		myPuzzle->moveRight();
-		drawCuts = true;
-	}else if(movePLeft){
-		//myPuzzle->unDraw();
-		myPuzzle->moveLeft();
-		drawCuts = true;
-	}else if(movePUp){
-		//myPuzzle->unDraw();
-		myPuzzle->moveUp();
-		drawCuts = true;
-	}else if(movePDown){
-		//myPuzzle->unDraw();
-		myPuzzle->moveDown();
-		drawCuts = true;
-	}
-	////////////////////////////////////////////rotate all puzzle
-	if(rotatePHright == true) {//rotate right
-		//myPuzzle->unDraw();
-		myPuzzle->rotateHright();
-		drawCuts = true;
-	}
-	if(rotatePHleft == true) {//rotate left
-		//myPuzzle->unDraw();
-		myPuzzle->rotateHleft();
-		drawCuts = true;
-	}
-	if(rotatePVup == true) {//rotate up
-		//myPuzzle->unDraw();
-		myPuzzle->rotateVup();
-		drawCuts = true;
-	}
-	if(rotatePVdown == true) {//rotate down
-		//myPuzzle->unDraw();
-		myPuzzle->rotateVdown();
-		drawCuts = true;
+	///////////////////////////////update games
+	for(int i = 0; i < myGames.size(); i++){
+		myGames[i]->update();
 	}
 
-	//////////////////////////////////////////////////////////////////
-	//////////////////////////////////////////////face rotations
-	SG_POINT point = {0,0,0};
-	SG_VECTOR axis = {1,0,0};
-	int idcubie = 11;
-	tempDeg =0;
-	if(faceRotateC == true) {//c
-		//myPuzzle->faceRotate(point, axis, tempDeg,true);
-		myPuzzle->rotateByIDandAxis(idcubie,axis,true,tempDeg);
-		//drawCuts = true;
-		faceRotateC = false;
-		//cout << tempDeg << endl;
-	}
-	if(faceRotateCC == true) {//
-		
-		//myPuzzle->faceRotate(point,axis,tempDeg,false);
-		myPuzzle->rotateByIDandAxis(idcubie,axis,false,tempDeg);
-		//drawCuts = true;
-		faceRotateCC = false;
-		//drawCuts = true;
-	}
-
-	SG_VECTOR axisy = {0,1,0};
-	if(faceRotateCy == true) {//c
-		//myPuzzle->unDraw();
-		//myPuzzle->faceRotate(point, axis, tempDeg,true);
-		myPuzzle->rotateByIDandAxis(idcubie,axisy,true,tempDeg);
-		//drawCuts = true;
-		faceRotateCy = false;
-		//cout << tempDeg << endl;
-	}
-	if(faceRotateCCy == true) {//
-		//myPuzzle->unDraw();
-		//myPuzzle->faceRotate(point,axis,tempDeg,false);
-		myPuzzle->rotateByIDandAxis(idcubie,axisy,false,tempDeg);
-		//drawCuts = true;
-		faceRotateCCy = false;
-		//cout << tempDeg << endl;
-	}
-
-	SG_VECTOR axisz = {0,0,1};
-	if(faceRotateCz == true) {//c
-		//myPuzzle->unDraw();
-		//myPuzzle->faceRotate(point, axis, tempDeg,true);
-		myPuzzle->rotateByIDandAxis(idcubie,axisz,true,tempDeg);
-		//drawCuts = true;
-		faceRotateCz = false;
-		//cout << tempDeg << endl;
-	}
-	if(faceRotateCCz == true) {//
-		//myPuzzle->unDraw();
-		//myPuzzle->faceRotate(point,axis,tempDeg,false);
-		myPuzzle->rotateByIDandAxis(idcubie,axisz,false,tempDeg);
-		//drawCuts = true;
-		faceRotateCCz = false;
-		//cout << tempDeg << endl;
-	}
-
-
-	///////////////////////////////////////////////////////////////////////update objects OF
-	if(draw3dObject){
-		objectDisplayed->update(); //rotates the selected object...just for show
-	}
-	///////////////////////////////////////update cubies
-	if(updatePuzzle){
-		if(puzzleExists){
-			myPuzzle->update();
-			//updatePuzzle = false;
-		}
-	}
 }
 
 //--------------------------------------------------------------
 void testApp::draw(){
 	// enable lighting //
-    ofEnableLighting();
-    // enable the material, so that it applies to all 3D objects before material.end() call //
+	ofEnableLighting();
+	// enable the material, so that it applies to all 3D objects before material.end() call //
 	material.begin();
-    // activate the lights //
+	// activate the lights //
 	if (bPointLight) pointLight.enable();
 	if (bSpotLight) spotLight.enable();
 	if (bDirLight) directionalLight.enable();
-    
-    // grab the texture reference and bind it //
-    // this will apply the texture to all drawing (vertex) calls before unbind() //
-    if(bUseTexture) ofLogoImage.getTextureReference().bind();
-    
+
+	// grab the texture reference and bind it //
+	// this will apply the texture to all drawing (vertex) calls before unbind() //
+	if(bUseTexture) ofLogoImage.getTextureReference().bind();
+
 	ofSetColor(255, 255, 255, 255);
-    /*ofPushMatrix();
-    ofTranslate(center.x, center.y, center.z-300);
-    ofRotate(ofGetElapsedTimef() * .8 * RAD_TO_DEG, 0, 1, 0);
+	/*ofPushMatrix();
+	ofTranslate(center.x, center.y, center.z-300);
+	ofRotate(ofGetElapsedTimef() * .8 * RAD_TO_DEG, 0, 1, 0);
 	ofDrawSphere( 0,0,0, radius);
-    ofPopMatrix();
-	
+	ofPopMatrix();
+
 	ofPushMatrix();
 	ofTranslate(300, 300, cos(ofGetElapsedTimef()*1.4) * 300.f);
 	ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 1, 0, 0);
 	ofRotate(ofGetElapsedTimef()*.8 * RAD_TO_DEG, 0, 1, 0);
 	ofDrawBox(0, 0, 0, 60);
 	ofPopMatrix();
-	
+
 	ofPushMatrix();
 	ofTranslate(center.x, center.y, -900);
 	ofRotate(ofGetElapsedTimef() * .2 * RAD_TO_DEG, 0, 1, 0);
 	ofDrawBox( 0, 0, 0, 850);
 	ofPopMatrix();*/
-    
-    if(bUseTexture) ofLogoImage.getTextureReference().unbind();
-	
+
+	if(bUseTexture) ofLogoImage.getTextureReference().unbind();
+
 	if (!bPointLight) pointLight.disable();
 	if (!bSpotLight) spotLight.disable();
 	if (!bDirLight) directionalLight.disable();
-	
-   
+
+
 	////////////////////////////////////////////////////////////////////////////PUZZLE !!!!//////////////////////////////////////
-	////////////////////////////////Draw the pieces////////////////////////////////////
-	if(drawCuts1==true){
-		//made the cuts
-		//mySlicer->draw();
-		drawCuts1 = false;
-		draw3dObject = false;
-		drawCuts = true;
+	///////////////////////////////draw games
+	for(int i = 0; i < myGames.size(); i++){
+		myGames[i]->draw();
 	}
 
-	if(draw3dObject){
-		objectDisplayed->draw();
-		//myCutter->draw();
-	}else{
-		//objectDisplayed->unDraw();//now its not doing anything
-		//myCutter->unDraw();
-	}
 
-	if(drawCuts==true){
-		if(puzzleExists == true){
-			myPuzzle->draw();
-		}
-		//drawCuts = false;
-	}
+	
 
-	//small test of openFrameworks simple drawing embeded with sgCore geometry 
+	//small test of openFrameworks drawing embeded with sgCore geometry 
 	ofPushMatrix();
-		ofTranslate(300,300);
-		ofSetColor(ofColor(255,0,255));
-		ofCircle(ofPoint(0,0),5);
-		//ofRotate(ofGetElapsedTimef() * .2 * RAD_TO_DEG, 0, 1, 0);
+	ofTranslate(300,300);
+	ofSetColor(ofColor(255,0,255));
+	ofCircle(ofPoint(0,0),5);
+	//ofRotate(ofGetElapsedTimef() * .2 * RAD_TO_DEG, 0, 1, 0);
 	ofPopMatrix();
 
-	///use openGL do draw elements taht are on the sgCore Scene object
-	//drawElements();
-
 	//////////////////////////////////////////////////////////////////////////END OF RENDERING////////////////////
-	 material.end();
+	material.end();
 	// turn off lighting //
-    ofDisableLighting();
-    
+	ofDisableLighting();
+
 	ofSetColor( pointLight.getDiffuseColor() );
 	if(bPointLight) pointLight.draw();
-    
-    ofSetColor(255, 255, 255);
+
+	ofSetColor(255, 255, 255);
 	ofSetColor( spotLight.getDiffuseColor() );
 	if(bSpotLight) spotLight.draw();
-	
+
 	ofSetColor(255, 255, 255);
 	/*ofDrawBitmapString("Point Light On (1) : "+ofToString(bPointLight) +"\n"+
-					   "Spot Light On (2) : "+ofToString(bSpotLight) +"\n"+
-					   "Directional Light On (3) : "+ofToString(bDirLight)+"\n"+
-					   "Shiny Objects On (s) : "+ofToString(bShiny)+"\n"+
-                       "Spot Light Cutoff (up/down) : "+ofToString(spotLight.getSpotlightCutOff(),0)+"\n"+
-                       "Spot Light Concentration (right/left) : " + ofToString(spotLight.getSpotConcentration(),0)+"\n"+
-                       "Smooth Lighting enabled (x) : "+ofToString(bSmoothLighting,0)+"\n"+
-                       "Textured (t) : "+ofToString(bUseTexture,0),
-					   20, 20);*/
+	"Spot Light On (2) : "+ofToString(bSpotLight) +"\n"+
+	"Directional Light On (3) : "+ofToString(bDirLight)+"\n"+
+	"Shiny Objects On (s) : "+ofToString(bShiny)+"\n"+
+	"Spot Light Cutoff (up/down) : "+ofToString(spotLight.getSpotlightCutOff(),0)+"\n"+
+	"Spot Light Concentration (right/left) : " + ofToString(spotLight.getSpotConcentration(),0)+"\n"+
+	"Smooth Lighting enabled (x) : "+ofToString(bSmoothLighting,0)+"\n"+
+	"Textured (t) : "+ofToString(bUseTexture,0),
+	20, 20);*/
 }
 //--------------------------------------------------------------
 void testApp::keyPressed(int key){
-	if(key == 'c') {
-		//cout << "init cut: " << ofGetElapsedTimeMillis() << endl;
-		makeCut = true;
-	}
-	if(puzzleExists == true){
-		if(key == 'd') {
-			cout << "manualDRAW" << endl;
-			drawCuts = true;
-		}
-		if(key == 'f') {
-			cout << "nu cubies " << myPuzzle->giveNumCubies() << endl;
-		}
-		if(key == 'g') {
-			cout << "nu pieces " << mySlicer->countPieces() << endl;
-		}
-		//////////////////////////////move all puzzle
-		if(key == 'l') {
-			movePRight = true;
-		}
-		if(key == 'j') {
-			movePLeft= true;
-		}
-		if(key == 'i') {
-			movePUp= true;
-		}
-		if(key == 'k') {
-			movePDown= true;
-		}
-		/////////////////////////////rotate all puzzle
-		if(key == 'm') {//rotate right
-			rotatePHright = true;
-		}
-		if(key == 'n') {//rotate left
-			rotatePHleft = true;
-		}
-		if(key == 'y') {//rotate up
-			rotatePVup = true;
-		}
-		if(key == 'h') {//rotate down
-			rotatePVdown = true;
-		}
-		////////////erase object ///////////
-		if(key == 'u') {
-			//drawCuts =false;
-			//myPuzzle->unDraw();
-			//myPuzzle->unDo();
-		}
-
-		/////////////////////FACE ROTATIONS!!!//////////////////////////////
-		//rotation point: 3D-center of cubie 7 (8 in the original numbering)
-
-		///x axis
-		if(key == 'q') {
-			ct1 = ofGetElapsedTimeMillis();
-			//tempDeg = 0.0;
-			randcubie = rand()%26;
-			faceRotateC = true; //clockwise
-		}if(key == 'a') {
-			//tempDeg = 0.0;
-			ct1 = ofGetElapsedTimeMillis();
-			faceRotateCC = true; //counter clockwise
-		}
-		//y axis
-		if(key == 'w') {
-			ct1 = ofGetElapsedTimeMillis();
-			//tempDeg = 0.0;
-			randcubie = rand()%26;
-			faceRotateCy = true; //clockwise
-		}if(key == 's') {
-			//tempDeg = 0.0;
-			ct1 = ofGetElapsedTimeMillis();
-			faceRotateCCy = true; //counter clockwise
-		}
-		//z axis
-		if(key == 'e') {
-			ct1 = ofGetElapsedTimeMillis();
-			//tempDeg = 0.0;
-			randcubie = rand()%26;
-			faceRotateCz = true; //clockwise
-		}if(key == 'd') {
-			//tempDeg = 0.0;
-			ct1 = ofGetElapsedTimeMillis();
-			faceRotateCCz = true; //counter clockwise
+	//load objects for a game
+	 
+	if(key == '1') {
+		SG_VECTOR v = {500,400,100}; 
+		for(int i = 0; i < myGames.size(); i++){
+			myGames[i]->loadObject(1,v);
 		}
 	}
+	if(key == '2') {
+		SG_VECTOR v = {500,400,100}; 
+		for(int i = 0; i < myGames.size(); i++){
+			myGames[i]->loadObject(2,v);
+		}
+	}
+
+
+
+
+
+
+	//if(key == 'c') {
+	//	makeCut = true;
+	//}
+	//if(puzzleExists == true){
+	//	if(key == 'd') {
+	//		cout << "manualDRAW" << endl;
+	//		drawCuts = true;
+	//	}
+	//	if(key == 'f') {
+	//		cout << "nu cubies " << myPuzzle->giveNumCubies() << endl;
+	//	}
+	//	if(key == 'g') {
+	//		cout << "nu pieces " << mySlicer->countPieces() << endl;
+	//	}
+	//	//////////////////////////////move all puzzle
+	//	if(key == 'l') {
+	//		movePRight = true;
+	//	}
+	//	if(key == 'j') {
+	//		movePLeft= true;
+	//	}
+	//	if(key == 'i') {
+	//		movePUp= true;
+	//	}
+	//	if(key == 'k') {
+	//		movePDown= true;
+	//	}
+	//	/////////////////////////////rotate all puzzle
+	//	if(key == 'm') {//rotate right
+	//		rotatePHright = true;
+	//	}
+	//	if(key == 'n') {//rotate left
+	//		rotatePHleft = true;
+	//	}
+	//	if(key == 'y') {//rotate up
+	//		rotatePVup = true;
+	//	}
+	//	if(key == 'h') {//rotate down
+	//		rotatePVdown = true;
+	//	}
+	//	////////////erase object ///////////
+	//	if(key == 'u') {
+	//		//drawCuts =false;
+	//		//myPuzzle->unDraw();
+	//		//myPuzzle->unDo();
+	//	}
+
+	//	/////////////////////FACE ROTATIONS!!!//////////////////////////////
+	//	//rotation point: 3D-center of cubie 7 (8 in the original numbering)
+
+	//	///x axis
+	//	if(key == 'q') {
+	//		ct1 = ofGetElapsedTimeMillis();
+	//		//tempDeg = 0.0;
+	//		randcubie = rand()%26;
+	//		faceRotateC = true; //clockwise
+	//	}if(key == 'a') {
+	//		//tempDeg = 0.0;
+	//		ct1 = ofGetElapsedTimeMillis();
+	//		faceRotateCC = true; //counter clockwise
+	//	}
+	//	//y axis
+	//	if(key == 'w') {
+	//		ct1 = ofGetElapsedTimeMillis();
+	//		//tempDeg = 0.0;
+	//		randcubie = rand()%26;
+	//		faceRotateCy = true; //clockwise
+	//	}if(key == 's') {
+	//		//tempDeg = 0.0;
+	//		ct1 = ofGetElapsedTimeMillis();
+	//		faceRotateCCy = true; //counter clockwise
+	//	}
+	//	//z axis
+	//	if(key == 'e') {
+	//		ct1 = ofGetElapsedTimeMillis();
+	//		//tempDeg = 0.0;
+	//		randcubie = rand()%26;
+	//		faceRotateCz = true; //clockwise
+	//	}if(key == 'd') {
+	//		//tempDeg = 0.0;
+	//		ct1 = ofGetElapsedTimeMillis();
+	//		faceRotateCCz = true; //counter clockwise
+	//	}
+	//}
 }
 //--------------------------------------------------------------
 void testApp::keyReleased(int key){
-	if(puzzleExists == true){
-		///////////////////////////move all puzzle
-		if(key == 'l') {
-			movePRight = false;
-		}
-		if(key == 'j') {
-			movePLeft = false;
-		}
-		if(key == 'i') {
-			movePUp = false;
-		}
-		if(key == 'k') {
-			movePDown = false;
-		}
-		/////////////////////////////rotate all puzzle
-		if(key == 'm') {
-			rotatePHright = false;
-		}
-		if(key == 'n') {
-			rotatePHleft = false;
-		}
-		if(key == 'y') {
-			rotatePVup = false;
-		}
-		if(key == 'h') {
-			rotatePVdown = false;
-		}
-	}
+	//if(puzzleExists == true){
+	//	///////////////////////////move all puzzle
+	//	if(key == 'l') {
+	//		movePRight = false;
+	//	}
+	//	if(key == 'j') {
+	//		movePLeft = false;
+	//	}
+	//	if(key == 'i') {
+	//		movePUp = false;
+	//	}
+	//	if(key == 'k') {
+	//		movePDown = false;
+	//	}
+	//	/////////////////////////////rotate all puzzle
+	//	if(key == 'm') {
+	//		rotatePHright = false;
+	//	}
+	//	if(key == 'n') {
+	//		rotatePHleft = false;
+	//	}
+	//	if(key == 'y') {
+	//		rotatePVup = false;
+	//	}
+	//	if(key == 'h') {
+	//		rotatePVdown = false;
+	//	}
+	//}
 }
 //--------------------------------------------------------------
 void testApp::mouseMoved(int x, int y ){
@@ -464,7 +289,7 @@ void testApp::dragEvent(ofDragInfo dragInfo){
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------
 void testApp::exit(){
-	if(puzzleExists == true){
+	/*if(puzzleExists == true){
 		myPuzzle->exit();
 		objectDisplayed->exit();
 		myCutter->exit();
@@ -473,7 +298,7 @@ void testApp::exit(){
 		objectDisplayed->exit();
 		myCutter->exit();
 		mySlicer->exit();
-	}
+	}*/
 	//sgFreeKernel();
 }
 //-----------------------------------------------------------------------------

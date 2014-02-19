@@ -232,7 +232,7 @@ void puzzle::faceRotate(SG_POINT point, SG_VECTOR axis, float deg,bool dir){
 	////myCubies[26]->faceRotate(point,axis,deg,dir);*/
 }
 //---------------------------------------------------------------
-void puzzle::rotateByIDandAxis(int id, SG_VECTOR axis, bool dir,float deg){
+void puzzle::rotateByIDandAxis(int id, SG_VECTOR axis, bool dir){
 	//it receives the id of a cubie,the axis and the direction of rotation
 	//it looks for the other 9 ids, according to the axis
 	//and makes those 9 myCubies[]->faceRotate
@@ -288,7 +288,7 @@ void puzzle::rotateByIDandAxis(int id, SG_VECTOR axis, bool dir,float deg){
 	}
 	//now we tell the 9 selected cubies to rotate
 	for(int i=0;i<9;i++){
-		myCubies[selected[i]]->faceRotate(axis,deg,dir);
+		myCubies[selected[i]]->faceRotate(axis,dir);
 	}
 	//myCubies[11]->faceRotate(axis,deg,dir);
 

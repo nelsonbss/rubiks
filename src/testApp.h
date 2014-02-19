@@ -29,46 +29,18 @@ public:
 	////////////////
 
 	////////////////
-	vector<game> myGames;
+	vector<game *> myGames;
+
 	myobject3D *objectDisplayed;
 	cutter *myCutter;
 	slicer *mySlicer;
 	puzzle *myPuzzle;
-	////////////////
-
-	bool puzzleExists;
-
-	bool updatePuzzle;
-
-	bool makeCut;
-	bool drawCuts;
-	bool drawCuts1;
-	bool draw3dObject;
-	//move all puzzle: every cubbie moves the same way
-	bool movePRight;
-	bool movePLeft;
-	bool movePUp;
-	bool movePDown;
-	//rotate all puzzlw: every cubbie rotates the same way
-	bool rotatePHright;
-	bool rotatePHleft;
-	bool rotatePVup;
-	bool rotatePVdown;
-
-	//face rotations
-	float tempDeg;
-	bool faceRotateC;
-	bool faceRotateCC;
-	bool faceRotateCy;
-	bool faceRotateCCy;
-	bool faceRotateCz;
-	bool faceRotateCCz;
+	
 
 	int randcubie;
 
 	float ct1;
 	float ct2;
-	float deg;
 	////////////////rendering  and textures
 	void initOFRender();
 	ofMesh myMesh;

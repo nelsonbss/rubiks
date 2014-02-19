@@ -154,7 +154,7 @@ void game::draw(){
 }
 //----------------------------------------------------------------
 void game::loadObject (int objID,SG_VECTOR p,SG_VECTOR t){
-	if(step == 0){
+	if(step == 0 || step==1){
 		objectDisplayed = new myobject3D(p,t);
 		if(objID == 1){
 			//torus
@@ -210,8 +210,7 @@ void game::createPuzzle(SG_VECTOR p){
 }
 //----------------------------------------------
 void game::restart(){
-	//go to step 1, clear puzzle, , clear pieces, clear object
-
+	//go to step 0, clear puzzle, , clear pieces, clear object
 	if(step==3 || step==4){
 		myPuzzle->exit();
 		objectDisplayed->exit();

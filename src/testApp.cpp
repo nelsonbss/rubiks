@@ -129,7 +129,9 @@ void testApp::draw(){
 }
 //--------------------------------------------------------------
 void testApp::keyPressed(int key){
-	//load objects for a game
+
+	////////////////////////////////////////////////////////////////
+	///////////////////load objects for a game//step 1 of the experience
 	//right now we only have one game, ideal: the master gui will tell a game wich object to load on drag and drop gestures
 	SG_VECTOR objectPos = {0,0,0}; 
 	SG_VECTOR tempPos = {displayX,displayY,displayZ};
@@ -141,12 +143,15 @@ void testApp::keyPressed(int key){
 		myGames[0]->loadObject(2,objectPos,tempPos);
 	}
 
+	////////////////////////////////////////////////////////////////
+	//////////make a cut//NEXT button action on step 2 of experience .. now its step 1..because we dont have armature yet
 	if(key == 'c') {
 		//tell a game to make a cut
 		SG_VECTOR v = {500,400,100};
 		myGames[0]->createPuzzle(v);
 	}
-
+	/////////////////////////////////////////////////////////////////
+	//////////resart// RESART button action on any step of the experience
 	if(key == 'r'){
 		//tell a game to restart 
 		myGames[0]->restart();
@@ -368,11 +373,6 @@ void testApp::initOFRender(){
 	ofLogoImage.loadImage("of.png");
 	bUseTexture = true;
 }
-
-
-
-
-
 /////////////////////////////////////////////////////////////////////////////////////
 // openGL rendering
 void testApp::initScene(){

@@ -35,7 +35,6 @@ public:
 	cutter *myCutter;
 	slicer *mySlicer;
 	puzzle *myPuzzle;
-	
 
 	int randcubie;
 

@@ -8,6 +8,7 @@
 *.vbproj merge=union
 *.fsproj merge=union
 *.dbproj merge=union
+rubiks.vcxproj.filters merge=ours
 
 # Standard to msysgit
 *.doc	 diff=astextplain

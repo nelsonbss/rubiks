@@ -187,12 +187,15 @@ void testApp::keyPressed(int key){
 	if(gStep == 4){
 		//showing puzzle with colors
 		//waiting for color change
+
+
 		//presssed NEXT
 		if(key == 'n') {
 			//go to step 5
 			myGames[0]->setCurrentStep(5);
 		}
 	}
+	////////////////////////////////////////////step 5 inputs
 	if(gStep == 5){
 		//selected color (or not)
 		//pressed next on color palette step

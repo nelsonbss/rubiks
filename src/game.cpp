@@ -22,6 +22,8 @@ game::game(SG_VECTOR p, float w, float h){
 void game::setup(){
 	step = 0;
 	idcubie=0;
+	myArmature = new armature (ofVec3f( ofGetWidth()/2,ofGetHeight()/2,0),300,300,10,3);
+    myArmature->setup();
 	/////////////////////////////////////////PUZzLE //////////
 	updatePuzzle = false;
 	//
@@ -71,12 +73,13 @@ void game::draw(){
 	}
 	if(step == 3){
 		//armature has been selected
-		//myArmature->draw();
+		myArmature->draw();
 		//show selected object
 		objectDisplayed->draw();
 	}
 	if(step == 4 || step == 5){
 		//made the cuts
+		//its showing color palette
 		//show puzzle
 		myPuzzle->draw();
 		//mySlicer->draw();

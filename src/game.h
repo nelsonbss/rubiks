@@ -4,8 +4,9 @@
 #include "ofMain.h"
 #include "sgCore.h"
 #include "myobject3D.h"
-#include "slicer.h"
 #include "cutter.h"
+#include "slicer.h"
+#include "armature.h"
 #include "puzzle.h"
 
 class game {
@@ -24,6 +25,7 @@ public:
 	myobject3D *objectDisplayed;
 	cutter *myCutter;
 	slicer *mySlicer;
+	armature *myArmature;
 	puzzle *myPuzzle;
 
 	void loadObject (int objID,SG_VECTOR p,SG_VECTOR t);

@@ -30,6 +30,8 @@ public:
 	void createSlicer();
 	void createPuzzle(SG_VECTOR p);
 
+	int getCurrentStep();
+	void setCurrentStep(int step);
 	void restart();
 	////////////move all puzzle: every cubbie moves the same way
 	SG_VECTOR pos;

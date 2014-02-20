@@ -55,21 +55,25 @@ void game::update(){
 //--------------------------------------------------------------
 void game::draw(){  
 	////////////////////////////////Draw the pieces////////////////////////////////////
-	if(step ==0){
-		ofSetColor(255, 255, 255);
-		ofDrawBitmapString("SELECT AN OBJECT:" + ofToString("") +"\n" + "torus "+ofToString(1)+"\n"+ "box "+ofToString(2)+"\n"+ "cone "+ofToString(3)+"\n",20, 20);
+	if(step == 0){
+		//is waiting for a shape to be selected
 	}
-	if((step == 1) || (step ==2)){
-		ofSetColor(255, 255, 255);
-		ofDrawBitmapString("SELECT AN OBJECT:" + ofToString("") +"\n" + "torus "+ofToString(1)+"\n"+ "box "+ofToString(2)+"\n"+ "cone "+ofToString(3)+"\n",20, 20);
+	if (step == 1){
+		//show selected object
 		objectDisplayed->draw();
 		//myCutter->draw();
 		//myCutter->unDraw();
 	}
+	if(step == 2){
+		//waiting for armature to be selected
+		ofDrawBitmapString("SHOW ARMATURE MENU HERE! and wait for input" + ofToString("") +"\n",20, 100);
+		//myArmature->draw();
+	}
 	if(step == 3){
 		//made the cuts
-		//mySlicer->draw();
+		//show puzzle
 		myPuzzle->draw();
+		//mySlicer->draw();
 	}
 }
 //----------------------------------------------------------------
@@ -131,7 +135,7 @@ void game::createSlicer(){
 }
 //---------------------------------------------
 void game::createPuzzle(SG_VECTOR p){
-	if((step == 1) || (step ==2)){
+	if(step == 2){
 		////////////////////////////////create puzzle///////////////////////////////////////
 		myPuzzle = new puzzle(p.x,p.y,p.z);
 		myPuzzle->setup();
@@ -149,6 +153,14 @@ void game::createPuzzle(SG_VECTOR p){
 		updatePuzzle = true;
 		step = 3;
 	}
+}
+//----------------------------------------------
+int game::getCurrentStep(){
+	return step;
+}
+//----------------------------------------------
+void game::setCurrentStep(int s){
+	step = s;
 }
 //----------------------------------------------
 void game::restart(){

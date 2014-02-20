@@ -46,7 +46,34 @@ void testApp::update(){
 void testApp::draw(){
 	///////////////////START OF RENDERING////////////////////
 	startOFLights();
-	
+
+	////////////////////////////////////////////dummy gui
+	for(int i = 0; i < myGames.size(); i++){
+		int gStep=0;
+		//get current step of game
+		gStep = myGames[i]->getCurrentStep();
+		if(gStep == 0){
+			//show object menu
+			ofDrawBitmapString("SELECT AN OBJECT:" + ofToString("") +"\n" + "torus "+ofToString(1)+"\n"+ "box "+ofToString(2)+"\n"+ "cone "+ofToString(3)+"\n",20, 20);
+			//waiting for object to be selected from menu //drag behavior
+		}else if(gStep == 1){
+			//an object has been selected
+			ofDrawBitmapString("SELECT AN OBJECT:" + ofToString("") +"\n" + "torus "+ofToString(1)+"\n"+ "box "+ofToString(2)+"\n"+ "cone "+ofToString(3)+"\n",20, 20);
+			//show next button.
+			ofDrawBitmapString("NEXT: press 'n' " + ofToString("") +"\n" ,20, 80);
+		}else if(gStep ==2){
+			//show armature menu
+			ofDrawBitmapString("SELECT AN ARMATURE:" + ofToString("") +"\n" + "armature 1:  "+ofToString(1)+"\n",20, 20);
+			//show next button.
+			ofDrawBitmapString("NEXT: press 'n' " + ofToString("") +"\n" ,20, 60);
+			//show restart button.
+			ofDrawBitmapString("RESTART: press 'r' " + ofToString("") +"\n" ,20, 80);
+		}else if(gStep == 3){
+			//show color palette menu
+			ofDrawBitmapString("SELECT AN ARMATURE:" + ofToString("") +"\n" + "armature 1:  "+ofToString(1)+"\n",20, 20);
+		}
+	}
+
 	////////////////////////PUZZLE !!!!//////////////////////
 	///////////////////////////////draw games
 	for(int i = 0; i < myGames.size(); i++){
@@ -77,10 +104,19 @@ void testApp::keyPressed(int key){
 	}
 	////////////////////////////////////////////////////////////////
 	//////////make a cut//NEXT button action on step 2 of experience .. now its step 1..because we dont have armature yet
-	if(key == 'c') {
-		//tell a game to make a cut
-		SG_VECTOR v = {500,400,100};
-		myGames[0]->createPuzzle(v);
+	if(key == 'n') {
+		int gStep=0;
+		//verify in which step the game is, so that "next" action works well
+		gStep = myGames[0]->getCurrentStep();
+		if(gStep == 1){
+			//go to step 2
+			myGames[0]->setCurrentStep(2);
+			//show armature
+		}else if(gStep == 2){
+			//do slicing
+			SG_VECTOR v = {500,400,100};
+			myGames[0]->createPuzzle(v);//create Puzzle goes to step3 inside the game
+		}
 	}
 	/////////////////////////////////////////////////////////////////
 	//////////resart// RESART button action on any step of the experience
@@ -443,7 +479,7 @@ void testApp::stopOFLights(){
 }
 //------------------------------------------------------------------------------
 void testApp::updateOFLights(){
-		pointLight.setPosition(cos(ofGetElapsedTimef()*.6f) * radius * 2 + center.x, 
+	pointLight.setPosition(cos(ofGetElapsedTimef()*.6f) * radius * 2 + center.x, 
 		sin(ofGetElapsedTimef()*.8f) * radius * 2 + center.y, 
 		-cos(ofGetElapsedTimef()*.8f) * radius * 2 + center.z);
 

@@ -15,14 +15,13 @@
 //--------------------------------------------------------------
 void testApp::setup(){
 	/////////////////////////////initialize sgCore library
-	sgInitKernel();  
-	//initScene();//this function was from openGL initial drawing
+	sgInitKernel();
 
 	/////////////////////////////initialize openFrameworks rendering
 	initOFRender();
 
 	////////////////////////////////create games
-	//one game for now
+	////////////////////////////////one game for now
 	SG_VECTOR p = {0,0,0};
 	game *tempGame = new game(p, 1024, 768);
 	myGames.push_back(tempGame);
@@ -36,98 +35,27 @@ void testApp::setup(){
 }
 //--------------------------------------------------------------
 void testApp::update(){
-	//////////////////////////////open frameworks lights /////////////////////////////////
-	pointLight.setPosition(cos(ofGetElapsedTimef()*.6f) * radius * 2 + center.x, 
-		sin(ofGetElapsedTimef()*.8f) * radius * 2 + center.y, 
-		-cos(ofGetElapsedTimef()*.8f) * radius * 2 + center.z);
+	//////////////////////////////open frameworks lights 
+	updateOFLights();
 
-	spotLight.setOrientation( ofVec3f( 0, cos(ofGetElapsedTimef()) * RAD_TO_DEG, 0) );
-	spotLight.setPosition( mouseX, mouseY, 200);
-
-	/////////////////////////////////////////////////////update games
+	///////////////////////////////////////////update games
 	for(int i = 0; i < myGames.size(); i++){
 		myGames[i]->update();
 	}
 }
 //--------------------------------------------------------------
 void testApp::draw(){
-	// enable lighting //
-	ofEnableLighting();
-	// enable the material, so that it applies to all 3D objects before material.end() call //
-	material.begin();
-	// activate the lights //
-	if (bPointLight) pointLight.enable();
-	if (bSpotLight) spotLight.enable();
-	if (bDirLight) directionalLight.enable();
-
-	// grab the texture reference and bind it //
-	// this will apply the texture to all drawing (vertex) calls before unbind() //
-	if(bUseTexture) ofLogoImage.getTextureReference().bind();
-
-	ofSetColor(255, 255, 255, 255);
-	/*ofPushMatrix();
-	ofTranslate(center.x, center.y, center.z-300);
-	ofRotate(ofGetElapsedTimef() * .8 * RAD_TO_DEG, 0, 1, 0);
-	ofDrawSphere( 0,0,0, radius);
-	ofPopMatrix();
-
-	ofPushMatrix();
-	ofTranslate(300, 300, cos(ofGetElapsedTimef()*1.4) * 300.f);
-	ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 1, 0, 0);
-	ofRotate(ofGetElapsedTimef()*.8 * RAD_TO_DEG, 0, 1, 0);
-	ofDrawBox(0, 0, 0, 60);
-	ofPopMatrix();
-
-	ofPushMatrix();
-	ofTranslate(center.x, center.y, -900);
-	ofRotate(ofGetElapsedTimef() * .2 * RAD_TO_DEG, 0, 1, 0);
-	ofDrawBox( 0, 0, 0, 850);
-	ofPopMatrix();*/
-
-	//small test of openFrameworks drawing embeded with sgCore geometry 
-	ofPushMatrix();
-	ofTranslate(300,300);
-	ofSetColor(ofColor(255,0,255));
-	ofCircle(ofPoint(0,0),5);
-	//ofRotate(ofGetElapsedTimef() * .2 * RAD_TO_DEG, 0, 1, 0);
-	ofPopMatrix();
-
-	if(bUseTexture) ofLogoImage.getTextureReference().unbind();
-
-	if (!bPointLight) pointLight.disable();
-	if (!bSpotLight) spotLight.disable();
-	if (!bDirLight) directionalLight.disable();
-
-
-	////////////////////////////////////////////////////////////////////////////PUZZLE !!!!//////////////////////////////////////
+	///////////////////START OF RENDERING////////////////////
+	startOFLights();
+	
+	////////////////////////PUZZLE !!!!//////////////////////
 	///////////////////////////////draw games
 	for(int i = 0; i < myGames.size(); i++){
 		myGames[i]->draw();
 	}
 
-
-	//////////////////////////////////////////////////////////////////////////END OF RENDERING////////////////////
-	material.end();
-	// turn off lighting //
-	ofDisableLighting();
-
-	ofSetColor( pointLight.getDiffuseColor() );
-	if(bPointLight) pointLight.draw();
-
-	ofSetColor(255, 255, 255);
-	ofSetColor( spotLight.getDiffuseColor() );
-	if(bSpotLight) spotLight.draw();
-
-	ofSetColor(255, 255, 255);
-	/*ofDrawBitmapString("Point Light On (1) : "+ofToString(bPointLight) +"\n"+
-	"Spot Light On (2) : "+ofToString(bSpotLight) +"\n"+
-	"Directional Light On (3) : "+ofToString(bDirLight)+"\n"+
-	"Shiny Objects On (s) : "+ofToString(bShiny)+"\n"+
-	"Spot Light Cutoff (up/down) : "+ofToString(spotLight.getSpotlightCutOff(),0)+"\n"+
-	"Spot Light Concentration (right/left) : " + ofToString(spotLight.getSpotConcentration(),0)+"\n"+
-	"Smooth Lighting enabled (x) : "+ofToString(bSmoothLighting,0)+"\n"+
-	"Textured (t) : "+ofToString(bUseTexture,0),
-	20, 20);*/
+	///////////////////END OF RENDERING////////////////////
+	stopOFLights();
 }
 //--------------------------------------------------------------
 void testApp::keyPressed(int key){
@@ -198,7 +126,7 @@ void testApp::keyPressed(int key){
 
 	/////////////////////FACE ROTATIONS!!!//////////////////////////////
 	////////////////////////////////////////////x axis
-	int idcubie = 11;
+	int idcubie = 11;//to follow this cubie for now //this will be decided upon touch, or click on top of puzzle
 	int randcubie=0;
 	if(key == 'q') {
 		if(rotate == true) {//c
@@ -301,8 +229,7 @@ void testApp::keyReleased(int key){
 		myGames[0]->rotate(r);
 	}
 	/////////////////////face rotations//no rotations comming in from gui
-	//send:
-	//SG_VECTOR axis = {0,0,0};
+	//send: SG_VECTOR axis = {0,0,0};
 	if(key == 'q') {
 		if(rotate == false) {//c
 			SG_VECTOR axis = {0,0,0};
@@ -370,20 +297,13 @@ void testApp::dragEvent(ofDragInfo dragInfo){
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------
 void testApp::exit(){
-	/*if(puzzleExists == true){
-	myPuzzle->exit();
-	objectDisplayed->exit();
-	myCutter->exit();
-	mySlicer->exit();
-	}else{
-	objectDisplayed->exit();
-	myCutter->exit();
-	mySlicer->exit();
-	}*/
 	myGames[0]->restart();
+	//cleanup games vector!!
 	//sgFreeKernel();
 }
 //-----------------------------------------------------------------------------
+/////////////////////////////////////////////////////////////////////////////////////
+// OF rendering
 void testApp::initOFRender(){
 	ofGLRenderer(true);
 
@@ -449,62 +369,85 @@ void testApp::initOFRender(){
 	ofLogoImage.loadImage("of.png");
 	bUseTexture = true;
 }
-/////////////////////////////////////////////////////////////////////////////////////
-// openGL rendering
-void testApp::initScene(){
-	// Lights properties
-	float ambientProperties[]  = {0.1f, 0.1f, 0.1f, 1.0f};
-	float diffuseProperties[]  = {1.0f, 1.0f, 1.0f, 1.0f};
-	float specularProperties[] = {1.0f, 1.0f, 1.0f, 1.0f};
+//------------------------------------------------------------------------------
+void testApp::startOFLights(){
+	// enable lighting //
+	ofEnableLighting();
+	// enable the material, so that it applies to all 3D objects before material.end() call //
+	material.begin();
+	// activate the lights //
+	if (bPointLight) pointLight.enable();
+	if (bSpotLight) spotLight.enable();
+	if (bDirLight) directionalLight.enable();
 
-	glLightfv( GL_LIGHT0, GL_AMBIENT, ambientProperties);
-	glLightfv( GL_LIGHT0, GL_DIFFUSE,diffuseProperties);
-	glLightfv( GL_LIGHT0, GL_SPECULAR, specularProperties);
-	//glLightModelf(GL_LIGHT_MODEL_TWO_SIDE, 1.0);
+	// grab the texture reference and bind it //
+	// this will apply the texture to all drawing (vertex) calls before unbind() //
+	if(bUseTexture) ofLogoImage.getTextureReference().bind();
 
-	glClearColor(1.0,1.0,1.0,1.0f);
+	ofSetColor(255, 255, 255, 255);
+	/*ofPushMatrix();
+	ofTranslate(center.x, center.y, center.z-300);
+	ofRotate(ofGetElapsedTimef() * .8 * RAD_TO_DEG, 0, 1, 0);
+	ofDrawSphere( 0,0,0, radius);
+	ofPopMatrix();
 
-	glHint(GL_LINE_SMOOTH_HINT,GL_FASTEST);
+	ofPushMatrix();
+	ofTranslate(300, 300, cos(ofGetElapsedTimef()*1.4) * 300.f);
+	ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 1, 0, 0);
+	ofRotate(ofGetElapsedTimef()*.8 * RAD_TO_DEG, 0, 1, 0);
+	ofDrawBox(0, 0, 0, 60);
+	ofPopMatrix();
 
-	//// Texture
-	glEnable(GL_TEXTURE_2D);
-	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
+	ofPushMatrix();
+	ofTranslate(center.x, center.y, -900);
+	ofRotate(ofGetElapsedTimef() * .2 * RAD_TO_DEG, 0, 1, 0);
+	ofDrawBox( 0, 0, 0, 850);
+	ofPopMatrix();*/
 
+	//small test of openFrameworks drawing embeded with sgCore geometry 
+	ofPushMatrix();
+	ofTranslate(300,300);
+	ofSetColor(ofColor(255,0,255));
+	ofCircle(ofPoint(0,0),5);
+	//ofRotate(ofGetElapsedTimef() * .2 * RAD_TO_DEG, 0, 1, 0);
+	ofPopMatrix();
 
-	// Default : lighting
+	if(bUseTexture) ofLogoImage.getTextureReference().unbind();
 
-	//glEnable(GL_LIGHTING);
-	glEnable(GL_LIGHT0);
-
-
-	// Default : blending
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-	glEnable(GL_DEPTH_TEST);
-
-	//glEnable(GL_CULL_FACE);
+	if (!bPointLight) pointLight.disable();
+	if (!bSpotLight) spotLight.disable();
+	if (!bDirLight) directionalLight.disable();
 }
-//-----------------------------------------------------------------------------------
-void testApp::drawElements(){
-	//////////////////////////////////////////////////////////////
-	////draw the elements of the scene
-	sgCObject*  curObj = sgGetScene()->GetObjectsList()->GetHead();
+//------------------------------------------------------------------------------
+void testApp::stopOFLights(){
+	material.end();
+	// turn off lighting //
+	ofDisableLighting();
 
-	while (curObj)
-	{
-		if (true)
-		{
-			Painter::DrawObject(GL_RENDER,curObj,false);
+	ofSetColor( pointLight.getDiffuseColor() );
+	if(bPointLight) pointLight.draw();
 
-			/*if ((curObj->GetAttribute(SG_OA_DRAW_STATE) & SG_DS_GABARITE))
-			{
-			SG_POINT a1,a2;
-			curObj->GetGabarits(a1,a2);
-			Painter::DrawGabariteBox(a1,a2);
-			}*/
-		}
-		curObj = sgGetScene()->GetObjectsList()->GetNext(curObj);
-	}
+	ofSetColor(255, 255, 255);
+	ofSetColor( spotLight.getDiffuseColor() );
+	if(bSpotLight) spotLight.draw();
+
+	ofSetColor(255, 255, 255);
+	/*ofDrawBitmapString("Point Light On (1) : "+ofToString(bPointLight) +"\n"+
+	"Spot Light On (2) : "+ofToString(bSpotLight) +"\n"+
+	"Directional Light On (3) : "+ofToString(bDirLight)+"\n"+
+	"Shiny Objects On (s) : "+ofToString(bShiny)+"\n"+
+	"Spot Light Cutoff (up/down) : "+ofToString(spotLight.getSpotlightCutOff(),0)+"\n"+
+	"Spot Light Concentration (right/left) : " + ofToString(spotLight.getSpotConcentration(),0)+"\n"+
+	"Smooth Lighting enabled (x) : "+ofToString(bSmoothLighting,0)+"\n"+
+	"Textured (t) : "+ofToString(bUseTexture,0),
+	20, 20);*/
+}
+//------------------------------------------------------------------------------
+void testApp::updateOFLights(){
+		pointLight.setPosition(cos(ofGetElapsedTimef()*.6f) * radius * 2 + center.x, 
+		sin(ofGetElapsedTimef()*.8f) * radius * 2 + center.y, 
+		-cos(ofGetElapsedTimef()*.8f) * radius * 2 + center.z);
+
+	spotLight.setOrientation( ofVec3f( 0, cos(ofGetElapsedTimef()) * RAD_TO_DEG, 0) );
+	spotLight.setPosition( mouseX, mouseY, 200);
 }

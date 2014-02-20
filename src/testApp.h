@@ -24,11 +24,6 @@ public:
 	void gotMessage(ofMessage msg);
 
 	////////////////
-	void initScene();
-	void drawElements();
-	////////////////
-
-	////////////////
 	vector<game *> myGames;
 
 	myobject3D *objectDisplayed;
@@ -40,6 +35,10 @@ public:
 
 	////////////////rendering  and textures
 	void initOFRender();
+	void startOFLights();
+	void updateOFLights();
+	void stopOFLights();
+
 	ofMesh myMesh;
 	ofLight pointLight;
 	ofLight spotLight;

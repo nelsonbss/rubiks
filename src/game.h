@@ -33,12 +33,12 @@ public:
 	int getCurrentStep();
 	void setCurrentStep(int step);
 	void restart();
-	////////////move all puzzle: every cubbie moves the same way
-	SG_VECTOR pos;
-	void move (SG_VECTOR p);
+	/////////////////////////////move all puzzle: every cubbie moves the same way
+	SG_VECTOR posP;
+	void moveP (SG_VECTOR p);
 	/////////////////////////////rotate all puzzle
-	SG_VECTOR rot;
-	void rotate(SG_VECTOR r);
+	SG_VECTOR rotP;
+	void rotateP(SG_VECTOR r);
 
 	////////////////
 	bool updatePuzzle;
@@ -49,5 +49,8 @@ public:
 	void rotateByIDandAxis(int id, SG_VECTOR axis, bool dir);
 	bool faceRotate;
 
+	//////////////////////////move all armature
+	SG_VECTOR posA;
+	void moveA (SG_VECTOR pa);
 };
 #endif /* defined(__Tgame__game__) */

@@ -34,6 +34,33 @@ void game::setup(){
 	updatePuzzle = false;
 	//
 	faceRotate = false;
+
+	////////////////////////////////////////load heavy models
+	bunny.loadModel("bunny.obj");
+	//need to make it an sgCore3DObject to be able to slice it
+	ofMesh tempMesh = bunny.getMesh(0);
+	//get vertices from mesh
+	vector<ofVec3f> bunnyVert = tempMesh.getVertices();
+	//make an array[] from this vector
+	SG_POINT *vert = new SG_POINT[bunnyVert.size()];
+	for(int i=0;i<bunnyVert.size(); i++){
+		vert[i].x = bunnyVert[i].x;
+		vert[i].y = bunnyVert[i].y;
+		vert[i].z = bunnyVert[i].z;
+	}
+	//get indices from mesh
+	vector<ofIndexType> bunnyIndices = tempMesh.getIndices();
+	//make an array[] from this vector
+	SG_INDEX_TRIANGLE *indexes = new SG_INDEX_TRIANGLE[bunnyIndices.size()];
+	for(int i=0;i<bunnyIndices.size(); i++){
+		indexes->ver_indexes[i] = bunnyIndices[i];
+	}
+	//generate sgC3DObject from geometry information
+	sgBunny = sgFileManager::ObjectFromTriangles(vert,bunnyVert.size(),indexes,bunnyIndices.size()/3); 
+
+
+	delete [] vert;
+	delete [] indexes;
 }
 //--------------------------------------------------------------
 void game::update(){
@@ -144,6 +171,14 @@ void game::loadObject (int objID,SG_VECTOR p,SG_VECTOR t){
 			//cone
 			objectDisplayed->loadObject(sgCreateCone(200,1,300.0, 3));
 		}
+		
+		if(objID == 4){
+			//try to load the bunny
+			objectDisplayed->loadObject((sgC3DObject *)sgBunny);
+		}
+
+
+
 		objectDisplayed->setup();
 		createSlicer();
 		step = 1;

@@ -8,6 +8,7 @@
 #include "slicer.h"
 #include "armature.h"
 #include "puzzle.h"
+#include "ofxAssimpModelLoader.h"
 
 class game {
 public:
@@ -58,5 +59,9 @@ public:
 	/////////////////////////////rotate armature
 	SG_VECTOR rotA;
 	void rotateA(SG_VECTOR ra);
+
+	///other objects
+	ofxAssimpModelLoader bunny;
+	sgCObject *sgBunny;
 };
 #endif /* defined(__Tgame__game__) */

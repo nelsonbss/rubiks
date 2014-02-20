@@ -133,6 +133,10 @@ void testApp::keyPressed(int key){
 			SG_VECTOR v = {500,400,100}; 
 			myGames[0]->loadObject(3,objectPos,tempPos);
 		}
+		if(key == '4') {
+			SG_VECTOR v = {500,400,100}; 
+			myGames[0]->loadObject(4,objectPos,tempPos);
+		}
 	}
 	////////////////////////////////////////////step 1 inputs
 	if(gStep == 1){

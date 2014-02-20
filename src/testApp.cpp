@@ -46,9 +46,12 @@ void testApp::update(){
 void testApp::draw(){
 	///////////////////START OF RENDERING////////////////////
 	startOFLights();
+
+
 	/////////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////////////  DUMMY GUI ///  DUMMY GUI  ///  DUMMY GUI
 	///to keep track of what menus and buttons to show, and when
+
 	for(int i = 0; i < myGames.size(); i++){
 		int gStep=0;
 		//get current step of game
@@ -78,11 +81,22 @@ void testApp::draw(){
 		}else if(gStep == 4){
 			//puzzle has been created
 			//show color palette menu
-			ofDrawBitmapString("SELECT AN ARMATURE:" + ofToString("") +"\n" + "armature 1:  "+ofToString(1)+"\n",20, 20);
+			ofDrawBitmapString("SELECT a COLOR:" + ofToString("") +"\n" + "color 1:  "+ofToString(1)+"\n",20, 20);
+			//show next button.
+			ofDrawBitmapString("NEXT: press 'n' " + ofToString("") +"\n" ,20, 60); //this enables the puzzle to have face rotations
+			//show restart button.
+			ofDrawBitmapString("RESTART: press 'r' " + ofToString("") +"\n" ,20, 80);
+		}else if(gStep == 5){
+			//puzzle has been created
+			//rotations can happen
+
+			//show restart button.
+			ofDrawBitmapString("RESTART: press 'r' " + ofToString("") +"\n" ,20, 80);
 		}
 	}
 
-	////////////////////////PUZZLE !!!!//////////////////////
+
+	////////////////////////PUZZLE //////////////////////
 	///////////////////////////////draw games
 	for(int i = 0; i < myGames.size(); i++){
 		myGames[i]->draw();
@@ -173,6 +187,11 @@ void testApp::keyPressed(int key){
 	if(gStep == 4){
 		//showing puzzle with colors
 		//waiting for color change
+		//presssed NEXT
+		if(key == 'n') {
+			//go to step 5
+			myGames[0]->setCurrentStep(5);
+		}
 	}
 	if(gStep == 5){
 		//selected color (or not)
@@ -237,6 +256,40 @@ void testApp::keyPressed(int key){
 				rotate = false;
 			}
 		}
+		//////////////////////////////move all puzzle
+		if(key == 'l') {
+			SG_VECTOR p = {10,0,0};
+			myGames[0]->moveP(p);
+		}
+		if(key == 'j') {
+			SG_VECTOR p = {-10,0,0};
+			myGames[0]->moveP(p);
+		}
+		if(key == 'i') {
+			SG_VECTOR p = {0,-10,0};
+			myGames[0]->moveP(p);
+		}
+		if(key == 'k') {
+			SG_VECTOR p = {0,10,0};
+			myGames[0]->moveP(p);
+		}
+		/////////////////////////////rotate all puzzle  // two finger swipe gesture
+		if(key == 'm') {//rotate right
+			SG_VECTOR r = {0,0.1,0};
+			myGames[0]->rotateP(r);
+		}
+		if(key == 'n') {//rotate left
+			SG_VECTOR r = {0,-0.1,0};
+			myGames[0]->rotateP(r);
+		}
+		if(key == 'y') {//rotate up
+			SG_VECTOR r = {0.1,0,0};
+			myGames[0]->rotateP(r);
+		}
+		if(key == 'h') {//rotate down
+			SG_VECTOR r = {-0.1,0,0};
+			myGames[0]->rotateP(r);
+		}
 	}
 
 	/////////////////////////////////////////////////////////////////
@@ -245,41 +298,6 @@ void testApp::keyPressed(int key){
 		//tell a game to restart 
 		myGames[0]->restart();
 	}
-	//////////////////////////////move all puzzle
-	if(key == 'l') {
-		SG_VECTOR p = {10,0,0};
-		myGames[0]->moveP(p);
-	}
-	if(key == 'j') {
-		SG_VECTOR p = {-10,0,0};
-		myGames[0]->moveP(p);
-	}
-	if(key == 'i') {
-		SG_VECTOR p = {0,-10,0};
-		myGames[0]->moveP(p);
-	}
-	if(key == 'k') {
-		SG_VECTOR p = {0,10,0};
-		myGames[0]->moveP(p);
-	}
-	/////////////////////////////rotate all puzzle  // two finger swipe gesture
-	if(key == 'm') {//rotate right
-		SG_VECTOR r = {0,0.1,0};
-		myGames[0]->rotateP(r);
-	}
-	if(key == 'n') {//rotate left
-		SG_VECTOR r = {0,-0.1,0};
-		myGames[0]->rotateP(r);
-	}
-	if(key == 'y') {//rotate up
-		SG_VECTOR r = {0.1,0,0};
-		myGames[0]->rotateP(r);
-	}
-	if(key == 'h') {//rotate down
-		SG_VECTOR r = {-0.1,0,0};
-		myGames[0]->rotateP(r);
-	}
-
 
 
 	//if(puzzleExists == true){

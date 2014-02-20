@@ -51,8 +51,11 @@ public:
 	void rotateByIDandAxis(int id, SG_VECTOR axis, bool dir);
 	bool faceRotate;
 
-	//////////////////////////move all armature
+	//////////////////////////move  armature
 	SG_VECTOR posA;
 	void moveA (SG_VECTOR pa);
+	/////////////////////////////rotate armature
+	SG_VECTOR rotA;
+	void rotateA(SG_VECTOR ra);
 };
 #endif /* defined(__Tgame__game__) */

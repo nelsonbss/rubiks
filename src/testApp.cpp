@@ -91,35 +91,52 @@ void testApp::keyPressed(int key){
 	//right now we only have one game, ideal: the master gui will tell a game wich object to load on drag and drop gestures
 	SG_VECTOR objectPos = {0,0,0}; 
 	SG_VECTOR tempPos = {displayX,displayY,displayZ};
-	if(key == '1') {
-		myGames[0]->loadObject(1,objectPos,tempPos); //pos.z its the torus radious
+
+	int gStep=0;
+	//verify in which step the game is, so that "input" action works well
+	gStep = myGames[0]->getCurrentStep();
+
+	////////////////////////////////////////////step 0 inputs
+	if(gStep == 0){
+		//waiting for shape to be selected
+		if(key == '1') {
+			myGames[0]->loadObject(1,objectPos,tempPos); //pos.z its the torus radious
+		}
+		if(key == '2') {
+			SG_VECTOR v = {500,400,100}; 
+			myGames[0]->loadObject(2,objectPos,tempPos);
+		}
+		if(key == '3') {
+			SG_VECTOR v = {500,400,100}; 
+			myGames[0]->loadObject(3,objectPos,tempPos);
+		}
 	}
-	if(key == '2') {
-		SG_VECTOR v = {500,400,100}; 
-		myGames[0]->loadObject(2,objectPos,tempPos);
-	}
-	if(key == '3') {
-		SG_VECTOR v = {500,400,100}; 
-		myGames[0]->loadObject(3,objectPos,tempPos);
-	}
-	////////////////////////////////////////////////////////////////
-	//////////make a cut//NEXT button action on step 2 of experience .. now its step 1..because we dont have armature yet
-	if(key == 'n') {
-		int gStep=0;
-		//verify in which step the game is, so that "next" action works well
-		gStep = myGames[0]->getCurrentStep();
-		if(gStep == 1){
+	////////////////////////////////////////////step 1 inputs
+	if(gStep == 1){
+		//selected an object
+		if(key == 'n') {
 			//go to step 2
 			myGames[0]->setCurrentStep(2);
 			//show armature
-		}else if(gStep == 2){
+		} 
+	}
+	////////////////////////////////////////////step 2 inputs
+	if(gStep == 2){
+		//waiting for armature to be selected
+
+	}
+	////////////////////////////////////////////step 3 inputs
+	if(gStep == 3){
+		//armature was selected
+		if(key == 'n') {
 			//do slicing
 			SG_VECTOR v = {500,400,100};
-			myGames[0]->createPuzzle(v);//create Puzzle goes to step3 inside the game
+			myGames[0]->createPuzzle(v);//create Puzzle goes to step4 inside the game to show the puzzle
 		}
 	}
+
 	/////////////////////////////////////////////////////////////////
-	//////////resart// RESART button action on any step of the experience
+	////////////////RESART button can work on any step, its not showed on step 1 (object selected)
 	if(key == 'r'){
 		//tell a game to restart 
 		myGames[0]->restart();
@@ -127,36 +144,36 @@ void testApp::keyPressed(int key){
 	//////////////////////////////move all puzzle
 	if(key == 'l') {
 		SG_VECTOR p = {10,0,0};
-		myGames[0]->move(p);
+		myGames[0]->moveP(p);
 	}
 	if(key == 'j') {
 		SG_VECTOR p = {-10,0,0};
-		myGames[0]->move(p);
+		myGames[0]->moveP(p);
 	}
 	if(key == 'i') {
 		SG_VECTOR p = {0,-10,0};
-		myGames[0]->move(p);
+		myGames[0]->moveP(p);
 	}
 	if(key == 'k') {
 		SG_VECTOR p = {0,10,0};
-		myGames[0]->move(p);
+		myGames[0]->moveP(p);
 	}
 	/////////////////////////////rotate all puzzle  // two finger swipe gesture
 	if(key == 'm') {//rotate right
 		SG_VECTOR r = {0,0.1,0};
-		myGames[0]->rotate(r);
+		myGames[0]->rotateP(r);
 	}
 	if(key == 'n') {//rotate left
 		SG_VECTOR r = {0,-0.1,0};
-		myGames[0]->rotate(r);
+		myGames[0]->rotateP(r);
 	}
 	if(key == 'y') {//rotate up
 		SG_VECTOR r = {0.1,0,0};
-		myGames[0]->rotate(r);
+		myGames[0]->rotateP(r);
 	}
 	if(key == 'h') {//rotate down
 		SG_VECTOR r = {-0.1,0,0};
-		myGames[0]->rotate(r);
+		myGames[0]->rotateP(r);
 	}
 
 	/////////////////////FACE ROTATIONS!!!//////////////////////////////
@@ -232,36 +249,36 @@ void testApp::keyReleased(int key){
 	/////////////////////////////move all puzzle
 	if(key == 'l') {
 		SG_VECTOR p = {0,0,0};
-		myGames[0]->move(p);
+		myGames[0]->moveP(p);
 	}
 	if(key == 'j') {
 		SG_VECTOR p = {0,0,0};
-		myGames[0]->move(p);
+		myGames[0]->moveP(p);
 	}
 	if(key == 'i') {
 		SG_VECTOR p = {0,0,0};
-		myGames[0]->move(p);
+		myGames[0]->moveP(p);
 	}
 	if(key == 'k') {
 		SG_VECTOR p = {0,0,0};
-		myGames[0]->move(p);
+		myGames[0]->moveP(p);
 	}
 	/////////////////////////////rotate all puzzle
 	if(key == 'm') {//rotate 
 		SG_VECTOR r = {0.0,0,0};
-		myGames[0]->rotate(r);
+		myGames[0]->rotateP(r);
 	}
 	if(key == 'n') {//rotate left
 		SG_VECTOR r = {0.0,0,0};
-		myGames[0]->rotate(r);
+		myGames[0]->rotateP(r);
 	}
 	if(key == 'y') {//rotate up
 		SG_VECTOR r = {0.0,0,0};
-		myGames[0]->rotate(r);
+		myGames[0]->rotateP(r);
 	}
 	if(key == 'h') {//rotate down
 		SG_VECTOR r = {0.0,0,0};
-		myGames[0]->rotate(r);
+		myGames[0]->rotateP(r);
 	}
 	/////////////////////face rotations//no rotations comming in from gui
 	//send: SG_VECTOR axis = {0,0,0};

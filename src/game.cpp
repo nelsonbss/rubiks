@@ -6,12 +6,12 @@
 #include "puzzle.h"
 
 game::game(SG_VECTOR p, float w, float h){
-	pos = p;
+	posP = p;
 	width = w;
 	height = h;
-	rot.x = 0;
-	rot.y = 0;
-	rot.z = 0;
+	rotP.x = 0;
+	rotP.y = 0;
+	rotP.z = 0;
 }
 //--------------------------------------------------------------
 #define planeThicknes 0.001
@@ -41,9 +41,9 @@ void game::update(){
 			//updatePuzzle = false;
 
 			////////////////////////////////////////////////////move all puzzle
-			myPuzzle->move(pos);
+			myPuzzle->move(posP);
 			////////////////////////////////////////////rotate all puzzle
-			myPuzzle->rotate(rot);
+			myPuzzle->rotate(rotP);
 			//////////////////////////////////////////make face rotation
 			if(faceRotate == true) {
 				myPuzzle->rotateByIDandAxis(idcubie,axis,dir);
@@ -67,9 +67,14 @@ void game::draw(){
 	if(step == 2){
 		//waiting for armature to be selected
 		ofDrawBitmapString("SHOW ARMATURE MENU HERE! and wait for input" + ofToString("") +"\n",20, 100);
-		//myArmature->draw();
+		
 	}
 	if(step == 3){
+		//armature has been selected
+		//myArmature->draw();
+		
+	}
+	if(step == 4){
 		//made the cuts
 		//show puzzle
 		myPuzzle->draw();
@@ -77,12 +82,12 @@ void game::draw(){
 	}
 }
 //----------------------------------------------------------------
-void game::move(SG_VECTOR p){
-	pos = p;
+void game::moveP(SG_VECTOR p){
+	posP = p;
 }
 //---------------------------------------------------------------
-void game::rotate(SG_VECTOR r){
-	rot = r;
+void game::rotateP(SG_VECTOR r){
+	rotP = r;
 }
 //-------------------------------------------------------------------
 void game::rotateByIDandAxis(int id, SG_VECTOR axs, bool d){
@@ -129,13 +134,13 @@ void game::createSlicer(){
 	//////////////////////////////////end create cutter///////////////////////////////////
 
 	//////////////////////////////////create slicer///////////////////////////////////////
-	mySlicer = new slicer(myCutter,pos.x,pos.y);
+	mySlicer = new slicer(myCutter,posP.x,posP.y);
 	mySlicer->setup();
 	///////////////////////////end create slicer /////////////////////////////////////////
 }
 //---------------------------------------------
 void game::createPuzzle(SG_VECTOR p){
-	if(step == 2){
+	if(step == 3){
 		////////////////////////////////create puzzle///////////////////////////////////////
 		myPuzzle = new puzzle(p.x,p.y,p.z);
 		myPuzzle->setup();
@@ -151,7 +156,7 @@ void game::createPuzzle(SG_VECTOR p){
 		////////////////////////////////end create puzzle//////////////////////////////////
 
 		updatePuzzle = true;
-		step = 3;
+		step = 4;
 	}
 }
 //----------------------------------------------

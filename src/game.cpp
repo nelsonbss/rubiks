@@ -23,7 +23,7 @@ void game::setup(){
 	step = 0;
 	idcubie=0;
 	myArmature = new armature (ofVec3f( ofGetWidth()/2,ofGetHeight()/2,0),300,300,10,3);
-    myArmature->setup();
+	myArmature->setup();
 	/////////////////////////////////////////PUZzLE //////////
 	updatePuzzle = false;
 	//
@@ -35,6 +35,9 @@ void game::update(){
 	if(step == 1 || step == 2 || step == 3){
 		//if there is an object selected
 		objectDisplayed->update(); //rotates the selected object...just for show
+	}
+	if(step == 3){
+		myArmature->update();
 	}
 
 	///////////////////////////////////////update cubies

@@ -176,6 +176,7 @@ void testApp::keyPressed(int key){
 	////////////////////////////////////////////step 3 inputs
 	if(gStep == 3){
 		//armature was selected
+		//showing armature
 		//a puzzle can be made
 		if(key == 'n') {
 			//do slicing

@@ -21,9 +21,7 @@ public:
     float depth;
     float blockSide;
     float side;
-    float degX;
-    float degY;
-    float degZ;
+    ofVec3f rot;
     
     int mode;
     

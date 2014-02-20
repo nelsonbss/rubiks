@@ -430,7 +430,10 @@ void testApp::initOFRender(){
 
 	ofSetVerticalSync(true);
 	ofEnableDepthTest();
-	ofBackground(100, 100, 100, 0);
+	/////background
+	//ofBackground(100, 100, 100, 0);//gray
+	//ofBackground(30, 144, 255, 0);//blue
+	ofBackground(65, 105, 225, 0);//blue
 	// turn on smooth lighting //
 	bSmoothLighting = true;
 	ofSetSmoothLighting(true);
@@ -466,7 +469,7 @@ void testApp::initOFRender(){
 	spotLight.setSpotConcentration( 45 );
 
 	// Directional Lights emit light based on their orientation, regardless of their position //
-	directionalLight.setDiffuseColor(ofColor(0.f, 0.f, 255.f));
+	directionalLight.setDiffuseColor(ofColor(0.f, 0.f, 0.f));
 	directionalLight.setSpecularColor(ofColor(255.f, 255.f, 255.f));
 	directionalLight.setDirectional();
 
@@ -487,8 +490,8 @@ void testApp::initOFRender(){
 	// so we must disable the arb rectangle call to allow 0 -> 1
 	ofDisableArbTex();
 	//// load an image to use as the texture //
-	ofLogoImage.loadImage("of.png");
-	bUseTexture = true;
+	//ofLogoImage.loadImage("of.png");
+	//bUseTexture = true;
 }
 //------------------------------------------------------------------------------
 void testApp::startOFLights(){
@@ -498,14 +501,14 @@ void testApp::startOFLights(){
 	material.begin();
 	// activate the lights //
 	if (bPointLight) pointLight.enable();
-	if (bSpotLight) spotLight.enable();
+	//if (bSpotLight) spotLight.enable();
 	if (bDirLight) directionalLight.enable();
 
 	// grab the texture reference and bind it //
 	// this will apply the texture to all drawing (vertex) calls before unbind() //
 	if(bUseTexture) ofLogoImage.getTextureReference().bind();
 
-	ofSetColor(255, 255, 255, 255);
+	//ofSetColor(255, 255, 255, 255);
 	/*ofPushMatrix();
 	ofTranslate(center.x, center.y, center.z-300);
 	ofRotate(ofGetElapsedTimef() * .8 * RAD_TO_DEG, 0, 1, 0);
@@ -526,18 +529,27 @@ void testApp::startOFLights(){
 	ofPopMatrix();*/
 
 	//small test of openFrameworks drawing embeded with sgCore geometry 
-	ofPushMatrix();
-	ofTranslate(300,300);
-	ofSetColor(ofColor(255,0,255));
-	ofCircle(ofPoint(0,0),5);
-	//ofRotate(ofGetElapsedTimef() * .2 * RAD_TO_DEG, 0, 1, 0);
-	ofPopMatrix();
+	//ofPushMatrix();
+	//ofTranslate(300,300);
+	//ofSetColor(ofColor(255,0,255));
+	//ofCircle(ofPoint(0,0),5);
+	////ofRotate(ofGetElapsedTimef() * .2 * RAD_TO_DEG, 0, 1, 0);
+	//ofPopMatrix();
 
 	if(bUseTexture) ofLogoImage.getTextureReference().unbind();
 
 	if (!bPointLight) pointLight.disable();
-	if (!bSpotLight) spotLight.disable();
+	//if (!bSpotLight) spotLight.disable();
 	if (!bDirLight) directionalLight.disable();
+}
+//------------------------------------------------------------------------------
+void testApp::updateOFLights(){
+	pointLight.setPosition(cos(ofGetElapsedTimef()*.6f) * radius * 2 + center.x, 
+		sin(ofGetElapsedTimef()*.8f) * radius * 2 + center.y, 
+		-cos(ofGetElapsedTimef()*.8f) * radius * 2 + center.z);
+
+	/*spotLight.setOrientation( ofVec3f( 0, cos(ofGetElapsedTimef()) * RAD_TO_DEG, 0) );
+	spotLight.setPosition( mouseX, mouseY, 200);*/
 }
 //------------------------------------------------------------------------------
 void testApp::stopOFLights(){
@@ -546,13 +558,13 @@ void testApp::stopOFLights(){
 	ofDisableLighting();
 
 	ofSetColor( pointLight.getDiffuseColor() );
-	if(bPointLight) pointLight.draw();
+	//if(bPointLight) pointLight.draw();
 
-	ofSetColor(255, 255, 255);
-	ofSetColor( spotLight.getDiffuseColor() );
-	if(bSpotLight) spotLight.draw();
+	//ofSetColor(255, 255, 255);
+	//ofSetColor( spotLight.getDiffuseColor() );
+	//if(bSpotLight) spotLight.draw();
 
-	ofSetColor(255, 255, 255);
+	//ofSetColor(255, 255, 255);
 	/*ofDrawBitmapString("Point Light On (1) : "+ofToString(bPointLight) +"\n"+
 	"Spot Light On (2) : "+ofToString(bSpotLight) +"\n"+
 	"Directional Light On (3) : "+ofToString(bDirLight)+"\n"+
@@ -562,13 +574,4 @@ void testApp::stopOFLights(){
 	"Smooth Lighting enabled (x) : "+ofToString(bSmoothLighting,0)+"\n"+
 	"Textured (t) : "+ofToString(bUseTexture,0),
 	20, 20);*/
-}
-//------------------------------------------------------------------------------
-void testApp::updateOFLights(){
-	pointLight.setPosition(cos(ofGetElapsedTimef()*.6f) * radius * 2 + center.x, 
-		sin(ofGetElapsedTimef()*.8f) * radius * 2 + center.y, 
-		-cos(ofGetElapsedTimef()*.8f) * radius * 2 + center.z);
-
-	spotLight.setOrientation( ofVec3f( 0, cos(ofGetElapsedTimef()) * RAD_TO_DEG, 0) );
-	spotLight.setPosition( mouseX, mouseY, 200);
 }

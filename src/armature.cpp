@@ -89,9 +89,9 @@ void armature::setup(){
 
 //--------------------------------------------------------------
 void armature::update(){
-	rot.x +=0.1;
+	/*rot.x +=0.1;
 	rot.y +=0;
-	rot.z +=0;
+	rot.z +=0;*/
 }
 
 void armature::togglePlanes(){
@@ -105,11 +105,11 @@ void armature::togglePlanes(){
 
 //--------------------------------------------------------------
 void armature::draw(){
-	ofPushMatrix();
-	ofTranslate(center.x,center.y);
-	ofRotateX(rot.x);
-	ofRotateY(rot.y);
-	ofRotateZ(rot.z);
+	glPushMatrix();
+	glTranslatef(center.x,center.y,center.z);
+	glRotatef(rot.x,1,0,0);
+	glRotatef(rot.y,0,1,0);
+	glRotatef(rot.z,0,0,1);
 
 	////////////////////boxes//////////////////////////////////////////////////////////////////////
 	ofFill();
@@ -144,20 +144,21 @@ void armature::draw(){
 
 	ofFill();
 	ofSetColor(255);
-	if(mode == 3) {
-		float angle = ofGetElapsedTimef()*3.2;
-		float strength = (sin( angle+.25 )) * .5f * 5.f;
-		ofVec3f faceNormal;
-		for(int i = 0; i < triangles.size(); i++ ) {
-			// store the face normal here.
-			// we change the vertices, which makes the face normal change
-			// every time that we call getFaceNormal //
-			faceNormal = triangles[i].getFaceNormal();
-			for(int j = 0; j < 3; j++ ) {
-				triangles[i].setVertex( j, triangles[i].getVertex(j) + faceNormal * strength);
-			}
-		}
-	}
+
+	//if(mode == 3) {
+	//	float angle = ofGetElapsedTimef()*3.2;
+	//	float strength = (sin( angle+.25 )) * .5f * 5.f;
+	//	ofVec3f faceNormal;
+	//	for(int i = 0; i < triangles.size(); i++ ) {
+	//		// store the face normal here.
+	//		// we change the vertices, which makes the face normal change
+	//		// every time that we call getFaceNormal //
+	//		faceNormal = triangles[i].getFaceNormal();
+	//		for(int j = 0; j < 3; j++ ) {
+	//			triangles[i].setVertex( j, triangles[i].getVertex(j) + faceNormal * strength);
+	//		}
+	//	}
+	//}
 
 
 	// Planes ////////////////////////////////////////////////////////////////
@@ -194,5 +195,6 @@ void armature::draw(){
 	cylinder3.draw();
 	///////////////////////////////////////////////////////////////////////////////////////
 
-	ofPopMatrix();
+	
+	glPopMatrix();
 }

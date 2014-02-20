@@ -45,8 +45,11 @@ void ofRender::sgCoretoOFmesh(sgC3DObject *obj, ofMesh &mesh,int idCubie){
 		ofFloatColor c;
 		//ask if it is for a cubie
 		if(idCubie == -1){
-			//its nota cubie
+			//its not a cubie // but we want to see color
 			c = decideColor(decideAxis(dir));
+		}else if (idCubie == -2){
+			//its an original shape// with plain color
+			c = ofFloatColor(1,1,1,0.5);
 		}else{
 			//it is a cubie
 			c = decideColorCubie(decideAxis(dir),idCubie);
@@ -202,7 +205,7 @@ ofColor ofRender::decideColorCubie(ofPoint normal, int idCubie){
 		if(normal==x){
 			c = ofFloatColor(0,1,1);
 		}else if(normal==y){
-			c = ofFloatColor(0,1,1);;
+			c = ofFloatColor(0,1,1);
 		}else if(normal==z){
 			c = ofFloatColor(0,1,1);
 		}else if(normal==xn){

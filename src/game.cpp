@@ -22,7 +22,7 @@ game::game(SG_VECTOR p, float w, float h){
 void game::setup(){
 	step = 0;
 	idcubie=0;
-	myArmature = new armature (ofVec3f( ofGetWidth()/2,ofGetHeight()/2,0),300,300,10,3);
+	myArmature = new armature (ofVec3f( posP.x,posP.y,posP.z),300,300,10,3);
 	myArmature->setup();
 	/////////////////////////////////////////PUZzLE //////////
 	updatePuzzle = false;
@@ -37,7 +37,12 @@ void game::update(){
 		objectDisplayed->update(); //rotates the selected object...just for show
 	}
 	if(step == 3){
-		myArmature->update();
+		myArmature->update();//now its rotating onits own
+		//should be movable like the puzzle
+		////////////////////////////////////////////////////move all puzzle
+		//myArmature->move(posA);
+		//////////////////////////////////////////////rotate all puzzle
+		//myArmature->rotate(rotA);
 	}
 
 	///////////////////////////////////////update cubies

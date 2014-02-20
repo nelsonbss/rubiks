@@ -23,9 +23,8 @@ public:
     float side;
     ofVec3f rot;
     
-    int mode;
-    
-    
+//    int mode;
+
     ofPlanePrimitive plane1;
     ofPlanePrimitive plane2;
     ofPlanePrimitive plane3;
@@ -43,14 +42,6 @@ public:
     ofCylinderPrimitive cylinder1;
     ofCylinderPrimitive cylinder2;
     ofCylinderPrimitive cylinder3;
-    
-    // place to store the sides of the box //
-    ofVboMesh boxSides[ofBoxPrimitive::SIDES_TOTAL];
-    ofVboMesh deformPlane;
-    ofVboMesh topCap, bottomCap, body;
-    vector<ofMeshFace> triangles;
-    
-    
 };
 
 #endif /* defined(__Tarmature__armature__) */

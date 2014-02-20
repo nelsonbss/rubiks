@@ -116,6 +116,9 @@
     <ClCompile Include="src\gui\Utils.cpp">
       <Filter>src\gui</Filter>
     </ClCompile>
+    <ClCompile Include="GuiDragable.cpp">
+      <Filter>src\gui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -374,6 +377,9 @@
     </ClInclude>
     <ClInclude Include="src\SceneManager.h" />
     <ClInclude Include="src\gui\Utils.h">
+      <Filter>src\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="GuiDragable.h">
       <Filter>src\gui</Filter>
     </ClInclude>
   </ItemGroup>

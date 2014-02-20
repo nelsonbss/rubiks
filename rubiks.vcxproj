@@ -95,6 +95,7 @@
     <ClCompile Include="..\..\..\addons\ofxXmlSettings\libs\tinyxmlerror.cpp" />
     <ClCompile Include="..\..\..\addons\ofxXmlSettings\libs\tinyxmlparser.cpp" />
     <ClCompile Include="..\..\..\addons\ofxXmlSettings\src\ofxXmlSettings.cpp" />
+    <ClCompile Include="GuiDragable.cpp" />
     <ClCompile Include="src\3DCamera.cpp" />
     <ClCompile Include="src\armature.cpp" />
     <ClCompile Include="src\cubie.cpp" />
@@ -134,6 +135,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\..\addons\ofxXmlSettings\libs\tinyxml.h" />
     <ClInclude Include="..\..\..\addons\ofxXmlSettings\src\ofxXmlSettings.h" />
+    <ClInclude Include="GuiDragable.h" />
     <ClInclude Include="src\3DCamera.h" />
     <ClInclude Include="src\armature.h" />
     <ClInclude Include="src\cubie.h" />

@@ -41,13 +41,13 @@ void myobject3D::setup(){
 //--------------------------------------------------------------
 void myobject3D::update(){
 
-	SG_POINT rotP = {0,0,0};
+	/*SG_POINT rotP = {0,0,0};
 	SG_VECTOR rotV = {0,1,0};
 	deg += 0.01;
 	temp->InitTempMatrix()->Rotate(rotP,rotV,deg);
 	SG_VECTOR transP = {tempPos.x,tempPos.y,tempPos.z};
 	temp->GetTempMatrix()->Translate(transP);
-	temp->ApplyTempMatrix();  
+	temp->ApplyTempMatrix();  */
 
 	//object->DestroyTempMatrix();
 	//object->InitTempMatrix()->Rotate(rotPobject,rotV,0.01);

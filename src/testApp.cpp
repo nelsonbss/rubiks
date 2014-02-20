@@ -46,29 +46,37 @@ void testApp::update(){
 void testApp::draw(){
 	///////////////////START OF RENDERING////////////////////
 	startOFLights();
-
-	////////////////////////////////////////////dummy gui
+	/////////////////////////////////////////////////////////////////////////////////////
+	/////////////////////////////////////////  DUMMY GUI ///  DUMMY GUI  ///  DUMMY GUI
+	///to keep track of what menus and buttons to show, and when
 	for(int i = 0; i < myGames.size(); i++){
 		int gStep=0;
 		//get current step of game
 		gStep = myGames[i]->getCurrentStep();
 		if(gStep == 0){
+			//waiting for object to be selected from menu //drag behavior
 			//show object menu
 			ofDrawBitmapString("SELECT AN OBJECT:" + ofToString("") +"\n" + "torus "+ofToString(1)+"\n"+ "box "+ofToString(2)+"\n"+ "cone "+ofToString(3)+"\n",20, 20);
-			//waiting for object to be selected from menu //drag behavior
 		}else if(gStep == 1){
 			//an object has been selected
 			ofDrawBitmapString("SELECT AN OBJECT:" + ofToString("") +"\n" + "torus "+ofToString(1)+"\n"+ "box "+ofToString(2)+"\n"+ "cone "+ofToString(3)+"\n",20, 20);
 			//show next button.
 			ofDrawBitmapString("NEXT: press 'n' " + ofToString("") +"\n" ,20, 80);
 		}else if(gStep ==2){
+			//waiting for armature to be selected from menu //drag behavior
 			//show armature menu
 			ofDrawBitmapString("SELECT AN ARMATURE:" + ofToString("") +"\n" + "armature 1:  "+ofToString(1)+"\n",20, 20);
-			//show next button.
-			ofDrawBitmapString("NEXT: press 'n' " + ofToString("") +"\n" ,20, 60);
 			//show restart button.
 			ofDrawBitmapString("RESTART: press 'r' " + ofToString("") +"\n" ,20, 80);
 		}else if(gStep == 3){
+			//armature was selected // show armature...manupulate armature
+			ofDrawBitmapString("ARMATURE SELECTED:" + ofToString("") +"\n",20, 20);
+			//show next button.
+			ofDrawBitmapString("NEXT: press 'n' " + ofToString("") +"\n" ,20, 60); //this makes the puzzle
+			//show restart button.
+			ofDrawBitmapString("RESTART: press 'r' " + ofToString("") +"\n" ,20, 80);
+		}else if(gStep == 4){
+			//puzzle has been created
 			//show color palette menu
 			ofDrawBitmapString("SELECT AN ARMATURE:" + ofToString("") +"\n" + "armature 1:  "+ofToString(1)+"\n",20, 20);
 		}
@@ -86,11 +94,7 @@ void testApp::draw(){
 //--------------------------------------------------------------
 void testApp::keyPressed(int key){
 
-	////////////////////////////////////////////////////////////////
-	///////////////////load objects for a game//step 1 of the experience
 	//right now we only have one game, ideal: the master gui will tell a game wich object to load on drag and drop gestures
-	SG_VECTOR objectPos = {0,0,0}; 
-	SG_VECTOR tempPos = {displayX,displayY,displayZ};
 
 	int gStep=0;
 	//verify in which step the game is, so that "input" action works well
@@ -98,8 +102,11 @@ void testApp::keyPressed(int key){
 
 	////////////////////////////////////////////step 0 inputs
 	if(gStep == 0){
+		SG_VECTOR objectPos = {0,0,0}; 
+		SG_VECTOR tempPos = {displayX,displayY,displayZ};
 		//waiting for shape to be selected
 		if(key == '1') {
+			//load object recieves (object id, boolean position, display position) 
 			myGames[0]->loadObject(1,objectPos,tempPos); //pos.z its the torus radious
 		}
 		if(key == '2') {
@@ -113,25 +120,122 @@ void testApp::keyPressed(int key){
 	}
 	////////////////////////////////////////////step 1 inputs
 	if(gStep == 1){
+		//is showing object with flat color
 		//selected an object
 		if(key == 'n') {
 			//go to step 2
 			myGames[0]->setCurrentStep(2);
 			//show armature
 		} 
+		//user can change the selected object
+		SG_VECTOR objectPos = {0,0,0}; 
+		SG_VECTOR tempPos = {displayX,displayY,displayZ};
+		//waiting for shape to be selected
+		if(key == '1') {
+			//load object recieves (object id, boolean position, display position) 
+			myGames[0]->loadObject(1,objectPos,tempPos); //pos.z its the torus radious
+		}
+		if(key == '2') {
+			SG_VECTOR v = {500,400,100}; 
+			myGames[0]->loadObject(2,objectPos,tempPos);
+		}
+		if(key == '3') {
+			SG_VECTOR v = {500,400,100}; 
+			myGames[0]->loadObject(3,objectPos,tempPos);
+		}
 	}
 	////////////////////////////////////////////step 2 inputs
 	if(gStep == 2){
 		//waiting for armature to be selected
-
+		if(key == '1') {
+			//select armature 1
+			//myGames[0]->loadArmature(1);
+			//for now .. go to step 3
+			myGames[0]->setCurrentStep(3);
+		}
+		if(key == '2') {
+			//select armature 2
+			//for now .. go to step 3
+			myGames[0]->setCurrentStep(3);
+		}
 	}
 	////////////////////////////////////////////step 3 inputs
 	if(gStep == 3){
 		//armature was selected
+		//a puzzle can be made
 		if(key == 'n') {
 			//do slicing
 			SG_VECTOR v = {500,400,100};
 			myGames[0]->createPuzzle(v);//create Puzzle goes to step4 inside the game to show the puzzle
+		}
+	}
+	////////////////////////////////////////////step 4 inputs
+	if(gStep == 4){
+		//showing puzzle with colors
+		//waiting for color change
+	}
+	if(gStep == 5){
+		//selected color (or not)
+		//pressed next on color palette step
+		//showing puzzle
+		//now the puzzle can be played with
+		///////////////////// FACE ROTATIONS //////////////////////////////
+		////////  x axis  ////  x axis
+		int idcubie = 11;//to follow this cubie for now //this will be decided upon touch, or click on top of puzzle
+		int randcubie=0;
+		if(key == 'q') {
+			if(rotate == true) {//c
+				randcubie = rand()%26;
+				//clockwise
+				SG_VECTOR axis = {1,0,0};
+				myGames[0]->rotateByIDandAxis(idcubie,axis,true);
+				rotate = false;
+			}
+		}
+		if(key == 'a') {
+			if(rotate == true) {//cc
+				randcubie = rand()%26;
+				//clockwise
+				SG_VECTOR axis = {1,0,0};
+				myGames[0]->rotateByIDandAxis(idcubie,axis,false);
+				rotate = false;
+			}
+		}
+		////////  y axis  ////  y axis
+		if(key == 'w') {
+			if(rotate == true) {
+				randcubie = rand()%26;
+				//clockwise
+				SG_VECTOR axis = {0,1,0};
+				myGames[0]->rotateByIDandAxis(idcubie,axis,true);
+				rotate = false;
+			}
+		}if(key == 's') {
+			//counter clockwise
+			if(rotate == true) {
+				randcubie = rand()%26;
+				SG_VECTOR axis = {0,1,0};
+				myGames[0]->rotateByIDandAxis(idcubie,axis,false);
+				rotate = false;
+			}
+		}
+		////////  z axis  ////  z axis
+		if(key == 'e') {
+			if(rotate == true) {
+				randcubie = rand()%26;
+				//clockwise
+				SG_VECTOR axis = {0,0,1};
+				myGames[0]->rotateByIDandAxis(idcubie,axis,true);
+				rotate = false;
+			}
+		}if(key == 'd') {
+			if(rotate == true) {
+				//counter clockwise
+				randcubie = rand()%26;
+				SG_VECTOR axis = {0,0,1};
+				myGames[0]->rotateByIDandAxis(idcubie,axis,false);
+				rotate = false;
+			}
 		}
 	}
 
@@ -176,64 +280,7 @@ void testApp::keyPressed(int key){
 		myGames[0]->rotateP(r);
 	}
 
-	/////////////////////FACE ROTATIONS!!!//////////////////////////////
-	////////////////////////////////////////////x axis
-	int idcubie = 11;//to follow this cubie for now //this will be decided upon touch, or click on top of puzzle
-	int randcubie=0;
-	if(key == 'q') {
-		if(rotate == true) {//c
-			randcubie = rand()%26;
-			//clockwise
-			SG_VECTOR axis = {1,0,0};
-			myGames[0]->rotateByIDandAxis(idcubie,axis,true);
-			rotate = false;
-		}
-	}
-	if(key == 'a') {
-		if(rotate == true) {//cc
-			randcubie = rand()%26;
-			//clockwise
-			SG_VECTOR axis = {1,0,0};
-			myGames[0]->rotateByIDandAxis(idcubie,axis,false);
-			rotate = false;
-		}
-	}
-	///////////////////////////////////////y axis
-	if(key == 'w') {
-		if(rotate == true) {
-			randcubie = rand()%26;
-			//clockwise
-			SG_VECTOR axis = {0,1,0};
-			myGames[0]->rotateByIDandAxis(idcubie,axis,true);
-			rotate = false;
-		}
-	}if(key == 's') {
-		//counter clockwise
-		if(rotate == true) {
-			randcubie = rand()%26;
-			SG_VECTOR axis = {0,1,0};
-			myGames[0]->rotateByIDandAxis(idcubie,axis,false);
-			rotate = false;
-		}
-	}
-	///////////////////////////////////////////z axis
-	if(key == 'e') {
-		if(rotate == true) {
-			randcubie = rand()%26;
-			//clockwise
-			SG_VECTOR axis = {0,0,1};
-			myGames[0]->rotateByIDandAxis(idcubie,axis,true);
-			rotate = false;
-		}
-	}if(key == 'd') {
-		if(rotate == true) {
-			//counter clockwise
-			randcubie = rand()%26;
-			SG_VECTOR axis = {0,0,1};
-			myGames[0]->rotateByIDandAxis(idcubie,axis,false);
-			rotate = false;
-		}
-	}
+
 
 	//if(puzzleExists == true){
 	//	if(key == 'f') {

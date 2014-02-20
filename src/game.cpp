@@ -36,10 +36,8 @@ void game::update(){
 
 	///////////////////////////////////////update cubies
 	if(updatePuzzle){
-		if(step == 3){
+		if(step == 4){
 			myPuzzle->update();
-			//updatePuzzle = false;
-
 			////////////////////////////////////////////////////move all puzzle
 			myPuzzle->move(posP);
 			////////////////////////////////////////////rotate all puzzle
@@ -49,6 +47,7 @@ void game::update(){
 				myPuzzle->rotateByIDandAxis(idcubie,axis,dir);
 				faceRotate = false;
 			}
+			//updatePuzzle = false;
 		}
 	}
 }
@@ -84,10 +83,12 @@ void game::draw(){
 //----------------------------------------------------------------
 void game::moveP(SG_VECTOR p){
 	posP = p;
+	//updatePuzzle = true;
 }
 //---------------------------------------------------------------
 void game::rotateP(SG_VECTOR r){
 	rotP = r;
+	//updatePuzzle = true;
 }
 //-------------------------------------------------------------------
 void game::rotateByIDandAxis(int id, SG_VECTOR axs, bool d){
@@ -99,6 +100,7 @@ void game::rotateByIDandAxis(int id, SG_VECTOR axs, bool d){
 		idcubie = id;
 		dir = d;
 		axis = axs;
+		//updatePuzzle = true;
 		faceRotate = true;
 	}
 
@@ -170,13 +172,13 @@ void game::setCurrentStep(int s){
 //----------------------------------------------
 void game::restart(){
 	//go to step 0, clear puzzle, , clear pieces, clear object
-	if(step==3 || step==4){
+	if(step==4){
 		myPuzzle->exit();
 		objectDisplayed->exit();
 		myCutter->exit();
 		mySlicer->exit();
 		step = 0;
-	}else if (step==1 || step==2){
+	}else if (step==1 || step==2 || step==3){
 		objectDisplayed->exit();
 		myCutter->exit();
 		mySlicer->exit();

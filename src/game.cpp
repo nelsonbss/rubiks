@@ -30,7 +30,7 @@ void game::setup(){
 //--------------------------------------------------------------
 void game::update(){
 
-	if(step == 1){
+	if(step == 1 || step == 2 || step == 3){
 		//if there is an object selected
 		objectDisplayed->update(); //rotates the selected object...just for show
 	}
@@ -66,10 +66,14 @@ void game::draw(){
 	}
 	if(step == 2){
 		//waiting for armature to be selected
+		//show selected object
+		objectDisplayed->draw();
 	}
 	if(step == 3){
 		//armature has been selected
 		//myArmature->draw();
+		//show selected object
+		objectDisplayed->draw();
 	}
 	if(step == 4 || step == 5){
 		//made the cuts

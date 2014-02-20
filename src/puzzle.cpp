@@ -149,39 +149,11 @@ void puzzle::rotate(SG_VECTOR r){
 	}
 }
 ////////////////////////////////////////////////////////////////
-void puzzle::moveRight(){
+void puzzle::move(SG_VECTOR p){
 	//iterate through cubies
-	pos.x += 10;
-	for(int i=0;i<numPieces;i++){
-		if(myCubies[i] != NULL){
-			myCubies[i]->move(pos);
-		}
-	}
-}
-//--------------------------------------------------------------
-void puzzle::moveLeft(){
-	//iterate through cubies
-	pos.x -= 10;
-	for(int i=0;i<numPieces;i++){
-		if(myCubies[i] != NULL){
-			myCubies[i]->move(pos);
-		}
-	}
-}
-//--------------------------------------------------------------
-void puzzle::moveUp(){
-	//iterate through cubies
-	pos.y -= 10;
-	for(int i=0;i<numPieces;i++){
-		if(myCubies[i] != NULL){
-			myCubies[i]->move(pos);
-		}
-	}
-}
-//--------------------------------------------------------------
-void puzzle::moveDown(){
-	//iterate through cubies
-	pos.y += 10;
+	pos.x +=  p.x;
+	pos.y +=  p.y;
+	pos.z +=  p.z;
 	for(int i=0;i<numPieces;i++){
 		if(myCubies[i] != NULL){
 			myCubies[i]->move(pos);

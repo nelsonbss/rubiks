@@ -24,11 +24,6 @@ public:
 	void gotMessage(ofMessage msg);
 
 	////////////////
-	void initScene();
-	void drawElements();
-	////////////////
-
-	////////////////
 	vector<game *> myGames;
 
 	myobject3D *objectDisplayed;
@@ -36,12 +31,14 @@ public:
 	slicer *mySlicer;
 	puzzle *myPuzzle;
 
-	int randcubie;
+	bool rotate;
 
-	float ct1;
-	float ct2;
 	////////////////rendering  and textures
 	void initOFRender();
+	void startOFLights();
+	void updateOFLights();
+	void stopOFLights();
+
 	ofMesh myMesh;
 	ofLight pointLight;
 	ofLight spotLight;

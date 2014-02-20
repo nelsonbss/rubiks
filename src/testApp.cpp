@@ -2,7 +2,6 @@
 #include <vector>
 #include "game.h"
 ///////////////////////////////////////////
-#include "Painter.h"
 #include "sgCore.h"
 
 ///////////////////////////////////////////
@@ -15,14 +14,13 @@
 //--------------------------------------------------------------
 void testApp::setup(){
 	/////////////////////////////initialize sgCore library
-	sgInitKernel();  
-	//initScene();//this function was from openGL initial drawing
+	sgInitKernel();
 
 	/////////////////////////////initialize openFrameworks rendering
 	initOFRender();
 
 	////////////////////////////////create games
-	//one game for now
+	////////////////////////////////one game for now
 	SG_VECTOR p = {0,0,0};
 	game *tempGame = new game(p, 1024, 768);
 	myGames.push_back(tempGame);
@@ -31,101 +29,32 @@ void testApp::setup(){
 	for(int i = 0; i < myGames.size(); i++){
 		myGames[i]->setup();
 	}
+
+	rotate = true;
 }
 //--------------------------------------------------------------
 void testApp::update(){
-	//////////////////////////////open frameworks lights /////////////////////////////////
-	pointLight.setPosition(cos(ofGetElapsedTimef()*.6f) * radius * 2 + center.x, 
-		sin(ofGetElapsedTimef()*.8f) * radius * 2 + center.y, 
-		-cos(ofGetElapsedTimef()*.8f) * radius * 2 + center.z);
+	//////////////////////////////open frameworks lights 
+	updateOFLights();
 
-	spotLight.setOrientation( ofVec3f( 0, cos(ofGetElapsedTimef()) * RAD_TO_DEG, 0) );
-	spotLight.setPosition( mouseX, mouseY, 200);
-
-	/////////////////////////////////////////////////////update games
+	///////////////////////////////////////////update games
 	for(int i = 0; i < myGames.size(); i++){
 		myGames[i]->update();
 	}
 }
 //--------------------------------------------------------------
 void testApp::draw(){
-	// enable lighting //
-	ofEnableLighting();
-	// enable the material, so that it applies to all 3D objects before material.end() call //
-	material.begin();
-	// activate the lights //
-	if (bPointLight) pointLight.enable();
-	if (bSpotLight) spotLight.enable();
-	if (bDirLight) directionalLight.enable();
-
-	// grab the texture reference and bind it //
-	// this will apply the texture to all drawing (vertex) calls before unbind() //
-	if(bUseTexture) ofLogoImage.getTextureReference().bind();
-
-	ofSetColor(255, 255, 255, 255);
-	/*ofPushMatrix();
-	ofTranslate(center.x, center.y, center.z-300);
-	ofRotate(ofGetElapsedTimef() * .8 * RAD_TO_DEG, 0, 1, 0);
-	ofDrawSphere( 0,0,0, radius);
-	ofPopMatrix();
-
-	ofPushMatrix();
-	ofTranslate(300, 300, cos(ofGetElapsedTimef()*1.4) * 300.f);
-	ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 1, 0, 0);
-	ofRotate(ofGetElapsedTimef()*.8 * RAD_TO_DEG, 0, 1, 0);
-	ofDrawBox(0, 0, 0, 60);
-	ofPopMatrix();
-
-	ofPushMatrix();
-	ofTranslate(center.x, center.y, -900);
-	ofRotate(ofGetElapsedTimef() * .2 * RAD_TO_DEG, 0, 1, 0);
-	ofDrawBox( 0, 0, 0, 850);
-	ofPopMatrix();*/
-
-	//small test of openFrameworks drawing embeded with sgCore geometry 
-	ofPushMatrix();
-	ofTranslate(300,300);
-	ofSetColor(ofColor(255,0,255));
-	ofCircle(ofPoint(0,0),5);
-	//ofRotate(ofGetElapsedTimef() * .2 * RAD_TO_DEG, 0, 1, 0);
-	ofPopMatrix();
-
-	if(bUseTexture) ofLogoImage.getTextureReference().unbind();
-
-	if (!bPointLight) pointLight.disable();
-	if (!bSpotLight) spotLight.disable();
-	if (!bDirLight) directionalLight.disable();
-
-
-	////////////////////////////////////////////////////////////////////////////PUZZLE !!!!//////////////////////////////////////
+	///////////////////START OF RENDERING////////////////////
+	startOFLights();
+	
+	////////////////////////PUZZLE !!!!//////////////////////
 	///////////////////////////////draw games
 	for(int i = 0; i < myGames.size(); i++){
 		myGames[i]->draw();
 	}
 
-
-	//////////////////////////////////////////////////////////////////////////END OF RENDERING////////////////////
-	material.end();
-	// turn off lighting //
-	ofDisableLighting();
-
-	ofSetColor( pointLight.getDiffuseColor() );
-	if(bPointLight) pointLight.draw();
-
-	ofSetColor(255, 255, 255);
-	ofSetColor( spotLight.getDiffuseColor() );
-	if(bSpotLight) spotLight.draw();
-
-	ofSetColor(255, 255, 255);
-	/*ofDrawBitmapString("Point Light On (1) : "+ofToString(bPointLight) +"\n"+
-	"Spot Light On (2) : "+ofToString(bSpotLight) +"\n"+
-	"Directional Light On (3) : "+ofToString(bDirLight)+"\n"+
-	"Shiny Objects On (s) : "+ofToString(bShiny)+"\n"+
-	"Spot Light Cutoff (up/down) : "+ofToString(spotLight.getSpotlightCutOff(),0)+"\n"+
-	"Spot Light Concentration (right/left) : " + ofToString(spotLight.getSpotConcentration(),0)+"\n"+
-	"Smooth Lighting enabled (x) : "+ofToString(bSmoothLighting,0)+"\n"+
-	"Textured (t) : "+ofToString(bUseTexture,0),
-	20, 20);*/
+	///////////////////END OF RENDERING////////////////////
+	stopOFLights();
 }
 //--------------------------------------------------------------
 void testApp::keyPressed(int key){
@@ -161,18 +90,22 @@ void testApp::keyPressed(int key){
 	}
 	//////////////////////////////move all puzzle
 	if(key == 'l') {
-		myGames[0]->movePRightF(true);
+		SG_VECTOR p = {10,0,0};
+		myGames[0]->move(p);
 	}
 	if(key == 'j') {
-		myGames[0]->movePLeftF(true);
+		SG_VECTOR p = {-10,0,0};
+		myGames[0]->move(p);
 	}
 	if(key == 'i') {
-		myGames[0]->movePUpF(true);
+		SG_VECTOR p = {0,-10,0};
+		myGames[0]->move(p);
 	}
 	if(key == 'k') {
-		myGames[0]->movePDownF(true);
+		SG_VECTOR p = {0,10,0};
+		myGames[0]->move(p);
 	}
-	/////////////////////////////rotate all puzzle
+	/////////////////////////////rotate all puzzle  // two finger swipe gesture
 	if(key == 'm') {//rotate right
 		SG_VECTOR r = {0,0.1,0};
 		myGames[0]->rotate(r);
@@ -182,61 +115,79 @@ void testApp::keyPressed(int key){
 		myGames[0]->rotate(r);
 	}
 	if(key == 'y') {//rotate up
-		SG_VECTOR r = {-0.1,0,0};
-		myGames[0]->rotate(r);
-	}
-	if(key == 'h') {//rotate down
 		SG_VECTOR r = {0.1,0,0};
 		myGames[0]->rotate(r);
 	}
+	if(key == 'h') {//rotate down
+		SG_VECTOR r = {-0.1,0,0};
+		myGames[0]->rotate(r);
+	}
+
+	/////////////////////FACE ROTATIONS!!!//////////////////////////////
+	////////////////////////////////////////////x axis
+	int idcubie = 11;//to follow this cubie for now //this will be decided upon touch, or click on top of puzzle
+	int randcubie=0;
+	if(key == 'q') {
+		if(rotate == true) {//c
+			randcubie = rand()%26;
+			//clockwise
+			SG_VECTOR axis = {1,0,0};
+			myGames[0]->rotateByIDandAxis(idcubie,axis,true);
+			rotate = false;
+		}
+	}
+	if(key == 'a') {
+		if(rotate == true) {//cc
+			randcubie = rand()%26;
+			//clockwise
+			SG_VECTOR axis = {1,0,0};
+			myGames[0]->rotateByIDandAxis(idcubie,axis,false);
+			rotate = false;
+		}
+	}
+	///////////////////////////////////////y axis
+	if(key == 'w') {
+		if(rotate == true) {
+			randcubie = rand()%26;
+			//clockwise
+			SG_VECTOR axis = {0,1,0};
+			myGames[0]->rotateByIDandAxis(idcubie,axis,true);
+			rotate = false;
+		}
+	}if(key == 's') {
+		//counter clockwise
+		if(rotate == true) {
+			randcubie = rand()%26;
+			SG_VECTOR axis = {0,1,0};
+			myGames[0]->rotateByIDandAxis(idcubie,axis,false);
+			rotate = false;
+		}
+	}
+	///////////////////////////////////////////z axis
+	if(key == 'e') {
+		if(rotate == true) {
+			randcubie = rand()%26;
+			//clockwise
+			SG_VECTOR axis = {0,0,1};
+			myGames[0]->rotateByIDandAxis(idcubie,axis,true);
+			rotate = false;
+		}
+	}if(key == 'd') {
+		if(rotate == true) {
+			//counter clockwise
+			randcubie = rand()%26;
+			SG_VECTOR axis = {0,0,1};
+			myGames[0]->rotateByIDandAxis(idcubie,axis,false);
+			rotate = false;
+		}
+	}
 
 	//if(puzzleExists == true){
-	//	if(key == 'd') {
-	//		cout << "manualDRAW" << endl;
-	//		drawCuts = true;
-	//	}
 	//	if(key == 'f') {
 	//		cout << "nu cubies " << myPuzzle->giveNumCubies() << endl;
 	//	}
 	//	if(key == 'g') {
 	//		cout << "nu pieces " << mySlicer->countPieces() << endl;
-	//	}
-
-	//	/////////////////////FACE ROTATIONS!!!//////////////////////////////
-	//	//rotation point: 3D-center of cubie 7 (8 in the original numbering)
-
-	//	///x axis
-	//	if(key == 'q') {
-	//		ct1 = ofGetElapsedTimeMillis();
-	//		//tempDeg = 0.0;
-	//		randcubie = rand()%26;
-	//		faceRotateC = true; //clockwise
-	//	}if(key == 'a') {
-	//		//tempDeg = 0.0;
-	//		ct1 = ofGetElapsedTimeMillis();
-	//		faceRotateCC = true; //counter clockwise
-	//	}
-	//	//y axis
-	//	if(key == 'w') {
-	//		ct1 = ofGetElapsedTimeMillis();
-	//		//tempDeg = 0.0;
-	//		randcubie = rand()%26;
-	//		faceRotateCy = true; //clockwise
-	//	}if(key == 's') {
-	//		//tempDeg = 0.0;
-	//		ct1 = ofGetElapsedTimeMillis();
-	//		faceRotateCCy = true; //counter clockwise
-	//	}
-	//	//z axis
-	//	if(key == 'e') {
-	//		ct1 = ofGetElapsedTimeMillis();
-	//		//tempDeg = 0.0;
-	//		randcubie = rand()%26;
-	//		faceRotateCz = true; //clockwise
-	//	}if(key == 'd') {
-	//		//tempDeg = 0.0;
-	//		ct1 = ofGetElapsedTimeMillis();
-	//		faceRotateCCz = true; //counter clockwise
 	//	}
 	//}
 }
@@ -244,16 +195,20 @@ void testApp::keyPressed(int key){
 void testApp::keyReleased(int key){
 	/////////////////////////////move all puzzle
 	if(key == 'l') {
-		myGames[0]->movePRightF(false);
+		SG_VECTOR p = {0,0,0};
+		myGames[0]->move(p);
 	}
 	if(key == 'j') {
-		myGames[0]->movePLeftF(false);
+		SG_VECTOR p = {0,0,0};
+		myGames[0]->move(p);
 	}
 	if(key == 'i') {
-		myGames[0]->movePUpF(false);
+		SG_VECTOR p = {0,0,0};
+		myGames[0]->move(p);
 	}
 	if(key == 'k') {
-		myGames[0]->movePDownF(false);
+		SG_VECTOR p = {0,0,0};
+		myGames[0]->move(p);
 	}
 	/////////////////////////////rotate all puzzle
 	if(key == 'm') {//rotate 
@@ -271,6 +226,51 @@ void testApp::keyReleased(int key){
 	if(key == 'h') {//rotate down
 		SG_VECTOR r = {0.0,0,0};
 		myGames[0]->rotate(r);
+	}
+	/////////////////////face rotations//no rotations comming in from gui
+	//send: SG_VECTOR axis = {0,0,0};
+	if(key == 'q') {
+		if(rotate == false) {//c
+			SG_VECTOR axis = {0,0,0};
+			myGames[0]->rotateByIDandAxis(0,axis,true);
+			rotate = true;
+		}
+	}
+	if(key == 'a') {
+		if(rotate == false) {//cc
+			SG_VECTOR axis = {0,0,0};
+			myGames[0]->rotateByIDandAxis(0,axis,false);
+			rotate = true;
+		}
+	}
+	//y axis
+	if(key == 'w') {
+		if(rotate == false) {
+			SG_VECTOR axis = {0,0,0};
+			myGames[0]->rotateByIDandAxis(0,axis,true);
+			rotate = true;
+		}
+	}if(key == 's') {
+		//counter clockwise
+		if(rotate == false) {
+			SG_VECTOR axis = {0,0,0};
+			myGames[0]->rotateByIDandAxis(0,axis,false);
+			rotate = true;
+		}
+	}
+	//z axis
+	if(key == 'e') {
+		if(rotate == false) {
+			SG_VECTOR axis = {0,0,0};
+			myGames[0]->rotateByIDandAxis(0,axis,true);
+			rotate = true;
+		}
+	}if(key == 'd') {
+		if(rotate == false) {
+			SG_VECTOR axis = {0,0,0};
+			myGames[0]->rotateByIDandAxis(0,axis,false);
+			rotate = true;
+		}
 	}
 }
 //--------------------------------------------------------------
@@ -296,20 +296,13 @@ void testApp::dragEvent(ofDragInfo dragInfo){
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------
 void testApp::exit(){
-	/*if(puzzleExists == true){
-	myPuzzle->exit();
-	objectDisplayed->exit();
-	myCutter->exit();
-	mySlicer->exit();
-	}else{
-	objectDisplayed->exit();
-	myCutter->exit();
-	mySlicer->exit();
-	}*/
 	myGames[0]->restart();
+	//cleanup games vector!!
 	//sgFreeKernel();
 }
 //-----------------------------------------------------------------------------
+/////////////////////////////////////////////////////////////////////////////////////
+// OF rendering
 void testApp::initOFRender(){
 	ofGLRenderer(true);
 
@@ -375,62 +368,85 @@ void testApp::initOFRender(){
 	ofLogoImage.loadImage("of.png");
 	bUseTexture = true;
 }
-/////////////////////////////////////////////////////////////////////////////////////
-// openGL rendering
-void testApp::initScene(){
-	// Lights properties
-	float ambientProperties[]  = {0.1f, 0.1f, 0.1f, 1.0f};
-	float diffuseProperties[]  = {1.0f, 1.0f, 1.0f, 1.0f};
-	float specularProperties[] = {1.0f, 1.0f, 1.0f, 1.0f};
+//------------------------------------------------------------------------------
+void testApp::startOFLights(){
+	// enable lighting //
+	ofEnableLighting();
+	// enable the material, so that it applies to all 3D objects before material.end() call //
+	material.begin();
+	// activate the lights //
+	if (bPointLight) pointLight.enable();
+	if (bSpotLight) spotLight.enable();
+	if (bDirLight) directionalLight.enable();
 
-	glLightfv( GL_LIGHT0, GL_AMBIENT, ambientProperties);
-	glLightfv( GL_LIGHT0, GL_DIFFUSE,diffuseProperties);
-	glLightfv( GL_LIGHT0, GL_SPECULAR, specularProperties);
-	//glLightModelf(GL_LIGHT_MODEL_TWO_SIDE, 1.0);
+	// grab the texture reference and bind it //
+	// this will apply the texture to all drawing (vertex) calls before unbind() //
+	if(bUseTexture) ofLogoImage.getTextureReference().bind();
 
-	glClearColor(1.0,1.0,1.0,1.0f);
+	ofSetColor(255, 255, 255, 255);
+	/*ofPushMatrix();
+	ofTranslate(center.x, center.y, center.z-300);
+	ofRotate(ofGetElapsedTimef() * .8 * RAD_TO_DEG, 0, 1, 0);
+	ofDrawSphere( 0,0,0, radius);
+	ofPopMatrix();
 
-	glHint(GL_LINE_SMOOTH_HINT,GL_FASTEST);
+	ofPushMatrix();
+	ofTranslate(300, 300, cos(ofGetElapsedTimef()*1.4) * 300.f);
+	ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 1, 0, 0);
+	ofRotate(ofGetElapsedTimef()*.8 * RAD_TO_DEG, 0, 1, 0);
+	ofDrawBox(0, 0, 0, 60);
+	ofPopMatrix();
 
-	//// Texture
-	glEnable(GL_TEXTURE_2D);
-	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
+	ofPushMatrix();
+	ofTranslate(center.x, center.y, -900);
+	ofRotate(ofGetElapsedTimef() * .2 * RAD_TO_DEG, 0, 1, 0);
+	ofDrawBox( 0, 0, 0, 850);
+	ofPopMatrix();*/
 
+	//small test of openFrameworks drawing embeded with sgCore geometry 
+	ofPushMatrix();
+	ofTranslate(300,300);
+	ofSetColor(ofColor(255,0,255));
+	ofCircle(ofPoint(0,0),5);
+	//ofRotate(ofGetElapsedTimef() * .2 * RAD_TO_DEG, 0, 1, 0);
+	ofPopMatrix();
 
-	// Default : lighting
+	if(bUseTexture) ofLogoImage.getTextureReference().unbind();
 
-	//glEnable(GL_LIGHTING);
-	glEnable(GL_LIGHT0);
-
-
-	// Default : blending
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-	glEnable(GL_DEPTH_TEST);
-
-	//glEnable(GL_CULL_FACE);
+	if (!bPointLight) pointLight.disable();
+	if (!bSpotLight) spotLight.disable();
+	if (!bDirLight) directionalLight.disable();
 }
-//-----------------------------------------------------------------------------------
-void testApp::drawElements(){
-	//////////////////////////////////////////////////////////////
-	////draw the elements of the scene
-	sgCObject*  curObj = sgGetScene()->GetObjectsList()->GetHead();
+//------------------------------------------------------------------------------
+void testApp::stopOFLights(){
+	material.end();
+	// turn off lighting //
+	ofDisableLighting();
 
-	while (curObj)
-	{
-		if (true)
-		{
-			Painter::DrawObject(GL_RENDER,curObj,false);
+	ofSetColor( pointLight.getDiffuseColor() );
+	if(bPointLight) pointLight.draw();
 
-			/*if ((curObj->GetAttribute(SG_OA_DRAW_STATE) & SG_DS_GABARITE))
-			{
-			SG_POINT a1,a2;
-			curObj->GetGabarits(a1,a2);
-			Painter::DrawGabariteBox(a1,a2);
-			}*/
-		}
-		curObj = sgGetScene()->GetObjectsList()->GetNext(curObj);
-	}
+	ofSetColor(255, 255, 255);
+	ofSetColor( spotLight.getDiffuseColor() );
+	if(bSpotLight) spotLight.draw();
+
+	ofSetColor(255, 255, 255);
+	/*ofDrawBitmapString("Point Light On (1) : "+ofToString(bPointLight) +"\n"+
+	"Spot Light On (2) : "+ofToString(bSpotLight) +"\n"+
+	"Directional Light On (3) : "+ofToString(bDirLight)+"\n"+
+	"Shiny Objects On (s) : "+ofToString(bShiny)+"\n"+
+	"Spot Light Cutoff (up/down) : "+ofToString(spotLight.getSpotlightCutOff(),0)+"\n"+
+	"Spot Light Concentration (right/left) : " + ofToString(spotLight.getSpotConcentration(),0)+"\n"+
+	"Smooth Lighting enabled (x) : "+ofToString(bSmoothLighting,0)+"\n"+
+	"Textured (t) : "+ofToString(bUseTexture,0),
+	20, 20);*/
+}
+//------------------------------------------------------------------------------
+void testApp::updateOFLights(){
+		pointLight.setPosition(cos(ofGetElapsedTimef()*.6f) * radius * 2 + center.x, 
+		sin(ofGetElapsedTimef()*.8f) * radius * 2 + center.y, 
+		-cos(ofGetElapsedTimef()*.8f) * radius * 2 + center.z);
+
+	spotLight.setOrientation( ofVec3f( 0, cos(ofGetElapsedTimef()) * RAD_TO_DEG, 0) );
+	spotLight.setPosition( mouseX, mouseY, 200);
 }

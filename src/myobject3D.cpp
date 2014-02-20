@@ -34,8 +34,8 @@ void myobject3D::setup(){
 	temp->Triangulate(SG_VERTEX_TRIANGULATION);
 	temp->SetAttribute(SG_OA_COLOR,2);
 	ofRender *ofr = new ofRender(); //class that has the metods to transform sgCore to OF mesh and set the normals (in one function)
-	ofr->sgCoretoOFmesh(temp,myMesh,-1); //-1 because its not a cubie but want color
-	//ofr->sgCoretoOFmesh(temp,myMesh,-2); //-2 for plain color
+	//ofr->sgCoretoOFmesh(temp,myMesh,-1); //-1 because its not a cubie but want color
+	ofr->sgCoretoOFmesh(temp,myMesh,-2); //-2 for plain color
 	myVbo.setMesh(myMesh, GL_STATIC_DRAW);
 	free(ofr);
 }

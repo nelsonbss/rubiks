@@ -12,9 +12,11 @@
 puzzle::puzzle(float x, float y, float z){
 	numPieces = 27;
 	myCubies = (cubie**)malloc(numPieces*sizeof(cubie*));
+
 	pos.x = x;
 	pos.y = y;
 	pos.z = z;
+
 	rot.x = 0;
 	rot.y = 0;
 	rot.z = 0;

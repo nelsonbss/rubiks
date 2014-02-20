@@ -304,8 +304,6 @@ void testApp::keyPressed(int key){
 		//tell a game to restart 
 		myGames[0]->restart();
 	}
-
-
 	//if(puzzleExists == true){
 	//	if(key == 'f') {
 	//		cout << "nu cubies " << myPuzzle->giveNumCubies() << endl;

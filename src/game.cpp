@@ -7,11 +7,15 @@
 
 game::game(SG_VECTOR p, float w, float h, SG_VECTOR puzzlePos){
 	posGame = p;
-	posP = puzzlePos; //for the puzzle
-	posA = puzzlePos;
 	width = w;
 	height = h;
-	rotP.x = 0;
+
+	posP.x = 0; //for the puzzle & sample object
+	posP.y = 0;
+	posP.z = 0;
+	posA = puzzlePos; //for the armature
+
+	rotP.x = 0; //rotation of puzzle
 	rotP.y = 0;
 	rotP.z = 0;
 }
@@ -39,7 +43,7 @@ void game::update(){
 		objectDisplayed->update(); //rotates the selected object...just for show
 	}
 	if(step == 3){
-		myArmature->update();//now its rotating onits own
+		//myArmature->update();//now its rotating onits own
 		//should be movable like the puzzle
 		////////////////////////////////////////////////////move all puzzle
 		//myArmature->move(posA);
@@ -87,10 +91,17 @@ void game::draw(){
 		//show selected object
 		objectDisplayed->draw();
 	}
-	if(step == 4 || step == 5){
+	if(step == 4 ){
 		//made the cuts
-		//its showing color palette
+		//show color palette
 		//show puzzle
+
+		myPuzzle->draw();
+		//mySlicer->draw();
+	}
+	if(step == 5){
+		//show puzzle
+		//rotations can be made
 		myPuzzle->draw();
 		//mySlicer->draw();
 	}

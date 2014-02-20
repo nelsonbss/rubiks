@@ -7,6 +7,7 @@
 
 game::game(SG_VECTOR p, float w, float h){
 	posP = p;
+	posA = p;
 	width = w;
 	height = h;
 	rotP.x = 0;
@@ -36,7 +37,7 @@ void game::update(){
 
 	///////////////////////////////////////update cubies
 	if(updatePuzzle){
-		if(step == 4){
+		if(step == 4 || step == 5){
 			myPuzzle->update();
 			////////////////////////////////////////////////////move all puzzle
 			myPuzzle->move(posP);
@@ -65,15 +66,12 @@ void game::draw(){
 	}
 	if(step == 2){
 		//waiting for armature to be selected
-		ofDrawBitmapString("SHOW ARMATURE MENU HERE! and wait for input" + ofToString("") +"\n",20, 100);
-		
 	}
 	if(step == 3){
 		//armature has been selected
 		//myArmature->draw();
-		
 	}
-	if(step == 4){
+	if(step == 4 || step == 5){
 		//made the cuts
 		//show puzzle
 		myPuzzle->draw();
@@ -144,7 +142,7 @@ void game::createSlicer(){
 void game::createPuzzle(SG_VECTOR p){
 	if(step == 3){
 		////////////////////////////////create puzzle///////////////////////////////////////
-		myPuzzle = new puzzle(p.x,p.y,p.z);
+		myPuzzle = new puzzle(p.x,p.y,p.z); // it receives th position to be displayed
 		myPuzzle->setup();
 		//////////////////////////////end create puzzle////////////////////////////////////
 
@@ -172,7 +170,7 @@ void game::setCurrentStep(int s){
 //----------------------------------------------
 void game::restart(){
 	//go to step 0, clear puzzle, , clear pieces, clear object
-	if(step==4){
+	if(step==4 || step==5){
 		myPuzzle->exit();
 		objectDisplayed->exit();
 		myCutter->exit();

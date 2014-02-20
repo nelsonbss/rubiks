@@ -47,15 +47,9 @@ public:
 	bool movePUp;
 	bool movePDown;
 	/////////////////////////////rotate all puzzle
-	void rotatePHrightF(bool active);
-	void rotatePHleftF(bool active);
-	void rotatePVupF(bool active);
-	void rotatePVdownF(bool active);
-	//rotate all puzzlw: every cubbie rotates the same way
-	bool rotatePHright;
-	bool rotatePHleft;
-	bool rotatePVup;
-	bool rotatePVdown;
+	SG_VECTOR rot;
+	void rotate(SG_VECTOR r);
+	bool rotateB;
 
 	////////////////
 	bool updatePuzzle;

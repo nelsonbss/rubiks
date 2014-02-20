@@ -15,8 +15,9 @@ puzzle::puzzle(float x, float y, float z){
 	pos.x = x;
 	pos.y = y;
 	pos.z = z;
-	rotH = 0;
-	rotV = 0;
+	rot.x = 0;
+	rot.y = 0;
+	rot.z = 0;
 	/*
 	create 3 * 10 * 25 array filled with '12'
 	*/
@@ -138,35 +139,13 @@ void puzzle::loadPieces(sgCGroup **pcs){
 	//sgCObject::DeleteObject(*pcs);
 }
 ////////////////////////////////////////////////////////////////
-void puzzle::rotateHright(){  
+void puzzle::rotate(SG_VECTOR r){  
 	//puzzle tells every cubie to rotate
-	rotH +=  0.1;
+	rot.x +=  r.x;
+	rot.y +=  r.y;
+	rot.z +=  r.z;
 	for(int i=0;i<numPieces;i++){
-		myCubies[i]->rotateH(rotH);
-	}
-}
-//--------------------------------------------------------------
-void puzzle::rotateHleft(){  
-	//puzzle tells every cubie to rotate
-	rotH -= 0.1;
-	for(int i=0;i<numPieces;i++){
-		myCubies[i]->rotateH(rotH);
-	}
-}
-//--------------------------------------------------------------
-void puzzle::rotateVup(){  
-	//puzzle tells every cubie to rotate
-	rotV += 0.1;
-	for(int i=0;i<numPieces;i++){
-		myCubies[i]->rotateV(rotV);
-	}
-}
-//--------------------------------------------------------------
-void puzzle::rotateVdown(){  
-	//puzzle tells every cubie to rotate
-	rotV -= 0.1;
-	for(int i=0;i<numPieces;i++){
-		myCubies[i]->rotateV(rotV);
+		myCubies[i]->rotate(rot);
 	}
 }
 ////////////////////////////////////////////////////////////////

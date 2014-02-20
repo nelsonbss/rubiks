@@ -174,16 +174,20 @@ void testApp::keyPressed(int key){
 	}
 	/////////////////////////////rotate all puzzle
 	if(key == 'm') {//rotate right
-		myGames[0]->rotatePHrightF(true);
+		SG_VECTOR r = {0,0.1,0};
+		myGames[0]->rotate(r);
 	}
 	if(key == 'n') {//rotate left
-		myGames[0]->rotatePHleftF(true);
+		SG_VECTOR r = {0,-0.1,0};
+		myGames[0]->rotate(r);
 	}
 	if(key == 'y') {//rotate up
-		myGames[0]->rotatePVupF(true);
+		SG_VECTOR r = {-0.1,0,0};
+		myGames[0]->rotate(r);
 	}
 	if(key == 'h') {//rotate down
-		myGames[0]->rotatePVdownF(true);
+		SG_VECTOR r = {0.1,0,0};
+		myGames[0]->rotate(r);
 	}
 
 	//if(puzzleExists == true){
@@ -252,17 +256,21 @@ void testApp::keyReleased(int key){
 		myGames[0]->movePDownF(false);
 	}
 	/////////////////////////////rotate all puzzle
-	if(key == 'm') {//rotate right
-		myGames[0]->rotatePHrightF(false);
+	if(key == 'm') {//rotate 
+		SG_VECTOR r = {0.0,0,0};
+		myGames[0]->rotate(r);
 	}
 	if(key == 'n') {//rotate left
-		myGames[0]->rotatePHleftF(false);
+		SG_VECTOR r = {0.0,0,0};
+		myGames[0]->rotate(r);
 	}
 	if(key == 'y') {//rotate up
-		myGames[0]->rotatePVupF(false);
+		SG_VECTOR r = {0.0,0,0};
+		myGames[0]->rotate(r);
 	}
 	if(key == 'h') {//rotate down
-		myGames[0]->rotatePVdownF(false);
+		SG_VECTOR r = {0.0,0,0};
+		myGames[0]->rotate(r);
 	}
 }
 //--------------------------------------------------------------

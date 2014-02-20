@@ -32,12 +32,8 @@ public:
 	void moveUp();
 	void moveDown();
 
-	float rotH;
-	float rotV;
-	void rotateHright();
-	void rotateHleft();
-	void rotateVup();
-	void rotateVdown();
+	SG_VECTOR rot;
+	void rotate(SG_VECTOR r);
 
 	double ***p3DArray;
 	void faceRotate(SG_POINT point, SG_VECTOR axis, float deg,bool dir);

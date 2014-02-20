@@ -8,8 +8,9 @@ cubie::cubie(float x, float y,float z, int idi){
 	pos.x = x;
 	pos.y = y;
 	pos.z = z;
-	rotH = 0.0;
-	rotV = 0.0;
+	rot.x = 0.0;
+	rot.y = 0.0;
+	rot.z = 0.0;
 	color = rand()%27;
 	okDraw = true;
 	pointRotate.x = 0;
@@ -239,10 +240,10 @@ void cubie::update(){
 		/*if (objectList[j]->GetTempMatrix()==0){
 		objectList[j]->InitTempMatrix()->Rotate(pointRotate,vrotH,rotH);
 		}else{*/
-		objectList[j]->GetTempMatrix()->Rotate(pointRotate,vrotH,rotH);
+		objectList[j]->GetTempMatrix()->Rotate(pointRotate,vrotH,rot.y);
 		//}
 		SG_VECTOR vrotV = {1,0,0}; //rotate V								 
-		objectList[j]->GetTempMatrix()->Rotate(pointRotate,vrotV,rotV);
+		objectList[j]->GetTempMatrix()->Rotate(pointRotate,vrotV,rot.x);
 		//translations
 		SG_VECTOR transBox11 = {pos.x,pos.y,pos.z}; 
 		objectList[j]->GetTempMatrix()->Translate(transBox11);
@@ -544,12 +545,10 @@ void cubie::setObjects(sgCGroup *objs,int cubieId){
 	}
 }
 //-------------------------------------------------------------------------------------------------------------------------------------------
-void cubie::rotateH(float rad){
-	rotH = rad;
-}
-//-------------------------------------------------------------------------------------------------------------------------------------------
-void cubie::rotateV(float rad){
-	rotV = rad;
+void cubie::rotate(SG_VECTOR r){
+	rot.x = r.x;
+	rot.y = r.y;
+	rot.z = r.z;
 }
 //--------------------------------------------------------------
 void cubie::move(SG_VECTOR p){

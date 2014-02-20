@@ -9,6 +9,9 @@ game::game(SG_VECTOR p, float w, float h){
 	pos = p;
 	width = w;
 	height = h;
+	rot.x = 0;
+	rot.y = 0;
+	rot.z = 0;
 }
 //--------------------------------------------------------------
 #define planeThicknes 0.001
@@ -25,10 +28,7 @@ void game::setup(){
 	movePUp = false;
 	movePDown = false;
 	//
-	rotatePHright = false;
-	rotatePHleft = false;
-	rotatePVup = false;
-	rotatePVdown = false;
+	rotateB = false;
 	//
 	tempDeg = 0.0;
 	faceRotateCx = false;
@@ -54,18 +54,7 @@ void game::update(){
 			myPuzzle->moveDown();
 		}
 		////////////////////////////////////////////rotate all puzzle
-		if(rotatePHright == true) {//rotate right
-			myPuzzle->rotateHright();
-		}
-		if(rotatePHleft == true) {//rotate left
-			myPuzzle->rotateHleft();
-		}
-		if(rotatePVup == true) {//rotate up
-			myPuzzle->rotateVup();
-		}
-		if(rotatePVdown == true) {//rotate down
-			myPuzzle->rotateVdown();
-		}
+		myPuzzle->rotate(rot);
 	}
 
 	//////////////////////////////////////////////////////////////////
@@ -167,19 +156,11 @@ void game::movePDownF(bool active){
 	movePDown= active;
 }
 //---------------------------------------------------------------
-void game::rotatePHrightF(bool active){
-	rotatePHright = active;
+void game::rotate(SG_VECTOR r){
+	rot.x = r.x;
+	rot.y = r.y;
+	rot.z = r.z;
 }
-void game::rotatePHleftF(bool active){
-	rotatePHleft = active;
-}
-void game::rotatePVupF(bool active){
-	rotatePVup = active;
-}
-void game::rotatePVdownF(bool active){
-	rotatePVdown = active;
-}
-
 //----------------------------------------------------------------
 void game::loadObject (int objID,SG_VECTOR p,SG_VECTOR t){
 	if(step == 0 || step==1){

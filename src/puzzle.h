@@ -26,11 +26,7 @@ public:
 	cubie **myCubies; //malloc numPieces of these
 
 	SG_VECTOR pos;
-
-	void moveRight();
-	void moveLeft();
-	void moveUp();
-	void moveDown();
+	void move(SG_VECTOR p);
 
 	SG_VECTOR rot;
 	void rotate(SG_VECTOR r);

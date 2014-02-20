@@ -161,16 +161,20 @@ void testApp::keyPressed(int key){
 	}
 	//////////////////////////////move all puzzle
 	if(key == 'l') {
-		myGames[0]->movePRightF(true);
+		SG_VECTOR p = {10,0,0};
+		myGames[0]->move(p);
 	}
 	if(key == 'j') {
-		myGames[0]->movePLeftF(true);
+		SG_VECTOR p = {-10,0,0};
+		myGames[0]->move(p);
 	}
 	if(key == 'i') {
-		myGames[0]->movePUpF(true);
+		SG_VECTOR p = {0,-10,0};
+		myGames[0]->move(p);
 	}
 	if(key == 'k') {
-		myGames[0]->movePDownF(true);
+		SG_VECTOR p = {0,10,0};
+		myGames[0]->move(p);
 	}
 	/////////////////////////////rotate all puzzle
 	if(key == 'm') {//rotate right
@@ -201,10 +205,8 @@ void testApp::keyPressed(int key){
 	//	if(key == 'g') {
 	//		cout << "nu pieces " << mySlicer->countPieces() << endl;
 	//	}
-
 	//	/////////////////////FACE ROTATIONS!!!//////////////////////////////
 	//	//rotation point: 3D-center of cubie 7 (8 in the original numbering)
-
 	//	///x axis
 	//	if(key == 'q') {
 	//		ct1 = ofGetElapsedTimeMillis();
@@ -244,16 +246,20 @@ void testApp::keyPressed(int key){
 void testApp::keyReleased(int key){
 	/////////////////////////////move all puzzle
 	if(key == 'l') {
-		myGames[0]->movePRightF(false);
+		SG_VECTOR p = {0,0,0};
+		myGames[0]->move(p);
 	}
 	if(key == 'j') {
-		myGames[0]->movePLeftF(false);
+		SG_VECTOR p = {0,0,0};
+		myGames[0]->move(p);
 	}
 	if(key == 'i') {
-		myGames[0]->movePUpF(false);
+		SG_VECTOR p = {0,0,0};
+		myGames[0]->move(p);
 	}
 	if(key == 'k') {
-		myGames[0]->movePDownF(false);
+		SG_VECTOR p = {0,0,0};
+		myGames[0]->move(p);
 	}
 	/////////////////////////////rotate all puzzle
 	if(key == 'm') {//rotate 

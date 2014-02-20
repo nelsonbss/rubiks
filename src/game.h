@@ -18,7 +18,7 @@ public:
 
 	int step;
 
-	SG_VECTOR pos;
+	
 	float width;
 	float height;
 
@@ -37,19 +37,11 @@ public:
 	void rotatePuzzleV();
 
 	////////////move all puzzle: every cubbie moves the same way
-	void movePRightF(bool active);
-	void movePLeftF(bool active);
-	void movePUpF(bool active);
-	void movePDownF(bool active);
-	//
-	bool movePRight;
-	bool movePLeft;
-	bool movePUp;
-	bool movePDown;
+	SG_VECTOR pos;
+	void move (SG_VECTOR p);
 	/////////////////////////////rotate all puzzle
 	SG_VECTOR rot;
 	void rotate(SG_VECTOR r);
-	bool rotateB;
 
 	////////////////
 	bool updatePuzzle;

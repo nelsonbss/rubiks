@@ -23,13 +23,6 @@ void game::setup(){
 	/////////////////////////////////////////PUZzLE //////////
 	updatePuzzle = false;
 	//
-	movePRight = false;
-	movePLeft = false;
-	movePUp = false;
-	movePDown = false;
-	//
-	rotateB = false;
-	//
 	tempDeg = 0.0;
 	faceRotateCx = false;
 	faceRotateCCx = false;
@@ -44,15 +37,7 @@ void game::setup(){
 void game::update(){
 	if(step==3){
 		////////////////////////////////////////////////////move all puzzle
-		if(movePRight){
-			myPuzzle->moveRight();
-		}else if(movePLeft){
-			myPuzzle->moveLeft();
-		}else if(movePUp){
-			myPuzzle->moveUp();
-		}else if(movePDown){
-			myPuzzle->moveDown();
-		}
+		myPuzzle->move(pos);
 		////////////////////////////////////////////rotate all puzzle
 		myPuzzle->rotate(rot);
 	}
@@ -130,7 +115,11 @@ void game::update(){
 //--------------------------------------------------------------
 void game::draw(){  
 	////////////////////////////////Draw the pieces////////////////////////////////////
+	if(step ==0){
+		ofDrawBitmapString("SELECT AN OBJECT:" + ofToString("") +"\n" + "torus "+ofToString(1)+"\n"+ "box "+ofToString(2)+"\n"+ "cone "+ofToString(3)+"\n",20, 20);
+	}
 	if((step == 1) || (step ==2)){
+		ofDrawBitmapString("SELECT AN OBJECT:" + ofToString("") +"\n" + "torus "+ofToString(1)+"\n"+ "box "+ofToString(2)+"\n"+ "cone "+ofToString(3)+"\n",20, 20);
 		objectDisplayed->draw();
 		//myCutter->draw();
 		//myCutter->unDraw();
@@ -138,28 +127,16 @@ void game::draw(){
 	if(step == 3){
 		//made the cuts
 		//mySlicer->draw();
-		//drawCuts1 = false;
 		myPuzzle->draw();
 	}
 }
 //----------------------------------------------------------------
-void game::movePRightF(bool active){
-	movePRight = active;
-}
-void game::movePLeftF(bool active){
-	movePLeft= active;
-}
-void game::movePUpF(bool active){
-	movePUp= active;
-}
-void game::movePDownF(bool active){
-	movePDown= active;
+void game::move(SG_VECTOR p){
+	pos = p;
 }
 //---------------------------------------------------------------
 void game::rotate(SG_VECTOR r){
-	rot.x = r.x;
-	rot.y = r.y;
-	rot.z = r.z;
+	rot = r;
 }
 //----------------------------------------------------------------
 void game::loadObject (int objID,SG_VECTOR p,SG_VECTOR t){

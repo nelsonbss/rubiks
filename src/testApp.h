@@ -36,10 +36,8 @@ public:
 	slicer *mySlicer;
 	puzzle *myPuzzle;
 
-	int randcubie;
+	bool rotate;
 
-	float ct1;
-	float ct2;
 	////////////////rendering  and textures
 	void initOFRender();
 	ofMesh myMesh;

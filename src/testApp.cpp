@@ -31,6 +31,8 @@ void testApp::setup(){
 	for(int i = 0; i < myGames.size(); i++){
 		myGames[i]->setup();
 	}
+
+	rotate = true;
 }
 //--------------------------------------------------------------
 void testApp::update(){
@@ -176,7 +178,7 @@ void testApp::keyPressed(int key){
 		SG_VECTOR p = {0,10,0};
 		myGames[0]->move(p);
 	}
-	/////////////////////////////rotate all puzzle
+	/////////////////////////////rotate all puzzle  // two finger swipe gesture
 	if(key == 'm') {//rotate right
 		SG_VECTOR r = {0,0.1,0};
 		myGames[0]->rotate(r);
@@ -186,59 +188,79 @@ void testApp::keyPressed(int key){
 		myGames[0]->rotate(r);
 	}
 	if(key == 'y') {//rotate up
-		SG_VECTOR r = {-0.1,0,0};
-		myGames[0]->rotate(r);
-	}
-	if(key == 'h') {//rotate down
 		SG_VECTOR r = {0.1,0,0};
 		myGames[0]->rotate(r);
 	}
+	if(key == 'h') {//rotate down
+		SG_VECTOR r = {-0.1,0,0};
+		myGames[0]->rotate(r);
+	}
+
+	/////////////////////FACE ROTATIONS!!!//////////////////////////////
+	////////////////////////////////////////////x axis
+	int idcubie = 11;
+	int randcubie=0;
+	if(key == 'q') {
+		if(rotate == true) {//c
+			randcubie = rand()%26;
+			//clockwise
+			SG_VECTOR axis = {1,0,0};
+			myGames[0]->rotateByIDandAxis(idcubie,axis,true);
+			rotate = false;
+		}
+	}
+	if(key == 'a') {
+		if(rotate == true) {//cc
+			randcubie = rand()%26;
+			//clockwise
+			SG_VECTOR axis = {1,0,0};
+			myGames[0]->rotateByIDandAxis(idcubie,axis,false);
+			rotate = false;
+		}
+	}
+	///////////////////////////////////////y axis
+	if(key == 'w') {
+		if(rotate == true) {
+			randcubie = rand()%26;
+			//clockwise
+			SG_VECTOR axis = {0,1,0};
+			myGames[0]->rotateByIDandAxis(idcubie,axis,true);
+			rotate = false;
+		}
+	}if(key == 's') {
+		//counter clockwise
+		if(rotate == true) {
+			randcubie = rand()%26;
+			SG_VECTOR axis = {0,1,0};
+			myGames[0]->rotateByIDandAxis(idcubie,axis,false);
+			rotate = false;
+		}
+	}
+	///////////////////////////////////////////z axis
+	if(key == 'e') {
+		if(rotate == true) {
+			randcubie = rand()%26;
+			//clockwise
+			SG_VECTOR axis = {0,0,1};
+			myGames[0]->rotateByIDandAxis(idcubie,axis,true);
+			rotate = false;
+		}
+	}if(key == 'd') {
+		if(rotate == true) {
+			//counter clockwise
+			randcubie = rand()%26;
+			SG_VECTOR axis = {0,0,1};
+			myGames[0]->rotateByIDandAxis(idcubie,axis,false);
+			rotate = false;
+		}
+	}
 
 	//if(puzzleExists == true){
-	//	if(key == 'd') {
-	//		cout << "manualDRAW" << endl;
-	//		drawCuts = true;
-	//	}
 	//	if(key == 'f') {
 	//		cout << "nu cubies " << myPuzzle->giveNumCubies() << endl;
 	//	}
 	//	if(key == 'g') {
 	//		cout << "nu pieces " << mySlicer->countPieces() << endl;
-	//	}
-	//	/////////////////////FACE ROTATIONS!!!//////////////////////////////
-	//	//rotation point: 3D-center of cubie 7 (8 in the original numbering)
-	//	///x axis
-	//	if(key == 'q') {
-	//		ct1 = ofGetElapsedTimeMillis();
-	//		//tempDeg = 0.0;
-	//		randcubie = rand()%26;
-	//		faceRotateC = true; //clockwise
-	//	}if(key == 'a') {
-	//		//tempDeg = 0.0;
-	//		ct1 = ofGetElapsedTimeMillis();
-	//		faceRotateCC = true; //counter clockwise
-	//	}
-	//	//y axis
-	//	if(key == 'w') {
-	//		ct1 = ofGetElapsedTimeMillis();
-	//		//tempDeg = 0.0;
-	//		randcubie = rand()%26;
-	//		faceRotateCy = true; //clockwise
-	//	}if(key == 's') {
-	//		//tempDeg = 0.0;
-	//		ct1 = ofGetElapsedTimeMillis();
-	//		faceRotateCCy = true; //counter clockwise
-	//	}
-	//	//z axis
-	//	if(key == 'e') {
-	//		ct1 = ofGetElapsedTimeMillis();
-	//		//tempDeg = 0.0;
-	//		randcubie = rand()%26;
-	//		faceRotateCz = true; //clockwise
-	//	}if(key == 'd') {
-	//		//tempDeg = 0.0;
-	//		ct1 = ofGetElapsedTimeMillis();
-	//		faceRotateCCz = true; //counter clockwise
 	//	}
 	//}
 }
@@ -277,6 +299,52 @@ void testApp::keyReleased(int key){
 	if(key == 'h') {//rotate down
 		SG_VECTOR r = {0.0,0,0};
 		myGames[0]->rotate(r);
+	}
+	/////////////////////face rotations//no rotations comming in from gui
+	//send:
+	//SG_VECTOR axis = {0,0,0};
+	if(key == 'q') {
+		if(rotate == false) {//c
+			SG_VECTOR axis = {0,0,0};
+			myGames[0]->rotateByIDandAxis(0,axis,true);
+			rotate = true;
+		}
+	}
+	if(key == 'a') {
+		if(rotate == false) {//cc
+			SG_VECTOR axis = {0,0,0};
+			myGames[0]->rotateByIDandAxis(0,axis,false);
+			rotate = true;
+		}
+	}
+	//y axis
+	if(key == 'w') {
+		if(rotate == false) {
+			SG_VECTOR axis = {0,0,0};
+			myGames[0]->rotateByIDandAxis(0,axis,true);
+			rotate = true;
+		}
+	}if(key == 's') {
+		//counter clockwise
+		if(rotate == false) {
+			SG_VECTOR axis = {0,0,0};
+			myGames[0]->rotateByIDandAxis(0,axis,false);
+			rotate = true;
+		}
+	}
+	//z axis
+	if(key == 'e') {
+		if(rotate == false) {
+			SG_VECTOR axis = {0,0,0};
+			myGames[0]->rotateByIDandAxis(0,axis,true);
+			rotate = true;
+		}
+	}if(key == 'd') {
+		if(rotate == false) {
+			SG_VECTOR axis = {0,0,0};
+			myGames[0]->rotateByIDandAxis(0,axis,false);
+			rotate = true;
+		}
 	}
 }
 //--------------------------------------------------------------

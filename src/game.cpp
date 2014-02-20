@@ -20,84 +20,14 @@ game::game(SG_VECTOR p, float w, float h){
 
 void game::setup(){
 	step = 0;
+	idcubie=0;
 	/////////////////////////////////////////PUZzLE //////////
 	updatePuzzle = false;
 	//
-	tempDeg = 0.0;
-	faceRotateCx = false;
-	faceRotateCCx = false;
-	faceRotateCy =false;
-	faceRotateCCy = false;
-	faceRotateCz = false;
-	faceRotateCCz = false;
-
-
+	faceRotate = false;
 }
 //--------------------------------------------------------------
 void game::update(){
-	if(step==3){
-		////////////////////////////////////////////////////move all puzzle
-		myPuzzle->move(pos);
-		////////////////////////////////////////////rotate all puzzle
-		myPuzzle->rotate(rot);
-	}
-
-	//////////////////////////////////////////////////////////////////
-	//////////////////////////////////////////////face rotations
-	SG_POINT point = {0,0,0};
-	SG_VECTOR axis = {1,0,0};
-	int idcubie = 11;
-	if(faceRotateCx == true) {//c
-		//myPuzzle->faceRotate(point, axis, tempDeg,true);
-		myPuzzle->rotateByIDandAxis(idcubie,axis,true);
-		//drawCuts = true;
-		faceRotateCx = false;
-		//cout << tempDeg << endl;
-	}
-	if(faceRotateCCx == true) {//
-		//myPuzzle->faceRotate(point,axis,tempDeg,false);
-		myPuzzle->rotateByIDandAxis(idcubie,axis,false);
-		//drawCuts = true;
-		faceRotateCCx = false;
-		//drawCuts = true;
-	}
-
-	SG_VECTOR axisy = {0,1,0};
-	if(faceRotateCy == true) {//c
-		//myPuzzle->unDraw();
-		//myPuzzle->faceRotate(point, axis, tempDeg,true);
-		myPuzzle->rotateByIDandAxis(idcubie,axisy,true);
-		//drawCuts = true;
-		faceRotateCy = false;
-		//cout << tempDeg << endl;
-	}
-	if(faceRotateCCy == true) {//
-		//myPuzzle->unDraw();
-		//myPuzzle->faceRotate(point,axis,tempDeg,false);
-		myPuzzle->rotateByIDandAxis(idcubie,axisy,false);
-		//drawCuts = true;
-		faceRotateCCy = false;
-		//cout << tempDeg << endl;
-	}
-
-	SG_VECTOR axisz = {0,0,1};
-	if(faceRotateCz == true) {//c
-		//myPuzzle->unDraw();
-		//myPuzzle->faceRotate(point, axis, tempDeg,true);
-		myPuzzle->rotateByIDandAxis(idcubie,axisz,true);
-		//drawCuts = true;
-		faceRotateCz = false;
-		//cout << tempDeg << endl;
-	}
-	if(faceRotateCCz == true) {//
-		//myPuzzle->unDraw();
-		//myPuzzle->faceRotate(point,axis,tempDeg,false);
-		myPuzzle->rotateByIDandAxis(idcubie,axisz,false);
-		//drawCuts = true;
-		faceRotateCCz = false;
-		//cout << tempDeg << endl;
-	}
-
 
 	if(step == 1){
 		//if there is an object selected
@@ -109,6 +39,16 @@ void game::update(){
 		if(step == 3){
 			myPuzzle->update();
 			//updatePuzzle = false;
+
+			////////////////////////////////////////////////////move all puzzle
+			myPuzzle->move(pos);
+			////////////////////////////////////////////rotate all puzzle
+			myPuzzle->rotate(rot);
+			//////////////////////////////////////////make face rotation
+			if(faceRotate == true) {
+				myPuzzle->rotateByIDandAxis(idcubie,axis,dir);
+				faceRotate = false;
+			}
 		}
 	}
 }
@@ -116,9 +56,11 @@ void game::update(){
 void game::draw(){  
 	////////////////////////////////Draw the pieces////////////////////////////////////
 	if(step ==0){
+		ofSetColor(255, 255, 255);
 		ofDrawBitmapString("SELECT AN OBJECT:" + ofToString("") +"\n" + "torus "+ofToString(1)+"\n"+ "box "+ofToString(2)+"\n"+ "cone "+ofToString(3)+"\n",20, 20);
 	}
 	if((step == 1) || (step ==2)){
+		ofSetColor(255, 255, 255);
 		ofDrawBitmapString("SELECT AN OBJECT:" + ofToString("") +"\n" + "torus "+ofToString(1)+"\n"+ "box "+ofToString(2)+"\n"+ "cone "+ofToString(3)+"\n",20, 20);
 		objectDisplayed->draw();
 		//myCutter->draw();
@@ -137,6 +79,20 @@ void game::move(SG_VECTOR p){
 //---------------------------------------------------------------
 void game::rotate(SG_VECTOR r){
 	rot = r;
+}
+//-------------------------------------------------------------------
+void game::rotateByIDandAxis(int id, SG_VECTOR axs, bool d){
+	if(axs.x==0 && axs.y==0 && axs.z==0){
+		//stop any rotation
+		faceRotate = false;
+	}else{
+		//allow rotation
+		idcubie = id;
+		dir = d;
+		axis = axs;
+		faceRotate = true;
+	}
+
 }
 //----------------------------------------------------------------
 void game::loadObject (int objID,SG_VECTOR p,SG_VECTOR t){

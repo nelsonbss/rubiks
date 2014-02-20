@@ -18,7 +18,6 @@ public:
 
 	int step;
 
-	
 	float width;
 	float height;
 
@@ -32,10 +31,6 @@ public:
 	void createPuzzle(SG_VECTOR p);
 
 	void restart();
-
-	void rotatePuzzleH();
-	void rotatePuzzleV();
-
 	////////////move all puzzle: every cubbie moves the same way
 	SG_VECTOR pos;
 	void move (SG_VECTOR p);
@@ -45,17 +40,12 @@ public:
 
 	////////////////
 	bool updatePuzzle;
-
-	
-
 	//face rotations
-	float tempDeg;
-	bool faceRotateCx;
-	bool faceRotateCCx;
-	bool faceRotateCy;
-	bool faceRotateCCy;
-	bool faceRotateCz;
-	bool faceRotateCCz;
+	int idcubie;
+	bool dir;
+	SG_VECTOR axis;
+	void rotateByIDandAxis(int id, SG_VECTOR axis, bool dir);
+	bool faceRotate;
 
 };
 #endif /* defined(__Tgame__game__) */

@@ -117,32 +117,26 @@ void armature::draw(){
 	ofSetColor(0,0,0);
 	box1.draw();
 
-	ofFill();
 	//ofSetColor(255,0,0);
 	ofSetColor(0,0,0);
 	box2.draw();
 
-	ofFill();
 	//ofSetColor(0,255,0);
 	ofSetColor(0,0,0);
 	box3.draw();
 
-	ofFill();
 	//ofSetColor(0,255,0);
 	ofSetColor(0,0,0);
 	box4.draw();
 
-	ofFill();
 	//ofSetColor(0,0,255);
 	ofSetColor(0,0,0);
 	box5.draw();
 
-	ofFill();
 	//ofSetColor(0,0,255);
 	ofSetColor(0,0,0);
 	box6.draw();
 
-	ofFill();
 	ofSetColor(255);
 
 	//if(mode == 3) {

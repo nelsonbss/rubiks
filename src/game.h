@@ -11,7 +11,7 @@
 
 class game {
 public:
-	game(SG_VECTOR p, float w, float h);
+	game(SG_VECTOR p, float w, float h, SG_VECTOR puzzlePos);
 
 	void setup();
 	void update();
@@ -19,6 +19,7 @@ public:
 
 	int step;
 
+	SG_VECTOR posGame;
 	float width;
 	float height;
 

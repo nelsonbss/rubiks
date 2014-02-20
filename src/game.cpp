@@ -5,9 +5,10 @@
 #include "cutter.h"
 #include "puzzle.h"
 
-game::game(SG_VECTOR p, float w, float h){
-	posP = p;
-	posA = p;
+game::game(SG_VECTOR p, float w, float h, SG_VECTOR puzzlePos){
+	posGame = p;
+	posP = puzzlePos; //for the puzzle
+	posA = puzzlePos;
 	width = w;
 	height = h;
 	rotP.x = 0;
@@ -22,7 +23,8 @@ game::game(SG_VECTOR p, float w, float h){
 void game::setup(){
 	step = 0;
 	idcubie=0;
-	myArmature = new armature (ofVec3f( posP.x,posP.y,posP.z),300,300,10,3);
+	///////////////////////////////
+	myArmature = new armature (ofVec3f(posA.x,posA.y,0),300,300,10,3);
 	myArmature->setup();
 	/////////////////////////////////////////PUZzLE //////////
 	updatePuzzle = false;
@@ -96,12 +98,10 @@ void game::draw(){
 //----------------------------------------------------------------
 void game::moveP(SG_VECTOR p){
 	posP = p;
-	//updatePuzzle = true;
 }
 //---------------------------------------------------------------
 void game::rotateP(SG_VECTOR r){
 	rotP = r;
-	//updatePuzzle = true;
 }
 //-------------------------------------------------------------------
 void game::rotateByIDandAxis(int id, SG_VECTOR axs, bool d){

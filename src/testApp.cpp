@@ -11,6 +11,7 @@
 #define displayX 500
 #define displayY 400
 #define displayZ 100
+
 //--------------------------------------------------------------
 void testApp::setup(){
 	/////////////////////////////initialize sgCore library
@@ -21,8 +22,9 @@ void testApp::setup(){
 
 	////////////////////////////////create games
 	////////////////////////////////one game for now
-	SG_VECTOR p = {0,0,0};
-	game *tempGame = new game(p, 1024, 768);
+	SG_VECTOR gamePos = {0,0,0}; //one game created at the origin // this will have to change for a game creating function when more stations are anabled
+	SG_VECTOR puzzlePos = {displayX,displayY,displayZ};
+	game *tempGame = new game(gamePos, 1024, 768,puzzlePos);
 	myGames.push_back(tempGame);
 
 	///////////////////////////////setup games

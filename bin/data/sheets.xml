@@ -27,7 +27,11 @@
       <size>150,150</size>
     </node>
     <menu set="main-menu" pos="100,100">
+<<<<<<< Updated upstream
       
+=======
+
+>>>>>>> Stashed changes
     </menu>
 	</sheet>
 </gui>

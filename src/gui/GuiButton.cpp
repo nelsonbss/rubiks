@@ -1,9 +1,9 @@
 #include "GuiButton.h"
 #include "Utils.h"
-//#include "SceneManager.h"
 
 GuiButton::GuiButton(map<string, string> &_attrs) : GuiNode(){
-    attrs = _attrs;
+	attrs = _attrs;
+	initialize();
     if(attrs["image"] != "none"){
         inactive.loadImage(attrs["image"]);
         haveImage = true;
@@ -18,8 +18,21 @@ GuiButton::GuiButton(map<string, string> &_attrs) : GuiNode(){
         active.loadImage(attrs["clicked"]);
         haveActive = true;
     }
+	bDraggable = false;
+	bTacky = false;
+	bSelected = false;
+	if(attrs.count("draggable")){
+		if(attrs["draggable"] == "true"){
+			bDraggable = true;
+		}
+		if(attrs.count("tacky")){
+			if(attrs["tacky"] == "true"){
+				bTacky = true;
+			}
+		}
+	}
+	drawPos = pos;
     drawActive = false;
-    initialize();
     setName("button");
 	setChannel("button");
 	haveArabic = false;
@@ -44,15 +57,45 @@ GuiButton::GuiButton(string _img) : GuiNode(){
 
 bool GuiButton::processMouse(int _x, int _y, int _state){
     //cout << name << " being checked." << endl;
-    if(_state == MOUSE_STATE_DOWN){
         //cout << name << " checking isInside." << endl;
-        if(isInside(_x,_y)){
-			//cout << "button clicked." << endl;
-            execute();
-            return true;
-        }
-    }
-    return false;
+	if(isInside(_x,_y)){
+		//cout << "button clicked." << endl;
+		if(_state == MOUSE_STATE_DOWN){
+			if(!bDraggable){
+				execute();
+			    return true;
+			} else {
+				bSelected = true;
+				selectionLocation.set(_x, _y);
+				return true;
+			}
+		}
+	}
+	if(_state == MOUSE_STATE_DRAG){
+		if(bSelected){
+			ofVec2f mouseMovement = ofVec2f(_x, _y) - selectionLocation;
+			drawPos = pos + mouseMovement;
+			cout << "moving to " << drawPos.x << ", " << drawPos.y << endl;
+			return true;
+		}
+	}
+	if(_state == MOUSE_STATE_UP){
+		if(bSelected){
+			execute();
+			if(bTacky){
+				drawPos = pos;
+			} else {
+				pos = drawPos;
+			}
+			bSelected = false;
+			return true;
+		}
+	}
+	if(bSelected){
+		cout << "deselecting." << endl;
+		bSelected = false;
+	}
+	return false;
 }
 
 void GuiButton::execute(){
@@ -69,10 +112,10 @@ void GuiButton::draw(){
             //if(haveArabic && SceneManager::Instance()->getDisplayArabic()){
              //   arabic.draw(pos.x,pos.y);
             //} else {
-                inactive.draw(pos.x,pos.y);
+                inactive.draw(drawPos.x,drawPos.y);
             //}
         } else {
-            active.draw(pos.x,pos.y);
+            active.draw(drawPos.x,drawPos.y);
         }
     } else {
         //ofRect(pos.x, pos.y, size.x, size.y);

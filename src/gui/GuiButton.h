@@ -20,7 +20,7 @@ class GuiButton : public GuiNode, public Subject, public Observer
         virtual void execute();
         virtual void update(string _subName, Subject* _sub);
         void setMessage(map<string,string> _msg){}
-        void draw();
+        virtual void draw();
         string getAttr(const char* _key){return attrs[_key];}
 		void setChannel(string _channel){channel = _channel;}
 		string getChannel(){return channel;}
@@ -29,11 +29,18 @@ class GuiButton : public GuiNode, public Subject, public Observer
         ofImage inactive;
         ofImage active;
         ofImage arabic;
+		ofVec2f drawPos;
 		string channel;
 		bool drawActive;
         bool haveActive;
         bool haveImage;
         bool haveArabic;
+
+		//Draggable members
+		bool bDraggable;
+		bool bSelected;
+		bool bTacky;
+		ofVec2f selectionLocation;
 };
 
 #endif // GUIBUTTON_H

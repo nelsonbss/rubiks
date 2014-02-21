@@ -1,5 +1,4 @@
 #include "GuiImage.h"
-//#include "SceneManager.h"
 
 GuiImage::GuiImage(map<string,string> &_attrs): GuiNode(){
     img.loadImage(_attrs["image"]);

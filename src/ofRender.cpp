@@ -104,6 +104,7 @@ void ofRender::sgCoretoOFmesh(sgC3DObject *obj, ofMesh &mesh,int idCubie){
 		/*mesh.setColor(0,col);*/
 	}
 	mesh.addColors(colorsVector);
+	//ofFloatColor * col = mesh.getColorsPointer();
 	////setup indices
 	//mesh.setupIndicesAuto();
 	////set normals.. for lighting 

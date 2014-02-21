@@ -5,16 +5,17 @@
 #include "sgCore.h"
 #include "cubie.h"
 #include "slicer.h"
+#include <vector>
+#include <iostream>
 
 class puzzle {
 
 public:
-	puzzle(float x, float y);
+	puzzle(float x, float y, float z);
 
 	void setup();
 	void update();
 	void draw();
-	void unDraw();
 
 	void exit();
 
@@ -24,21 +25,26 @@ public:
 	float numPieces;
 	cubie **myCubies; //malloc numPieces of these
 
-	float posX;
-	float posY;
-	void moveRight();
-	void moveLeft();
-	void moveUp();
-	void moveDown();
+	SG_VECTOR pos;
+	void move(SG_VECTOR p);
 
-	float rotH;
-	float rotV;
-	void rotateHright();
-	void rotateHleft();
-	void rotateVup();
-	void rotateVdown();
+	SG_VECTOR rot;
+	void rotate(SG_VECTOR r);
 
-	void faceRotate(SG_POINT point, SG_VECTOR axis, float deg);
+	double ***p3DArray;
+	void faceRotate(SG_POINT point, SG_VECTOR axis, float deg,bool dir);
+	 /* one-liner */
+    //typedef std::vector<std::vector<std::vector<int> > >ThreeDimensions;
+    /* expanded */
+    typedef std::vector<int>OneDimension;
+    typedef std::vector<OneDimension>TwoDimensions;
+    typedef std::vector<TwoDimensions>ThreeDimensions;
+	ThreeDimensions three_dim1;
+	void rotateByIDandAxis(int id, SG_VECTOR axis,bool dir);
+	void rearange3dArray(SG_VECTOR axis, int plane, bool dir);
+
+	void unDo();
+
 };
 
 #endif /* defined(__Tpuzzle__puzzle__) */

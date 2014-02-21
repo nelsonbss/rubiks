@@ -10,6 +10,7 @@ class GuiSheet : public Subject{
 public:
     GuiSheet();
     void addNode(GuiNode* _node);
+	void addMenu(string _set, GuiSheet* _sheet); //Expects a completed gui sheet.  
     //void pushToStack();
     //void popFromStack();
     void update();
@@ -33,6 +34,8 @@ private:
     string name;
     string type;
     string effectTarget;
+	ofVec2f pos;
+	map<string, GuiSheet*> menus;
     GuiNode* activatedNode;
     bool haveLoosie;
     map<string,string> attrs;

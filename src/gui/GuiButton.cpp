@@ -1,6 +1,6 @@
 #include "GuiButton.h"
 #include "Utils.h"
-#include "SceneManager.h"
+//#include "SceneManager.h"
 
 GuiButton::GuiButton(map<string, string> &_attrs) : GuiNode(){
     attrs = _attrs;

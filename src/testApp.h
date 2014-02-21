@@ -2,15 +2,13 @@
 
 #include "ofMain.h"
 #include "sgCore.h"
-#include "myobject3D.h"
-#include "cutter.h"
-#include "slicer.h"
-#include "puzzle.h"
 #include "GuiConfigurator.h"
 #include "Observer.h"
 #include "Subject.h"
 #include "SubObMediator.h"
 #include "SceneManager.h"
+#include "game.h"
+#include <vector>
 
 class testApp : public ofBaseApp, public Observer, public Subject{
 
@@ -32,36 +30,28 @@ public:
 	void gotMessage(ofMessage msg);
 
 	////////////////
-	void initScene();
-	void addGroupToScene(sgCGroup *group);
-	void drawElements();
-	////////////////
+	vector<game *> myGames;
 
-	////////////////
 	myobject3D *objectDisplayed;
 	cutter *myCutter;
 	slicer *mySlicer;
 	puzzle *myPuzzle;
-	////////////////
 
-	sgCGroup* add;
+	bool rotate;
 
-	bool puzzleExists;
+	////////////////rendering  and textures
+	void initOFRender();
+	void startOFLights();
+	void updateOFLights();
+	void stopOFLights();
 
-	bool makeCut;
-	bool drawCuts;
-	bool drawCuts1;
-	bool draw3dObject;
-	//move all puzzle: every cubbie moves the same way
-	bool movePRight;
-	bool movePLeft;
-	bool movePUp;
-	bool movePDown;
-	//rotate all puzzlw: every cubbie rotates the same way
-	bool rotatePHright;
-	bool rotatePHleft;
-	bool rotatePVup;
-	bool rotatePVdown;
+	ofMesh myMesh;
+	ofLight pointLight;
+	ofLight spotLight;
+	ofLight directionalLight;
+
+	ofMaterial material;
+	ofImage ofLogoImage;
 
 	//face rotations
 	float tempDeg;
@@ -77,4 +67,10 @@ public:
     float timeOutCounter;
 	float timeOfLastInput;
     float inputDelayTime;
+	float radius;
+	ofVec3f center;
+	bool bShiny;
+	bool bSmoothLighting;
+	bool bPointLight, bSpotLight, bDirLight;
+	bool bUseTexture;
 };

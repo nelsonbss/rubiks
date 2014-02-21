@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Painter.h"
 
+
 static float SYSTEM_COLORS[1024] =
 //              0               1               2               3
 {
@@ -148,43 +149,43 @@ const unsigned short Painter::GetLineTypeByIndex(unsigned short ind)
 
 void  Painter::DrawGabariteBox(const SG_POINT& pMin,const SG_POINT& pMax)
 {
-	glPushAttrib(GL_ENABLE_BIT|GL_LINE_BIT|GL_CURRENT_BIT|GL_LIGHTING_BIT);
+	//glPushAttrib(GL_ENABLE_BIT|GL_LINE_BIT|GL_CURRENT_BIT|GL_LIGHTING_BIT);
 
-	glDisable(GL_LIGHTING);
-	glDisable(GL_TEXTURE_2D);
-	glLineWidth(1);
+	//glDisable(GL_LIGHTING);
+	//glDisable(GL_TEXTURE_2D);
+	//glLineWidth(1);
 
-	glColor3f(1.0f, 1.0f, 1.0f);
+	//glColor3f(1.0f, 1.0f, 1.0f);
 
-	glEnable(GL_LINE_SMOOTH);
-	glBegin(GL_LINE_STRIP);
-		glVertex3d(pMin.x,pMin.y,pMin.z);
-		glVertex3d(pMin.x,pMin.y,pMax.z);
-		glVertex3d(pMin.x,pMax.y,pMax.z);
-		glVertex3d(pMin.x,pMax.y,pMin.z);
-		glVertex3d(pMin.x,pMin.y,pMin.z);
-		glVertex3d(pMax.x,pMin.y,pMin.z);
-		glVertex3d(pMax.x,pMin.y,pMax.z);
-		glVertex3d(pMax.x,pMax.y,pMax.z);
-		glVertex3d(pMax.x,pMax.y,pMin.z);
-		glVertex3d(pMax.x,pMin.y,pMin.z);
-	glEnd();
-	glBegin(GL_LINES);
-		glVertex3d(pMin.x,pMin.y,pMax.z);
-		glVertex3d(pMax.x,pMin.y,pMax.z);
-		glVertex3d(pMin.x,pMax.y,pMax.z);
-		glVertex3d(pMax.x,pMax.y,pMax.z);
-		glVertex3d(pMin.x,pMax.y,pMin.z);
-		glVertex3d(pMax.x,pMax.y,pMin.z);
-	glEnd();
+	//glEnable(GL_LINE_SMOOTH);
+	//glBegin(GL_LINE_STRIP);
+	//	glVertex3d(pMin.x,pMin.y,pMin.z);
+	//	glVertex3d(pMin.x,pMin.y,pMax.z);
+	//	glVertex3d(pMin.x,pMax.y,pMax.z);
+	//	glVertex3d(pMin.x,pMax.y,pMin.z);
+	//	glVertex3d(pMin.x,pMin.y,pMin.z);
+	//	glVertex3d(pMax.x,pMin.y,pMin.z);
+	//	glVertex3d(pMax.x,pMin.y,pMax.z);
+	//	glVertex3d(pMax.x,pMax.y,pMax.z);
+	//	glVertex3d(pMax.x,pMax.y,pMin.z);
+	//	glVertex3d(pMax.x,pMin.y,pMin.z);
+	//glEnd();
+	//glBegin(GL_LINES);
+	//	glVertex3d(pMin.x,pMin.y,pMax.z);
+	//	glVertex3d(pMax.x,pMin.y,pMax.z);
+	//	glVertex3d(pMin.x,pMax.y,pMax.z);
+	//	glVertex3d(pMax.x,pMax.y,pMax.z);
+	//	glVertex3d(pMin.x,pMax.y,pMin.z);
+	//	glVertex3d(pMax.x,pMax.y,pMin.z);
+	//glEnd();
 
 
-	glPopAttrib();
+	//glPopAttrib();
 }
 
 bool  Painter::DrawPoint(GLenum mode,sgCPoint* objP,bool selSubObjects,bool asHot)
 {
-	const SG_POINT*  pnt = objP->GetGeometry();
+	/*const SG_POINT*  pnt = objP->GetGeometry();
 	double pnts[3];
 	pnts[0]  = pnt->x;
 	pnts[1]  = pnt->y;
@@ -215,13 +216,13 @@ bool  Painter::DrawPoint(GLenum mode,sgCPoint* objP,bool selSubObjects,bool asHo
 			glPopMatrix();
 			glPopAttrib();
 	}
-
+	*/
 	return true;
 }
 
 bool  Painter::DrawLine(GLenum mode,sgCLine* objL,bool selSubObjects,bool asHot)
 {
-	const SG_LINE*  ln = objL->GetGeometry();
+	/*const SG_LINE*  ln = objL->GetGeometry();
 	double pnts[6];
 	pnts[0]  = ln->p1.x;
 	pnts[1]  = ln->p1.y;
@@ -263,14 +264,14 @@ bool  Painter::DrawLine(GLenum mode,sgCLine* objL,bool selSubObjects,bool asHot)
 
 				glPopMatrix();
 				glPopAttrib();
-	}
+	}*/
 
 	return true;
 }
 
 bool   Painter::DrawCircle(GLenum mode,sgCCircle* objC,bool selSubObjects,bool asHot)
 {
-	const int  pnts_cnt = objC->GetPointsCount();
+	/*const int  pnts_cnt = objC->GetPointsCount();
 	const SG_POINT*  pnts = objC->GetPoints();
 	
 
@@ -308,7 +309,7 @@ bool   Painter::DrawCircle(GLenum mode,sgCCircle* objC,bool selSubObjects,bool a
 
 				glPopMatrix();
 				glPopAttrib();
-	}
+	}*/
 
 		
 	return true;
@@ -316,44 +317,44 @@ bool   Painter::DrawCircle(GLenum mode,sgCCircle* objC,bool selSubObjects,bool a
 
 bool   Painter::DrawArc(GLenum mode,sgCArc* objA,bool selSubObjects,bool asHot)
 {
-	const int  pnts_cnt = objA->GetPointsCount();
-	const SG_POINT*  pnts = objA->GetPoints();
-	
-	if (mode == GL_RENDER)
-	{
-		glPushAttrib(GL_ENABLE_BIT|GL_LINE_BIT|GL_CURRENT_BIT|GL_LIGHTING_BIT);
+	//const int  pnts_cnt = objA->GetPointsCount();
+	//const SG_POINT*  pnts = objA->GetPoints();
+	//
+	//if (mode == GL_RENDER)
+	//{
+	//	glPushAttrib(GL_ENABLE_BIT|GL_LINE_BIT|GL_CURRENT_BIT|GL_LIGHTING_BIT);
 
-		glDisable(GL_LIGHTING);
-		glDisable(GL_TEXTURE_2D);
+	//	glDisable(GL_LIGHTING);
+	//	glDisable(GL_TEXTURE_2D);
 
-		glLineWidth(static_cast<float>(objA->GetAttribute(SG_OA_LINE_THICKNESS)+1));
+	//	glLineWidth(static_cast<float>(objA->GetAttribute(SG_OA_LINE_THICKNESS)+1));
 
-		GLushort pattern = GetLineTypeByIndex(objA->GetAttribute(SG_OA_LINE_TYPE));
-		if (pattern>0)
-		{
-			glEnable(GL_LINE_STIPPLE);
-			glLineStipple(1, pattern);
-		}
+	//	GLushort pattern = GetLineTypeByIndex(objA->GetAttribute(SG_OA_LINE_TYPE));
+	//	if (pattern>0)
+	//	{
+	//		glEnable(GL_LINE_STIPPLE);
+	//		glLineStipple(1, pattern);
+	//	}
 
-		if (asHot)
-			glColor3f(1.0f, 0.0f, 0.0f);
-		else
-			if (objA->IsSelect())
-				glColor3f(1.0f, 0.0f, 0.0f);
-			else
-				glColor3fv(GetColorByIndex(objA->GetAttribute(SG_OA_COLOR)));
-		glEnable(GL_LINE_SMOOTH);
-		glPushMatrix();
-		if (objA->GetTempMatrix()!=0)
-			glMultMatrixd(objA->GetTempMatrix()->GetTransparentData());
-		glBegin(GL_LINE_STRIP);
-		for (int i=0;i<pnts_cnt;i++)
-			glVertex3dv(&pnts[i].x);
-		glEnd();
+	//	if (asHot)
+	//		glColor3f(1.0f, 0.0f, 0.0f);
+	//	else
+	//		if (objA->IsSelect())
+	//			glColor3f(1.0f, 0.0f, 0.0f);
+	//		else
+	//			glColor3fv(GetColorByIndex(objA->GetAttribute(SG_OA_COLOR)));
+	//	glEnable(GL_LINE_SMOOTH);
+	//	glPushMatrix();
+	//	if (objA->GetTempMatrix()!=0)
+	//		glMultMatrixd(objA->GetTempMatrix()->GetTransparentData());
+	//	glBegin(GL_LINE_STRIP);
+	//	for (int i=0;i<pnts_cnt;i++)
+	//		glVertex3dv(&pnts[i].x);
+	//	glEnd();
 
-		glPopMatrix();
-		glPopAttrib();
-	}
+	//	glPopMatrix();
+	//	glPopAttrib();
+	//}
 
 
 	return true;
@@ -361,7 +362,7 @@ bool   Painter::DrawArc(GLenum mode,sgCArc* objA,bool selSubObjects,bool asHot)
 
 bool  Painter::DrawSpline(GLenum mode,sgCSpline* splObj,bool selSubObjects, bool asHot)
 {
-	const unsigned int  pnts_cnt = splObj->GetGeometry()->GetPointsCount();
+	/*const unsigned int  pnts_cnt = splObj->GetGeometry()->GetPointsCount();
 	const SG_POINT*  pnts = splObj->GetGeometry()->GetPoints();
 	
 	if (mode == GL_RENDER)
@@ -400,13 +401,13 @@ bool  Painter::DrawSpline(GLenum mode,sgCSpline* splObj,bool selSubObjects, bool
 		glPopAttrib();
 	}
 
-
+*/
 	return true;
 }
 
 bool   Painter::DrawGroup(GLenum mode, sgCGroup* objGr,bool selSubObjects,bool asHot)
 {
-	glPushMatrix();
+	/*glPushMatrix();
 	if (objGr->GetTempMatrix()!=0)
 		glMultMatrixd(objGr->GetTempMatrix()->GetTransparentData());
 
@@ -417,13 +418,13 @@ bool   Painter::DrawGroup(GLenum mode, sgCGroup* objGr,bool selSubObjects,bool a
 			return false;
 		curObj = objGr->GetChildrenList()->GetNext(curObj);
 	}
-	glPopMatrix();
+	glPopMatrix();*/
 	return true;
 }
 
 bool   Painter::DrawContour(GLenum mode, sgCContour* objCnt,bool selSubObjects,bool asHot)
 {
-	glPushMatrix();
+	/*glPushMatrix();
 	if (objCnt->GetTempMatrix()!=0)
 		glMultMatrixd(objCnt->GetTempMatrix()->GetTransparentData());
 
@@ -434,10 +435,11 @@ bool   Painter::DrawContour(GLenum mode, sgCContour* objCnt,bool selSubObjects,b
 			return false;
 		curObj = objCnt->GetChildrenList()->GetNext(curObj);
 	}
-	glPopMatrix();
+	glPopMatrix();*/
 	return true;
 }
 
+/////////////////////////////this one is used//////////////////////////////////////////////////
 bool  Painter::Draw3D(GLenum mode, sgC3DObject* obj3D,bool selSubObjects,bool asHot)
 {
 	const SG_ALL_TRIANGLES* trngls = obj3D->GetTriangles();
@@ -449,8 +451,10 @@ bool  Painter::Draw3D(GLenum mode, sgC3DObject* obj3D,bool selSubObjects,bool as
 		glPushAttrib(GL_ENABLE_BIT|GL_LINE_BIT|GL_CURRENT_BIT|GL_LIGHTING_BIT|GL_TEXTURE_BIT);
 
 		glPushMatrix();
+
 		if (obj3D->GetTempMatrix()!=0)
 			glMultMatrixd(obj3D->GetTempMatrix()->GetTransparentData());
+
 		glMultMatrixd(obj3D->GetWorldMatrixData());
 
 		if ( trngls && 

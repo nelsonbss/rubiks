@@ -10,39 +10,55 @@
 class cubie {
 	
 public:
-	cubie(float x,float y);
+	cubie(float x,float y,float z,int id);
     
 	void setup();
 	void update();
 	void draw();
-	void unDraw();
+	//void unDraw();// has legacy of how to detach from scene
 	void exit();
+
+	int id;
 
 	sgCGroup *objects;
 	float numObjs;
-	sgCObject **objectList;
+	sgC3DObject **objectList;
+	vector<ofMesh> myMeshs; // this will be used to store the objet to be drawn 
+	vector<ofVbo>  myVbos;
 
 	float color;
 	bool okDraw;
 
-	void setObjects(sgCGroup *objs);
-	sgCGroup* copyObjects();
+	void setObjects(sgCGroup *objs,int cubieId);
+	sgCGroup* copyObjects();   //this is no longer needed
 
-	float posX;
-	float posY;
-	void moveH(float px);
-	void moveV(float py);
+	SG_VECTOR pos;
+	void move(SG_VECTOR p);
 	
-	float rotH;
-	float rotV;
-	void rotateH(float radH); //rotates the cubie as part of the whole puzzle object NOT as a faceMove rotation
-	void rotateV(float radV);
+	SG_POINT pointRotate;
+	SG_VECTOR rot;
+	void rotate(SG_VECTOR r); //rotates the cubie as part of the whole puzzle object, NOT as a faceMove rotation
+
 
 	//this is vector of matrix objects that have all the transformations for each cubie.
 	//its a vector since we don't know how many transformations a cubie is going to have
 
 	vector<matrix> myMatrix; 
-	void faceRotate(SG_POINT point, SG_VECTOR axis, float deg);
+	void faceRotate(SG_VECTOR axis, bool dir);
+	float rotX;
+	float rotY;
+	float rotZ;
+	bool moving;
+	bool movingXC;
+	bool movingXCC;
+	bool movingYC;
+	bool movingYCC;
+	bool movingZC;
+	bool movingZCC;
+	float ct1;
+	float ct2;
+	float animTime;
+	float tempDeg;
 };
 
 #endif /* defined(__Tcubie__cubie__) */

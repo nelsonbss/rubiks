@@ -112,12 +112,17 @@
     <ClCompile Include="..\..\..\addons\ofxXmlSettings\src\ofxXmlSettings.cpp">
       <Filter>addons\ofxXmlSettings\src</Filter>
     </ClCompile>
-    <ClCompile Include="src\SceneManager.cpp" />
     <ClCompile Include="src\gui\Utils.cpp">
       <Filter>src\gui</Filter>
     </ClCompile>
-    <ClCompile Include="GuiDragable.cpp">
-      <Filter>src\gui</Filter>
+    <ClCompile Include="src\SceneManager.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ofRender.cpp">
+      <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -375,12 +380,17 @@
     <ClInclude Include="..\..\..\addons\ofxXmlSettings\src\ofxXmlSettings.h">
       <Filter>addons\ofxXmlSettings\src</Filter>
     </ClInclude>
-    <ClInclude Include="src\SceneManager.h" />
     <ClInclude Include="src\gui\Utils.h">
       <Filter>src\gui</Filter>
     </ClInclude>
-    <ClInclude Include="GuiDragable.h">
-      <Filter>src\gui</Filter>
+    <ClInclude Include="src\SceneManager.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ofRender.h">
+      <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

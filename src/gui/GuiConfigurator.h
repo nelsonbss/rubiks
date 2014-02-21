@@ -12,7 +12,7 @@
 #include "GuiSheet.h"
 //#include "GuiMediaPreview.h"
 //#include "GuiViewport.h"
-#include "SceneManager.h"
+#include "..\SceneManager.h"
 #include "Observer.h"
 #include "Subject.h"
 #include "SubObMediator.h"
@@ -26,6 +26,7 @@ public:
     static GuiConfigurator* Instance();
     void addFile(string _file);
     void getTags();
+	void getSheet();
     //void getTimelines();
     void makeGUI();
     void makeNode(string _handle, map<string, string> &_attrs);

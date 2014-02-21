@@ -2,8 +2,13 @@
 #include "sgCore.h"
 #include "cutter.h"
 
-slicer::slicer(cutter *c){
+slicer::slicer(cutter *c, float x, float y){
 	myCutter = c;
+	////
+	posX = x;
+	posY = y;
+	rotH = 0;
+	rotV = 0;
 	//create & initialize the pieces of the slicer as NULL
 	pieces = (sgCGroup**)malloc(27*sizeof(sgCObject*));
 	for(int i =0; i<27; i ++){
@@ -38,7 +43,7 @@ void slicer::draw(){
 				//aux->DestroyTempMatrix();
 				aux->Triangulate(SG_VERTEX_TRIANGULATION);
 				aux->SetAttribute(SG_OA_COLOR,rand()%50);
-				sgGetScene()->AttachObject(allChilds3a[j]);
+				//sgGetScene()->AttachObject(allChilds3a[j]);
 			}
 			free(allChilds3a);
 		}
@@ -51,33 +56,37 @@ sgCGroup** slicer::getPieces(){
 	aux = (sgCGroup**)malloc(27*sizeof(sgCGroup*));
 	for(int i =0; i<27; i ++){
 		sgCObject **objcts = (sgCObject**)malloc(50*sizeof(sgCObject*));
+		sgCObject **objcts1 = (sgCObject**)malloc(50*sizeof(sgCObject*));
 		int objctr = 0;
 		//break each pieces[i]
-		sgCGroup *parts = pieces[i];
-		if(parts != NULL){
-			const int ChCnt = parts->GetChildrenList()->GetCount();
+		//sgCGroup *parts = pieces[i];
+		if(pieces[i] != NULL){
+			const int ChCnt = pieces[i]->GetChildrenList()->GetCount();
 			sgCObject** allParts = (sgCObject**)malloc(ChCnt*sizeof(sgCObject*));
-			parts->BreakGroup(allParts);
-			sgCObject::DeleteObject(parts);
+			pieces[i]->BreakGroup(allParts);
+			sgDeleteObject(pieces[i]); //break group and delete each object?
 			for (int j=0; j < ChCnt; j++){
 				//clone each object
-				sgCObject *temp = allParts[j]->Clone();
+				sgCObject *temp = allParts[j];
 				//put clone on *[] tomake new group
-				objcts[objctr] = temp;
+				objcts[objctr] = temp->Clone();
+				objcts1[objctr] = temp->Clone();
 				objctr ++;
+				sgCObject::DeleteObject(temp);
 			}
 			free(allParts);
 			//put that new group inside aux**[]
 			pieces[i] = sgCGroup::CreateGroup(objcts,objctr); //so pieces[] has the data again, and keeps it for future requests
-			aux[i] = sgCGroup::CreateGroup(objcts,objctr);  
+			aux[i] = sgCGroup::CreateGroup(objcts1,objctr);  
 		}else{
 			pieces[i] = NULL;
 			aux[i] = NULL; 
 		}
 		free(objcts);
+		free(objcts1);
 	}
 	return aux;
-	//return NULL;
+	//return NULL; //here for memory leaks testing
 }
 //----------------------------------------------------------------
 int slicer::countPieces(){
@@ -99,14 +108,9 @@ void slicer::intersectCubes(sgCObject *obj){
 	for(int i =0; i<27; i ++){
 		sgCObject *tempObj = obj->Clone();
 		sgCObject *tempCutter = myCutter->cubes[i]->Clone();
-
-		//INTERSECTION IS BEING DONE ON THE ORIGIN!!!
-
-		//do intersecton
+		//do intersecton at origin
 		pieces[i] = sgBoolean::Intersection(*(sgC3DObject*)tempObj,*(sgC3DObject*)tempCutter); 
 		//one of this operations.. is creating 53 objects!! that are not being released on exit!!!!
-
-
 		//now we have the whole piece that goes into a cubie for that cube
 		//clean up
 		sgCObject::DeleteObject(tempObj);
@@ -115,9 +119,13 @@ void slicer::intersectCubes(sgCObject *obj){
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------
 void slicer::exit(){
-	sgCObject::DeleteObject(*pieces);
+	sgCObject::DeleteObject(*pieces); //break and delete all objects!!
 	free(myCutter);
-	free(aux);
+	for (int j=0; j < 27; j++){
+		sgCObject::DeleteObject(pieces[j]);
+	}
+	free(pieces);
+	//free(aux);//this is generating conflict on adding group to scene on cutter.cpp
 }
 
 /////////////////////////////////////////first algorithms developped///////////////////////////////////////////////////////

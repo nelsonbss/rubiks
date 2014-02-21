@@ -196,7 +196,7 @@ void testApp::keyPressed(int key){
 		//waiting for color change
 		if(key == '1') {
 			//call color change funtion
-			ofFloatColor sc = ofFloatColor (1,1,0);
+			ofFloatColor sc = ofFloatColor (1,1,1);
 			ofFloatColor tc = ofFloatColor (1, 0, 1);
 			myGames[0]->changeColorToColor(sc,tc);
 		}

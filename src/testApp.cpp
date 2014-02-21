@@ -298,6 +298,7 @@ void testApp::keyPressed(int key){
 		}
 		if(key == 'h') {//rotate down
 			SG_VECTOR r = {-0.1,0,0};
+			ofVec3f v;
 			myGames[0]->rotateP(r);
 		}
 	}

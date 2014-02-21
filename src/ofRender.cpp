@@ -206,6 +206,7 @@ ofColor ofRender::decideColor(ofPoint normal){
 	}else if(normal==yn){
 		c = red; //red
 	}else if(normal==zn){
+
 		c = yellow; //yellow
 	}
 	return c;

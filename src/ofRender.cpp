@@ -14,15 +14,15 @@ ofRender::ofRender(){
 	black = ofFloatColor(0,0,0);
 	cyan = ofFloatColor(0,1,1);
 	
-	colorsVector.push_back(mate);//0
-	colorsVector.push_back(green);//1
-	colorsVector.push_back(orange);//2
-	colorsVector.push_back(white);//3
-	colorsVector.push_back(blue);//4
-	colorsVector.push_back(red);//5
-	colorsVector.push_back(yellow);//6
-	colorsVector.push_back(black);//7
-	colorsVector.push_back(cyan);//8
+	//colorsVector.push_back(mate);//0
+	//colorsVector.push_back(green);//1
+	//colorsVector.push_back(orange);//2
+	//colorsVector.push_back(white);//3
+	//colorsVector.push_back(blue);//4
+	//colorsVector.push_back(red);//5
+	//colorsVector.push_back(yellow);//6
+	//colorsVector.push_back(black);//7
+	//colorsVector.push_back(cyan);//8
 }
 
 void ofRender::sgCoretoOFmesh(sgC3DObject *obj, ofMesh &mesh,int idCubie){
@@ -40,8 +40,6 @@ void ofRender::sgCoretoOFmesh(sgC3DObject *obj, ofMesh &mesh,int idCubie){
 
 	//generate ofMesh
 	// build vector of vertices from allthe vertices
-
-	//mesh.addColors(colorsVector);
 
 	for (int i=0; i<(numTriangles*3);i+=3){ //each triangle has three vertices
 		ofVec3f auxV1;
@@ -72,19 +70,22 @@ void ofRender::sgCoretoOFmesh(sgC3DObject *obj, ofMesh &mesh,int idCubie){
 			c = decideColor(decideAxis(dir));
 		}else if (idCubie == -2){
 			//its an original shape// with plain color
-			c = colorsVector[0];//mate
+			c = mate;//colorsVector[0];//mate
 		}else{
 			//it is a cubie
 			c = decideColorCubie(decideAxis(dir),idCubie);
 		}
 
-		mesh.addColor(c);
+		//mesh.addColor(c);
+		colorsVector.push_back(c);
 		mesh.addVertex(auxV1);
 
-		mesh.addColor(c);
+		//mesh.addColor(c);
+		colorsVector.push_back(c);
 		mesh.addVertex(auxV2);
 		
-		mesh.addColor(c);
+		//mesh.addColor(c);
+		colorsVector.push_back(c);
 		mesh.addVertex(auxV3);
 		
 
@@ -102,7 +103,7 @@ void ofRender::sgCoretoOFmesh(sgC3DObject *obj, ofMesh &mesh,int idCubie){
 		mesh.addNormal(ofVec3f(normals[i+2].x,normals[i+2].y,normals[i+2].z));
 		/*mesh.setColor(0,col);*/
 	}
-
+	mesh.addColors(colorsVector);
 	////setup indices
 	//mesh.setupIndicesAuto();
 	////set normals.. for lighting 
@@ -182,7 +183,6 @@ ofPoint ofRender::decideAxis(ofPoint dir){
 
 	return simple;
 }
-
 //-----------------------------------------------------------------------
 ofColor ofRender::decideColor(ofPoint normal){
 	//decides a color according to a normal direction
@@ -196,17 +196,17 @@ ofColor ofRender::decideColor(ofPoint normal){
 	ofPoint zn = ofPoint(0,0,-1);
 
 	if(normal==x){
-		c = colorsVector[1]; //green
+		c = green; //green
 	}else if(normal==y){
-		c = colorsVector[2]; //orange
+		c = orange; //orange
 	}else if(normal==z){
-		c = colorsVector[3]; //white
+		c = white; //white
 	}else if(normal==xn){
-		c = colorsVector[4]; //blue
+		c = blue; //blue
 	}else if(normal==yn){
-		c = colorsVector[5]; //red
+		c = red; //red
 	}else if(normal==zn){
-		c = colorsVector[6]; //yellow
+		c = yellow; //yellow
 	}
 	return c;
 }

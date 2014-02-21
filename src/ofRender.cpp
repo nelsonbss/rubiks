@@ -1,8 +1,28 @@
 #include "ofRender.h"
 #include "ofMain.h"
 #include "sgCore.h"
+#include <vector>
 
 ofRender::ofRender(){
+	mate = ofFloatColor(1.0,1.0,1.0,0.5);
+	green = ofFloatColor(0,1,0);
+	orange = ofFloatColor(1.000, 0.549, 0.000);
+	white = ofFloatColor(1,1,1);
+	blue = ofFloatColor(0,0,1);
+	red = ofFloatColor(1,0,0);
+	yellow = ofFloatColor(1,1,0);
+	black = ofFloatColor(0,0,0);
+	cyan = ofFloatColor(0,1,1);
+	
+	colorsVector.push_back(mate);//0
+	colorsVector.push_back(green);//1
+	colorsVector.push_back(orange);//2
+	colorsVector.push_back(white);//3
+	colorsVector.push_back(blue);//4
+	colorsVector.push_back(red);//5
+	colorsVector.push_back(yellow);//6
+	colorsVector.push_back(black);//7
+	colorsVector.push_back(cyan);//8
 }
 
 void ofRender::sgCoretoOFmesh(sgC3DObject *obj, ofMesh &mesh,int idCubie){
@@ -20,6 +40,9 @@ void ofRender::sgCoretoOFmesh(sgC3DObject *obj, ofMesh &mesh,int idCubie){
 
 	//generate ofMesh
 	// build vector of vertices from allthe vertices
+
+	//mesh.addColors(colorsVector);
+
 	for (int i=0; i<(numTriangles*3);i+=3){ //each triangle has three vertices
 		ofVec3f auxV1;
 		ofVec3f auxV2;
@@ -49,25 +72,35 @@ void ofRender::sgCoretoOFmesh(sgC3DObject *obj, ofMesh &mesh,int idCubie){
 			c = decideColor(decideAxis(dir));
 		}else if (idCubie == -2){
 			//its an original shape// with plain color
-			c = ofFloatColor(1,1,1,0.5);
+			c = colorsVector[0];//mate
 		}else{
 			//it is a cubie
 			c = decideColorCubie(decideAxis(dir),idCubie);
 		}
+
 		mesh.addColor(c);
 		mesh.addVertex(auxV1);
+
 		mesh.addColor(c);
 		mesh.addVertex(auxV2);
+		
 		mesh.addColor(c);
 		mesh.addVertex(auxV3);
+		
 
 		//make indices & add normals to each index
 		mesh.addIndex(i);
 		mesh.addNormal(ofVec3f(normals[i].x,normals[i].y,normals[i].z));
+		/*ofIndexType index = 5;
+		ofFloatColor col = mesh.getColor(5);
+		mesh.setColor(0,col);*/
+
 		mesh.addIndex(i + 1);
 		mesh.addNormal(ofVec3f(normals[i+1].x,normals[i+1].y,normals[i+1].z));
+		/*mesh.setColor(0,col);*/
 		mesh.addIndex(i + 2);
 		mesh.addNormal(ofVec3f(normals[i+2].x,normals[i+2].y,normals[i+2].z));
+		/*mesh.setColor(0,col);*/
 	}
 
 	////setup indices
@@ -163,17 +196,17 @@ ofColor ofRender::decideColor(ofPoint normal){
 	ofPoint zn = ofPoint(0,0,-1);
 
 	if(normal==x){
-		c = ofFloatColor(0,1,0); //green
+		c = colorsVector[1]; //green
 	}else if(normal==y){
-		c = ofFloatColor(1.000, 0.549, 0.000); //orange
+		c = colorsVector[2]; //orange
 	}else if(normal==z){
-		c = ofFloatColor(1,1,1); //white
+		c = colorsVector[3]; //white
 	}else if(normal==xn){
-		c = ofFloatColor(0,0,1); //blue
+		c = colorsVector[4]; //blue
 	}else if(normal==yn){
-		c = ofFloatColor(1,0,0); //red
+		c = colorsVector[5]; //red
 	}else if(normal==zn){
-		c = ofFloatColor(1,1,0); //yellow
+		c = colorsVector[6]; //yellow
 	}
 	return c;
 }
@@ -192,31 +225,24 @@ ofColor ofRender::decideColorCubie(ofPoint normal, int idCubie){
 	ofPoint yn = ofPoint(0,-1,0);
 	ofPoint zn = ofPoint(0,0,-1);
 
-	ofFloatColor green = ofFloatColor(0,1,0);
-	ofFloatColor orange = ofFloatColor(1.000, 0.549, 0.000);
-	ofFloatColor white = ofFloatColor(1,1,1);
-	ofFloatColor blue = ofFloatColor(0,0,1);
-	ofFloatColor red = ofFloatColor(1,0,0);
-	ofFloatColor yellow = ofFloatColor(1,1,0);
-	ofFloatColor black = ofFloatColor(0,0,0);
-
 	if(idCubie==0){
 		//this is the center piece!! what to do with this??
 		if(normal==x){
-			c = ofFloatColor(0,1,1);
+			c = cyan;
 		}else if(normal==y){
-			c = ofFloatColor(0,1,1);
+			c = cyan;
 		}else if(normal==z){
-			c = ofFloatColor(0,1,1);
+			c = cyan;
 		}else if(normal==xn){
-			c = ofFloatColor(0,1,1);
+			c = cyan;
 		}else if(normal==yn){
-			c = ofFloatColor(0,1,1);
+			c = cyan;
 		}else if(normal==zn){
-			c = ofFloatColor(0,1,1);
+			c = cyan;
 		}
 	}else if (idCubie==1){
 		//middle center blue
+
 		if(normal==x){
 			c = blue;
 		}else if(normal==y){

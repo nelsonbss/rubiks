@@ -372,6 +372,12 @@ void puzzle::rearange3dArray(SG_VECTOR axis, int plane, bool dir){
 	}
 
 }
+//---------------------------------------------------------------
+void puzzle::changeColorToColor(ofFloatColor Sc, ofFloatColor Tc){
+	for(int i=0;i<numPieces;i++){
+		myCubies[i]->changeColorToColor(Sc,Tc);
+	}
+}
 //----------------------------------------------------------------
 void puzzle::unDo(){
 	//takes the puzzle one step back on its history

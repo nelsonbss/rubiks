@@ -552,6 +552,19 @@ void cubie::rotate(SG_VECTOR r){
 void cubie::move(SG_VECTOR p){
 	pos = p;
 }
+//--------------------------------------------------------------
+void cubie::changeColorToColor(ofFloatColor Sc, ofFloatColor Tc){
+	ofRender *ofr = new ofRender(); 
+	for(int j=0; j< numObjs; j++){
+		ofr->changeColorToColor(Sc,Tc,myMeshs[j]);
+		//have to replace the vbo
+		ofVbo tempVbo;
+		tempVbo.setMesh(myMeshs[j], GL_STATIC_DRAW);
+		myVbos[j]=tempVbo;
+	}
+			
+	free(ofr);
+}
 //----------------------------------------------------------------
 void cubie::exit(){
 	if(objects != NULL){

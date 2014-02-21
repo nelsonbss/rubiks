@@ -111,6 +111,25 @@ void ofRender::sgCoretoOFmesh(sgC3DObject *obj, ofMesh &mesh,int idCubie){
 	//setNormals(mesh);//before normals were done at the end, now they are done for each created triangle, so we can color it according to the normal
 }
 //---------------------------------------------------------------------------------------------------------------
+void ofRender::changeColorToColor(ofFloatColor Sc, ofFloatColor Tc, ofMesh &mesh){
+	//it recieves a target color tolook for
+	//a target color to change to
+	//and the mesh in which to look for it
+	vector <ofFloatColor> colorsVectorT;
+	colorsVectorT = mesh.getColors();
+	//looks on the colorvector for this color
+	for(int i=0; i< colorsVectorT.size(); i++){
+		ofFloatColor c = colorsVectorT[i];
+		if((c.r == Sc.r) && (c.g == Sc.g)  && (c.b == Sc.b)){
+			//when it finds it->replace it for the incoming color
+			colorsVectorT[i] = Tc;
+		}
+	}
+	//replace the colors vector on the mesh
+	mesh.clearColors();
+	mesh.addColors(colorsVectorT);
+}
+//---------------------------------------------------------------------------------------------------------------
 ofPoint ofRender::decideAxis(ofPoint dir){
 	//looks at a point (normal vector) and decides which axis is closer to the most prominent component of the vector
 

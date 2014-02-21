@@ -63,5 +63,9 @@ public:
 	///other objects
 	ofxAssimpModelLoader bunny;
 	sgCObject *sgBunny;
+
+
+	////color change
+	void changeColorToColor(ofFloatColor Sc, ofFloatColor Tc);
 };
 #endif /* defined(__Tgame__game__) */

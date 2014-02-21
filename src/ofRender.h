@@ -27,7 +27,7 @@ public:
 	ofFloatColor black;
 	ofFloatColor cyan;
 
-	const vector <ofFloatColor> colorsVectorC;
+	void changeColorToColor(ofFloatColor Sc, ofFloatColor Tc, ofMesh &mesh);
 };
 
 #endif /* defined(__TofRender__ofRender__) */

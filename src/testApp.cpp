@@ -194,7 +194,12 @@ void testApp::keyPressed(int key){
 	if(gStep == 4){
 		//showing puzzle with colors
 		//waiting for color change
-
+		if(key == '1') {
+			//call color change funtion
+			ofFloatColor sc = ofFloatColor (1,1,0);
+			ofFloatColor tc = ofFloatColor (1, 0, 1);
+			myGames[0]->changeColorToColor(sc,tc);
+		}
 
 		//presssed NEXT
 		if(key == 'n') {

@@ -59,6 +59,9 @@ public:
 	float ct2;
 	float animTime;
 	float tempDeg;
+
+	///color change
+	void changeColorToColor(ofFloatColor Sc, ofFloatColor Tc);
 };
 
 #endif /* defined(__Tcubie__cubie__) */

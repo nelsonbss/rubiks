@@ -45,6 +45,8 @@ public:
 
 	void unDo();
 
+	///color change
+	void changeColorToColor(ofFloatColor Sc, ofFloatColor Tc);
 };
 
 #endif /* defined(__Tpuzzle__puzzle__) */

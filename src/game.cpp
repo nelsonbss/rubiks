@@ -228,6 +228,10 @@ int game::getCurrentStep(){
 void game::setCurrentStep(int s){
 	step = s;
 }
+//-----------------------------------------------------------------
+void game::changeColorToColor(ofFloatColor sc, ofFloatColor tc){
+	myPuzzle->changeColorToColor(sc,tc);
+}
 //----------------------------------------------
 void game::restart(){
 	//go to step 0, clear puzzle, , clear pieces, clear object

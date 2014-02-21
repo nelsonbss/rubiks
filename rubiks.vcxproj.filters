@@ -117,15 +117,6 @@
     </ClCompile>
     <ClCompile Include="src\SceneManager.cpp">
       <Filter>src</Filter>
-<<<<<<< Updated upstream
-    </ClCompile>
-    <ClCompile Include="src\game.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ofRender.cpp">
-      <Filter>src</Filter>
-=======
->>>>>>> Stashed changes
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -388,15 +379,6 @@
     </ClInclude>
     <ClInclude Include="src\SceneManager.h">
       <Filter>src</Filter>
-<<<<<<< Updated upstream
-    </ClInclude>
-    <ClInclude Include="src\game.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ofRender.h">
-      <Filter>src</Filter>
-=======
->>>>>>> Stashed changes
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

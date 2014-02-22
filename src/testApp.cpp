@@ -137,6 +137,22 @@ void testApp::keyPressed(int key){
 			SG_VECTOR v = {500,400,100}; 
 			myGames[0]->loadObject(4,objectPos,tempPos);
 		}
+		if(key == '5') {
+			SG_VECTOR v = {500,400,100}; 
+			myGames[0]->loadObject(5,objectPos,tempPos);
+		}
+		if(key == '6') {
+			SG_VECTOR v = {500,400,100}; 
+			myGames[0]->loadObject(6,objectPos,tempPos);
+		}
+		if(key == '7') {
+			SG_VECTOR v = {500,400,100}; 
+			myGames[0]->loadObject(7,objectPos,tempPos);
+		}
+		if(key == '8') {
+			SG_VECTOR v = {500,400,100}; 
+			myGames[0]->loadObject(7,objectPos,tempPos);
+		}
 	}
 	////////////////////////////////////////////step 1 inputs
 	if(gStep == 1){
@@ -162,6 +178,26 @@ void testApp::keyPressed(int key){
 		if(key == '3') {
 			SG_VECTOR v = {500,400,100}; 
 			myGames[0]->loadObject(3,objectPos,tempPos);
+		}
+		if(key == '4') {
+			SG_VECTOR v = {500,400,100}; 
+			myGames[0]->loadObject(4,objectPos,tempPos);
+		}
+		if(key == '5') {
+			SG_VECTOR v = {500,400,100}; 
+			myGames[0]->loadObject(5,objectPos,tempPos);
+		}
+		if(key == '6') {
+			SG_VECTOR v = {500,400,100}; 
+			myGames[0]->loadObject(6,objectPos,tempPos);
+		}
+		if(key == '7') {
+			SG_VECTOR v = {500,400,100}; 
+			myGames[0]->loadObject(7,objectPos,tempPos);
+		}
+		if(key == '8') {
+			SG_VECTOR v = {500,400,100}; 
+			myGames[0]->loadObject(8,objectPos,tempPos);
 		}
 	}
 	////////////////////////////////////////////step 2 inputs
@@ -196,9 +232,9 @@ void testApp::keyPressed(int key){
 		//waiting for color change
 		if(key == '1') {
 			//call color change funtion
-			ofFloatColor sc = ofFloatColor (1,1,1);
-			ofFloatColor tc = ofFloatColor (1, 0, 1);
-			myGames[0]->changeColorToColor(sc,tc);
+			ofFloatColor sc = pickColorMouse();
+			ofFloatColor menuColor = ofFloatColor (1, 0, 1); //this color comes from the GUI
+			myGames[0]->changeColorToColor(sc,menuColor);
 		}
 
 		//presssed NEXT
@@ -406,6 +442,22 @@ void testApp::keyReleased(int key){
 	}
 }
 //--------------------------------------------------------------
+ofFloatColor testApp::pickColorMouse(){
+	//temporary way of picking a color to change
+	ofFloatColor tc = ofFloatColor(1,1,0);
+	//ofImage pix;
+	//ofImage image;
+	//image.grabScreen(mouseX,mouseY,1,1);
+	//PixelType *p;
+	//ofPixels *pixels;
+	//pixels = image.getPixels();
+	////pix = image.getPixels();
+	//ofFloatColor c = pix.getColor(mouseX, mouseY);
+
+
+	return tc;
+}
+//--------------------------------------------------------------
 void testApp::mouseMoved(int x, int y ){
 }
 //--------------------------------------------------------------
@@ -554,9 +606,9 @@ void testApp::startOFLights(){
 }
 //------------------------------------------------------------------------------
 void testApp::updateOFLights(){
-	pointLight.setPosition(cos(ofGetElapsedTimef()*.6f) * radius * 2 + center.x, 
+	/*pointLight.setPosition(cos(ofGetElapsedTimef()*.6f) * radius * 2 + center.x, 
 		sin(ofGetElapsedTimef()*.8f) * radius * 2 + center.y, 
-		-cos(ofGetElapsedTimef()*.8f) * radius * 2 + center.z);
+		-cos(ofGetElapsedTimef()*.8f) * radius * 2 + center.z);*/
 
 	/*spotLight.setOrientation( ofVec3f( 0, cos(ofGetElapsedTimef()) * RAD_TO_DEG, 0) );
 	spotLight.setPosition( mouseX, mouseY, 200);*/

@@ -63,6 +63,15 @@ public:
 	///other objects
 	ofxAssimpModelLoader bunny;
 	sgCObject *sgBunny;
+	ofxAssimpModelLoader dodecahedron;
+	sgCObject *sgDodecahedron;
+	ofxAssimpModelLoader icosahedron;
+	sgCObject *sgIcosahedron;
+	ofxAssimpModelLoader octahedron;
+	sgCObject *sgOctahedron;
+	ofxAssimpModelLoader pot;
+	sgCObject *sgTeapot;
+	
 
 
 	////color change

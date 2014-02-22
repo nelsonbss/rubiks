@@ -23,8 +23,8 @@ void testApp::setup(){
 	////////////////////////////////create games
 	////////////////////////////////one game for now
 	SG_VECTOR gamePos = {0,0,0}; //one game created at the origin // this will have to change for a game creating function when more stations are anabled
-	SG_VECTOR puzzlePos = {displayX,displayY,displayZ};
-	game *tempGame = new game(gamePos, 1024, 768,puzzlePos);
+	SG_VECTOR displayPos = {displayX,displayY,displayZ};
+	game *tempGame = new game(gamePos, 1024, 768,displayPos);
 	myGames.push_back(tempGame);
 
 	///////////////////////////////setup games
@@ -118,39 +118,40 @@ void testApp::keyPressed(int key){
 
 	////////////////////////////////////////////step 0 inputs
 	if(gStep == 0){
-		SG_VECTOR objectPos = {0,0,0}; 
-		SG_VECTOR tempPos = {displayX,displayY,displayZ};
+		SG_VECTOR objectPos = {0,0,0};  //where it gets sliced
+		SG_VECTOR tempPos = {displayX,displayY,displayZ}; // where the temp object will be showed to user
 		//waiting for shape to be selected
 		if(key == '1') {
 			//load object recieves (object id, boolean position, display position) 
 			myGames[0]->loadObject(1,objectPos,tempPos); //pos.z its the torus radious
 		}
 		if(key == '2') {
-			SG_VECTOR v = {500,400,100}; 
+			SG_VECTOR offset = {-150,-150,-150}; //for the cube to be in place
+			objectPos.x += offset.x;
+			objectPos.y += offset.y;
+			objectPos.z += offset.z;
+			SG_VECTOR offset2 = {-150,-150,-150}; //for the cube to be in place
+			tempPos.x += offset2.x;
+			tempPos.y += offset2.y;
+			tempPos.z += offset2.z;
 			myGames[0]->loadObject(2,objectPos,tempPos);
 		}
 		if(key == '3') {
-			SG_VECTOR v = {500,400,100}; 
 			myGames[0]->loadObject(3,objectPos,tempPos);
 		}
 		if(key == '4') {
-			SG_VECTOR v = {500,400,100}; 
 			myGames[0]->loadObject(4,objectPos,tempPos);
 		}
 		if(key == '5') {
-			SG_VECTOR v = {500,400,100}; 
 			myGames[0]->loadObject(5,objectPos,tempPos);
 		}
 		if(key == '6') {
-			SG_VECTOR v = {500,400,100}; 
 			myGames[0]->loadObject(6,objectPos,tempPos);
 		}
-		if(key == '7') {
-			SG_VECTOR v = {500,400,100}; 
+		if(key == '7') { 
 			myGames[0]->loadObject(7,objectPos,tempPos);
 		}
-		if(key == '8') {
-			SG_VECTOR v = {500,400,100}; 
+		if(key == '8') { 
 			myGames[0]->loadObject(7,objectPos,tempPos);
 		}
 	}
@@ -222,7 +223,7 @@ void testApp::keyPressed(int key){
 		//a puzzle can be made
 		if(key == 'n') {
 			//do slicing
-			SG_VECTOR v = {500,400,100};
+			SG_VECTOR v = {displayX,displayY,displayZ};
 			myGames[0]->createPuzzle(v);//create Puzzle goes to step4 inside the game to show the puzzle
 		}
 	}
@@ -607,8 +608,8 @@ void testApp::startOFLights(){
 //------------------------------------------------------------------------------
 void testApp::updateOFLights(){
 	/*pointLight.setPosition(cos(ofGetElapsedTimef()*.6f) * radius * 2 + center.x, 
-		sin(ofGetElapsedTimef()*.8f) * radius * 2 + center.y, 
-		-cos(ofGetElapsedTimef()*.8f) * radius * 2 + center.z);*/
+	sin(ofGetElapsedTimef()*.8f) * radius * 2 + center.y, 
+	-cos(ofGetElapsedTimef()*.8f) * radius * 2 + center.z);*/
 
 	/*spotLight.setOrientation( ofVec3f( 0, cos(ofGetElapsedTimef()) * RAD_TO_DEG, 0) );
 	spotLight.setPosition( mouseX, mouseY, 200);*/

@@ -5,15 +5,15 @@
 #include "cutter.h"
 #include "puzzle.h"
 
-game::game(SG_VECTOR p, float w, float h, SG_VECTOR puzzlePos){
-	posGame = p;
+game::game(SG_VECTOR gamePos, float w, float h, SG_VECTOR displayPos){
+	posGame = gamePos;
 	width = w;
 	height = h;
 
 	posP.x = 0; //for the puzzle & sample object
 	posP.y = 0;
 	posP.z = 0;
-	posA = puzzlePos; //for the armature
+	posA = displayPos; //for the armature
 
 	rotP.x = 0; //rotation of puzzle
 	rotP.y = 0;

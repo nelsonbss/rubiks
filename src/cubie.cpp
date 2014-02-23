@@ -20,12 +20,12 @@ cubie::cubie(float x, float y,float z, int idi){
 	rotY = 0.0;
 	rotZ = 0.0;
 	moving = false;
-	movingXC = false;
+/*	movingXC = false;
 	movingXCC = false;
 	movingYC = false;
 	movingYCC = false;
 	movingZC = false;
-	movingZCC = false;
+	movingZCC = false*/;
 	ct1 = 0.0;
 	ct2 = 0.0;
 	animTime = 300;
@@ -150,7 +150,7 @@ void cubie::update(){
 						double aux =  ofDegToRad(rotXa);
 						objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,aux);
 						moving = false;
-						movingXC = false;
+						//movingXC = false;
 					}
 					//}
 				}else{
@@ -167,7 +167,7 @@ void cubie::update(){
 						double aux =  ofDegToRad(rotXa);
 						objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,aux);
 						moving = false;
-						movingXCC = false;
+						//movingXCC = false;
 					}
 					//}
 				}
@@ -270,18 +270,18 @@ void cubie::faceRotate(SG_VECTOR axis,bool di){
 			if(di == true){
 				//c
 				if(axis.x == 1){
-					movingXC = true;
+					//movingXC = true;
 					sample = false;
 					rotX += 90;
 					myMatrix.push_back(matrix(axis,rotX,di));
 					//cout << "history: " << myMatrix.size() << " rotX: " << rotX << endl;
 				}else if(axis.y == 1){
-					movingYC = true;
+					//movingYC = true;
 					sample = false;
 					rotY += 90;
 					myMatrix.push_back(matrix(axis,rotY,di));
 				}else{
-					movingZC = true;
+					//movingZC = true;
 					sample = false;
 					rotZ += 90;
 					myMatrix.push_back(matrix(axis,rotZ,di));
@@ -289,17 +289,17 @@ void cubie::faceRotate(SG_VECTOR axis,bool di){
 			}else{
 				//cc
 				if(axis.x == 1){
-					movingXCC = true;
+					//movingXCC = true;
 					sample = false;
 					rotX -= 90;
 					myMatrix.push_back(matrix(axis,rotX,di));
 				}else if(axis.y == 1){
-					movingYCC = true;
+					//movingYCC = true;
 					sample = false;
 					rotY -= 90;
 					myMatrix.push_back(matrix(axis,rotY,di));
 				}else{
-					movingZCC = true;
+					//movingZCC = true;
 					sample = false;
 					rotZ -= 90;
 					myMatrix.push_back(matrix(axis,rotZ,di));
@@ -365,6 +365,10 @@ void cubie::rotate(SG_VECTOR r){
 //--------------------------------------------------------------
 void cubie::move(SG_VECTOR p){
 	pos = p;
+}
+//--------------------------------------------------------------
+int cubie::getId(){
+	return id;
 }
 //--------------------------------------------------------------
 void cubie::changeColorToColor(ofFloatColor Sc, ofFloatColor Tc){

@@ -19,6 +19,7 @@ public:
 	void exit();
 
 	int id;
+	int getId();
 
 	sgCGroup *objects;
 	float numObjs;
@@ -39,7 +40,6 @@ public:
 	SG_VECTOR rot;
 	void rotate(SG_VECTOR r); //rotates the cubie as part of the whole puzzle object, NOT as a faceMove rotation
 
-
 	//this is vector of matrix objects that have all the transformations for each cubie.
 	//its a vector since we don't know how many transformations a cubie is going to have
 
@@ -49,12 +49,12 @@ public:
 	double rotY;
 	double rotZ;
 	bool moving;
-	bool movingXC;
-	bool movingXCC;
-	bool movingYC;
-	bool movingYCC;
-	bool movingZC;
-	bool movingZCC;
+	//bool movingXC;
+	//bool movingXCC;
+	//bool movingYC;
+	//bool movingYCC;
+	//bool movingZC;
+	//bool movingZCC;
 	float ct1;
 	float ct2;
 	float animTime;

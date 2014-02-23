@@ -246,10 +246,10 @@ void cubie::update(){
 				//we are at the last positon
 				SG_POINT protFace = {0,0,0};										 
 				SG_VECTOR vrotFace = myMatrix.at(myMatrix.size()-1).vector;//  axis; //rotate to do a face move
-				double tempDeg2 = myMatrix.at(myMatrix.size()-1).deg;
+				double tempDeg2 = myMatrix.at(myMatrix.size()-1).deg; //target angle, the last angle it will move to
 				if(sample==false){
 					//this should only be sampled once during the animation
-					rotXa = myMatrix.at(myMatrix.size()-2).deg;
+					rotXa = 0;//myMatrix.at(myMatrix.size()-2).deg;
 					sample=true;
 				}
 				if(myMatrix.at(myMatrix.size()-1).dir == true){
@@ -259,13 +259,13 @@ void cubie::update(){
 						if(rotXa < tempDeg2){
 							//ct2 = ofGetElapsedTimeMillis();
 							rotXa += 1;//0.1;//(ct2 - ct1)*((1.57)/animTime);
-							rotXa =  ofDegToRad(rotXa);
-							objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,rotXa);
+							double aux =  ofDegToRad(rotXa);
+							objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,aux);
 							//ct1 = ct2;
 						}else{
-							rotX = tempDeg2;
-							rotX =  ofDegToRad(rotX);
-							objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,rotX);
+							rotXa = tempDeg2;
+							double aux =  ofDegToRad(rotXa);
+							objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,aux);
 							moving = false;
 							movingXC = false;
 						}
@@ -276,11 +276,13 @@ void cubie::update(){
 						if(rotXa > tempDeg2){
 							//ct2 = ofGetElapsedTimeMillis();
 							rotXa -= 1;//0.1;  //(ct2 - ct1)*((1.57)/animTime);
-							objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,rotXa);
+							double aux =  ofDegToRad(rotXa);
+							objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,aux);
 							//ct1 = ct2;
 						}else{
-							rotX = tempDeg2;
-							objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,rotX);
+							rotXa = tempDeg2;
+							double aux =  ofDegToRad(rotXa);
+							objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,aux);
 							moving = false;
 							movingXCC = false;
 						}
@@ -397,7 +399,7 @@ void cubie::faceRotate(SG_VECTOR axis,bool di){
 			rotX=0;
 			rotY=0;
 			rotZ=0;
-			//moving = true;
+			moving = true;
 			//tempDeg = 0.0;
 			ct1 = ofGetElapsedTimeMillis();
 			if(di == true){

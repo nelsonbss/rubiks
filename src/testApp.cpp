@@ -14,7 +14,6 @@
 
 //--------------------------------------------------------------
 void testApp::setup(){
-	/*
 	/////////////////////////////initialize sgCore library
 	sgInitKernel();
 
@@ -32,7 +31,6 @@ void testApp::setup(){
 	for(int i = 0; i < myGames.size(); i++){
 		myGames[i]->setup();
 	}
-	*/
 	//////setup GUI/////////////
 	string guiFile = "sheets.xml";
 	GuiConfigurator::Instance()->addFile(guiFile);
@@ -40,6 +38,7 @@ void testApp::setup(){
 	GuiConfigurator::Instance()->makeGUI();
 
 	SubObMediator::Instance()->addObserver("button", this);
+	SubObMediator::Instance()->addObserver("object-selected", this);
 
 	rotate = true;
 }
@@ -530,6 +529,16 @@ void testApp::update(string _subName, Subject *_sub){
 		}
 	}
 	*/
+}
+
+void testApp::update(string _eventName, SubObEvent* _event){
+	if(_eventName == "object-selected"){
+		int obj = _event->getArg("object")->getInt();
+		SG_VECTOR objectPos = {0,0,0};  //where it gets sliced
+		SG_VECTOR tempPos = {displayX,displayY,displayZ}; // where the temp object will be showed to user
+		cout << "dropping object - " << obj << endl;
+		myGames[0]->loadObject(obj,objectPos,tempPos);
+	}
 }
 
 //--------------------------------------------------------------

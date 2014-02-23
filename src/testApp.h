@@ -6,6 +6,7 @@
 #include "Observer.h"
 #include "Subject.h"
 #include "SubObMediator.h"
+#include "SubObEvent.h"
 #include "SceneManager.h"
 #include "game.h"
 #include <vector>
@@ -61,6 +62,7 @@ public:
 	//subob stuff
 	map<string,string> attrs;
 	void update(string _subName, Subject* _sub);
+	void update(string _eventName, SubObEvent* _event);
     string getAttr(const char* _key){return attrs[_key];}
 
 	float timeOfLastInteraction;

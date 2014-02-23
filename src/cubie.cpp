@@ -254,11 +254,11 @@ void cubie::update(){
 				}
 				if(myMatrix.at(myMatrix.size()-1).dir == true){
 					//animate rotation xc
-					if(movingXC == true){
+					//if(movingXC == true){
 						//rotXa += 0.1;
 						if(rotXa < tempDeg2){
 							//ct2 = ofGetElapsedTimeMillis();
-							rotXa += 1;//0.1;//(ct2 - ct1)*((1.57)/animTime);
+							rotXa += 9;//0.1;//(ct2 - ct1)*((1.57)/animTime);
 							double aux =  ofDegToRad(rotXa);
 							objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,aux);
 							//ct1 = ct2;
@@ -269,13 +269,13 @@ void cubie::update(){
 							moving = false;
 							movingXC = false;
 						}
-					}
+					//}
 				}else{
 					//xcc
-					if(movingXCC == true){
+					//if(movingXCC == true){
 						if(rotXa > tempDeg2){
 							//ct2 = ofGetElapsedTimeMillis();
-							rotXa -= 1;//0.1;  //(ct2 - ct1)*((1.57)/animTime);
+							rotXa -= 9;//0.1;  //(ct2 - ct1)*((1.57)/animTime);
 							double aux =  ofDegToRad(rotXa);
 							objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,aux);
 							//ct1 = ct2;
@@ -286,7 +286,7 @@ void cubie::update(){
 							moving = false;
 							movingXCC = false;
 						}
-					}
+					//}
 				}
 			}
 
@@ -406,8 +406,6 @@ void cubie::faceRotate(SG_VECTOR axis,bool di){
 				//c
 				if(axis.x == 1){
 					movingXC = true;
-
-
 					sample = false;
 
 					/*rotX += 1.57;
@@ -428,6 +426,7 @@ void cubie::faceRotate(SG_VECTOR axis,bool di){
 					cout << "history: " << myMatrix.size() << " rotX: " << rotX << endl;
 				}else if(axis.y == 1){
 					movingYC = true;
+					sample = false;
 					/*tempDeg = rotY;
 					tempDeg += 1.57;*/
 
@@ -448,6 +447,7 @@ void cubie::faceRotate(SG_VECTOR axis,bool di){
 					cout << "history: " << myMatrix.size() << endl;
 				}else{
 					movingZC = true;
+					sample = false;
 					/*tempDeg = rotZ;
 					tempDeg += 1.57;*/
 
@@ -471,8 +471,6 @@ void cubie::faceRotate(SG_VECTOR axis,bool di){
 				//cc
 				if(axis.x == 1){
 					movingXCC = true;
-					/*tempDeg = rotX;
-					tempDeg -= 1.57*/;
 					sample = false;
 					/*rotX -= 1.57;
 					if(rotX <= -6.28){
@@ -491,6 +489,7 @@ void cubie::faceRotate(SG_VECTOR axis,bool di){
 					cout << "history: " << myMatrix.size() << "rotX: " << tempDeg << endl;
 				}else if(axis.y == 1){
 					movingYCC = true;
+					sample = false;
 					/*tempDeg = rotY;
 					tempDeg -= 1.57;*/
 
@@ -511,6 +510,7 @@ void cubie::faceRotate(SG_VECTOR axis,bool di){
 					cout << "history: " << myMatrix.size() << endl;
 				}else{
 					movingZCC = true;
+					sample = false;
 					/*tempDeg = rotZ;
 					tempDeg -= 1.57;*/
 

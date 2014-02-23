@@ -60,6 +60,9 @@ public:
 	float animTime;
 	float tempDeg;
 
+	bool sample;
+	float rotXa;
+
 	///color change
 	void changeColorToColor(ofFloatColor Sc, ofFloatColor Tc);
 };

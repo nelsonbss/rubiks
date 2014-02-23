@@ -88,9 +88,6 @@
     <ClCompile Include="src\gui\GuiSheet.cpp">
       <Filter>src\gui</Filter>
     </ClCompile>
-    <ClCompile Include="src\gui\GuiVideo.cpp">
-      <Filter>src\gui</Filter>
-    </ClCompile>
     <ClCompile Include="src\subob\Observer.cpp">
       <Filter>src\subob</Filter>
     </ClCompile>
@@ -117,6 +114,11 @@
     </ClCompile>
     <ClCompile Include="src\SceneManager.cpp">
       <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game.cpp" />
+    <ClCompile Include="src\ofRender.cpp" />
+    <ClCompile Include="src\subob\SubObEvent.cpp">
+      <Filter>src\subob</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -356,9 +358,6 @@
     <ClInclude Include="src\gui\GuiSheet.h">
       <Filter>src\gui</Filter>
     </ClInclude>
-    <ClInclude Include="src\gui\GuiVideo.h">
-      <Filter>src\gui</Filter>
-    </ClInclude>
     <ClInclude Include="src\subob\Observer.h">
       <Filter>src\subob</Filter>
     </ClInclude>
@@ -379,6 +378,11 @@
     </ClInclude>
     <ClInclude Include="src\SceneManager.h">
       <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game.h" />
+    <ClInclude Include="src\ofRender.h" />
+    <ClInclude Include="src\subob\SubObEvent.h">
+      <Filter>src\subob</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -4,8 +4,7 @@ GuiConfigurator* GuiConfigurator::mInstance = NULL;
 
 GuiConfigurator::GuiConfigurator(){
     bFirstStart = true;
-    SubObMediator::Instance()->addObserver("button", this);
-    SubObMediator::Instance()->addObserver("clip-selected", this);
+    SubObMediator::Instance()->addObserver("replace-sheet", this);
 }
 
 GuiConfigurator* GuiConfigurator::Instance(){
@@ -62,6 +61,15 @@ void GuiConfigurator::update(string _subName, Subject* _sub){
 	*/
 }
 
+void GuiConfigurator::update(string _eventName, SubObEvent* _event){
+	cout << "received event named - " << _eventName << endl;
+	if(_eventName == "replace-sheet"){
+   		string target = _event->getArg("target")->getString();
+		cout << "replacing with " << target << endl;
+		replaceSheet(target);
+	}
+}
+
 void GuiConfigurator::getTags(){
     mXML.pushTag("gui");
     int numSheets = mXML.getNumTags("sheet");
@@ -76,23 +84,52 @@ void GuiConfigurator::getTags(){
         cout << "have " << numNodes << " nodes." << endl;
         for(int j = 0; j < numNodes; j++){
             vector<string> attrs, vals;
+			vector<SubObEvent*> events;
             mXML.getAttributeNames("node",attrs, j);
+			string nodeName = mXML.getAttribute("node", "name", "none", j); 
             for(int k = 0; k < attrs.size(); k++){
                 vals.push_back(mXML.getAttribute("node",attrs[k], "none", j));
             }
             mXML.pushTag("node",j);
             string pos = mXML.getValue("pos", "none");
             string size = mXML.getValue("size", "none");
-            attrs.push_back("pos");
+			string scale = mXML.getValue("scale","1.0");
+			int numEvents = mXML.getNumTags("event");
+			vector<SubObEvent*> tmpEvents;
+			for(int k = 0; k < numEvents; k++){
+				SubObEvent* tmpEventPtr = new SubObEvent();
+				string eventName = mXML.getAttribute("event", "name", "none", k);
+				//cout << "adding event - " << eventName << endl;
+				tmpEventPtr->setName(eventName);
+				mXML.pushTag("event", k);
+				int numArgs = mXML.getNumTags("arg");
+				for(int args = 0; args < numArgs; args++){
+					string argName = mXML.getAttribute("arg", "name", "none", args);
+					mXML.pushTag("arg", args);
+					string type = mXML.getValue("type", "string");
+					string val = mXML.getValue("val","none");
+					tmpEventPtr->addArg(argName, type, val);
+					mXML.popTag();
+				}
+				mXML.popTag();
+				tmpEvents.push_back(tmpEventPtr);
+			}
+			nodeEvents[nodeName] = tmpEvents;
+			attrs.push_back("pos");
             vals.push_back(pos);
             attrs.push_back("size");
             vals.push_back(size);
+			attrs.push_back("scale");
+			vals.push_back(scale);
             mXML.popTag();
             addAttributeMap(sheetName, attrs, vals);
         }
         mXML.popTag();
     }
     mXML.popTag();
+}
+
+void GuiConfigurator::makeEvents(){
 }
 
 /*
@@ -124,6 +161,7 @@ void GuiConfigurator::addAttributeMap(string _sheet, vector<string> &_names, vec
 }
 
 void GuiConfigurator::makeGUI(){
+	cout << "making GUI" << endl;
     map<string, vector<map<string,string> > >::iterator sIter;
     vector<map<string, string> >::iterator gIter;
     for(sIter = attrs.begin(); sIter != attrs.end(); sIter++){
@@ -145,17 +183,17 @@ void GuiConfigurator::makeGUI(){
 
 void GuiConfigurator::makeNode(string _handle, map<string,string> &_attrs){
     string type = _attrs["type"];
-    /*
+	string name = _attrs["name"];
+	/*
 	if(type == "scrubber"){
         sheets[_handle]->addNode(new GuiScrubber(_attrs));
         //cout << "CREATING SCRUBBER" << endl;
     */
 	if(type == "image"){
         sheets[_handle]->addNode(new GuiImage(_attrs));
-    } else if(type == "video"){
-        sheets[_handle]->addNode(new GuiVideo(_attrs));
     } else if(type == "button"){
-        sheets[_handle]->addNode(new GuiButton(_attrs));
+		//cout << "making a button with " << nodeEvents[name].size() << " events" << endl;
+		sheets[_handle]->addNode(new GuiButton(_attrs, nodeEvents[name]));
     /*
 	} else if(type == "media-preview"){
         sheets[_handle]->addNode(new GuiMediaPreview(_attrs));

@@ -7,7 +7,6 @@
 //#include "Pager.h"
 #include "GuiButton.h"
 #include "GuiImage.h"
-#include "GuiVideo.h"
 //#include "GuiScrubber.h"
 #include "GuiSheet.h"
 //#include "GuiMediaPreview.h"
@@ -30,6 +29,7 @@ public:
     //void getTimelines();
     void makeGUI();
     void makeNode(string _handle, map<string, string> &_attrs);
+	void makeEvents();
     void print();
     void draw();
     void addSheet(string _handle, GuiSheet *_sheet);
@@ -46,6 +46,7 @@ public:
     */
 
     void update(string _subName, Subject* _sub);
+	void update(string _eventName, SubObEvent* _event);
 
     /*
     Do this next.
@@ -67,7 +68,8 @@ private:
     map<string,GuiSheet*> sheets;
     map<string, string> globals;
     map<string,string>sheetTypes;
-    GuiNode* loosie;
+    map<string,vector<SubObEvent*>> nodeEvents;
+	GuiNode* loosie;
     bool bFirstStart;
 };
 

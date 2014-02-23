@@ -1,15 +1,137 @@
 <gui>
 	<sheet name="attract" pos="0,0">
-		<!--
-    <node type="image" name="background" image="cuts/pb_main_bg_new.png" arabic="cuts/pb_bg_arabic.png">
-			<pos>0,0</pos>
+    <node type="image" name="background" image="stationBlue.png">
+			<pos>0.0,0.0</pos>
 			<size>200,200</size>
+      <scale>1.0</scale>
 		</node>
-		-->
-    <node type="button" name="scissors" action="control" target="none" message="cut" image="scissors_sm.png" clicked="none" draggable="true">
-			<pos>20,80</pos>
+    <!--
+    <node type="button" name="grey1" action="new-object" target="none" message"id:1" image="grey1.png" clicked="none">
+      <pos>0.2,0.3</pos>
+      <size>150,150</size>
+      <scale>0.3</scale>
+    </node>
+    -->
+    <node type="button" name="grey1" action="replace" target="step2" message="cut" image="grey1.png" clicked="none" draggable="true" tacky="true">
+			<pos>0.04,0.13</pos>
 			<size>150,150</size>
+      <scale>0.15</scale>
+      <event name="replace-sheet">
+        <arg name="target">
+          <type>string</type>
+          <val>step2</val>
+        </arg>
+      </event>
+      <event name="object-selected">
+        <arg name="object">
+          <type>int</type>
+          <val>1</val>
+        </arg>
+      </event>
 		</node>
+    <node type="button" name="grey8" action="replace" target="step2" message="cut" image="grey8.png" clicked="none" draggable="true" tacky="true">
+      <pos>0.12,0.13</pos>
+      <size>150,150</size>
+      <scale>0.15</scale>
+      <event name="replace-sheet">
+        <arg name="target">
+          <type>string</type>
+          <val>step2</val>
+        </arg>
+      </event>
+      <event name="object-selected">
+        <arg name="object">
+          <type>int</type>
+          <val>8</val>
+        </arg>
+      </event>
+    </node>
+    <node type="button" name="grey2" action="replace" target="step2" message="cut" image="grey2.png" clicked="none" draggable="true" tacky="true">
+      <pos>0.04,0.32</pos>
+      <size>150,150</size>
+      <scale>0.15</scale>
+      <event name="replace-sheet">
+        <arg name="target">
+          <type>string</type>
+          <val>step2</val>
+        </arg>
+      </event>
+      <event name="object-selected">
+        <arg name="object">
+          <type>int</type>
+          <val>2</val>
+        </arg>
+      </event>
+    </node>
+    <node type="button" name="grey3" action="replace" target="step2" message="cut" image="grey3.png" clicked="none" draggable="true" tacky="true">
+      <pos>0.12,0.32</pos>
+      <size>150,150</size>
+      <scale>0.15</scale>
+      <event name="replace-sheet">
+        <arg name="target">
+          <type>string</type>
+          <val>step2</val>
+        </arg>
+      </event>
+      <event name="object-selected">
+        <arg name="object">
+          <type>int</type>
+          <val>3</val>
+        </arg>
+      </event>
+    </node>
+    <node type="button" name="grey4" action="replace" target="step2" message="cut" image="grey4.png" clicked="none" draggable="true" tacky="true">
+      <pos>0.04,0.51</pos>
+      <size>150,150</size>
+      <scale>0.15</scale>
+      <event name="replace-sheet">
+        <arg name="target">
+          <type>string</type>
+          <val>step2</val>
+        </arg>
+      </event>
+      <event name="object-selected">
+        <arg name="object">
+          <type>int</type>
+          <val>4</val>
+        </arg>
+      </event>
+    </node>
+    <node type="button" name="grey6" action="replace" target="step2" message="cut" image="grey6.png" clicked="none" draggable="true" tacky="true">
+      <pos>0.12,0.51</pos>
+      <size>150,150</size>
+      <scale>0.15</scale>
+      <event name="replace-sheet">
+        <arg name="target">
+          <type>string</type>
+          <val>step2</val>
+        </arg>
+      </event>
+      <event name="object-selected">
+        <arg name="object">
+          <type>int</type>
+          <val>6</val>
+        </arg>
+      </event>
+    </node>
+    <node type="button" name="grey7" action="replace" target="step2" message="cut" image="grey7.png" clicked="none" draggable="true" tacky="true">
+      <pos>0.04,0.7</pos>
+      <size>150,150</size>
+      <scale>0.15</scale>
+      <event name="replace-sheet">
+        <arg name="target">
+          <type>string</type>
+          <val>step2</val>
+        </arg>
+      </event>
+      <event name="object-selected">
+        <arg name="object">
+          <type>int</type>
+          <val>7</val>
+        </arg>
+      </event>
+    </node>
+    <!--
     <node type="button" name="arrow-left" action="control" target="none" message="rotate-left" image="arrow-left.png" clicked="none">
       <pos>170,70</pos>
       <size>150,150</size>
@@ -26,12 +148,151 @@
       <pos>280,165</pos>
       <size>150,150</size>
     </node>
-    <menu set="main-menu" pos="100,100">
-<<<<<<< Updated upstream
-      
-=======
-
->>>>>>> Stashed changes
-    </menu>
+    -->
 	</sheet>
+  <sheet name="step2" pos="0,0">
+    <node type="image" name="background" image="stationBlue.png">
+      <pos>0.0,0.0</pos>
+      <size>200,200</size>
+      <scale>1.0</scale>
+    </node>
+    <!--
+    <node type="button" name="grey1" action="new-object" target="none" message"id:1" image="grey1.png" clicked="none">
+      <pos>0.2,0.3</pos>
+      <size>150,150</size>
+      <scale>0.3</scale>
+    </node>
+    -->
+    <node type="button" name="arm1a" action="replace" target="step3" message="cut" image="armature1.png" clicked="none" draggable="true" tacky="true">
+      <pos>0.04,0.13</pos>
+      <size>150,150</size>
+      <scale>0.25</scale>
+      <event type="replace-sheet">
+        <arg>
+          <name>target</name>
+          <val>step3</val>
+        </arg>
+      </event>
+    </node>
+    <node type="button" name="arm2a" action="replace" target="step3" message="cut" image="armature2.png" clicked="none" draggable="true" tacky="true">
+      <pos>0.12,0.13</pos>
+      <size>150,150</size>
+      <scale>0.25</scale>
+    </node>
+    <node type="button" name="arm1b" action="replace" target="step3" message="cut" image="armature1.png" clicked="none" draggable="true" tacky="true">
+      <pos>0.04,0.32</pos>
+      <size>150,150</size>
+      <scale>0.25</scale>
+    </node>
+    <node type="button" name="arm2b" action="replace" target="step3" message="cut" image="armature2.png" clicked="none" draggable="true" tacky="true">
+      <pos>0.12,0.32</pos>
+      <size>150,150</size>
+      <scale>0.25</scale>
+    </node>
+    <node type="button" name="arm1c" action="replace" target="step3" message="cut" image="armature1.png" clicked="none" draggable="true" tacky="true">
+      <pos>0.04,0.51</pos>
+      <size>150,150</size>
+      <scale>0.25</scale>
+    </node>
+    <node type="button" name="arm2c" action="replace" target="step3" message="cut" image="armature2.png" clicked="none" draggable="true" tacky="true">
+      <pos>0.12,0.51</pos>
+      <size>150,150</size>
+      <scale>0.25</scale>
+    </node>
+    <node type="button" name="arm1d" action="replace" target="step3" message="cut" image="armature1.png" clicked="none" draggable="true" tacky="true">
+      <pos>0.04,0.7</pos>
+      <size>150,150</size>
+      <scale>0.25</scale>
+    </node>
+    <node type="button" name="arm2d" action="replace" target="attract" message="cut" image="btnReset.png" clicked="none">
+      <pos>0.8,0.85</pos>
+      <size>150,150</size>
+      <scale>0.9</scale>
+    </node>
+    <!--
+    <node type="button" name="arrow-left" action="control" target="none" message="rotate-left" image="arrow-left.png" clicked="none">
+      <pos>170,70</pos>
+      <size>150,150</size>
+    </node>
+    <node type="button" name="arrow-up" action="control" target="none" message="rotate-up" image="arrow-up.png" clicked="none">
+      <pos>280,-35</pos>
+      <size>150,150</size>
+    </node>
+    <node type="button" name="arrow-right" action="control" target="none" message="rotate-right" image="arrow-right.png" clicked="none">
+      <pos>390,70</pos>
+      <size>150,150</size>
+    </node>
+    <node type="button" name="arrow-down" action="control" target="none" message="rotate-down" image="arrow-down.png" clicked="none">
+      <pos>280,165</pos>
+      <size>150,150</size>
+    </node>
+    -->
+  </sheet>
+  <sheet name="step3" pos="0,0">
+    <node type="image" name="background" image="stationBlue.png">
+      <pos>0.0,0.0</pos>
+      <size>200,200</size>
+      <scale>1.0</scale>
+    </node>
+    <!--
+    <node type="button" name="grey1" action="new-object" target="none" message"id:1" image="grey1.png" clicked="none">
+      <pos>0.2,0.3</pos>
+      <size>150,150</size>
+      <scale>0.3</scale>
+    </node>
+    -->
+    <node type="button" name="F79720" action="control" target="none" message="cut" image="clr_F79720.png" clicked="none" draggable="true" tacky="true">
+      <pos>0.04,0.32</pos>
+      <size>150,150</size>
+      <scale>1.0</scale>
+    </node>
+    <node type="button" name="F79720" action="control" target="none" message="cut" image="clr_0779BE.png" clicked="none" draggable="true" tacky="true">
+      <pos>0.12,0.32</pos>
+      <size>150,150</size>
+      <scale>1.0</scale>
+    </node>
+    <node type="button" name="F79720" action="control" target="none" message="cut" image="clr_EC2224.png" clicked="none" draggable="true" tacky="true">
+      <pos>0.04,0.51</pos>
+      <size>150,150</size>
+      <scale>1.0</scale>
+    </node>
+    <node type="button" name="F79720" action="control" target="none" message="cut" image="clr_FFCD00.png" clicked="none" draggable="true" tacky="true">
+      <pos>0.12,0.51</pos>
+      <size>150,150</size>
+      <scale>1.0</scale>
+    </node>
+    <node type="button" name="F79720" action="control" target="none" message="cut" image="clr_00AC68.png" clicked="none" draggable="true" tacky="true">
+      <pos>0.04,0.7</pos>
+      <size>150,150</size>
+      <scale>1.0</scale>
+    </node>
+    <node type="button" name="F79720" action="control" target="none" message="cut" image="clr_989897.png" clicked="none" draggable="true" tacky="true">
+      <pos>0.12,0.7</pos>
+      <size>150,150</size>
+      <scale>1.0</scale>
+    </node>
+    <node type="button" name="F79720" action="replace" target="attract" message="cut" image="btnReset.png" clicked="none">
+      <pos>0.8,0.85</pos>
+      <size>150,150</size>
+      <scale>0.9</scale>
+    </node>
+    <!--
+    <node type="button" name="arrow-left" action="control" target="none" message="rotate-left" image="arrow-left.png" clicked="none">
+      <pos>170,70</pos>
+      <size>150,150</size>
+    </node>
+    <node type="button" name="arrow-up" action="control" target="none" message="rotate-up" image="arrow-up.png" clicked="none">
+      <pos>280,-35</pos>
+      <size>150,150</size>
+    </node>
+    <node type="button" name="arrow-right" action="control" target="none" message="rotate-right" image="arrow-right.png" clicked="none">
+      <pos>390,70</pos>
+      <size>150,150</size>
+    </node>
+    <node type="button" name="arrow-down" action="control" target="none" message="rotate-down" image="arrow-down.png" clicked="none">
+      <pos>280,165</pos>
+      <size>150,150</size>
+    </node>
+    -->
+  </sheet>
 </gui>

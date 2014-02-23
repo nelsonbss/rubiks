@@ -14,6 +14,7 @@
 
 //--------------------------------------------------------------
 void testApp::setup(){
+	/*
 	/////////////////////////////initialize sgCore library
 	sgInitKernel();
 
@@ -31,7 +32,7 @@ void testApp::setup(){
 	for(int i = 0; i < myGames.size(); i++){
 		myGames[i]->setup();
 	}
-
+	*/
 	//////setup GUI/////////////
 	string guiFile = "sheets.xml";
 	GuiConfigurator::Instance()->addFile(guiFile);
@@ -55,13 +56,12 @@ void testApp::update(){
 //--------------------------------------------------------------
 void testApp::draw(){
 	///////////////////START OF RENDERING////////////////////
-	startOFLights();
+	//startOFLights();
 
 
 	/////////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////////////  DUMMY GUI ///  DUMMY GUI  ///  DUMMY GUI
 	///to keep track of what menus and buttons to show, and when
-
 	for(int i = 0; i < myGames.size(); i++){
 		int gStep=0;
 		//get current step of game
@@ -481,7 +481,7 @@ void testApp::dragEvent(ofDragInfo dragInfo){
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------
 void testApp::exit(){
-	myGames[0]->restart();
+	//myGames[0]->restart();
 	//cleanup games vector!!
 	//sgFreeKernel();
 }

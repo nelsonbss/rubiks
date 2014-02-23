@@ -9,15 +9,14 @@
 
 class GuiNode;
 
-class GuiButton : public GuiNode, public Subject, public Observer
+class GuiButton : public GuiNode
 {
     public:
-        GuiButton(map<string,string> &_attrs);
+        GuiButton(map<string,string> &_attrs, vector<SubObEvent*> _events);
         GuiButton(string _img);
         GuiButton(){}
         virtual ~GuiButton(){}
         bool processMouse(int _x, int _y, int _state);
-        virtual void execute();
         virtual void update(string _subName, Subject* _sub);
         void setMessage(map<string,string> _msg){}
         virtual void draw();
@@ -29,7 +28,6 @@ class GuiButton : public GuiNode, public Subject, public Observer
         ofImage inactive;
         ofImage active;
         ofImage arabic;
-		ofVec2f drawPos;
 		string channel;
 		bool drawActive;
         bool haveActive;
@@ -41,6 +39,7 @@ class GuiButton : public GuiNode, public Subject, public Observer
 		bool bSelected;
 		bool bTacky;
 		ofVec2f selectionLocation;
+		ofVec2f dragStartLocation;
 };
 
 #endif // GUIBUTTON_H

@@ -3,8 +3,8 @@
 
 bool GuiNode::isInside(int _x, int _y){
     //cout << name << " checking insides." << pos.x << ", " << size.x << endl;
-    if((_x > pos.x && _x < (pos.x + size.x)) &&
-       (_y > pos.y && _y < (pos.y + size.y))){
+    if((_x > drawPos.x && _x < (drawPos.x + size.x)) &&
+       (_y > drawPos.y && _y < (drawPos.y + size.y))){
            return true;
        }
     return false;
@@ -18,6 +18,25 @@ void GuiNode::initialize(){
     type = attrs["type"];
     name = attrs["name"];
     pos = stringToVec2f(attrs["pos"]);
-    //size = stringToVec2f(attrs["size"]);
+    scale = ofToFloat(attrs["scale"]);
+	setPosition();
+	//cout << "have " << events.size() << " events." << endl;
+	//size = stringToVec2f(attrs["size"]);
 }
 
+void GuiNode::setPosition(){
+	drawPos.x = ofGetWidth() * pos.x;
+	drawPos.y = ofGetHeight() * pos.y;
+}
+
+void GuiNode::_windowResized(){
+	setPosition();
+	windowResized();
+}
+
+void GuiNode::execute(){
+	cout << "sending " << events.size() << " events." << endl;
+	for(vector<SubObEvent*>::iterator sIter = events.begin(); sIter != events.end(); ++sIter){
+		SubObMediator::Instance()->sendEvent((*sIter)->getName(), (*sIter));
+	}
+}

@@ -2,6 +2,12 @@
 #define GUINODE_H
 
 #include "ofMain.h"
+#include "SubObEvent.h"
+#include "Subject.h"
+#include "Observer.h"
+#include "SubObMediator.h"
+
+class SubObEvent;
 
 enum{
     MOUSE_STATE_DOWN,
@@ -9,7 +15,7 @@ enum{
     MOUSE_STATE_DRAG
 };
 
-class GuiNode{
+class GuiNode: public Subject, public Observer{
 
 public:
 
@@ -33,7 +39,8 @@ public:
     string setName(string &_name){name = _name; cout << "setting name to " << name << endl;}
     void setName(const char * _name){name = _name;}
     string getType(){return type;}
-    ofVec2f getPos(){return pos;}
+    ofVec2f getPos(){return drawPos;}
+	ofVec2f getCenter(){ofVec2f(drawPos.x + (size.x / 2), drawPos.y + (size.y / 2));}
     ofVec2f getSize(){return size;}
     void setSize(float x, float y){size.set(x,y);}
     void setAttr(string _attr, string _val){attrs.insert(pair<string,string>(_attr, _val));}
@@ -41,9 +48,12 @@ public:
     void setDur(int _dur){dur = _dur;}
     int getDur(){return dur;}
     void setParent(string _parent){parent = _parent;}
+	void setPosition();
+	void _windowResized();
+	virtual void windowResized(){}
 
     //Virtual methods that each subclass is responsible for defining.
-    virtual void execute() = 0;
+    virtual void execute();
     virtual void executeDrag(int _x, int _y){}
     virtual void draw() = 0;
     virtual void drawLoosie(){}
@@ -52,8 +62,11 @@ public:
 protected:
 
     map<string,string> attrs;
+	vector<SubObEvent*> events;
     ofVec2f pos;
-    ofVec2f size;
+	ofVec2f drawPos;
+    float scale;
+	ofVec2f size;
     string name;
     string type;
     string parent;

@@ -4,6 +4,8 @@ GuiImage::GuiImage(map<string,string> &_attrs): GuiNode(){
     img.loadImage(_attrs["image"]);
     attrs = _attrs;
     initialize();
+	size.x = img.getWidth() * scale;
+	size.y = img.getHeight() * scale;
     haveArabic = false;
     map<string,string>::iterator mIter;
     mIter = attrs.find("arabic");
@@ -24,7 +26,7 @@ void GuiImage::draw(){
 	//if(haveArabic && SceneManager::Instance()->getDisplayArabic()){
     //    imgArabic.draw(pos.x,pos.y);
 	//} else {
-       img.draw(pos.x,pos.y);
+    img.draw(drawPos.x,drawPos.y, size.x, size.y);
     //}
 }
 

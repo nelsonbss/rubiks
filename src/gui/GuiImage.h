@@ -6,7 +6,7 @@
 #include "Subject.h"
 #include "SubObMediator.h"
 
-class GuiImage : public GuiNode, public Observer{
+class GuiImage : public GuiNode{
 
 public:
     GuiImage(map<string,string> &_attrs);

@@ -1,14 +1,16 @@
 #include "GuiButton.h"
 #include "Utils.h"
 
-GuiButton::GuiButton(map<string, string> &_attrs) : GuiNode(){
+GuiButton::GuiButton(map<string, string> &_attrs, vector<SubObEvent*> _events) : GuiNode(){
 	attrs = _attrs;
+	events = _events;
+	//cout << "button has " << events.size() << endl;
 	initialize();
     if(attrs["image"] != "none"){
         inactive.loadImage(attrs["image"]);
         haveImage = true;
-        size.x = inactive.getWidth();
-        size.y = inactive.getHeight();
+        size.x = inactive.getWidth() * scale;
+        size.y = inactive.getHeight() * scale;
     } else {
         haveImage = false;
         size = stringToVec2f(attrs["size"]);
@@ -31,7 +33,6 @@ GuiButton::GuiButton(map<string, string> &_attrs) : GuiNode(){
 			}
 		}
 	}
-	drawPos = pos;
     drawActive = false;
     setName("button");
 	setChannel("button");
@@ -67,6 +68,7 @@ bool GuiButton::processMouse(int _x, int _y, int _state){
 			} else {
 				bSelected = true;
 				selectionLocation.set(_x, _y);
+				dragStartLocation = drawPos;
 				return true;
 			}
 		}
@@ -74,8 +76,8 @@ bool GuiButton::processMouse(int _x, int _y, int _state){
 	if(_state == MOUSE_STATE_DRAG){
 		if(bSelected){
 			ofVec2f mouseMovement = ofVec2f(_x, _y) - selectionLocation;
-			drawPos = pos + mouseMovement;
-			cout << "moving to " << drawPos.x << ", " << drawPos.y << endl;
+			drawPos = dragStartLocation + mouseMovement;
+			//cout << "moving to " << drawPos.x << ", " << drawPos.y << endl;
 			return true;
 		}
 	}
@@ -83,9 +85,9 @@ bool GuiButton::processMouse(int _x, int _y, int _state){
 		if(bSelected){
 			execute();
 			if(bTacky){
-				drawPos = pos;
+				drawPos = dragStartLocation;
 			} else {
-				pos = drawPos;
+				//pos = drawPos;
 			}
 			bSelected = false;
 			return true;
@@ -98,11 +100,6 @@ bool GuiButton::processMouse(int _x, int _y, int _state){
 	return false;
 }
 
-void GuiButton::execute(){
-    //cout << name << " is executing" << endl;
-    SubObMediator::Instance()->update(channel, this);
-}
-
 void GuiButton::update(string _subName, Subject* _sub){
 }
 
@@ -112,10 +109,10 @@ void GuiButton::draw(){
             //if(haveArabic && SceneManager::Instance()->getDisplayArabic()){
              //   arabic.draw(pos.x,pos.y);
             //} else {
-                inactive.draw(drawPos.x,drawPos.y);
+                inactive.draw(drawPos.x,drawPos.y, size.x, size.y);
             //}
         } else {
-            active.draw(drawPos.x,drawPos.y);
+            active.draw(drawPos.x,drawPos.y, size.x, size.y);
         }
     } else {
         //ofRect(pos.x, pos.y, size.x, size.y);

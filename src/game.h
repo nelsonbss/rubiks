@@ -63,5 +63,18 @@ public:
 	///other objects
 	ofxAssimpModelLoader bunny;
 	sgCObject *sgBunny;
+	ofxAssimpModelLoader dodecahedron;
+	sgCObject *sgDodecahedron;
+	ofxAssimpModelLoader icosahedron;
+	sgCObject *sgIcosahedron;
+	ofxAssimpModelLoader octahedron;
+	sgCObject *sgOctahedron;
+	ofxAssimpModelLoader pot;
+	sgCObject *sgTeapot;
+	
+
+
+	////color change
+	void changeColorToColor(ofFloatColor Sc, ofFloatColor Tc);
 };
 #endif /* defined(__Tgame__game__) */

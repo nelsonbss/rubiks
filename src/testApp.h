@@ -73,4 +73,7 @@ public:
 	bool bSmoothLighting;
 	bool bPointLight, bSpotLight, bDirLight;
 	bool bUseTexture;
+
+	///for color changing //first version
+	ofFloatColor pickColorMouse();
 };

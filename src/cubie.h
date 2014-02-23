@@ -58,7 +58,6 @@ public:
 	float ct1;
 	float ct2;
 	float animTime;
-	double tempDeg;
 
 	bool sample;
 	double rotXa;

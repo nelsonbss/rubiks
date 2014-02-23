@@ -29,13 +29,12 @@ cubie::cubie(float x, float y,float z, int idi){
 	ct1 = 0.0;
 	ct2 = 0.0;
 	animTime = 300;
-	tempDeg = 0.0;
 
 	sample = true;
 	rotXa = 0.0;
 	SG_POINT axis = {0,0,0};
 	SG_VECTOR vrotFace = {0,0,0};
-	myMatrix.push_back(matrix(axis,tempDeg,true));
+	myMatrix.push_back(matrix(axis,0.0,true));
 }
 //--------------------------------------------------------------
 void cubie::setup(){
@@ -43,180 +42,66 @@ void cubie::setup(){
 }
 //--------------------------------------------------------------
 void cubie::update(){
-	//if(numObjs>0){
-	if(moving==true){
-		for (int j=0; j < numObjs; j++){
-			//		//animate rotation xc
-			//		if(movingXC == true){
-			//			if(rotX < tempDeg){
-			//				ct2 = ofGetElapsedTimeMillis();
-			//				rotX += (ct2 - ct1)*((1.57)/animTime);
-			//				ct1 = ct2;
-			//			}else{
-			//				rotX = tempDeg;
-			//				/*if(rotX >= 360){
-			//				rotX = 0.0;
-			//				}*/
-			//				if(rotX >= 6.28){
-			//					rotX = 0.0;
-			//				}
-			//				moving = false;
-			//				movingXC = false;
-			//			}
-			//		}
-			//		//xcc
-			//		if(movingXCC == true){
-			//			if(rotX > tempDeg){
-			//				ct2 = ofGetElapsedTimeMillis();
-			//				rotX -= (ct2 - ct1)*((1.57)/animTime);
-			//				ct1 = ct2;
-			//			}else{
-			//				rotX = tempDeg;
-			//				/*if(rotX <= -360){
-			//				rotX = 0.0;
-			//				}*/
-			//				if(rotX <= -6.28){
-			//					rotX = 0.0;
-			//				}
-			//				moving = false;
-			//				movingXCC = false;
-			//			}
-			//		}
-			//		////////////   Y
-			//		//animate rotation yc
-			//		if(movingYC == true){
-			//			if(rotY < tempDeg){
-			//				ct2 = ofGetElapsedTimeMillis();
-			//				rotY += (ct2 - ct1)*((1.57)/animTime);
-			//				ct1 = ct2;
-			//			}else{
-			//				rotY = tempDeg;
-			//				/*if(rotY >= 360){
-			//				rotY = 0.0;
-			//				}*/
-			//				if(rotY >= 6.28){
-			//					rotY = 0.0;
-			//				}
-			//				moving = false;
-			//				movingYC = false;
-			//			}
-			//		}
-			//		//ycc
-			//		if(movingYCC == true){
-			//			if(rotY > tempDeg){
-			//				ct2 = ofGetElapsedTimeMillis();
-			//				rotY -= (ct2 - ct1)*((1.57)/animTime);
-			//				ct1 = ct2;
-			//			}else{
-			//				rotY = tempDeg;
-			//				/*if(rotY <= -360){
-			//				rotY = 0.0;
-			//				}*/
-			//				if(rotY <= -6.28){
-			//					rotY = 0.0;
-			//				}
-			//				moving = false;
-			//				movingYCC = false;
-			//			}
-			//		}
-			//		////////////  Z
-			//		//animate rotation zc
-			//		if(movingZC == true){
-			//			if(rotZ < tempDeg){
-			//				ct2 = ofGetElapsedTimeMillis();
-			//				rotZ += (ct2 - ct1)*((1.57)/animTime);
-			//				ct1 = ct2;
-			//			}else{
-			//				rotZ = tempDeg;
-			//				/*if(rotZ >= 360){
-			//				rotZ = 0.0;
-			//				}*/
-			//				if(rotZ >= 6.28){
-			//					rotZ = 0.0;
-			//				}
-			//				moving = false;
-			//				movingZC = false;
-			//			}
-			//		}
-			//		//zcc
-			//		if(movingZCC == true){
-			//			if(rotZ > tempDeg){
-			//				ct2 = ofGetElapsedTimeMillis();
-			//				rotZ -= (ct2 - ct1)*((1.57)/animTime); //////////////////////90 on OF rotations
-			//				ct1 = ct2;
-			//			}else{
-			//				rotZ = tempDeg;
-			//				/*if(rotZ <= -360){
-			//				rotZ = 0.0;
-			//				}*/
-			//				if(rotZ <= -6.28){
-			//					rotZ = 0.0;
-			//				}
-			//				moving = false;
-			//				movingZCC = false;
-			//			}
-			//		}
-
-
+	for (int j=0; j < numObjs; j++){
+		if(moving==true){
+			//for (int j=0; j < numObjs; j++){
 			///////////////////////////////////applying rotations matrix HISTORY
 			//use vector with matrix(s)
-			if(myMatrix.size()<2){
-				for(int i=0; i<myMatrix.size();i++){
-					SG_POINT protFace = {0,0,0};										 
-					SG_VECTOR vrotFace = myMatrix.at(i).vector;//  axis; //rotate to do a face move
-					double d = myMatrix.at(i).deg;
-					d = ofDegToRad(d);
-					if(myMatrix.at(i).dir == true){
-						//c
-						//if(myMatrix.at(i).vector.x == 1){
-						if (objectList[j]->GetTempMatrix()==0){
-							objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,d);
-						}else{
-							objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,d);
-						}
-						//}else if(myMatrix.at(i).vector.y == 1){
-						//	//rotY = d;
-						//	if (objectList[j]->GetTempMatrix()==0){
-						//		objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,d);
-						//	}else{
-						//		objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,d);
-						//	}
-						//}else{
-						//	//rotZ = d;
-						//	if (objectList[j]->GetTempMatrix()==0){
-						//		objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,d);
-						//	}else{
-						//		objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,d);
-						//	}
-						//}
-					}else{
-						//cc
-						//if(myMatrix.at(i).vector.x == 1){
-						if (objectList[j]->GetTempMatrix()==0){
-							objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,d);
-						}else{
-							objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,d);
-						}
-						//}else if(myMatrix.at(i).vector.y == 1){
-						//	//rotY = d;
-						//	if (objectList[j]->GetTempMatrix()==0){
-						//		objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,d);
-						//	}else{
-						//		objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,d);
-						//	}
-						//}else{
-						//	//rotZ = d;
-						//	if (objectList[j]->GetTempMatrix()==0){
-						//		objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,d);
-						//	}else{
-						//		objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,d);
-						//	}
-						//}
-					}
-					//objectList[j]->ApplyTempMatrix();
-					//objectList[j]->DestroyTempMatrix();
-				}
-			}
+			//if(myMatrix.size()<2){
+			//	for(int i=0; i<myMatrix.size();i++){
+			//		SG_POINT protFace = {0,0,0};										 
+			//		SG_VECTOR vrotFace = myMatrix.at(i).vector;//  axis; //rotate to do a face move
+			//		double d = myMatrix.at(i).deg;
+			//		d = ofDegToRad(d);
+			//		if(myMatrix.at(i).dir == true){
+			//			//c
+			//			//if(myMatrix.at(i).vector.x == 1){
+			//			if (objectList[j]->GetTempMatrix()==0){
+			//				objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,d);
+			//			}else{
+			//				objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,d);
+			//			}
+			//			//}else if(myMatrix.at(i).vector.y == 1){
+			//			//	//rotY = d;
+			//			//	if (objectList[j]->GetTempMatrix()==0){
+			//			//		objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,d);
+			//			//	}else{
+			//			//		objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,d);
+			//			//	}
+			//			//}else{
+			//			//	//rotZ = d;
+			//			//	if (objectList[j]->GetTempMatrix()==0){
+			//			//		objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,d);
+			//			//	}else{
+			//			//		objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,d);
+			//			//	}
+			//			//}
+			//		}else{
+			//			//cc
+			//			//if(myMatrix.at(i).vector.x == 1){
+			//			if (objectList[j]->GetTempMatrix()==0){
+			//				objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,d);
+			//			}else{
+			//				objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,d);
+			//			}
+			//			//}else if(myMatrix.at(i).vector.y == 1){
+			//			//	//rotY = d;
+			//			//	if (objectList[j]->GetTempMatrix()==0){
+			//			//		objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,d);
+			//			//	}else{
+			//			//		objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,d);
+			//			//	}
+			//			//}else{
+			//			//	//rotZ = d;
+			//			//	if (objectList[j]->GetTempMatrix()==0){
+			//			//		objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,d);
+			//			//	}else{
+			//			//		objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,d);
+			//			//	}
+			//			//}
+			//		}
+			//	}
+			//}
 			if(myMatrix.size()>=2){
 				//build rotation matrix for all steps up to the one where it was at the moment of a new movement
 				for(int i=0; i<myMatrix.size()-1;i++){
@@ -240,8 +125,6 @@ void cubie::update(){
 							objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,d);
 						}
 					}
-					//objectList[j]->ApplyTempMatrix();
-					//objectList[j]->DestroyTempMatrix();
 				}
 				//we are at the last positon
 				SG_POINT protFace = {0,0,0};										 
@@ -255,62 +138,45 @@ void cubie::update(){
 				if(myMatrix.at(myMatrix.size()-1).dir == true){
 					//animate rotation xc
 					//if(movingXC == true){
-						//rotXa += 0.1;
-						if(rotXa < tempDeg2){
-							//ct2 = ofGetElapsedTimeMillis();
-							rotXa += 9;//0.1;//(ct2 - ct1)*((1.57)/animTime);
-							double aux =  ofDegToRad(rotXa);
-							objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,aux);
-							//ct1 = ct2;
-						}else{
-							rotXa = tempDeg2;
-							double aux =  ofDegToRad(rotXa);
-							objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,aux);
-							moving = false;
-							movingXC = false;
-						}
+					//rotXa += 0.1;
+					if(rotXa < tempDeg2){
+						//ct2 = ofGetElapsedTimeMillis();
+						rotXa += 9;//0.1;//(ct2 - ct1)*((1.57)/animTime);
+						double aux =  ofDegToRad(rotXa);
+						objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,aux);
+						//ct1 = ct2;
+					}else{
+						rotXa = tempDeg2;
+						double aux =  ofDegToRad(rotXa);
+						objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,aux);
+						moving = false;
+						movingXC = false;
+					}
 					//}
 				}else{
 					//xcc
 					//if(movingXCC == true){
-						if(rotXa > tempDeg2){
-							//ct2 = ofGetElapsedTimeMillis();
-							rotXa -= 9;//0.1;  //(ct2 - ct1)*((1.57)/animTime);
-							double aux =  ofDegToRad(rotXa);
-							objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,aux);
-							//ct1 = ct2;
-						}else{
-							rotXa = tempDeg2;
-							double aux =  ofDegToRad(rotXa);
-							objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,aux);
-							moving = false;
-							movingXCC = false;
-						}
+					if(rotXa > tempDeg2){
+						//ct2 = ofGetElapsedTimeMillis();
+						rotXa -= 9;//0.1;  //(ct2 - ct1)*((1.57)/animTime);
+						double aux =  ofDegToRad(rotXa);
+						objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,aux);
+						//ct1 = ct2;
+					}else{
+						rotXa = tempDeg2;
+						double aux =  ofDegToRad(rotXa);
+						objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,aux);
+						moving = false;
+						movingXCC = false;
+					}
 					//}
 				}
 			}
-
-			///////////////////////////////////////////////////////////
-			////////rotate and move with the whole puzzle
-			SG_VECTOR vrotH = {0,1,0}; //rotate H                            
-			if (objectList[j]->GetTempMatrix()==0){
-				objectList[j]->InitTempMatrix()->Rotate(pointRotate,vrotH,rot.y);
-			}else{
-				objectList[j]->GetTempMatrix()->Rotate(pointRotate,vrotH,rot.y);
-			}
-			SG_VECTOR vrotV = {1,0,0}; //rotate V								 
-			objectList[j]->GetTempMatrix()->Rotate(pointRotate,vrotV,rot.x);
-			//translations
-			SG_VECTOR transBox11 = {pos.x,pos.y,pos.z}; 
-			objectList[j]->GetTempMatrix()->Translate(transBox11);
-			objectList[j]->ApplyTempMatrix();
 		}
-	}
-	//}
-	else{
-		//puzzle is not moving
-		//if(objects != NULL){
-		for (int j=0; j < numObjs; j++){
+		else{
+			//puzzle is not moving
+			//if(objects != NULL){
+			//for (int j=0; j < numObjs; j++){
 			///////////////////////////////////applying rotations matrix HISTORY
 			//use vector with matrix(s)
 			for(int i=0; i<myMatrix.size();i++){
@@ -334,21 +200,21 @@ void cubie::update(){
 					}
 				}
 			}
-			///////////////////////////////////////////////////////////
-			////////rotate and move with the whole puzzle
-			SG_VECTOR vrotH = {0,1,0}; //rotate H                            
-			if (objectList[j]->GetTempMatrix()==0){
-				objectList[j]->InitTempMatrix()->Rotate(pointRotate,vrotH,rot.y);
-			}else{
-				objectList[j]->GetTempMatrix()->Rotate(pointRotate,vrotH,rot.y);
-			}
-			SG_VECTOR vrotV = {1,0,0}; //rotate V								 
-			objectList[j]->GetTempMatrix()->Rotate(pointRotate,vrotV,rot.x);
-			//translations
-			SG_VECTOR transBox11 = {pos.x,pos.y,pos.z}; 
-			objectList[j]->GetTempMatrix()->Translate(transBox11);
-			objectList[j]->ApplyTempMatrix();
 		}
+		///////////////////////////////////////////////////////////
+		////////rotate and move with the whole puzzle
+		SG_VECTOR vrotH = {0,1,0}; //rotate H                            
+		if (objectList[j]->GetTempMatrix()==0){
+			objectList[j]->InitTempMatrix()->Rotate(pointRotate,vrotH,rot.y);
+		}else{
+			objectList[j]->GetTempMatrix()->Rotate(pointRotate,vrotH,rot.y);
+		}
+		SG_VECTOR vrotV = {1,0,0}; //rotate V								 
+		objectList[j]->GetTempMatrix()->Rotate(pointRotate,vrotV,rot.x);
+		//translations
+		SG_VECTOR transBox11 = {pos.x,pos.y,pos.z}; 
+		objectList[j]->GetTempMatrix()->Translate(transBox11);
+		objectList[j]->ApplyTempMatrix();
 	}
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
@@ -400,135 +266,43 @@ void cubie::faceRotate(SG_VECTOR axis,bool di){
 			rotY=0;
 			rotZ=0;
 			moving = true;
-			//tempDeg = 0.0;
 			ct1 = ofGetElapsedTimeMillis();
 			if(di == true){
 				//c
 				if(axis.x == 1){
 					movingXC = true;
 					sample = false;
-
-					/*rotX += 1.57;
-					if(rotX >= 6.28){
-					rotX = 0.0;
-					}*/
-
-					/*tempDeg = rotX;
-					tempDeg += 90;*/
-
 					rotX += 90;
-					/*if(rotX >= 360){
-					rotX = 0.0;
-					}*/
-					//build matrix and add it to the vector myMatrix
-					//tempDeg = tempDeg/100;
 					myMatrix.push_back(matrix(axis,rotX,di));
-					cout << "history: " << myMatrix.size() << " rotX: " << rotX << endl;
+					//cout << "history: " << myMatrix.size() << " rotX: " << rotX << endl;
 				}else if(axis.y == 1){
 					movingYC = true;
 					sample = false;
-					/*tempDeg = rotY;
-					tempDeg += 1.57;*/
-
-					/*rotY += 1.57;
-					if(rotY >= 6.28){
-					rotY = 0.0;
-					}*/
-
-					/*movingYC = true;
-					tempDeg = rotY;
-					tempDeg += 90;*/
-
 					rotY += 90;
-					/*if(rotY >= 360){
-					rotY = 0.0;
-					}*/
 					myMatrix.push_back(matrix(axis,rotY,di));
-					cout << "history: " << myMatrix.size() << endl;
 				}else{
 					movingZC = true;
 					sample = false;
-					/*tempDeg = rotZ;
-					tempDeg += 1.57;*/
-
-					/*rotZ += 1.57;
-					if(rotZ >= 6.28){
-					rotZ = 0.0;
-					}*/
-
-					/*movingZC = true;
-					tempDeg = rotZ;
-					tempDeg += 90;*/
-
 					rotZ += 90;
-					/*if(rotZ >= 360){
-					rotZ = 0.0;
-					}*/
 					myMatrix.push_back(matrix(axis,rotZ,di));
-					cout << "history: " << myMatrix.size() << endl;
 				}
 			}else{
 				//cc
 				if(axis.x == 1){
 					movingXCC = true;
 					sample = false;
-					/*rotX -= 1.57;
-					if(rotX <= -6.28){
-					rotX = 0.0;
-					}*/
-
-					/*ovingXCC = true;
-					tempDeg = rotX;
-					tempDeg -= 90;*/
-
 					rotX -= 90;
-					/*if(rotX <= -360){
-					rotX = 0.0;
-					}*/
 					myMatrix.push_back(matrix(axis,rotX,di));
-					cout << "history: " << myMatrix.size() << "rotX: " << tempDeg << endl;
 				}else if(axis.y == 1){
 					movingYCC = true;
 					sample = false;
-					/*tempDeg = rotY;
-					tempDeg -= 1.57;*/
-
-					/*rotY -= 1.57;
-					if(rotY <= -6.28){
-					rotY = 0.0;
-					}*/
-
-					/*movingYCC = true;
-					tempDeg = rotY;
-					tempDeg -= 90;*/
-
 					rotY -= 90;
-					/*if(rotY <= -360){
-					rotY = 0.0;
-					}*/
 					myMatrix.push_back(matrix(axis,rotY,di));
-					cout << "history: " << myMatrix.size() << endl;
 				}else{
 					movingZCC = true;
 					sample = false;
-					/*tempDeg = rotZ;
-					tempDeg -= 1.57;*/
-
-					/*rotZ -= 1.57;
-					if(rotZ <= -6.28){
-					rotZ = 0.0;
-					}*/
-
-					/*movingZCC = true;
-					tempDeg = rotZ;
-					tempDeg -= 90;*/
-
 					rotZ -= 90;
-					/*if(rotZ <= -360){
-					rotZ = 0.0;
-					}*/
 					myMatrix.push_back(matrix(axis,rotZ,di));
-					cout << "history: " << myMatrix.size() << endl;
 				}
 			}
 		}

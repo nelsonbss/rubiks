@@ -275,7 +275,7 @@ void cubie::update(){
 				//we are at the last positon
 				SG_POINT protFace = {0,0,0};										 
 				SG_VECTOR vrotFace = myMatrix.at(myMatrix.size()-1).vector;//  axis; //rotate to do a face move
-				float tempDeg2 = myMatrix.at(myMatrix.size()-1).deg;
+				double tempDeg2 = myMatrix.at(myMatrix.size()-1).deg;
 				if(sample==false){
 					//this should only be sampled once during the animation
 					rotXa = myMatrix.at(myMatrix.size()-2).deg;
@@ -286,7 +286,7 @@ void cubie::update(){
 					if(movingXC == true){
 						if(rotXa < tempDeg2){
 							ct2 = ofGetElapsedTimeMillis();
-							rotXa += (ct2 - ct1)*((1.57)/animTime);
+							rotXa += 0.1;//(ct2 - ct1)*((1.57)/animTime);
 							objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,rotXa);
 							ct1 = ct2;
 						}else{
@@ -307,7 +307,7 @@ void cubie::update(){
 					if(movingXCC == true){
 						if(rotXa > tempDeg2){
 							ct2 = ofGetElapsedTimeMillis();
-							rotXa -= (ct2 - ct1)*((1.57)/animTime);
+							rotXa -= 0.1;//(ct2 - ct1)*((1.57)/animTime);
 							objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,rotXa);
 							ct1 = ct2;
 						}else{
@@ -519,7 +519,7 @@ void cubie::faceRotate(SG_VECTOR axis,bool di){
 			rotY=0;
 			rotZ=0;*/
 			moving = true;
-			//tempDeg = 0.0;
+			tempDeg = 0.0;
 			ct1 = ofGetElapsedTimeMillis();
 			if(di == true){
 				//c
@@ -543,8 +543,9 @@ void cubie::faceRotate(SG_VECTOR axis,bool di){
 					}*/
 					//objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,rotX);
 					//build matrix and add it to the vector myMatrix
+					//tempDeg = tempDeg/100;
 					myMatrix.push_back(matrix(axis,tempDeg,di));
-					cout << "history: " << myMatrix.size() << endl;
+					cout << "history: " << myMatrix.size() << "rotX: " << tempDeg << endl;
 				}else if(axis.y == 1){
 					movingYC = true;
 					tempDeg = rotY;
@@ -610,7 +611,7 @@ void cubie::faceRotate(SG_VECTOR axis,bool di){
 					}*/
 					//objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,rotX);
 					myMatrix.push_back(matrix(axis,tempDeg,di));
-					cout << "history: " << myMatrix.size() << endl;
+					cout << "history: " << myMatrix.size() << "rotX: " << tempDeg << endl;
 				}else if(axis.y == 1){
 					movingYCC = true;
 					tempDeg = rotY;

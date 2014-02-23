@@ -45,7 +45,7 @@ public:
 
 	vector<matrix> myMatrix; 
 	void faceRotate(SG_VECTOR axis, bool dir);
-	float rotX;
+	double rotX;
 	float rotY;
 	float rotZ;
 	bool moving;
@@ -58,10 +58,10 @@ public:
 	float ct1;
 	float ct2;
 	float animTime;
-	float tempDeg;
+	double tempDeg;
 
 	bool sample;
-	float rotXa;
+	double rotXa;
 
 	///color change
 	void changeColorToColor(ofFloatColor Sc, ofFloatColor Tc);

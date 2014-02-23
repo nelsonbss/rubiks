@@ -46,8 +46,8 @@ public:
 	vector<matrix> myMatrix; 
 	void faceRotate(SG_VECTOR axis, bool dir);
 	double rotX;
-	float rotY;
-	float rotZ;
+	double rotY;
+	double rotZ;
 	bool moving;
 	bool movingXC;
 	bool movingXCC;

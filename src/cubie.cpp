@@ -164,7 +164,8 @@ void cubie::update(){
 				for(int i=0; i<myMatrix.size();i++){
 					SG_POINT protFace = {0,0,0};										 
 					SG_VECTOR vrotFace = myMatrix.at(i).vector;//  axis; //rotate to do a face move
-					float d = myMatrix.at(i).deg;
+					double d = myMatrix.at(i).deg;
+					d = ofDegToRad(d);
 					if(myMatrix.at(i).dir == true){
 						//c
 						if(myMatrix.at(i).vector.x == 1){
@@ -221,7 +222,8 @@ void cubie::update(){
 				for(int i=0; i<myMatrix.size()-1;i++){
 					SG_POINT protFace = {0,0,0};										 
 					SG_VECTOR vrotFace = myMatrix.at(i).vector;//  axis; //rotate to do a face move
-					float d = myMatrix.at(i).deg;
+					double d = myMatrix.at(i).deg;
+					d = ofDegToRad(d);
 					if(myMatrix.at(i).dir == true){
 						//c
 						if(myMatrix.at(i).vector.x == 1){
@@ -284,20 +286,23 @@ void cubie::update(){
 				if(myMatrix.at(myMatrix.size()-1).dir == true){
 					//animate rotation xc
 					if(movingXC == true){
+						//rotXa += 0.1;
 						if(rotXa < tempDeg2){
-							ct2 = ofGetElapsedTimeMillis();
-							rotXa += 0.1;//(ct2 - ct1)*((1.57)/animTime);
+							//ct2 = ofGetElapsedTimeMillis();
+							rotXa += 1;//0.1;//(ct2 - ct1)*((1.57)/animTime);
+							rotXa =  ofDegToRad(rotXa);
 							objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,rotXa);
-							ct1 = ct2;
+							//ct1 = ct2;
 						}else{
 							rotX = tempDeg2;
+							rotX =  ofDegToRad(rotX);
 							objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,rotX);
 							/*if(rotX >= 360){
 							rotX = 0.0;
 							}*/
-							if(rotX >= 6.28){
-								rotX = 0.0;
-							}
+							/*if(rotX >= 6.28){
+							rotX = 0.0;
+							}*/
 							moving = false;
 							movingXC = false;
 						}
@@ -306,19 +311,19 @@ void cubie::update(){
 					//xcc
 					if(movingXCC == true){
 						if(rotXa > tempDeg2){
-							ct2 = ofGetElapsedTimeMillis();
+							//ct2 = ofGetElapsedTimeMillis();
 							rotXa -= 0.1;//(ct2 - ct1)*((1.57)/animTime);
 							objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,rotXa);
-							ct1 = ct2;
+							//ct1 = ct2;
 						}else{
 							rotX = tempDeg2;
 							objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,rotX);
 							/*if(rotX <= -360){
 							rotX = 0.0;
 							}*/
-							if(rotX <= -6.28){
-								rotX = 0.0;
-							}
+							/*if(rotX <= -6.28){
+							rotX = 0.0;
+							}*/
 							moving = false;
 							movingXCC = false;
 						}
@@ -351,67 +356,25 @@ void cubie::update(){
 			//use vector with matrix(s)
 			for(int i=0; i<myMatrix.size();i++){
 				SG_POINT protFace = {0,0,0};										 
-				SG_VECTOR vrotFace = myMatrix.at(i).vector;//  axis; //rotate to do a face move
-				float d = myMatrix.at(i).deg;
+				SG_VECTOR vrotFace = myMatrix.at(i).vector;//  axis of rotation
+				double d = myMatrix.at(i).deg;
+				d = ofDegToRad(d);
 				if(myMatrix.at(i).dir == true){
 					//c
-					if(myMatrix.at(i).vector.x == 1){
-						if (objectList[j]->GetTempMatrix()==0){
-							objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,d);
-						}else{
-							objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,d);
-						}
-					}else if(myMatrix.at(i).vector.y == 1){
-						//rotY = d;
-						if (objectList[j]->GetTempMatrix()==0){
-							objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,d);
-						}else{
-							objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,d);
-						}
+					if (objectList[j]->GetTempMatrix()==0){
+						objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,d);
 					}else{
-						//rotZ = d;
-						if (objectList[j]->GetTempMatrix()==0){
-							objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,d);
-						}else{
-							objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,d);
-						}
+						objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,d);
 					}
 				}else{
 					//cc
-					if(myMatrix.at(i).vector.x == 1){
-						if (objectList[j]->GetTempMatrix()==0){
-							objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,d);
-						}else{
-							objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,d);
-						}
-					}else if(myMatrix.at(i).vector.y == 1){
-						//rotY = d;
-						if (objectList[j]->GetTempMatrix()==0){
-							objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,d);
-						}else{
-							objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,d);
-						}
+					if (objectList[j]->GetTempMatrix()==0){
+						objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,d);
 					}else{
-						//rotZ = d;
-						if (objectList[j]->GetTempMatrix()==0){
-							objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,d);
-						}else{
-							objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,d);
-						}
+						objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,d);
 					}
 				}
-				//objectList[j]->ApplyTempMatrix();
-				//objectList[j]->DestroyTempMatrix();
 			}
-			/////////////////////////////////////////////////////////////////	 
-			//SG_VECTOR vrotFaceX ={1,0,0};
-			//SG_VECTOR vrotFaceY ={0,1,0};
-			//SG_VECTOR vrotFaceZ ={0,0,1};
-			//objectList[j]->InitTempMatrix()->Rotate(pointRotate,vrotFaceX,rotX);
-			//objectList[j]->GetTempMatrix()->Rotate(pointRotate,vrotFaceY,rotY);
-			//objectList[j]->GetTempMatrix()->Rotate(pointRotate,vrotFaceZ,rotZ);
-			///////////////////////////////////////////////////////////////////
-
 			///////////////////////////////////////////////////////////
 			////////rotate and move with the whole puzzle
 			SG_VECTOR vrotH = {0,1,0}; //rotate H                            
@@ -426,14 +389,6 @@ void cubie::update(){
 			SG_VECTOR transBox11 = {pos.x,pos.y,pos.z}; 
 			objectList[j]->GetTempMatrix()->Translate(transBox11);
 			objectList[j]->ApplyTempMatrix();
-
-
-			//	//objectList[j]->Triangulate(SG_VERTEX_TRIANGULATION);
-			//	//objectList[j]->DestroyTempMatrix();
-			//	//objectList[j]->SetAttribute(SG_OA_COLOR,color);
-			//	//objectList[j]->SetAttribute(SG_OA_DRAW_STATE,SG_DS_FULL);
-			//	//sgGetScene()->AttachObject(objectList[j]);
-			//}
 		}
 	}
 }
@@ -471,40 +426,7 @@ void cubie::draw(){
 	//}
 
 }
-//--------------------------------------------------------------
-//void cubie::unDraw(){  
-//sgGetScene()->Clear();
-//detach from scene
-//if(objects != NULL){
-//	for (int j=0; j < numObjs; j++){
-//		//objectList[j]->SetAttribute(SG_OA_DRAW_STATE,SG_DS_HIDE);
-//		//sgGetScene()->DetachObject(objectList[j]);
-//		//sgCObject::DeleteObject(objectList[j]);
-//		okDraw = true;
-//	}
-//	////////////////////////////////////IMPORTANT!!!!!!!!///////////////////////////////////
-//	////remake objectList for next drawing
-//	////there is somememory leakage here!!!!! even after sgCObject::DeleteObject(objectList[j]);
-//	/////////////////////////////////////////////////////////////////////////////////////////////
 
-//	sgCGroup *objects2 = copyObjects(); 
-//	const int ChCnt = objects2->GetChildrenList()->GetCount();
-//	numObjs = ChCnt;
-//	//give this cubies list some memory
-//	objectList = (sgC3DObject**)malloc(ChCnt*sizeof(sgC3DObject*));
-//	//start breaking incoming group
-//	sgCObject** allParts = (sgCObject**)malloc(ChCnt*sizeof(sgCObject*));
-//	objects2->BreakGroup(allParts);
-//	sgCObject::DeleteObject(objects2);
-
-//	for (int j=0; j < ChCnt; j++){
-//		objectList[j] = (sgC3DObject*)allParts[j];
-//	}
-//	free(allParts);
-//}else{
-//	//cout << "null at undraw" << endl;
-//}
-//}
 //------------------------------------------------------------------------------------------------------------------------------------------
 void cubie::faceRotate(SG_VECTOR axis,bool di){
 	//this function is to handle a face rotation for a cubbie
@@ -515,41 +437,40 @@ void cubie::faceRotate(SG_VECTOR axis,bool di){
 		for (int j=0; j < numObjs; j++){
 			SG_POINT protFace = {0,0,0};
 			SG_VECTOR vrotFace = axis;
-			/*rotX=0;
+			rotX=0;
 			rotY=0;
-			rotZ=0;*/
-			moving = true;
-			tempDeg = 0.0;
+			rotZ=0;
+			//moving = true;
+			//tempDeg = 0.0;
 			ct1 = ofGetElapsedTimeMillis();
 			if(di == true){
 				//c
 				if(axis.x == 1){
 					movingXC = true;
-					tempDeg = rotX;
-					tempDeg += 1.57;
+
+					
 					sample = false;
+
 					/*rotX += 1.57;
 					if(rotX >= 6.28){
 					rotX = 0.0;
 					}*/
 
-					/*movingXC = true;
-					tempDeg = rotX;
+					/*tempDeg = rotX;
 					tempDeg += 90;*/
 
-					/*rotX += 90;
-					if(rotX >= 360){
+					rotX += 90;
+					/*if(rotX >= 360){
 					rotX = 0.0;
 					}*/
-					//objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,rotX);
 					//build matrix and add it to the vector myMatrix
 					//tempDeg = tempDeg/100;
-					myMatrix.push_back(matrix(axis,tempDeg,di));
-					cout << "history: " << myMatrix.size() << "rotX: " << tempDeg << endl;
+					myMatrix.push_back(matrix(axis,rotX,di));
+					cout << "history: " << myMatrix.size() << " rotX: " << rotX << endl;
 				}else if(axis.y == 1){
 					movingYC = true;
-					tempDeg = rotY;
-					tempDeg += 1.57;
+					/*tempDeg = rotY;
+					tempDeg += 1.57;*/
 
 					/*rotY += 1.57;
 					if(rotY >= 6.28){
@@ -560,17 +481,17 @@ void cubie::faceRotate(SG_VECTOR axis,bool di){
 					tempDeg = rotY;
 					tempDeg += 90;*/
 
-					/*rotY += 90;
-					if(rotY >= 360){
+					rotY += 90;
+					/*if(rotY >= 360){
 					rotY = 0.0;
 					}*/
 					//objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,rotY);
-					myMatrix.push_back(matrix(axis,tempDeg,di));
+					myMatrix.push_back(matrix(axis,rotY,di));
 					cout << "history: " << myMatrix.size() << endl;
 				}else{
 					movingZC = true;
-					tempDeg = rotZ;
-					tempDeg += 1.57;
+					/*tempDeg = rotZ;
+					tempDeg += 1.57;*/
 
 					/*rotZ += 1.57;
 					if(rotZ >= 6.28){
@@ -581,12 +502,12 @@ void cubie::faceRotate(SG_VECTOR axis,bool di){
 					tempDeg = rotZ;
 					tempDeg += 90;*/
 
-					/*rotZ += 90;
-					if(rotZ >= 360){
+					rotZ += 90;
+					/*if(rotZ >= 360){
 					rotZ = 0.0;
 					}*/
 					//objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,rotZ);
-					myMatrix.push_back(matrix(axis,tempDeg,di));
+					myMatrix.push_back(matrix(axis,rotZ,di));
 					cout << "history: " << myMatrix.size() << endl;
 				}
 			}else{
@@ -778,3 +699,38 @@ sgCGroup* cubie::copyObjects(){
 	//free(objcts1);
 	return aux;
 }
+
+//--------------------------------------------------------------
+//void cubie::unDraw(){  
+//sgGetScene()->Clear();
+//detach from scene
+//if(objects != NULL){
+//	for (int j=0; j < numObjs; j++){
+//		//objectList[j]->SetAttribute(SG_OA_DRAW_STATE,SG_DS_HIDE);
+//		//sgGetScene()->DetachObject(objectList[j]);
+//		//sgCObject::DeleteObject(objectList[j]);
+//		okDraw = true;
+//	}
+//	////////////////////////////////////IMPORTANT!!!!!!!!///////////////////////////////////
+//	////remake objectList for next drawing
+//	////there is somememory leakage here!!!!! even after sgCObject::DeleteObject(objectList[j]);
+//	/////////////////////////////////////////////////////////////////////////////////////////////
+
+//	sgCGroup *objects2 = copyObjects(); 
+//	const int ChCnt = objects2->GetChildrenList()->GetCount();
+//	numObjs = ChCnt;
+//	//give this cubies list some memory
+//	objectList = (sgC3DObject**)malloc(ChCnt*sizeof(sgC3DObject*));
+//	//start breaking incoming group
+//	sgCObject** allParts = (sgCObject**)malloc(ChCnt*sizeof(sgCObject*));
+//	objects2->BreakGroup(allParts);
+//	sgCObject::DeleteObject(objects2);
+
+//	for (int j=0; j < ChCnt; j++){
+//		objectList[j] = (sgC3DObject*)allParts[j];
+//	}
+//	free(allParts);
+//}else{
+//	//cout << "null at undraw" << endl;
+//}
+//}

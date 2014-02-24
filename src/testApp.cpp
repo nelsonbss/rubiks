@@ -12,7 +12,7 @@
 #define displayY 540
 #define displayZ 100
 
-std::map<int,gwc::Point> active_points;
+//std::map<int,gwc::Point> active_points;
 
 //--------------------------------------------------------------
 void testApp::setup(){
@@ -49,6 +49,7 @@ void testApp::setup(){
 
 	last_tick_count = GetTickCount();
 
+	/*
 	active_points = std::map<int,gwc::Point>();
 
 	if(loadGestureWorks("GestureworksCore32.dll")) { 
@@ -67,6 +68,7 @@ void testApp::setup(){
 		std::cout << "Could not register target window for touch." << std::endl; 
 		exit(); 
 	}
+	*/
 
 	rotate = true;
 }
@@ -80,17 +82,18 @@ void testApp::update(){
 		myGames[i]->update();
 	}
 
+	/*
+
 	if(GetTickCount() - last_tick_count < 16) {
 		return;
 	} else { last_tick_count = GetTickCount(); }
-  
+
 	processFrame();
 
 	std::vector<gwc::PointEvent> point_events = consumePointEvents();
 
 	for(std::vector<gwc::PointEvent>::iterator event_it = point_events.begin(); event_it != point_events.end(); event_it++) {
 		//cout << event_it->status << endl;
-		/*
 		switch(event_it->status) {
 			case gwc::TOUCHADDED:
 			case gwc::TOUCHUPDATE:
@@ -103,7 +106,6 @@ void testApp::update(){
 				active_points.erase(event_it->point_id);
 				break;
 		}
-		*/
 	}
 
 	std::vector<gwc::GestureEvent> gesture_events = consumeGestureEvents();
@@ -113,6 +115,8 @@ void testApp::update(){
 	for(std::vector<gwc::GestureEvent>::iterator gesture_it = gesture_events.begin(); gesture_it != gesture_events.end(); gesture_it++) {
 		cout << gesture_it->gesture_type << endl;
 	}
+
+	*/
 }
 //--------------------------------------------------------------
 void testApp::draw(){
@@ -179,6 +183,7 @@ void testApp::draw(){
 	ofEnableDepthTest();
 	SceneManager::Instance()->draw();
 
+	/*
 	for(std::map<int,gwc::Point>::iterator points_it = active_points.begin(); points_it != active_points.end(); points_it++)
 	{
 		float x = points_it->second.getX();
@@ -200,6 +205,7 @@ void testApp::draw(){
 		//Annotate the circle we just drew with the id, x and y values for the corresponding point
 		ofDrawBitmapString("ID: " + ids.str() + "\nX: " + xvals.str() + " Y: " + yvals.str(), x + 40, y - 40, 0);
 	}
+	*/
 	ofDisableDepthTest();
 }
 
@@ -568,11 +574,11 @@ void testApp::mouseMoved(int x, int y ){
 //--------------------------------------------------------------
 void testApp::mouseDragged(int x, int y, int button){
 	if(button == 2){
-		float rotationMultiplier = 2.0;
+		float rotationMultiplier = 5.0;
 		ofVec2f dragNow(x,y);
 		ofVec2f dragDelta = dragNow - lastRightDragPos;
 		//cout << "drag change = " << dragDelta.x << ", " << dragDelta.y << endl;
-		SG_VECTOR axis = {(1.0 - (dragDelta.y / ofGetHeight())) * rotationMultiplier,0, dragDelta.x / ofGetWidth() * rotationMultiplier};
+		SG_VECTOR axis = {((dragDelta.y / ofGetHeight()) * rotationMultiplier) * -1.0,(dragDelta.x / ofGetWidth()) * rotationMultiplier,0};
 		myGames[0]->rotateP(axis);
 		rotate = false;
 		lastRightDragPos = dragNow;
@@ -582,6 +588,18 @@ void testApp::mouseDragged(int x, int y, int button){
 		    updateMouseState("drag", x, y, button);
 			timeOfLastInteraction = ofGetElapsedTimef();
 			timeOfLastInput = ofGetElapsedTimef();
+		}
+		int gStep = myGames[0]->getCurrentStep();
+		cout << gStep << endl;
+		if(gStep == 4){
+			float rotationMultiplier = 5.0;
+			ofVec2f dragNow(x,y);
+			ofVec2f dragDelta = dragNow - lastRightDragPos;
+			//cout << "drag change = " << dragDelta.x << ", " << dragDelta.y << endl;
+			SG_VECTOR axis = {(dragDelta.y / ofGetHeight()) * rotationMultiplier,0, (dragDelta.x / ofGetWidth()) * rotationMultiplier};
+			myGames[0]->rotateP(axis);
+			rotate = false;
+			lastRightDragPos = dragNow;
 		}
 	}
 }

@@ -9,7 +9,7 @@
 #include "SubObEvent.h"
 #include "SceneManager.h"
 #include "game.h"
-#include "GestureWorksCore.h"
+//#include "GestureWorksCore.h"
 #include <math.h>
 
 class testApp : public ofBaseApp, public Observer, public Subject{

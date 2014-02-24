@@ -447,6 +447,8 @@ void cubie::unDo(){
 			if(moving == false){
 				undoing = true;
 				sample = false;
+				/*myMatrix.pop_back();
+				undoing = false;*/
 			}
 		}
 	}

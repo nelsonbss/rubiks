@@ -495,7 +495,9 @@ void testApp::dragEvent(ofDragInfo dragInfo){
 void testApp::exit(){
 	myGames[0]->restart();
 	//cleanup games vector!!
-	myGames[0]->objectDisplayed->exit();
+	if(myGames[0]->getCurrentStep() != 0){
+		myGames[0]->objectDisplayed->exit();
+	}
 	//sgFreeKernel();
 }
 //-----------------------------------------------------------------------------

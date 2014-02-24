@@ -144,7 +144,7 @@ void testApp::keyPressed(int key){
 			myGames[0]->loadObject(7,objectPos,tempPos);
 		}
 		if(key == '8') { 
-			//myGames[0]->loadObject(7,objectPos,tempPos);
+			myGames[0]->loadObject(8,objectPos,tempPos);
 		}
 	}
 	////////////////////////////////////////////step 1 inputs
@@ -165,32 +165,25 @@ void testApp::keyPressed(int key){
 			myGames[0]->loadObject(1,objectPos,tempPos); //pos.z its the torus radious
 		}
 		if(key == '2') {
-			SG_VECTOR v = {500,400,100}; 
 			myGames[0]->loadObject(2,objectPos,tempPos);
 		}
 		if(key == '3') {
-			SG_VECTOR v = {500,400,100}; 
 			myGames[0]->loadObject(3,objectPos,tempPos);
 		}
 		if(key == '4') {
-			SG_VECTOR v = {500,400,100}; 
 			myGames[0]->loadObject(4,objectPos,tempPos);
 		}
 		if(key == '5') {
-			SG_VECTOR v = {500,400,100}; 
 			myGames[0]->loadObject(5,objectPos,tempPos);
 		}
 		if(key == '6') {
-			SG_VECTOR v = {500,400,100}; 
 			myGames[0]->loadObject(6,objectPos,tempPos);
 		}
 		if(key == '7') {
-			SG_VECTOR v = {500,400,100}; 
 			myGames[0]->loadObject(7,objectPos,tempPos);
 		}
-		if(key == '8') {
-			SG_VECTOR v = {500,400,100}; 
-			//myGames[0]->loadObject(8,objectPos,tempPos);
+		if(key == '8') { 
+			myGames[0]->loadObject(8,objectPos,tempPos);
 		}
 	}
 	////////////////////////////////////////////step 2 inputs

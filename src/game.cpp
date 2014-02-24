@@ -152,7 +152,7 @@ void game::setup(){
 		indexes5->ver_indexes[i] = teapot3Indices[i];
 	}
 	//generate sgC3DObject from geometry information
-	sgTeapot = sgFileManager::ObjectFromTriangles(vert5,teapot3Vert.size(),indexes5,teapot3Indices.size()/3); 
+	sgTeapot = (sgC3DObject *) sgFileManager::ObjectFromTriangles(vert5,teapot3Vert.size(),indexes5,teapot3Vert.size()/3); 
 	delete [] vert5;
 	delete [] indexes5;
 }

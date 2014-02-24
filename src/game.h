@@ -74,7 +74,7 @@ public:
 	ofxAssimpModelLoader octahedron;
 	sgCObject *sgOctahedron;
 	ofxAssimpModelLoader pot;
-	sgCObject *sgTeapot;
+	sgC3DObject *sgTeapot;
 	
 	////color change
 	void changeColorToColor(ofFloatColor Sc, ofFloatColor Tc);

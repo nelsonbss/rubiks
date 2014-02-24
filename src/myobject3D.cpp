@@ -61,14 +61,6 @@ void myobject3D::update(){
 		temp->GetTempMatrix()->Rotate(rotP2,rotV2,ofDegToRad(180));
 	}
 	temp->ApplyTempMatrix();  
-
-	//object->DestroyTempMatrix();
-	//object->InitTempMatrix()->Rotate(rotPobject,rotV,0.01);
-	//object->GetTempMatrix()->Translate(rotD);
-	//object->GetTempMatrix()->Translate(rotDobject);
-	//object->ApplyTempMatrix();
-	//object->DestroyTempMatrix();
-
 }
 //--------------------------------------------------------------
 void myobject3D::draw(){

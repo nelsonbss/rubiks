@@ -8,15 +8,14 @@
 #include <math.h>
 #define _USE_MATH_DEFINES
 
-#define displayX 500
-#define displayY 400
-#define displayZ -10
+#define displayX 970
+#define displayY 540
+#define displayZ 100
 
 std::map<int,gwc::Point> active_points;
 
 //--------------------------------------------------------------
 void testApp::setup(){
-	/*
 	/////////////////////////////initialize sgCore library
 	sgInitKernel();
 
@@ -34,9 +33,8 @@ void testApp::setup(){
 	for(int i = 0; i < myGames.size(); i++){
 		myGames[i]->setup();
 	}
-	*/
 	//////setup GUI/////////////
-	ofSetFullscreen(true);
+	//ofSetFullscreen(true);
 
 	string guiFile = "sheets.xml";
 	GuiConfigurator::Instance()->addFile(guiFile);
@@ -64,7 +62,7 @@ void testApp::setup(){
 
 	initializeGestureWorks(1920,1080);
 
-	if(!registerWindowForTouchByName("rubiks")) { 
+	if(!registerWindowForTouchByName("rubiksWindow")) { 
 		std::cout << "Could not register target window for touch." << std::endl; 
 		exit(); 
 	}
@@ -179,6 +177,28 @@ void testApp::draw(){
 
 	ofEnableDepthTest();
 	SceneManager::Instance()->draw();
+
+	for(std::map<int,gwc::Point>::iterator points_it = active_points.begin(); points_it != active_points.end(); points_it++)
+	{
+		float x = points_it->second.getX();
+		float y = points_it->second.getY();
+
+		//Generate a circle with a 50-pixel radius at this point's location
+		ofFill();
+		ofCircle(ofPoint(x, y, 0), 20);
+		ofNoFill();
+		ofSetLineWidth(2);
+		ofCircle(ofPoint(x, y, 0), 30);
+
+
+		//Generate a stringstream for each value with which we're concerned
+		std::stringstream xvals; xvals << (int)x;
+		std::stringstream yvals; yvals << (int)y;
+		std::stringstream ids; ids << points_it->first;
+
+		//Annotate the circle we just drew with the id, x and y values for the corresponding point
+		ofDrawBitmapString("ID: " + ids.str() + "\nX: " + xvals.str() + " Y: " + yvals.str(), x + 40, y - 40, 0);
+	}
 	ofDisableDepthTest();
 }
 
@@ -541,19 +561,36 @@ void testApp::mouseMoved(int x, int y ){
 }
 //--------------------------------------------------------------
 void testApp::mouseDragged(int x, int y, int button){
-	if(ofGetElapsedTimef() - timeOfLastInput > inputDelayTime){
-        updateMouseState("drag", x, y, button);
-        timeOfLastInteraction = ofGetElapsedTimef();
-        timeOfLastInput = ofGetElapsedTimef();
-    }
+	if(button == 2){
+		ofVec2f dragNow(x,y);
+		ofVec2f dragDelta = dragNow - lastRightDragPos;
+		//cout << "drag change = " << dragDelta.x << ", " << dragDelta.y << endl;
+		SG_VECTOR axis = {dragDelta.x,dragDelta.y,0};
+		myGames[0]->rotateByIDandAxis(11,axis,false);
+		rotate = false;
+		lastRightDragPos = dragNow;
+	}
+	if(button == 0){
+		if(ofGetElapsedTimef() - timeOfLastInput > inputDelayTime){
+		    updateMouseState("drag", x, y, button);
+			timeOfLastInteraction = ofGetElapsedTimef();
+			timeOfLastInput = ofGetElapsedTimef();
+		}
+	}
 }
 //--------------------------------------------------------------
 void testApp::mousePressed(int x, int y, int button){
-	if(ofGetElapsedTimef() - timeOfLastInput > inputDelayTime){
-        updateMouseState("down", x, y, button);
-        timeOfLastInteraction = ofGetElapsedTimef();
-        timeOfLastInput = ofGetElapsedTimef();
-    }
+	cout << button << endl;
+	if(button == 2){
+		lastRightDragPos.set(x,y);
+	}
+	if(button == 0){
+		if(ofGetElapsedTimef() - timeOfLastInput > inputDelayTime){
+		    updateMouseState("down", x, y, button);
+			timeOfLastInteraction = ofGetElapsedTimef();
+			timeOfLastInput = ofGetElapsedTimef();
+		}
+	}
 }
 //--------------------------------------------------------------
 void testApp::mouseReleased(int x, int y, int button){

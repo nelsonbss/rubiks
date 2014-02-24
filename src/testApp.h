@@ -10,6 +10,7 @@
 #include "SceneManager.h"
 #include "game.h"
 #include "GestureWorksCore.h"
+#include <math.h>
 
 class testApp : public ofBaseApp, public Observer, public Subject{
 
@@ -64,6 +65,8 @@ public:
 	void update(string _subName, Subject* _sub);
 	void update(string _eventName, SubObEvent* _event);
     string getAttr(const char* _key){return attrs[_key];}
+
+	ofVec2f lastRightDragPos;
 
 	float timeOfLastInteraction;
     float timeOutCounter;

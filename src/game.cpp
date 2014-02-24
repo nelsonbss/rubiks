@@ -21,14 +21,14 @@ game::game(SG_VECTOR gamePos, float w, float h, SG_VECTOR displayPos){
 }
 //--------------------------------------------------------------
 #define planeThicknes 0.001
-#define planeSize 400
+#define planeSize 500
 #define tamCubie 100
 
 void game::setup(){
 	step = 0;
 	idcubie=0;
 	///////////////////////////////
-	myArmature = new armature (ofVec3f(posA.x,posA.y,0),300,300,10,3);
+	myArmature = new armature (ofVec3f(posA.x,posA.y,0),300,300,10,tamCubie);
 	myArmature->setup();
 	/////////////////////////////////////////PUZzLE //////////
 	updatePuzzle = false;
@@ -274,15 +274,15 @@ void game::loadObject (int objID,SG_VECTOR p,SG_VECTOR t){
 			objectDisplayed->loadObject((sgC3DObject *)sgDodecahedron);
 		}
 		if(objID == 6){
-			//try to load the dodecahedron
+			//try to load the Icosahedron
 			objectDisplayed->loadObject((sgC3DObject *)sgIcosahedron);
 		}
 		if(objID == 7){
-			//try to load the dodecahedron
+			//try to load the Octahedron
 			objectDisplayed->loadObject((sgC3DObject *)sgOctahedron);
 		}
 		if(objID == 8){
-			//try to load the dodecahedron
+			//try to load the Teapot
 			objectDisplayed->loadObject((sgC3DObject *)sgTeapot);
 		}
 		
@@ -342,19 +342,23 @@ void game::setCurrentStep(int s){
 void game::changeColorToColor(ofFloatColor sc, ofFloatColor tc){
 	myPuzzle->changeColorToColor(sc,tc);
 }
+//-------------------------------------------------------
+void game::moveA (ofVec3f input){
+	myArmature->moveA(input);
+}
 //----------------------------------------------
 void game::restart(){
 	//go to step 0, clear puzzle, , clear pieces, clear object
 	if(step==4 || step==5){
 		myPuzzle->exit();
-		objectDisplayed->exit();
 		myCutter->exit();
 		mySlicer->exit();
+		//objectDisplayed->exit();
 		step = 0;
 	}else if (step==1 || step==2 || step==3){
-		objectDisplayed->exit();
 		myCutter->exit();
 		mySlicer->exit();
+		//objectDisplayed->exit();
 		step = 0;
 	}
 }

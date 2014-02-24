@@ -62,24 +62,16 @@ void myobject3D::update(){
 void myobject3D::draw(){
 	//ofTranslate(0,0);
 	//ofSetColor(ofColor(255,0,0));
-	ofCircle(ofPoint(100,100),5);
+	//ofCircle(ofPoint(100,100),5);
 	//sgGetScene()->AttachObject(temp);
 	//instead of attaching to scene
 
 	ofPushMatrix();
+	//ofScale(1.2,1.2,1.2);
 		glMultMatrixd(temp->GetTempMatrix()->GetTransparentData());
 		temp->DestroyTempMatrix();
 		myVbo.draw(GL_TRIANGLES, 0,myMesh.getNumIndices());
 	ofPopMatrix();
-	
-
-	//object->SetAttribute(SG_OA_COLOR,5);
-	////object->Triangulate(SG_VERTEX_TRIANGULATION);
-	////SG_VECTOR rotD = {posX,posY,0};
-	////object->InitTempMatrix()->Translate(rotD);
-	////object->ApplyTempMatrix();  
-	////object->DestroyTempMatrix();
-	//sgGetScene()->AttachObject(object);
 }
 //--------------------------------------------------------------
 void myobject3D::unDraw(){  

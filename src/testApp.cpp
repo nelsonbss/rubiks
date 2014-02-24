@@ -220,6 +220,23 @@ void testApp::keyPressed(int key){
 	if(gStep == 3){
 		//armature was selected
 		//showing armature
+		//////////////////////////////move all armature
+		if(key == 'l') {
+			ofVec3f p = ofVec3f (5,0,0);
+			myGames[0]->moveA(p);
+		}
+		if(key == 'j') {
+			ofVec3f p = ofVec3f (-5,0,0);
+			myGames[0]->moveA(p);
+		}
+		if(key == 'i') {
+			ofVec3f p = ofVec3f (0,-5,0);
+			myGames[0]->moveA(p);
+		}
+		if(key == 'k') {
+			ofVec3f p = ofVec3f (0,5,0);
+			myGames[0]->moveA(p);
+		}
 		//a puzzle can be made
 		if(key == 'n') {
 			//do slicing
@@ -237,8 +254,7 @@ void testApp::keyPressed(int key){
 			ofFloatColor menuColor = ofFloatColor (1, 0, 1); //this color comes from the GUI
 			myGames[0]->changeColorToColor(sc,menuColor);
 		}
-
-		//presssed NEXT
+		//pressed NEXT
 		if(key == 'n') {
 			//go to step 5
 			myGames[0]->setCurrentStep(5);
@@ -481,8 +497,9 @@ void testApp::dragEvent(ofDragInfo dragInfo){
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------
 void testApp::exit(){
-	//myGames[0]->restart();
+	myGames[0]->restart();
 	//cleanup games vector!!
+	myGames[0]->objectDisplayed->exit();
 	//sgFreeKernel();
 }
 //-----------------------------------------------------------------------------

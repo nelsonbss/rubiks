@@ -44,7 +44,7 @@ public:
 	SG_VECTOR rotP;
 	void rotateP(SG_VECTOR r);
 
-	////////////////
+	////////////////puzzle movements
 	bool updatePuzzle;
 	//face rotations
 	int idcubie;
@@ -55,10 +55,10 @@ public:
 
 	//////////////////////////move  armature
 	SG_VECTOR posA;
-	void moveA (SG_VECTOR pa);
+	void moveA (ofVec3f input);
 	/////////////////////////////rotate armature
 	SG_VECTOR rotA;
-	void rotateA(SG_VECTOR ra);
+	void rotateA(ofVec3f input);
 
 	///other objects
 	ofxAssimpModelLoader bunny;
@@ -72,8 +72,6 @@ public:
 	ofxAssimpModelLoader pot;
 	sgCObject *sgTeapot;
 	
-
-
 	////color change
 	void changeColorToColor(ofFloatColor Sc, ofFloatColor Tc);
 };

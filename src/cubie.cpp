@@ -232,6 +232,7 @@ void cubie::draw(){
 	if(objects != NULL){
 		for (int j=0; j < numObjs; j++){
 			glPushMatrix();
+			ofScale(1.2,1.2,1.2);
 			////all puzzle
 			//glTranslatef(posX,posY,posZ);
 			//glRotatef(rotH,0,1,0);

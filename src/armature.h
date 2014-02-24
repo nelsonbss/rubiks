@@ -16,6 +16,8 @@ public:
     bool btogglePlanes;
     
     ofVec3f center;
+	void moveA(ofVec3f input);
+
     float width;
     float height;
     float depth;

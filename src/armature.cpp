@@ -6,7 +6,8 @@ armature::armature(ofVec3f cntr, float w, float h, float d, float bs){
 	height = h;
 	depth = d;
 	blockSide = bs;
-	side = height/blockSide;
+	//side = height/blockSide;
+	side = bs;
 
 	btogglePlanes = false;
 
@@ -86,14 +87,13 @@ void armature::setup(){
 	box6.rotate(0, 0, 1.0, 0.0);
 	//END/////BOXES//////////////////////////////////////////////////////////////////////
 }
-
 //--------------------------------------------------------------
 void armature::update(){
 	/*rot.x +=0.1;
 	rot.y +=0;
 	rot.z +=0;*/
 }
-
+//--------------------------------------------------------------
 void armature::togglePlanes(){
 	if(btogglePlanes == true){
 		cout << "Time: " << ofGetElapsedTimef() << endl;
@@ -102,7 +102,6 @@ void armature::togglePlanes(){
 		btogglePlanes=true;
 	}
 }
-
 //--------------------------------------------------------------
 void armature::draw(){
 	glPushMatrix();
@@ -191,4 +190,10 @@ void armature::draw(){
 
 	
 	glPopMatrix();
+}
+//--------------------------------------------------------------
+void armature::moveA(ofVec3f input){
+	center.x +=  input.x;
+	center.y += input.y;
+	center.z += input.z;
 }

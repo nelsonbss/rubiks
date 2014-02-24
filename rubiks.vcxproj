@@ -108,6 +108,7 @@
     <ClCompile Include="src\gui\GuiNode.cpp" />
     <ClCompile Include="src\gui\GuiSheet.cpp" />
     <ClCompile Include="src\gui\Utils.cpp" />
+    <ClCompile Include="src\history.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\matrix.cpp" />
     <ClCompile Include="src\myobject3D.cpp" />
@@ -151,6 +152,7 @@
     <ClInclude Include="src\gui\GuiNode.h" />
     <ClInclude Include="src\gui\GuiSheet.h" />
     <ClInclude Include="src\gui\Utils.h" />
+    <ClInclude Include="src\history.h" />
     <ClInclude Include="src\matrix.h" />
     <ClInclude Include="src\myobject3D.h" />
     <ClInclude Include="src\ofRender.h" />

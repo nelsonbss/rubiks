@@ -119,7 +119,7 @@ void slicer::intersectCubes(sgCObject *obj){
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------
 void slicer::exit(){
-	sgCObject::DeleteObject(*pieces); //break and delete all objects!!
+	//sgCObject::DeleteObject(*pieces); //break and delete all objects!!
 	free(myCutter);
 	for (int j=0; j < 27; j++){
 		if(pieces[j]!= NULL){
@@ -130,7 +130,7 @@ void slicer::exit(){
 	//free(aux);//this is generating conflict on adding group to scene on cutter.cpp
 }
 
-/////////////////////////////////////////first algorithms developped///////////////////////////////////////////////////////
+/////////////////////////////////////////first algorithms developed///////////////////////////////////////////////////////
 ///these algorithms use boolean substraction to do "slicing" with 6 planes
 ///Y slicing still needs to group pieces that are going to Ycut again with turn++
 ///Z slicing has basic slicing, still needs to look for all cases and recursive calls

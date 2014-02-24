@@ -12,6 +12,7 @@ myobject3D::myobject3D(SG_VECTOR p, SG_VECTOR t){
 	tempPos.z = t.z;
 
 	deg = 0.0;
+	id=0;
 }
 //--------------------------------------------------------------
 void myobject3D::setup(){
@@ -34,8 +35,8 @@ void myobject3D::setup(){
 	temp->Triangulate(SG_VERTEX_TRIANGULATION);
 	temp->SetAttribute(SG_OA_COLOR,2);
 	ofRender *ofr = new ofRender(); //class that has the metods to transform sgCore to OF mesh and set the normals (in one function)
-	//ofr->sgCoretoOFmesh(temp,myMesh,-1); //-1 because its not a cubie but want color
-	ofr->sgCoretoOFmesh(temp,myMesh,-2); //-2 for plain color
+	//ofr->sgCoretoOFmesh(temp,myMesh,-1,true); //-1 because its not a cubie but want color
+	ofr->sgCoretoOFmesh(temp,myMesh,-2,true); //-2 for plain color
 	myVbo.setMesh(myMesh, GL_STATIC_DRAW);
 	free(ofr);
 }
@@ -48,6 +49,17 @@ void myobject3D::update(){
 	temp->InitTempMatrix()->Rotate(rotP,rotV,deg);
 	SG_VECTOR transP = {tempPos.x,tempPos.y,tempPos.z};
 	temp->GetTempMatrix()->Translate(transP);
+	if(id == 2){
+		//cube
+		SG_VECTOR offset = {-150,-150,-150}; //for the cube to be in place
+		temp->GetTempMatrix()->Translate(offset);//this translates the object to be cut!!
+	}
+	if(id == 4){
+		//rabbit
+		SG_POINT rotP2 = transP;//{tempPos.x,tempPos.y,tempPos.z};
+		SG_VECTOR rotV2 = {1,0,0};
+		temp->GetTempMatrix()->Rotate(rotP2,rotV2,ofDegToRad(180));
+	}
 	temp->ApplyTempMatrix();  
 
 	//object->DestroyTempMatrix();
@@ -62,24 +74,16 @@ void myobject3D::update(){
 void myobject3D::draw(){
 	//ofTranslate(0,0);
 	//ofSetColor(ofColor(255,0,0));
-	ofCircle(ofPoint(100,100),5);
+	//ofCircle(ofPoint(100,100),5);
 	//sgGetScene()->AttachObject(temp);
 	//instead of attaching to scene
 
 	ofPushMatrix();
-		glMultMatrixd(temp->GetTempMatrix()->GetTransparentData());
-		temp->DestroyTempMatrix();
-		myVbo.draw(GL_TRIANGLES, 0,myMesh.getNumIndices());
+	//ofScale(1.2,1.2,1.2);
+	glMultMatrixd(temp->GetTempMatrix()->GetTransparentData());
+	temp->DestroyTempMatrix();
+	myVbo.draw(GL_TRIANGLES, 0,myMesh.getNumIndices());
 	ofPopMatrix();
-	
-
-	//object->SetAttribute(SG_OA_COLOR,5);
-	////object->Triangulate(SG_VERTEX_TRIANGULATION);
-	////SG_VECTOR rotD = {posX,posY,0};
-	////object->InitTempMatrix()->Translate(rotD);
-	////object->ApplyTempMatrix();  
-	////object->DestroyTempMatrix();
-	//sgGetScene()->AttachObject(object);
 }
 //--------------------------------------------------------------
 void myobject3D::unDraw(){  
@@ -94,9 +98,27 @@ void myobject3D::loadObjectFromFile(const char* pathTofile){
 	cout << "object from file: " << sgGetScene()->GetObjectsList()->GetCount() << endl;
 }
 //----------------------------------------------------------------
-void myobject3D::loadObject(sgC3DObject *obj){
+void myobject3D::loadObject(sgC3DObject *obj, int ID){
 	//it will load a sgCore lib object: torus, box
 	object = obj;
+	id = ID;
+	if(id == 2){
+		//cube
+		SG_VECTOR offset = {-150,-150,-150}; //for the cube to be in place
+		object->InitTempMatrix()->Translate(offset);//this translates the object to be cut!!
+		object->ApplyTempMatrix();  
+		object->DestroyTempMatrix();
+	}
+	if(id == 4){
+		//rabbit
+		SG_POINT rotP = {0,0,0};
+		SG_VECTOR rotV = {1,0,0};
+		object->InitTempMatrix()->Rotate(rotP,rotV,ofDegToRad(180));
+		/*SG_VECTOR offset = {0,800,200}; 
+		object->GetTempMatrix()->Translate(offset);*/
+		object->ApplyTempMatrix();  
+		object->DestroyTempMatrix();
+	}
 }
 //----------------------------------------------------------------
 sgCObject* myobject3D::getObject(){

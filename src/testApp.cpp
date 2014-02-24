@@ -8,7 +8,7 @@
 #include <math.h>
 #define _USE_MATH_DEFINES
 
-#define displayX 970
+#define displayX 960
 #define displayY 540
 #define displayZ 100
 
@@ -45,6 +45,7 @@ void testApp::setup(){
 	SubObMediator::Instance()->addObserver("object-selected", this);
 	SubObMediator::Instance()->addObserver("armature-selected", this);
 	SubObMediator::Instance()->addObserver("cut-object", this);
+	SubObMediator::Instance()->addObserver("reset", this);
 
 	last_tick_count = GetTickCount();
 
@@ -221,14 +222,6 @@ void testApp::keyPressed(int key){
 			myGames[0]->loadObject(1,objectPos,tempPos); //pos.z its the torus radious
 		}
 		if(key == '2') {
-			SG_VECTOR offset = {-150,-150,-150}; //for the cube to be in place
-			objectPos.x += offset.x;
-			objectPos.y += offset.y;
-			objectPos.z += offset.z;
-			SG_VECTOR offset2 = {-150,-150,-150}; //for the cube to be in place
-			tempPos.x += offset2.x;
-			tempPos.y += offset2.y;
-			tempPos.z += offset2.z;
 			myGames[0]->loadObject(2,objectPos,tempPos);
 		}
 		if(key == '3') {
@@ -247,7 +240,7 @@ void testApp::keyPressed(int key){
 			myGames[0]->loadObject(7,objectPos,tempPos);
 		}
 		if(key == '8') { 
-			myGames[0]->loadObject(7,objectPos,tempPos);
+			myGames[0]->loadObject(8,objectPos,tempPos);
 		}
 	}
 	if(key == 's'){
@@ -271,31 +264,24 @@ void testApp::keyPressed(int key){
 			myGames[0]->loadObject(1,objectPos,tempPos); //pos.z its the torus radious
 		}
 		if(key == '2') {
-			SG_VECTOR v = {500,400,100}; 
 			myGames[0]->loadObject(2,objectPos,tempPos);
 		}
 		if(key == '3') {
-			SG_VECTOR v = {500,400,100}; 
 			myGames[0]->loadObject(3,objectPos,tempPos);
 		}
 		if(key == '4') {
-			SG_VECTOR v = {500,400,100}; 
 			myGames[0]->loadObject(4,objectPos,tempPos);
 		}
 		if(key == '5') {
-			SG_VECTOR v = {500,400,100}; 
 			myGames[0]->loadObject(5,objectPos,tempPos);
 		}
 		if(key == '6') {
-			SG_VECTOR v = {500,400,100}; 
 			myGames[0]->loadObject(6,objectPos,tempPos);
 		}
 		if(key == '7') {
-			SG_VECTOR v = {500,400,100}; 
 			myGames[0]->loadObject(7,objectPos,tempPos);
 		}
-		if(key == '8') {
-			SG_VECTOR v = {500,400,100}; 
+		if(key == '8') { 
 			myGames[0]->loadObject(8,objectPos,tempPos);
 		}
 	}
@@ -318,6 +304,23 @@ void testApp::keyPressed(int key){
 	if(gStep == 3){
 		//armature was selected
 		//showing armature
+		//////////////////////////////move all armature
+		if(key == 'l') {
+			ofVec3f p = ofVec3f (5,0,0);
+			myGames[0]->moveA(p);
+		}
+		if(key == 'j') {
+			ofVec3f p = ofVec3f (-5,0,0);
+			myGames[0]->moveA(p);
+		}
+		if(key == 'i') {
+			ofVec3f p = ofVec3f (0,-5,0);
+			myGames[0]->moveA(p);
+		}
+		if(key == 'k') {
+			ofVec3f p = ofVec3f (0,5,0);
+			myGames[0]->moveA(p);
+		}
 		//a puzzle can be made
 		if(key == 'n') {
 			//do slicing
@@ -335,8 +338,7 @@ void testApp::keyPressed(int key){
 			ofFloatColor menuColor = ofFloatColor (1, 0, 1); //this color comes from the GUI
 			myGames[0]->changeColorToColor(sc,menuColor);
 		}
-
-		//presssed NEXT
+		//pressed NEXT
 		if(key == 'n') {
 			//go to step 5
 			myGames[0]->setCurrentStep(5);
@@ -348,61 +350,65 @@ void testApp::keyPressed(int key){
 		//pressed next on color palette step
 		//showing puzzle
 		//now the puzzle can be played with
+		if(key == 'u'){
+			//undo last move 
+			myGames[0]->unDo();
+		}
 		///////////////////// FACE ROTATIONS //////////////////////////////
 		////////  x axis  ////  x axis
 		int idcubie = 11;//to follow this cubie for now //this will be decided upon touch, or click on top of puzzle
 		int randcubie=0;
 		if(key == 'q') {
 			if(rotate == true) {//c
-				randcubie = rand()%26;
+				randcubie = 11;//rand()%26;
 				//clockwise
 				SG_VECTOR axis = {1,0,0};
-				myGames[0]->rotateByIDandAxis(idcubie,axis,true);
+				myGames[0]->rotateByIDandAxis(randcubie,axis,true);
 				rotate = false;
 			}
 		}
 		if(key == 'a') {
 			if(rotate == true) {//cc
-				randcubie = rand()%26;
+				randcubie = 11;//rand()%26;
 				//clockwise
 				SG_VECTOR axis = {1,0,0};
-				myGames[0]->rotateByIDandAxis(idcubie,axis,false);
+				myGames[0]->rotateByIDandAxis(randcubie,axis,false);
 				rotate = false;
 			}
 		}
 		////////  y axis  ////  y axis
 		if(key == 'w') {
 			if(rotate == true) {
-				randcubie = rand()%26;
+				randcubie = 11;//rand()%26;
 				//clockwise
 				SG_VECTOR axis = {0,1,0};
-				myGames[0]->rotateByIDandAxis(idcubie,axis,true);
+				myGames[0]->rotateByIDandAxis(randcubie,axis,true);
 				rotate = false;
 			}
 		}if(key == 's') {
 			//counter clockwise
 			if(rotate == true) {
-				randcubie = rand()%26;
+				randcubie = 11;//rand()%26;
 				SG_VECTOR axis = {0,1,0};
-				myGames[0]->rotateByIDandAxis(idcubie,axis,false);
+				myGames[0]->rotateByIDandAxis(randcubie,axis,false);
 				rotate = false;
 			}
 		}
 		////////  z axis  ////  z axis
 		if(key == 'e') {
 			if(rotate == true) {
-				randcubie = rand()%26;
+				randcubie = 11;//rand()%26;
 				//clockwise
 				SG_VECTOR axis = {0,0,1};
-				myGames[0]->rotateByIDandAxis(idcubie,axis,true);
+				myGames[0]->rotateByIDandAxis(randcubie,axis,true);
 				rotate = false;
 			}
 		}if(key == 'd') {
 			if(rotate == true) {
 				//counter clockwise
-				randcubie = rand()%26;
+				randcubie = 11;//rand()%26;
 				SG_VECTOR axis = {0,0,1};
-				myGames[0]->rotateByIDandAxis(idcubie,axis,false);
+				myGames[0]->rotateByIDandAxis(randcubie,axis,false);
 				rotate = false;
 			}
 		}
@@ -562,11 +568,12 @@ void testApp::mouseMoved(int x, int y ){
 //--------------------------------------------------------------
 void testApp::mouseDragged(int x, int y, int button){
 	if(button == 2){
+		float rotationMultiplier = 2.0;
 		ofVec2f dragNow(x,y);
 		ofVec2f dragDelta = dragNow - lastRightDragPos;
 		//cout << "drag change = " << dragDelta.x << ", " << dragDelta.y << endl;
-		SG_VECTOR axis = {dragDelta.x,dragDelta.y,0};
-		myGames[0]->rotateByIDandAxis(11,axis,false);
+		SG_VECTOR axis = {(1.0 - (dragDelta.y / ofGetHeight())) * rotationMultiplier,0, dragDelta.x / ofGetWidth() * rotationMultiplier};
+		myGames[0]->rotateP(axis);
 		rotate = false;
 		lastRightDragPos = dragNow;
 	}
@@ -650,6 +657,9 @@ void testApp::update(string _eventName, SubObEvent* _event){
 		SG_VECTOR v = {displayX,displayY,displayZ};
 		myGames[0]->createPuzzle(v);
 	}
+	if(_eventName == "reset"){
+		myGames[0]->restart();
+	}
 }
 
 //--------------------------------------------------------------
@@ -660,8 +670,11 @@ void testApp::dragEvent(ofDragInfo dragInfo){
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------
 void testApp::exit(){
-	//myGames[0]->restart();
+	myGames[0]->restart();
 	//cleanup games vector!!
+	if(myGames[0]->getCurrentStep() != 0){
+		myGames[0]->objectDisplayed->exit();
+	}
 	//sgFreeKernel();
 }
 //-----------------------------------------------------------------------------

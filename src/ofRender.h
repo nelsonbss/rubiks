@@ -9,7 +9,7 @@ class ofRender{
 
 public:
 	ofRender();
-	void sgCoretoOFmesh(sgC3DObject *obj, ofMesh &mesh,int numCubie);
+	void sgCoretoOFmesh(sgC3DObject *obj, ofMesh &mesh,int numCubie, bool plain);
 	void setNormals( ofMesh &mesh );
 	ofPoint decideAxis(ofPoint dir);
 	ofColor decideColor(ofPoint normal);

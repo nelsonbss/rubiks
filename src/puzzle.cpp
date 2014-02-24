@@ -387,6 +387,7 @@ void puzzle::unDo(int id, SG_VECTOR axis, bool dir){
 	int selX =0;
 	int selY =0;
 	int selZ =0;
+	dir = !dir;//inverse the direction of rotation
 	//look for positon of cubie on the 3d data structure
 	for(int x=0;x<3;x++){
 		for(int y=0;y<3;y++){

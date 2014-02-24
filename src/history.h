@@ -7,11 +7,10 @@
 class history {
 	
 public:
-	history(int idcubie, SG_VECTOR axis, double deg, bool di);
+	history(int idcubie, SG_VECTOR axis, bool di);
    
 	int id;
 	bool dir;//direction of rotation true-> Clockwise, false->CC
-	double deg; //both YES
 	SG_VECTOR vector; //YES
 };
 

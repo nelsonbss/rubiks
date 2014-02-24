@@ -186,7 +186,7 @@ void game::update(){
 				//put this move on the game history vector
 				//it only saves the idcubie. 
 				//undo will look for the other 9 cubies involved and do a pop_back on their history
-				historyV.push_back(history(idcubie,axis,0,!dir));
+				historyV.push_back(history(idcubie,axis,dir));
 				faceRotate = false;
 			}
 			//updatePuzzle = false;

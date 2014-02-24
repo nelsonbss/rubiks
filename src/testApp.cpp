@@ -8,8 +8,8 @@
 #include <math.h>
 #define _USE_MATH_DEFINES
 
-#define displayX 960
-#define displayY 540
+#define displayX 480
+#define displayY 270
 #define displayZ 100
 
 //std::map<int,gwc::Point> active_points;

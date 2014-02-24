@@ -302,7 +302,7 @@ void game::loadObject (int objID, SG_VECTOR p, SG_VECTOR t){
 //--------------------------------------------
 void game::createSlicer(){
 	////////////////////////////////create cutter///////////////////////////////////////
-	myCutter = new cutter(planeThicknes,planeSize,tamCubie,1,0,0,0);							//this -100 if because of torus radious!!! have to fix this!! to adapt to other selected shapes!!
+	myCutter = new cutter(planeThicknes,planeSize,tamCubie,1,0,0,100);							//this -100 if because of torus radious!!! have to fix this!! to adapt to other selected shapes!!
 	myCutter->setup();
 	//////////////////////////////////end create cutter///////////////////////////////////
 

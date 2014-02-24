@@ -19,7 +19,7 @@ public:
 
 	void exit();
 
-	void loadPieces(sgCGroup **pcs);
+	void loadPieces(sgCGroup **pcs,bool plain);
 	int giveNumCubies();
 
 	float numPieces;
@@ -43,7 +43,7 @@ public:
 	void rotateByIDandAxis(int id, SG_VECTOR axis,bool dir);
 	void rearange3dArray(SG_VECTOR axis, int plane, bool dir);
 
-	void unDo();
+	void unDo(int id, SG_VECTOR axis, bool dir);
 
 	///color change
 	void changeColorToColor(ofFloatColor Sc, ofFloatColor Tc);

@@ -9,6 +9,7 @@
 #include "armature.h"
 #include "puzzle.h"
 #include "ofxAssimpModelLoader.h"
+#include "history.h"
 
 class game {
 public:
@@ -31,6 +32,7 @@ public:
 	puzzle *myPuzzle;
 
 	void loadObject (int objID,SG_VECTOR p,SG_VECTOR t);
+	int objectID;
 	void createSlicer();
 	void createPuzzle(SG_VECTOR p);
 
@@ -44,7 +46,7 @@ public:
 	SG_VECTOR rotP;
 	void rotateP(SG_VECTOR r);
 
-	////////////////
+	////////////////puzzle movements
 	bool updatePuzzle;
 	//face rotations
 	int idcubie;
@@ -52,13 +54,16 @@ public:
 	SG_VECTOR axis;
 	void rotateByIDandAxis(int id, SG_VECTOR axis, bool dir);
 	bool faceRotate;
+	//history to undo
+	vector<history> historyV; 
+	void unDo();
 
 	//////////////////////////move  armature
 	SG_VECTOR posA;
-	void moveA (SG_VECTOR pa);
+	void moveA (ofVec3f input);
 	/////////////////////////////rotate armature
 	SG_VECTOR rotA;
-	void rotateA(SG_VECTOR ra);
+	void rotateA(ofVec3f input);
 
 	///other objects
 	ofxAssimpModelLoader bunny;
@@ -70,10 +75,8 @@ public:
 	ofxAssimpModelLoader octahedron;
 	sgCObject *sgOctahedron;
 	ofxAssimpModelLoader pot;
-	sgCObject *sgTeapot;
+	sgC3DObject *sgTeapot;
 	
-
-
 	////color change
 	void changeColorToColor(ofFloatColor Sc, ofFloatColor Tc);
 };

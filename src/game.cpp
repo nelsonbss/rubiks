@@ -18,17 +18,19 @@ game::game(SG_VECTOR gamePos, float w, float h, SG_VECTOR displayPos){
 	rotP.x = 0; //rotation of puzzle
 	rotP.y = 0;
 	rotP.z = 0;
+
+	objectID = 0;
 }
 //--------------------------------------------------------------
 #define planeThicknes 0.001
-#define planeSize 400
+#define planeSize 900
 #define tamCubie 100
 
 void game::setup(){
 	step = 0;
 	idcubie=0;
 	///////////////////////////////
-	myArmature = new armature (ofVec3f(posA.x,posA.y,0),300,300,10,3);
+	myArmature = new armature (ofVec3f(posA.x,posA.y,0),300,300,10,tamCubie);
 	myArmature->setup();
 	/////////////////////////////////////////PUZzLE //////////
 	updatePuzzle = false;
@@ -132,29 +134,29 @@ void game::setup(){
 	delete [] vert4;
 	delete [] indexes4;
 	////////////////////////////////////////load heavy models
-	//pot.loadModel("teapot.obj");
-	//need to make it an sgCore3DObject to be able to slice it
-	//ofMesh tempMesh5 = pot.getMesh(0);
+	pot.loadModel("teapot.obj");
+	//needto make it an sgCore3DObject to be able to slice it
+	ofMesh tempMesh5 = pot.getMesh(0);
 	//get vertices from mesh
-	//vector<ofVec3f> teapot3Vert = tempMesh5.getVertices();
+	vector<ofVec3f> teapot3Vert = tempMesh5.getVertices();
 	//make an array[] from this vector
-	//SG_POINT *vert5 = new SG_POINT[teapot3Vert.size()];
-	//for(int i=0;i<teapot3Vert.size(); i++){
-	//	vert5[i].x = teapot3Vert[i].x;
-	//	vert5[i].y = teapot3Vert[i].y;
-	//	vert5[i].z = teapot3Vert[i].z;
-	//}
+	SG_POINT *vert5 = new SG_POINT[teapot3Vert.size()];
+	for(int i=0;i<teapot3Vert.size(); i++){
+		vert5[i].x = teapot3Vert[i].x;
+		vert5[i].y = teapot3Vert[i].y;
+		vert5[i].z = teapot3Vert[i].z;
+	}
 	//get indices from mesh
-	//vector<ofIndexType>  teapot3Indices = tempMesh5.getIndices();
+	vector<ofIndexType>  teapot3Indices = tempMesh5.getIndices();
 	//make an array[] from this vector
-	//SG_INDEX_TRIANGLE *indexes5 = new SG_INDEX_TRIANGLE[teapot3Indices.size()];
-	//for(int i=0;i<teapot3Indices.size(); i++){
-	//	indexes5->ver_indexes[i] = teapot3Indices[i];
-//	}
+	SG_INDEX_TRIANGLE *indexes5 = new SG_INDEX_TRIANGLE[teapot3Indices.size()];
+	for(int i=0;i<teapot3Indices.size(); i++){
+		indexes5->ver_indexes[i] = teapot3Indices[i];
+	}
 	//generate sgC3DObject from geometry information
-	//sgTeapot = sgFileManager::ObjectFromTriangles(vert5,teapot3Vert.size(),indexes5,teapot3Indices.size()/3); 
-	//delete [] vert5;
-	//delete [] indexes5;
+	sgTeapot = (sgC3DObject *) sgFileManager::ObjectFromTriangles(vert5,teapot3Vert.size(),indexes5,teapot3Vert.size()/3); 
+	delete [] vert5;
+	delete [] indexes5;
 }
 //--------------------------------------------------------------
 void game::update(){
@@ -183,6 +185,10 @@ void game::update(){
 			//////////////////////////////////////////make face rotation
 			if(faceRotate == true) {
 				myPuzzle->rotateByIDandAxis(idcubie,axis,dir);
+				//put this move on the game history vector
+				//it only saves the idcubie. 
+				//undo will look for the other 9 cubies involved and do a pop_back on their history
+				historyV.push_back(history(idcubie,axis,dir));
 				faceRotate = false;
 			}
 			//updatePuzzle = false;
@@ -199,7 +205,6 @@ void game::draw(){
 		//show selected object
 		objectDisplayed->draw();
 		//myCutter->draw();
-		//myCutter->unDraw();
 	}
 	if(step == 2){
 		//waiting for armature to be selected
@@ -251,44 +256,41 @@ void game::rotateByIDandAxis(int id, SG_VECTOR axs, bool d){
 
 }
 //----------------------------------------------------------------
-void game::loadObject (int objID,SG_VECTOR p,SG_VECTOR t){
+void game::loadObject (int objID, SG_VECTOR p, SG_VECTOR t){
+	objectID = objID;
 	if(step == 0 || step==1){
 		objectDisplayed = new myobject3D(p,t);
 		if(objID == 1){
 			//torus
-			objectDisplayed->loadObject(sgCreateTorus(100,80,50,50));//pos.z is radius, thicknes, meridians
+			objectDisplayed->loadObject(sgCreateTorus(100,80,50,50),1);//pos.z is radius, thicknes, meridians
 		}
 		if(objID == 2){
 			//cube
-			objectDisplayed->loadObject(sgCreateBox(300,300,300));
+			objectDisplayed->loadObject(sgCreateBox(300,300,300),2);
 		}if(objID == 3){
 			//cone
-			objectDisplayed->loadObject(sgCreateCone(200,1,300.0, 3));
+			objectDisplayed->loadObject(sgCreateCone(200,1,300.0, 3),3);
 		}
 		if(objID == 4){
 			//try to load the bunny
-			objectDisplayed->loadObject((sgC3DObject *)sgBunny);
+			objectDisplayed->loadObject((sgC3DObject *)sgBunny,4);
 		}
 		if(objID == 5){
 			//try to load the dodecahedron
-			objectDisplayed->loadObject((sgC3DObject *)sgDodecahedron);
+			objectDisplayed->loadObject((sgC3DObject *)sgDodecahedron,5);
 		}
 		if(objID == 6){
-			//try to load the dodecahedron
-			objectDisplayed->loadObject((sgC3DObject *)sgIcosahedron);
+			//try to load the Icosahedron
+			objectDisplayed->loadObject((sgC3DObject *)sgIcosahedron,6);
 		}
 		if(objID == 7){
-			//try to load the dodecahedron
-			objectDisplayed->loadObject((sgC3DObject *)sgOctahedron);
+			//try to load the Octahedron
+			objectDisplayed->loadObject((sgC3DObject *)sgOctahedron,7);
 		}
 		if(objID == 8){
-			//try to load the dodecahedron
-			objectDisplayed->loadObject((sgC3DObject *)sgTeapot);
+			//try to load the Teapot
+			objectDisplayed->loadObject((sgC3DObject *)sgTeapot,8);
 		}
-		
-		
-
-
 		objectDisplayed->setup();
 		createSlicer();
 		step = 1;
@@ -300,7 +302,7 @@ void game::loadObject (int objID,SG_VECTOR p,SG_VECTOR t){
 //--------------------------------------------
 void game::createSlicer(){
 	////////////////////////////////create cutter///////////////////////////////////////
-	myCutter = new cutter(planeThicknes,planeSize,tamCubie,1,0,0,-100);							//this -100 if because of torus radious!!! have to fix this!! to adapt to other selected shapes!!
+	myCutter = new cutter(planeThicknes,planeSize,tamCubie,1,0,0,100);							//this -100 if because of torus radious!!! have to fix this!! to adapt to other selected shapes!!
 	myCutter->setup();
 	//////////////////////////////////end create cutter///////////////////////////////////
 
@@ -323,7 +325,11 @@ void game::createPuzzle(SG_VECTOR p){
 		mySlicer->intersectCubes(objectDisplayed->getObject()); 
 		//now slicer has all the parts inside sgCGroup ** = pieces[]
 		//////////////////////////////create puzzle////////////////////////////////////////
-		myPuzzle->loadPieces(mySlicer->getPieces());
+		if(objectID == 4){
+			myPuzzle->loadPieces(mySlicer->getPieces(),true);
+		}else{
+			myPuzzle->loadPieces(mySlicer->getPieces(),false);
+		}
 		////////////////////////////////end create puzzle//////////////////////////////////
 
 		updatePuzzle = true;
@@ -342,19 +348,35 @@ void game::setCurrentStep(int s){
 void game::changeColorToColor(ofFloatColor sc, ofFloatColor tc){
 	myPuzzle->changeColorToColor(sc,tc);
 }
+//-------------------------------------------------------
+void game::moveA (ofVec3f input){
+	myArmature->moveA(input);
+}
+//----------------------------------------------
+void game::unDo(){
+	//it only saves the idcubie. 
+	//undo will look for the other 9 cubies involved and do a pop_back on their history
+	if(historyV.size()>0){
+		int id = historyV[historyV.size()-1].id;
+		SG_VECTOR axis = historyV[historyV.size()-1].vector;
+		double dir = historyV[historyV.size()-1].dir;
+		myPuzzle->unDo(id,axis,dir);
+		historyV.pop_back();
+	}
+}
 //----------------------------------------------
 void game::restart(){
 	//go to step 0, clear puzzle, , clear pieces, clear object
 	if(step==4 || step==5){
 		myPuzzle->exit();
-		objectDisplayed->exit();
 		myCutter->exit();
 		mySlicer->exit();
+		//objectDisplayed->exit();
 		step = 0;
 	}else if (step==1 || step==2 || step==3){
-		objectDisplayed->exit();
 		myCutter->exit();
 		mySlicer->exit();
+		//objectDisplayed->exit();
 		step = 0;
 	}
 }

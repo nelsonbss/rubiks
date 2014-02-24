@@ -16,25 +16,28 @@ cubie::cubie(float x, float y,float z, int idi){
 	pointRotate.x = 0;
 	pointRotate.y = 0;
 	pointRotate.z = 0;
-	rotX = 0.0;
+	/*rotX = 0.0;
 	rotY = 0.0;
-	rotZ = 0.0;
+	rotZ = 0.0;*/
 	moving = false;
-/*	movingXC = false;
+	/*	movingXC = false;
 	movingXCC = false;
 	movingYC = false;
 	movingYCC = false;
 	movingZC = false;
 	movingZCC = false*/;
-	ct1 = 0.0;
-	ct2 = 0.0;
-	animTime = 300;
+	/*ct1 = 0.0;
+	ct2 = 0.0;*/
+	animTime = 9;
 
 	sample = true;
 	rotXa = 0.0;
+	//initializing cubie history
 	SG_POINT axis = {0,0,0};
 	SG_VECTOR vrotFace = {0,0,0};
 	myMatrix.push_back(matrix(axis,0.0,true));
+	//to control undo
+	undoing = false;
 }
 //--------------------------------------------------------------
 void cubie::setup(){
@@ -43,7 +46,7 @@ void cubie::setup(){
 //--------------------------------------------------------------
 void cubie::update(){
 	for (int j=0; j < numObjs; j++){
-		if(moving==true){
+		if(moving==true)       
 			//for (int j=0; j < numObjs; j++){
 			///////////////////////////////////applying rotations matrix HISTORY
 			//use vector with matrix(s)
@@ -138,10 +141,9 @@ void cubie::update(){
 				if(myMatrix.at(myMatrix.size()-1).dir == true){
 					//animate rotation xc
 					//if(movingXC == true){
-					//rotXa += 0.1;
 					if(rotXa < tempDeg2){
 						//ct2 = ofGetElapsedTimeMillis();
-						rotXa += 9;//0.1;//(ct2 - ct1)*((1.57)/animTime);
+						rotXa += animTime;//0.1;//(ct2 - ct1)*((1.57)/animTime);
 						double aux =  ofDegToRad(rotXa);
 						objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,aux);
 						//ct1 = ct2;
@@ -158,7 +160,7 @@ void cubie::update(){
 					//if(movingXCC == true){
 					if(rotXa > tempDeg2){
 						//ct2 = ofGetElapsedTimeMillis();
-						rotXa -= 9;//0.1;  //(ct2 - ct1)*((1.57)/animTime);
+						rotXa -= animTime;//0.1;  //(ct2 - ct1)*((1.57)/animTime);
 						double aux =  ofDegToRad(rotXa);
 						objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,aux);
 						//ct1 = ct2;
@@ -172,6 +174,68 @@ void cubie::update(){
 					//}
 				}
 			}
+		}else if (undoing == true){
+			//go from the last element in cubie history, doing the inverse move that got it there
+			//i.e. if last move was C on x -> then we do CC on x
+
+			SG_POINT protFace = {0,0,0};										 
+			SG_VECTOR vrotFace = myMatrix.at(myMatrix.size()-1).vector;//  axis; //rotate to do a face move
+			double targetDeg = 0;//myMatrix.at(myMatrix.size()-1).deg; //target angle, the last angle it will move to
+			if(sample==false){
+				//this should only be sampled once during the animation
+				rotXa = myMatrix.at(myMatrix.size()-1).deg; // from where we want to move towards zero, to do the undo animation
+				sample=true;
+			}
+			if(myMatrix.at(myMatrix.size()-1).dir == true){
+				//it was rotation C
+				//so we do CC!!!!!
+				if(rotXa > targetDeg){
+					//ct2 = ofGetElapsedTimeMillis();
+					rotXa -= animTime/2;//0.1;//(ct2 - ct1)*((1.57)/animTime);
+					double aux =  ofDegToRad(rotXa);
+					if (objectList[j]->GetTempMatrix()==0){
+						objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,aux);
+					}else{
+						objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,aux);
+					}
+					//ct1 = ct2;
+				}else{
+					rotXa = targetDeg;
+					/*double aux =  ofDegToRad(rotXa);
+					if (objectList[j]->GetTempMatrix()==0){
+					objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,aux);
+					}else{
+					objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,aux);
+					}*/
+					myMatrix.pop_back();
+					undoing = false;
+				}
+			}else{
+				//it was cc
+				//so we do C!!!!
+				if(rotXa < targetDeg){
+					//ct2 = ofGetElapsedTimeMillis();
+					rotXa += animTime;//0.1;  //(ct2 - ct1)*((1.57)/animTime);
+					double aux =  ofDegToRad(rotXa);
+					if (objectList[j]->GetTempMatrix()==0){
+						objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,aux);
+					}else{
+						objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,aux);
+					}
+					//ct1 = ct2;
+				}else{
+					rotXa = targetDeg;
+					double aux =  ofDegToRad(rotXa);
+					if (objectList[j]->GetTempMatrix()==0){
+						objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,aux);
+					}else{
+						objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,aux);
+					}
+					myMatrix.pop_back();
+					undoing = false;
+				}
+			}
+
 		}
 		else{
 			//puzzle is not moving
@@ -232,6 +296,7 @@ void cubie::draw(){
 	if(objects != NULL){
 		for (int j=0; j < numObjs; j++){
 			glPushMatrix();
+			//ofScale(1.2,1.2,1.2);
 			////all puzzle
 			//glTranslatef(posX,posY,posZ);
 			//glRotatef(rotH,0,1,0);
@@ -258,61 +323,63 @@ void cubie::faceRotate(SG_VECTOR axis,bool di){
 	//its invoked on a group of cubies determined by the puzzle..??(stil lneeds to be determined)
 	//use this cubies objectList to draw elements without ever loosing them on groupBreaking
 	if(objects != NULL){
-		//if(moving == false){
-		for (int j=0; j < numObjs; j++){
-			SG_POINT protFace = {0,0,0};
-			SG_VECTOR vrotFace = axis;
-			rotX=0;
-			rotY=0;
-			rotZ=0;
-			moving = true;
-			ct1 = ofGetElapsedTimeMillis();
-			if(di == true){
-				//c
-				if(axis.x == 1){
-					//movingXC = true;
-					sample = false;
-					rotX += 90;
-					myMatrix.push_back(matrix(axis,rotX,di));
-					//cout << "history: " << myMatrix.size() << " rotX: " << rotX << endl;
-				}else if(axis.y == 1){
-					//movingYC = true;
-					sample = false;
-					rotY += 90;
-					myMatrix.push_back(matrix(axis,rotY,di));
-				}else{
-					//movingZC = true;
-					sample = false;
-					rotZ += 90;
-					myMatrix.push_back(matrix(axis,rotZ,di));
-				}
-			}else{
-				//cc
-				if(axis.x == 1){
-					//movingXCC = true;
-					sample = false;
-					rotX -= 90;
-					myMatrix.push_back(matrix(axis,rotX,di));
-				}else if(axis.y == 1){
-					//movingYCC = true;
-					sample = false;
-					rotY -= 90;
-					myMatrix.push_back(matrix(axis,rotY,di));
-				}else{
-					//movingZCC = true;
-					sample = false;
-					rotZ -= 90;
-					myMatrix.push_back(matrix(axis,rotZ,di));
+		if(moving == false){
+			if(undoing == false){
+				for (int j=0; j < numObjs; j++){
+					SG_POINT protFace = {0,0,0};
+					SG_VECTOR vrotFace = axis;
+					/*rotX=0;
+					rotY=0;
+					rotZ=0;*/
+					moving = true;
+					//ct1 = ofGetElapsedTimeMillis();
+					if(di == true){
+						//c
+						//if(axis.x == 1){
+						//movingXC = true;
+						sample = false;
+						//rotX += 90;
+						myMatrix.push_back(matrix(axis,90,di));
+						//cout << "history: " << myMatrix.size() << " rotX: " << rotX << endl;
+						//}else if(axis.y == 1){
+						//	//movingYC = true;
+						//	sample = false;
+						//	//rotY += 90;
+						//	myMatrix.push_back(matrix(axis,90,di));
+						//}else{
+						//	//movingZC = true;
+						//	sample = false;
+						//	//rotZ += 90;
+						//	myMatrix.push_back(matrix(axis,90,di));
+						//}
+					}else{
+						//cc
+						//if(axis.x == 1){
+						//movingXCC = true;
+						sample = false;
+						//rotX -= 90;
+						myMatrix.push_back(matrix(axis,-90,di));
+						//}else if(axis.y == 1){
+						//	//movingYCC = true;
+						//	sample = false;
+						//	//rotY -= 90;
+						//	myMatrix.push_back(matrix(axis,-90,di));
+						//}else{
+						//	//movingZCC = true;
+						//	sample = false;
+						//	//rotZ -= 90;
+						//	myMatrix.push_back(matrix(axis,-90,di));
+						//}
+					}
 				}
 			}
 		}
-		//}
 	}else{
 		//cout << "null at face rotation" << endl;
 	}
 }
 //-------------------------------------------------------------------------------------------------------------------------------------------
-void cubie::setObjects(sgCGroup *objs,int cubieId){
+void cubie::setObjects(sgCGroup *objs,int cubieId,bool plain){
 	//it receives a group, when Puzzle loadsPieces(ySlicer->getPieces())  on main
 	//it takes the input group and breaks it, to put parts on cubie group "objects"
 	if(objs != NULL){
@@ -341,7 +408,7 @@ void cubie::setObjects(sgCGroup *objs,int cubieId){
 			sgC3DObject *o = (sgC3DObject*)temp->Clone();
 			o->Triangulate(SG_VERTEX_TRIANGULATION);
 			//convert to ofMEsh with cubie ID!!!
-			ofr->sgCoretoOFmesh(o,tempMesh,cubieId); //give cubie id!!
+			ofr->sgCoretoOFmesh(o,tempMesh,cubieId,plain); //give cubie id!! so that it knows how to color it, lain or not
 			myMeshs.push_back(tempMesh);
 			ofVbo tempVbo;
 			tempVbo.setMesh(tempMesh, GL_STATIC_DRAW);
@@ -371,6 +438,22 @@ int cubie::getId(){
 	return id;
 }
 //--------------------------------------------------------------
+void cubie::unDo(){
+	//it removes the las element on the vector with the history of each cubie
+	if(myMatrix.size()>1){
+		//trigger an undo animation routine in the update()
+		//at the end of that routine-> we do the pop_back of the cubies history
+		if(undoing==false){
+			if(moving == false){
+				//undoing = true;
+				sample = false;
+				myMatrix.pop_back();
+				//undoing = false;
+			}
+		}
+	}
+}
+//---------------------------------------------------------------
 void cubie::changeColorToColor(ofFloatColor Sc, ofFloatColor Tc){
 	ofRender *ofr = new ofRender(); 
 	for(int j=0; j< numObjs; j++){

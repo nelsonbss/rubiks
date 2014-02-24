@@ -43,7 +43,7 @@
       <event name="object-selected">
         <arg name="object">
           <type>int</type>
-          <val>1</val>
+          <val>8</val>
         </arg>
       </event>
     </node>
@@ -274,10 +274,24 @@
       <size>150,150</size>
       <scale>1.0</scale>
     </node>
-    <node type="button" name="F79720" action="replace" target="attract" message="cut" image="btnReset.png" clicked="none">
+    <node type="button" name="step4-next" action="replace" target="attract" message="cut" image="btnNext.png" clicked="none">
       <pos>0.8,0.85</pos>
       <size>150,150</size>
       <scale>0.9</scale>
+      <event name="goto-step5">
+      </event>
+    </node>
+    <node type="button" name="F79720" action="replace" target="attract" message="cut" image="btnReset.png" clicked="none">
+      <pos>0.9,0.85</pos>
+      <size>150,150</size>
+      <scale>0.9</scale>
+      <event name="replace-sheet">
+        <arg name="target">
+          <type>string</type>
+          <val>attract</val>
+        </arg>
+      </event>
+      <event name="reset"></event>
     </node>
     <!--
     <node type="button" name="arrow-left" action="control" target="none" message="rotate-left" image="arrow-left.png" clicked="none">

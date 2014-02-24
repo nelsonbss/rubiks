@@ -8,15 +8,14 @@
 #include <math.h>
 #define _USE_MATH_DEFINES
 
-#define displayX 500
-#define displayY 400
-#define displayZ -10
+#define displayX 480
+#define displayY 270
+#define displayZ 100
 
-std::map<int,gwc::Point> active_points;
+//std::map<int,gwc::Point> active_points;
 
 //--------------------------------------------------------------
 void testApp::setup(){
-	/*
 	/////////////////////////////initialize sgCore library
 	sgInitKernel();
 
@@ -34,7 +33,6 @@ void testApp::setup(){
 	for(int i = 0; i < myGames.size(); i++){
 		myGames[i]->setup();
 	}
-	*/
 	//////setup GUI/////////////
 	//ofSetFullscreen(true);
 
@@ -47,9 +45,12 @@ void testApp::setup(){
 	SubObMediator::Instance()->addObserver("object-selected", this);
 	SubObMediator::Instance()->addObserver("armature-selected", this);
 	SubObMediator::Instance()->addObserver("cut-object", this);
+	SubObMediator::Instance()->addObserver("goto-step5", this);
+	SubObMediator::Instance()->addObserver("reset", this);
 
 	last_tick_count = GetTickCount();
 
+	/*
 	active_points = std::map<int,gwc::Point>();
 
 	if(loadGestureWorks("GestureworksCore32.dll")) { 
@@ -64,10 +65,11 @@ void testApp::setup(){
 
 	initializeGestureWorks(1920,1080);
 
-	if(!registerWindowForTouchByName("rubiks")) { 
+	if(!registerWindowForTouchByName("rubiksWindow")) { 
 		std::cout << "Could not register target window for touch." << std::endl; 
 		exit(); 
 	}
+	*/
 
 	rotate = true;
 }
@@ -81,17 +83,18 @@ void testApp::update(){
 		myGames[i]->update();
 	}
 
+	/*
+
 	if(GetTickCount() - last_tick_count < 16) {
 		return;
 	} else { last_tick_count = GetTickCount(); }
-  
+
 	processFrame();
 
 	std::vector<gwc::PointEvent> point_events = consumePointEvents();
 
 	for(std::vector<gwc::PointEvent>::iterator event_it = point_events.begin(); event_it != point_events.end(); event_it++) {
 		//cout << event_it->status << endl;
-		/*
 		switch(event_it->status) {
 			case gwc::TOUCHADDED:
 			case gwc::TOUCHUPDATE:
@@ -104,7 +107,6 @@ void testApp::update(){
 				active_points.erase(event_it->point_id);
 				break;
 		}
-		*/
 	}
 
 	std::vector<gwc::GestureEvent> gesture_events = consumeGestureEvents();
@@ -114,6 +116,8 @@ void testApp::update(){
 	for(std::vector<gwc::GestureEvent>::iterator gesture_it = gesture_events.begin(); gesture_it != gesture_events.end(); gesture_it++) {
 		cout << gesture_it->gesture_type << endl;
 	}
+
+	*/
 }
 //--------------------------------------------------------------
 void testApp::draw(){
@@ -179,6 +183,30 @@ void testApp::draw(){
 
 	ofEnableDepthTest();
 	SceneManager::Instance()->draw();
+
+	/*
+	for(std::map<int,gwc::Point>::iterator points_it = active_points.begin(); points_it != active_points.end(); points_it++)
+	{
+		float x = points_it->second.getX();
+		float y = points_it->second.getY();
+
+		//Generate a circle with a 50-pixel radius at this point's location
+		ofFill();
+		ofCircle(ofPoint(x, y, 0), 20);
+		ofNoFill();
+		ofSetLineWidth(2);
+		ofCircle(ofPoint(x, y, 0), 30);
+
+
+		//Generate a stringstream for each value with which we're concerned
+		std::stringstream xvals; xvals << (int)x;
+		std::stringstream yvals; yvals << (int)y;
+		std::stringstream ids; ids << points_it->first;
+
+		//Annotate the circle we just drew with the id, x and y values for the corresponding point
+		ofDrawBitmapString("ID: " + ids.str() + "\nX: " + xvals.str() + " Y: " + yvals.str(), x + 40, y - 40, 0);
+	}
+	*/
 	ofDisableDepthTest();
 }
 
@@ -201,14 +229,6 @@ void testApp::keyPressed(int key){
 			myGames[0]->loadObject(1,objectPos,tempPos); //pos.z its the torus radious
 		}
 		if(key == '2') {
-			SG_VECTOR offset = {-150,-150,-150}; //for the cube to be in place
-			objectPos.x += offset.x;
-			objectPos.y += offset.y;
-			objectPos.z += offset.z;
-			SG_VECTOR offset2 = {-150,-150,-150}; //for the cube to be in place
-			tempPos.x += offset2.x;
-			tempPos.y += offset2.y;
-			tempPos.z += offset2.z;
 			myGames[0]->loadObject(2,objectPos,tempPos);
 		}
 		if(key == '3') {
@@ -227,10 +247,10 @@ void testApp::keyPressed(int key){
 			myGames[0]->loadObject(7,objectPos,tempPos);
 		}
 		if(key == '8') { 
-			myGames[0]->loadObject(7,objectPos,tempPos);
+			myGames[0]->loadObject(8,objectPos,tempPos);
 		}
 	}
-	if(key == 's'){
+	if(key == 'b'){
 		ofToggleFullscreen();
 	}
 	////////////////////////////////////////////step 1 inputs
@@ -251,31 +271,24 @@ void testApp::keyPressed(int key){
 			myGames[0]->loadObject(1,objectPos,tempPos); //pos.z its the torus radious
 		}
 		if(key == '2') {
-			SG_VECTOR v = {500,400,100}; 
 			myGames[0]->loadObject(2,objectPos,tempPos);
 		}
 		if(key == '3') {
-			SG_VECTOR v = {500,400,100}; 
 			myGames[0]->loadObject(3,objectPos,tempPos);
 		}
 		if(key == '4') {
-			SG_VECTOR v = {500,400,100}; 
 			myGames[0]->loadObject(4,objectPos,tempPos);
 		}
 		if(key == '5') {
-			SG_VECTOR v = {500,400,100}; 
 			myGames[0]->loadObject(5,objectPos,tempPos);
 		}
 		if(key == '6') {
-			SG_VECTOR v = {500,400,100}; 
 			myGames[0]->loadObject(6,objectPos,tempPos);
 		}
 		if(key == '7') {
-			SG_VECTOR v = {500,400,100}; 
 			myGames[0]->loadObject(7,objectPos,tempPos);
 		}
-		if(key == '8') {
-			SG_VECTOR v = {500,400,100}; 
+		if(key == '8') { 
 			myGames[0]->loadObject(8,objectPos,tempPos);
 		}
 	}
@@ -298,6 +311,23 @@ void testApp::keyPressed(int key){
 	if(gStep == 3){
 		//armature was selected
 		//showing armature
+		//////////////////////////////move all armature
+		if(key == 'l') {
+			ofVec3f p = ofVec3f (5,0,0);
+			myGames[0]->moveA(p);
+		}
+		if(key == 'j') {
+			ofVec3f p = ofVec3f (-5,0,0);
+			myGames[0]->moveA(p);
+		}
+		if(key == 'i') {
+			ofVec3f p = ofVec3f (0,-5,0);
+			myGames[0]->moveA(p);
+		}
+		if(key == 'k') {
+			ofVec3f p = ofVec3f (0,5,0);
+			myGames[0]->moveA(p);
+		}
 		//a puzzle can be made
 		if(key == 'n') {
 			//do slicing
@@ -315,8 +345,7 @@ void testApp::keyPressed(int key){
 			ofFloatColor menuColor = ofFloatColor (1, 0, 1); //this color comes from the GUI
 			myGames[0]->changeColorToColor(sc,menuColor);
 		}
-
-		//presssed NEXT
+		//pressed NEXT
 		if(key == 'n') {
 			//go to step 5
 			myGames[0]->setCurrentStep(5);
@@ -328,61 +357,65 @@ void testApp::keyPressed(int key){
 		//pressed next on color palette step
 		//showing puzzle
 		//now the puzzle can be played with
+		if(key == 'u'){
+			//undo last move 
+			myGames[0]->unDo();
+		}
 		///////////////////// FACE ROTATIONS //////////////////////////////
 		////////  x axis  ////  x axis
 		int idcubie = 11;//to follow this cubie for now //this will be decided upon touch, or click on top of puzzle
 		int randcubie=0;
 		if(key == 'q') {
 			if(rotate == true) {//c
-				randcubie = rand()%26;
+				randcubie = 11;//rand()%26;
 				//clockwise
 				SG_VECTOR axis = {1,0,0};
-				myGames[0]->rotateByIDandAxis(idcubie,axis,true);
+				myGames[0]->rotateByIDandAxis(randcubie,axis,true);
 				rotate = false;
 			}
 		}
 		if(key == 'a') {
 			if(rotate == true) {//cc
-				randcubie = rand()%26;
+				randcubie = 11;//rand()%26;
 				//clockwise
 				SG_VECTOR axis = {1,0,0};
-				myGames[0]->rotateByIDandAxis(idcubie,axis,false);
+				myGames[0]->rotateByIDandAxis(randcubie,axis,false);
 				rotate = false;
 			}
 		}
 		////////  y axis  ////  y axis
 		if(key == 'w') {
 			if(rotate == true) {
-				randcubie = rand()%26;
+				randcubie = 11;//rand()%26;
 				//clockwise
 				SG_VECTOR axis = {0,1,0};
-				myGames[0]->rotateByIDandAxis(idcubie,axis,true);
+				myGames[0]->rotateByIDandAxis(randcubie,axis,true);
 				rotate = false;
 			}
 		}if(key == 's') {
 			//counter clockwise
 			if(rotate == true) {
-				randcubie = rand()%26;
+				randcubie = 11;//rand()%26;
 				SG_VECTOR axis = {0,1,0};
-				myGames[0]->rotateByIDandAxis(idcubie,axis,false);
+				myGames[0]->rotateByIDandAxis(randcubie,axis,false);
 				rotate = false;
 			}
 		}
 		////////  z axis  ////  z axis
 		if(key == 'e') {
 			if(rotate == true) {
-				randcubie = rand()%26;
+				randcubie = 11;//rand()%26;
 				//clockwise
 				SG_VECTOR axis = {0,0,1};
-				myGames[0]->rotateByIDandAxis(idcubie,axis,true);
+				myGames[0]->rotateByIDandAxis(randcubie,axis,true);
 				rotate = false;
 			}
 		}if(key == 'd') {
 			if(rotate == true) {
 				//counter clockwise
-				randcubie = rand()%26;
+				randcubie = 11;//rand()%26;
 				SG_VECTOR axis = {0,0,1};
-				myGames[0]->rotateByIDandAxis(idcubie,axis,false);
+				myGames[0]->rotateByIDandAxis(randcubie,axis,false);
 				rotate = false;
 			}
 		}
@@ -541,19 +574,49 @@ void testApp::mouseMoved(int x, int y ){
 }
 //--------------------------------------------------------------
 void testApp::mouseDragged(int x, int y, int button){
-	if(ofGetElapsedTimef() - timeOfLastInput > inputDelayTime){
-        updateMouseState("drag", x, y, button);
-        timeOfLastInteraction = ofGetElapsedTimef();
-        timeOfLastInput = ofGetElapsedTimef();
-    }
+	if(button == 2){
+		float rotationMultiplier = 5.0;
+		ofVec2f dragNow(x,y);
+		ofVec2f dragDelta = dragNow - lastRightDragPos;
+		//cout << "drag change = " << dragDelta.x << ", " << dragDelta.y << endl;
+		SG_VECTOR axis = {((dragDelta.y / ofGetHeight()) * rotationMultiplier) * -1.0,(dragDelta.x / ofGetWidth()) * rotationMultiplier,0};
+		myGames[0]->rotateP(axis);
+		rotate = false;
+		lastRightDragPos = dragNow;
+	}
+	if(button == 0){
+		if(ofGetElapsedTimef() - timeOfLastInput > inputDelayTime){
+		    updateMouseState("drag", x, y, button);
+			timeOfLastInteraction = ofGetElapsedTimef();
+			timeOfLastInput = ofGetElapsedTimef();
+		}
+		int gStep = myGames[0]->getCurrentStep();
+		cout << gStep << endl;
+		if(gStep == 4){
+			float rotationMultiplier = 5.0;
+			ofVec2f dragNow(x,y);
+			ofVec2f dragDelta = dragNow - lastRightDragPos;
+			//cout << "drag change = " << dragDelta.x << ", " << dragDelta.y << endl;
+			SG_VECTOR axis = {((dragDelta.y / ofGetHeight()) * rotationMultiplier) * -1.0,(dragDelta.x / ofGetWidth()) * rotationMultiplier,0};
+			myGames[0]->rotateP(axis);
+			rotate = false;
+			lastRightDragPos = dragNow;
+		}
+	}
 }
 //--------------------------------------------------------------
 void testApp::mousePressed(int x, int y, int button){
-	if(ofGetElapsedTimef() - timeOfLastInput > inputDelayTime){
-        updateMouseState("down", x, y, button);
-        timeOfLastInteraction = ofGetElapsedTimef();
-        timeOfLastInput = ofGetElapsedTimef();
-    }
+	cout << button << endl;
+	if(button == 2){
+		lastRightDragPos.set(x,y);
+	}
+	if(button == 0){
+		if(ofGetElapsedTimef() - timeOfLastInput > inputDelayTime){
+		    updateMouseState("down", x, y, button);
+			timeOfLastInteraction = ofGetElapsedTimef();
+			timeOfLastInput = ofGetElapsedTimef();
+		}
+	}
 }
 //--------------------------------------------------------------
 void testApp::mouseReleased(int x, int y, int button){
@@ -613,6 +676,12 @@ void testApp::update(string _eventName, SubObEvent* _event){
 		SG_VECTOR v = {displayX,displayY,displayZ};
 		myGames[0]->createPuzzle(v);
 	}
+	if(_eventName == "goto-step5"){
+		myGames[0]->setCurrentStep(5);
+	}
+	if(_eventName == "reset"){
+		myGames[0]->restart();
+	}
 }
 
 //--------------------------------------------------------------
@@ -623,8 +692,11 @@ void testApp::dragEvent(ofDragInfo dragInfo){
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------
 void testApp::exit(){
-	//myGames[0]->restart();
+	myGames[0]->restart();
 	//cleanup games vector!!
+	if(myGames[0]->getCurrentStep() != 0){
+		myGames[0]->objectDisplayed->exit();
+	}
 	//sgFreeKernel();
 }
 //-----------------------------------------------------------------------------

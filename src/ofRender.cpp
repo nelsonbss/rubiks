@@ -25,7 +25,7 @@ ofRender::ofRender(){
 	//colorsVector.push_back(cyan);//8
 }
 
-void ofRender::sgCoretoOFmesh(sgC3DObject *obj, ofMesh &mesh,int idCubie){
+void ofRender::sgCoretoOFmesh(sgC3DObject *obj, ofMesh &mesh,int idCubie, bool plain){
 	//convert to of mesh and draw as of
 	mesh.setMode(OF_PRIMITIVE_TRIANGLES);
 
@@ -73,7 +73,11 @@ void ofRender::sgCoretoOFmesh(sgC3DObject *obj, ofMesh &mesh,int idCubie){
 			c = mate;//colorsVector[0];//mate
 		}else{
 			//it is a cubie
+			if(plain ==false){
 			c = decideColorCubie(decideAxis(dir),idCubie);
+			}else{
+				c = cyan;
+			}
 		}
 
 		//mesh.addColor(c);

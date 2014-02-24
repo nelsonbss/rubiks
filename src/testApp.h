@@ -9,7 +9,7 @@
 #include "SubObEvent.h"
 #include "SceneManager.h"
 #include "game.h"
-#include <vector>
+#include "GestureWorksCore.h"
 
 class testApp : public ofBaseApp, public Observer, public Subject{
 
@@ -78,4 +78,6 @@ public:
 
 	///for color changing //first version
 	ofFloatColor pickColorMouse();
+
+	DWORD last_tick_count;
 };

@@ -12,8 +12,11 @@
 #define displayY 400
 #define displayZ -10
 
+std::map<int,gwc::Point> active_points;
+
 //--------------------------------------------------------------
 void testApp::setup(){
+	/*
 	/////////////////////////////initialize sgCore library
 	sgInitKernel();
 
@@ -31,7 +34,10 @@ void testApp::setup(){
 	for(int i = 0; i < myGames.size(); i++){
 		myGames[i]->setup();
 	}
+	*/
 	//////setup GUI/////////////
+	ofSetFullscreen(true);
+
 	string guiFile = "sheets.xml";
 	GuiConfigurator::Instance()->addFile(guiFile);
 	GuiConfigurator::Instance()->getTags();
@@ -41,6 +47,27 @@ void testApp::setup(){
 	SubObMediator::Instance()->addObserver("object-selected", this);
 	SubObMediator::Instance()->addObserver("armature-selected", this);
 	SubObMediator::Instance()->addObserver("cut-object", this);
+
+	last_tick_count = GetTickCount();
+
+	active_points = std::map<int,gwc::Point>();
+
+	if(loadGestureWorks("GestureworksCore32.dll")) { 
+		std::cout << "Error loading gestureworks dll" << std::endl; 
+		exit(); 
+	}
+	
+	if( !registerWindowForTouchByName("Hello Multitouch!") ) { 
+		std::cout << "Could not register target window for touch." << std::endl; 
+		exit(); 
+	}
+
+	initializeGestureWorks(1920,1080);
+
+	if(!registerWindowForTouchByName("rubiks")) { 
+		std::cout << "Could not register target window for touch." << std::endl; 
+		exit(); 
+	}
 
 	rotate = true;
 }
@@ -52,6 +79,40 @@ void testApp::update(){
 	///////////////////////////////////////////update games
 	for(int i = 0; i < myGames.size(); i++){
 		myGames[i]->update();
+	}
+
+	if(GetTickCount() - last_tick_count < 16) {
+		return;
+	} else { last_tick_count = GetTickCount(); }
+  
+	processFrame();
+
+	std::vector<gwc::PointEvent> point_events = consumePointEvents();
+
+	for(std::vector<gwc::PointEvent>::iterator event_it = point_events.begin(); event_it != point_events.end(); event_it++) {
+		//cout << event_it->status << endl;
+		/*
+		switch(event_it->status) {
+			case gwc::TOUCHADDED:
+			case gwc::TOUCHUPDATE:
+				//If the point is being added, this will place it in our point map; the same line of code will update the point's
+				//position if it's already present, so we can use this command to handle new points as well as point updates
+				active_points[event_it->point_id] = gwc::Point(event_it->position.getX(),event_it->position.getY());
+				break;
+			case gwc::TOUCHREMOVED:
+				//Remove the point from the map
+				active_points.erase(event_it->point_id);
+				break;
+		}
+		*/
+	}
+
+	std::vector<gwc::GestureEvent> gesture_events = consumeGestureEvents();
+
+	//cout << "have " << gesture_events.size() << " gesture events" << endl;
+
+	for(std::vector<gwc::GestureEvent>::iterator gesture_it = gesture_events.begin(); gesture_it != gesture_events.end(); gesture_it++) {
+		cout << gesture_it->gesture_type << endl;
 	}
 }
 //--------------------------------------------------------------

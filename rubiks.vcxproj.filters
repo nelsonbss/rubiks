@@ -120,6 +120,12 @@
     <ClCompile Include="src\subob\SubObEvent.cpp">
       <Filter>src\subob</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\..\Program Files (x86)\Ideum\GestureworksCore\bindings\c++\gwc_c++\GestureWorksCore.cpp">
+      <Filter>src\gwc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\..\Program Files (x86)\Ideum\GestureworksCore\bindings\c++\gwc_c++\GWCUtils.cpp">
+      <Filter>src\gwc</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -172,6 +178,9 @@
     </Filter>
     <Filter Include="addons\ofxXmlSettings\src">
       <UniqueIdentifier>{4a8e9d2e-28ca-4ed1-9cbf-ea0f07bdc01e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\gwc">
+      <UniqueIdentifier>{ea15b80d-e6e5-40ac-b0e8-75dc79d47cfd}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -383,6 +392,12 @@
     <ClInclude Include="src\ofRender.h" />
     <ClInclude Include="src\subob\SubObEvent.h">
       <Filter>src\subob</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\..\Program Files (x86)\Ideum\GestureworksCore\bindings\c++\gwc_c++\GestureWorksCore.h">
+      <Filter>src\gwc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\..\Program Files (x86)\Ideum\GestureworksCore\bindings\c++\gwc_c++\GWCUtils.h">
+      <Filter>src\gwc</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

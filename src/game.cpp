@@ -132,29 +132,29 @@ void game::setup(){
 	delete [] vert4;
 	delete [] indexes4;
 	////////////////////////////////////////load heavy models
-	pot.loadModel("teapot.obj");
+	//pot.loadModel("teapot.obj");
 	//need to make it an sgCore3DObject to be able to slice it
-	ofMesh tempMesh5 = pot.getMesh(0);
+	//ofMesh tempMesh5 = pot.getMesh(0);
 	//get vertices from mesh
-	vector<ofVec3f> teapot3Vert = tempMesh5.getVertices();
+	//vector<ofVec3f> teapot3Vert = tempMesh5.getVertices();
 	//make an array[] from this vector
-	SG_POINT *vert5 = new SG_POINT[teapot3Vert.size()];
-	for(int i=0;i<teapot3Vert.size(); i++){
-		vert5[i].x = teapot3Vert[i].x;
-		vert5[i].y = teapot3Vert[i].y;
-		vert5[i].z = teapot3Vert[i].z;
-	}
+	//SG_POINT *vert5 = new SG_POINT[teapot3Vert.size()];
+	//for(int i=0;i<teapot3Vert.size(); i++){
+	//	vert5[i].x = teapot3Vert[i].x;
+	//	vert5[i].y = teapot3Vert[i].y;
+	//	vert5[i].z = teapot3Vert[i].z;
+	//}
 	//get indices from mesh
-	vector<ofIndexType>  teapot3Indices = tempMesh5.getIndices();
+	//vector<ofIndexType>  teapot3Indices = tempMesh5.getIndices();
 	//make an array[] from this vector
-	SG_INDEX_TRIANGLE *indexes5 = new SG_INDEX_TRIANGLE[teapot3Indices.size()];
-	for(int i=0;i<teapot3Indices.size(); i++){
-		indexes5->ver_indexes[i] = teapot3Indices[i];
-	}
+	//SG_INDEX_TRIANGLE *indexes5 = new SG_INDEX_TRIANGLE[teapot3Indices.size()];
+	//for(int i=0;i<teapot3Indices.size(); i++){
+	//	indexes5->ver_indexes[i] = teapot3Indices[i];
+//	}
 	//generate sgC3DObject from geometry information
-	sgTeapot = sgFileManager::ObjectFromTriangles(vert5,teapot3Vert.size(),indexes5,teapot3Indices.size()/3); 
-	delete [] vert5;
-	delete [] indexes5;
+	//sgTeapot = sgFileManager::ObjectFromTriangles(vert5,teapot3Vert.size(),indexes5,teapot3Indices.size()/3); 
+	//delete [] vert5;
+	//delete [] indexes5;
 }
 //--------------------------------------------------------------
 void game::update(){

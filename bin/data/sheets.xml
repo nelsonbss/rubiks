@@ -274,8 +274,15 @@
       <size>150,150</size>
       <scale>1.0</scale>
     </node>
-    <node type="button" name="F79720" action="replace" target="attract" message="cut" image="btnReset.png" clicked="none">
+    <node type="button" name="step4-next" action="replace" target="attract" message="cut" image="btnNext.png" clicked="none">
       <pos>0.8,0.85</pos>
+      <size>150,150</size>
+      <scale>0.9</scale>
+      <event name="goto-step5">
+      </event>
+    </node>
+    <node type="button" name="F79720" action="replace" target="attract" message="cut" image="btnReset.png" clicked="none">
+      <pos>0.9,0.85</pos>
       <size>150,150</size>
       <scale>0.9</scale>
       <event name="replace-sheet">

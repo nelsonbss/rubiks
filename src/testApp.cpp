@@ -45,6 +45,7 @@ void testApp::setup(){
 	SubObMediator::Instance()->addObserver("object-selected", this);
 	SubObMediator::Instance()->addObserver("armature-selected", this);
 	SubObMediator::Instance()->addObserver("cut-object", this);
+	SubObMediator::Instance()->addObserver("goto-step5", this);
 	SubObMediator::Instance()->addObserver("reset", this);
 
 	last_tick_count = GetTickCount();
@@ -249,7 +250,7 @@ void testApp::keyPressed(int key){
 			myGames[0]->loadObject(8,objectPos,tempPos);
 		}
 	}
-	if(key == 's'){
+	if(key == 'b'){
 		ofToggleFullscreen();
 	}
 	////////////////////////////////////////////step 1 inputs
@@ -596,7 +597,7 @@ void testApp::mouseDragged(int x, int y, int button){
 			ofVec2f dragNow(x,y);
 			ofVec2f dragDelta = dragNow - lastRightDragPos;
 			//cout << "drag change = " << dragDelta.x << ", " << dragDelta.y << endl;
-			SG_VECTOR axis = {(dragDelta.y / ofGetHeight()) * rotationMultiplier,0, (dragDelta.x / ofGetWidth()) * rotationMultiplier};
+			SG_VECTOR axis = {((dragDelta.y / ofGetHeight()) * rotationMultiplier) * -1.0,(dragDelta.x / ofGetWidth()) * rotationMultiplier,0};
 			myGames[0]->rotateP(axis);
 			rotate = false;
 			lastRightDragPos = dragNow;
@@ -674,6 +675,9 @@ void testApp::update(string _eventName, SubObEvent* _event){
 	if(_eventName == "cut-object"){
 		SG_VECTOR v = {displayX,displayY,displayZ};
 		myGames[0]->createPuzzle(v);
+	}
+	if(_eventName == "goto-step5"){
+		myGames[0]->setCurrentStep(5);
 	}
 	if(_eventName == "reset"){
 		myGames[0]->restart();

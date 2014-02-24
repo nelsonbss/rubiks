@@ -18,6 +18,8 @@ game::game(SG_VECTOR gamePos, float w, float h, SG_VECTOR displayPos){
 	rotP.x = 0; //rotation of puzzle
 	rotP.y = 0;
 	rotP.z = 0;
+
+	objectID = 0;
 }
 //--------------------------------------------------------------
 #define planeThicknes 0.001
@@ -255,6 +257,7 @@ void game::rotateByIDandAxis(int id, SG_VECTOR axs, bool d){
 }
 //----------------------------------------------------------------
 void game::loadObject (int objID, SG_VECTOR p, SG_VECTOR t){
+	objectID = objID;
 	if(step == 0 || step==1){
 		objectDisplayed = new myobject3D(p,t);
 		if(objID == 1){
@@ -322,7 +325,11 @@ void game::createPuzzle(SG_VECTOR p){
 		mySlicer->intersectCubes(objectDisplayed->getObject()); 
 		//now slicer has all the parts inside sgCGroup ** = pieces[]
 		//////////////////////////////create puzzle////////////////////////////////////////
-		myPuzzle->loadPieces(mySlicer->getPieces());
+		if(objectID == 4){
+			myPuzzle->loadPieces(mySlicer->getPieces(),true);
+		}else{
+			myPuzzle->loadPieces(mySlicer->getPieces(),false);
+		}
 		////////////////////////////////end create puzzle//////////////////////////////////
 
 		updatePuzzle = true;

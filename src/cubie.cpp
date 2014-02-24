@@ -379,7 +379,7 @@ void cubie::faceRotate(SG_VECTOR axis,bool di){
 	}
 }
 //-------------------------------------------------------------------------------------------------------------------------------------------
-void cubie::setObjects(sgCGroup *objs,int cubieId){
+void cubie::setObjects(sgCGroup *objs,int cubieId,bool plain){
 	//it receives a group, when Puzzle loadsPieces(ySlicer->getPieces())  on main
 	//it takes the input group and breaks it, to put parts on cubie group "objects"
 	if(objs != NULL){
@@ -408,7 +408,7 @@ void cubie::setObjects(sgCGroup *objs,int cubieId){
 			sgC3DObject *o = (sgC3DObject*)temp->Clone();
 			o->Triangulate(SG_VERTEX_TRIANGULATION);
 			//convert to ofMEsh with cubie ID!!!
-			ofr->sgCoretoOFmesh(o,tempMesh,cubieId); //give cubie id!!
+			ofr->sgCoretoOFmesh(o,tempMesh,cubieId,plain); //give cubie id!! so that it knows how to color it, lain or not
 			myMeshs.push_back(tempMesh);
 			ofVbo tempVbo;
 			tempVbo.setMesh(tempMesh, GL_STATIC_DRAW);

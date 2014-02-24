@@ -30,7 +30,7 @@ public:
 	float color;
 	bool okDraw;
 
-	void setObjects(sgCGroup *objs,int cubieId);
+	void setObjects(sgCGroup *objs,int cubieId,bool plain);
 	sgCGroup* copyObjects();   //this is no longer needed
 
 	SG_VECTOR pos;

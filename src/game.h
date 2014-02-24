@@ -32,6 +32,7 @@ public:
 	puzzle *myPuzzle;
 
 	void loadObject (int objID,SG_VECTOR p,SG_VECTOR t);
+	int objectID;
 	void createSlicer();
 	void createPuzzle(SG_VECTOR p);
 

@@ -35,8 +35,8 @@ void myobject3D::setup(){
 	temp->Triangulate(SG_VERTEX_TRIANGULATION);
 	temp->SetAttribute(SG_OA_COLOR,2);
 	ofRender *ofr = new ofRender(); //class that has the metods to transform sgCore to OF mesh and set the normals (in one function)
-	//ofr->sgCoretoOFmesh(temp,myMesh,-1); //-1 because its not a cubie but want color
-	ofr->sgCoretoOFmesh(temp,myMesh,-2); //-2 for plain color
+	//ofr->sgCoretoOFmesh(temp,myMesh,-1,true); //-1 because its not a cubie but want color
+	ofr->sgCoretoOFmesh(temp,myMesh,-2,true); //-2 for plain color
 	myVbo.setMesh(myMesh, GL_STATIC_DRAW);
 	free(ofr);
 }
@@ -54,14 +54,12 @@ void myobject3D::update(){
 		SG_VECTOR offset = {-150,-150,-150}; //for the cube to be in place
 		temp->GetTempMatrix()->Translate(offset);//this translates the object to be cut!!
 	}
-	//if(id == 4){
-	//	//rabbit
-	//	SG_POINT rotP2 = {0,0,0};
-	//	SG_VECTOR rotV2 = {1,0,0};
-	//	temp->GetTempMatrix()->Rotate(rotP2,rotV2,ofDegToRad(180));
-	//	SG_VECTOR offset = {0,800,200}; 
-	//	temp->GetTempMatrix()->Translate(offset);
-	//}
+	if(id == 4){
+		//rabbit
+		SG_POINT rotP2 = transP;//{tempPos.x,tempPos.y,tempPos.z};
+		SG_VECTOR rotV2 = {1,0,0};
+		temp->GetTempMatrix()->Rotate(rotP2,rotV2,ofDegToRad(180));
+	}
 	temp->ApplyTempMatrix();  
 
 	//object->DestroyTempMatrix();
@@ -111,16 +109,16 @@ void myobject3D::loadObject(sgC3DObject *obj, int ID){
 		object->ApplyTempMatrix();  
 		object->DestroyTempMatrix();
 	}
-	//if(id == 4){
-	//	//rabbit
-	//	SG_POINT rotP = {0,0,0};
-	//	SG_VECTOR rotV = {1,0,0};
-	//	object->InitTempMatrix()->Rotate(rotP,rotV,ofDegToRad(180));
-	//	SG_VECTOR offset = {0,800,200}; 
-	//	object->GetTempMatrix()->Translate(offset);
-	//	object->ApplyTempMatrix();  
-	//	object->DestroyTempMatrix();
-	//}
+	if(id == 4){
+		//rabbit
+		SG_POINT rotP = {0,0,0};
+		SG_VECTOR rotV = {1,0,0};
+		object->InitTempMatrix()->Rotate(rotP,rotV,ofDegToRad(180));
+		/*SG_VECTOR offset = {0,800,200}; 
+		object->GetTempMatrix()->Translate(offset);*/
+		object->ApplyTempMatrix();  
+		object->DestroyTempMatrix();
+	}
 }
 //----------------------------------------------------------------
 sgCObject* myobject3D::getObject(){

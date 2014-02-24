@@ -36,7 +36,7 @@ void testApp::setup(){
 	}
 	*/
 	//////setup GUI/////////////
-	ofSetFullscreen(true);
+	//ofSetFullscreen(true);
 
 	string guiFile = "sheets.xml";
 	GuiConfigurator::Instance()->addFile(guiFile);

@@ -106,9 +106,9 @@ void puzzle::loadPieces(sgCGroup **pcs,bool plain){
 		//add this cubie to mycubies[]
 		myCubies[i] = auxCubie;
 	}
-	for(int i=0;i<numPieces;i++){ //this is creating some 2400 ish objects not cleared!
+	for(int i=0;i<numPieces;i++){
 		//get group from pieces[] copy
-		sgCGroup *part = pcs[i]; //pcs[i] will get destroyed!!!!!!!!!!!!!!!!!
+		sgCGroup *part = pcs[i];
 
 		if(part != NULL){
 			const int ChCnt = part->GetChildrenList()->GetCount();
@@ -130,7 +130,6 @@ void puzzle::loadPieces(sgCGroup **pcs,bool plain){
 			//put that gorup inside temp cubie
 			myCubies[i]->setObjects(cubieGroup,i,plain);//here goes the group of clones from the iriginal slicing pieces[]
 			//put that cubie on the cubies[]
-			//myCubies[i] = auxCubie; //am I loosing whtas inside auxCubie here?
 
 			free(obj);
 			free(allParts);

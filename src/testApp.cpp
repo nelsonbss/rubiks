@@ -10,7 +10,7 @@
 
 #define displayX 500
 #define displayY 400
-#define displayZ 100
+#define displayZ -10
 
 //--------------------------------------------------------------
 void testApp::setup(){
@@ -39,6 +39,8 @@ void testApp::setup(){
 
 	SubObMediator::Instance()->addObserver("button", this);
 	SubObMediator::Instance()->addObserver("object-selected", this);
+	SubObMediator::Instance()->addObserver("armature-selected", this);
+	SubObMediator::Instance()->addObserver("cut-object", this);
 
 	rotate = true;
 }
@@ -55,7 +57,7 @@ void testApp::update(){
 //--------------------------------------------------------------
 void testApp::draw(){
 	///////////////////START OF RENDERING////////////////////
-	//startOFLights();
+	startOFLights();
 
 
 	/////////////////////////////////////////////////////////////////////////////////////
@@ -111,9 +113,12 @@ void testApp::draw(){
 		myGames[i]->draw();
 	}
 
-	SceneManager::Instance()->draw();
 	///////////////////END OF RENDERING////////////////////
 	stopOFLights();
+
+	ofEnableDepthTest();
+	SceneManager::Instance()->draw();
+	ofDisableDepthTest();
 }
 
 //--------------------------------------------------------------
@@ -532,12 +537,20 @@ void testApp::update(string _subName, Subject *_sub){
 }
 
 void testApp::update(string _eventName, SubObEvent* _event){
+	cout << "event named - " << _eventName << endl;
 	if(_eventName == "object-selected"){
 		int obj = _event->getArg("object")->getInt();
 		SG_VECTOR objectPos = {0,0,0};  //where it gets sliced
 		SG_VECTOR tempPos = {displayX,displayY,displayZ}; // where the temp object will be showed to user
 		cout << "dropping object - " << obj << endl;
 		myGames[0]->loadObject(obj,objectPos,tempPos);
+	}
+	if(_eventName == "armature-selected"){
+		myGames[0]->setCurrentStep(3);
+	}
+	if(_eventName == "cut-object"){
+		SG_VECTOR v = {displayX,displayY,displayZ};
+		myGames[0]->createPuzzle(v);
 	}
 }
 

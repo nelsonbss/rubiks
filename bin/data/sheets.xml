@@ -1,10 +1,12 @@
 <gui>
 	<sheet name="attract" pos="0,0">
+    <!--
     <node type="image" name="background" image="stationBlue.png">
 			<pos>0.0,0.0</pos>
 			<size>200,200</size>
       <scale>1.0</scale>
 		</node>
+    -->
     <!--
     <node type="button" name="grey1" action="new-object" target="none" message"id:1" image="grey1.png" clicked="none">
       <pos>0.2,0.3</pos>
@@ -16,16 +18,10 @@
 			<pos>0.04,0.13</pos>
 			<size>150,150</size>
       <scale>0.15</scale>
-      <event name="replace-sheet">
-        <arg name="target">
-          <type>string</type>
-          <val>step2</val>
-        </arg>
-      </event>
       <event name="object-selected">
         <arg name="object">
           <type>int</type>
-          <val>1</val>
+          <val>6</val>
         </arg>
       </event>
 		</node>
@@ -33,16 +29,10 @@
       <pos>0.12,0.13</pos>
       <size>150,150</size>
       <scale>0.15</scale>
-      <event name="replace-sheet">
-        <arg name="target">
-          <type>string</type>
-          <val>step2</val>
-        </arg>
-      </event>
       <event name="object-selected">
         <arg name="object">
           <type>int</type>
-          <val>8</val>
+          <val>1</val>
         </arg>
       </event>
     </node>
@@ -50,16 +40,10 @@
       <pos>0.04,0.32</pos>
       <size>150,150</size>
       <scale>0.15</scale>
-      <event name="replace-sheet">
-        <arg name="target">
-          <type>string</type>
-          <val>step2</val>
-        </arg>
-      </event>
       <event name="object-selected">
         <arg name="object">
           <type>int</type>
-          <val>2</val>
+          <val>1</val>
         </arg>
       </event>
     </node>
@@ -67,16 +51,10 @@
       <pos>0.12,0.32</pos>
       <size>150,150</size>
       <scale>0.15</scale>
-      <event name="replace-sheet">
-        <arg name="target">
-          <type>string</type>
-          <val>step2</val>
-        </arg>
-      </event>
       <event name="object-selected">
         <arg name="object">
           <type>int</type>
-          <val>3</val>
+          <val>2</val>
         </arg>
       </event>
     </node>
@@ -84,16 +62,10 @@
       <pos>0.04,0.51</pos>
       <size>150,150</size>
       <scale>0.15</scale>
-      <event name="replace-sheet">
-        <arg name="target">
-          <type>string</type>
-          <val>step2</val>
-        </arg>
-      </event>
       <event name="object-selected">
         <arg name="object">
           <type>int</type>
-          <val>4</val>
+          <val>7</val>
         </arg>
       </event>
     </node>
@@ -101,16 +73,10 @@
       <pos>0.12,0.51</pos>
       <size>150,150</size>
       <scale>0.15</scale>
-      <event name="replace-sheet">
-        <arg name="target">
-          <type>string</type>
-          <val>step2</val>
-        </arg>
-      </event>
       <event name="object-selected">
         <arg name="object">
           <type>int</type>
-          <val>6</val>
+          <val>3</val>
         </arg>
       </event>
     </node>
@@ -118,16 +84,21 @@
       <pos>0.04,0.7</pos>
       <size>150,150</size>
       <scale>0.15</scale>
+      <event name="object-selected">
+        <arg name="object">
+          <type>int</type>
+          <val>4</val>
+        </arg>
+      </event>
+    </node>
+    <node type="button" name="attract-next" action="replace" target="attract" message="cut" image="btnNext.png" clicked="none">
+      <pos>0.8,0.85</pos>
+      <size>150,150</size>
+      <scale>0.9</scale>
       <event name="replace-sheet">
         <arg name="target">
           <type>string</type>
           <val>step2</val>
-        </arg>
-      </event>
-      <event name="object-selected">
-        <arg name="object">
-          <type>int</type>
-          <val>7</val>
         </arg>
       </event>
     </node>
@@ -151,11 +122,13 @@
     -->
 	</sheet>
   <sheet name="step2" pos="0,0">
+    <!--
     <node type="image" name="background" image="stationBlue.png">
       <pos>0.0,0.0</pos>
       <size>200,200</size>
       <scale>1.0</scale>
     </node>
+    -->
     <!--
     <node type="button" name="grey1" action="new-object" target="none" message"id:1" image="grey1.png" clicked="none">
       <pos>0.2,0.3</pos>
@@ -167,13 +140,34 @@
       <pos>0.04,0.13</pos>
       <size>150,150</size>
       <scale>0.25</scale>
+      <!--
       <event type="replace-sheet">
-        <arg>
-          <name>target</name>
+        <arg name="target">
+          <type>string</type>
           <val>step3</val>
         </arg>
       </event>
+      -->
+      <event name="armature-selected">
+        <arg name="armature">
+          <type>int</type>
+          <val>1</val>
+        </arg>
+      </event>
     </node>
+    <node type="button" name="arm-next" action="replace" target="attract" message="cut" image="btnNext.png" clicked="none">
+      <pos>0.8,0.85</pos>
+      <size>150,150</size>
+      <scale>0.9</scale>
+      <event name="replace-sheet">
+        <arg name="target">
+          <type>string</type>
+          <val>step3</val>
+        </arg>
+      </event>
+      <event name="cut-object"></event>
+    </node>
+    <!--
     <node type="button" name="arm2a" action="replace" target="step3" message="cut" image="armature2.png" clicked="none" draggable="true" tacky="true">
       <pos>0.12,0.13</pos>
       <size>150,150</size>
@@ -208,7 +202,14 @@
       <pos>0.8,0.85</pos>
       <size>150,150</size>
       <scale>0.9</scale>
+      <event type="replace-sheet">
+        <arg>
+          <name>target</name>
+          <val>attract</val>
+        </arg>
+      </event>
     </node>
+    -->
     <!--
     <node type="button" name="arrow-left" action="control" target="none" message="rotate-left" image="arrow-left.png" clicked="none">
       <pos>170,70</pos>
@@ -229,11 +230,13 @@
     -->
   </sheet>
   <sheet name="step3" pos="0,0">
+    <!--
     <node type="image" name="background" image="stationBlue.png">
       <pos>0.0,0.0</pos>
       <size>200,200</size>
       <scale>1.0</scale>
     </node>
+    -->
     <!--
     <node type="button" name="grey1" action="new-object" target="none" message"id:1" image="grey1.png" clicked="none">
       <pos>0.2,0.3</pos>

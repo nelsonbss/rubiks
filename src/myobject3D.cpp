@@ -12,6 +12,7 @@ myobject3D::myobject3D(SG_VECTOR p, SG_VECTOR t){
 	tempPos.z = t.z;
 
 	deg = 0.0;
+	id=0;
 }
 //--------------------------------------------------------------
 void myobject3D::setup(){
@@ -48,6 +49,19 @@ void myobject3D::update(){
 	temp->InitTempMatrix()->Rotate(rotP,rotV,deg);
 	SG_VECTOR transP = {tempPos.x,tempPos.y,tempPos.z};
 	temp->GetTempMatrix()->Translate(transP);
+	if(id == 2){
+		//cube
+		SG_VECTOR offset = {-150,-150,-150}; //for the cube to be in place
+		temp->GetTempMatrix()->Translate(offset);//this translates the object to be cut!!
+	}
+	//if(id == 4){
+	//	//rabbit
+	//	SG_POINT rotP2 = {0,0,0};
+	//	SG_VECTOR rotV2 = {1,0,0};
+	//	temp->GetTempMatrix()->Rotate(rotP2,rotV2,ofDegToRad(180));
+	//	SG_VECTOR offset = {0,800,200}; 
+	//	temp->GetTempMatrix()->Translate(offset);
+	//}
 	temp->ApplyTempMatrix();  
 
 	//object->DestroyTempMatrix();
@@ -68,9 +82,9 @@ void myobject3D::draw(){
 
 	ofPushMatrix();
 	//ofScale(1.2,1.2,1.2);
-		glMultMatrixd(temp->GetTempMatrix()->GetTransparentData());
-		temp->DestroyTempMatrix();
-		myVbo.draw(GL_TRIANGLES, 0,myMesh.getNumIndices());
+	glMultMatrixd(temp->GetTempMatrix()->GetTransparentData());
+	temp->DestroyTempMatrix();
+	myVbo.draw(GL_TRIANGLES, 0,myMesh.getNumIndices());
 	ofPopMatrix();
 }
 //--------------------------------------------------------------
@@ -86,9 +100,27 @@ void myobject3D::loadObjectFromFile(const char* pathTofile){
 	cout << "object from file: " << sgGetScene()->GetObjectsList()->GetCount() << endl;
 }
 //----------------------------------------------------------------
-void myobject3D::loadObject(sgC3DObject *obj){
+void myobject3D::loadObject(sgC3DObject *obj, int ID){
 	//it will load a sgCore lib object: torus, box
 	object = obj;
+	id = ID;
+	if(id == 2){
+		//cube
+		SG_VECTOR offset = {-150,-150,-150}; //for the cube to be in place
+		object->InitTempMatrix()->Translate(offset);//this translates the object to be cut!!
+		object->ApplyTempMatrix();  
+		object->DestroyTempMatrix();
+	}
+	//if(id == 4){
+	//	//rabbit
+	//	SG_POINT rotP = {0,0,0};
+	//	SG_VECTOR rotV = {1,0,0};
+	//	object->InitTempMatrix()->Rotate(rotP,rotV,ofDegToRad(180));
+	//	SG_VECTOR offset = {0,800,200}; 
+	//	object->GetTempMatrix()->Translate(offset);
+	//	object->ApplyTempMatrix();  
+	//	object->DestroyTempMatrix();
+	//}
 }
 //----------------------------------------------------------------
 sgCObject* myobject3D::getObject(){

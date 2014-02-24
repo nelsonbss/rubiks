@@ -256,53 +256,38 @@ void game::rotateByIDandAxis(int id, SG_VECTOR axs, bool d){
 //----------------------------------------------------------------
 void game::loadObject (int objID, SG_VECTOR p, SG_VECTOR t){
 	if(step == 0 || step==1){
-		if(objID == 2){
-			SG_VECTOR offset = {-150,-150,-150}; //for the cube to be in place
-			p.x += offset.x;
-			p.y += offset.y;
-			p.z += offset.z;
-			SG_VECTOR offset2 = {-150,-150,-150}; //for the cube to be in place
-			t.x += offset2.x;
-			t.y += offset2.y;
-			t.z += offset2.z;
-		}
-
 		objectDisplayed = new myobject3D(p,t);
 		if(objID == 1){
 			//torus
-			objectDisplayed->loadObject(sgCreateTorus(100,80,50,50));//pos.z is radius, thicknes, meridians
+			objectDisplayed->loadObject(sgCreateTorus(100,80,50,50),1);//pos.z is radius, thicknes, meridians
 		}
 		if(objID == 2){
 			//cube
-			objectDisplayed->loadObject(sgCreateBox(300,300,300));
+			objectDisplayed->loadObject(sgCreateBox(300,300,300),2);
 		}if(objID == 3){
 			//cone
-			objectDisplayed->loadObject(sgCreateCone(200,1,300.0, 3));
+			objectDisplayed->loadObject(sgCreateCone(200,1,300.0, 3),3);
 		}
 		if(objID == 4){
 			//try to load the bunny
-			objectDisplayed->loadObject((sgC3DObject *)sgBunny);
+			objectDisplayed->loadObject((sgC3DObject *)sgBunny,4);
 		}
 		if(objID == 5){
 			//try to load the dodecahedron
-			objectDisplayed->loadObject((sgC3DObject *)sgDodecahedron);
+			objectDisplayed->loadObject((sgC3DObject *)sgDodecahedron,5);
 		}
 		if(objID == 6){
 			//try to load the Icosahedron
-			objectDisplayed->loadObject((sgC3DObject *)sgIcosahedron);
+			objectDisplayed->loadObject((sgC3DObject *)sgIcosahedron,6);
 		}
 		if(objID == 7){
 			//try to load the Octahedron
-			objectDisplayed->loadObject((sgC3DObject *)sgOctahedron);
+			objectDisplayed->loadObject((sgC3DObject *)sgOctahedron,7);
 		}
 		if(objID == 8){
 			//try to load the Teapot
-			objectDisplayed->loadObject((sgC3DObject *)sgTeapot);
+			objectDisplayed->loadObject((sgC3DObject *)sgTeapot,8);
 		}
-
-
-
-
 		objectDisplayed->setup();
 		createSlicer();
 		step = 1;

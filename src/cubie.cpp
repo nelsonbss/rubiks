@@ -445,10 +445,10 @@ void cubie::unDo(){
 		//at the end of that routine-> we do the pop_back of the cubies history
 		if(undoing==false){
 			if(moving == false){
-				undoing = true;
+				//undoing = true;
 				sample = false;
-				/*myMatrix.pop_back();
-				undoing = false;*/
+				myMatrix.pop_back();
+				//undoing = false;
 			}
 		}
 	}

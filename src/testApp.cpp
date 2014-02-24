@@ -258,13 +258,17 @@ void testApp::keyPressed(int key){
 		//pressed next on color palette step
 		//showing puzzle
 		//now the puzzle can be played with
+		if(key == 'u'){
+			//undo last move 
+			myGames[0]->unDo();
+		}
 		///////////////////// FACE ROTATIONS //////////////////////////////
 		////////  x axis  ////  x axis
 		int idcubie = 11;//to follow this cubie for now //this will be decided upon touch, or click on top of puzzle
 		int randcubie=0;
 		if(key == 'q') {
 			if(rotate == true) {//c
-				randcubie = rand()%26;
+				randcubie = 11;//rand()%26;
 				//clockwise
 				SG_VECTOR axis = {1,0,0};
 				myGames[0]->rotateByIDandAxis(randcubie,axis,true);
@@ -273,7 +277,7 @@ void testApp::keyPressed(int key){
 		}
 		if(key == 'a') {
 			if(rotate == true) {//cc
-				randcubie = rand()%26;
+				randcubie = 11;//rand()%26;
 				//clockwise
 				SG_VECTOR axis = {1,0,0};
 				myGames[0]->rotateByIDandAxis(randcubie,axis,false);
@@ -283,7 +287,7 @@ void testApp::keyPressed(int key){
 		////////  y axis  ////  y axis
 		if(key == 'w') {
 			if(rotate == true) {
-				randcubie = rand()%26;
+				randcubie = 11;//rand()%26;
 				//clockwise
 				SG_VECTOR axis = {0,1,0};
 				myGames[0]->rotateByIDandAxis(randcubie,axis,true);
@@ -292,7 +296,7 @@ void testApp::keyPressed(int key){
 		}if(key == 's') {
 			//counter clockwise
 			if(rotate == true) {
-				randcubie = rand()%26;
+				randcubie = 11;//rand()%26;
 				SG_VECTOR axis = {0,1,0};
 				myGames[0]->rotateByIDandAxis(randcubie,axis,false);
 				rotate = false;
@@ -301,7 +305,7 @@ void testApp::keyPressed(int key){
 		////////  z axis  ////  z axis
 		if(key == 'e') {
 			if(rotate == true) {
-				randcubie = rand()%26;
+				randcubie = 11;//rand()%26;
 				//clockwise
 				SG_VECTOR axis = {0,0,1};
 				myGames[0]->rotateByIDandAxis(randcubie,axis,true);
@@ -310,7 +314,7 @@ void testApp::keyPressed(int key){
 		}if(key == 'd') {
 			if(rotate == true) {
 				//counter clockwise
-				randcubie = rand()%26;
+				randcubie = 11;//rand()%26;
 				SG_VECTOR axis = {0,0,1};
 				myGames[0]->rotateByIDandAxis(randcubie,axis,false);
 				rotate = false;

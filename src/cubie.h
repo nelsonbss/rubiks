@@ -64,6 +64,8 @@ public:
 
 	///color change
 	void changeColorToColor(ofFloatColor Sc, ofFloatColor Tc);
+
+	void unDo();
 };
 
 #endif /* defined(__Tcubie__cubie__) */

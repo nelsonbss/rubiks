@@ -372,6 +372,13 @@ int cubie::getId(){
 	return id;
 }
 //--------------------------------------------------------------
+void cubie::unDo(){
+	//it removes the las element on the vector with the history of each cubie
+	if(myMatrix.size()>1){
+		myMatrix.pop_back();
+	}
+}
+//---------------------------------------------------------------
 void cubie::changeColorToColor(ofFloatColor Sc, ofFloatColor Tc){
 	ofRender *ofr = new ofRender(); 
 	for(int j=0; j< numObjs; j++){

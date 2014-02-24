@@ -183,6 +183,10 @@ void game::update(){
 			//////////////////////////////////////////make face rotation
 			if(faceRotate == true) {
 				myPuzzle->rotateByIDandAxis(idcubie,axis,dir);
+				//put this move on the game history vector
+				//it only saves the idcubie. 
+				//undo will look for the other 9 cubies involved and do a pop_back on their history
+				historyV.push_back(history(idcubie,axis,0,!dir));
 				faceRotate = false;
 			}
 			//updatePuzzle = false;
@@ -253,14 +257,14 @@ void game::rotateByIDandAxis(int id, SG_VECTOR axs, bool d){
 void game::loadObject (int objID, SG_VECTOR p, SG_VECTOR t){
 	if(step == 0 || step==1){
 		if(objID == 2){
-		SG_VECTOR offset = {-150,-150,-150}; //for the cube to be in place
-		p.x += offset.x;
-		p.y += offset.y;
-		p.z += offset.z;
-		SG_VECTOR offset2 = {-150,-150,-150}; //for the cube to be in place
-		t.x += offset2.x;
-		t.y += offset2.y;
-		t.z += offset2.z;
+			SG_VECTOR offset = {-150,-150,-150}; //for the cube to be in place
+			p.x += offset.x;
+			p.y += offset.y;
+			p.z += offset.z;
+			SG_VECTOR offset2 = {-150,-150,-150}; //for the cube to be in place
+			t.x += offset2.x;
+			t.y += offset2.y;
+			t.z += offset2.z;
 		}
 
 		objectDisplayed = new myobject3D(p,t);
@@ -355,6 +359,18 @@ void game::changeColorToColor(ofFloatColor sc, ofFloatColor tc){
 //-------------------------------------------------------
 void game::moveA (ofVec3f input){
 	myArmature->moveA(input);
+}
+//----------------------------------------------
+void game::unDo(){
+	//it only saves the idcubie. 
+	//undo will look for the other 9 cubies involved and do a pop_back on their history
+	if(historyV.size()>0){
+		int id = historyV[historyV.size()-1].id;
+		SG_VECTOR axis = historyV[historyV.size()-1].vector;
+		double dir = historyV[historyV.size()-1].dir;
+		myPuzzle->unDo(id,axis,dir);
+		historyV.pop_back();
+	}
 }
 //----------------------------------------------
 void game::restart(){

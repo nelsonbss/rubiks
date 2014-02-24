@@ -9,6 +9,7 @@
 #include "armature.h"
 #include "puzzle.h"
 #include "ofxAssimpModelLoader.h"
+#include "history.h"
 
 class game {
 public:
@@ -52,6 +53,9 @@ public:
 	SG_VECTOR axis;
 	void rotateByIDandAxis(int id, SG_VECTOR axis, bool dir);
 	bool faceRotate;
+	//history to undo
+	vector<history> historyV; 
+	void unDo();
 
 	//////////////////////////move  armature
 	SG_VECTOR posA;

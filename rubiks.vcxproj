@@ -96,6 +96,7 @@
     <ClCompile Include="src\cubie.cpp" />
     <ClCompile Include="src\cutter.cpp" />
     <ClCompile Include="src\game.cpp" />
+    <ClCompile Include="src\history.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\matrix.cpp" />
     <ClCompile Include="src\myobject3D.cpp" />
@@ -124,6 +125,7 @@
     <ClInclude Include="src\cubie.h" />
     <ClInclude Include="src\cutter.h" />
     <ClInclude Include="src\game.h" />
+    <ClInclude Include="src\history.h" />
     <ClInclude Include="src\matrix.h" />
     <ClInclude Include="src\myobject3D.h" />
     <ClInclude Include="src\ofRender.h" />

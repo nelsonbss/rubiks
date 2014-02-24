@@ -379,12 +379,63 @@ void puzzle::changeColorToColor(ofFloatColor Sc, ofFloatColor Tc){
 	}
 }
 //----------------------------------------------------------------
-void puzzle::unDo(){
+void puzzle::unDo(int id, SG_VECTOR axis, bool dir){
 	//takes the puzzle one step back on its history
-	//it removes the las element on the vector with the history
-
-	//unDraw
-	//draw
+	//undo will look for the other 9 cubies involved and do a pop_back on their history
+	int selected[9];
+	int counter=0;
+	int selX =0;
+	int selY =0;
+	int selZ =0;
+	//look for positon of cubie on the 3d data structure
+	for(int x=0;x<3;x++){
+		for(int y=0;y<3;y++){
+			for(int z=0;z<3;z++){
+				if(three_dim1[x][y][z] == id){
+					//when selected cubie is found
+					selX = x;
+					selY = y;
+					selZ = z;
+				}
+			}
+		}
+	}
+	//now we ask for the cubies on that axis
+	if(axis.x == 1){
+		//if the move is on an x axis
+		for(int y=0;y<3;y++){
+			for(int z=0; z<3;z++){
+				selected[counter] = three_dim1[selX][y][z];
+				counter ++;
+			}
+		}
+		//now we re-arrange ids on the 3d array
+		//according to axis of rotation
+		// and actual selected plane: selX = x; selY = y; selZ = z;
+		rearange3dArray(axis,selX,dir);
+	}else if(axis.y == 1){
+		//if the move is on a y axis
+		for(int x=0;x<3;x++){
+			for(int z=0; z<3;z++){
+				selected[counter] = three_dim1[x][selY][z];
+				counter ++;
+			}
+		}
+		rearange3dArray(axis,selY,dir);
+	}else{
+		//if the move is on a z axis
+		for(int x=0;x<3;x++){
+			for(int y=0; y<3;y++){
+				selected[counter] = three_dim1[x][y][selZ];
+				counter ++;
+			}
+		}
+		rearange3dArray(axis,selZ,dir);
+	}
+	//now we tell the 9 selected cubies to rotate
+	for(int i=0;i<9;i++){
+		myCubies[selected[i]]->unDo();
+	}
 }
 //----------------------------------------------------------------
 void puzzle::exit(){

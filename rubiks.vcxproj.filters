@@ -79,6 +79,9 @@
     <ClCompile Include="src\game.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\history.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -294,6 +297,9 @@
       <Filter>src\OFrender</Filter>
     </ClInclude>
     <ClInclude Include="src\game.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\history.h">
       <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>

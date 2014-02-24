@@ -21,7 +21,7 @@ game::game(SG_VECTOR gamePos, float w, float h, SG_VECTOR displayPos){
 }
 //--------------------------------------------------------------
 #define planeThicknes 0.001
-#define planeSize 500
+#define planeSize 900
 #define tamCubie 100
 
 void game::setup(){
@@ -199,7 +199,6 @@ void game::draw(){
 		//show selected object
 		objectDisplayed->draw();
 		//myCutter->draw();
-		//myCutter->unDraw();
 	}
 	if(step == 2){
 		//waiting for armature to be selected
@@ -251,8 +250,19 @@ void game::rotateByIDandAxis(int id, SG_VECTOR axs, bool d){
 
 }
 //----------------------------------------------------------------
-void game::loadObject (int objID,SG_VECTOR p,SG_VECTOR t){
+void game::loadObject (int objID, SG_VECTOR p, SG_VECTOR t){
 	if(step == 0 || step==1){
+		if(objID == 2){
+		SG_VECTOR offset = {-150,-150,-150}; //for the cube to be in place
+		p.x += offset.x;
+		p.y += offset.y;
+		p.z += offset.z;
+		SG_VECTOR offset2 = {-150,-150,-150}; //for the cube to be in place
+		t.x += offset2.x;
+		t.y += offset2.y;
+		t.z += offset2.z;
+		}
+
 		objectDisplayed = new myobject3D(p,t);
 		if(objID == 1){
 			//torus
@@ -285,8 +295,8 @@ void game::loadObject (int objID,SG_VECTOR p,SG_VECTOR t){
 			//try to load the Teapot
 			objectDisplayed->loadObject((sgC3DObject *)sgTeapot);
 		}
-		
-		
+
+
 
 
 		objectDisplayed->setup();

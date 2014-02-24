@@ -17,7 +17,6 @@ public:
 	sgCGroup* getCutterPlanes();//it will return the object, i.e to be drawn
     sgCGroup* getCutterCubes();
 	void addGroupToScene(sgCGroup *group);
-	void unDraw();
 	void deleteGroupFromScene(sgCGroup *group);
 	//sgCGroup* getGroup();
 

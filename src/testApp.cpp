@@ -126,14 +126,6 @@ void testApp::keyPressed(int key){
 			myGames[0]->loadObject(1,objectPos,tempPos); //pos.z its the torus radious
 		}
 		if(key == '2') {
-			SG_VECTOR offset = {-150,-150,-150}; //for the cube to be in place
-			objectPos.x += offset.x;
-			objectPos.y += offset.y;
-			objectPos.z += offset.z;
-			SG_VECTOR offset2 = {-150,-150,-150}; //for the cube to be in place
-			tempPos.x += offset2.x;
-			tempPos.y += offset2.y;
-			tempPos.z += offset2.z;
 			myGames[0]->loadObject(2,objectPos,tempPos);
 		}
 		if(key == '3') {
@@ -152,7 +144,7 @@ void testApp::keyPressed(int key){
 			myGames[0]->loadObject(7,objectPos,tempPos);
 		}
 		if(key == '8') { 
-			myGames[0]->loadObject(7,objectPos,tempPos);
+			//myGames[0]->loadObject(7,objectPos,tempPos);
 		}
 	}
 	////////////////////////////////////////////step 1 inputs
@@ -198,7 +190,7 @@ void testApp::keyPressed(int key){
 		}
 		if(key == '8') {
 			SG_VECTOR v = {500,400,100}; 
-			myGames[0]->loadObject(8,objectPos,tempPos);
+			//myGames[0]->loadObject(8,objectPos,tempPos);
 		}
 	}
 	////////////////////////////////////////////step 2 inputs
@@ -275,7 +267,7 @@ void testApp::keyPressed(int key){
 				randcubie = rand()%26;
 				//clockwise
 				SG_VECTOR axis = {1,0,0};
-				myGames[0]->rotateByIDandAxis(idcubie,axis,true);
+				myGames[0]->rotateByIDandAxis(randcubie,axis,true);
 				rotate = false;
 			}
 		}
@@ -284,7 +276,7 @@ void testApp::keyPressed(int key){
 				randcubie = rand()%26;
 				//clockwise
 				SG_VECTOR axis = {1,0,0};
-				myGames[0]->rotateByIDandAxis(idcubie,axis,false);
+				myGames[0]->rotateByIDandAxis(randcubie,axis,false);
 				rotate = false;
 			}
 		}
@@ -294,7 +286,7 @@ void testApp::keyPressed(int key){
 				randcubie = rand()%26;
 				//clockwise
 				SG_VECTOR axis = {0,1,0};
-				myGames[0]->rotateByIDandAxis(idcubie,axis,true);
+				myGames[0]->rotateByIDandAxis(randcubie,axis,true);
 				rotate = false;
 			}
 		}if(key == 's') {
@@ -302,7 +294,7 @@ void testApp::keyPressed(int key){
 			if(rotate == true) {
 				randcubie = rand()%26;
 				SG_VECTOR axis = {0,1,0};
-				myGames[0]->rotateByIDandAxis(idcubie,axis,false);
+				myGames[0]->rotateByIDandAxis(randcubie,axis,false);
 				rotate = false;
 			}
 		}
@@ -312,7 +304,7 @@ void testApp::keyPressed(int key){
 				randcubie = rand()%26;
 				//clockwise
 				SG_VECTOR axis = {0,0,1};
-				myGames[0]->rotateByIDandAxis(idcubie,axis,true);
+				myGames[0]->rotateByIDandAxis(randcubie,axis,true);
 				rotate = false;
 			}
 		}if(key == 'd') {
@@ -320,7 +312,7 @@ void testApp::keyPressed(int key){
 				//counter clockwise
 				randcubie = rand()%26;
 				SG_VECTOR axis = {0,0,1};
-				myGames[0]->rotateByIDandAxis(idcubie,axis,false);
+				myGames[0]->rotateByIDandAxis(randcubie,axis,false);
 				rotate = false;
 			}
 		}

@@ -515,6 +515,8 @@ void cutter::setup(){
 	allCubes = sgCGroup::CreateGroup(cubes,27);
 	//move cubes to display position, where cuts are going to be made
 	allCubes->InitTempMatrix()->Translate(transPlanes);
+	SG_VECTOR v = {0,0,0};
+	allCubes->GetTempMatrix()->Translate(v); 
 	allCubes->ApplyTempMatrix();  
 	allCubes->DestroyTempMatrix();
 
@@ -533,16 +535,12 @@ void cutter::update(){
 }
 //--------------------------------------------------------------
 void cutter::draw(){
-	ofSetColor(ofColor(255,255,0));
-	ofCircle(ofPoint(posX,posY),10);
-	////////////////////////add planes &/or cubies to scene//
-	//addGroupToScene(getCutterPlanes());
-	//addGroupToScene(getCutterCubes());
-}
-//--------------------------------------------------------------
-void cutter::unDraw(){  
-	//deleteGroupFromScene(getCutterPlanes());
-	//deleteGroupFromScene(getCutterCubes());
+	//ofSetColor(ofColor(255,255,0,150));
+	//ofPushMatrix();
+	//if (allCubes->GetTempMatrix()!=0)
+	//	glMultMatrixd(allCubes->GetTempMatrix()->GetTransparentData());
+	////allCubes->DestroyTempMatrix();
+	//ofPopMatrix();
 }
 /////////////////////////////////////////////////////////////////
 //----------------------------------------------------------------

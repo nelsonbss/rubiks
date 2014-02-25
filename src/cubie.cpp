@@ -153,6 +153,13 @@ void cubie::update(){
 						objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,aux);
 						moving = false;
 						//movingXC = false;
+						if(undoing == true){
+							//pop 2 histories on this cubie
+							//this wwill leave us in the same position
+							myMatrix.pop_back();
+							myMatrix.pop_back();
+							undoing=false;
+						}
 					}
 					//}
 				}else{
@@ -170,73 +177,82 @@ void cubie::update(){
 						objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,aux);
 						moving = false;
 						//movingXCC = false;
+						if(undoing == true){
+							//pop 2 histories on this cubie
+							//this wwill leave us in the same position
+							myMatrix.pop_back();
+							myMatrix.pop_back();
+							undoing=false;
+						}
 					}
 					//}
 				}
 			}
-		}else if (undoing == true){
-			//go from the last element in cubie history, doing the inverse move that got it there
-			//i.e. if last move was C on x -> then we do CC on x
-
-			SG_POINT protFace = {0,0,0};										 
-			SG_VECTOR vrotFace = myMatrix.at(myMatrix.size()-1).vector;//  axis; //rotate to do a face move
-			double targetDeg = 0;//myMatrix.at(myMatrix.size()-1).deg; //target angle, the last angle it will move to
-			if(sample==false){
-				//this should only be sampled once during the animation
-				rotXa = myMatrix.at(myMatrix.size()-1).deg; // from where we want to move towards zero, to do the undo animation
-				sample=true;
-			}
-			if(myMatrix.at(myMatrix.size()-1).dir == true){
-				//it was rotation C
-				//so we do CC!!!!!
-				if(rotXa > targetDeg){
-					//ct2 = ofGetElapsedTimeMillis();
-					rotXa -= animTime/2;//0.1;//(ct2 - ct1)*((1.57)/animTime);
-					double aux =  ofDegToRad(rotXa);
-					if (objectList[j]->GetTempMatrix()==0){
-						objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,aux);
-					}else{
-						objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,aux);
-					}
-					//ct1 = ct2;
-				}else{
-					rotXa = targetDeg;
-					/*double aux =  ofDegToRad(rotXa);
-					if (objectList[j]->GetTempMatrix()==0){
-					objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,aux);
-					}else{
-					objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,aux);
-					}*/
-					myMatrix.pop_back();
-					undoing = false;
-				}
-			}else{
-				//it was cc
-				//so we do C!!!!
-				if(rotXa < targetDeg){
-					//ct2 = ofGetElapsedTimeMillis();
-					rotXa += animTime;//0.1;  //(ct2 - ct1)*((1.57)/animTime);
-					double aux =  ofDegToRad(rotXa);
-					if (objectList[j]->GetTempMatrix()==0){
-						objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,aux);
-					}else{
-						objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,aux);
-					}
-					//ct1 = ct2;
-				}else{
-					rotXa = targetDeg;
-					double aux =  ofDegToRad(rotXa);
-					if (objectList[j]->GetTempMatrix()==0){
-						objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,aux);
-					}else{
-						objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,aux);
-					}
-					myMatrix.pop_back();
-					undoing = false;
-				}
-			}
-
 		}
+		//  else if (undoing == true){
+		//	//go from the last element in cubie history, doing the inverse move that got it there
+		//	//i.e. if last move was C on x -> then we do CC on x
+
+		//	SG_POINT protFace = {0,0,0};										 
+		//	SG_VECTOR vrotFace = myMatrix.at(myMatrix.size()-1).vector;//  axis; //rotate to do a face move
+		//	double targetDeg = 0;//myMatrix.at(myMatrix.size()-1).deg; //target angle, the last angle it will move to
+		//	if(sample==false){
+		//		//this should only be sampled once during the animation
+		//		rotXa = myMatrix.at(myMatrix.size()-1).deg; // from where we want to move towards zero, to do the undo animation
+		//		sample=true;
+		//	}
+		//	if(myMatrix.at(myMatrix.size()-1).dir == true){
+		//		//it was rotation C
+		//		//so we do CC!!!!!
+		//		if(rotXa > targetDeg){
+		//			//ct2 = ofGetElapsedTimeMillis();
+		//			rotXa -= animTime/2;//0.1;//(ct2 - ct1)*((1.57)/animTime);
+		//			double aux =  ofDegToRad(rotXa);
+		//			if (objectList[j]->GetTempMatrix()==0){
+		//				objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,aux);
+		//			}else{
+		//				objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,aux);
+		//			}
+		//			//ct1 = ct2;
+		//		}else{
+		//			rotXa = targetDeg;
+		//			double aux =  ofDegToRad(rotXa);
+		//			if (objectList[j]->GetTempMatrix()==0){
+		//				objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,aux);
+		//			}else{
+		//				objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,aux);
+		//			}
+		//			myMatrix.pop_back();
+		//			undoing = false;
+		//		}
+		//	}else{
+		//		//it was cc
+		//		//so we do C!!!!
+		//		if(rotXa < targetDeg){
+		//			//ct2 = ofGetElapsedTimeMillis();
+		//			rotXa += animTime;//0.1;  //(ct2 - ct1)*((1.57)/animTime);
+		//			double aux =  ofDegToRad(rotXa);
+		//			if (objectList[j]->GetTempMatrix()==0){
+		//				objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,aux);
+		//			}else{
+		//				objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,aux);
+		//			}
+		//			//ct1 = ct2;
+		//		}else{
+		//			rotXa = targetDeg;
+		//			double aux =  ofDegToRad(rotXa);
+		//			if (objectList[j]->GetTempMatrix()==0){
+		//				objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,aux);
+		//			}else{
+		//				objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,aux);
+		//			}
+		//			myMatrix.pop_back();
+		//			undoing = false;
+		//		}
+		//	}
+
+
+		//}
 		else{
 			//puzzle is not moving
 			//if(objects != NULL){
@@ -332,12 +348,12 @@ void cubie::faceRotate(SG_VECTOR axis,bool di){
 					rotY=0;
 					rotZ=0;*/
 					moving = true;
+					sample = false;
 					//ct1 = ofGetElapsedTimeMillis();
 					if(di == true){
 						//c
 						//if(axis.x == 1){
 						//movingXC = true;
-						sample = false;
 						//rotX += 90;
 						myMatrix.push_back(matrix(axis,90,di));
 						//cout << "history: " << myMatrix.size() << " rotX: " << rotX << endl;
@@ -356,7 +372,6 @@ void cubie::faceRotate(SG_VECTOR axis,bool di){
 						//cc
 						//if(axis.x == 1){
 						//movingXCC = true;
-						sample = false;
 						//rotX -= 90;
 						myMatrix.push_back(matrix(axis,-90,di));
 						//}else if(axis.y == 1){
@@ -438,17 +453,29 @@ int cubie::getId(){
 	return id;
 }
 //--------------------------------------------------------------
-void cubie::unDo(){
+void cubie::unDo(SG_VECTOR axis,bool di){
 	//it removes the las element on the vector with the history of each cubie
 	if(myMatrix.size()>1){
 		//trigger an undo animation routine in the update()
 		//at the end of that routine-> we do the pop_back of the cubies history
 		if(undoing==false){
 			if(moving == false){
-				//undoing = true;
-				sample = false;
-				myMatrix.pop_back();
-				//undoing = false;
+				for (int j=0; j < numObjs; j++){
+					SG_POINT protFace = {0,0,0};
+					SG_VECTOR vrotFace = axis;
+					moving = true;
+					undoing = true;
+					sample = false;
+					//ct1 = ofGetElapsedTimeMillis();
+					if(di == true){
+						//c
+						myMatrix.push_back(matrix(axis,90,di));
+
+					}else{
+						//cc
+						myMatrix.push_back(matrix(axis,-90,di));
+					}
+				}
 			}
 		}
 	}

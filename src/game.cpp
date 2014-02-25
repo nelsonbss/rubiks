@@ -188,7 +188,8 @@ void game::update(){
 				//put this move on the game history vector
 				//it only saves the idcubie. 
 				//undo will look for the other 9 cubies involved and do a pop_back on their history
-				historyV.push_back(history(idcubie,axis,dir));
+				/*historyV.push_back(history(idcubie,axis,dir));*/ //save the play
+				historyV.push_back(history(idcubie,axis,!dir)); //new approach save inverse move, to do it at undo, and do 2 pop 
 				faceRotate = false;
 			}
 			//updatePuzzle = false;
@@ -326,9 +327,11 @@ void game::createPuzzle(SG_VECTOR p){
 		//now slicer has all the parts inside sgCGroup ** = pieces[]
 		//////////////////////////////create puzzle////////////////////////////////////////
 		if(objectID == 4){
-			myPuzzle->loadPieces(mySlicer->getPieces(),true);
+			//bunny
+			myPuzzle->loadPieces(mySlicer->getPieces(),true); // plain color
 		}else{
-			myPuzzle->loadPieces(mySlicer->getPieces(),false);
+			//cube and others
+			myPuzzle->loadPieces(mySlicer->getPieces(),false); //rubiks colors
 		}
 		////////////////////////////////end create puzzle//////////////////////////////////
 
@@ -356,11 +359,24 @@ void game::moveA (ofVec3f input){
 void game::unDo(){
 	//it only saves the idcubie. 
 	//undo will look for the other 9 cubies involved and do a pop_back on their history
-	if(historyV.size()>0){
+	/*if(historyV.size()>0){
 		int id = historyV[historyV.size()-1].id;
 		SG_VECTOR axis = historyV[historyV.size()-1].vector;
 		double dir = historyV[historyV.size()-1].dir;
 		myPuzzle->unDo(id,axis,dir);
+		historyV.pop_back();
+	}*/
+
+	//new aproach
+	//to do 1 undo:
+	//undo will look for the other 9 cubies involved and do add a move opposite to the last one
+	//when it stops animation andits on the new place
+	//take 2 (two) pop_back on each of the cubies history
+	if(historyV.size()>0){//game history
+		int idcubie = historyV[historyV.size()-1].id;
+		SG_VECTOR axis = historyV[historyV.size()-1].vector;
+		double dir = historyV[historyV.size()-1].dir;
+		myPuzzle->unDo(idcubie,axis,dir);
 		historyV.pop_back();
 	}
 }

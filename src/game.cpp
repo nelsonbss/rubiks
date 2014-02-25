@@ -19,7 +19,7 @@ game::game(SG_VECTOR gamePos, float w, float h, SG_VECTOR displayPos){
 	rotP.y = 0;
 	rotP.z = 0;
 
-	objectID = 0;
+	objectID = -1;
 }
 //--------------------------------------------------------------
 #define planeThicknes 0.001
@@ -29,9 +29,7 @@ game::game(SG_VECTOR gamePos, float w, float h, SG_VECTOR displayPos){
 void game::setup(){
 	step = 0;
 	idcubie=0;
-	///////////////////////////////
-	myArmature = new armature (ofVec3f(posA.x,posA.y,0),300,300,10,tamCubie);
-	myArmature->setup();
+
 	/////////////////////////////////////////PUZzLE //////////
 	updatePuzzle = false;
 	//
@@ -157,6 +155,8 @@ void game::setup(){
 	sgTeapot = (sgC3DObject *) sgFileManager::ObjectFromTriangles(vert5,teapot3Vert.size(),indexes5,teapot3Vert.size()/3); 
 	delete [] vert5;
 	delete [] indexes5;
+	/////////////////
+	//loadObjects();
 }
 //--------------------------------------------------------------
 void game::update(){
@@ -257,10 +257,17 @@ void game::rotateByIDandAxis(int id, SG_VECTOR axs, bool d){
 
 }
 //----------------------------------------------------------------
-void game::loadObject (int objID, SG_VECTOR p, SG_VECTOR t){
+void game::loadObject(int objID, SG_VECTOR p, SG_VECTOR t){
+	if (objectID == -1){
+		objectDisplayed = new myobject3D(p,t);
+	}else{
+		objectDisplayed->exit();
+		delete objectDisplayed;
+		objectDisplayed = new myobject3D(p,t);
+	}
 	objectID = objID;
 	if(step == 0 || step==1){
-		objectDisplayed = new myobject3D(p,t);
+
 		if(objID == 1){
 			//torus
 			objectDisplayed->loadObject(sgCreateTorus(100,80,50,50),1);//pos.z is radius, thicknes, meridians
@@ -274,26 +281,25 @@ void game::loadObject (int objID, SG_VECTOR p, SG_VECTOR t){
 		}
 		if(objID == 4){
 			//try to load the bunny
-			objectDisplayed->loadObject((sgC3DObject *)sgBunny,4);
+			objectDisplayed->loadObject((sgC3DObject *)sgBunny->Clone(),4);
 		}
 		if(objID == 5){
 			//try to load the dodecahedron
-			objectDisplayed->loadObject((sgC3DObject *)sgDodecahedron,5);
+			objectDisplayed->loadObject((sgC3DObject *)sgDodecahedron->Clone(),5);
 		}
 		if(objID == 6){
 			//try to load the Icosahedron
-			objectDisplayed->loadObject((sgC3DObject *)sgIcosahedron,6);
+			objectDisplayed->loadObject((sgC3DObject *)sgIcosahedron->Clone(),6);
 		}
 		if(objID == 7){
 			//try to load the Octahedron
-			objectDisplayed->loadObject((sgC3DObject *)sgOctahedron,7);
+			objectDisplayed->loadObject((sgC3DObject *)sgOctahedron->Clone(),7);
 		}
 		if(objID == 8){
 			//try to load the Teapot
-			objectDisplayed->loadObject((sgC3DObject *)sgTeapot,8);
+			objectDisplayed->loadObject((sgC3DObject *)sgTeapot->Clone(),8);
 		}
 		objectDisplayed->setup();
-		createSlicer();
 		step = 1;
 	}
 	////////////////////// from STL file
@@ -303,7 +309,7 @@ void game::loadObject (int objID, SG_VECTOR p, SG_VECTOR t){
 //--------------------------------------------
 void game::createSlicer(){
 	////////////////////////////////create cutter///////////////////////////////////////
-	myCutter = new cutter(planeThicknes,planeSize,tamCubie,1,0,0,-100);							//this -100 if because of torus radious!!! have to fix this!! to adapt to other selected shapes!!
+	myCutter = new cutter(planeThicknes,planeSize,tamCubie,1,0,0,-100);				
 	myCutter->setup();
 	//////////////////////////////////end create cutter///////////////////////////////////
 
@@ -311,6 +317,17 @@ void game::createSlicer(){
 	mySlicer = new slicer(myCutter,posP.x,posP.y);
 	mySlicer->setup();
 	///////////////////////////end create slicer /////////////////////////////////////////
+}
+//---------------------------------------------
+void game::loadArmature(int type){
+	if(type == 1){
+		myArmature = new armature (ofVec3f(posA.x,posA.y,0),300,300,10,tamCubie*1.2);
+	}
+	if(type ==2 ){
+		myArmature = new armature (ofVec3f(posA.x,posA.y,0),300,300,10,tamCubie*1.2);
+	}
+	myArmature->setup();
+	setCurrentStep(3);
 }
 //---------------------------------------------
 void game::createPuzzle(SG_VECTOR p){
@@ -357,16 +374,6 @@ void game::moveA (ofVec3f input){
 }
 //----------------------------------------------
 void game::unDo(){
-	//it only saves the idcubie. 
-	//undo will look for the other 9 cubies involved and do a pop_back on their history
-	/*if(historyV.size()>0){
-		int id = historyV[historyV.size()-1].id;
-		SG_VECTOR axis = historyV[historyV.size()-1].vector;
-		double dir = historyV[historyV.size()-1].dir;
-		myPuzzle->unDo(id,axis,dir);
-		historyV.pop_back();
-	}*/
-
 	//new aproach
 	//to do 1 undo:
 	//undo will look for the other 9 cubies involved and do add a move opposite to the last one
@@ -387,12 +394,23 @@ void game::restart(){
 		myPuzzle->exit();
 		myCutter->exit();
 		mySlicer->exit();
-		//objectDisplayed->exit();
+		objectDisplayed->exit();
+		objectID = -1;
 		step = 0;
-	}else if (step==1 || step==2 || step==3){
+	}else if (step==3){
 		myCutter->exit();
 		mySlicer->exit();
-		//objectDisplayed->exit();
+		objectDisplayed->exit();
 		step = 0;
+		objectID = -1;
+	}else if (step==1 || step==2){
+		objectDisplayed->exit();
+		step = 0;
+		objectID = -1;
 	}
+	sgDeleteObject(sgBunny);
+	sgDeleteObject(sgDodecahedron);
+	sgDeleteObject(sgIcosahedron);
+	sgDeleteObject(sgOctahedron);
+	sgDeleteObject(sgTeapot);
 }

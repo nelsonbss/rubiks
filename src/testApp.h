@@ -24,7 +24,7 @@ public:
 	void gotMessage(ofMessage msg);
 
 	////////////////
-	vector<game *> myGames;
+	vector<game*> myGames;
 
 	myobject3D *objectDisplayed;
 	cutter *myCutter;

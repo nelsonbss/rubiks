@@ -34,6 +34,7 @@ public:
 	void loadObject (int objID,SG_VECTOR p,SG_VECTOR t);
 	int objectID;
 	void createSlicer();
+	void loadArmature(int type);
 	void createPuzzle(SG_VECTOR p);
 
 	int getCurrentStep();

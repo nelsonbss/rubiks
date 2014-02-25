@@ -395,8 +395,8 @@ void cubie::faceRotate(SG_VECTOR axis,bool di){
 }
 //-------------------------------------------------------------------------------------------------------------------------------------------
 void cubie::setObjects(sgCGroup *objs,int cubieId,bool plain){
-	//it receives a group, when Puzzle loadsPieces(ySlicer->getPieces())  on main
-	//it takes the input group and breaks it, to put parts on cubie group "objects"
+	////it receives a group, when Puzzle loadsPieces(ySlicer->getPieces())  on main
+	////it takes the input group and breaks it, to put parts on cubie group "objects"
 	if(objs != NULL){
 		sgCObject **objcts = (sgCObject**)malloc(50*sizeof(sgCObject*));
 		int objctr = 0;

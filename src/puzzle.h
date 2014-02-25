@@ -21,7 +21,7 @@ public:
 
 	void loadPieces(sgCGroup **pcs,bool plain);
 	int giveNumCubies();
-
+	sgCGroup* cubieGroup;
 	float numPieces;
 	cubie **myCubies; //malloc numPieces of these
 

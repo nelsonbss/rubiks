@@ -18,6 +18,7 @@ public:
 	void setup();
 	void update();
 	void draw();
+	void exit();
 
 	int step;
 

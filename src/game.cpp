@@ -389,7 +389,6 @@ void game::unDo(){
 }
 //----------------------------------------------
 void game::restart(){
-	//go to step 0, clear puzzle, , clear pieces, clear object
 	if(step==4 || step==5){
 		myPuzzle->exit();
 		myCutter->exit();
@@ -408,9 +407,13 @@ void game::restart(){
 		step = 0;
 		objectID = -1;
 	}
+}
+//----------------------------------------------
+void game::exit(){
 	sgDeleteObject(sgBunny);
 	sgDeleteObject(sgDodecahedron);
 	sgDeleteObject(sgIcosahedron);
 	sgDeleteObject(sgOctahedron);
 	sgDeleteObject(sgTeapot);
+	//}
 }

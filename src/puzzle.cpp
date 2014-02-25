@@ -114,30 +114,41 @@ void puzzle::loadPieces(sgCGroup **pcs,bool plain){
 			const int ChCnt = part->GetChildrenList()->GetCount();
 			sgCObject** allParts = (sgCObject**)malloc(ChCnt*sizeof(sgCObject*));
 			part->BreakGroup(allParts);
-			sgCObject::DeleteObject(part);
 
 			sgCObject **obj = (sgCObject**)malloc(50*sizeof(sgCObject*));
 			int realNumPieces=0;
 
 			for (int j=0; j < ChCnt; j++){
 				//clone each part
-				sgCObject *tempOBJ = allParts[j]; //each is an object that goes in one cubie
-				obj[j] = tempOBJ;
+				//sgCObject *tempOBJ = allParts[j]; //each is an object that goes in one cubie
+				obj[j] =allParts[j];// tempOBJ;
 				realNumPieces ++;
+				//sgDeleteObject(tempOBJ);
 			}
 			//make them a group
-			sgCGroup* cubieGroup = sgCGroup::CreateGroup(obj,realNumPieces);  
+			cubieGroup = sgCGroup::CreateGroup(obj,realNumPieces);  
 			//put that gorup inside temp cubie
 			myCubies[i]->setObjects(cubieGroup,i,plain);//here goes the group of clones from the iriginal slicing pieces[]
 			//put that cubie on the cubies[]
 
 			free(obj);
-			free(allParts);
+
+			if(allParts != NULL){
+				for (int j=0; j < ChCnt; j++){
+					if(allParts[j] != NULL){
+					sgCObject::DeleteObject(allParts[j]);
+					}
+				}
+				free(allParts);
+			}
+
+			sgDeleteObject(part);
 		}else{
 			myCubies[i]->setObjects(NULL,i,true);
 		}
+
 	}
-	//sgCObject::DeleteObject(*pcs);
+
 }
 ////////////////////////////////////////////////////////////////
 void puzzle::rotate(SG_VECTOR r){  
@@ -222,7 +233,7 @@ void puzzle::rotateByIDandAxis(int id, SG_VECTOR axis, bool dir){
 	}
 	//myCubies[11]->faceRotate(axis,deg,dir);
 
-	//rearranging
+	//rearrange cubies position
 	//do we do this after we complete 90 deg rotation???
 	/////it doesnt matter, it can be that instant, since the 3d array is only looked upon before moving
 	/////the animation will lock selection of new cubie, so on ly one movement is done at a time
@@ -417,6 +428,7 @@ void puzzle::unDo(int id, SG_VECTOR axis, bool dir){
 }
 //----------------------------------------------------------------
 void puzzle::exit(){
+
 	for(int i=0;i<numPieces;i++){
 		if(myCubies[i] != NULL){
 			myCubies[i]->exit();
@@ -425,10 +437,10 @@ void puzzle::exit(){
 	//// De-Allocate memory to prevent memory leak
 	//for (int i = 0; i < HEIGHT; ++i) {
 	//	for (int j = 0; j < WIDTH; ++j){
-	//		delete [] three_dim[i][j];
+	//		delete [] three_dim1[i][j];
 	//	}
-	//	delete [] three_dim[i];
+	//	delete [] three_dim1[i];
 	//}
-	//delete [] three_dim;
+	//delete [] three_dim1;
 	free(myCubies);
 }

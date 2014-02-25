@@ -69,7 +69,7 @@ public:
 	///color change
 	void changeColorToColor(ofFloatColor Sc, ofFloatColor Tc);
 
-	void unDo();
+	void unDo(SG_VECTOR axis,bool di);
 };
 
 #endif /* defined(__Tcubie__cubie__) */

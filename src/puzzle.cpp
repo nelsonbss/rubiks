@@ -161,28 +161,6 @@ void puzzle::move(SG_VECTOR p){
 		}
 	}
 }
-////////////////////////////////////////////////////////////////
-void puzzle::faceRotate(SG_POINT point, SG_VECTOR axis, float deg,bool dir){
-	//this function is to handle a face rotation for a cubbie
-	//this function is invoked on a group of cubies determined by the puzzle..??(stil lneeds to be determined)
-	//use this cubies objectList to draw elements without ever loosing them on groupBreaking
-	//16-17-18
-	//7-8-9
-	//25-26-27
-	//all numbers -1 because array starts in zero 0
-	//rotation point: 3D-center of puzzle at 0,0,0
-	/////*myCubies[15]->faceRotate(point,axis,deg,dir);
-	////myCubies[16]->faceRotate(point,axis,deg,dir);
-	////myCubies[17]->faceRotate(point,axis,deg,dir);
-	///////
-	////myCubies[6]->faceRotate(point,axis,deg,dir);
-	////myCubies[7]->faceRotate(point,axis,deg,dir);
-	////myCubies[8]->faceRotate(point,axis,deg,dir);
-	///////
-	////myCubies[24]->faceRotate(point,axis,deg,dir);
-	////myCubies[25]->faceRotate(point,axis,deg,dir);
-	////myCubies[26]->faceRotate(point,axis,deg,dir);*/
-}
 //---------------------------------------------------------------
 void puzzle::rotateByIDandAxis(int id, SG_VECTOR axis, bool dir){
 	//it receives the id of a cubie,the axis and the direction of rotation
@@ -379,14 +357,14 @@ void puzzle::changeColorToColor(ofFloatColor Sc, ofFloatColor Tc){
 }
 //----------------------------------------------------------------
 void puzzle::unDo(int id, SG_VECTOR axis, bool dir){
-	//takes the puzzle one step back on its history
-	//undo will look for the other 9 cubies involved and do a pop_back on their history
+	//it receives the id of a cubie,the axis and the direction of rotation
+	//it looks for the other 9 ids, according to the axis
+	//and makes those 9 myCubies[]->faceRotate
 	int selected[9];
 	int counter=0;
 	int selX =0;
 	int selY =0;
 	int selZ =0;
-	dir = !dir;//inverse the direction of rotation
 	//look for positon of cubie on the 3d data structure
 	for(int x=0;x<3;x++){
 		for(int y=0;y<3;y++){
@@ -434,7 +412,7 @@ void puzzle::unDo(int id, SG_VECTOR axis, bool dir){
 	}
 	//now we tell the 9 selected cubies to rotate
 	for(int i=0;i<9;i++){
-		myCubies[selected[i]]->unDo();
+		myCubies[selected[i]]->unDo(axis,dir);
 	}
 }
 //----------------------------------------------------------------

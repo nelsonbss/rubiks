@@ -32,7 +32,6 @@ public:
 	void rotate(SG_VECTOR r);
 
 	double ***p3DArray;
-	void faceRotate(SG_POINT point, SG_VECTOR axis, float deg,bool dir);
 	 /* one-liner */
     //typedef std::vector<std::vector<std::vector<int> > >ThreeDimensions;
     /* expanded */

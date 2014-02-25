@@ -46,7 +46,7 @@ void cubie::setup(){
 //--------------------------------------------------------------
 void cubie::update(){
 	for (int j=0; j < numObjs; j++){
-		if(moving==true)       
+		if(moving==true){    
 			//for (int j=0; j < numObjs; j++){
 			///////////////////////////////////applying rotations matrix HISTORY
 			//use vector with matrix(s)

@@ -10,7 +10,7 @@
 class cubie {
 	
 public:
-	cubie(float x,float y,float z,int id);
+	cubie(float x,float y,float z,int id, int selObjId);
     
 	void setup();
 	void update();
@@ -18,8 +18,10 @@ public:
 	//void unDraw();// has legacy of how to detach from scene
 	void exit();
 
-	int id;
+	int id; //id of the cuie to be used on the selection of the cuie to rotate
 	int getId();
+
+	int selectedObjectID; // keeps the id of the object selected to become a puzzle, used for coloring
 
 	sgCGroup *objects;
 	float numObjs;
@@ -30,7 +32,7 @@ public:
 	float color;
 	bool okDraw;
 
-	void setObjects(sgCGroup *objs,int cubieId,bool plain);
+	void setObjects(sgCGroup *objs,int cubieId);
 	sgCGroup* copyObjects();   //this is no longer needed
 
 	SG_VECTOR pos;

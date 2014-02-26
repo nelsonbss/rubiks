@@ -9,11 +9,16 @@ class ofRender{
 
 public:
 	ofRender();
-	void sgCoretoOFmesh(sgC3DObject *obj, ofMesh &mesh,int numCubie, bool plain);
+	void sgCoretoOFmesh(sgC3DObject *obj, ofMesh &mesh,int numCubie,int selObjId);
 	void setNormals( ofMesh &mesh );
 	ofPoint decideAxis(ofPoint dir);
 	ofColor decideColor(ofPoint normal);
-	ofColor decideColorCubie(ofPoint normal,int numCubie);
+	ofColor decideColorCubieBox(ofPoint normal,int numCubie);
+
+	ofColor  decideColorCubiePyramid(ofPoint normal,int numCubie);
+	ofColor  decideColorCubieDodecahedron(ofPoint normal,int numCubie);
+	ofColor  decideColorCubieIcosahedron(ofPoint normal,int numCubie);
+	ofColor  decideColorCubieOctahedron(ofPoint normal,int numCubie);
 
 	vector <ofFloatColor> colorsVector;
 	ofFloatColor c;

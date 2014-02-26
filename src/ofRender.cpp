@@ -13,7 +13,7 @@ ofRender::ofRender(){
 	yellow = ofFloatColor(1,1,0);
 	black = ofFloatColor(0,0,0);
 	cyan = ofFloatColor(0,1,1);
-	
+
 	//colorsVector.push_back(mate);//0
 	//colorsVector.push_back(green);//1
 	//colorsVector.push_back(orange);//2
@@ -25,7 +25,7 @@ ofRender::ofRender(){
 	//colorsVector.push_back(cyan);//8
 }
 
-void ofRender::sgCoretoOFmesh(sgC3DObject *obj, ofMesh &mesh,int idCubie, bool plain){
+void ofRender::sgCoretoOFmesh(sgC3DObject *obj, ofMesh &mesh,int idCubie,int selObjId){
 	//convert to of mesh and draw as of
 	mesh.setMode(OF_PRIMITIVE_TRIANGLES);
 
@@ -58,54 +58,72 @@ void ofRender::sgCoretoOFmesh(sgC3DObject *obj, ofMesh &mesh,int idCubie, bool p
 		auxV3.x = vertex[i+2].x;
 		auxV3.y = vertex[i+2].y;
 		auxV3.z =vertex[i+2].z;
-		//look at normal
-		////Compute the triangle's normal
-		ofPoint dir = ( (auxV2 - auxV1).crossed( auxV3 - auxV1 ) ).normalized();
-
-		//set colors
-		ofFloatColor c;
-		//ask if it is for a cubie
-		if(idCubie == -1){
-			//its not a cubie // but we want to see color
-			c = decideColor(decideAxis(dir));
-		}else if (idCubie == -2){
-			//its an original shape// with plain color
-			c = mate;//colorsVector[0];//mate
-		}else{
-			//it is a cubie
-			if(plain ==false){
-			c = decideColorCubie(decideAxis(dir),idCubie);
-			}else{
-				c = cyan;
-			}
-		}
-
-		//mesh.addColor(c);
-		colorsVector.push_back(c);
+		//
 		mesh.addVertex(auxV1);
-
-		//mesh.addColor(c);
-		colorsVector.push_back(c);
 		mesh.addVertex(auxV2);
-		
-		//mesh.addColor(c);
-		colorsVector.push_back(c);
 		mesh.addVertex(auxV3);
-		
 
 		//make indices & add normals to each index
 		mesh.addIndex(i);
 		mesh.addNormal(ofVec3f(normals[i].x,normals[i].y,normals[i].z));
-		/*ofIndexType index = 5;
-		ofFloatColor col = mesh.getColor(5);
-		mesh.setColor(0,col);*/
 
 		mesh.addIndex(i + 1);
 		mesh.addNormal(ofVec3f(normals[i+1].x,normals[i+1].y,normals[i+1].z));
-		/*mesh.setColor(0,col);*/
+
 		mesh.addIndex(i + 2);
 		mesh.addNormal(ofVec3f(normals[i+2].x,normals[i+2].y,normals[i+2].z));
-		/*mesh.setColor(0,col);*/
+
+		//look at normal
+		////Compute the triangle's normal
+		ofPoint dir = ( (auxV2 - auxV1).crossed( auxV3 - auxV1 ) ).normalized();
+		//set colors
+		ofFloatColor c;
+		//ask if it is for a cubie
+		if(idCubie == -1){
+			//original shape with color...use this for pyramid 
+			c = decideColor(decideAxis(dir));
+		}else if (idCubie == -2){
+			//its an original shape// with plain color
+			c = mate;//colorsVector[0];//mate
+		}
+		else{
+			//it is a puzzle cubie
+			if(selObjId == 4){
+				//plain color, used for bunny
+				c = cyan;
+			}else{
+				//put colors for regular rubiks cube
+				//torus
+				//cube
+				//for now
+				if(selObjId ==1 || selObjId == 2){
+					c = decideColorCubieBox(decideAxis(dir),idCubie);
+				}else if(selObjId == 3 ){
+					//pyramid
+					c = decideColorCubiePyramid(decideAxis(dir),idCubie);
+				}else if(selObjId == 4 ){
+					//Pyramid
+					c = decideColorCubiePyramid(dir,idCubie);
+				}else if(selObjId == 5 ){
+					//Dodecahedron
+					c = decideColorCubieDodecahedron(decideAxis(dir),idCubie);
+				}else if(selObjId == 6 ){
+					//Icosahedron
+					c = decideColorCubieIcosahedron(decideAxis(dir),idCubie);
+				}else if(selObjId == 7 ){
+					//Octahedron
+					c = decideColorCubieOctahedron(decideAxis(dir),idCubie);
+				}
+				else{
+					//teapot for now
+					c = black;
+				}
+			}
+		}
+
+		colorsVector.push_back(c);
+		colorsVector.push_back(c);
+		colorsVector.push_back(c);
 	}
 	mesh.addColors(colorsVector);
 	//ofFloatColor * col = mesh.getColorsPointer();
@@ -135,7 +153,7 @@ void ofRender::changeColorToColor(ofFloatColor Sc, ofFloatColor Tc, ofMesh &mesh
 }
 //---------------------------------------------------------------------------------------------------------------
 ofPoint ofRender::decideAxis(ofPoint dir){
-	//looks at a point (normal vector) and decides which axis is closer to the most prominent component of the vector
+	//looks at a point (normal vector) and decides which axis is closer according to the most prominent component of the vector
 
 	ofPoint simple = ofPoint(0,0,0);
 	int chosen=0;//1=x, 2=y, 3=z
@@ -211,6 +229,8 @@ ofPoint ofRender::decideAxis(ofPoint dir){
 ofColor ofRender::decideColor(ofPoint normal){
 	//decides a color according to a normal direction
 	// 6 colores are taken as base color (normal rubiks color)
+	//no inside face coloring
+	//it colors the whole cubie 
 	ofFloatColor c;
 	ofPoint x = ofPoint(1,0,0);
 	ofPoint y = ofPoint(0,1,0);
@@ -230,13 +250,12 @@ ofColor ofRender::decideColor(ofPoint normal){
 	}else if(normal==yn){
 		c = red; //red
 	}else if(normal==zn){
-
 		c = yellow; //yellow
 	}
 	return c;
 }
 //-----------------------------------------------------------------------
-ofColor ofRender::decideColorCubie(ofPoint normal, int idCubie){
+ofColor ofRender::decideColorCubieBox(ofPoint normal, int idCubie){
 	//takes into account the number of the cubie son it can decide the colors for that specific cubie
 	//decides a color according to a normal direction
 	// 6 colores are taken as base color (normal rubiks color)
@@ -280,6 +299,1702 @@ ofColor ofRender::decideColorCubie(ofPoint normal, int idCubie){
 			c = black;
 		}else if(normal==zn){
 			c = black;
+		}
+	}else if (idCubie==2){
+		//middle right yellow.blue
+		if(normal==x){
+			c = blue;
+		}else if(normal==y){
+			c = black;
+		}else if(normal==z){
+			c = yellow;
+		}else if(normal==xn){
+			c = black;
+		}else if(normal==yn){
+			c = black;
+		}else if(normal==zn){
+			c = black;
+		}
+	}else if (idCubie==3){
+		//middle center yellow
+		if(normal==x){
+			c = black;
+		}else if(normal==y){
+			c = black;
+		}else if(normal==z){
+			c = yellow;
+		}else if(normal==xn){
+			c = black;
+		}else if(normal==yn){
+			c = black;
+		}else if(normal==zn){
+			c = black;
+		}
+	}else if(idCubie==4){
+		//middle left yellow/green
+		if(normal==x){
+			c = black;
+		}else if(normal==y){
+			c = black;
+		}else if(normal==z){
+			c = yellow;
+		}else if(normal==xn){
+			c = green;
+		}else if(normal==yn){
+			c = black;
+		}else if(normal==zn){
+			c = black;
+		}
+	}else if(idCubie==5){
+		//middle center green
+		if(normal==x){
+			c = black;
+		}else if(normal==y){
+			c = black;
+		}else if(normal==z){
+			c = black;
+		}else if(normal==xn){
+			c = green;
+		}else if(normal==yn){
+			c = black;
+		}else if(normal==zn){
+			c = black;
+		}
+	}else if(idCubie==6){
+		//middle right white/green
+		if(normal==x){
+			c = black;
+		}else if(normal==y){
+			c = black;
+		}else if(normal==z){
+			c = black;
+		}else if(normal==xn){
+			c = green;
+		}else if(normal==yn){
+			c = black;
+		}else if(normal==zn){
+			c = white;
+		}
+	}else if(idCubie==7){
+		//middle center white
+		if(normal==x){
+			c = black;
+		}else if(normal==y){
+			c = black;
+		}else if(normal==z){
+			c = black;
+		}else if(normal==xn){
+			c = black;
+		}else if(normal==yn){
+			c = black;
+		}else if(normal==zn){
+			c = white;
+		}
+	}else if(idCubie==8){
+		//center left white/blue
+		if(normal==x){
+			c = blue;
+		}else if(normal==y){
+			c = black;
+		}else if(normal==z){
+			c = black;
+		}else if(normal==xn){
+			c = black;
+		}else if(normal==yn){
+			c = black;
+		}else if(normal==zn){
+			c = white;
+		}
+	}else if(idCubie==9){
+		//top center
+		if(normal==x){
+			c = black;
+		}else if(normal==y){
+			c = black;
+		}else if(normal==z){
+			c = black;
+		}else if(normal==xn){
+			c = black;
+		}else if(normal==yn){
+			c = red;
+		}else if(normal==zn){
+			c = black;
+		}
+	}else if(idCubie==10){
+		//top middle red/blue
+		if(normal==x){
+			c = blue;
+		}else if(normal==y){
+			c = black;
+		}else if(normal==z){
+			c = black;
+		}else if(normal==xn){
+			c = black;
+		}else if(normal==yn){
+			c = red;
+		}else if(normal==zn){
+			c = black;
+		}
+	}else if(idCubie==11){
+		//top right red/yello/blue
+		if(normal==x){
+			c = blue;
+		}else if(normal==y){
+			c = black;
+		}else if(normal==z){
+			c = yellow;
+		}else if(normal==xn){
+			c = black;
+		}else if(normal==yn){
+			c = red;
+		}else if(normal==zn){
+			c = black;
+		}
+	}else if(idCubie==12){
+		//top middle red/yellow
+		if(normal==x){
+			c = black;
+		}else if(normal==y){
+			c = black;
+		}else if(normal==z){
+			c = yellow;
+		}else if(normal==xn){
+			c = black;
+		}else if(normal==yn){
+			c = red;
+		}else if(normal==zn){
+			c = black;
+		}
+	}else if(idCubie==13){
+		//top left red/yellow/green
+		if(normal==x){
+			c = black;
+		}else if(normal==y){
+			c = black;
+		}else if(normal==z){
+			c = yellow;
+		}else if(normal==xn){
+			c = green;
+		}else if(normal==yn){
+			c = red;
+		}else if(normal==zn){
+			c = black;
+		}
+	}else if(idCubie==14){
+		//top middle red/green
+		if(normal==x){
+			c = black;
+		}else if(normal==y){
+			c = black;
+		}else if(normal==z){
+			c = black;
+		}else if(normal==xn){
+			c = green;
+		}else if(normal==yn){
+			c = red;
+		}else if(normal==zn){
+			c = black;
+		}
+	}else if(idCubie==15){
+		//top right red/white/green
+		if(normal==x){
+			c = black;
+		}else if(normal==y){
+			c = black;
+		}else if(normal==z){
+			c = black;
+		}else if(normal==xn){
+			c = green;
+		}else if(normal==yn){
+			c = red;
+		}else if(normal==zn){
+			c = white;
+		}
+	}else if(idCubie==16){
+		//top middle red/white
+		if(normal==x){
+			c = black;
+		}else if(normal==y){
+			c = black;
+		}else if(normal==z){
+			c = black;
+		}else if(normal==xn){
+			c = black;
+		}else if(normal==yn){
+			c = red;
+		}else if(normal==zn){
+			c = white;
+		}
+	}else if(idCubie==17){
+		//top left red/blue/white
+		if(normal==x){
+			c = blue;
+		}else if(normal==y){
+			c = black;
+		}else if(normal==z){
+			c = black;
+		}else if(normal==xn){
+			c = black;
+		}else if(normal==yn){
+			c = red;
+		}else if(normal==zn){
+			c = white;
+		}
+	}else if(idCubie==18){
+		//bottom center orange
+		if(normal==x){
+			c = black;
+		}else if(normal==y){
+			c = orange;
+		}else if(normal==z){
+			c = black;
+		}else if(normal==xn){
+			c = black;
+		}else if(normal==yn){
+			c = black;
+		}else if(normal==zn){
+			c = black;
+		}
+	}else if(idCubie==19){
+		//middle blue/orange
+		if(normal==x){
+			c = blue;
+		}else if(normal==y){
+			c = orange;
+		}else if(normal==z){
+			c = black;
+		}else if(normal==xn){
+			c = black;
+		}else if(normal==yn){
+			c = black;
+		}else if(normal==zn){
+			c = black;
+		}
+	}else if(idCubie==20){
+		//bottom right yellow/blur/orange
+		if(normal==x){
+			c = blue;
+		}else if(normal==y){
+			c = orange;
+		}else if(normal==z){
+			c = yellow;
+		}else if(normal==xn){
+			c = black;
+		}else if(normal==yn){
+			c = black;
+		}else if(normal==zn){
+			c = black;
+		}
+	}else if(idCubie==21){
+		//botom middle yellow/orange
+		if(normal==x){
+			c = black;
+		}else if(normal==y){
+			c = orange;
+		}else if(normal==z){
+			c = yellow;
+		}else if(normal==xn){
+			c = black;
+		}else if(normal==yn){
+			c = black;
+		}else if(normal==zn){
+			c = black;
+		}
+	}else if(idCubie==22){
+		//bottom left yellow/green/orange
+		if(normal==x){
+			c = black;
+		}else if(normal==y){
+			c = orange;
+		}else if(normal==z){
+			c = yellow;
+		}else if(normal==xn){
+			c = green;
+		}else if(normal==yn){
+			c = black;
+		}else if(normal==zn){
+			c = black;
+		}
+	}if(idCubie==23){
+		//bottom middle green/orange
+		if(normal==x){
+			c = black;
+		}else if(normal==y){
+			c = orange;
+		}else if(normal==z){
+			c = black;
+		}else if(normal==xn){
+			c = green;
+		}else if(normal==yn){
+			c = black;
+		}else if(normal==zn){
+			c = black;
+		}
+	}else if(idCubie==24){
+		//bottom left white/green/orange
+		if(normal==x){
+			c = black;
+		}else if(normal==y){
+			c = orange;
+		}else if(normal==z){
+			c = black;
+		}else if(normal==xn){
+			c = green;
+		}else if(normal==yn){
+			c = black;
+		}else if(normal==zn){
+			c = white;
+		}
+	}else if(idCubie==25){
+		//bottom middle white/orange
+		if(normal==x){
+			c = black;
+		}else if(normal==y){
+			c = orange;
+		}else if(normal==z){
+			c = black;
+		}else if(normal==xn){
+			c = black;
+		}else if(normal==yn){
+			c = black;
+		}else if(normal==zn){
+			c = white;
+		}
+	}else if(idCubie==26){
+		//bottom right white/blue/orange
+		if(normal==x){
+			c = blue;
+		}else if(normal==y){
+			c = orange;
+		}else if(normal==z){
+			c = black;
+		}else if(normal==xn){
+			c = black;
+		}else if(normal==yn){
+			c = black;
+		}else if(normal==zn){
+			c = white;
+		}
+	}
+	return c;
+}
+//-------------------------------------------------------------------------------
+ofColor ofRender::decideColorCubiePyramid(ofPoint normal, int idCubie){
+	//takes into account the number of the cubie son it can decide the colors for that specific cubie
+	//decides a color according to a normal direction
+	// 6 colores are taken as base color (normal rubiks color)
+	//1 more color is used on cubies : BLACK for the inside of each cubie
+
+	ofFloatColor c;
+	ofPoint x = ofPoint(1,0,0);
+	ofPoint y = ofPoint(0,1,0);
+	ofPoint z = ofPoint(0,0,1);
+	ofPoint xn = ofPoint(-1,0,0);
+	ofPoint yn = ofPoint(0,-1,0);
+	ofPoint zn = ofPoint(0,0,-1);
+
+	if(idCubie==0){
+		//this is the center piece!! what to do with this??
+		if(normal==x){
+			c = cyan;
+		}else if(normal==y){
+			c = cyan;
+		}else if(normal==z){
+			c = cyan;
+		}else if(normal==xn){
+			c = cyan;
+		}else if(normal==yn){
+			c = cyan;
+		}else if(normal==zn){
+			c = cyan;
+		}
+	}else if (idCubie==1){
+		//middle center blue
+
+		if(normal==x){
+			c = blue;
+		}else if(normal==y){
+			c = black;
+		}else if(normal==z){
+			c = black;
+		}else if(normal==xn){
+			c = black;
+		}else if(normal==yn){
+			c = black;
+		}else if(normal==zn){
+			c = black;
+		}
+	}else if (idCubie==2){
+		//middle right yellow.blue
+		if(normal==x){
+			c = blue;
+		}else if(normal==y){
+			c = black;
+		}else if(normal==z){
+			c = yellow;
+		}else if(normal==xn){
+			c = black;
+		}else if(normal==yn){
+			c = black;
+		}else if(normal==zn){
+			c = black;
+		}
+	}else if (idCubie==3){
+		//middle center yellow
+		if(normal==x){
+			c = black;
+		}else if(normal==y){
+			c = black;
+		}else if(normal==z){
+			c = yellow;
+		}else if(normal==xn){
+			c = black;
+		}else if(normal==yn){
+			c = black;
+		}else if(normal==zn){
+			c = black;
+		}
+	}else if(idCubie==4){
+		//middle left yellow/green
+		if(normal==x){
+			c = black;
+		}else if(normal==y){
+			c = black;
+		}else if(normal==z){
+			c = yellow;
+		}else if(normal==xn){
+			c = green;
+		}else if(normal==yn){
+			c = black;
+		}else if(normal==zn){
+			c = black;
+		}
+	}else if(idCubie==5){
+		//middle center green
+		if(normal==x){
+			c = black;
+		}else if(normal==y){
+			c = black;
+		}else if(normal==z){
+			c = black;
+		}else if(normal==xn){
+			c = green;
+		}else if(normal==yn){
+			c = black;
+		}else if(normal==zn){
+			c = black;
+		}
+	}else if(idCubie==6){
+		//middle right white/green
+		if(normal==x){
+			c = black;
+		}else if(normal==y){
+			c = black;
+		}else if(normal==z){
+			c = black;
+		}else if(normal==xn){
+			c = green;
+		}else if(normal==yn){
+			c = black;
+		}else if(normal==zn){
+			c = white;
+		}
+	}else if(idCubie==7){
+		//middle center white
+		if(normal==x){
+			c = black;
+		}else if(normal==y){
+			c = black;
+		}else if(normal==z){
+			c = black;
+		}else if(normal==xn){
+			c = black;
+		}else if(normal==yn){
+			c = black;
+		}else if(normal==zn){
+			c = white;
+		}
+	}else if(idCubie==8){
+		//center left white/blue
+		if(normal==x){
+			c = blue;
+		}else if(normal==y){
+			c = black;
+		}else if(normal==z){
+			c = black;
+		}else if(normal==xn){
+			c = black;
+		}else if(normal==yn){
+			c = black;
+		}else if(normal==zn){
+			c = white;
+		}
+	}else if(idCubie==9){
+		//top center
+		if(normal==x){
+			c = black;
+		}else if(normal==y){
+			c = black;
+		}else if(normal==z){
+			c = black;
+		}else if(normal==xn){
+			c = black;
+		}else if(normal==yn){
+			c = red;
+		}else if(normal==zn){
+			c = black;
+		}
+	}else if(idCubie==10){
+		//top middle red/blue
+		if(normal==x){
+			c = blue;
+		}else if(normal==y){
+			c = black;
+		}else if(normal==z){
+			c = black;
+		}else if(normal==xn){
+			c = black;
+		}else if(normal==yn){
+			c = red;
+		}else if(normal==zn){
+			c = black;
+		}
+	}else if(idCubie==11){
+		//top right red/yello/blue
+		if(normal==x){
+			c = blue;
+		}else if(normal==y){
+			c = black;
+		}else if(normal==z){
+			c = yellow;
+		}else if(normal==xn){
+			c = black;
+		}else if(normal==yn){
+			c = red;
+		}else if(normal==zn){
+			c = black;
+		}
+	}else if(idCubie==12){
+		//top middle red/yellow
+		if(normal==x){
+			c = black;
+		}else if(normal==y){
+			c = black;
+		}else if(normal==z){
+			c = yellow;
+		}else if(normal==xn){
+			c = black;
+		}else if(normal==yn){
+			c = red;
+		}else if(normal==zn){
+			c = black;
+		}
+	}else if(idCubie==13){
+		//top left red/yellow/green
+		if(normal==x){
+			c = black;
+		}else if(normal==y){
+			c = black;
+		}else if(normal==z){
+			c = yellow;
+		}else if(normal==xn){
+			c = green;
+		}else if(normal==yn){
+			c = red;
+		}else if(normal==zn){
+			c = black;
+		}
+	}else if(idCubie==14){
+		//top middle red/green
+		if(normal==x){
+			c = black;
+		}else if(normal==y){
+			c = black;
+		}else if(normal==z){
+			c = black;
+		}else if(normal==xn){
+			c = green;
+		}else if(normal==yn){
+			c = red;
+		}else if(normal==zn){
+			c = black;
+		}
+	}else if(idCubie==15){
+		//top right red/white/green
+		if(normal==x){
+			c = black;
+		}else if(normal==y){
+			c = black;
+		}else if(normal==z){
+			c = black;
+		}else if(normal==xn){
+			c = green;
+		}else if(normal==yn){
+			c = red;
+		}else if(normal==zn){
+			c = white;
+		}
+	}else if(idCubie==16){
+		//top middle red/white
+		if(normal==x){
+			c = black;
+		}else if(normal==y){
+			c = black;
+		}else if(normal==z){
+			c = black;
+		}else if(normal==xn){
+			c = black;
+		}else if(normal==yn){
+			c = red;
+		}else if(normal==zn){
+			c = white;
+		}
+	}else if(idCubie==17){
+		//top left red/blue/white
+		if(normal==x){
+			c = blue;
+		}else if(normal==y){
+			c = black;
+		}else if(normal==z){
+			c = black;
+		}else if(normal==xn){
+			c = black;
+		}else if(normal==yn){
+			c = red;
+		}else if(normal==zn){
+			c = white;
+		}
+	}else if(idCubie==18){
+		//bottom center orange
+		if(normal==x){
+			c = black;
+		}else if(normal==y){
+			c = orange;
+		}else if(normal==z){
+			c = black;
+		}else if(normal==xn){
+			c = black;
+		}else if(normal==yn){
+			c = black;
+		}else if(normal==zn){
+			c = black;
+		}
+	}else if(idCubie==19){
+		//middle blue/orange
+		if(normal==x){
+			c = blue;
+		}else if(normal==y){
+			c = orange;
+		}else if(normal==z){
+			c = black;
+		}else if(normal==xn){
+			c = black;
+		}else if(normal==yn){
+			c = black;
+		}else if(normal==zn){
+			c = black;
+		}
+	}else if(idCubie==20){
+		//bottom right yellow/blur/orange
+		if(normal==x){
+			c = blue;
+		}else if(normal==y){
+			c = orange;
+		}else if(normal==z){
+			c = yellow;
+		}else if(normal==xn){
+			c = black;
+		}else if(normal==yn){
+			c = black;
+		}else if(normal==zn){
+			c = black;
+		}
+	}else if(idCubie==21){
+		//botom middle yellow/orange
+		if(normal==x){
+			c = black;
+		}else if(normal==y){
+			c = orange;
+		}else if(normal==z){
+			c = yellow;
+		}else if(normal==xn){
+			c = black;
+		}else if(normal==yn){
+			c = black;
+		}else if(normal==zn){
+			c = black;
+		}
+	}else if(idCubie==22){
+		//bottom left yellow/green/orange
+		if(normal==x){
+			c = black;
+		}else if(normal==y){
+			c = orange;
+		}else if(normal==z){
+			c = yellow;
+		}else if(normal==xn){
+			c = green;
+		}else if(normal==yn){
+			c = black;
+		}else if(normal==zn){
+			c = black;
+		}
+	}if(idCubie==23){
+		//bottom middle green/orange
+		if(normal==x){
+			c = black;
+		}else if(normal==y){
+			c = orange;
+		}else if(normal==z){
+			c = black;
+		}else if(normal==xn){
+			c = green;
+		}else if(normal==yn){
+			c = black;
+		}else if(normal==zn){
+			c = black;
+		}
+	}else if(idCubie==24){
+		//bottom left white/green/orange
+		if(normal==x){
+			c = black;
+		}else if(normal==y){
+			c = orange;
+		}else if(normal==z){
+			c = black;
+		}else if(normal==xn){
+			c = green;
+		}else if(normal==yn){
+			c = black;
+		}else if(normal==zn){
+			c = white;
+		}
+	}else if(idCubie==25){
+		//bottom middle white/orange
+		if(normal==x){
+			c = black;
+		}else if(normal==y){
+			c = orange;
+		}else if(normal==z){
+			c = black;
+		}else if(normal==xn){
+			c = black;
+		}else if(normal==yn){
+			c = black;
+		}else if(normal==zn){
+			c = white;
+		}
+	}else if(idCubie==26){
+		//bottom right white/blue/orange
+		if(normal==x){
+			c = blue;
+		}else if(normal==y){
+			c = orange;
+		}else if(normal==z){
+			c = black;
+		}else if(normal==xn){
+			c = black;
+		}else if(normal==yn){
+			c = black;
+		}else if(normal==zn){
+			c = white;
+		}
+	}
+	return c;
+}
+//--------------------------------------------------------------------------------
+ofColor ofRender::decideColorCubieDodecahedron(ofPoint normal, int idCubie){
+	//takes into account the number of the cubie son it can decide the colors for that specific cubie
+	//decides a color according to a normal direction
+	// 6 colores are taken as base color (normal rubiks color)
+	//1 more color is used on cubies : BLACK for the inside of each cubie
+
+	ofFloatColor c;
+	ofPoint x = ofPoint(1,0,0);
+	ofPoint y = ofPoint(0,1,0);
+	ofPoint z = ofPoint(0,0,1);
+	ofPoint xn = ofPoint(-1,0,0);
+	ofPoint yn = ofPoint(0,-1,0);
+	ofPoint zn = ofPoint(0,0,-1);
+
+	if(idCubie==0){
+		//this is the center piece!! what to do with this??
+		if(normal==x){
+			c = cyan;
+		}else if(normal==y){
+			c = cyan;
+		}else if(normal==z){
+			c = cyan;
+		}else if(normal==xn){
+			c = cyan;
+		}else if(normal==yn){
+			c = cyan;
+		}else if(normal==zn){
+			c = cyan;
+		}
+	}else if (idCubie==1){
+		//middle center blue
+
+		if(normal==x){
+			c = blue;
+		}else if(normal==y){
+			c = black;
+		}else if(normal==z){
+			c = black;
+		}else if(normal==xn){
+			c = black;
+		}else if(normal==yn){
+			c = black;
+		}else if(normal==zn){
+			c = black;
+		}
+	}else if (idCubie==2){
+		//middle right yellow.blue
+		if(normal==x){
+			c = blue;
+		}else if(normal==y){
+			c = black;
+		}else if(normal==z){
+			c = yellow;
+		}else if(normal==xn){
+			c = black;
+		}else if(normal==yn){
+			c = black;
+		}else if(normal==zn){
+			c = black;
+		}
+	}else if (idCubie==3){
+		//middle center yellow
+		if(normal==x){
+			c = black;
+		}else if(normal==y){
+			c = black;
+		}else if(normal==z){
+			c = yellow;
+		}else if(normal==xn){
+			c = black;
+		}else if(normal==yn){
+			c = black;
+		}else if(normal==zn){
+			c = black;
+		}
+	}else if(idCubie==4){
+		//middle left yellow/green
+		if(normal==x){
+			c = black;
+		}else if(normal==y){
+			c = black;
+		}else if(normal==z){
+			c = yellow;
+		}else if(normal==xn){
+			c = green;
+		}else if(normal==yn){
+			c = black;
+		}else if(normal==zn){
+			c = black;
+		}
+	}else if(idCubie==5){
+		//middle center green
+		if(normal==x){
+			c = black;
+		}else if(normal==y){
+			c = black;
+		}else if(normal==z){
+			c = black;
+		}else if(normal==xn){
+			c = green;
+		}else if(normal==yn){
+			c = black;
+		}else if(normal==zn){
+			c = black;
+		}
+	}else if(idCubie==6){
+		//middle right white/green
+		if(normal==x){
+			c = black;
+		}else if(normal==y){
+			c = black;
+		}else if(normal==z){
+			c = black;
+		}else if(normal==xn){
+			c = green;
+		}else if(normal==yn){
+			c = black;
+		}else if(normal==zn){
+			c = white;
+		}
+	}else if(idCubie==7){
+		//middle center white
+		if(normal==x){
+			c = black;
+		}else if(normal==y){
+			c = black;
+		}else if(normal==z){
+			c = black;
+		}else if(normal==xn){
+			c = black;
+		}else if(normal==yn){
+			c = black;
+		}else if(normal==zn){
+			c = white;
+		}
+	}else if(idCubie==8){
+		//center left white/blue
+		if(normal==x){
+			c = blue;
+		}else if(normal==y){
+			c = black;
+		}else if(normal==z){
+			c = black;
+		}else if(normal==xn){
+			c = black;
+		}else if(normal==yn){
+			c = black;
+		}else if(normal==zn){
+			c = white;
+		}
+	}else if(idCubie==9){
+		//top center
+		if(normal==x){
+			c = black;
+		}else if(normal==y){
+			c = black;
+		}else if(normal==z){
+			c = black;
+		}else if(normal==xn){
+			c = black;
+		}else if(normal==yn){
+			c = red;
+		}else if(normal==zn){
+			c = black;
+		}
+	}else if(idCubie==10){
+		//top middle red/blue
+		if(normal==x){
+			c = blue;
+		}else if(normal==y){
+			c = black;
+		}else if(normal==z){
+			c = black;
+		}else if(normal==xn){
+			c = black;
+		}else if(normal==yn){
+			c = red;
+		}else if(normal==zn){
+			c = black;
+		}
+	}else if(idCubie==11){
+		//top right red/yello/blue
+		if(normal==x){
+			c = blue;
+		}else if(normal==y){
+			c = black;
+		}else if(normal==z){
+			c = yellow;
+		}else if(normal==xn){
+			c = black;
+		}else if(normal==yn){
+			c = red;
+		}else if(normal==zn){
+			c = black;
+		}
+	}else if(idCubie==12){
+		//top middle red/yellow
+		if(normal==x){
+			c = black;
+		}else if(normal==y){
+			c = black;
+		}else if(normal==z){
+			c = yellow;
+		}else if(normal==xn){
+			c = black;
+		}else if(normal==yn){
+			c = red;
+		}else if(normal==zn){
+			c = black;
+		}
+	}else if(idCubie==13){
+		//top left red/yellow/green
+		if(normal==x){
+			c = black;
+		}else if(normal==y){
+			c = black;
+		}else if(normal==z){
+			c = yellow;
+		}else if(normal==xn){
+			c = green;
+		}else if(normal==yn){
+			c = red;
+		}else if(normal==zn){
+			c = black;
+		}
+	}else if(idCubie==14){
+		//top middle red/green
+		if(normal==x){
+			c = black;
+		}else if(normal==y){
+			c = black;
+		}else if(normal==z){
+			c = black;
+		}else if(normal==xn){
+			c = green;
+		}else if(normal==yn){
+			c = red;
+		}else if(normal==zn){
+			c = black;
+		}
+	}else if(idCubie==15){
+		//top right red/white/green
+		if(normal==x){
+			c = black;
+		}else if(normal==y){
+			c = black;
+		}else if(normal==z){
+			c = black;
+		}else if(normal==xn){
+			c = green;
+		}else if(normal==yn){
+			c = red;
+		}else if(normal==zn){
+			c = white;
+		}
+	}else if(idCubie==16){
+		//top middle red/white
+		if(normal==x){
+			c = black;
+		}else if(normal==y){
+			c = black;
+		}else if(normal==z){
+			c = black;
+		}else if(normal==xn){
+			c = black;
+		}else if(normal==yn){
+			c = red;
+		}else if(normal==zn){
+			c = white;
+		}
+	}else if(idCubie==17){
+		//top left red/blue/white
+		if(normal==x){
+			c = blue;
+		}else if(normal==y){
+			c = black;
+		}else if(normal==z){
+			c = black;
+		}else if(normal==xn){
+			c = black;
+		}else if(normal==yn){
+			c = red;
+		}else if(normal==zn){
+			c = white;
+		}
+	}else if(idCubie==18){
+		//bottom center orange
+		if(normal==x){
+			c = black;
+		}else if(normal==y){
+			c = orange;
+		}else if(normal==z){
+			c = black;
+		}else if(normal==xn){
+			c = black;
+		}else if(normal==yn){
+			c = black;
+		}else if(normal==zn){
+			c = black;
+		}
+	}else if(idCubie==19){
+		//middle blue/orange
+		if(normal==x){
+			c = blue;
+		}else if(normal==y){
+			c = orange;
+		}else if(normal==z){
+			c = black;
+		}else if(normal==xn){
+			c = black;
+		}else if(normal==yn){
+			c = black;
+		}else if(normal==zn){
+			c = black;
+		}
+	}else if(idCubie==20){
+		//bottom right yellow/blur/orange
+		if(normal==x){
+			c = blue;
+		}else if(normal==y){
+			c = orange;
+		}else if(normal==z){
+			c = yellow;
+		}else if(normal==xn){
+			c = black;
+		}else if(normal==yn){
+			c = black;
+		}else if(normal==zn){
+			c = black;
+		}
+	}else if(idCubie==21){
+		//botom middle yellow/orange
+		if(normal==x){
+			c = black;
+		}else if(normal==y){
+			c = orange;
+		}else if(normal==z){
+			c = yellow;
+		}else if(normal==xn){
+			c = black;
+		}else if(normal==yn){
+			c = black;
+		}else if(normal==zn){
+			c = black;
+		}
+	}else if(idCubie==22){
+		//bottom left yellow/green/orange
+		if(normal==x){
+			c = black;
+		}else if(normal==y){
+			c = orange;
+		}else if(normal==z){
+			c = yellow;
+		}else if(normal==xn){
+			c = green;
+		}else if(normal==yn){
+			c = black;
+		}else if(normal==zn){
+			c = black;
+		}
+	}if(idCubie==23){
+		//bottom middle green/orange
+		if(normal==x){
+			c = black;
+		}else if(normal==y){
+			c = orange;
+		}else if(normal==z){
+			c = black;
+		}else if(normal==xn){
+			c = green;
+		}else if(normal==yn){
+			c = black;
+		}else if(normal==zn){
+			c = black;
+		}
+	}else if(idCubie==24){
+		//bottom left white/green/orange
+		if(normal==x){
+			c = black;
+		}else if(normal==y){
+			c = orange;
+		}else if(normal==z){
+			c = black;
+		}else if(normal==xn){
+			c = green;
+		}else if(normal==yn){
+			c = black;
+		}else if(normal==zn){
+			c = white;
+		}
+	}else if(idCubie==25){
+		//bottom middle white/orange
+		if(normal==x){
+			c = black;
+		}else if(normal==y){
+			c = orange;
+		}else if(normal==z){
+			c = black;
+		}else if(normal==xn){
+			c = black;
+		}else if(normal==yn){
+			c = black;
+		}else if(normal==zn){
+			c = white;
+		}
+	}else if(idCubie==26){
+		//bottom right white/blue/orange
+		if(normal==x){
+			c = blue;
+		}else if(normal==y){
+			c = orange;
+		}else if(normal==z){
+			c = black;
+		}else if(normal==xn){
+			c = black;
+		}else if(normal==yn){
+			c = black;
+		}else if(normal==zn){
+			c = white;
+		}
+	}
+	return c;
+}
+//------------------------------------------------------------------------------
+ofColor ofRender::decideColorCubieIcosahedron(ofPoint normal, int idCubie){
+	//takes into account the number of the cubie son it can decide the colors for that specific cubie
+	//decides a color according to a normal direction
+	// 6 colores are taken as base color (normal rubiks color)
+	//1 more color is used on cubies : BLACK for the inside of each cubie
+
+	ofFloatColor c;
+	ofPoint x = ofPoint(1,0,0);
+	ofPoint y = ofPoint(0,1,0);
+	ofPoint z = ofPoint(0,0,1);
+	ofPoint xn = ofPoint(-1,0,0);
+	ofPoint yn = ofPoint(0,-1,0);
+	ofPoint zn = ofPoint(0,0,-1);
+
+	if(idCubie==0){
+		//this is the center piece!! what to do with this??
+		if(normal==x){
+			c = cyan;
+		}else if(normal==y){
+			c = cyan;
+		}else if(normal==z){
+			c = cyan;
+		}else if(normal==xn){
+			c = cyan;
+		}else if(normal==yn){
+			c = cyan;
+		}else if(normal==zn){
+			c = cyan;
+		}
+	}else if (idCubie==1){
+		//middle center blue
+
+		if(normal==x){
+			c = blue;
+		}else if(normal==y){
+			c = black;
+		}else if(normal==z){
+			c = black;
+		}else if(normal==xn){
+			c = black;
+		}else if(normal==yn){
+			c = black;
+		}else if(normal==zn){
+			c = black;
+		}
+	}else if (idCubie==2){
+		//middle right yellow.blue
+		if(normal==x){
+			c = blue;
+		}else if(normal==y){
+			c = black;
+		}else if(normal==z){
+			c = yellow;
+		}else if(normal==xn){
+			c = black;
+		}else if(normal==yn){
+			c = black;
+		}else if(normal==zn){
+			c = black;
+		}
+	}else if (idCubie==3){
+		//middle center yellow
+		if(normal==x){
+			c = black;
+		}else if(normal==y){
+			c = black;
+		}else if(normal==z){
+			c = yellow;
+		}else if(normal==xn){
+			c = black;
+		}else if(normal==yn){
+			c = black;
+		}else if(normal==zn){
+			c = black;
+		}
+	}else if(idCubie==4){
+		//middle left yellow/green
+		if(normal==x){
+			c = black;
+		}else if(normal==y){
+			c = black;
+		}else if(normal==z){
+			c = yellow;
+		}else if(normal==xn){
+			c = green;
+		}else if(normal==yn){
+			c = black;
+		}else if(normal==zn){
+			c = black;
+		}
+	}else if(idCubie==5){
+		//middle center green
+		if(normal==x){
+			c = black;
+		}else if(normal==y){
+			c = black;
+		}else if(normal==z){
+			c = black;
+		}else if(normal==xn){
+			c = green;
+		}else if(normal==yn){
+			c = black;
+		}else if(normal==zn){
+			c = black;
+		}
+	}else if(idCubie==6){
+		//middle right white/green
+		if(normal==x){
+			c = black;
+		}else if(normal==y){
+			c = black;
+		}else if(normal==z){
+			c = black;
+		}else if(normal==xn){
+			c = green;
+		}else if(normal==yn){
+			c = black;
+		}else if(normal==zn){
+			c = white;
+		}
+	}else if(idCubie==7){
+		//middle center white
+		if(normal==x){
+			c = black;
+		}else if(normal==y){
+			c = black;
+		}else if(normal==z){
+			c = black;
+		}else if(normal==xn){
+			c = black;
+		}else if(normal==yn){
+			c = black;
+		}else if(normal==zn){
+			c = white;
+		}
+	}else if(idCubie==8){
+		//center left white/blue
+		if(normal==x){
+			c = blue;
+		}else if(normal==y){
+			c = black;
+		}else if(normal==z){
+			c = black;
+		}else if(normal==xn){
+			c = black;
+		}else if(normal==yn){
+			c = black;
+		}else if(normal==zn){
+			c = white;
+		}
+	}else if(idCubie==9){
+		//top center
+		if(normal==x){
+			c = black;
+		}else if(normal==y){
+			c = black;
+		}else if(normal==z){
+			c = black;
+		}else if(normal==xn){
+			c = black;
+		}else if(normal==yn){
+			c = red;
+		}else if(normal==zn){
+			c = black;
+		}
+	}else if(idCubie==10){
+		//top middle red/blue
+		if(normal==x){
+			c = blue;
+		}else if(normal==y){
+			c = black;
+		}else if(normal==z){
+			c = black;
+		}else if(normal==xn){
+			c = black;
+		}else if(normal==yn){
+			c = red;
+		}else if(normal==zn){
+			c = black;
+		}
+	}else if(idCubie==11){
+		//top right red/yello/blue
+		if(normal==x){
+			c = blue;
+		}else if(normal==y){
+			c = black;
+		}else if(normal==z){
+			c = yellow;
+		}else if(normal==xn){
+			c = black;
+		}else if(normal==yn){
+			c = red;
+		}else if(normal==zn){
+			c = black;
+		}
+	}else if(idCubie==12){
+		//top middle red/yellow
+		if(normal==x){
+			c = black;
+		}else if(normal==y){
+			c = black;
+		}else if(normal==z){
+			c = yellow;
+		}else if(normal==xn){
+			c = black;
+		}else if(normal==yn){
+			c = red;
+		}else if(normal==zn){
+			c = black;
+		}
+	}else if(idCubie==13){
+		//top left red/yellow/green
+		if(normal==x){
+			c = black;
+		}else if(normal==y){
+			c = black;
+		}else if(normal==z){
+			c = yellow;
+		}else if(normal==xn){
+			c = green;
+		}else if(normal==yn){
+			c = red;
+		}else if(normal==zn){
+			c = black;
+		}
+	}else if(idCubie==14){
+		//top middle red/green
+		if(normal==x){
+			c = black;
+		}else if(normal==y){
+			c = black;
+		}else if(normal==z){
+			c = black;
+		}else if(normal==xn){
+			c = green;
+		}else if(normal==yn){
+			c = red;
+		}else if(normal==zn){
+			c = black;
+		}
+	}else if(idCubie==15){
+		//top right red/white/green
+		if(normal==x){
+			c = black;
+		}else if(normal==y){
+			c = black;
+		}else if(normal==z){
+			c = black;
+		}else if(normal==xn){
+			c = green;
+		}else if(normal==yn){
+			c = red;
+		}else if(normal==zn){
+			c = white;
+		}
+	}else if(idCubie==16){
+		//top middle red/white
+		if(normal==x){
+			c = black;
+		}else if(normal==y){
+			c = black;
+		}else if(normal==z){
+			c = black;
+		}else if(normal==xn){
+			c = black;
+		}else if(normal==yn){
+			c = red;
+		}else if(normal==zn){
+			c = white;
+		}
+	}else if(idCubie==17){
+		//top left red/blue/white
+		if(normal==x){
+			c = blue;
+		}else if(normal==y){
+			c = black;
+		}else if(normal==z){
+			c = black;
+		}else if(normal==xn){
+			c = black;
+		}else if(normal==yn){
+			c = red;
+		}else if(normal==zn){
+			c = white;
+		}
+	}else if(idCubie==18){
+		//bottom center orange
+		if(normal==x){
+			c = black;
+		}else if(normal==y){
+			c = orange;
+		}else if(normal==z){
+			c = black;
+		}else if(normal==xn){
+			c = black;
+		}else if(normal==yn){
+			c = black;
+		}else if(normal==zn){
+			c = black;
+		}
+	}else if(idCubie==19){
+		//middle blue/orange
+		if(normal==x){
+			c = blue;
+		}else if(normal==y){
+			c = orange;
+		}else if(normal==z){
+			c = black;
+		}else if(normal==xn){
+			c = black;
+		}else if(normal==yn){
+			c = black;
+		}else if(normal==zn){
+			c = black;
+		}
+	}else if(idCubie==20){
+		//bottom right yellow/blur/orange
+		if(normal==x){
+			c = blue;
+		}else if(normal==y){
+			c = orange;
+		}else if(normal==z){
+			c = yellow;
+		}else if(normal==xn){
+			c = black;
+		}else if(normal==yn){
+			c = black;
+		}else if(normal==zn){
+			c = black;
+		}
+	}else if(idCubie==21){
+		//botom middle yellow/orange
+		if(normal==x){
+			c = black;
+		}else if(normal==y){
+			c = orange;
+		}else if(normal==z){
+			c = yellow;
+		}else if(normal==xn){
+			c = black;
+		}else if(normal==yn){
+			c = black;
+		}else if(normal==zn){
+			c = black;
+		}
+	}else if(idCubie==22){
+		//bottom left yellow/green/orange
+		if(normal==x){
+			c = black;
+		}else if(normal==y){
+			c = orange;
+		}else if(normal==z){
+			c = yellow;
+		}else if(normal==xn){
+			c = green;
+		}else if(normal==yn){
+			c = black;
+		}else if(normal==zn){
+			c = black;
+		}
+	}if(idCubie==23){
+		//bottom middle green/orange
+		if(normal==x){
+			c = black;
+		}else if(normal==y){
+			c = orange;
+		}else if(normal==z){
+			c = black;
+		}else if(normal==xn){
+			c = green;
+		}else if(normal==yn){
+			c = black;
+		}else if(normal==zn){
+			c = black;
+		}
+	}else if(idCubie==24){
+		//bottom left white/green/orange
+		if(normal==x){
+			c = black;
+		}else if(normal==y){
+			c = orange;
+		}else if(normal==z){
+			c = black;
+		}else if(normal==xn){
+			c = green;
+		}else if(normal==yn){
+			c = black;
+		}else if(normal==zn){
+			c = white;
+		}
+	}else if(idCubie==25){
+		//bottom middle white/orange
+		if(normal==x){
+			c = black;
+		}else if(normal==y){
+			c = orange;
+		}else if(normal==z){
+			c = black;
+		}else if(normal==xn){
+			c = black;
+		}else if(normal==yn){
+			c = black;
+		}else if(normal==zn){
+			c = white;
+		}
+	}else if(idCubie==26){
+		//bottom right white/blue/orange
+		if(normal==x){
+			c = blue;
+		}else if(normal==y){
+			c = orange;
+		}else if(normal==z){
+			c = black;
+		}else if(normal==xn){
+			c = black;
+		}else if(normal==yn){
+			c = black;
+		}else if(normal==zn){
+			c = white;
+		}
+	}
+	return c;
+}
+//-----------------------------------------------------------------------------------------------
+ofColor ofRender::decideColorCubieOctahedron(ofPoint normal, int idCubie){
+	//takes into account the number of the cubie son it can decide the colors for that specific cubie
+	//decides a color according to a normal direction
+	// 6 colores are taken as base color (normal rubiks color)
+	//1 more color is used on cubies : BLACK for the inside of each cubie
+
+	ofFloatColor c;
+	ofPoint x = ofPoint(1,0,0);
+	ofPoint y = ofPoint(0,1,0);
+	ofPoint z = ofPoint(0,0,1);
+	ofPoint xn = ofPoint(-1,0,0);
+	ofPoint yn = ofPoint(0,-1,0);
+	ofPoint zn = ofPoint(0,0,-1);
+
+	if(idCubie==0){
+		//this is the center piece!! what to do with this??
+		if(normal==x){
+			c = cyan;
+		}else if(normal==y){
+			c = cyan;
+		}else if(normal==z){
+			c = cyan;
+		}else if(normal==xn){
+			c = cyan;
+		}else if(normal==yn){
+			c = cyan;
+		}else if(normal==zn){
+			c = cyan;
+		}
+	}else if (idCubie==1){
+		//middle center blue
+
+		if(normal==x){
+			c = blue;
+		}else if(normal==y){
+			c = blue;
+		}else if(normal==z){
+			c = blue;
+		}else if(normal==xn){
+			c = black;
+		}else if(normal==yn){
+			c = blue;
+		}else if(normal==zn){
+			c = blue;
 		}
 	}else if (idCubie==2){
 		//middle right yellow.blue

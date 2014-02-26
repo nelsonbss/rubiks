@@ -2,9 +2,10 @@
 #include "sgCore.h"
 #include "ofRender.h"
 
-cubie::cubie(float x, float y,float z, int idi){
+cubie::cubie(float x, float y,float z, int idi, int selObjId){
 	objects = NULL;
 	id = idi;
+	selectedObjectID = selObjId;
 	pos.x = x;
 	pos.y = y;
 	pos.z = z;
@@ -394,7 +395,7 @@ void cubie::faceRotate(SG_VECTOR axis,bool di){
 	}
 }
 //-------------------------------------------------------------------------------------------------------------------------------------------
-void cubie::setObjects(sgCGroup *objs,int cubieId,bool plain){
+void cubie::setObjects(sgCGroup *objs,int cubieId){
 	////it receives a group, when Puzzle loadsPieces(ySlicer->getPieces())  on main
 	////it takes the input group and breaks it, to put parts on cubie group "objects"
 	if(objs != NULL){
@@ -423,7 +424,7 @@ void cubie::setObjects(sgCGroup *objs,int cubieId,bool plain){
 			sgC3DObject *o = (sgC3DObject*)temp->Clone();
 			o->Triangulate(SG_VERTEX_TRIANGULATION);
 			//convert to ofMEsh with cubie ID!!!
-			ofr->sgCoretoOFmesh(o,tempMesh,cubieId,plain); //give cubie id!! so that it knows how to color it, lain or not
+			ofr->sgCoretoOFmesh(o,tempMesh,cubieId,selectedObjectID); //give cubie id!! so that it knows how to color the inside walls black
 			myMeshs.push_back(tempMesh);
 			ofVbo tempVbo;
 			tempVbo.setMesh(tempMesh, GL_STATIC_DRAW);

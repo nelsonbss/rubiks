@@ -345,10 +345,10 @@ void game::createPuzzle(SG_VECTOR p){
 		//////////////////////////////create puzzle////////////////////////////////////////
 		if(objectID == 4){
 			//bunny
-			myPuzzle->loadPieces(mySlicer->getPieces(),true); // plain color
+			myPuzzle->loadPieces(mySlicer->getPieces(),objectID); // plain color
 		}else{
 			//cube and others
-			myPuzzle->loadPieces(mySlicer->getPieces(),false); //rubiks colors
+			myPuzzle->loadPieces(mySlicer->getPieces(),objectID); //rubiks colors
 		}
 		////////////////////////////////end create puzzle//////////////////////////////////
 

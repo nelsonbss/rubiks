@@ -94,14 +94,14 @@ int puzzle::giveNumCubies(){
 	return aux;
 }
 //--------------------------------------------------------------
-void puzzle::loadPieces(sgCGroup **pcs,bool plain){
+void puzzle::loadPieces(sgCGroup **pcs,int selObjId){
 	//it loads the pieces that the slicer made, the pieces are in a sgCGroup** pieces[], 
 	//this function receives a copy of that sgCGroup** made by mySlicer->getPieces()
 	//it loads them into its own cubies
 	//create cubies
 	//so each time there is a new boolean operation, whole new cubies get created with variables in zero or blank
 	for(int i =0;i<numPieces;i++){
-		cubie *auxCubie = new cubie(pos.x,pos.y,pos.z,i+1);// is this really creating independent instances of cubie??
+		cubie *auxCubie = new cubie(pos.x,pos.y,pos.z,i+1,selObjId);// is this really creating independent instances of cubie??
 		//auxCubie->setup();
 		//add this cubie to mycubies[]
 		myCubies[i] = auxCubie;
@@ -128,7 +128,8 @@ void puzzle::loadPieces(sgCGroup **pcs,bool plain){
 			//make them a group
 			cubieGroup = sgCGroup::CreateGroup(obj,realNumPieces);  
 			//put that gorup inside temp cubie
-			myCubies[i]->setObjects(cubieGroup,i,plain);//here goes the group of clones from the iriginal slicing pieces[]
+			myCubies[i]->setObjects(cubieGroup,i);//here goes the group of clones from the iriginal slicing pieces[]
+			//i is the cubie ID
 			//put that cubie on the cubies[]
 
 			free(obj);
@@ -144,7 +145,7 @@ void puzzle::loadPieces(sgCGroup **pcs,bool plain){
 
 			sgDeleteObject(part);
 		}else{
-			myCubies[i]->setObjects(NULL,i,true);
+			myCubies[i]->setObjects(NULL,i);
 		}
 
 	}

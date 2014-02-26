@@ -25,6 +25,7 @@ public:
 
 	sgCGroup *objects;
 	float numObjs;
+	float getNumObjs();
 	sgC3DObject **objectList;
 	vector<ofMesh> myMeshs; // this will be used to store the objet to be drawn 
 	vector<ofVbo>  myVbos;
@@ -67,11 +68,12 @@ public:
 
 	//undo
 	bool undoing;
+	void unDo(SG_VECTOR axis,bool di);
 
 	///color change
 	void changeColorToColor(ofFloatColor Sc, ofFloatColor Tc);
 
-	void unDo(SG_VECTOR axis,bool di);
+	
 };
 
 #endif /* defined(__Tcubie__cubie__) */

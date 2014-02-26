@@ -87,38 +87,38 @@ void ofRender::sgCoretoOFmesh(sgC3DObject *obj, ofMesh &mesh,int idCubie,int sel
 			c = mate;//colorsVector[0];//mate
 		}
 		else{
-			//it is a puzzle cubie
-			if(selObjId == 4){
-				//plain color, used for bunny
-				c = cyan;
-			}else{
-				//put colors for regular rubiks cube
-				//torus
-				//cube
-				//for now
-				if(selObjId ==1 || selObjId == 2){
-					c = decideColorCubieBox(decideAxis(dir),idCubie);
-				}else if(selObjId == 3 ){
-					//pyramid
-					c = decideColorCubiePyramid(decideAxis(dir),idCubie);
-				}else if(selObjId == 4 ){
-					//Pyramid
-					c = decideColorCubiePyramid(dir,idCubie);
-				}else if(selObjId == 5 ){
-					//Dodecahedron
-					c = decideColorCubieDodecahedron(decideAxis(dir),idCubie);
-				}else if(selObjId == 6 ){
-					//Icosahedron
-					c = decideColorCubieIcosahedron(decideAxis(dir),idCubie);
-				}else if(selObjId == 7 ){
-					//Octahedron
-					c = decideColorCubieOctahedron(decideAxis(dir),idCubie);
-				}
-				else{
-					//teapot for now
-					c = black;
-				}
-			}
+			////it is a puzzle cubie
+			//if(selObjId == 4){
+			//	//plain color, used for bunny
+			//	c = cyan;
+			//}else{
+			//	//put colors for regular rubiks cube
+			//	//torus
+			//	//cube
+			//	//for now
+			//	if(selObjId ==1 || selObjId == 2){
+			//		c = decideColorCubieBox(decideAxis(dir),idCubie);
+			//	}else if(selObjId == 3 ){
+			//		//pyramid
+			//		c = decideColorCubiePyramid(decideAxis(dir),idCubie);
+			//	}else if(selObjId == 4 ){
+			//		//Pyramid
+			//		c = decideColorCubiePyramid(dir,idCubie);
+			//	}else if(selObjId == 5 ){
+			//		//Dodecahedron
+			//		c = decideColorCubieDodecahedron(decideAxis(dir),idCubie);
+			//	}else if(selObjId == 6 ){
+			//		//Icosahedron
+			//		c = decideColorCubieIcosahedron(decideAxis(dir),idCubie);
+			//	}else if(selObjId == 7 ){
+			//		//Octahedron
+			//		c = decideColorCubieOctahedron(decideAxis(dir),idCubie);
+			//	}
+			//	else{
+			//		//teapot for now
+			//		c = black;
+			//	}
+			//}
 		}
 
 		colorsVector.push_back(c);

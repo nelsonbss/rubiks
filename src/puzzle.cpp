@@ -137,7 +137,7 @@ void puzzle::loadPieces(sgCGroup **pcs,int selObjId){
 			if(allParts != NULL){
 				for (int j=0; j < ChCnt; j++){
 					if(allParts[j] != NULL){
-					sgCObject::DeleteObject(allParts[j]);
+						sgCObject::DeleteObject(allParts[j]);
 					}
 				}
 				free(allParts);
@@ -360,6 +360,34 @@ void puzzle::rearange3dArray(SG_VECTOR axis, int plane, bool dir){
 		}
 	}
 
+}
+//----------------------------------------------------------------
+void puzzle::colorFaces(){
+	//goes through each cubie and makes sets of normals.. to determine all different normals in the object
+	//i.e. this will give 8 + 6 faces for octahedor
+	vector< ofVec3f > tnormals;
+	vector< ofFloatColor > tcolors;
+
+	//create sets of distitnct normals from all the meshes of all the cubies of the puzzle
+	vector< ofVec3f > uniqueNormals;
+	for(int i=0;i<numPieces;i++){
+		float meshesCubie =  myCubies[i]->getNumObjs();
+		for (int j = 0 ; j< meshesCubie; j++){
+			tnormals = myCubies[i]->myMeshs[j].getNormals();
+			//verify each normal value on uniquenormals vector
+			for(int n=0; n< tnormals.size() ; n++){
+				ofVec3f tn = tnormals[n];
+				if(uniqueNormals.size() == 0){
+					uniqueNormals.push_back (tn);
+				}else{
+					//it has at least one normal
+
+				}
+			}
+
+		}
+
+	}
 }
 //---------------------------------------------------------------
 void puzzle::changeColorToColor(ofFloatColor Sc, ofFloatColor Tc){

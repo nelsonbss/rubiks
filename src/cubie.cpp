@@ -453,6 +453,10 @@ void cubie::move(SG_VECTOR p){
 int cubie::getId(){
 	return id;
 }
+//-------------------------------------------------------------
+float cubie::getNumObjs(){
+	return numObjs;
+}
 //--------------------------------------------------------------
 void cubie::unDo(SG_VECTOR axis,bool di){
 	//it removes the las element on the vector with the history of each cubie

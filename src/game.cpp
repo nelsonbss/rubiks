@@ -352,6 +352,11 @@ void game::createPuzzle(SG_VECTOR p){
 		}
 		////////////////////////////////end create puzzle//////////////////////////////////
 
+		///////////////////////////////  color puzzle   ////////////////////////////////// 
+		//color all the faces for platonic solids!!
+		//myPuzzle->colorFaces();
+		//color black all the inside faces of each cubie (after all other face colors have been applied)
+
 		updatePuzzle = true;
 		step = 4;
 	}

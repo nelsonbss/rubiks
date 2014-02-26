@@ -14,18 +14,19 @@ ofRender::ofRender(){
 	black = ofFloatColor(0,0,0);
 	cyan = ofFloatColor(0,1,1);
 
-	//colorsVector.push_back(mate);//0
-	//colorsVector.push_back(green);//1
-	//colorsVector.push_back(orange);//2
-	//colorsVector.push_back(white);//3
-	//colorsVector.push_back(blue);//4
-	//colorsVector.push_back(red);//5
-	//colorsVector.push_back(yellow);//6
-	//colorsVector.push_back(black);//7
-	//colorsVector.push_back(cyan);//8
+	colorsVector.push_back(ofFloatColor(1.0,1.0,1.0,1.0));//0 - solid mate
+	colorsVector.push_back(green);//1
+	colorsVector.push_back(orange);//2
+	colorsVector.push_back(white);//3
+	colorsVector.push_back(blue);//4
+	colorsVector.push_back(red);//5
+	colorsVector.push_back(yellow);//6
+	colorsVector.push_back(black);//7
+	colorsVector.push_back(cyan);//8
 }
 
 void ofRender::sgCoretoOFmesh(sgC3DObject *obj, ofMesh &mesh,int idCubie,int selObjId){
+	vector <ofFloatColor> colorsVector2;
 	//convert to of mesh and draw as of
 	mesh.setMode(OF_PRIMITIVE_TRIANGLES);
 
@@ -84,48 +85,46 @@ void ofRender::sgCoretoOFmesh(sgC3DObject *obj, ofMesh &mesh,int idCubie,int sel
 			c = decideColor(decideAxis(dir));
 		}else if (idCubie == -2){
 			//its an original shape// with plain color
-			c = mate;//colorsVector[0];//mate
+			c = mate;//colorsVector2[0];//mate
 		}
 		else{
-			////it is a puzzle cubie
-			//if(selObjId == 4){
-			//	//plain color, used for bunny
-			//	c = cyan;
-			//}else{
-			//	//put colors for regular rubiks cube
-			//	//torus
-			//	//cube
-			//	//for now
-			//	if(selObjId ==1 || selObjId == 2){
-			//		c = decideColorCubieBox(decideAxis(dir),idCubie);
-			//	}else if(selObjId == 3 ){
-			//		//pyramid
-			//		c = decideColorCubiePyramid(decideAxis(dir),idCubie);
-			//	}else if(selObjId == 4 ){
-			//		//Pyramid
-			//		c = decideColorCubiePyramid(dir,idCubie);
-			//	}else if(selObjId == 5 ){
-			//		//Dodecahedron
-			//		c = decideColorCubieDodecahedron(decideAxis(dir),idCubie);
-			//	}else if(selObjId == 6 ){
-			//		//Icosahedron
-			//		c = decideColorCubieIcosahedron(decideAxis(dir),idCubie);
-			//	}else if(selObjId == 7 ){
-			//		//Octahedron
-			//		c = decideColorCubieOctahedron(decideAxis(dir),idCubie);
-			//	}
-			//	else{
-			//		//teapot for now
-			//		c = black;
-			//	}
-			//}
+			//it is a puzzle cubie
+			if(selObjId == 4){
+				//plain color, used for bunny
+				c = cyan;
+			}else{
+				//put colors for regular rubiks cube
+				//torus
+				//cube
+				//for now
+				if(selObjId ==1 || selObjId == 2){
+					c = decideColorCubieBox(decideAxis(dir),idCubie);
+				}
+				//else if(selObjId == 3 ){
+				//	//Pyramid
+				//	c = decideColorCubiePyramid(dir,idCubie);
+				//}else if(selObjId == 5 ){
+				//	//Dodecahedron
+				//	c = decideColorCubieDodecahedron(decideAxis(dir),idCubie);
+				//}else if(selObjId == 6 ){
+				//	//Icosahedron
+				//	c = decideColorCubieIcosahedron(decideAxis(dir),idCubie);
+				//}else if(selObjId == 7 ){
+				//	//Octahedron
+				//	c = decideColorCubieOctahedron(decideAxis(dir),idCubie);
+				//}
+				//else{
+				//	//teapot for now
+				//	c = black;
+				//}
+			}
 		}
 
-		colorsVector.push_back(c);
-		colorsVector.push_back(c);
-		colorsVector.push_back(c);
+		colorsVector2.push_back(c);
+		colorsVector2.push_back(c);
+		colorsVector2.push_back(c);
 	}
-	mesh.addColors(colorsVector);
+	mesh.addColors(colorsVector2);
 	//ofFloatColor * col = mesh.getColorsPointer();
 	////setup indices
 	//mesh.setupIndicesAuto();
@@ -150,6 +149,436 @@ void ofRender::changeColorToColor(ofFloatColor Sc, ofFloatColor Tc, ofMesh &mesh
 	//replace the colors vector on the mesh
 	mesh.clearColors();
 	mesh.addColors(colorsVectorT);
+}
+//--------------------------------------------------------------------------------------------------------------
+void ofRender::colorBlackSides(ofMesh &mesh, int idCubie){
+	//color black the correct sides of each cubie
+	vector< ofVec3f > tnormals;
+	vector< ofFloatColor > tcolors;
+	ofPoint x = ofPoint(1,0,0);
+	ofPoint y = ofPoint(0,1,0);
+	ofPoint z = ofPoint(0,0,1);
+	ofPoint xn = ofPoint(-1,0,0);
+	ofPoint yn = ofPoint(0,-1,0);
+	ofPoint zn = ofPoint(0,0,-1);
+	ofFloatColor c;
+
+	tnormals = mesh.getNormals();
+	tcolors = mesh.getColors();
+
+	//check each normal
+	//decide according to cubie[num]
+	for(int i=0; i<tnormals.size(); i++){
+		if(idCubie==0){
+			//this is the center piece!! what to do with this??
+			//if(tnormals[i]==x){
+			//	c = cyan;
+			//}else if(tnormals[i]==y){
+			//	c = cyan;
+			//}else if(tnormals[i]==z){
+			//	c = cyan;
+			//}else if(tnormals[i]==xn){
+			//	c = cyan;
+			//}else if(tnormals[i]==yn){
+			//	c = cyan;
+			//}else if(tnormals[i]==zn){
+			//	c = cyan;
+			//}else{
+			//	//leave same color
+			//	c = tcolors[i];
+			//}
+			tcolors[i] =  black;
+		}else if (idCubie==1){
+			//middle center blue
+			if(decideAxis(tnormals[i])==y){
+				c = black;
+			}else if(decideAxis(tnormals[i])==z){
+				c = black;
+			}else if(decideAxis(tnormals[i])==xn){
+				c = black;
+			}else if(decideAxis(tnormals[i])==yn){
+				c = black;
+			}else if(decideAxis(tnormals[i])==zn){
+				c = black;
+			}else{
+				//leave same color
+				c = tcolors[i];
+			}
+			tcolors[i] =  c;
+		}else if (idCubie==2){
+			//middle right yellow.blue
+			if(decideAxis(tnormals[i])==y){
+				c = black;
+			}else if(decideAxis(tnormals[i])==xn){
+				c = black;
+			}else if(decideAxis(tnormals[i])==yn){
+				c = black;
+			}else if(decideAxis(tnormals[i])==zn){
+				c = black;
+			}else{
+				//leave same color
+				c = tcolors[i];
+			}
+			tcolors[i] =  c;
+		}else if (idCubie==3){
+			//middle center yellow
+			if(decideAxis(tnormals[i])==x){
+				c = black;
+			}else if(decideAxis(tnormals[i])==y){
+				c = black;
+			}else if(decideAxis(tnormals[i])==xn){
+				c = black;
+			}else if(decideAxis(tnormals[i])==yn){
+				c = black;
+			}else if(decideAxis(tnormals[i])==zn){
+				c = black;
+			}else{
+				//leave same color
+				c = tcolors[i];
+			}
+			tcolors[i] =  c;
+		}else if(idCubie==4){
+			//middle left yellow/green
+			if(decideAxis(tnormals[i])==x){
+				c = black;
+			}else if(decideAxis(tnormals[i])==y){
+				c = black;
+			}else if(decideAxis(tnormals[i])==yn){
+				c = black;
+			}else if(decideAxis(tnormals[i])==zn){
+				c = black;
+			}else{
+				//leave same color
+				c = tcolors[i];
+			}
+			tcolors[i] =  c;
+		}else if(idCubie==5){
+			//middle center green
+			if(decideAxis(tnormals[i])==x){
+				c = black;
+			}else if(decideAxis(tnormals[i])==y){
+				c = black;
+			}else if(decideAxis(tnormals[i])==z){
+				c = black;
+			}else if(decideAxis(tnormals[i])==yn){
+				c = black;
+			}else if(decideAxis(tnormals[i])==zn){
+				c = black;
+			}else{
+				//leave same color
+				c = tcolors[i];
+			}
+			tcolors[i] =  c;
+		}else if(idCubie==6){
+			//middle right white/green
+			if(decideAxis(tnormals[i])==x){
+				c = black;
+			}else if(decideAxis(tnormals[i])==y){
+				c = black;
+			}else if(decideAxis(tnormals[i])==z){
+				c = black;
+			}else if(decideAxis(tnormals[i])==yn){
+				c = black;
+			}else{
+				//leave same color
+				c = tcolors[i];
+			}
+			tcolors[i] =  c;
+		}else if(idCubie==7){
+			//middle center white
+			if(decideAxis(tnormals[i])==x){
+				c = black;
+			}else if(decideAxis(tnormals[i])==y){
+				c = black;
+			}else if(decideAxis(tnormals[i])==z){
+				c = black;
+			}else if(decideAxis(tnormals[i])==xn){
+				c = black;
+			}else if(decideAxis(tnormals[i])==yn){
+				c = black;
+			}else{
+				//leave same color
+				c = tcolors[i];
+			}
+			tcolors[i] =  c;
+		}else if(idCubie==8){
+			//center left white/blue
+			if(decideAxis(tnormals[i])==y){
+				c = black;
+			}else if(decideAxis(tnormals[i])==z){
+				c = black;
+			}else if(decideAxis(tnormals[i])==xn){
+				c = black;
+			}else if(decideAxis(tnormals[i])==yn){
+				c = black;
+			}else{
+				//leave same color
+				c = tcolors[i];
+			}
+			tcolors[i] =  c;
+		}else if(idCubie==9){
+			//top center
+			if(decideAxis(tnormals[i])==x){
+				c = black;
+			}else if(decideAxis(tnormals[i])==y){
+				c = black;
+			}else if(decideAxis(tnormals[i])==z){
+				c = black;
+			}else if(decideAxis(tnormals[i])==xn){
+				c = black;
+			}else if(decideAxis(tnormals[i])==zn){
+				c = black;
+			}else{
+				//leave same color
+				c = tcolors[i];
+			}
+			tcolors[i] =  c;
+		}else if(idCubie==10){
+			//top middle red/blue
+			if(decideAxis(tnormals[i])==y){
+				c = black;
+			}else if(decideAxis(tnormals[i])==z){
+				c = black;
+			}else if(decideAxis(tnormals[i])==xn){
+				c = black;
+			}else if(decideAxis(tnormals[i])==zn){
+				c = black;
+			}else{
+				//leave same color
+				c = tcolors[i];
+			}
+			tcolors[i] =  c;
+		}else if(idCubie==11){
+			//top right red/yello/blue
+			if(decideAxis(tnormals[i])==y){
+				c = black;
+			}else if(decideAxis(tnormals[i])==xn){
+				c = black;
+			}else if(decideAxis(tnormals[i])==zn){
+				c = black;
+			}else{
+				//leave same color
+				c = tcolors[i];
+			}
+			tcolors[i] =  c;
+		}else if(idCubie==12){
+			//top middle red/yellow
+			if(decideAxis(tnormals[i])==x){
+				c = black;
+			}else if(decideAxis(tnormals[i])==y){
+				c = black;
+			}else if(decideAxis(tnormals[i])==xn){
+				c = black;
+			}else if(decideAxis(tnormals[i])==zn){
+				c = black;
+			}else{
+				//leave same color
+				c = tcolors[i];
+			}
+			tcolors[i] =  c;
+		}else if(idCubie==13){
+			//top left red/yellow/green
+			if(decideAxis(tnormals[i])==x){
+				c = black;
+			}else if(decideAxis(tnormals[i])==y){
+				c = black;
+			}else if(decideAxis(tnormals[i])==zn){
+				c = black;
+			}else{
+				//leave same color
+				c = tcolors[i];
+			}
+			tcolors[i] =  c;
+		}else if(idCubie==14){
+			//top middle red/green
+			if(decideAxis(tnormals[i])==x){
+				c = black;
+			}else if(decideAxis(tnormals[i])==y){
+				c = black;
+			}else if(decideAxis(tnormals[i])==z){
+				c = black;
+			}else if(decideAxis(tnormals[i])==zn){
+				c = black;
+			}else{
+				//leave same color
+				c = tcolors[i];
+			}
+			tcolors[i] =  c;
+		}else if(idCubie==15){
+			//top right red/white/green
+			if(decideAxis(tnormals[i])==x){
+				c = black;
+			}else if(decideAxis(tnormals[i])==y){
+				c = black;
+			}else if(decideAxis(tnormals[i])==z){
+				c = black;
+			}else{
+				//leave same color
+				c = tcolors[i];
+			}
+			tcolors[i] =  c;
+		}else if(idCubie==16){
+			//top middle red/white
+			if(decideAxis(tnormals[i])==x){
+				c = black;
+			}else if(decideAxis(tnormals[i])==y){
+				c = black;
+			}else if(decideAxis(tnormals[i])==z){
+				c = black;
+			}else if(decideAxis(tnormals[i])==xn){
+				c = black;
+			}else{
+				//leave same color
+				c = tcolors[i];
+			}
+			tcolors[i] =  c;
+		}else if(idCubie==17){
+			//top left red/blue/white
+			if(decideAxis(tnormals[i])==y){
+				c = black;
+			}else if(decideAxis(tnormals[i])==z){
+				c = black;
+			}else if(decideAxis(tnormals[i])==xn){
+				c = black;
+			}else{
+				//leave same color
+				c = tcolors[i];
+			}
+			tcolors[i] =  c;
+		}else if(idCubie==18){
+			//bottom center orange
+			if(decideAxis(tnormals[i])==x){
+				c = black;
+			}else if(decideAxis(tnormals[i])==z){
+				c = black;
+			}else if(decideAxis(tnormals[i])==xn){
+				c = black;
+			}else if(decideAxis(tnormals[i])==yn){
+				c = black;
+			}else if(decideAxis(tnormals[i])==zn){
+				c = black;
+			}else{
+				//leave same color
+				c = tcolors[i];
+			}
+			tcolors[i] =  c;
+		}else if(idCubie==19){
+			//middle blue/orange
+			if(decideAxis(tnormals[i])==z){
+				c = black;
+			}else if(decideAxis(tnormals[i])==xn){
+				c = black;
+			}else if(decideAxis(tnormals[i])==yn){
+				c = black;
+			}else if(decideAxis(tnormals[i])==zn){
+				c = black;
+			}else{
+				//leave same color
+				c = tcolors[i];
+			}
+			tcolors[i] =  c;
+		}else if(idCubie==20){
+			//bottom right yellow/blue/orange
+			if(decideAxis(tnormals[i])==xn){
+				c = black;
+			}else if(decideAxis(tnormals[i])==yn){
+				c = black;
+			}else if(decideAxis(tnormals[i])==zn){
+				c = black;
+			}else{
+				//leave same color
+				c = tcolors[i];
+			}
+			tcolors[i] =  c;
+		}else if(idCubie==21){
+			//botom middle yellow/orange
+			if(decideAxis(tnormals[i])==x){
+				c = black;
+			}else if(decideAxis(tnormals[i])==xn){
+				c = black;
+			}else if(decideAxis(tnormals[i])==yn){
+				c = black;
+			}else if(decideAxis(tnormals[i])==zn){
+				c = black;
+			}else{
+				//leave same color
+				c = tcolors[i];
+			}
+			tcolors[i] =  c;
+		}else if(idCubie==22){
+			//bottom left yellow/green/orange
+			if(decideAxis(tnormals[i])==x){
+				c = black;
+			}else if(decideAxis(tnormals[i])==yn){
+				c = black;
+			}else if(decideAxis(tnormals[i])==zn){
+				c = black;
+			}else{
+				//leave same color
+				c = tcolors[i];
+			}
+			tcolors[i] =  c;
+		}if(idCubie==23){
+			//bottom middle green/orange
+			if(decideAxis(tnormals[i])==x){
+				c = black;
+			}else if(decideAxis(tnormals[i])==z){
+				c = black;
+			}else if(decideAxis(tnormals[i])==yn){
+				c = black;
+			}else if(decideAxis(tnormals[i])==zn){
+				c = black;
+			}else{
+				//leave same color
+				c = tcolors[i];
+			}
+			tcolors[i] =  c;
+		}else if(idCubie==24){
+			//bottom left white/green/orange
+			if(decideAxis(tnormals[i])==x){
+				c = black;
+			}else if(decideAxis(tnormals[i])==z){
+				c = black;
+			}else if(decideAxis(tnormals[i])==yn){
+				c = black;
+			}else{
+				//leave same color
+				c = tcolors[i];
+			}
+			tcolors[i] =  c;
+		}else if(idCubie==25){
+			//bottom middle white/orange
+			if(decideAxis(tnormals[i])==x){
+				c = black;
+			}else if(decideAxis(tnormals[i])==z){
+				c = black;
+			}else if(decideAxis(tnormals[i])==xn){
+				c = black;
+			}else if(decideAxis(tnormals[i])==yn){
+				c = black;
+			}else{
+				//leave same color
+				c = tcolors[i];
+			}
+			tcolors[i] =  c;
+		}else if(idCubie==26){
+			//bottom right white/blue/orange
+			if(decideAxis(tnormals[i])==z){
+				c = black;
+			}else if(decideAxis(tnormals[i])==xn){
+				c = black;
+			}else if(decideAxis(tnormals[i])==yn){
+				c = black;
+			}else{
+				//leave same color
+				c = tcolors[i];
+			}
+			tcolors[i] =  c;
+		}
+	}
+	//replace the colors vector on the mesh
+	mesh.clearColors();
+	mesh.addColors(tcolors);
 }
 //---------------------------------------------------------------------------------------------------------------
 ofPoint ofRender::decideAxis(ofPoint dir){
@@ -712,17 +1141,17 @@ ofColor ofRender::decideColorCubiePyramid(ofPoint normal, int idCubie){
 		//middle center blue
 
 		if(normal==x){
-			c = blue;
+			c = cyan;
 		}else if(normal==y){
-			c = black;
+			c = cyan;
 		}else if(normal==z){
-			c = black;
+			c = cyan;
 		}else if(normal==xn){
-			c = black;
+			c = cyan;
 		}else if(normal==yn){
-			c = black;
+			c = cyan;
 		}else if(normal==zn){
-			c = black;
+			c = cyan;
 		}
 	}else if (idCubie==2){
 		//middle right yellow.blue

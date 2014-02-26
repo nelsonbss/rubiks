@@ -21,7 +21,6 @@ public:
 	ofColor  decideColorCubieOctahedron(ofPoint normal,int numCubie);
 
 	vector <ofFloatColor> colorsVector;
-	ofFloatColor c;
 	ofFloatColor mate;
 	ofFloatColor green;
 	ofFloatColor orange;
@@ -33,6 +32,7 @@ public:
 	ofFloatColor cyan;
 
 	void changeColorToColor(ofFloatColor Sc, ofFloatColor Tc, ofMesh &mesh);
+	void colorBlackSides(ofMesh &mesh, int idCubie);
 };
 
 #endif /* defined(__TofRender__ofRender__) */

@@ -1,6 +1,7 @@
 #include "puzzle.h"
 #include "sgCore.h"
 #include "cubie.h"
+#include "ofRender.h"
 
 #include <vector>
 #include <iostream>
@@ -370,23 +371,94 @@ void puzzle::colorFaces(){
 
 	//create sets of distitnct normals from all the meshes of all the cubies of the puzzle
 	vector< ofVec3f > uniqueNormals;
+
 	for(int i=0;i<numPieces;i++){
 		float meshesCubie =  myCubies[i]->getNumObjs();
 		for (int j = 0 ; j< meshesCubie; j++){
 			tnormals = myCubies[i]->myMeshs[j].getNormals();
 			//verify each normal value on uniquenormals vector
 			for(int n=0; n< tnormals.size() ; n++){
-				ofVec3f tn = tnormals[n];
 				if(uniqueNormals.size() == 0){
-					uniqueNormals.push_back (tn);
+					//the first normal of all the normals
+					uniqueNormals.push_back (tnormals[n]);
 				}else{
 					//it has at least one normal
-
+					//compare current normal with all other normals
+					for(int un = 0; un < uniqueNormals.size(); un ++){
+						if(uniqueNormals[un] == tnormals[n]){
+							//we already have that type of normal
+							//stop looking through the vector
+							un = uniqueNormals.size();
+						}else{
+							//its different
+							//keep going until the last element
+							if(un == uniqueNormals.size()-1){
+								//its the las element on the vector of unique normals
+								//if we got here its because the current normal (cn) is new to the set
+								uniqueNormals.push_back(tnormals[n]);
+								//stop this for.. we just changed the size
+								un = uniqueNormals.size();
+							}
+						}
+					}
 				}
 			}
-
 		}
+	}
+	//at this point we have the unique normals of the object
+	//each of these normals should have a unique color
+	vector< ofFloatColor > uniqueColors;
+	//build roster of colors for the current object
+	ofRender *ofr = new ofRender();
 
+	for(int i =0; i< uniqueNormals.size(); i++){
+		//for each unique normal
+		//for now we select from 9 possible colors that we have right now
+		ofFloatColor x =  ofr->colorsVector[i%9];
+		uniqueColors.push_back(x);
+	}
+	free(ofr);
+	//now -> uniqueColors.size = uniqueNormals.size
+
+	//got through each cubie again
+	for(int i=0;i<numPieces;i++){
+		float meshesCubie =  myCubies[i]->getNumObjs();
+		for (int j = 0 ; j< meshesCubie; j++){
+			//got through each cubies meshes again
+			tnormals = myCubies[i]->myMeshs[j].getNormals();
+			tcolors = myCubies[i]->myMeshs[j].getColors();
+			//compare this normals to the uniqueNormals(index) to get the color from that uniqueColors(index)
+			//go through uniqueNormals
+			for(int un = 0; un<uniqueNormals.size();un++){
+				//compare each t normal with each unique normal
+				for(int n=0; n< tnormals.size() ; n++){
+					if(uniqueNormals[un] == tnormals[n]){
+						//if the cubies meshs normalis one of the unique normals
+						//we assign a color to that normal on the cubie
+						//the index of the tnormal that we are looking at, is the same on the tcolors vector
+						//the color that we want is the one that corresponds to the uniqueNormals(index) that matched-> that same index is used to get color from uniqueColors(index) vector
+						tcolors[n] = uniqueColors[un];
+					}
+				}
+			}
+			//we now have a colors Vector with new colors assigned
+			//put that colorVector on the current mesh of the current cubie
+			myCubies[i]->myMeshs[j].clearColors();
+			myCubies[i]->myMeshs[j].addColors(tcolors);
+			//have to replace the vbo
+			ofVbo tempVbo;
+			tempVbo.setMesh(myCubies[i]->myMeshs[j], GL_STATIC_DRAW);
+			myCubies[i]->myVbos[j]=tempVbo;
+		}
+	}
+	cout << "ee" << endl;
+}
+//----------------------------------------------------------------
+void puzzle::colorCubiesBlackSides(){
+	//it takes care of the "inside" coloring for each cubie
+	//for the platonian solids other than cube
+	for(int i=0;i<numPieces;i++){
+		myCubies[i]->colorBlackSides(i);
 	}
 }
 //---------------------------------------------------------------

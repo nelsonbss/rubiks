@@ -46,6 +46,7 @@ public:
 
 	//color faces
 	void colorFaces();
+	void colorCubiesBlackSides();
 	///color change
 	void changeColorToColor(ofFloatColor Sc, ofFloatColor Tc);
 };

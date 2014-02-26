@@ -72,7 +72,7 @@ public:
 
 	///color change
 	void changeColorToColor(ofFloatColor Sc, ofFloatColor Tc);
-
+	void colorBlackSides(int cubieId);
 	
 };
 

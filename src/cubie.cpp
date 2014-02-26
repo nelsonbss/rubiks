@@ -29,7 +29,7 @@ cubie::cubie(float x, float y,float z, int idi, int selObjId){
 	movingZCC = false*/;
 	/*ct1 = 0.0;
 	ct2 = 0.0;*/
-	animTime = 9;
+	animTime = 2;
 
 	sample = true;
 	rotXa = 0.0;
@@ -490,6 +490,20 @@ void cubie::changeColorToColor(ofFloatColor Sc, ofFloatColor Tc){
 	ofRender *ofr = new ofRender(); 
 	for(int j=0; j< numObjs; j++){
 		ofr->changeColorToColor(Sc,Tc,myMeshs[j]);
+		//have to replace the vbo
+		ofVbo tempVbo;
+		tempVbo.setMesh(myMeshs[j], GL_STATIC_DRAW);
+		myVbos[j]=tempVbo;
+	}
+
+	free(ofr);
+}
+//-----------------------------------------------------------------
+void cubie::colorBlackSides(int idCubie){
+	//have key sides of cubie colored black
+	ofRender *ofr = new ofRender(); 
+	for(int j=0; j< numObjs; j++){
+		ofr->colorBlackSides(myMeshs[j],idCubie);
 		//have to replace the vbo
 		ofVbo tempVbo;
 		tempVbo.setMesh(myMeshs[j], GL_STATIC_DRAW);

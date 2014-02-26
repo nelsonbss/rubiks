@@ -23,6 +23,8 @@ ofRender::ofRender(){
 	colorsVector.push_back(yellow);//6  
 	colorsVector.push_back(ofFloatColor(0.576, 0.439, 0.859));//7 medium purple
 	colorsVector.push_back(cyan);//8
+
+	playRoom = 0.1;
 }
 
 void ofRender::sgCoretoOFmesh(sgC3DObject *obj, ofMesh &mesh,int idCubie,int selObjId){
@@ -93,6 +95,7 @@ void ofRender::sgCoretoOFmesh(sgC3DObject *obj, ofMesh &mesh,int idCubie,int sel
 				//plain color, used for bunny
 				c = cyan;
 			}else{
+				//c = decideColor(decideAxis(dir));
 				//put colors for regular rubiks cube
 				//torus
 				//cube
@@ -190,15 +193,15 @@ void ofRender::colorBlackSides(ofMesh &mesh, int idCubie){
 			tcolors[i] =  black;
 		}else if (idCubie==1){
 			//middle center blue
-			if(decideAxis(tnormals[i])==y){
+			if(decideAxis2(tnormals[i])==y){
 				c = black;
-			}else if(decideAxis(tnormals[i])==z){
+			}else if(decideAxis2(tnormals[i])==z){
 				c = black;
-			}else if(decideAxis(tnormals[i])==xn){
+			}else if(decideAxis2(tnormals[i])==xn){
 				c = black;
-			}else if(decideAxis(tnormals[i])==yn){
+			}else if(decideAxis2(tnormals[i])==yn){
 				c = black;
-			}else if(decideAxis(tnormals[i])==zn){
+			}else if(decideAxis2(tnormals[i])==zn){
 				c = black;
 			}else{
 				//leave same color
@@ -583,7 +586,6 @@ void ofRender::colorBlackSides(ofMesh &mesh, int idCubie){
 //---------------------------------------------------------------------------------------------------------------
 ofPoint ofRender::decideAxis(ofPoint dir){
 	//looks at a point (normal vector) and decides which axis is closer according to the most prominent component of the vector
-
 	ofPoint simple = ofPoint(0,0,0);
 	int chosen=0;//1=x, 2=y, 3=z
 	float absX;
@@ -610,10 +612,13 @@ ofPoint ofRender::decideAxis(ofPoint dir){
 	}
 	//look at the highest, and choose that one as the axis
 	if((absX > absY)&& (absX > absZ)){
-		chosen =1;
+		//x is bigger
+		chosen = 1;
 	}else if((absY > absX)&& (absY > absZ)){
-		chosen =2;
+		//y is bigger
+		chosen = 2;
 	}else{
+		//z is bigger
 		chosen = 3;
 	}
 	//ask if its positive or negative
@@ -647,6 +652,130 @@ ofPoint ofRender::decideAxis(ofPoint dir){
 		}else if(ofSign(dir.z)==-1){
 			//negative
 			simple = ofPoint(0,0,-1);
+		}else{
+			//zero
+		}
+	}
+
+	return simple;
+}
+//------------------------------------------------------------------------
+ofPoint ofRender::decideAxis2(ofPoint dir){
+	//looks at a point (normal vector) and decides which axis is closer according to the most prominent component of the vector
+	ofPoint simple = ofPoint(0,0,0);
+	int chosen=0;//1=x, 2=y, 3=z
+	float absX;
+	bool sx = false;
+	float absY;
+	bool sy = false;
+	float absZ;
+	bool sz = false;
+	//take abs of all
+	if(ofSign(dir.x)==-1){
+		absX = (dir.x)*(-1);
+	}else{
+		absX = dir.x;
+	}
+	if(ofSign(dir.y)==-1){
+		absY = (dir.y)*(-1);
+	}else{
+		absY = dir.y;
+	}
+	if(ofSign(dir.z)==-1){
+		absZ = (dir.z)*(-1);
+	}else{
+		absZ = dir.z;
+	}
+	//look at the highest, and choose that one as the axis
+	if((absX > absY)&& (absX > absZ)){
+		//x is bigger
+		chosen = 1;
+	}else if((absY > absX)&& (absY > absZ)){
+		//y is bigger
+		chosen = 2;
+	}else{
+		//z is bigger
+		chosen = 3;
+	}
+	//ask if its positive or negative
+	if(chosen == 1){
+		//x is chosen
+		if(ofSign(dir.x)==1){
+			//positive
+			double xn = 1.0-playRoom;
+			double xp = 1.0+playRoom;
+			if((xn < dir.x) && (dir.x < xp)){
+				simple = ofPoint(1,0,0);
+			}else{
+				//return the original
+				//dont want to consider it an "axis" vector
+				simple = dir;
+			}
+		}else if(ofSign(dir.x)==-1){
+			//negative
+			double xn = -1.0-playRoom;
+			double xp = -1.0+playRoom;
+			if((xn < dir.x) && (dir.x < xp)){
+				simple = ofPoint(-1,0,0);
+			}else{
+				//return the original
+				//dont want to consider it an "axis" vector
+				simple = dir;
+			}
+		}else{
+			//zero
+		}
+	}else if (chosen==2){
+		//its y
+		if(ofSign(dir.y)==1){
+			//positive
+			double yn = 1.0-playRoom;
+			double yp = 1.0+playRoom;
+			if((yn < dir.y) && (dir.y < yp)){
+				simple = ofPoint(0,1,0);
+			}else{
+				//return the original
+				//dont want to consider it an "axis" vector
+				simple = dir;
+			}
+		}else if(ofSign(dir.y)==-1){
+			//negative
+			double yn = -1.0-playRoom;
+			double yp = -1.0+playRoom;
+			if((yn < dir.y) && (dir.y < yp)){
+				simple = ofPoint(0,-1,0);
+			}else{
+				//return the original
+				//dont want to consider it an "axis" vector
+				simple = dir;
+			}
+		}else{
+			//zero
+		}
+	}else{
+		//its z
+		if(ofSign(dir.z)==1){
+			double zn = 1.0-playRoom;
+			double zp = 1.0+playRoom;
+			//positive
+			if((zn < dir.z) && (dir.z < zp)){
+				simple = ofPoint(0,0,1);
+			}else{
+				//return the original
+				//dont want to consider it an "axis" vector
+				simple = dir;
+			}
+		}else if(ofSign(dir.z)==-1){
+			//negative
+			double zn = -1.0-playRoom;
+			double zp = -1.0+playRoom;
+			if((zn < dir.z) && (dir.z < zp)){
+				simple = ofPoint(0,0,-1);
+			}else{
+				//return the original
+				//dont want to consider it an "axis" vector
+				simple = dir;
+			}
 		}else{
 			//zero
 		}

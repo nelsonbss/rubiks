@@ -12,6 +12,7 @@ public:
 	void sgCoretoOFmesh(sgC3DObject *obj, ofMesh &mesh,int numCubie,int selObjId);
 	void setNormals( ofMesh &mesh );
 	ofPoint decideAxis(ofPoint dir);
+	ofPoint decideAxis2(ofPoint dir);
 	ofColor decideColor(ofPoint normal);
 	ofColor decideColorCubieBox(ofPoint normal,int numCubie);
 
@@ -33,6 +34,7 @@ public:
 
 	void changeColorToColor(ofFloatColor Sc, ofFloatColor Tc, ofMesh &mesh);
 	void colorBlackSides(ofMesh &mesh, int idCubie);
+	double playRoom; //to make a less strong axis deciding algorith
 };
 
 #endif /* defined(__TofRender__ofRender__) */

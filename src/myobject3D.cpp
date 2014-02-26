@@ -106,6 +106,9 @@ void myobject3D::loadObject(sgC3DObject *obj, int ID){
 			//cube
 			SG_VECTOR offset = {-150,-150,-150}; //for the cube to be in place
 			object->InitTempMatrix()->Translate(offset);//this translates the object to be cut!!
+			//SG_POINT rotP = {0,0,0};
+			//SG_VECTOR rotV = {1,0,0};
+			//object->GetTempMatrix()->Rotate(rotP,rotV,ofDegToRad(45));
 			object->ApplyTempMatrix();  
 			object->DestroyTempMatrix();
 		}

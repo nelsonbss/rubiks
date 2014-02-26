@@ -14,14 +14,14 @@ ofRender::ofRender(){
 	black = ofFloatColor(0,0,0);
 	cyan = ofFloatColor(0,1,1);
 
-	colorsVector.push_back(ofFloatColor(1.0,1.0,1.0,1.0));//0 - solid mate
+	colorsVector.push_back(ofFloatColor(0.933, 0.510, 0.933));//0 violet
 	colorsVector.push_back(green);//1
 	colorsVector.push_back(orange);//2
 	colorsVector.push_back(white);//3
 	colorsVector.push_back(blue);//4
 	colorsVector.push_back(red);//5
-	colorsVector.push_back(yellow);//6
-	colorsVector.push_back(black);//7
+	colorsVector.push_back(yellow);//6  
+	colorsVector.push_back(ofFloatColor(0.576, 0.439, 0.859));//7 medium purple
 	colorsVector.push_back(cyan);//8
 }
 
@@ -685,6 +685,7 @@ ofColor ofRender::decideColor(ofPoint normal){
 }
 //-----------------------------------------------------------------------
 ofColor ofRender::decideColorCubieBox(ofPoint normal, int idCubie){
+	//special coloring function for TRADITIONAL rubicks coloring
 	//takes into account the number of the cubie son it can decide the colors for that specific cubie
 	//decides a color according to a normal direction
 	// 6 colores are taken as base color (normal rubiks color)

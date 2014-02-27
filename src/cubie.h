@@ -10,7 +10,7 @@
 class cubie {
 	
 public:
-	cubie(float x,float y,float z,int id, int selObjId);
+	cubie(float x,float y,float z,int id, int selObjId, ofVec3f offset);
     
 	void setup();
 	void update();
@@ -33,18 +33,19 @@ public:
 	float color;
 
 	void setObjects(sgCGroup *objs,int cubieId);
-	sgCGroup* copyObjects();   //this is no longer needed
+	
+	//this vector (point) is the offset of the cutter, to rotate correctly when its offcentered by user on the armature stage
+	ofVec3f pointRotate;
+	
 
+	///whole puzzle
 	SG_VECTOR pos;
 	void move(SG_VECTOR p);
-	
-	SG_POINT pointRotate;
 	SG_VECTOR rot;
 	void rotate(SG_VECTOR r); //rotates the cubie as part of the whole puzzle object, NOT as a faceMove rotation
 
 	//this is vector of matrix objects that have all the transformations for each cubie.
 	//its a vector since we don't know how many transformations a cubie is going to have
-
 	vector<matrix> myMatrix; 
 	void faceRotate(SG_VECTOR axis, bool dir);
 	bool moving;

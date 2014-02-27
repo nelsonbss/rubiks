@@ -203,14 +203,10 @@ void testApp::keyPressed(int key){
 		if(key == '1') {
 			//select armature 1
 			myGames[0]->loadArmature(1); //this creates the slicer and cutter
-			//for now .. go to step 3
-			//myGames[0]->setCurrentStep(3);
 		}
 		if(key == '2') {
 			//select armature 2
 			myGames[0]->loadArmature(2);
-			//for now .. go to step 3
-			//myGames[0]->setCurrentStep(3);
 		}
 	}
 	////////////////////////////////////////////step 3 inputs
@@ -238,9 +234,11 @@ void testApp::keyPressed(int key){
 		}
 		//a puzzle can be made
 		if(key == 'n') {
+			//now we know the offset position from the armature to create-> cutter & slicer
+			myGames[0]->createCutterSlicer();
 			//do slicing
-			SG_VECTOR v = {displayX,displayY,displayZ};
-			myGames[0]->createPuzzle(v);//create Puzzle goes to step4 inside the game to show the puzzle
+			SG_VECTOR viewPuzzle = {displayX,displayY,displayZ};
+			myGames[0]->createPuzzle(viewPuzzle,myGames[0]->giveOffset());//create Puzzle goes to step4 inside the game to show the puzzle
 		}
 	}
 	////////////////////////////////////////////step 4 inputs

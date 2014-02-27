@@ -2,10 +2,11 @@
 #include "sgCore.h"
 #include "ofRender.h"
 
-cubie::cubie(float x, float y,float z, int idi, int selObjId){
+cubie::cubie(float x, float y,float z, int idi, int selObjId, ofVec3f offset){
 	objects = NULL;
 	id = idi;
 	selectedObjectID = selObjId;
+
 	pos.x = x;
 	pos.y = y;
 	pos.z = z;
@@ -16,9 +17,9 @@ cubie::cubie(float x, float y,float z, int idi, int selObjId){
 
 	color = rand()%27;
 
-	pointRotate.x = 0;
-	pointRotate.y = 0;
-	pointRotate.z = 0;
+	pointRotate.x = offset.x;
+	pointRotate.y = offset.y;
+	pointRotate.z = offset.z;
 
 	moving = false;
 
@@ -46,7 +47,7 @@ void cubie::update(){
 			if(myMatrix.size()>=2){
 				//build rotation matrix for all steps up to the one where it was at the moment of a new movement
 				for(int i=0; i<myMatrix.size()-1;i++){
-					SG_POINT protFace = {0,0,0};										 
+					SG_POINT protFace = {pointRotate.x,pointRotate.y,0};										 
 					SG_VECTOR vrotFace = myMatrix.at(i).vector;//  axis; //rotate to do a face move
 					double d = myMatrix.at(i).deg;
 					d = ofDegToRad(d);
@@ -68,7 +69,7 @@ void cubie::update(){
 					}
 				}
 				//we are at the last positon
-				SG_POINT protFace = {0,0,0};										 
+				SG_POINT protFace = {pointRotate.x,pointRotate.y,0};										 
 				SG_VECTOR vrotFace = myMatrix.at(myMatrix.size()-1).vector;//  axis; //rotate to do a face move
 				double tempDeg2 = myMatrix.at(myMatrix.size()-1).deg; //target angle, the last angle it will move to
 				if(sample==false){
@@ -132,7 +133,7 @@ void cubie::update(){
 			///////////////////////////////////applying rotations matrix HISTORY
 			//use vector with matrix(s)
 			for(int i=0; i<myMatrix.size();i++){
-				SG_POINT protFace = {0,0,0};										 
+				SG_POINT protFace = {pointRotate.x,pointRotate.y,0};										 
 				SG_VECTOR vrotFace = myMatrix.at(i).vector;//  axis of rotation
 				double d = myMatrix.at(i).deg;
 				d = ofDegToRad(d);
@@ -155,14 +156,15 @@ void cubie::update(){
 		}
 		///////////////////////////////////////////////////////////
 		////////rotate and move with the whole puzzle
-		SG_VECTOR vrotH = {0,1,0}; //rotate H                            
+		SG_VECTOR vrotH = {0,1,0}; //rotate H         
+		SG_VECTOR puzzleRotate = {0,0,0};
 		if (objectList[j]->GetTempMatrix()==0){
-			objectList[j]->InitTempMatrix()->Rotate(pointRotate,vrotH,rot.y);
+			objectList[j]->InitTempMatrix()->Rotate(puzzleRotate,vrotH,rot.y);
 		}else{
-			objectList[j]->GetTempMatrix()->Rotate(pointRotate,vrotH,rot.y);
+			objectList[j]->GetTempMatrix()->Rotate(puzzleRotate,vrotH,rot.y);
 		}
 		SG_VECTOR vrotV = {1,0,0}; //rotate V								 
-		objectList[j]->GetTempMatrix()->Rotate(pointRotate,vrotV,rot.x);
+		objectList[j]->GetTempMatrix()->Rotate(puzzleRotate,vrotV,rot.x);
 		//translations
 		SG_VECTOR transBox11 = {pos.x,pos.y,pos.z}; 
 		objectList[j]->GetTempMatrix()->Translate(transBox11);
@@ -386,39 +388,4 @@ void cubie::exit(){
 		free(objectList);
 		sgCObject::DeleteObject(objects);
 	}
-}
-//-------------------------------------------------------------------------------------------------------------------------------------------
-sgCGroup* cubie::copyObjects(){
-	//make a copy of *objects send outside cubie
-	//so originals dont get messed up, and cubies can draw every time without making a the boolean first
-
-	sgCGroup* aux;
-	//sgCObject **objcts = (sgCObject**)malloc(50*sizeof(sgCObject*));
-	//sgCObject **objcts1 = (sgCObject**)malloc(50*sizeof(sgCObject*));
-	//int objctr = 0;
-
-	//if(objects != NULL){
-	//	const int ChCnt = objects->GetChildrenList()->GetCount();
-	//	sgCObject** allParts = (sgCObject**)malloc(ChCnt*sizeof(sgCObject*));
-	//	objects->BreakGroup(allParts);
-	//	sgCObject::DeleteObject(objects);
-	//	for (int j=0; j < ChCnt; j++){
-	//		//clone each object
-	//		sgCObject *temp = allParts[j];
-	//		//put clone on *[] tomake new group
-	//		objcts[objctr] = temp->Clone();
-	//		objcts1[objctr] = temp->Clone();
-	//		objctr ++;
-	//		sgCObject::DeleteObject(temp);
-	//	}
-	//	free(allParts);
-	//	//put that new group inside aux**[]
-	//	objects = sgCGroup::CreateGroup(objcts,objctr); //so objects[] has the data again, and keeps it for future requests
-	//	aux = sgCGroup::CreateGroup(objcts1,objctr);  
-	//}else{
-	//	return NULL;
-	//}
-	//free(objcts);
-	//free(objcts1);
-	return aux;
 }

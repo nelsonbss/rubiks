@@ -36,9 +36,9 @@ public:
 	int objectID;
 	
 	void loadArmature(int type);
-	void createCutterSlicer(float thick, float tamPlane, float tamCuby,float numCutr, float x, float y, float z);
+	void createCutterSlicer();//(float thick, float tamPlane, float tamCuby,float numCutr, float x, float y, float z);
 
-	void createPuzzle(SG_VECTOR p);
+	void createPuzzle(SG_VECTOR p, ofVec3f offset);
 
 	int getCurrentStep();
 	void setCurrentStep(int step);
@@ -51,6 +51,10 @@ public:
 	void rotateP(SG_VECTOR r);
 
 	////////////////puzzle movements
+	//offset vars
+	ofVec3f offsetSlicer;
+	ofVec3f giveOffset();
+
 	bool updatePuzzle;
 	//face rotations
 	int idcubie;

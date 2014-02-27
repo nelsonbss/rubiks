@@ -17,13 +17,21 @@ game::game(SG_VECTOR gamePos, float w, float h, SG_VECTOR displayPos){
 	posP.x = 0; //for the puzzle & sample object
 	posP.y = 0;
 	posP.z = 0;
-	posA = displayPos; //for the armature
+
+	posA.x = displayPos.x; //for the armature
+	posA.y = displayPos.y;
+	posA.z = displayPos.z;
 
 	rotP.x = 0; //rotation of puzzle
 	rotP.y = 0;
 	rotP.z = 0;
 
-	objectID = -1;
+	//offset
+	offsetSlicer.x = 50;
+	offsetSlicer.y = 50;
+	offsetSlicer.z = -100;   ///this is because of the torus!!!, have to fix this dammit!
+
+	objectID = -1; //initialized on -1 because on stage=0 there is no object selected
 }
 //--------------------------------------------------------------
 void game::setup(){
@@ -308,37 +316,38 @@ void game::loadObject(int objID, SG_VECTOR p, SG_VECTOR t){
 }
 //----------------------------------------------------------------------
 void game::loadArmature(int type){
-	//loads armature and creates slicer at the same time??
+	//loads armature and creates cutter and slicer
+	
+	
+	
+	//have to clear myArmature, to load the new one, like load objects!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
 	if(type == 1){
 		myArmature = new armature (ofVec3f(posA.x,posA.y,0),300,300,10,tamCubie);
-		////////////////////////////////create cutter & slicer ////////////////////////
-		createCutterSlicer(planeThicknes,planeSize,tamCubie,1,0,0,-100);
 	}
 	if(type == 2){
-		myArmature = new armature (ofVec3f(posA.x,posA.y,0),300,300,10,tamCubie*2.0);
-		////////////////////////////////create cutter & slicer ////////////////////////
-		createCutterSlicer(planeThicknes,planeSize,tamCubie*1.1,1,0,0,-100);
+		myArmature = new armature (ofVec3f(posA.x,posA.y,0),300,300,10,2);
 	}
 	myArmature->setup();
 	setCurrentStep(3);
 }
 //-----------------------------------------------------------------------------------------
-	void game::createCutterSlicer(float thick, float tamPlane, float tamCuby,float numCutr, float x, float y, float z){
+void game::createCutterSlicer(){//(float thick, float tamPlane, float tamCuby,float numCutr, float x, float y, float z){
 	////////////////////////////////create cutter///////////////////////////////////////
-	myCutter = new cutter(thick,tamPlane,tamCuby,1,x,y,z);				
+	myCutter = new cutter(planeThicknes,planeSize,tamCubie,1,offsetSlicer);		
 	myCutter->setup();
 	//////////////////////////////////end create cutter///////////////////////////////////
 
 	//////////////////////////////////create slicer///////////////////////////////////////
-	mySlicer = new slicer(myCutter,posP.x,posP.y);
+	mySlicer = new slicer(myCutter,posP.x,posP.y); //slicer needs pos??????????????
 	mySlicer->setup();
 	///////////////////////////end create slicer /////////////////////////////////////////
 }
 //----------------------------------------------------------------------
-void game::createPuzzle(SG_VECTOR p){
+void game::createPuzzle(SG_VECTOR p, ofVec3f offset){
 	if(step == 3){
 		////////////////////////////////create puzzle///////////////////////////////////////
-		myPuzzle = new puzzle(p.x,p.y,p.z); // it receives th position to be displayed
+		myPuzzle = new puzzle(p, offset); // it receives the position to be displayed AND the offset of the armature/cutter
 		myPuzzle->setup();
 
 		////boolean substraction//////////////////////////////////////////////////////////
@@ -372,6 +381,14 @@ void game::changeColorToColor(ofFloatColor sc, ofFloatColor tc){
 //----------------------------------------------------------------------
 void game::moveA (ofVec3f input){
 	myArmature->moveA(input);
+	//move the offset vector of the cutter
+	/*offsetSlicer.x += input.x;
+	offsetSlicer.y += input.y;
+	offsetSlicer.z += input.z;*/
+}
+//----------------------------------------------------------------------
+ofVec3f game::giveOffset(){
+	return offsetSlicer;
 }
 //----------------------------------------------------------------------
 void game::unDo(){

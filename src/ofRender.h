@@ -31,7 +31,7 @@ public:
 	ofPoint decideAxisRange(ofPoint dir,float playRoom); // tho look at normals and decide sets of normals, to color faces
 
 	ofColor decideColorCubieBox(ofPoint normal,int numCubie); //only used for cube
-
+	ofColor decideColorCubieDEBUG(ofPoint normal,int numCubie);
 	///////////////////////////////////////////////////////////////////////////////////////////
 	ofColor decideColor(ofPoint normal); 
 	//this function is ONLY being used by tetrahedron, 

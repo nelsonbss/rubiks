@@ -10,13 +10,15 @@
 #define WIDTH 3
 #define DEPTH 3
 
-puzzle::puzzle(float x, float y, float z){
+puzzle::puzzle(SG_VECTOR p, ofVec3f offset){
 	numPieces = 27;
 	myCubies = (cubie**)malloc(numPieces*sizeof(cubie*));
-
-	pos.x = x;
-	pos.y = y;
-	pos.z = z;
+	
+	cubiesOffset = offset;
+	
+	pos.x = p.x;
+	pos.y = p.y;
+	pos.z = p.z;
 
 	rot.x = 0;
 	rot.y = 0;
@@ -99,8 +101,8 @@ void puzzle::loadPieces(sgCGroup **pcs,int selObjId){
 	//it loads them into its own cubies
 	//create cubies
 	//so each time there is a new boolean operation, whole new cubies get created with variables in zero or blank
-	for(int i =0;i<numPieces;i++){
-		cubie *auxCubie = new cubie(pos.x,pos.y,pos.z,i+1,selObjId);// is this really creating independent instances of cubie??
+	for(int i=0;i<numPieces;i++){
+		cubie *auxCubie = new cubie(pos.x,pos.y,pos.z,i+1,selObjId,cubiesOffset);// is this really creating independent instances of cubie??
 		//auxCubie->setup();
 		//add this cubie to mycubies[]
 		myCubies[i] = auxCubie;

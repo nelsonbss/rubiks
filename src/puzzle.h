@@ -11,7 +11,7 @@
 class puzzle {
 
 public:
-	puzzle(float x, float y, float z);
+	puzzle(SG_VECTOR p, ofVec3f offset);
 
 	void setup();
 	void update();
@@ -24,6 +24,7 @@ public:
 	sgCGroup* cubieGroup;
 	float numPieces;
 	cubie **myCubies; //malloc numPieces of these
+	ofVec3f cubiesOffset;
 
 	SG_VECTOR pos;
 	void move(SG_VECTOR p);

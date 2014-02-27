@@ -94,7 +94,8 @@ void ofRender::sgCoretoOFmesh(sgC3DObject *obj, ofMesh &mesh,int idCubie,int sel
 		}else{
 			//its another object, most probable the cube
 			if(selectedObjectID == 2){
-				c = decideColorCubieBox(dir,idCubie); //we color the cube here so it gets the official colors on its faces
+				//c = decideColorCubieBox(dir,idCubie); //we color the cube here so it gets the official colors on its faces
+				c = decideColorCubieDEBUG(dir,idCubie); //this is to test the offset slicing and rotations
 			}else if(selectedObjectID == 3){
 				//cone(ish)
 				c = decideColor(decideAxisRange(dir,10.0));
@@ -1241,6 +1242,80 @@ ofColor ofRender::decideColorCubieBox(ofPoint normal, int idCubie){
 		}else if(normal==zn){
 			c = white;
 		}
+	}
+	return c;
+}
+/////-------------------------------------------------------------------------------------------------------------
+ofColor ofRender::decideColorCubieDEBUG(ofPoint normal, int idCubie){
+	//just for cube
+	//special coloring function for TRADITIONAL rubicks coloring
+	//takes into account the number of the cubie son it can decide the colors for that specific cubie
+	//decides a color according to a normal direction
+	// 6 colores are taken as base color (normal rubiks color)
+	//1 more color is used on cubies : BLACK for the inside of each cubie
+
+	ofFloatColor c;
+	ofPoint x = ofPoint(1,0,0);
+	ofPoint y = ofPoint(0,1,0);
+	ofPoint z = ofPoint(0,0,1);
+	ofPoint xn = ofPoint(-1,0,0);
+	ofPoint yn = ofPoint(0,-1,0);
+	ofPoint zn = ofPoint(0,0,-1);
+
+	if(idCubie==0){
+		c = cyan;
+	}else if (idCubie==1){
+		c = blue;
+	}else if (idCubie==2){
+		c = yellow;
+	}else if (idCubie==3){
+		c = black;
+	}else if(idCubie==4){
+		c = green;
+	}else if(idCubie==5){
+		c = cyan;
+	}else if(idCubie==6){
+		c = white;
+	}else if(idCubie==7){
+		c = black;
+	}else if(idCubie==8){
+		c = blue;
+	}else if(idCubie==9){
+		c = red;
+	}else if(idCubie==10){
+		c = blue;
+	}else if(idCubie==11){
+		c = yellow;
+	}else if(idCubie==12){
+		c = red;
+	}else if(idCubie==13){
+		c = green;
+	}else if(idCubie==14){
+		c = red;
+	}else if(idCubie==15){
+		c = green;
+	}else if(idCubie==16){
+		c = black;
+	}else if(idCubie==17){
+		c = white;
+	}else if(idCubie==18){
+		c = black;
+	}else if(idCubie==19){
+		c = orange;
+	}else if(idCubie==20){
+		c = yellow;
+	}else if(idCubie==21){
+		c = black;
+	}else if(idCubie==22){
+		c = yellow;
+	}else if(idCubie==23){
+		c = orange;
+	}else if(idCubie==24){
+		c = green;
+	}else if(idCubie==25){
+		c = white;
+	}else if(idCubie==26){
+		c = blue;
 	}
 	return c;
 }

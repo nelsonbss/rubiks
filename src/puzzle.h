@@ -31,10 +31,6 @@ public:
 	SG_VECTOR rot;
 	void rotate(SG_VECTOR r);
 
-	double ***p3DArray;
-	 /* one-liner */
-    //typedef std::vector<std::vector<std::vector<int> > >ThreeDimensions;
-    /* expanded */
     typedef std::vector<int>OneDimension;
     typedef std::vector<OneDimension>TwoDimensions;
     typedef std::vector<TwoDimensions>ThreeDimensions;
@@ -43,6 +39,9 @@ public:
 	void rearange3dArray(SG_VECTOR axis, int plane, bool dir);
 
 	void unDo(int id, SG_VECTOR axis, bool dir);
+
+	bool moving;
+	bool isMoving();
 
 	//color faces
 	void colorFaces(int objectID);

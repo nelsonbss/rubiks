@@ -372,6 +372,12 @@ void cubie::colorBlackSides(int idCubie, float playRoom){
 	free(ofr);
 }
 //----------------------------------------------------------------
+bool cubie::isMoving(){
+	//returns the state of the moving boolean
+	//to prevent key press events from messing up the movements
+	return moving;
+}
+//----------------------------------------------------------------
 void cubie::exit(){
 	if(objects != NULL){
 		for (int j=0; j < numObjs; j++){

@@ -257,67 +257,69 @@ void testApp::keyPressed(int key){
 		//pressed next on color palette step
 		//showing puzzle
 		//now the puzzle can be played with
-		if(key == 'u'){
-			//undo last move 
-			myGames[0]->unDo();
-		}
-		///////////////////////////////////////////////////////////// FACE ROTATIONS //////////////////////////////
-		////////  x axis  ////  x axis
+
 		int idcubie = 11;//to follow this cubie for now //this will be decided upon touch, or click on top of puzzle
 		int randcubie=0;
-
-		if(key == 'q') {
-			if(rotate == true) {//c
-				randcubie = 11;//rand()%26;
-				//clockwise
-				SG_VECTOR axis = {1,0,0};
-				myGames[0]->rotateByIDandAxis(randcubie,axis,true);
-				rotate = false;
+		if(myGames[0]->myPuzzle->isMoving() == false){ //thi sis to prevent from reading keypress events while puzzle is moving
+			if(key == 'u'){
+				//undo last move 
+				myGames[0]->unDo();
 			}
-		}
-		if(key == 'a') {
-			if(rotate == true) {//cc
-				randcubie = 11;//rand()%26;
-				//clockwise
-				SG_VECTOR axis = {1,0,0};
-				myGames[0]->rotateByIDandAxis(randcubie,axis,false);
-				rotate = false;
+			///////////////////////////////////////////////////////////// FACE ROTATIONS //////////////////////////////
+			////////  x axis  ////  x axis
+			if(key == 'q') {
+				if(rotate == true) {//c
+					randcubie = 11;//rand()%26;
+					//clockwise
+					SG_VECTOR axis = {1,0,0};
+					myGames[0]->rotateByIDandAxis(randcubie,axis,true);
+					rotate = false;
+				}
 			}
-		}
-		////////  y axis  ////  y axis
-		if(key == 'w') {
-			if(rotate == true) {
-				randcubie = 11;//rand()%26;
-				//clockwise
-				SG_VECTOR axis = {0,1,0};
-				myGames[0]->rotateByIDandAxis(randcubie,axis,true);
-				rotate = false;
+			if(key == 'a') {
+				if(rotate == true) {//cc
+					randcubie = 11;//rand()%26;
+					//clockwise
+					SG_VECTOR axis = {1,0,0};
+					myGames[0]->rotateByIDandAxis(randcubie,axis,false);
+					rotate = false;
+				}
 			}
-		}if(key == 's') {
-			//counter clockwise
-			if(rotate == true) {
-				randcubie = 11;//rand()%26;
-				SG_VECTOR axis = {0,1,0};
-				myGames[0]->rotateByIDandAxis(randcubie,axis,false);
-				rotate = false;
-			}
-		}
-		////////  z axis  ////  z axis
-		if(key == 'e') {
-			if(rotate == true) {
-				randcubie = 11;//rand()%26;
-				//clockwise
-				SG_VECTOR axis = {0,0,1};
-				myGames[0]->rotateByIDandAxis(randcubie,axis,true);
-				rotate = false;
-			}
-		}if(key == 'd') {
-			if(rotate == true) {
+			////////  y axis  ////  y axis
+			if(key == 'w') {
+				if(rotate == true) {
+					randcubie = 11;//rand()%26;
+					//clockwise
+					SG_VECTOR axis = {0,1,0};
+					myGames[0]->rotateByIDandAxis(randcubie,axis,true);
+					rotate = false;
+				}
+			}if(key == 's') {
 				//counter clockwise
-				randcubie = 11;//rand()%26;
-				SG_VECTOR axis = {0,0,1};
-				myGames[0]->rotateByIDandAxis(randcubie,axis,false);
-				rotate = false;
+				if(rotate == true) {
+					randcubie = 11;//rand()%26;
+					SG_VECTOR axis = {0,1,0};
+					myGames[0]->rotateByIDandAxis(randcubie,axis,false);
+					rotate = false;
+				}
+			}
+			////////  z axis  ////  z axis
+			if(key == 'e') {
+				if(rotate == true) {
+					randcubie = 11;//rand()%26;
+					//clockwise
+					SG_VECTOR axis = {0,0,1};
+					myGames[0]->rotateByIDandAxis(randcubie,axis,true);
+					rotate = false;
+				}
+			}if(key == 'd') {
+				if(rotate == true) {
+					//counter clockwise
+					randcubie = 11;//rand()%26;
+					SG_VECTOR axis = {0,0,1};
+					myGames[0]->rotateByIDandAxis(randcubie,axis,false);
+					rotate = false;
+				}
 			}
 		}
 		//////////////////////////////////////////////////////////////////////////move all puzzle

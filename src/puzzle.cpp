@@ -145,7 +145,7 @@ void puzzle::loadPieces(sgCGroup **pcs,int selObjId){
 		}
 	}
 }
-////////////////////////////////////////////////////////////////
+//----------------------------------------------------------------
 void puzzle::rotate(SG_VECTOR r){  
 	//puzzle tells every cubie to rotate
 	rot.x +=  r.x;
@@ -155,7 +155,7 @@ void puzzle::rotate(SG_VECTOR r){
 		myCubies[i]->rotate(rot);
 	}
 }
-////////////////////////////////////////////////////////////////
+//----------------------------------------------------------------
 void puzzle::move(SG_VECTOR p){
 	//iterate through cubies
 	pos.x +=  p.x;
@@ -166,6 +166,21 @@ void puzzle::move(SG_VECTOR p){
 			myCubies[i]->move(pos);
 		}
 	}
+}
+//----------------------------------------------------------------
+bool puzzle::isMoving(){
+	//returns the state of the moving boolean
+	//to prevent key press events from messing up the movements
+	moving = false;
+	for(int i=0;i<numPieces;i++){
+		if(myCubies[i] != NULL){
+			moving = myCubies[i]->isMoving();
+			if(moving==true){
+				return moving;
+			}
+		}
+	}
+	return moving;
 }
 //---------------------------------------------------------------
 void puzzle::rotateByIDandAxis(int id, SG_VECTOR axis, bool dir){

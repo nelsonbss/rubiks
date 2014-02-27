@@ -48,6 +48,7 @@ public:
 	vector<matrix> myMatrix; 
 	void faceRotate(SG_VECTOR axis, bool dir);
 	bool moving;
+	bool isMoving();
 
 	//float ct1;
 	//float ct2;

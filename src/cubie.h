@@ -31,7 +31,6 @@ public:
 	vector<ofVbo>  myVbos;
 
 	float color;
-	bool okDraw;
 
 	void setObjects(sgCGroup *objs,int cubieId);
 	sgCGroup* copyObjects();   //this is no longer needed
@@ -48,16 +47,7 @@ public:
 
 	vector<matrix> myMatrix; 
 	void faceRotate(SG_VECTOR axis, bool dir);
-	/*double rotX;
-	double rotY;
-	double rotZ;*/
 	bool moving;
-	//bool movingXC;
-	//bool movingXCC;
-	//bool movingYC;
-	//bool movingYCC;
-	//bool movingZC;
-	//bool movingZCC;
 
 	//float ct1;
 	//float ct2;

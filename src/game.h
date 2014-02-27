@@ -34,8 +34,10 @@ public:
 
 	void loadObject (int objID,SG_VECTOR p,SG_VECTOR t);
 	int objectID;
-
+	
 	void loadArmature(int type);
+	void createCutterSlicer(float thick, float tamPlane, float tamCuby,float numCutr, float x, float y, float z);
+
 	void createPuzzle(SG_VECTOR p);
 
 	int getCurrentStep();

@@ -261,10 +261,11 @@ void testApp::keyPressed(int key){
 			//undo last move 
 			myGames[0]->unDo();
 		}
-		///////////////////// FACE ROTATIONS //////////////////////////////
+		///////////////////////////////////////////////////////////// FACE ROTATIONS //////////////////////////////
 		////////  x axis  ////  x axis
 		int idcubie = 11;//to follow this cubie for now //this will be decided upon touch, or click on top of puzzle
 		int randcubie=0;
+
 		if(key == 'q') {
 			if(rotate == true) {//c
 				randcubie = 11;//rand()%26;
@@ -319,7 +320,7 @@ void testApp::keyPressed(int key){
 				rotate = false;
 			}
 		}
-		//////////////////////////////move all puzzle
+		//////////////////////////////////////////////////////////////////////////move all puzzle
 		if(key == 'l') {
 			SG_VECTOR p = {10,0,0};
 			myGames[0]->moveP(p);
@@ -336,7 +337,7 @@ void testApp::keyPressed(int key){
 			SG_VECTOR p = {0,10,0};
 			myGames[0]->moveP(p);
 		}
-		/////////////////////////////rotate all puzzle  // two finger swipe gesture
+		////////////////////////////////////////////////////////////////////////////////rotate all puzzle  // two finger swipe gesture
 		if(key == 'm') {//rotate right
 			SG_VECTOR r = {0,0.1,0};
 			myGames[0]->rotateP(r);

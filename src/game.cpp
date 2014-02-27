@@ -311,32 +311,28 @@ void game::loadArmature(int type){
 	//loads armature and creates slicer at the same time??
 	if(type == 1){
 		myArmature = new armature (ofVec3f(posA.x,posA.y,0),300,300,10,tamCubie);
-		////////////////////////////////create cutter///////////////////////////////////////
-		myCutter = new cutter(planeThicknes,planeSize,tamCubie,1,0,0,-100);				
-		myCutter->setup();
-		//////////////////////////////////end create cutter///////////////////////////////////
-
-		//////////////////////////////////create slicer///////////////////////////////////////
-		mySlicer = new slicer(myCutter,posP.x,posP.y);
-		mySlicer->setup();
-		///////////////////////////end create slicer //////////////////////////////////
+		////////////////////////////////create cutter & slicer ////////////////////////
+		createCutterSlicer(planeThicknes,planeSize,tamCubie,1,0,0,-100);
 	}
 	if(type == 2){
 		myArmature = new armature (ofVec3f(posA.x,posA.y,0),300,300,10,tamCubie*2.0);
-		////////////////////////////////create cutter///////////////////////////////////////
-		myCutter = new cutter(planeThicknes,planeSize,tamCubie*2.0,1,0,0,-100);				
-		myCutter->setup();
-		//////////////////////////////////end create cutter///////////////////////////////////
-
-		//////////////////////////////////create slicer///////////////////////////////////////
-		mySlicer = new slicer(myCutter,posP.x,posP.y);
-		mySlicer->setup();
-		///////////////////////////end create slicer //////////////////////////////////
+		////////////////////////////////create cutter & slicer ////////////////////////
+		createCutterSlicer(planeThicknes,planeSize,tamCubie*1.1,1,0,0,-100);
 	}
 	myArmature->setup();
 	setCurrentStep(3);
+}
+//-----------------------------------------------------------------------------------------
+	void game::createCutterSlicer(float thick, float tamPlane, float tamCuby,float numCutr, float x, float y, float z){
+	////////////////////////////////create cutter///////////////////////////////////////
+	myCutter = new cutter(thick,tamPlane,tamCuby,1,x,y,z);				
+	myCutter->setup();
+	//////////////////////////////////end create cutter///////////////////////////////////
 
-
+	//////////////////////////////////create slicer///////////////////////////////////////
+	mySlicer = new slicer(myCutter,posP.x,posP.y);
+	mySlicer->setup();
+	///////////////////////////end create slicer /////////////////////////////////////////
 }
 //----------------------------------------------------------------------
 void game::createPuzzle(SG_VECTOR p){

@@ -45,7 +45,7 @@ public:
 	void unDo(int id, SG_VECTOR axis, bool dir);
 
 	//color faces
-	void colorFaces();
+	void colorFaces(int objectID);
 	void colorCubiesBlackSides();
 	///color change
 	void changeColorToColor(ofFloatColor Sc, ofFloatColor Tc);

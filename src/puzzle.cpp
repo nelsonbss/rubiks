@@ -119,10 +119,8 @@ void puzzle::loadPieces(sgCGroup **pcs,int selObjId){
 
 			for (int j=0; j < ChCnt; j++){
 				//clone each part
-				//sgCObject *tempOBJ = allParts[j]; //each is an object that goes in one cubie
-				obj[j] =allParts[j];// tempOBJ;
+				obj[j] =allParts[j];
 				realNumPieces ++;
-				//sgDeleteObject(tempOBJ);
 			}
 			//make them a group
 			cubieGroup = sgCGroup::CreateGroup(obj,realNumPieces);  
@@ -131,8 +129,8 @@ void puzzle::loadPieces(sgCGroup **pcs,int selObjId){
 			//i is the cubie ID
 			//put that cubie on the cubies[]
 
+			//cleanup
 			free(obj);
-
 			if(allParts != NULL){
 				for (int j=0; j < ChCnt; j++){
 					if(allParts[j] != NULL){
@@ -141,14 +139,11 @@ void puzzle::loadPieces(sgCGroup **pcs,int selObjId){
 				}
 				free(allParts);
 			}
-
 			sgDeleteObject(part);
 		}else{
 			myCubies[i]->setObjects(NULL,i);
 		}
-
 	}
-
 }
 ////////////////////////////////////////////////////////////////
 void puzzle::rotate(SG_VECTOR r){  
@@ -361,12 +356,19 @@ void puzzle::rearange3dArray(SG_VECTOR axis, int plane, bool dir){
 
 }
 //----------------------------------------------------------------
-void puzzle::colorFaces(){
+void puzzle::colorFaces(int objectID){
 	////goes through each cubie and makes sets of normals.. to determine all different normals in the object
 	//and apply colors to those normals
-	ofRender *ofr = new ofRender();
+	if((objectID != 4) && (objectID != 2) && (objectID != 3)){
+		//not the bunny or the cube -> they were colored on puzzle::loadPieces->cubie::setObjects
+		ofRender *ofr = new ofRender();
 		ofr->colorFaces(myCubies,numPieces);
-	free(ofr);
+		free(ofr);
+		//color black all the inside faces of each cubie (after all other face colors have been applied)
+		//all the puzzles have to do this
+		colorCubiesBlackSides();
+	}
+	//need to color black sides of bunny in a better way.. will they be colored? or leave it plain?
 }
 //----------------------------------------------------------------
 void puzzle::colorCubiesBlackSides(){

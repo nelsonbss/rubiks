@@ -277,7 +277,7 @@ void game::loadObject(int objID, SG_VECTOR p, SG_VECTOR t){
 			objectDisplayed->loadObject(sgCreateBox(300,300,300),2);
 		}if(objID == 3){
 			//cone
-			objectDisplayed->loadObject(sgCreateCone(200,1,300.0, 3),3);
+			objectDisplayed->loadObject(sgCreateCone(200,1,300,3),3);
 		}
 		if(objID == 4){
 			//try to load the bunny
@@ -343,23 +343,12 @@ void game::createPuzzle(SG_VECTOR p){
 		mySlicer->intersectCubes(objectDisplayed->getObject()); 
 		//now slicer has all the parts inside sgCGroup ** = pieces[]
 		//////////////////////////////create puzzle////////////////////////////////////////
-		if(objectID == 4){
-			//bunny
-			myPuzzle->loadPieces(mySlicer->getPieces(),objectID); // plain color
-		}else{
-			//cube and others
-			myPuzzle->loadPieces(mySlicer->getPieces(),objectID); //rubiks colors
-		}
+		myPuzzle->loadPieces(mySlicer->getPieces(),objectID);
 		////////////////////////////////end create puzzle//////////////////////////////////
 
 		///////////////////////////////  color puzzle   ////////////////////////////////// 
-		if(objectID != 2 && objectID != 4  && objectID != 1){
-			//not the cube, nor the bunny, nor the torus
-			//color all the faces for platonic solids!!
-			myPuzzle->colorFaces();
-			//color black all the inside faces of each cubie (after all other face colors have been applied)
-			myPuzzle->colorCubiesBlackSides();
-		}
+		//color all the faces for platonic solids!! colors outside for most objects(not bunny), black on the insides
+		myPuzzle->colorFaces(objectID);
 
 		updatePuzzle = true;
 		step = 4;

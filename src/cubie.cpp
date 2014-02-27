@@ -424,171 +424,142 @@ void cubie::setObjects(sgCGroup *objs,int cubieId){
 			sgC3DObject *o = (sgC3DObject*)temp->Clone();
 			o->Triangulate(SG_VERTEX_TRIANGULATION);
 			//convert to ofMEsh with cubie ID!!!
-			ofr->sgCoretoOFmesh(o,tempMesh,cubieId,selectedObjectID); //give cubie id!! so that it knows how to color the inside walls black
+			//ask if its a plain color puzzle:: bunny torus??
+			if(selectedObjectID == 4){
+				//bunny
+				ofr->sgCoretoOFmesh(o,tempMesh,-3,selectedObjectID);
+			}else{
+				ofr->sgCoretoOFmesh(o,tempMesh,cubieId,selectedObjectID); //give cubie id!! so that it knows if its a plain color puzzle or not
+			}
 			myMeshs.push_back(tempMesh);
 			ofVbo tempVbo;
 			tempVbo.setMesh(tempMesh, GL_STATIC_DRAW);
 			myVbos.push_back(tempVbo);
 			free(ofr);
 			sgDeleteObject(o);
+			}
+			free(allParts);
+			//put that new group inside *objects of this class, of every cubie
+			objects = sgCGroup::CreateGroup(objcts,objctr);
+			free(objcts);
+		}else{
+			numObjs = 0;
+			objects = NULL;
 		}
-		free(allParts);
-		//put that new group inside *objects of this class, of every cubie
-		objects = sgCGroup::CreateGroup(objcts,objctr);
-		free(objcts);
-	}else{
-		numObjs = 0;
-		objects = NULL;
 	}
-}
-//-------------------------------------------------------------------------------------------------------------------------------------------
-void cubie::rotate(SG_VECTOR r){
-	rot = r;
-}
-//--------------------------------------------------------------
-void cubie::move(SG_VECTOR p){
-	pos = p;
-}
-//--------------------------------------------------------------
-int cubie::getId(){
-	return id;
-}
-//-------------------------------------------------------------
-float cubie::getNumObjs(){
-	return numObjs;
-}
-//--------------------------------------------------------------
-void cubie::unDo(SG_VECTOR axis,bool di){
-	//it removes the las element on the vector with the history of each cubie
-	if(myMatrix.size()>1){
-		//trigger an undo animation routine in the update()
-		//at the end of that routine-> we do the pop_back of the cubies history
-		if(undoing==false){
-			if(moving == false){
-				for (int j=0; j < numObjs; j++){
-					SG_POINT protFace = {0,0,0};
-					SG_VECTOR vrotFace = axis;
-					moving = true;
-					undoing = true;
-					sample = false;
-					//ct1 = ofGetElapsedTimeMillis();
-					if(di == true){
-						//c
-						myMatrix.push_back(matrix(axis,90,di));
+	//-------------------------------------------------------------------------------------------------------------------------------------------
+	void cubie::rotate(SG_VECTOR r){
+		rot = r;
+	}
+	//--------------------------------------------------------------
+	void cubie::move(SG_VECTOR p){
+		pos = p;
+	}
+	//--------------------------------------------------------------
+	int cubie::getId(){
+		return id;
+	}
+	//-------------------------------------------------------------
+	float cubie::getNumObjs(){
+		return numObjs;
+	}
+	//--------------------------------------------------------------
+	void cubie::unDo(SG_VECTOR axis,bool di){
+		//it removes the las element on the vector with the history of each cubie
+		if(myMatrix.size()>1){
+			//trigger an undo animation routine in the update()
+			//at the end of that routine-> we do the pop_back of the cubies history
+			if(undoing==false){
+				if(moving == false){
+					for (int j=0; j < numObjs; j++){
+						SG_POINT protFace = {0,0,0};
+						SG_VECTOR vrotFace = axis;
+						moving = true;
+						undoing = true;
+						sample = false;
+						//ct1 = ofGetElapsedTimeMillis();
+						if(di == true){
+							//c
+							myMatrix.push_back(matrix(axis,90,di));
 
-					}else{
-						//cc
-						myMatrix.push_back(matrix(axis,-90,di));
+						}else{
+							//cc
+							myMatrix.push_back(matrix(axis,-90,di));
+						}
 					}
 				}
 			}
 		}
 	}
-}
-//---------------------------------------------------------------
-void cubie::changeColorToColor(ofFloatColor Sc, ofFloatColor Tc){
-	ofRender *ofr = new ofRender(); 
-	for(int j=0; j< numObjs; j++){
-		ofr->changeColorToColor(Sc,Tc,myMeshs[j]);
-		//have to replace the vbo
-		ofVbo tempVbo;
-		tempVbo.setMesh(myMeshs[j], GL_STATIC_DRAW);
-		myVbos[j]=tempVbo;
-	}
-
-	free(ofr);
-}
-//-----------------------------------------------------------------
-void cubie::colorBlackSides(int idCubie){
-	//have key sides of cubie colored black
-	ofRender *ofr = new ofRender(); 
-	for(int j=0; j< numObjs; j++){
-		ofr->colorBlackSides(myMeshs[j],idCubie);
-		//have to replace the vbo
-		ofVbo tempVbo;
-		tempVbo.setMesh(myMeshs[j], GL_STATIC_DRAW);
-		myVbos[j]=tempVbo;
-	}
-
-	free(ofr);
-}
-//----------------------------------------------------------------
-void cubie::exit(){
-	if(objects != NULL){
-		for (int j=0; j < numObjs; j++){
-			sgCObject::DeleteObject(objectList[j]);
+	//---------------------------------------------------------------
+	void cubie::changeColorToColor(ofFloatColor Sc, ofFloatColor Tc){
+		ofRender *ofr = new ofRender(); 
+		for(int j=0; j< numObjs; j++){
+			ofr->changeColorToColor(Sc,Tc,myMeshs[j]);
+			//have to replace the vbo
+			ofVbo tempVbo;
+			tempVbo.setMesh(myMeshs[j], GL_STATIC_DRAW);
+			myVbos[j]=tempVbo;
 		}
-		free(objectList);
-		sgCObject::DeleteObject(objects);
+
+		free(ofr);
 	}
-}
-//-------------------------------------------------------------------------------------------------------------------------------------------
-sgCGroup* cubie::copyObjects(){
-	//make a copy of *objects send outside cubie
-	//so originals dont get messed up, and cubies can draw every time without making a the boolean first
+	//-----------------------------------------------------------------
+	void cubie::colorBlackSides(int idCubie){
+		//have key sides of cubie colored black
+		ofRender *ofr = new ofRender(); 
+		for(int j=0; j< numObjs; j++){
+			ofr->colorBlackSides(myMeshs[j],idCubie);
+			//have to replace the vbo
+			ofVbo tempVbo;
+			tempVbo.setMesh(myMeshs[j], GL_STATIC_DRAW);
+			myVbos[j]=tempVbo;
+		}
 
-	sgCGroup* aux;
-	//sgCObject **objcts = (sgCObject**)malloc(50*sizeof(sgCObject*));
-	//sgCObject **objcts1 = (sgCObject**)malloc(50*sizeof(sgCObject*));
-	//int objctr = 0;
+		free(ofr);
+	}
+	//----------------------------------------------------------------
+	void cubie::exit(){
+		if(objects != NULL){
+			for (int j=0; j < numObjs; j++){
+				sgCObject::DeleteObject(objectList[j]);
+			}
+			free(objectList);
+			sgCObject::DeleteObject(objects);
+		}
+	}
+	//-------------------------------------------------------------------------------------------------------------------------------------------
+	sgCGroup* cubie::copyObjects(){
+		//make a copy of *objects send outside cubie
+		//so originals dont get messed up, and cubies can draw every time without making a the boolean first
 
-	//if(objects != NULL){
-	//	const int ChCnt = objects->GetChildrenList()->GetCount();
-	//	sgCObject** allParts = (sgCObject**)malloc(ChCnt*sizeof(sgCObject*));
-	//	objects->BreakGroup(allParts);
-	//	sgCObject::DeleteObject(objects);
-	//	for (int j=0; j < ChCnt; j++){
-	//		//clone each object
-	//		sgCObject *temp = allParts[j];
-	//		//put clone on *[] tomake new group
-	//		objcts[objctr] = temp->Clone();
-	//		objcts1[objctr] = temp->Clone();
-	//		objctr ++;
-	//		sgCObject::DeleteObject(temp);
-	//	}
-	//	free(allParts);
-	//	//put that new group inside aux**[]
-	//	objects = sgCGroup::CreateGroup(objcts,objctr); //so objects[] has the data again, and keeps it for future requests
-	//	aux = sgCGroup::CreateGroup(objcts1,objctr);  
-	//}else{
-	//	return NULL;
-	//}
-	//free(objcts);
-	//free(objcts1);
-	return aux;
-}
+		sgCGroup* aux;
+		//sgCObject **objcts = (sgCObject**)malloc(50*sizeof(sgCObject*));
+		//sgCObject **objcts1 = (sgCObject**)malloc(50*sizeof(sgCObject*));
+		//int objctr = 0;
 
-//--------------------------------------------------------------
-//void cubie::unDraw(){  
-//sgGetScene()->Clear();
-//detach from scene
-//if(objects != NULL){
-//	for (int j=0; j < numObjs; j++){
-//		//objectList[j]->SetAttribute(SG_OA_DRAW_STATE,SG_DS_HIDE);
-//		//sgGetScene()->DetachObject(objectList[j]);
-//		//sgCObject::DeleteObject(objectList[j]);
-//		okDraw = true;
-//	}
-//	////////////////////////////////////IMPORTANT!!!!!!!!///////////////////////////////////
-//	////remake objectList for next drawing
-//	////there is somememory leakage here!!!!! even after sgCObject::DeleteObject(objectList[j]);
-//	/////////////////////////////////////////////////////////////////////////////////////////////
-
-//	sgCGroup *objects2 = copyObjects(); 
-//	const int ChCnt = objects2->GetChildrenList()->GetCount();
-//	numObjs = ChCnt;
-//	//give this cubies list some memory
-//	objectList = (sgC3DObject**)malloc(ChCnt*sizeof(sgC3DObject*));
-//	//start breaking incoming group
-//	sgCObject** allParts = (sgCObject**)malloc(ChCnt*sizeof(sgCObject*));
-//	objects2->BreakGroup(allParts);
-//	sgCObject::DeleteObject(objects2);
-
-//	for (int j=0; j < ChCnt; j++){
-//		objectList[j] = (sgC3DObject*)allParts[j];
-//	}
-//	free(allParts);
-//}else{
-//	//cout << "null at undraw" << endl;
-//}
-//}
+		//if(objects != NULL){
+		//	const int ChCnt = objects->GetChildrenList()->GetCount();
+		//	sgCObject** allParts = (sgCObject**)malloc(ChCnt*sizeof(sgCObject*));
+		//	objects->BreakGroup(allParts);
+		//	sgCObject::DeleteObject(objects);
+		//	for (int j=0; j < ChCnt; j++){
+		//		//clone each object
+		//		sgCObject *temp = allParts[j];
+		//		//put clone on *[] tomake new group
+		//		objcts[objctr] = temp->Clone();
+		//		objcts1[objctr] = temp->Clone();
+		//		objctr ++;
+		//		sgCObject::DeleteObject(temp);
+		//	}
+		//	free(allParts);
+		//	//put that new group inside aux**[]
+		//	objects = sgCGroup::CreateGroup(objcts,objctr); //so objects[] has the data again, and keeps it for future requests
+		//	aux = sgCGroup::CreateGroup(objcts1,objctr);  
+		//}else{
+		//	return NULL;
+		//}
+		//free(objcts);
+		//free(objcts1);
+		return aux;
+	}

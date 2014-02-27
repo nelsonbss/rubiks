@@ -10,10 +10,10 @@ class ofRender{
 
 public:
 	ofRender();
-	void sgCoretoOFmesh(sgC3DObject *obj, ofMesh &mesh,int numCubie,int selObjId);
+	void sgCoretoOFmesh(sgC3DObject *obj, ofMesh &mesh,int numCubie,int selectedObjectID);
 	void setNormals( ofMesh &mesh );
 	ofPoint decideAxis(ofPoint dir);
-	ofPoint decideAxis2(ofPoint dir);
+	ofPoint decideAxisRange(ofPoint dir);
 	ofColor decideColor(ofPoint normal);
 	ofColor decideColorCubieBox(ofPoint normal,int numCubie);
 

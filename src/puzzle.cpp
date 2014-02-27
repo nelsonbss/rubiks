@@ -359,10 +359,10 @@ void puzzle::rearange3dArray(SG_VECTOR axis, int plane, bool dir){
 void puzzle::colorFaces(int objectID){
 	////goes through each cubie and makes sets of normals.. to determine all different normals in the object
 	//and apply colors to those normals
-	if((objectID != 4) && (objectID != 2) && (objectID != 3)){
-		//not the bunny or the cube -> they were colored on puzzle::loadPieces->cubie::setObjects
+	if((objectID != 4) && (objectID != 2)){
+		//not the bunny or the cube -> they were already colored on puzzle::loadPieces->cubie::setObjects
 		ofRender *ofr = new ofRender();
-		ofr->colorFaces(myCubies,numPieces);
+		ofr->colorFaces(myCubies,numPieces,0.01);
 		free(ofr);
 		//color black all the inside faces of each cubie (after all other face colors have been applied)
 		//all the puzzles have to do this
@@ -375,7 +375,7 @@ void puzzle::colorCubiesBlackSides(){
 	//it takes care of the "inside" coloring for each cubie
 	//for the platonian solids other than cube
 	for(int i=0;i<numPieces;i++){
-		myCubies[i]->colorBlackSides(i);
+		myCubies[i]->colorBlackSides(i,0.1);
 	}
 }
 //---------------------------------------------------------------

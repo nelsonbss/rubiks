@@ -277,7 +277,7 @@ void game::loadObject(int objID, SG_VECTOR p, SG_VECTOR t){
 			objectDisplayed->loadObject(sgCreateBox(300,300,300),2);
 		}if(objID == 3){
 			//cone
-			objectDisplayed->loadObject(sgCreateCone(200,1,300,3),3);
+			objectDisplayed->loadObject(sgCreateCone(250,1,250,3),3);
 		}
 		if(objID == 4){
 			//try to load the bunny

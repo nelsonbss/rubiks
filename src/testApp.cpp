@@ -122,6 +122,8 @@ void testApp::keyPressed(int key){
 	gStep = myGames[0]->getCurrentStep();
 
 	////////////////////////////////////////////step 0 inputs
+	////////////////////////////////////////////step 0 inputs
+	////////////////////////////////////////////step 0 inputs
 	if(gStep == 0){
 		SG_VECTOR objectPos = {0,0,0};  //where it gets sliced
 		SG_VECTOR tempPos = {displayX,displayY,displayZ}; // where the temp object will be showed to user
@@ -152,6 +154,8 @@ void testApp::keyPressed(int key){
 			myGames[0]->loadObject(8,objectPos,tempPos);
 		}
 	}
+	////////////////////////////////////////////step 1 inputs
+	////////////////////////////////////////////step 1 inputs
 	////////////////////////////////////////////step 1 inputs
 	if(gStep == 1){
 		//is showing object with flat color
@@ -192,6 +196,8 @@ void testApp::keyPressed(int key){
 		}
 	}
 	////////////////////////////////////////////step 2 inputs
+	////////////////////////////////////////////step 2 inputs
+	////////////////////////////////////////////step 2 inputs
 	if(gStep == 2){
 		//waiting for armature to be selected
 		if(key == '1') {
@@ -207,6 +213,8 @@ void testApp::keyPressed(int key){
 			//myGames[0]->setCurrentStep(3);
 		}
 	}
+	////////////////////////////////////////////step 3 inputs
+	////////////////////////////////////////////step 3 inputs
 	////////////////////////////////////////////step 3 inputs
 	if(gStep == 3){
 		//armature was selected
@@ -236,6 +244,8 @@ void testApp::keyPressed(int key){
 		}
 	}
 	////////////////////////////////////////////step 4 inputs
+	////////////////////////////////////////////step 4 inputs
+	////////////////////////////////////////////step 4 inputs
 	if(gStep == 4){
 		//showing puzzle with colors
 		//waiting for color change
@@ -250,13 +260,51 @@ void testApp::keyPressed(int key){
 			//go to step 5
 			myGames[0]->setCurrentStep(5);
 		}
+		///////////////////////////////move all puzzle
+		if(key == 'l') {
+			SG_VECTOR p = {10,0,0};
+			myGames[0]->moveP(p);
+		}
+		if(key == 'j') {
+			SG_VECTOR p = {-10,0,0};
+			myGames[0]->moveP(p);
+		}
+		if(key == 'i') {
+			SG_VECTOR p = {0,-10,0};
+			myGames[0]->moveP(p);
+		}
+		if(key == 'k') {
+			SG_VECTOR p = {0,10,0};
+			myGames[0]->moveP(p);
+		}
+		///////////rotate all puzzle  // two finger swipe gesture
+		if(key == 'm') {//rotate right
+			SG_VECTOR r = {0,0.1,0};
+			myGames[0]->rotateP(r);
+		}
+		if(key == 'n') {//rotate left
+			SG_VECTOR r = {0,-0.1,0};
+			myGames[0]->rotateP(r);
+		}
+		if(key == 'y') {//rotate up
+			SG_VECTOR r = {0.1,0,0};
+			myGames[0]->rotateP(r);
+		}
+		if(key == 'h') {//rotate down
+			SG_VECTOR r = {-0.1,0,0};
+			ofVec3f v;
+			myGames[0]->rotateP(r);
+		}
 	}
 	////////////////////////////////////////////step 5 inputs
+	////////////////////////////////////////////step 5 inputs
+	////////////////////////////////////////////step 5 inputs
 	if(gStep == 5){
-		//selected color (or not)
+		//selected color (or not, its not mandatory)
 		//pressed next on color palette step
 		//showing puzzle
 		//now the puzzle can be played with
+
 
 		int idcubie = 11;//to follow this cubie for now //this will be decided upon touch, or click on top of puzzle
 		int randcubie=0;
@@ -265,7 +313,7 @@ void testApp::keyPressed(int key){
 				//undo last move 
 				myGames[0]->unDo();
 			}
-			///////////////////////////////////////////////////////////// FACE ROTATIONS //////////////////////////////
+			////////////////////////////////////////////// FACE ROTATIONS //////////////////////////////
 			////////  x axis  ////  x axis
 			if(key == 'q') {
 				if(rotate == true) {//c
@@ -322,7 +370,7 @@ void testApp::keyPressed(int key){
 				}
 			}
 		}
-		//////////////////////////////////////////////////////////////////////////move all puzzle
+		////////////////////////////////////move all puzzle
 		if(key == 'l') {
 			SG_VECTOR p = {10,0,0};
 			myGames[0]->moveP(p);
@@ -339,7 +387,7 @@ void testApp::keyPressed(int key){
 			SG_VECTOR p = {0,10,0};
 			myGames[0]->moveP(p);
 		}
-		////////////////////////////////////////////////////////////////////////////////rotate all puzzle  // two finger swipe gesture
+		//////////////////rotate all puzzle  // two finger swipe gesture
 		if(key == 'm') {//rotate right
 			SG_VECTOR r = {0,0.1,0};
 			myGames[0]->rotateP(r);

@@ -11,11 +11,11 @@ public:
 	void setup();
 	void update();
 	void draw();
-
 	void exit();
 
-	sgCGroup* getCutterPlanes();//it will return the object, i.e to be drawn
-    sgCGroup* getCutterCubes();
+	//sgCGroup* getCutterPlanes();//it will return the object, i.e to be drawn
+ //   sgCGroup* getCutterCubes();
+
 	void addGroupToScene(sgCGroup *group);
 	void deleteGroupFromScene(sgCGroup *group);
 	//sgCGroup* getGroup();
@@ -24,9 +24,7 @@ public:
 	float cutterSize; //width and height of the "blade"
 	float tamCubie;
 	//whole cutter coordinates
-	float posX;
-	float posY;
-	float posZ;
+	ofVec3f posCutter;
 	void moveRight();
 	void moveLeft();
 	void moveUp();

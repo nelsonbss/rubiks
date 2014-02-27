@@ -9,14 +9,18 @@ cubie::cubie(float x, float y,float z, int idi, int selObjId){
 	pos.x = x;
 	pos.y = y;
 	pos.z = z;
+
 	rot.x = 0.0;
 	rot.y = 0.0;
 	rot.z = 0.0;
+
 	color = rand()%27;
 	okDraw = true;
+
 	pointRotate.x = 0;
 	pointRotate.y = 0;
 	pointRotate.z = 0;
+
 	/*rotX = 0.0;
 	rotY = 0.0;
 	rotZ = 0.0;*/
@@ -26,7 +30,7 @@ cubie::cubie(float x, float y,float z, int idi, int selObjId){
 	movingYC = false;
 	movingYCC = false;
 	movingZC = false;
-	movingZCC = false*/;
+	movingZCC = false;*/
 	/*ct1 = 0.0;
 	ct2 = 0.0;*/
 	animTime = 2;
@@ -314,14 +318,6 @@ void cubie::draw(){
 		for (int j=0; j < numObjs; j++){
 			glPushMatrix();
 			//ofScale(1.2,1.2,1.2);
-			////all puzzle
-			//glTranslatef(posX,posY,posZ);
-			//glRotatef(rotH,0,1,0);
-			//glRotatef(rotV,1,0,0);
-			////this cubie
-			//glRotatef(rotX,1,0,0);
-			//glRotatef(rotY,0,1,0);
-			//glRotatef(rotZ,0,0,1);
 			if (objectList[j]->GetTempMatrix()!=0)
 				glMultMatrixd(objectList[j]->GetTempMatrix()->GetTransparentData());
 			objectList[j]->DestroyTempMatrix();

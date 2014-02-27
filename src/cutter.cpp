@@ -9,9 +9,10 @@ cutter::cutter(float thick, float tamPlane, float tamCuby,float numCutr, float x
 	planes = (sgCObject**)malloc(6*sizeof(sgCObject*));
 	cubes = (sgCObject**)malloc(27*sizeof(sgCObject*));
 	////
-	posX = x;
-	posY = y;
-	posZ = z;
+	posCutter.x = x;
+	posCutter.y = y;
+	posCutter.z = z;
+	////
 	rotH = 0;
 	rotV = 0;
 	///
@@ -181,7 +182,7 @@ void cutter::setup(){
 	//////create group////////////////////////////////////////////////
 	allPlanes = sgCGroup::CreateGroup(planes,6);
 	//move planes to display position, where cuts are going to be made
-	SG_VECTOR transPlanes = {posX,posY,posZ};
+	SG_VECTOR transPlanes = {posCutter.x,posCutter.y,posCutter.z};
 	allPlanes->InitTempMatrix()->Translate(transPlanes);
 	allPlanes->ApplyTempMatrix();  
 	allPlanes->DestroyTempMatrix();
@@ -544,13 +545,13 @@ void cutter::draw(){
 }
 /////////////////////////////////////////////////////////////////
 //----------------------------------------------------------------
-sgCGroup* cutter::getCutterPlanes(){
-	return allPlanes;
-}
-
-sgCGroup* cutter::getCutterCubes(){
-	return allCubes; 
-}
+//sgCGroup* cutter::getCutterPlanes(){
+//	return allPlanes;
+//}
+//
+//sgCGroup* cutter::getCutterCubes(){
+//	return allCubes; 
+//}
 
 void cutter::exit(){
 	sgCObject** allParts = (sgCObject**)malloc(6*sizeof(sgCObject*));
@@ -598,41 +599,3 @@ void cutter::deleteGroupFromScene(sgCGroup *group){
 		free(allChilds); 
 	}  
 }
-
-//sgCGroup* cutter::getGroup(){
-//make a copy of the group** to send outside pieces[]
-//sgCGroup *aux;
-
-//sgCGroup **aux = (sgCGroup**)malloc(27*sizeof(sgCGroup*));
-//sgCObject *objcts[50];  
-
-//for(int i =0; i<27; i ++){
-//	int objctr = 0;
-//	//break each pieces[i]
-//	sgCGroup *parts = pieces[i];
-//	if(parts != NULL){
-//		const int ChCnt = parts->GetChildrenList()->GetCount();
-//		sgCObject** allParts = (sgCObject**)malloc(ChCnt*sizeof(sgCObject*));
-//		parts->BreakGroup(allParts);
-//		sgCObject::DeleteObject(parts);
-//		for (int j=0; j < ChCnt; j++){
-//			//clone each object
-//			sgCObject *temp = allParts[j]->Clone();
-//			//put clone on *[] tomake new group
-//			objcts[objctr] = temp;
-//			objctr ++;
-//		}
-//		free(allParts);
-//		//put that new group inside aux**[]
-//		pieces[i] = sgCGroup::CreateGroup(objcts,objctr); //so pieces[] has the data again, and keeps it for future requests
-//		aux[i] = sgCGroup::CreateGroup(objcts,objctr);  
-//	}else{
-//		pieces[i] = NULL;
-//		aux[i] = NULL; 
-//	}
-//}
-/////important!!!!!!!!!!!!!!!!important!!!!!!!!!!!///////////important/////////////////////////////
-//sgCObject::DeleteObject(*objcts); //why if I delete the objects everything goes KAPUT?????
-///////////////important////////////////////important//////////////important//////////////////////
-//return aux;
-//}

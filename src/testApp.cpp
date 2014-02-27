@@ -196,14 +196,12 @@ void testApp::keyPressed(int key){
 		//waiting for armature to be selected
 		if(key == '1') {
 			//select armature 1
-			myGames[0]->createSlicer();
-			myGames[0]->loadArmature(1);
+			myGames[0]->loadArmature(1); //this creates the slicer and cutter
 			//for now .. go to step 3
 			//myGames[0]->setCurrentStep(3);
 		}
 		if(key == '2') {
 			//select armature 2
-			myGames[0]->createSlicer();
 			myGames[0]->loadArmature(2);
 			//for now .. go to step 3
 			//myGames[0]->setCurrentStep(3);

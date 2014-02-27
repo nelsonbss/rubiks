@@ -5,6 +5,10 @@
 #include "cutter.h"
 #include "puzzle.h"
 
+#define planeThicknes 0.001
+#define planeSize 900
+#define tamCubie 100
+
 game::game(SG_VECTOR gamePos, float w, float h, SG_VECTOR displayPos){
 	posGame = gamePos;
 	width = w;
@@ -22,10 +26,6 @@ game::game(SG_VECTOR gamePos, float w, float h, SG_VECTOR displayPos){
 	objectID = -1;
 }
 //--------------------------------------------------------------
-#define planeThicknes 0.001
-#define planeSize 900
-#define tamCubie 100
-
 void game::setup(){
 	step = 0;
 	idcubie=0;
@@ -158,7 +158,7 @@ void game::setup(){
 	/////////////////
 	//loadObjects();
 }
-//--------------------------------------------------------------
+//----------------------------------------------------------------------
 void game::update(){
 
 	if(step == 1 || step == 2 || step == 3){
@@ -196,7 +196,7 @@ void game::update(){
 		}
 	}
 }
-//--------------------------------------------------------------
+//----------------------------------------------------------------------
 void game::draw(){  
 	////////////////////////////////Draw the pieces////////////////////////////////////
 	if(step == 0){
@@ -233,15 +233,15 @@ void game::draw(){
 		//mySlicer->draw();
 	}
 }
-//----------------------------------------------------------------
+//----------------------------------------------------------------------
 void game::moveP(SG_VECTOR p){
 	posP = p;
 }
-//---------------------------------------------------------------
+//----------------------------------------------------------------------
 void game::rotateP(SG_VECTOR r){
 	rotP = r;
 }
-//-------------------------------------------------------------------
+//----------------------------------------------------------------------
 void game::rotateByIDandAxis(int id, SG_VECTOR axs, bool d){
 	if(axs.x==0 && axs.y==0 && axs.z==0){
 		//stop any rotation
@@ -256,7 +256,7 @@ void game::rotateByIDandAxis(int id, SG_VECTOR axs, bool d){
 	}
 
 }
-//----------------------------------------------------------------
+//----------------------------------------------------------------------
 void game::loadObject(int objID, SG_VECTOR p, SG_VECTOR t){
 	if (objectID == -1){
 		objectDisplayed = new myobject3D(p,t);
@@ -306,45 +306,52 @@ void game::loadObject(int objID, SG_VECTOR p, SG_VECTOR t){
 	/*const char* nel =  ofToDataPath("cube.stl",false).c_str();
 	objectDisplayed.loadObjectFromFile(nel);*/
 }
-//--------------------------------------------
-void game::createSlicer(){
-	////////////////////////////////create cutter///////////////////////////////////////
-	myCutter = new cutter(planeThicknes,planeSize,tamCubie,1,0,0,-100);				
-	myCutter->setup();
-	//////////////////////////////////end create cutter///////////////////////////////////
-
-	//////////////////////////////////create slicer///////////////////////////////////////
-	mySlicer = new slicer(myCutter,posP.x,posP.y);
-	mySlicer->setup();
-	///////////////////////////end create slicer /////////////////////////////////////////
-}
-//---------------------------------------------
+//----------------------------------------------------------------------
 void game::loadArmature(int type){
+	//loads armature and creates slicer at the same time??
 	if(type == 1){
-		myArmature = new armature (ofVec3f(posA.x,posA.y,0),300,300,10,tamCubie*1.2);
+		myArmature = new armature (ofVec3f(posA.x,posA.y,0),300,300,10,tamCubie);
+		////////////////////////////////create cutter///////////////////////////////////////
+		myCutter = new cutter(planeThicknes,planeSize,tamCubie,1,0,0,-100);				
+		myCutter->setup();
+		//////////////////////////////////end create cutter///////////////////////////////////
+
+		//////////////////////////////////create slicer///////////////////////////////////////
+		mySlicer = new slicer(myCutter,posP.x,posP.y);
+		mySlicer->setup();
+		///////////////////////////end create slicer //////////////////////////////////
 	}
-	if(type ==2 ){
-		myArmature = new armature (ofVec3f(posA.x,posA.y,0),300,300,10,tamCubie*1.2);
+	if(type == 2){
+		myArmature = new armature (ofVec3f(posA.x,posA.y,0),300,300,10,tamCubie*2.0);
+		////////////////////////////////create cutter///////////////////////////////////////
+		myCutter = new cutter(planeThicknes,planeSize,tamCubie*2.0,1,0,0,-100);				
+		myCutter->setup();
+		//////////////////////////////////end create cutter///////////////////////////////////
+
+		//////////////////////////////////create slicer///////////////////////////////////////
+		mySlicer = new slicer(myCutter,posP.x,posP.y);
+		mySlicer->setup();
+		///////////////////////////end create slicer //////////////////////////////////
 	}
 	myArmature->setup();
 	setCurrentStep(3);
+
+
 }
-//---------------------------------------------
+//----------------------------------------------------------------------
 void game::createPuzzle(SG_VECTOR p){
 	if(step == 3){
 		////////////////////////////////create puzzle///////////////////////////////////////
 		myPuzzle = new puzzle(p.x,p.y,p.z); // it receives th position to be displayed
 		myPuzzle->setup();
-		//////////////////////////////end create puzzle////////////////////////////////////
 
-		////BOOLEAN SUBSTRACTION//////////////////////////////////////////////////////////
+		////boolean substraction//////////////////////////////////////////////////////////
 		//mySlicer->xSlicing(*mySlicer->myCutter,objectDisplayed->getObject(),1,1);
-		///boolean INTERSECTION///////////////////////////////////////////////////////////
+		///////////////  BOOLEAN INTERSECTION          ///////////////////////////////////
 		mySlicer->intersectCubes(objectDisplayed->getObject()); 
 		//now slicer has all the parts inside sgCGroup ** = pieces[]
-		//////////////////////////////create puzzle////////////////////////////////////////
 		myPuzzle->loadPieces(mySlicer->getPieces(),objectID);
-		////////////////////////////////end create puzzle//////////////////////////////////
+		////////////////////////////////end create puzzle/////////////////////////////////
 
 		///////////////////////////////  color puzzle   ////////////////////////////////// 
 		//color all the faces for platonic solids!! colors outside for most objects(not bunny), black on the insides
@@ -354,23 +361,23 @@ void game::createPuzzle(SG_VECTOR p){
 		step = 4;
 	}
 }
-//----------------------------------------------
+//----------------------------------------------------------------------
 int game::getCurrentStep(){
 	return step;
 }
-//----------------------------------------------
+//----------------------------------------------------------------------
 void game::setCurrentStep(int s){
 	step = s;
 }
-//-----------------------------------------------------------------
+//----------------------------------------------------------------------
 void game::changeColorToColor(ofFloatColor sc, ofFloatColor tc){
 	myPuzzle->changeColorToColor(sc,tc);
 }
-//-------------------------------------------------------
+//----------------------------------------------------------------------
 void game::moveA (ofVec3f input){
 	myArmature->moveA(input);
 }
-//----------------------------------------------
+//----------------------------------------------------------------------
 void game::unDo(){
 	//new aproach
 	//to do 1 undo:
@@ -385,7 +392,7 @@ void game::unDo(){
 		historyV.pop_back();
 	}
 }
-//----------------------------------------------
+//----------------------------------------------------------------------
 void game::restart(){
 	if(step==4 || step==5){
 		myPuzzle->exit();
@@ -406,7 +413,7 @@ void game::restart(){
 		objectID = -1;
 	}
 }
-//----------------------------------------------
+//----------------------------------------------------------------------
 void game::exit(){
 	sgDeleteObject(sgBunny);
 	sgDeleteObject(sgDodecahedron);

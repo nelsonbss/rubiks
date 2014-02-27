@@ -179,7 +179,15 @@ void ofRender::colorFaces(cubie **myCubies, int numPieces){
 					//it has at least one normal
 					//compare current normal with all other normals
 					for(int un = 0; un < uniqueNormals.size(); un ++){
-						if(uniqueNormals[un] == tnormals[n]){
+
+						if(((uniqueNormals[un].x - playRoom) < tnormals[n].x) && 
+						   (tnormals[n].x < (uniqueNormals[un].x + playRoom)) &&
+							((uniqueNormals[un].y - playRoom) < tnormals[n].y) && 
+						   (tnormals[n].y < (uniqueNormals[un].y + playRoom)) &&
+						   ((uniqueNormals[un].z - playRoom) < tnormals[n].z) && 
+						   (tnormals[n].z < (uniqueNormals[un].z + playRoom))
+						){
+						//if(uniqueNormals[un] == tnormals[n]){
 							//we already have that type of normal
 							//stop looking through the vector
 							un = uniqueNormals.size();
@@ -223,8 +231,16 @@ void ofRender::colorFaces(cubie **myCubies, int numPieces){
 			for(int un = 0; un<uniqueNormals.size();un++){
 				//compare each t normal with each unique normal
 				for(int n=0; n< tnormals.size() ; n++){
-					if(uniqueNormals[un] == tnormals[n]){
-						//if the cubies meshs normalis one of the unique normals
+
+					if(((uniqueNormals[un].x - playRoom) < tnormals[n].x) && 
+						   (tnormals[n].x < (uniqueNormals[un].x + playRoom)) &&
+							((uniqueNormals[un].y - playRoom) < tnormals[n].y) && 
+						   (tnormals[n].y < (uniqueNormals[un].y + playRoom)) &&
+						   ((uniqueNormals[un].z - playRoom) < tnormals[n].z) && 
+						   (tnormals[n].z < (uniqueNormals[un].z + playRoom))
+						){
+					//if(uniqueNormals[un] == tnormals[n]){
+						//if the cubies meshs normal is one of the unique normals
 						//we assign a color to that normal on the cubie
 						//the index of the tnormal that we are looking at, is the same on the tcolors vector
 						//the color that we want is the one that corresponds to the uniqueNormals(index) that matched-> that same index is used to get color from uniqueColors(index) vector

@@ -3,6 +3,7 @@
 
 #include "ofMain.h"
 #include "sgCore.h"
+#include "cubie.h"
 
 #include <vector>
 class ofRender{
@@ -34,6 +35,7 @@ public:
 
 	void changeColorToColor(ofFloatColor Sc, ofFloatColor Tc, ofMesh &mesh);
 	void colorBlackSides(ofMesh &mesh, int idCubie);
+	void colorFaces(cubie **myCubies, int numPieces);
 	double playRoom; //to make a less strong axis deciding algorith
 };
 

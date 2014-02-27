@@ -356,7 +356,7 @@ void game::createPuzzle(SG_VECTOR p){
 		if(objectID != 2 && objectID != 4  && objectID != 1){
 			//not the cube, nor the bunny, nor the torus
 			//color all the faces for platonic solids!!
-			//myPuzzle->colorFaces();
+			myPuzzle->colorFaces();
 			//color black all the inside faces of each cubie (after all other face colors have been applied)
 			myPuzzle->colorCubiesBlackSides();
 		}

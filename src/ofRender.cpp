@@ -1,7 +1,9 @@
 #include "ofRender.h"
 #include "ofMain.h"
 #include "sgCore.h"
+#include "cubie.h"
 #include <vector>
+
 
 ofRender::ofRender(){
 	mate = ofFloatColor(1.0,1.0,1.0,0.5);
@@ -24,6 +26,7 @@ ofRender::ofRender(){
 	colorsVector.push_back(ofFloatColor(0.576, 0.439, 0.859));//7 medium purple
 	colorsVector.push_back(cyan);//8
 
+	//very important to color inside black faces
 	playRoom = 0.1;
 }
 
@@ -153,7 +156,94 @@ void ofRender::changeColorToColor(ofFloatColor Sc, ofFloatColor Tc, ofMesh &mesh
 	mesh.clearColors();
 	mesh.addColors(colorsVectorT);
 }
-//--------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------
+void ofRender::colorFaces(cubie **myCubies, int numPieces){
+	//goes through each cubie and makes sets of normals.. to determine all different normals in the object
+	//i.e. this will give 8 + 6 faces for octahedor
+	vector< ofVec3f > tnormals;
+	vector< ofFloatColor > tcolors;
+
+	//create sets of distitnct normals from all the meshes of all the cubies of the puzzle
+	vector< ofVec3f > uniqueNormals;
+
+	for(int i=0;i<numPieces;i++){
+		float meshesCubie =  myCubies[i]->getNumObjs();
+		for (int j = 0 ; j< meshesCubie; j++){
+			tnormals = myCubies[i]->myMeshs[j].getNormals();
+			//verify each normal value on uniquenormals vector
+			for(int n=0; n< tnormals.size() ; n++){
+				if(uniqueNormals.size() == 0){
+					//the first normal of all the normals
+					uniqueNormals.push_back (tnormals[n]);
+				}else{
+					//it has at least one normal
+					//compare current normal with all other normals
+					for(int un = 0; un < uniqueNormals.size(); un ++){
+						if(uniqueNormals[un] == tnormals[n]){
+							//we already have that type of normal
+							//stop looking through the vector
+							un = uniqueNormals.size();
+						}else{
+							//its different
+							//keep going until the last element
+							if(un == uniqueNormals.size()-1){
+								//its the las element on the vector of unique normals
+								//if we got here its because the current normal (cn) is new to the set
+								uniqueNormals.push_back(tnormals[n]);
+								//stop this for.. we just changed the size
+								un = uniqueNormals.size();
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	//at this point we have the unique normals of the object
+	//each of these normals should have a unique color
+	vector< ofFloatColor > uniqueColors;
+	//build roster of colors for the current object
+	for(int i =0; i< uniqueNormals.size(); i++){
+		//for each unique normal
+		//for now we select from 9 possible colors that we have right now
+		ofFloatColor x =  colorsVector[i%9];
+		uniqueColors.push_back(x);
+	}
+	//now -> uniqueColors.size = uniqueNormals.size
+
+	//got through each cubie again
+	for(int i=0;i<numPieces;i++){
+		float meshesCubie =  myCubies[i]->getNumObjs();
+		for (int j = 0 ; j< meshesCubie; j++){
+			//got through each cubies meshes again
+			tnormals = myCubies[i]->myMeshs[j].getNormals();
+			tcolors = myCubies[i]->myMeshs[j].getColors();
+			//compare this normals to the uniqueNormals(index) to get the color from that uniqueColors(index)
+			//go through uniqueNormals
+			for(int un = 0; un<uniqueNormals.size();un++){
+				//compare each t normal with each unique normal
+				for(int n=0; n< tnormals.size() ; n++){
+					if(uniqueNormals[un] == tnormals[n]){
+						//if the cubies meshs normalis one of the unique normals
+						//we assign a color to that normal on the cubie
+						//the index of the tnormal that we are looking at, is the same on the tcolors vector
+						//the color that we want is the one that corresponds to the uniqueNormals(index) that matched-> that same index is used to get color from uniqueColors(index) vector
+						tcolors[n] = uniqueColors[un];
+					}
+				}
+			}
+			//we now have a colors Vector with new colors assigned
+			//put that colorVector on the current mesh of the current cubie
+			myCubies[i]->myMeshs[j].clearColors();
+			myCubies[i]->myMeshs[j].addColors(tcolors);
+			//have to replace the vbo
+			ofVbo tempVbo;
+			tempVbo.setMesh(myCubies[i]->myMeshs[j], GL_STATIC_DRAW);
+			myCubies[i]->myVbos[j]=tempVbo;
+		}
+	}
+}
+//---------------------------------------------------------------------------------------------------------------
 void ofRender::colorBlackSides(ofMesh &mesh, int idCubie){
 	//color black the correct sides of each cubie
 	vector< ofVec3f > tnormals;
@@ -210,13 +300,13 @@ void ofRender::colorBlackSides(ofMesh &mesh, int idCubie){
 			tcolors[i] =  c;
 		}else if (idCubie==2){
 			//middle right yellow.blue
-			if(decideAxis(tnormals[i])==y){
+			if(decideAxis2(tnormals[i])==y){
 				c = black;
-			}else if(decideAxis(tnormals[i])==xn){
+			}else if(decideAxis2(tnormals[i])==xn){
 				c = black;
-			}else if(decideAxis(tnormals[i])==yn){
+			}else if(decideAxis2(tnormals[i])==yn){
 				c = black;
-			}else if(decideAxis(tnormals[i])==zn){
+			}else if(decideAxis2(tnormals[i])==zn){
 				c = black;
 			}else{
 				//leave same color
@@ -225,15 +315,15 @@ void ofRender::colorBlackSides(ofMesh &mesh, int idCubie){
 			tcolors[i] =  c;
 		}else if (idCubie==3){
 			//middle center yellow
-			if(decideAxis(tnormals[i])==x){
+			if(decideAxis2(tnormals[i])==x){
 				c = black;
-			}else if(decideAxis(tnormals[i])==y){
+			}else if(decideAxis2(tnormals[i])==y){
 				c = black;
-			}else if(decideAxis(tnormals[i])==xn){
+			}else if(decideAxis2(tnormals[i])==xn){
 				c = black;
-			}else if(decideAxis(tnormals[i])==yn){
+			}else if(decideAxis2(tnormals[i])==yn){
 				c = black;
-			}else if(decideAxis(tnormals[i])==zn){
+			}else if(decideAxis2(tnormals[i])==zn){
 				c = black;
 			}else{
 				//leave same color
@@ -242,13 +332,13 @@ void ofRender::colorBlackSides(ofMesh &mesh, int idCubie){
 			tcolors[i] =  c;
 		}else if(idCubie==4){
 			//middle left yellow/green
-			if(decideAxis(tnormals[i])==x){
+			if(decideAxis2(tnormals[i])==x){
 				c = black;
-			}else if(decideAxis(tnormals[i])==y){
+			}else if(decideAxis2(tnormals[i])==y){
 				c = black;
-			}else if(decideAxis(tnormals[i])==yn){
+			}else if(decideAxis2(tnormals[i])==yn){
 				c = black;
-			}else if(decideAxis(tnormals[i])==zn){
+			}else if(decideAxis2(tnormals[i])==zn){
 				c = black;
 			}else{
 				//leave same color
@@ -257,15 +347,15 @@ void ofRender::colorBlackSides(ofMesh &mesh, int idCubie){
 			tcolors[i] =  c;
 		}else if(idCubie==5){
 			//middle center green
-			if(decideAxis(tnormals[i])==x){
+			if(decideAxis2(tnormals[i])==x){
 				c = black;
-			}else if(decideAxis(tnormals[i])==y){
+			}else if(decideAxis2(tnormals[i])==y){
 				c = black;
-			}else if(decideAxis(tnormals[i])==z){
+			}else if(decideAxis2(tnormals[i])==z){
 				c = black;
-			}else if(decideAxis(tnormals[i])==yn){
+			}else if(decideAxis2(tnormals[i])==yn){
 				c = black;
-			}else if(decideAxis(tnormals[i])==zn){
+			}else if(decideAxis2(tnormals[i])==zn){
 				c = black;
 			}else{
 				//leave same color
@@ -274,13 +364,13 @@ void ofRender::colorBlackSides(ofMesh &mesh, int idCubie){
 			tcolors[i] =  c;
 		}else if(idCubie==6){
 			//middle right white/green
-			if(decideAxis(tnormals[i])==x){
+			if(decideAxis2(tnormals[i])==x){
 				c = black;
-			}else if(decideAxis(tnormals[i])==y){
+			}else if(decideAxis2(tnormals[i])==y){
 				c = black;
-			}else if(decideAxis(tnormals[i])==z){
+			}else if(decideAxis2(tnormals[i])==z){
 				c = black;
-			}else if(decideAxis(tnormals[i])==yn){
+			}else if(decideAxis2(tnormals[i])==yn){
 				c = black;
 			}else{
 				//leave same color
@@ -289,15 +379,15 @@ void ofRender::colorBlackSides(ofMesh &mesh, int idCubie){
 			tcolors[i] =  c;
 		}else if(idCubie==7){
 			//middle center white
-			if(decideAxis(tnormals[i])==x){
+			if(decideAxis2(tnormals[i])==x){
 				c = black;
-			}else if(decideAxis(tnormals[i])==y){
+			}else if(decideAxis2(tnormals[i])==y){
 				c = black;
-			}else if(decideAxis(tnormals[i])==z){
+			}else if(decideAxis2(tnormals[i])==z){
 				c = black;
-			}else if(decideAxis(tnormals[i])==xn){
+			}else if(decideAxis2(tnormals[i])==xn){
 				c = black;
-			}else if(decideAxis(tnormals[i])==yn){
+			}else if(decideAxis2(tnormals[i])==yn){
 				c = black;
 			}else{
 				//leave same color
@@ -306,13 +396,13 @@ void ofRender::colorBlackSides(ofMesh &mesh, int idCubie){
 			tcolors[i] =  c;
 		}else if(idCubie==8){
 			//center left white/blue
-			if(decideAxis(tnormals[i])==y){
+			if(decideAxis2(tnormals[i])==y){
 				c = black;
-			}else if(decideAxis(tnormals[i])==z){
+			}else if(decideAxis2(tnormals[i])==z){
 				c = black;
-			}else if(decideAxis(tnormals[i])==xn){
+			}else if(decideAxis2(tnormals[i])==xn){
 				c = black;
-			}else if(decideAxis(tnormals[i])==yn){
+			}else if(decideAxis2(tnormals[i])==yn){
 				c = black;
 			}else{
 				//leave same color
@@ -321,15 +411,15 @@ void ofRender::colorBlackSides(ofMesh &mesh, int idCubie){
 			tcolors[i] =  c;
 		}else if(idCubie==9){
 			//top center
-			if(decideAxis(tnormals[i])==x){
+			if(decideAxis2(tnormals[i])==x){
 				c = black;
-			}else if(decideAxis(tnormals[i])==y){
+			}else if(decideAxis2(tnormals[i])==y){
 				c = black;
-			}else if(decideAxis(tnormals[i])==z){
+			}else if(decideAxis2(tnormals[i])==z){
 				c = black;
-			}else if(decideAxis(tnormals[i])==xn){
+			}else if(decideAxis2(tnormals[i])==xn){
 				c = black;
-			}else if(decideAxis(tnormals[i])==zn){
+			}else if(decideAxis2(tnormals[i])==zn){
 				c = black;
 			}else{
 				//leave same color
@@ -338,13 +428,13 @@ void ofRender::colorBlackSides(ofMesh &mesh, int idCubie){
 			tcolors[i] =  c;
 		}else if(idCubie==10){
 			//top middle red/blue
-			if(decideAxis(tnormals[i])==y){
+			if(decideAxis2(tnormals[i])==y){
 				c = black;
-			}else if(decideAxis(tnormals[i])==z){
+			}else if(decideAxis2(tnormals[i])==z){
 				c = black;
-			}else if(decideAxis(tnormals[i])==xn){
+			}else if(decideAxis2(tnormals[i])==xn){
 				c = black;
-			}else if(decideAxis(tnormals[i])==zn){
+			}else if(decideAxis2(tnormals[i])==zn){
 				c = black;
 			}else{
 				//leave same color
@@ -353,11 +443,11 @@ void ofRender::colorBlackSides(ofMesh &mesh, int idCubie){
 			tcolors[i] =  c;
 		}else if(idCubie==11){
 			//top right red/yello/blue
-			if(decideAxis(tnormals[i])==y){
+			if(decideAxis2(tnormals[i])==y){
 				c = black;
-			}else if(decideAxis(tnormals[i])==xn){
+			}else if(decideAxis2(tnormals[i])==xn){
 				c = black;
-			}else if(decideAxis(tnormals[i])==zn){
+			}else if(decideAxis2(tnormals[i])==zn){
 				c = black;
 			}else{
 				//leave same color
@@ -366,13 +456,13 @@ void ofRender::colorBlackSides(ofMesh &mesh, int idCubie){
 			tcolors[i] =  c;
 		}else if(idCubie==12){
 			//top middle red/yellow
-			if(decideAxis(tnormals[i])==x){
+			if(decideAxis2(tnormals[i])==x){
 				c = black;
-			}else if(decideAxis(tnormals[i])==y){
+			}else if(decideAxis2(tnormals[i])==y){
 				c = black;
-			}else if(decideAxis(tnormals[i])==xn){
+			}else if(decideAxis2(tnormals[i])==xn){
 				c = black;
-			}else if(decideAxis(tnormals[i])==zn){
+			}else if(decideAxis2(tnormals[i])==zn){
 				c = black;
 			}else{
 				//leave same color
@@ -381,11 +471,11 @@ void ofRender::colorBlackSides(ofMesh &mesh, int idCubie){
 			tcolors[i] =  c;
 		}else if(idCubie==13){
 			//top left red/yellow/green
-			if(decideAxis(tnormals[i])==x){
+			if(decideAxis2(tnormals[i])==x){
 				c = black;
-			}else if(decideAxis(tnormals[i])==y){
+			}else if(decideAxis2(tnormals[i])==y){
 				c = black;
-			}else if(decideAxis(tnormals[i])==zn){
+			}else if(decideAxis2(tnormals[i])==zn){
 				c = black;
 			}else{
 				//leave same color
@@ -394,13 +484,13 @@ void ofRender::colorBlackSides(ofMesh &mesh, int idCubie){
 			tcolors[i] =  c;
 		}else if(idCubie==14){
 			//top middle red/green
-			if(decideAxis(tnormals[i])==x){
+			if(decideAxis2(tnormals[i])==x){
 				c = black;
-			}else if(decideAxis(tnormals[i])==y){
+			}else if(decideAxis2(tnormals[i])==y){
 				c = black;
-			}else if(decideAxis(tnormals[i])==z){
+			}else if(decideAxis2(tnormals[i])==z){
 				c = black;
-			}else if(decideAxis(tnormals[i])==zn){
+			}else if(decideAxis2(tnormals[i])==zn){
 				c = black;
 			}else{
 				//leave same color
@@ -409,11 +499,11 @@ void ofRender::colorBlackSides(ofMesh &mesh, int idCubie){
 			tcolors[i] =  c;
 		}else if(idCubie==15){
 			//top right red/white/green
-			if(decideAxis(tnormals[i])==x){
+			if(decideAxis2(tnormals[i])==x){
 				c = black;
-			}else if(decideAxis(tnormals[i])==y){
+			}else if(decideAxis2(tnormals[i])==y){
 				c = black;
-			}else if(decideAxis(tnormals[i])==z){
+			}else if(decideAxis2(tnormals[i])==z){
 				c = black;
 			}else{
 				//leave same color
@@ -422,13 +512,13 @@ void ofRender::colorBlackSides(ofMesh &mesh, int idCubie){
 			tcolors[i] =  c;
 		}else if(idCubie==16){
 			//top middle red/white
-			if(decideAxis(tnormals[i])==x){
+			if(decideAxis2(tnormals[i])==x){
 				c = black;
-			}else if(decideAxis(tnormals[i])==y){
+			}else if(decideAxis2(tnormals[i])==y){
 				c = black;
-			}else if(decideAxis(tnormals[i])==z){
+			}else if(decideAxis2(tnormals[i])==z){
 				c = black;
-			}else if(decideAxis(tnormals[i])==xn){
+			}else if(decideAxis2(tnormals[i])==xn){
 				c = black;
 			}else{
 				//leave same color
@@ -437,11 +527,11 @@ void ofRender::colorBlackSides(ofMesh &mesh, int idCubie){
 			tcolors[i] =  c;
 		}else if(idCubie==17){
 			//top left red/blue/white
-			if(decideAxis(tnormals[i])==y){
+			if(decideAxis2(tnormals[i])==y){
 				c = black;
-			}else if(decideAxis(tnormals[i])==z){
+			}else if(decideAxis2(tnormals[i])==z){
 				c = black;
-			}else if(decideAxis(tnormals[i])==xn){
+			}else if(decideAxis2(tnormals[i])==xn){
 				c = black;
 			}else{
 				//leave same color
@@ -450,15 +540,15 @@ void ofRender::colorBlackSides(ofMesh &mesh, int idCubie){
 			tcolors[i] =  c;
 		}else if(idCubie==18){
 			//bottom center orange
-			if(decideAxis(tnormals[i])==x){
+			if(decideAxis2(tnormals[i])==x){
 				c = black;
-			}else if(decideAxis(tnormals[i])==z){
+			}else if(decideAxis2(tnormals[i])==z){
 				c = black;
-			}else if(decideAxis(tnormals[i])==xn){
+			}else if(decideAxis2(tnormals[i])==xn){
 				c = black;
-			}else if(decideAxis(tnormals[i])==yn){
+			}else if(decideAxis2(tnormals[i])==yn){
 				c = black;
-			}else if(decideAxis(tnormals[i])==zn){
+			}else if(decideAxis2(tnormals[i])==zn){
 				c = black;
 			}else{
 				//leave same color
@@ -467,13 +557,13 @@ void ofRender::colorBlackSides(ofMesh &mesh, int idCubie){
 			tcolors[i] =  c;
 		}else if(idCubie==19){
 			//middle blue/orange
-			if(decideAxis(tnormals[i])==z){
+			if(decideAxis2(tnormals[i])==z){
 				c = black;
-			}else if(decideAxis(tnormals[i])==xn){
+			}else if(decideAxis2(tnormals[i])==xn){
 				c = black;
-			}else if(decideAxis(tnormals[i])==yn){
+			}else if(decideAxis2(tnormals[i])==yn){
 				c = black;
-			}else if(decideAxis(tnormals[i])==zn){
+			}else if(decideAxis2(tnormals[i])==zn){
 				c = black;
 			}else{
 				//leave same color
@@ -482,11 +572,11 @@ void ofRender::colorBlackSides(ofMesh &mesh, int idCubie){
 			tcolors[i] =  c;
 		}else if(idCubie==20){
 			//bottom right yellow/blue/orange
-			if(decideAxis(tnormals[i])==xn){
+			if(decideAxis2(tnormals[i])==xn){
 				c = black;
-			}else if(decideAxis(tnormals[i])==yn){
+			}else if(decideAxis2(tnormals[i])==yn){
 				c = black;
-			}else if(decideAxis(tnormals[i])==zn){
+			}else if(decideAxis2(tnormals[i])==zn){
 				c = black;
 			}else{
 				//leave same color
@@ -495,13 +585,13 @@ void ofRender::colorBlackSides(ofMesh &mesh, int idCubie){
 			tcolors[i] =  c;
 		}else if(idCubie==21){
 			//botom middle yellow/orange
-			if(decideAxis(tnormals[i])==x){
+			if(decideAxis2(tnormals[i])==x){
 				c = black;
-			}else if(decideAxis(tnormals[i])==xn){
+			}else if(decideAxis2(tnormals[i])==xn){
 				c = black;
-			}else if(decideAxis(tnormals[i])==yn){
+			}else if(decideAxis2(tnormals[i])==yn){
 				c = black;
-			}else if(decideAxis(tnormals[i])==zn){
+			}else if(decideAxis2(tnormals[i])==zn){
 				c = black;
 			}else{
 				//leave same color
@@ -510,11 +600,11 @@ void ofRender::colorBlackSides(ofMesh &mesh, int idCubie){
 			tcolors[i] =  c;
 		}else if(idCubie==22){
 			//bottom left yellow/green/orange
-			if(decideAxis(tnormals[i])==x){
+			if(decideAxis2(tnormals[i])==x){
 				c = black;
-			}else if(decideAxis(tnormals[i])==yn){
+			}else if(decideAxis2(tnormals[i])==yn){
 				c = black;
-			}else if(decideAxis(tnormals[i])==zn){
+			}else if(decideAxis2(tnormals[i])==zn){
 				c = black;
 			}else{
 				//leave same color
@@ -523,13 +613,13 @@ void ofRender::colorBlackSides(ofMesh &mesh, int idCubie){
 			tcolors[i] =  c;
 		}if(idCubie==23){
 			//bottom middle green/orange
-			if(decideAxis(tnormals[i])==x){
+			if(decideAxis2(tnormals[i])==x){
 				c = black;
-			}else if(decideAxis(tnormals[i])==z){
+			}else if(decideAxis2(tnormals[i])==z){
 				c = black;
-			}else if(decideAxis(tnormals[i])==yn){
+			}else if(decideAxis2(tnormals[i])==yn){
 				c = black;
-			}else if(decideAxis(tnormals[i])==zn){
+			}else if(decideAxis2(tnormals[i])==zn){
 				c = black;
 			}else{
 				//leave same color
@@ -538,11 +628,11 @@ void ofRender::colorBlackSides(ofMesh &mesh, int idCubie){
 			tcolors[i] =  c;
 		}else if(idCubie==24){
 			//bottom left white/green/orange
-			if(decideAxis(tnormals[i])==x){
+			if(decideAxis2(tnormals[i])==x){
 				c = black;
-			}else if(decideAxis(tnormals[i])==z){
+			}else if(decideAxis2(tnormals[i])==z){
 				c = black;
-			}else if(decideAxis(tnormals[i])==yn){
+			}else if(decideAxis2(tnormals[i])==yn){
 				c = black;
 			}else{
 				//leave same color
@@ -551,13 +641,13 @@ void ofRender::colorBlackSides(ofMesh &mesh, int idCubie){
 			tcolors[i] =  c;
 		}else if(idCubie==25){
 			//bottom middle white/orange
-			if(decideAxis(tnormals[i])==x){
+			if(decideAxis2(tnormals[i])==x){
 				c = black;
-			}else if(decideAxis(tnormals[i])==z){
+			}else if(decideAxis2(tnormals[i])==z){
 				c = black;
-			}else if(decideAxis(tnormals[i])==xn){
+			}else if(decideAxis2(tnormals[i])==xn){
 				c = black;
-			}else if(decideAxis(tnormals[i])==yn){
+			}else if(decideAxis2(tnormals[i])==yn){
 				c = black;
 			}else{
 				//leave same color
@@ -566,11 +656,11 @@ void ofRender::colorBlackSides(ofMesh &mesh, int idCubie){
 			tcolors[i] =  c;
 		}else if(idCubie==26){
 			//bottom right white/blue/orange
-			if(decideAxis(tnormals[i])==z){
+			if(decideAxis2(tnormals[i])==z){
 				c = black;
-			}else if(decideAxis(tnormals[i])==xn){
+			}else if(decideAxis2(tnormals[i])==xn){
 				c = black;
-			}else if(decideAxis(tnormals[i])==yn){
+			}else if(decideAxis2(tnormals[i])==yn){
 				c = black;
 			}else{
 				//leave same color
@@ -659,9 +749,12 @@ ofPoint ofRender::decideAxis(ofPoint dir){
 
 	return simple;
 }
-//------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------
 ofPoint ofRender::decideAxis2(ofPoint dir){
 	//looks at a point (normal vector) and decides which axis is closer according to the most prominent component of the vector
+	/////////
+	///////THS VERSION: uses a small range to do inequality check so that the selected axis is not so strict, and doesnt color black faces that are not the inside faces
+	//////////
 	ofPoint simple = ofPoint(0,0,0);
 	int chosen=0;//1=x, 2=y, 3=z
 	float absX;
@@ -783,7 +876,7 @@ ofPoint ofRender::decideAxis2(ofPoint dir){
 
 	return simple;
 }
-//-----------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------
 ofColor ofRender::decideColor(ofPoint normal){
 	//decides a color according to a normal direction
 	// 6 colores are taken as base color (normal rubiks color)
@@ -812,7 +905,7 @@ ofColor ofRender::decideColor(ofPoint normal){
 	}
 	return c;
 }
-//-----------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------
 ofColor ofRender::decideColorCubieBox(ofPoint normal, int idCubie){
 	//special coloring function for TRADITIONAL rubicks coloring
 	//takes into account the number of the cubie son it can decide the colors for that specific cubie
@@ -1237,7 +1330,55 @@ ofColor ofRender::decideColorCubieBox(ofPoint normal, int idCubie){
 	}
 	return c;
 }
-//-------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ofColor ofRender::decideColorCubiePyramid(ofPoint normal, int idCubie){
 	//takes into account the number of the cubie son it can decide the colors for that specific cubie
 	//decides a color according to a normal direction

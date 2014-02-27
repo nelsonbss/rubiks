@@ -27,8 +27,8 @@ game::game(SG_VECTOR gamePos, float w, float h, SG_VECTOR displayPos){
 	rotP.z = 0;
 
 	//offset
-	offsetSlicer.x = 50;
-	offsetSlicer.y = 50;
+	offsetSlicer.x = 0;
+	offsetSlicer.y = 0;
 	offsetSlicer.z = -100;   ///this is because of the torus!!!, have to fix this dammit!
 
 	objectID = -1; //initialized on -1 because on stage=0 there is no object selected
@@ -382,9 +382,9 @@ void game::changeColorToColor(ofFloatColor sc, ofFloatColor tc){
 void game::moveA (ofVec3f input){
 	myArmature->moveA(input);
 	//move the offset vector of the cutter
-	/*offsetSlicer.x += input.x;
+	offsetSlicer.x += input.x;
 	offsetSlicer.y += input.y;
-	offsetSlicer.z += input.z;*/
+	offsetSlicer.z += input.z;
 }
 //----------------------------------------------------------------------
 ofVec3f game::giveOffset(){

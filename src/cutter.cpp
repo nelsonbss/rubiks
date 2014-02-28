@@ -1,13 +1,14 @@
 #include "cutter.h"
 #include "sgCore.h"
 
-cutter::cutter(float thick, float tamPlane, float tamCuby,float numCutr, ofVec3f pos){
+cutter::cutter(float thick, float tamCutter, float tamCuby,float numCutr, ofVec3f pos){
 	numCutter = numCutr; //to use when we have more than one cutter
 	//cutterThick = thick; //only used on planes
 
-	cutterSize = tamPlane; //how big is the cutter cube
+	cutterSize = tamCutter; //how big is the cutter cube
+
 	tamCubie = tamCuby;
-	planes = (sgCObject**)malloc(6*sizeof(sgCObject*));
+	//planes = (sgCObject**)malloc(6*sizeof(sgCObject*));
 	cubes = (sgCObject**)malloc(27*sizeof(sgCObject*));
 	////
 	posCutter.x = pos.x;
@@ -19,7 +20,7 @@ cutter::cutter(float thick, float tamPlane, float tamCuby,float numCutr, ofVec3f
 	///
 	centerCube.x = -tamCubie/2;
 	centerCube.y = -tamCubie/2;
-	centerCube.z = tamCubie/2; 
+	centerCube.z = -tamCubie/2; 
 	infinity = (cutterSize-tamCubie)/2;
 }
 //--------------------------------------------------------------
@@ -354,8 +355,9 @@ void cutter::setup(){
 	//move cubes to display position, where cuts are going to be made
 	SG_VECTOR transCubies = {posCutter.x,posCutter.y,posCutter.z};
 	allCubes->InitTempMatrix()->Translate(transCubies);
-	SG_VECTOR v = {0,0,0};
-	allCubes->GetTempMatrix()->Translate(v); 
+	//have to put rotation code here after we make translation work well
+	//SG_VECTOR v = {0,0,0};
+	//allCubes->GetTempMatrix()->Translate(v); 
 	allCubes->ApplyTempMatrix();  
 	allCubes->DestroyTempMatrix();
 
@@ -398,7 +400,7 @@ void cutter::exit(){
 		sgDeleteObject(allParts2[j]);
 	}
 	free(allParts2);
-	free(planes);
+	//free(planes);
 	free(cubes);
 }
 

@@ -6,7 +6,7 @@
 
 class cutter {
 public:
-	cutter(float thick, float tam, float tamPiece,float numCutrc, ofVec3f pos);
+	cutter(float thick, float tamCutter, float tamCuby,float numCutrc, ofVec3f pos);
     
 	void setup();
 	void update();

@@ -15,7 +15,7 @@ public:
 	void exit();
 
 	void loadObject(sgC3DObject *obj, int ID); //it will load a sgCore lib object: torus, box...
-	sgCObject* getObject();//it will return the object, i.e to be used in boolean
+	sgC3DObject* getObject();//it will return the object, i.e to be used in boolean
 
 	int objectId; //the id of the 3d selected object, the id comes from the main app
 	sgC3DObject *object;

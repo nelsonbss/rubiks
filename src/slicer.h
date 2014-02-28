@@ -8,28 +8,13 @@
 
 class slicer {
 public:
-	slicer(cutter *c, float x, float y);
+	slicer(cutter *c);
     
 	void setup();
 	void update();
 	void draw();
 
 	void exit();
-
-	//slicer coordinates
-	float posX;
-	float posY;
-	void moveRight();
-	void moveLeft();
-	void moveUp();
-	void moveDown();
-
-	float rotH;
-	float rotV;
-	void rotateHright();
-	void rotateHleft();
-	void rotateVup();
-	void rotateVdown();
 
 	cutter *myCutter;
 	sgCGroup  **pieces;//this array of GROUP pointers that will have the object for the 27 "pieces" for the puzzle

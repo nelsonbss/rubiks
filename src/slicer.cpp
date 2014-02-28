@@ -2,13 +2,9 @@
 #include "sgCore.h"
 #include "cutter.h"
 
-slicer::slicer(cutter *c, float x, float y){
+slicer::slicer(cutter *c){
 	myCutter = c;
 	////
-	posX = x;
-	posY = y;
-	rotH = 0;
-	rotV = 0;
 	//create & initialize the pieces of the slicer as NULL
 	pieces = (sgCGroup**)malloc(27*sizeof(sgCObject*));
 	for(int i =0; i<27; i ++){
@@ -23,34 +19,8 @@ void slicer::update(){
 }
 //--------------------------------------------------------------
 void slicer::draw(){  
-	sgCGroup **result2 = getPieces();
-	for(int i =0; i<27; i ++){
-		if(pieces[i] != NULL){
-			const int ChCnt = result2[i]->GetChildrenList()->GetCount();
-			sgCObject** allChilds3a = (sgCObject**)malloc(ChCnt*sizeof(sgCObject*));
-			result2[i]->BreakGroup(allChilds3a);
-			sgCObject::DeleteObject(result2[i]);
-			for (int j=0; j < ChCnt; j++){
-				SG_VECTOR rotD = {0,1,0};
-				SG_POINT rot = {0,0,0};
-				sgC3DObject *aux = (sgC3DObject *) allChilds3a[j]; 
-				//aux->InitTempMatrix()->Rotate(rot,rotD,1.0);
-				//SG_VECTOR transBox11 = {0,0,0}; 
-				//aux->GetTempMatrix()->Translate(transBox11);
-				//SG_VECTOR transBox121 = {0,0,0}; 
-				//aux->GetTempMatrix()->Translate(transBox121);
-				//aux->ApplyTempMatrix();  
-				//aux->DestroyTempMatrix();
-				aux->Triangulate(SG_VERTEX_TRIANGULATION);
-				aux->SetAttribute(SG_OA_COLOR,rand()%50);
-				//sgGetScene()->AttachObject(allChilds3a[j]);
-			}
-			free(allChilds3a);
-		}
-	}
 }
-//////////////////////////////////////////////////////////////////////////////////////////////////
-//----------------------------------------------------------------
+//--------------------------------------------------------------
 sgCGroup** slicer::getPieces(){
 	//make a copy of the group** to send outside pieces[]
 	aux = (sgCGroup**)malloc(27*sizeof(sgCGroup*));
@@ -88,7 +58,7 @@ sgCGroup** slicer::getPieces(){
 	return aux;
 	//return NULL; //here for memory leaks testing
 }
-//----------------------------------------------------------------
+//--------------------------------------------------------------
 int slicer::countPieces(){
 	//it tells me how many pieces have info
 	int count =0;
@@ -101,23 +71,23 @@ int slicer::countPieces(){
 	}
 	return count;
 }
-//----------------------------------------------------------------
-//////////////////////////// Intersection/////////////////////////////////////////////////////////////////////////////////
+//--------------------------------------------------------------
+//////////////////////////// Intersection///////////////////////
 void slicer::intersectCubes(sgCObject *obj){
 	//it uses intersection of 27 cubes, on the object, to get all the pieces for each cubie in one oeration
+	//all pieces are left in pieces[]
 	for(int i =0; i<27; i ++){
 		sgCObject *tempObj = obj->Clone();
 		sgCObject *tempCutter = myCutter->cubes[i]->Clone();
 		//do intersecton at origin
 		pieces[i] = sgBoolean::Intersection(*(sgC3DObject*)tempObj,*(sgC3DObject*)tempCutter); 
-		//one of this operations.. is creating 53 objects!! that are not being released on exit!!!!
 		//now we have the whole piece that goes into a cubie for that cube
 		//clean up
 		sgDeleteObject(tempObj);
 		sgDeleteObject(tempCutter);
 	}
 }
-//----------------------------------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------
 void slicer::exit(){
 	//sgCObject::DeleteObject(*pieces); //break and delete all objects!!
 	free(myCutter);
@@ -129,6 +99,40 @@ void slicer::exit(){
 	free(pieces);
 	//free(aux);//this is generating conflict on adding group to scene on cutter.cpp
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /////////////////////////////////////////first algorithms developed///////////////////////////////////////////////////////
 ///these algorithms use boolean substraction to do "slicing" with 6 planes

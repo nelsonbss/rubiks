@@ -6,7 +6,7 @@
 #include "puzzle.h"
 
 #define planeThicknes 0.001
-#define planeSize 900
+#define tamCutter 900
 
 
 game::game(SG_VECTOR gamePos, float w, float h, SG_VECTOR displayPos){
@@ -14,10 +14,11 @@ game::game(SG_VECTOR gamePos, float w, float h, SG_VECTOR displayPos){
 	width = w;
 	height = h;
 
-	posP.x = 0; //for the puzzle & sample object
-	posP.y = 0;
-	posP.z = 0;
+	posP.x = displayPos.x; //for the puzzle & sample object
+	posP.y = displayPos.y;
+	posP.z = displayPos.z;
 
+	tamSideArmature = 300;
 	posA.x = displayPos.x; //for the armature
 	posA.y = displayPos.y;
 	posA.z = displayPos.z;
@@ -27,7 +28,7 @@ game::game(SG_VECTOR gamePos, float w, float h, SG_VECTOR displayPos){
 	rotP.z = 0;
 
 	//offset
-	tamCubie = 0;
+	tamCubie = 0;  //when creating armature this gets a size
 	offsetSlicer.x = 0;
 	offsetSlicer.y = 0;
 	offsetSlicer.z = 0;   ///this is because of the torus!!!, have to fix this dammit!
@@ -175,23 +176,19 @@ void game::update(){
 		//if there is an object selected
 		objectDisplayed->update(); //rotates the selected object...just for show
 	}
-	if(step == 3){
-		//myArmature->update();//now its rotating onits own
-		//should be movable like the puzzle
-		////////////////////////////////////////////////////move all puzzle
-		//myArmature->move(posA);
-		//////////////////////////////////////////////rotate all puzzle
-		//myArmature->rotate(rotA);
-	}
+
+	//if(step == 3){
+	//	//myArmature->update();//now its rotating onits own
+	//}
 
 	///////////////////////////////////////update cubies
 	if(updatePuzzle){
 		if(step == 4 || step == 5){
 			myPuzzle->update();
 			////////////////////////////////////////////////////move all puzzle
-			myPuzzle->move(posP);
+			//myPuzzle->move(posP);
 			////////////////////////////////////////////rotate all puzzle
-			myPuzzle->rotate(rotP);
+			//myPuzzle->rotate(rotP);
 			//////////////////////////////////////////make face rotation
 			if(faceRotate == true) {
 				myPuzzle->rotateByIDandAxis(idcubie,axis,dir);
@@ -232,24 +229,13 @@ void game::draw(){
 		//made the cuts
 		//show color palette
 		//show puzzle
-
 		myPuzzle->draw();
-		//mySlicer->draw();
 	}
 	if(step == 5){
 		//show puzzle
 		//rotations can be made
 		myPuzzle->draw();
-		//mySlicer->draw();
 	}
-}
-//----------------------------------------------------------------------
-void game::moveP(SG_VECTOR p){
-	posP = p;
-}
-//----------------------------------------------------------------------
-void game::rotateP(SG_VECTOR r){
-	rotP = r;
 }
 //----------------------------------------------------------------------
 void game::rotateByIDandAxis(int id, SG_VECTOR axs, bool d){
@@ -280,11 +266,11 @@ void game::loadObject(int objID, SG_VECTOR p, SG_VECTOR t){
 
 		if(objID == 1){
 			//torus
-			objectDisplayed->loadObject(sgCreateTorus(100,80,50,50),1);//pos.z is radius, thicknes, meridians
+			objectDisplayed->loadObject(sgCreateTorus(100,70,50,50),1);//(radius,thickness,meridiansDonut,meridiansDonutCut)
 		}
 		if(objID == 2){
 			//cube
-			objectDisplayed->loadObject(sgCreateBox(300,300,300),2);
+			objectDisplayed->loadObject(sgCreateBox(300,300,300),2);//(tamX,tamY,tamZ)
 		}if(objID == 3){
 			//cone
 			objectDisplayed->loadObject(sgCreateCone(250,1,250,3),3);
@@ -324,10 +310,10 @@ void game::loadArmature(int type){
 		//first time
 		if(type == 1){
 			tamCubie = 100;
-			myArmature = new armature (ofVec3f(posA.x,posA.y,0),300,300,10,tamCubie);
+			myArmature = new armature (ofVec3f(posA.x,posA.y,posA.z),tamSideArmature,tamSideArmature,10,tamCubie);
 		}else if(type == 2){
 			tamCubie = 50;
-			myArmature = new armature (ofVec3f(posA.x,posA.y,0),300,300,10,tamCubie);
+			myArmature = new armature (ofVec3f(posA.x,posA.y,posA.z),tamSideArmature,tamSideArmature,10,tamCubie);
 		}
 		armID = type;
 	}else{
@@ -335,10 +321,10 @@ void game::loadArmature(int type){
 		//delete myArmature;
 		if(type == 1){
 			tamCubie = 100;
-			myArmature = new armature (ofVec3f(posA.x,posA.y,0),300,300,10,tamCubie);
+			myArmature = new armature (ofVec3f(posA.x,posA.y,posA.z),tamSideArmature,tamSideArmature,10,tamCubie);
 		}else if(type == 2){
 			tamCubie = 50;
-			myArmature = new armature (ofVec3f(posA.x,posA.y,0),300,300,10,tamCubie);
+			myArmature = new armature (ofVec3f(posA.x,posA.y,posA.z),tamSideArmature,tamSideArmature,10,tamCubie);
 		}
 		armID = type;
 	}
@@ -347,16 +333,13 @@ void game::loadArmature(int type){
 	setCurrentStep(3);
 }
 //-----------------------------------------------------------------------------------------
-void game::createCutterSlicer(){//(float thick, float tamPlane, float tamCuby,float numCutr, float x, float y, float z){
-	////////////////////////////////create cutter///////////////////////////////////////
-	myCutter = new cutter(planeThicknes,planeSize,tamCubie,1,offsetSlicer);		
+void game::createCutterSlicer(){
+	////////////////////////////////create cutter
+	myCutter = new cutter(planeThicknes,tamCutter,tamCubie,1,offsetSlicer);		
 	myCutter->setup();
-	//////////////////////////////////end create cutter///////////////////////////////////
-
-	//////////////////////////////////create slicer///////////////////////////////////////
-	mySlicer = new slicer(myCutter,posP.x,posP.y); //slicer needs pos??????????????
+	//////////////////////////////////create slicer
+	mySlicer = new slicer(myCutter);
 	mySlicer->setup();
-	///////////////////////////end create slicer /////////////////////////////////////////
 }
 //----------------------------------------------------------------------
 void game::createPuzzle(SG_VECTOR p, ofVec3f offset){
@@ -368,7 +351,7 @@ void game::createPuzzle(SG_VECTOR p, ofVec3f offset){
 		////boolean substraction//////////////////////////////////////////////////////////
 		//mySlicer->xSlicing(*mySlicer->myCutter,objectDisplayed->getObject(),1,1);
 		///////////////  BOOLEAN INTERSECTION          ///////////////////////////////////
-		mySlicer->intersectCubes(objectDisplayed->getObject()); 
+		mySlicer->intersectCubes((sgCObject*)objectDisplayed->getObject()); 
 		//now slicer has all the parts inside sgCGroup ** = pieces[]
 		myPuzzle->loadPieces(mySlicer->getPieces(),objectID);
 		////////////////////////////////end create puzzle/////////////////////////////////
@@ -380,6 +363,14 @@ void game::createPuzzle(SG_VECTOR p, ofVec3f offset){
 		updatePuzzle = true;
 		step = 4;
 	}
+}
+//----------------------------------------------------------------------
+void game::moveP(SG_VECTOR p){
+	myPuzzle->move(p);
+}
+//----------------------------------------------------------------------
+void game::rotateP(SG_VECTOR r){
+	myPuzzle->rotate(r);
 }
 //----------------------------------------------------------------------
 int game::getCurrentStep(){
@@ -396,7 +387,7 @@ void game::changeColorToColor(ofFloatColor sc, ofFloatColor tc){
 //----------------------------------------------------------------------
 void game::moveA (ofVec3f input){
 	myArmature->moveA(input);
-	//move the offset vector of the cutter
+	//move the offset vector of the cutter at the same time as the armature
 	offsetSlicer.x += input.x;
 	offsetSlicer.y += input.y;
 	offsetSlicer.z += input.z;
@@ -440,6 +431,9 @@ void game::restart(){
 		step = 0;
 		objectID = -1;
 	}
+	offsetSlicer.x = 0;
+	offsetSlicer.y = 0;
+	offsetSlicer.z = 0;
 }
 //----------------------------------------------------------------------
 void game::exit(){

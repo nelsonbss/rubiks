@@ -57,9 +57,6 @@ public:
 	ofVec3f giveOffset();
 	float tamCubie;
 
-
-
-	
 	//face rotations
 	bool updatePuzzle;
 	int idcubie;
@@ -72,6 +69,7 @@ public:
 	void unDo();
 
 	//////////////////////////move  armature
+	float tamSideArmature;
 	SG_VECTOR posA;
 	void moveA (ofVec3f input);
 	/////////////////////////////rotate armature

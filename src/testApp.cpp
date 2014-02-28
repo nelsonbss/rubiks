@@ -130,7 +130,7 @@ void testApp::keyPressed(int key){
 		//waiting for shape to be selected
 		if(key == '1') {
 			//load object recieves (object id, boolean position, display position) 
-			myGames[0]->loadObject(1,objectPos,tempPos); //pos.z its the torus radious
+			myGames[0]->loadObject(1,objectPos,tempPos);
 		}
 		if(key == '2') {
 			myGames[0]->loadObject(2,objectPos,tempPos);
@@ -430,40 +430,40 @@ void testApp::keyPressed(int key){
 }
 //--------------------------------------------------------------
 void testApp::keyReleased(int key){
-	/////////////////////////////move all puzzle
-	if(key == 'l') {
-		SG_VECTOR p = {0,0,0};
-		myGames[0]->moveP(p);
-	}
-	if(key == 'j') {
-		SG_VECTOR p = {0,0,0};
-		myGames[0]->moveP(p);
-	}
-	if(key == 'i') {
-		SG_VECTOR p = {0,0,0};
-		myGames[0]->moveP(p);
-	}
-	if(key == 'k') {
-		SG_VECTOR p = {0,0,0};
-		myGames[0]->moveP(p);
-	}
-	/////////////////////////////rotate all puzzle
-	if(key == 'm') {//rotate 
-		SG_VECTOR r = {0.0,0,0};
-		myGames[0]->rotateP(r);
-	}
-	if(key == 'n') {//rotate left
-		SG_VECTOR r = {0.0,0,0};
-		myGames[0]->rotateP(r);
-	}
-	if(key == 'y') {//rotate up
-		SG_VECTOR r = {0.0,0,0};
-		myGames[0]->rotateP(r);
-	}
-	if(key == 'h') {//rotate down
-		SG_VECTOR r = {0.0,0,0};
-		myGames[0]->rotateP(r);
-	}
+	///////////////////////////////move all puzzle
+	//if(key == 'l') {
+	//	SG_VECTOR p = {0,0,0};
+	//	myGames[0]->moveP(p);
+	//}
+	//if(key == 'j') {
+	//	SG_VECTOR p = {0,0,0};
+	//	myGames[0]->moveP(p);
+	//}
+	//if(key == 'i') {
+	//	SG_VECTOR p = {0,0,0};
+	//	myGames[0]->moveP(p);
+	//}
+	//if(key == 'k') {
+	//	SG_VECTOR p = {0,0,0};
+	//	myGames[0]->moveP(p);
+	//}
+	///////////////////////////////rotate all puzzle
+	//if(key == 'm') {//rotate 
+	//	SG_VECTOR r = {0.0,0,0};
+	//	myGames[0]->rotateP(r);
+	//}
+	//if(key == 'n') {//rotate left
+	//	SG_VECTOR r = {0.0,0,0};
+	//	myGames[0]->rotateP(r);
+	//}
+	//if(key == 'y') {//rotate up
+	//	SG_VECTOR r = {0.0,0,0};
+	//	myGames[0]->rotateP(r);
+	//}
+	//if(key == 'h') {//rotate down
+	//	SG_VECTOR r = {0.0,0,0};
+	//	myGames[0]->rotateP(r);
+	//}
 	/////////////////////face rotations//no rotations comming in from gui
 	//send: SG_VECTOR axis = {0,0,0};
 	if(key == 'q') {

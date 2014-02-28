@@ -1,7 +1,10 @@
 #include "armature.h"
 
 armature::armature(ofVec3f cntr, float w, float h, float d, float bs){
-	center = cntr;
+	center.x = cntr.x;
+	center.y = cntr.y;
+	center.z = cntr.z;
+
 	width  = w;
 	height = h;
 	depth = d;
@@ -89,9 +92,6 @@ void armature::setup(){
 }
 //--------------------------------------------------------------
 void armature::update(){
-	/*rot.x +=0.1;
-	rot.y +=0;
-	rot.z +=0;*/
 }
 //--------------------------------------------------------------
 void armature::togglePlanes(){

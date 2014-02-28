@@ -146,6 +146,7 @@ void GuiSheet::update(){
 
 void GuiSheet::draw(){
 	vector<GuiNode*>::iterator nIter;
+	//cout << "drawing " << nodes.size() << " nodes." << endl;
 	for(nIter = nodes.begin(); nIter != nodes.end(); ++nIter){
 		(*nIter)->draw();
 	}

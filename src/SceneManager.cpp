@@ -76,9 +76,10 @@ void SceneManager::pushSheet(GuiSheet* _sheet){
 	*/
     drawStack.push_back(_sheet);
     _sheet->activate();
-    attrs["top-sheet"] = drawStack.back()->getName();
+    //attrs["top-sheet"] = drawStack.back()->getName();
     SubObMediator::Instance()->update("sheet-changed", this);
-    cout << "top sheet = " << attrs["top-sheet"] << endl;
+    //cout << "top sheet = " << attrs["top-sheet"] << endl;
+	cout << "top sheet = " << drawStack.back()->getName() << endl;
 }
 
 void SceneManager::popSheet(){

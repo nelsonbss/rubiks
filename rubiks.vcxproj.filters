@@ -121,6 +121,15 @@
       <Filter>src\subob</Filter>
     </ClCompile>
     <ClCompile Include="src\history.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\..\Program Files (x86)\Ideum\GestureworksCore\bindings\c++\gwc_c++\GestureWorksCore.cpp">
+      <Filter>src\gwc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\..\Program Files (x86)\Ideum\GestureworksCore\bindings\c++\gwc_c++\GWCUtils.cpp">
+      <Filter>src\gwc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GestureManager.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -173,6 +182,9 @@
     </Filter>
     <Filter Include="addons\ofxXmlSettings\src">
       <UniqueIdentifier>{4a8e9d2e-28ca-4ed1-9cbf-ea0f07bdc01e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\gwc">
+      <UniqueIdentifier>{d4ee8651-9590-4046-8114-ea86b73cac6f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -386,6 +398,15 @@
       <Filter>src\subob</Filter>
     </ClInclude>
     <ClInclude Include="src\history.h" />
+    <ClInclude Include="..\..\..\..\..\..\..\Program Files (x86)\Ideum\GestureworksCore\bindings\c++\gwc_c++\GestureWorksCore.h">
+      <Filter>src\gwc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\..\..\Program Files (x86)\Ideum\GestureworksCore\bindings\c++\gwc_c++\GWCUtils.h">
+      <Filter>src\gwc</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GestureManager.h">
+      <Filter>src</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="icon.rc" />

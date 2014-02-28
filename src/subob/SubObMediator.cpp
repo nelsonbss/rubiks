@@ -18,11 +18,12 @@ Only add observer to new observer vector for now.
 */
 
 void SubObMediator::addObserver(string _subName, Observer* _obs){
-    //observers[_subName].push_back(_obs);
-    //std::cout << "adding an observer to subject - " << _subName << std::endl;
-    newObservers.push_back(_obs);
-    newObserverChannels.push_back(_subName);
-    bHaveNewObservers = true;
+    //observers[_subName].push_back(_obs);    
+    //newObservers.push_back(_obs);
+    //newObserverChannels.push_back(_subName);
+    //bHaveNewObservers = true;
+	//std::cout << "adding an observer to subject - " << _subName << std::endl;
+	observers[_subName].push_back(_obs);
 }
 
 void SubObMediator::removeObserver(Observer* _obs){
@@ -63,6 +64,7 @@ void SubObMediator::update(string _subName, Subject* _sub){
 
 void SubObMediator::sendEvent(string _eventName, SubObEvent* _event){
 	vector<Observer*>::iterator oIter;
+	//cout << "sending " << _eventName << " to " << observers[_eventName].size() << " observers." << endl;
     for(oIter = observers[_eventName].begin(); oIter != observers[_eventName].end(); ++oIter){
         (*oIter)->update(_eventName, _event);
     }

@@ -1,21 +1,55 @@
 #include "testApp.h"
-#include <vector>
-#include "game.h"
 ///////////////////////////////////////////
-#include "sgCore.h"
 
-///////////////////////////////////////////
-#include <math.h>
-#define _USE_MATH_DEFINES
+//#define _USE_MATH_DEFINES
 
 #define displayX 480
 #define displayY 270
 #define displayZ 100
 
-//std::map<int,gwc::Point> active_points;
+std::map<int,gwc::Point> active_points;
 
 //--------------------------------------------------------------
 void testApp::setup(){
+
+	//gm = new GestureManager();
+	//gm.loadGMLFile("C:\\Users\\pp\\dev\\of_v0.8.0_vs_release\\apps\\myApps\\rubiks\\bin\\basic_manipulation.gml");
+	//gm.init("rubiksWindow", ofGetWidth(), ofGetHeight());
+	gm.start();
+
+	vector<string> gestureList;
+	gestureList.push_back("n-drag");
+	gestureList.push_back("n-scale");
+	gestureList.push_back("n-rotate");
+
+	gm.addObjectAndGestures("touchReceiver", &gestureList);
+
+	/*
+	if(loadGestureWorks("GestureworksCore32.dll")) { 
+		std::cout << "Error loading gestureworks dll" << std::endl; 
+		exit(); 
+	}
+
+	//string gmlFile = "basic_manipulation.gml";
+
+	if(!loadGML("C:\\Users\\pp\\dev\\of_v0.8.0_vs_release\\apps\\myApps\\rubiks\\bin\\basic_manipulation.gml")) { 
+		std::cout << "Could not find gml file" << std::endl; 
+		exit(); 
+	}
+
+	initializeGestureWorks(1920,1080);
+
+	if(!registerWindowForTouchByName("rubiksWindow")) { 
+		std::cout << "Could not register target window for touch." << std::endl; 
+		exit(); 
+	}
+	registerTouchObject("touchReceiver");
+
+	addGesture("touchReceiver","n-drag");
+	addGesture("touchReceiver","n-scale");
+	addGesture("touchReceiver","n-rotate");
+	*/
+
 	/////////////////////////////initialize sgCore library
 	sgInitKernel();
 
@@ -33,6 +67,7 @@ void testApp::setup(){
 	for(int i = 0; i < myGames.size(); i++){
 		myGames[i]->setup();
 	}
+
 	//////setup GUI/////////////
 	//ofSetFullscreen(true);
 
@@ -47,29 +82,11 @@ void testApp::setup(){
 	SubObMediator::Instance()->addObserver("cut-object", this);
 	SubObMediator::Instance()->addObserver("goto-step5", this);
 	SubObMediator::Instance()->addObserver("reset", this);
+	SubObMediator::Instance()->addObserver("touch-point", this);
+	SubObMediator::Instance()->addObserver("gesture", this);
 
-	last_tick_count = GetTickCount();
 
-	/*
 	active_points = std::map<int,gwc::Point>();
-
-	if(loadGestureWorks("GestureworksCore32.dll")) { 
-		std::cout << "Error loading gestureworks dll" << std::endl; 
-		exit(); 
-	}
-	
-	if( !registerWindowForTouchByName("Hello Multitouch!") ) { 
-		std::cout << "Could not register target window for touch." << std::endl; 
-		exit(); 
-	}
-
-	initializeGestureWorks(1920,1080);
-
-	if(!registerWindowForTouchByName("rubiksWindow")) { 
-		std::cout << "Could not register target window for touch." << std::endl; 
-		exit(); 
-	}
-	*/
 
 	rotate = true;
 }
@@ -94,9 +111,10 @@ void testApp::update(){
 	std::vector<gwc::PointEvent> point_events = consumePointEvents();
 
 	for(std::vector<gwc::PointEvent>::iterator event_it = point_events.begin(); event_it != point_events.end(); event_it++) {
-		//cout << event_it->status << endl;
+		//cout << "Touch Point = " << event_it->point_id << endl;
 		switch(event_it->status) {
 			case gwc::TOUCHADDED:
+				assignTouchPoint("touchReceiver", event_it->point_id);
 			case gwc::TOUCHUPDATE:
 				//If the point is being added, this will place it in our point map; the same line of code will update the point's
 				//position if it's already present, so we can use this command to handle new points as well as point updates
@@ -111,12 +129,9 @@ void testApp::update(){
 
 	std::vector<gwc::GestureEvent> gesture_events = consumeGestureEvents();
 
-	//cout << "have " << gesture_events.size() << " gesture events" << endl;
-
 	for(std::vector<gwc::GestureEvent>::iterator gesture_it = gesture_events.begin(); gesture_it != gesture_events.end(); gesture_it++) {
-		cout << gesture_it->gesture_type << endl;
+		cout << gesture_it->gesture_type << " - " << gesture_it->x << ", " << gesture_it->y << " - " << gesture_it->phase << endl;
 	}
-
 	*/
 }
 //--------------------------------------------------------------
@@ -184,7 +199,6 @@ void testApp::draw(){
 	ofEnableDepthTest();
 	SceneManager::Instance()->draw();
 
-	/*
 	for(std::map<int,gwc::Point>::iterator points_it = active_points.begin(); points_it != active_points.end(); points_it++)
 	{
 		float x = points_it->second.getX();
@@ -206,7 +220,6 @@ void testApp::draw(){
 		//Annotate the circle we just drew with the id, x and y values for the corresponding point
 		ofDrawBitmapString("ID: " + ids.str() + "\nX: " + xvals.str() + " Y: " + yvals.str(), x + 40, y - 40, 0);
 	}
-	*/
 	ofDisableDepthTest();
 }
 
@@ -591,7 +604,7 @@ void testApp::mouseDragged(int x, int y, int button){
 			timeOfLastInput = ofGetElapsedTimef();
 		}
 		int gStep = myGames[0]->getCurrentStep();
-		cout << gStep << endl;
+		//cout << gStep << endl;
 		if(gStep == 4){
 			float rotationMultiplier = 5.0;
 			ofVec2f dragNow(x,y);
@@ -606,7 +619,6 @@ void testApp::mouseDragged(int x, int y, int button){
 }
 //--------------------------------------------------------------
 void testApp::mousePressed(int x, int y, int button){
-	cout << button << endl;
 	if(button == 2){
 		lastRightDragPos.set(x,y);
 	}
@@ -629,7 +641,7 @@ void testApp::updateMouseState(const char * _state, int _x, int _y, int _button)
     attrs["mouseY"] = ofToString(_y);
     attrs["mouseButton"] = ofToString(_button);
     attrs["mouseState"] = _state;
-    SubObMediator::Instance()->update("mouse-changed",this);
+    //SubObMediator::Instance()->update("mouse-changed",this);
 }
 
 //--------------------------------------------------------------
@@ -681,6 +693,13 @@ void testApp::update(string _eventName, SubObEvent* _event){
 	}
 	if(_eventName == "reset"){
 		myGames[0]->restart();
+	}
+	if(_eventName == "touch-point"){
+		cout << "received touch point" << endl;
+		_event->setActive(false);
+	}
+	if(_eventName == "gesture"){
+	
 	}
 }
 

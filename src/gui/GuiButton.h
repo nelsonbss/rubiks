@@ -16,6 +16,7 @@ class GuiButton : public GuiNode
         GuiButton(string _img);
         GuiButton(){}
         virtual ~GuiButton(){}
+		void init();
         bool processMouse(int _x, int _y, int _state);
         virtual void update(string _subName, Subject* _sub);
         void setMessage(map<string,string> _msg){}

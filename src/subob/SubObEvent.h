@@ -37,14 +37,23 @@ private:
 class SubObEvent{
 
 public:
-	SubObEvent(){}
+	SubObEvent(){bActive = false;}
 	//virtual ~SubObEvent(){}
 	void setName(string _name){name = _name;}
 	string getName(){return name;}
 	SubObEventArg* getArg(string _name);
 	void addArg(string _name, string _type, string _arg);
+	void addArg(string _name, string _arg);
+	void addArg(string _name, int _arg);
+	void addArg(string _name, float _arg);
+	void addArg(string _name, ofVec2f _arg);
+	void addArg(string _name, ofVec3f _arg);
+	bool hasArg(string _arg){return args.count(_arg);}
+	void setActive(bool _active){bActive = _active;}
+	bool isActive(){return bActive;}
 private:
 	string name;
+	bool bActive;
 	map<string,SubObEventArg*> args;
 };
 

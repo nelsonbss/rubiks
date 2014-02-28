@@ -15,6 +15,8 @@
 #include "Observer.h"
 #include "Subject.h"
 #include "SubObMediator.h"
+#include "SubObEvent.h"
+#include "Utils.h"
 
 class GuiCreator;
 
@@ -41,7 +43,20 @@ public:
     void setGlobal(string _handle, string _val);
     GuiNode* getLoosie();
     void addLoosie(GuiNode* _loosie);
-    /*
+    void addActive(GuiNode* _node);
+	void removeActive(GuiNode* _node);
+
+	/*
+	New
+	*/
+	void loadGui();
+	void loadSheets();
+	void loadNodes(string _sheetName);
+	void loadParams(GuiNode* _node);
+	void loadEvents(GuiNode* _node);
+	void loadArgs(SubObEvent* _event);
+
+	/*
     Subject/Observer interface
     */
 
@@ -62,6 +77,9 @@ private:
 
     ofxXmlSettings mXML;
     void addAttributeMap(string _sheet, vector<string> &_names, vector<string> &_values);
+
+	map<string,GuiNode*> activeNodes;
+	vector<string> availableGestures;
 
     map<string, vector<map<string,string> > > attrs;
     map<string, vector<GuiNode*> > guiNodes;

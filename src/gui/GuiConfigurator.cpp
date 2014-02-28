@@ -5,6 +5,12 @@ GuiConfigurator* GuiConfigurator::mInstance = NULL;
 GuiConfigurator::GuiConfigurator(){
     bFirstStart = true;
     SubObMediator::Instance()->addObserver("replace-sheet", this);
+	availableGestures.push_back("n-drag");
+	availableGestures.push_back("n-rotate");
+	availableGestures.push_back("n-tap");
+	SubObMediator::Instance()->addObserver("touch-point",this);
+	SubObMediator::Instance()->addObserver("gesture",this);
+	SubObMediator::Instance()->sendEvent("add-gesture-receiver",new SubObEvent());
 }
 
 GuiConfigurator* GuiConfigurator::Instance(){
@@ -62,11 +68,35 @@ void GuiConfigurator::update(string _subName, Subject* _sub){
 }
 
 void GuiConfigurator::update(string _eventName, SubObEvent* _event){
-	cout << "received event named - " << _eventName << endl;
+	//cout << "received event named - " << _eventName << endl;
 	if(_eventName == "replace-sheet"){
    		string target = _event->getArg("target")->getString();
 		cout << "replacing with " << target << endl;
 		replaceSheet(target);
+	}
+	if(_eventName == "touch-point"){
+		for(map<string, GuiNode*>::iterator nIter =  activeNodes.begin(); nIter != activeNodes.end(); ++nIter){
+			if(nIter->second->isInside(_event->getArg("x")->getFloat(), _event->getArg("y")->getFloat())){
+				_event->getArg("hit")->setInt(1);
+				_event->addArg("target",nIter->first);
+				break;
+			}
+		}
+		_event->getArg("receivers")->setInt(_event->getArg("receivers")->getInt() + 1);
+	}
+	if(_eventName == "gesture"){
+		string target = _event->getArg("target")->getString();
+		string type = _event->getArg("type")->getString();
+		cout << "type = " << type << endl;
+		if(type == "drag" && (activeNodes.count(target))){
+			string draggable = activeNodes[target]->getParam("draggable");
+			if(draggable == "true"){
+				if(_event->getArg("n")->getInt() == 2){
+					cout << "dragging element" << endl;
+					activeNodes[target]->adjustPosition(_event->getArg("drag_d")->getVec2());
+				}
+			}
+		}
 	}
 }
 
@@ -129,7 +159,106 @@ void GuiConfigurator::getTags(){
     mXML.popTag();
 }
 
-void GuiConfigurator::makeEvents(){
+void GuiConfigurator::loadGui(){
+	mXML.pushTag("gui");
+	string main = mXML.getValue("main-sheet","attract");
+	loadSheets();
+	SceneManager::Instance()->pushSheet(sheets[main]);
+}
+
+void GuiConfigurator::loadSheets(){
+	int numSheets = mXML.getNumTags("sheet");
+	for(int i = 0; i < numSheets; i++){
+		string sheetName = mXML.getAttribute("sheet", "name", "none", i);
+		if(sheetName == "none"){
+			continue;
+		}
+		sheets[sheetName] = new GuiSheet();
+		sheets[sheetName]->setName(sheetName);
+		mXML.pushTag("sheet", i);
+		loadNodes(sheetName);
+		mXML.popTag();
+	}
+}
+
+void GuiConfigurator::loadNodes(string _sheetName){
+	int numNodes = mXML.getNumTags("node");
+	for(int i = 0; i < numNodes; i++){
+		string nodeName = mXML.getAttribute("node","name","none",i);
+		if(nodeName == "none"){
+			continue;
+		}
+		string nodeType = mXML.getAttribute("node","type","none",i);
+		if(nodeType == "none"){
+			continue;
+		}
+		GuiNode* nodePtr = NULL;
+		if(nodeType == "button"){
+			nodePtr = new GuiButton();
+		} else {
+			continue;
+		}
+		if(nodePtr == NULL){
+			continue;
+		}
+		nodePtr->setName(nodeName);
+		mXML.pushTag("node", i);
+		string pos = mXML.getValue("pos", "0.0,0.0");
+		string size = mXML.getValue("size", "150.0,150.0");
+		string scale = mXML.getValue("scale","1.0");
+		nodePtr->setPosition(stringToVec2f(pos));
+		nodePtr->setSize(stringToVec2f(size)); 
+		nodePtr->setScale(ofToFloat(scale));
+		loadParams(nodePtr);
+		loadEvents(nodePtr);
+		nodePtr->init();
+		sheets[_sheetName]->addNode(nodePtr);
+		mXML.popTag();
+	}
+}
+
+void GuiConfigurator::loadParams(GuiNode* _node){
+	int numParams = mXML.getNumTags("param");
+	for(int i = 0; i < numParams; i++){
+		string name = mXML.getValue("param:name", "none", i);
+		string val = mXML.getValue("param:val", "none", i);
+		if((name == "none") || (val == "none")){
+			continue;
+		}
+		_node->addParam(name, val);
+	}
+}
+
+void GuiConfigurator::loadEvents(GuiNode* _node){
+	int numEvents = mXML.getNumTags("event");
+	for(int i = 0; i < numEvents; i++){
+		string eventName = mXML.getAttribute("event","name","none",i);
+		if(eventName == "none"){
+			continue;
+		}
+		SubObEvent* eventPtr = new SubObEvent();
+		eventPtr->setName(eventName);
+		mXML.pushTag("event", i);
+		loadArgs(eventPtr);
+		_node->addEvent(eventPtr);
+		mXML.popTag();
+	}
+}
+
+void GuiConfigurator::loadArgs(SubObEvent* _event){
+	int numArgs = mXML.getNumTags("arg");
+	for(int i = 0; i < numArgs; i++){
+		string argName = mXML.getAttribute("arg","name","none",i);
+		if(argName == "none"){
+			continue;
+		}
+		string type = mXML.getValue("arg:type","none",i);
+		string val = mXML.getValue("arg:val","none",i);
+		if((type == "none") || (val == "none")){
+			continue;
+		}
+		_event->addArg(argName,type,val);
+	}
 }
 
 /*
@@ -283,4 +412,24 @@ void GuiConfigurator::click(int _x, int _y){
 void GuiConfigurator::reset(){
     bFirstStart = true;
     SceneManager::Instance()->pushSheet(sheets["attract"]);
+}
+
+void GuiConfigurator::addActive(GuiNode* _node){
+	string nodeName = _node->getName();
+	activeNodes[nodeName] = _node;
+	SubObEvent* nEvent = new SubObEvent();
+	nEvent->setName("add-object");
+	nEvent->addArg("objName", nodeName);
+	SubObMediator::Instance()->sendEvent(nEvent->getName(), nEvent);
+	for(vector<string>::iterator aIter = availableGestures.begin(); aIter != availableGestures.end(); ++aIter){
+		SubObEvent* gEvent = new SubObEvent();
+		gEvent->setName("add-gesture");
+		gEvent->addArg("objName",nodeName);
+		gEvent->addArg("gesture",*aIter);
+		SubObMediator::Instance()->sendEvent(gEvent->getName(), gEvent);
+	}
+}
+
+void GuiConfigurator::removeActive(GuiNode* _node){
+	activeNodes.erase(_node->getName());
 }

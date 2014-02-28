@@ -56,6 +56,22 @@ GuiButton::GuiButton(string _img) : GuiNode(){
 	setChannel("button");
 }
 
+void GuiButton::init(){
+	if(params.count("image")){
+		cout << "loading image - " << params["image"] << endl;;
+		inactive.loadImage(params["image"]);
+		size.x = inactive.getWidth();
+		size.y = inactive.getHeight();
+		haveImage = true;
+	} else {
+		haveImage = false;
+	}
+	setPosition();
+	drawActive = false;
+	haveActive = false;
+	haveArabic = false;
+}
+
 bool GuiButton::processMouse(int _x, int _y, int _state){
     //cout << name << " being checked." << endl;
         //cout << name << " checking isInside." << endl;
@@ -109,7 +125,7 @@ void GuiButton::draw(){
             //if(haveArabic && SceneManager::Instance()->getDisplayArabic()){
              //   arabic.draw(pos.x,pos.y);
             //} else {
-                inactive.draw(drawPos.x,drawPos.y, size.x, size.y);
+                inactive.draw(drawPos.x,drawPos.y, scale * size.x,scale * size.y);
             //}
         } else {
             active.draw(drawPos.x,drawPos.y, size.x, size.y);

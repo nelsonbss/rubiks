@@ -1,11 +1,14 @@
 #include "GuiNode.h"
 #include "Utils.h"
+#include "GuiConfigurator.h"
 
 bool GuiNode::isInside(int _x, int _y){
-    //cout << name << " checking insides." << pos.x << ", " << size.x << endl;
-    if((_x > drawPos.x && _x < (drawPos.x + size.x)) &&
-       (_y > drawPos.y && _y < (drawPos.y + size.y))){
-           return true;
+    cout << name << " checking insides " << drawPos.x << ", " << drawPos.x + (scale * size.x) << " - " << drawPos.y << ", " << drawPos.y + (scale * size.y);
+	cout << " against " << _x << ", " << _y << endl;
+    if((_x > drawPos.x && _x < (drawPos.x + (scale * size.x)) &&
+       (_y > drawPos.y && _y < (drawPos.y + (scale * size.y))))){
+           cout << "hit" << endl;
+		   return true;
        }
     return false;
 }
@@ -22,6 +25,14 @@ void GuiNode::initialize(){
 	setPosition();
 	//cout << "have " << events.size() << " events." << endl;
 	//size = stringToVec2f(attrs["size"]);
+}
+
+void GuiNode::activate(){
+	GuiConfigurator::Instance()->addActive(this);
+}
+
+void GuiNode::deactivate(){
+	GuiConfigurator::Instance()->removeActive(this);
 }
 
 void GuiNode::setPosition(){

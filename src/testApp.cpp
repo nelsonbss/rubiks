@@ -202,7 +202,7 @@ void testApp::keyPressed(int key){
 		//waiting for armature to be selected
 		if(key == '1') {
 			//select armature 1
-			myGames[0]->loadArmature(1); //this creates the slicer and cutter
+			myGames[0]->loadArmature(1); 
 		}
 		if(key == '2') {
 			//select armature 2
@@ -214,7 +214,15 @@ void testApp::keyPressed(int key){
 	////////////////////////////////////////////step 3 inputs
 	if(gStep == 3){
 		//armature was selected
-		//showing armature
+		////showing armature    another armature can be selected
+		if(key == '1') {
+			//select armature 1
+			myGames[0]->loadArmature(1); 
+		}
+		if(key == '2') {
+			//select armature 2
+			myGames[0]->loadArmature(2);
+		}
 		//////////////////////////////move all armature
 		if(key == 'l') {
 			ofVec3f p = ofVec3f (5,0,0);

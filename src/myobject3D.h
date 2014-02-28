@@ -14,7 +14,6 @@ public:
 	void draw();
 	void exit();
 
-	void loadObjectFromFile(const char* pathTofile); //it will load a stl file into object
 	void loadObject(sgC3DObject *obj, int ID); //it will load a sgCore lib object: torus, box...
 	sgCObject* getObject();//it will return the object, i.e to be used in boolean
 

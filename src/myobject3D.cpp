@@ -76,13 +76,6 @@ void myobject3D::draw(){
 	myVbo.draw(GL_TRIANGLES, 0,myMesh.getNumIndices());
 	ofPopMatrix();
 }
-//////////////////////////////////////////////////////////////////////////////////////////////////
-//--------------------------------------------------------------
-void myobject3D::loadObjectFromFile(const char* pathTofile){ 
-	//it will load a stl file into object
-	sgFileManager::ImportSTL(sgCScene::GetScene(), pathTofile);
-	cout << "object from file: " << sgGetScene()->GetObjectsList()->GetCount() << endl;
-}
 //----------------------------------------------------------------
 void myobject3D::loadObject(sgC3DObject *obj, int ID){
 	//it will load a sgCore lib object: torus, box

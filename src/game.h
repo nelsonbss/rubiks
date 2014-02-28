@@ -36,6 +36,7 @@ public:
 	int objectID;
 	
 	void loadArmature(int type);
+	int armID;
 	void createCutterSlicer();//(float thick, float tamPlane, float tamCuby,float numCutr, float x, float y, float z);
 
 	void createPuzzle(SG_VECTOR p, ofVec3f offset);
@@ -54,9 +55,13 @@ public:
 	//offset vars
 	ofVec3f offsetSlicer;
 	ofVec3f giveOffset();
+	float tamCubie;
 
-	bool updatePuzzle;
+
+
+	
 	//face rotations
+	bool updatePuzzle;
 	int idcubie;
 	bool dir;
 	SG_VECTOR axis;

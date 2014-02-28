@@ -7,7 +7,7 @@
 
 #define planeThicknes 0.001
 #define planeSize 900
-#define tamCubie 100
+
 
 game::game(SG_VECTOR gamePos, float w, float h, SG_VECTOR displayPos){
 	posGame = gamePos;
@@ -27,9 +27,11 @@ game::game(SG_VECTOR gamePos, float w, float h, SG_VECTOR displayPos){
 	rotP.z = 0;
 
 	//offset
+	tamCubie = 0;
 	offsetSlicer.x = 0;
 	offsetSlicer.y = 0;
 	offsetSlicer.z = -100;   ///this is because of the torus!!!, have to fix this dammit!
+	armID = -1;
 
 	objectID = -1; //initialized on -1 because on stage=0 there is no object selected
 }
@@ -317,17 +319,30 @@ void game::loadObject(int objID, SG_VECTOR p, SG_VECTOR t){
 //----------------------------------------------------------------------
 void game::loadArmature(int type){
 	//loads armature and creates cutter and slicer
-	
-	
-	
 	//have to clear myArmature, to load the new one, like load objects!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	if (armID == -1){
+		//first time
+		if(type == 1){
+			tamCubie = 100;
+			myArmature = new armature (ofVec3f(posA.x,posA.y,0),300,300,10,tamCubie);
+		}else if(type == 2){
+			tamCubie = 50;
+			myArmature = new armature (ofVec3f(posA.x,posA.y,0),300,300,10,tamCubie);
+		}
+		armID = type;
+	}else{
+		//free (myArmature);
+		//delete myArmature;
+		if(type == 1){
+			tamCubie = 100;
+			myArmature = new armature (ofVec3f(posA.x,posA.y,0),300,300,10,tamCubie);
+		}else if(type == 2){
+			tamCubie = 50;
+			myArmature = new armature (ofVec3f(posA.x,posA.y,0),300,300,10,tamCubie);
+		}
+		armID = type;
+	}
 
-	if(type == 1){
-		myArmature = new armature (ofVec3f(posA.x,posA.y,0),300,300,10,tamCubie);
-	}
-	if(type == 2){
-		myArmature = new armature (ofVec3f(posA.x,posA.y,0),300,300,10,2);
-	}
 	myArmature->setup();
 	setCurrentStep(3);
 }
@@ -414,12 +429,12 @@ void game::restart(){
 		objectDisplayed->exit();
 		objectID = -1;
 		step = 0;
+		armID = -1;
 	}else if (step==3){
-		myCutter->exit();
-		mySlicer->exit();
 		objectDisplayed->exit();
 		step = 0;
 		objectID = -1;
+		armID = -1;
 	}else if (step==1 || step==2){
 		objectDisplayed->exit();
 		step = 0;

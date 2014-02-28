@@ -11,7 +11,7 @@
 class puzzle {
 
 public:
-	puzzle(float x, float y, float z);
+	puzzle(SG_VECTOR p, ofVec3f offset);
 
 	void setup();
 	void update();
@@ -19,11 +19,12 @@ public:
 
 	void exit();
 
-	void loadPieces(sgCGroup **pcs,bool plain);
+	void loadPieces(sgCGroup **pcs, int selObjId);
 	int giveNumCubies();
-
+	sgCGroup* cubieGroup;
 	float numPieces;
 	cubie **myCubies; //malloc numPieces of these
+	ofVec3f cubiesOffset;
 
 	SG_VECTOR pos;
 	void move(SG_VECTOR p);
@@ -31,11 +32,6 @@ public:
 	SG_VECTOR rot;
 	void rotate(SG_VECTOR r);
 
-	double ***p3DArray;
-	void faceRotate(SG_POINT point, SG_VECTOR axis, float deg,bool dir);
-	 /* one-liner */
-    //typedef std::vector<std::vector<std::vector<int> > >ThreeDimensions;
-    /* expanded */
     typedef std::vector<int>OneDimension;
     typedef std::vector<OneDimension>TwoDimensions;
     typedef std::vector<TwoDimensions>ThreeDimensions;
@@ -45,6 +41,12 @@ public:
 
 	void unDo(int id, SG_VECTOR axis, bool dir);
 
+	bool moving;
+	bool isMoving();
+
+	//color faces
+	void colorFaces(int objectID);
+	void colorCubiesBlackSides();
 	///color change
 	void changeColorToColor(ofFloatColor Sc, ofFloatColor Tc);
 };

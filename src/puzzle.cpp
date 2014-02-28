@@ -1,6 +1,7 @@
 #include "puzzle.h"
 #include "sgCore.h"
 #include "cubie.h"
+#include "ofRender.h"
 
 #include <vector>
 #include <iostream>
@@ -9,20 +10,20 @@
 #define WIDTH 3
 #define DEPTH 3
 
-puzzle::puzzle(float x, float y, float z){
+puzzle::puzzle(SG_VECTOR p, ofVec3f offset){
 	numPieces = 27;
 	myCubies = (cubie**)malloc(numPieces*sizeof(cubie*));
-
-	pos.x = x;
-	pos.y = y;
-	pos.z = z;
+	
+	cubiesOffset = offset;
+	
+	pos.x = p.x;
+	pos.y = p.y;
+	pos.z = p.z;
 
 	rot.x = 0;
 	rot.y = 0;
 	rot.z = 0;
-	/*
-	create 3 * 10 * 25 array filled with '12'
-	*/
+
 	const size_t NElements1(3);
 	const size_t NElements2(3);
 	const size_t NElements3(3);
@@ -94,14 +95,14 @@ int puzzle::giveNumCubies(){
 	return aux;
 }
 //--------------------------------------------------------------
-void puzzle::loadPieces(sgCGroup **pcs,bool plain){
+void puzzle::loadPieces(sgCGroup **pcs,int selObjId){
 	//it loads the pieces that the slicer made, the pieces are in a sgCGroup** pieces[], 
 	//this function receives a copy of that sgCGroup** made by mySlicer->getPieces()
 	//it loads them into its own cubies
 	//create cubies
 	//so each time there is a new boolean operation, whole new cubies get created with variables in zero or blank
-	for(int i =0;i<numPieces;i++){
-		cubie *auxCubie = new cubie(pos.x,pos.y,pos.z,i+1);// is this really creating independent instances of cubie??
+	for(int i=0;i<numPieces;i++){
+		cubie *auxCubie = new cubie(pos.x,pos.y,pos.z,i+1,selObjId,cubiesOffset);// is this really creating independent instances of cubie??
 		//auxCubie->setup();
 		//add this cubie to mycubies[]
 		myCubies[i] = auxCubie;
@@ -114,32 +115,39 @@ void puzzle::loadPieces(sgCGroup **pcs,bool plain){
 			const int ChCnt = part->GetChildrenList()->GetCount();
 			sgCObject** allParts = (sgCObject**)malloc(ChCnt*sizeof(sgCObject*));
 			part->BreakGroup(allParts);
-			sgCObject::DeleteObject(part);
 
 			sgCObject **obj = (sgCObject**)malloc(50*sizeof(sgCObject*));
 			int realNumPieces=0;
 
 			for (int j=0; j < ChCnt; j++){
 				//clone each part
-				sgCObject *tempOBJ = allParts[j]; //each is an object that goes in one cubie
-				obj[j] = tempOBJ;
+				obj[j] =allParts[j];
 				realNumPieces ++;
 			}
 			//make them a group
-			sgCGroup* cubieGroup = sgCGroup::CreateGroup(obj,realNumPieces);  
+			cubieGroup = sgCGroup::CreateGroup(obj,realNumPieces);  
 			//put that gorup inside temp cubie
-			myCubies[i]->setObjects(cubieGroup,i,plain);//here goes the group of clones from the iriginal slicing pieces[]
+			myCubies[i]->setObjects(cubieGroup,i);//here goes the group of clones from the iriginal slicing pieces[]
+			//i is the cubie ID
 			//put that cubie on the cubies[]
 
+			//cleanup
 			free(obj);
-			free(allParts);
+			if(allParts != NULL){
+				for (int j=0; j < ChCnt; j++){
+					if(allParts[j] != NULL){
+						sgCObject::DeleteObject(allParts[j]);
+					}
+				}
+				free(allParts);
+			}
+			sgDeleteObject(part);
 		}else{
-			myCubies[i]->setObjects(NULL,i,true);
+			myCubies[i]->setObjects(NULL,i);
 		}
 	}
-	//sgCObject::DeleteObject(*pcs);
 }
-////////////////////////////////////////////////////////////////
+//----------------------------------------------------------------
 void puzzle::rotate(SG_VECTOR r){  
 	//puzzle tells every cubie to rotate
 	rot.x +=  r.x;
@@ -149,7 +157,7 @@ void puzzle::rotate(SG_VECTOR r){
 		myCubies[i]->rotate(rot);
 	}
 }
-////////////////////////////////////////////////////////////////
+//----------------------------------------------------------------
 void puzzle::move(SG_VECTOR p){
 	//iterate through cubies
 	pos.x +=  p.x;
@@ -161,27 +169,20 @@ void puzzle::move(SG_VECTOR p){
 		}
 	}
 }
-////////////////////////////////////////////////////////////////
-void puzzle::faceRotate(SG_POINT point, SG_VECTOR axis, float deg,bool dir){
-	//this function is to handle a face rotation for a cubbie
-	//this function is invoked on a group of cubies determined by the puzzle..??(stil lneeds to be determined)
-	//use this cubies objectList to draw elements without ever loosing them on groupBreaking
-	//16-17-18
-	//7-8-9
-	//25-26-27
-	//all numbers -1 because array starts in zero 0
-	//rotation point: 3D-center of puzzle at 0,0,0
-	/////*myCubies[15]->faceRotate(point,axis,deg,dir);
-	////myCubies[16]->faceRotate(point,axis,deg,dir);
-	////myCubies[17]->faceRotate(point,axis,deg,dir);
-	///////
-	////myCubies[6]->faceRotate(point,axis,deg,dir);
-	////myCubies[7]->faceRotate(point,axis,deg,dir);
-	////myCubies[8]->faceRotate(point,axis,deg,dir);
-	///////
-	////myCubies[24]->faceRotate(point,axis,deg,dir);
-	////myCubies[25]->faceRotate(point,axis,deg,dir);
-	////myCubies[26]->faceRotate(point,axis,deg,dir);*/
+//----------------------------------------------------------------
+bool puzzle::isMoving(){
+	//returns the state of the moving boolean
+	//to prevent key press events from messing up the movements
+	moving = false;
+	for(int i=0;i<numPieces;i++){
+		if(myCubies[i] != NULL){
+			moving = myCubies[i]->isMoving();
+			if(moving==true){
+				return moving;
+			}
+		}
+	}
+	return moving;
 }
 //---------------------------------------------------------------
 void puzzle::rotateByIDandAxis(int id, SG_VECTOR axis, bool dir){
@@ -244,7 +245,7 @@ void puzzle::rotateByIDandAxis(int id, SG_VECTOR axis, bool dir){
 	}
 	//myCubies[11]->faceRotate(axis,deg,dir);
 
-	//rearranging
+	//rearrange cubies position
 	//do we do this after we complete 90 deg rotation???
 	/////it doesnt matter, it can be that instant, since the 3d array is only looked upon before moving
 	/////the animation will lock selection of new cubie, so on ly one movement is done at a time
@@ -371,6 +372,29 @@ void puzzle::rearange3dArray(SG_VECTOR axis, int plane, bool dir){
 	}
 
 }
+//----------------------------------------------------------------
+void puzzle::colorFaces(int objectID){
+	////goes through each cubie and makes sets of normals.. to determine all different normals in the object
+	//and apply colors to those normals
+	if((objectID != 4) && (objectID != 2)){
+		//not the bunny or the cube -> they were already colored on puzzle::loadPieces->cubie::setObjects
+		ofRender *ofr = new ofRender();
+		ofr->colorFaces(myCubies,numPieces,0.01);
+		free(ofr);
+		//color black all the inside faces of each cubie (after all other face colors have been applied)
+		//all the puzzles have to do this
+		colorCubiesBlackSides();
+	}
+	//need to color black sides of bunny in a better way.. will they be colored? or leave it plain?
+}
+//----------------------------------------------------------------
+void puzzle::colorCubiesBlackSides(){
+	//it takes care of the "inside" coloring for each cubie
+	//for the platonian solids other than cube
+	for(int i=0;i<numPieces;i++){
+		myCubies[i]->colorBlackSides(i,0.1);
+	}
+}
 //---------------------------------------------------------------
 void puzzle::changeColorToColor(ofFloatColor Sc, ofFloatColor Tc){
 	for(int i=0;i<numPieces;i++){
@@ -379,14 +403,14 @@ void puzzle::changeColorToColor(ofFloatColor Sc, ofFloatColor Tc){
 }
 //----------------------------------------------------------------
 void puzzle::unDo(int id, SG_VECTOR axis, bool dir){
-	//takes the puzzle one step back on its history
-	//undo will look for the other 9 cubies involved and do a pop_back on their history
+	//it receives the id of a cubie,the axis and the direction of rotation
+	//it looks for the other 9 ids, according to the axis
+	//and makes those 9 myCubies[]->faceRotate
 	int selected[9];
 	int counter=0;
 	int selX =0;
 	int selY =0;
 	int selZ =0;
-	dir = !dir;//inverse the direction of rotation
 	//look for positon of cubie on the 3d data structure
 	for(int x=0;x<3;x++){
 		for(int y=0;y<3;y++){
@@ -434,11 +458,12 @@ void puzzle::unDo(int id, SG_VECTOR axis, bool dir){
 	}
 	//now we tell the 9 selected cubies to rotate
 	for(int i=0;i<9;i++){
-		myCubies[selected[i]]->unDo();
+		myCubies[selected[i]]->unDo(axis,dir);
 	}
 }
 //----------------------------------------------------------------
 void puzzle::exit(){
+
 	for(int i=0;i<numPieces;i++){
 		if(myCubies[i] != NULL){
 			myCubies[i]->exit();
@@ -447,10 +472,10 @@ void puzzle::exit(){
 	//// De-Allocate memory to prevent memory leak
 	//for (int i = 0; i < HEIGHT; ++i) {
 	//	for (int j = 0; j < WIDTH; ++j){
-	//		delete [] three_dim[i][j];
+	//		delete [] three_dim1[i][j];
 	//	}
-	//	delete [] three_dim[i];
+	//	delete [] three_dim1[i];
 	//}
-	//delete [] three_dim;
+	//delete [] three_dim1;
 	free(myCubies);
 }

@@ -113,8 +113,8 @@ void slicer::intersectCubes(sgCObject *obj){
 		//one of this operations.. is creating 53 objects!! that are not being released on exit!!!!
 		//now we have the whole piece that goes into a cubie for that cube
 		//clean up
-		sgCObject::DeleteObject(tempObj);
-		sgCObject::DeleteObject(tempCutter);
+		sgDeleteObject(tempObj);
+		sgDeleteObject(tempCutter);
 	}
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------

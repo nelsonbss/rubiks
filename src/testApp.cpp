@@ -3,9 +3,9 @@
 
 //#define _USE_MATH_DEFINES
 
-#define displayX 480
-#define displayY 270
-#define displayZ 100
+#define displayX 500
+#define displayY 400
+#define displayZ 0
 
 std::map<int,gwc::Point> active_points;
 
@@ -180,9 +180,14 @@ void testApp::draw(){
 		}else if(gStep == 5){
 			//puzzle has been created
 			//rotations can happen
-
+			ofDrawBitmapString("ROTATE PUZZLE:  horizontal: 'm' 'n'              vertial: 'h' 'y'"+ofToString("")+"\n",20, 20);
+			ofDrawBitmapString("X rotations: 'q' 'a'"+ofToString(" ")+"\n",20, 40);
+			ofDrawBitmapString("Y rotations: 'w' 's'"+ofToString(" ")+"\n",20, 60);
+			ofDrawBitmapString("Z rotations: 'e' 'd'"+ofToString(" ")+"\n",20, 80);
+			//undo move
+			ofDrawBitmapString("UNDO: press 'u' " + ofToString("") +"\n" ,20, 120);
 			//show restart button.
-			ofDrawBitmapString("RESTART: press 'r' " + ofToString("") +"\n" ,20, 80);
+			ofDrawBitmapString("RESTART: press 'r' " + ofToString("") +"\n" ,20, 140);
 		}
 	}
 
@@ -233,6 +238,8 @@ void testApp::keyPressed(int key){
 	gStep = myGames[0]->getCurrentStep();
 
 	////////////////////////////////////////////step 0 inputs
+	////////////////////////////////////////////step 0 inputs
+	////////////////////////////////////////////step 0 inputs
 	if(gStep == 0){
 		SG_VECTOR objectPos = {0,0,0};  //where it gets sliced
 		SG_VECTOR tempPos = {displayX,displayY,displayZ}; // where the temp object will be showed to user
@@ -266,6 +273,8 @@ void testApp::keyPressed(int key){
 	if(key == 'b'){
 		ofToggleFullscreen();
 	}
+	////////////////////////////////////////////step 1 inputs
+	////////////////////////////////////////////step 1 inputs
 	////////////////////////////////////////////step 1 inputs
 	if(gStep == 1){
 		//is showing object with flat color
@@ -306,24 +315,33 @@ void testApp::keyPressed(int key){
 		}
 	}
 	////////////////////////////////////////////step 2 inputs
+	////////////////////////////////////////////step 2 inputs
+	////////////////////////////////////////////step 2 inputs
 	if(gStep == 2){
 		//waiting for armature to be selected
 		if(key == '1') {
 			//select armature 1
-			//myGames[0]->loadArmature(1);
-			//for now .. go to step 3
-			myGames[0]->setCurrentStep(3);
+			myGames[0]->loadArmature(1); 
 		}
 		if(key == '2') {
 			//select armature 2
-			//for now .. go to step 3
-			myGames[0]->setCurrentStep(3);
+			myGames[0]->loadArmature(2);
 		}
 	}
 	////////////////////////////////////////////step 3 inputs
+	////////////////////////////////////////////step 3 inputs
+	////////////////////////////////////////////step 3 inputs
 	if(gStep == 3){
 		//armature was selected
-		//showing armature
+		////showing armature    another armature can be selected
+		if(key == '1') {
+			//select armature 1
+			myGames[0]->loadArmature(1); 
+		}
+		if(key == '2') {
+			//select armature 2
+			myGames[0]->loadArmature(2);
+		}
 		//////////////////////////////move all armature
 		if(key == 'l') {
 			ofVec3f p = ofVec3f (5,0,0);
@@ -343,11 +361,15 @@ void testApp::keyPressed(int key){
 		}
 		//a puzzle can be made
 		if(key == 'n') {
+			//now we know the offset position from the armature to create-> cutter & slicer
+			myGames[0]->createCutterSlicer();
 			//do slicing
-			SG_VECTOR v = {displayX,displayY,displayZ};
-			myGames[0]->createPuzzle(v);//create Puzzle goes to step4 inside the game to show the puzzle
+			SG_VECTOR viewPuzzle = {displayX,displayY,displayZ};
+			myGames[0]->createPuzzle(viewPuzzle,myGames[0]->giveOffset());//create Puzzle goes to step4 inside the game to show the puzzle
 		}
 	}
+	////////////////////////////////////////////step 4 inputs
+	////////////////////////////////////////////step 4 inputs
 	////////////////////////////////////////////step 4 inputs
 	if(gStep == 4){
 		//showing puzzle with colors
@@ -363,76 +385,7 @@ void testApp::keyPressed(int key){
 			//go to step 5
 			myGames[0]->setCurrentStep(5);
 		}
-	}
-	////////////////////////////////////////////step 5 inputs
-	if(gStep == 5){
-		//selected color (or not)
-		//pressed next on color palette step
-		//showing puzzle
-		//now the puzzle can be played with
-		if(key == 'u'){
-			//undo last move 
-			myGames[0]->unDo();
-		}
-		///////////////////// FACE ROTATIONS //////////////////////////////
-		////////  x axis  ////  x axis
-		int idcubie = 11;//to follow this cubie for now //this will be decided upon touch, or click on top of puzzle
-		int randcubie=0;
-		if(key == 'q') {
-			if(rotate == true) {//c
-				randcubie = 11;//rand()%26;
-				//clockwise
-				SG_VECTOR axis = {1,0,0};
-				myGames[0]->rotateByIDandAxis(randcubie,axis,true);
-				rotate = false;
-			}
-		}
-		if(key == 'a') {
-			if(rotate == true) {//cc
-				randcubie = 11;//rand()%26;
-				//clockwise
-				SG_VECTOR axis = {1,0,0};
-				myGames[0]->rotateByIDandAxis(randcubie,axis,false);
-				rotate = false;
-			}
-		}
-		////////  y axis  ////  y axis
-		if(key == 'w') {
-			if(rotate == true) {
-				randcubie = 11;//rand()%26;
-				//clockwise
-				SG_VECTOR axis = {0,1,0};
-				myGames[0]->rotateByIDandAxis(randcubie,axis,true);
-				rotate = false;
-			}
-		}if(key == 's') {
-			//counter clockwise
-			if(rotate == true) {
-				randcubie = 11;//rand()%26;
-				SG_VECTOR axis = {0,1,0};
-				myGames[0]->rotateByIDandAxis(randcubie,axis,false);
-				rotate = false;
-			}
-		}
-		////////  z axis  ////  z axis
-		if(key == 'e') {
-			if(rotate == true) {
-				randcubie = 11;//rand()%26;
-				//clockwise
-				SG_VECTOR axis = {0,0,1};
-				myGames[0]->rotateByIDandAxis(randcubie,axis,true);
-				rotate = false;
-			}
-		}if(key == 'd') {
-			if(rotate == true) {
-				//counter clockwise
-				randcubie = 11;//rand()%26;
-				SG_VECTOR axis = {0,0,1};
-				myGames[0]->rotateByIDandAxis(randcubie,axis,false);
-				rotate = false;
-			}
-		}
-		//////////////////////////////move all puzzle
+		///////////////////////////////move all puzzle
 		if(key == 'l') {
 			SG_VECTOR p = {10,0,0};
 			myGames[0]->moveP(p);
@@ -449,7 +402,117 @@ void testApp::keyPressed(int key){
 			SG_VECTOR p = {0,10,0};
 			myGames[0]->moveP(p);
 		}
-		/////////////////////////////rotate all puzzle  // two finger swipe gesture
+		///////////rotate all puzzle  // two finger swipe gesture
+		if(key == 'm') {//rotate right
+			SG_VECTOR r = {0,0.1,0};
+			myGames[0]->rotateP(r);
+		}
+		if(key == 'n') {//rotate left
+			SG_VECTOR r = {0,-0.1,0};
+			myGames[0]->rotateP(r);
+		}
+		if(key == 'y') {//rotate up
+			SG_VECTOR r = {0.1,0,0};
+			myGames[0]->rotateP(r);
+		}
+		if(key == 'h') {//rotate down
+			SG_VECTOR r = {-0.1,0,0};
+			ofVec3f v;
+			myGames[0]->rotateP(r);
+		}
+	}
+	////////////////////////////////////////////step 5 inputs
+	////////////////////////////////////////////step 5 inputs
+	////////////////////////////////////////////step 5 inputs
+	if(gStep == 5){
+		//selected color (or not, its not mandatory)
+		//pressed next on color palette step
+		//showing puzzle
+		//now the puzzle can be played with
+
+
+		int idcubie = 11;//to follow this cubie for now //this will be decided upon touch, or click on top of puzzle
+		int randcubie=0;
+		if(myGames[0]->myPuzzle->isMoving() == false){ //thi sis to prevent from reading keypress events while puzzle is moving
+			if(key == 'u'){
+				//undo last move 
+				myGames[0]->unDo();
+			}
+			////////////////////////////////////////////// FACE ROTATIONS //////////////////////////////
+			////////  x axis  ////  x axis
+			if(key == 'q') {
+				if(rotate == true) {//c
+					randcubie = 11;//rand()%26;
+					//clockwise
+					SG_VECTOR axis = {1,0,0};
+					myGames[0]->rotateByIDandAxis(randcubie,axis,true);
+					rotate = false;
+				}
+			}
+			if(key == 'a') {
+				if(rotate == true) {//cc
+					randcubie = 11;//rand()%26;
+					//clockwise
+					SG_VECTOR axis = {1,0,0};
+					myGames[0]->rotateByIDandAxis(randcubie,axis,false);
+					rotate = false;
+				}
+			}
+			////////  y axis  ////  y axis
+			if(key == 'w') {
+				if(rotate == true) {
+					randcubie = 11;//rand()%26;
+					//clockwise
+					SG_VECTOR axis = {0,1,0};
+					myGames[0]->rotateByIDandAxis(randcubie,axis,true);
+					rotate = false;
+				}
+			}if(key == 's') {
+				//counter clockwise
+				if(rotate == true) {
+					randcubie = 11;//rand()%26;
+					SG_VECTOR axis = {0,1,0};
+					myGames[0]->rotateByIDandAxis(randcubie,axis,false);
+					rotate = false;
+				}
+			}
+			////////  z axis  ////  z axis
+			if(key == 'e') {
+				if(rotate == true) {
+					randcubie = 11;//rand()%26;
+					//clockwise
+					SG_VECTOR axis = {0,0,1};
+					myGames[0]->rotateByIDandAxis(randcubie,axis,true);
+					rotate = false;
+				}
+			}if(key == 'd') {
+				if(rotate == true) {
+					//counter clockwise
+					randcubie = 11;//rand()%26;
+					SG_VECTOR axis = {0,0,1};
+					myGames[0]->rotateByIDandAxis(randcubie,axis,false);
+					rotate = false;
+				}
+			}
+		}
+		////////////////////////////////////move all puzzle
+		if(key == 'l') {
+			SG_VECTOR p = {10,0,0};
+			myGames[0]->moveP(p);
+		}
+		if(key == 'j') {
+			SG_VECTOR p = {-10,0,0};
+			myGames[0]->moveP(p);
+		}
+		if(key == 'i') {
+			SG_VECTOR p = {0,-10,0};
+			myGames[0]->moveP(p);
+		}
+		if(key == 'k') {
+			SG_VECTOR p = {0,10,0};
+			myGames[0]->moveP(p);
+		}
+		//////////////////rotate all puzzle  // two finger swipe gesture
 		if(key == 'm') {//rotate right
 			SG_VECTOR r = {0,0.1,0};
 			myGames[0]->rotateP(r);
@@ -686,7 +749,7 @@ void testApp::update(string _eventName, SubObEvent* _event){
 	}
 	if(_eventName == "cut-object"){
 		SG_VECTOR v = {displayX,displayY,displayZ};
-		myGames[0]->createPuzzle(v);
+		myGames[0]->createPuzzle(v, myGames[0]->giveOffset());
 	}
 	if(_eventName == "goto-step5"){
 		myGames[0]->setCurrentStep(5);
@@ -712,11 +775,8 @@ void testApp::dragEvent(ofDragInfo dragInfo){
 //--------------------------------------------------------------------------------------------------------------------------------------------------------
 void testApp::exit(){
 	myGames[0]->restart();
-	//cleanup games vector!!
-	if(myGames[0]->getCurrentStep() != 0){
-		myGames[0]->objectDisplayed->exit();
-	}
-	//sgFreeKernel();
+	myGames[0]->exit();
+	sgFreeKernel();
 }
 //-----------------------------------------------------------------------------
 /////////////////////////////////////////////////////////////////////////////////////

@@ -6,27 +6,21 @@
 
 class cutter {
 public:
-	cutter(float thick, float tam, float tamPiece,float numCutrc, float x, float y,float z);
+	cutter(float thick, float tam, float tamPiece,float numCutrc, ofVec3f pos);
     
 	void setup();
 	void update();
 	void draw();
-
 	void exit();
 
-	sgCGroup* getCutterPlanes();//it will return the object, i.e to be drawn
-    sgCGroup* getCutterCubes();
-	void addGroupToScene(sgCGroup *group);
-	void deleteGroupFromScene(sgCGroup *group);
-	//sgCGroup* getGroup();
+	//sgCGroup* getCutterPlanes();//it will return the object, i.e to be drawn
+    //sgCGroup* getCutterCubes();
 
 	float cutterThick; // ideally it will be 0.1; how thick is the "blade"
 	float cutterSize; //width and height of the "blade"
 	float tamCubie;
 	//whole cutter coordinates
-	float posX;
-	float posY;
-	float posZ;
+	ofVec3f posCutter;
 	void moveRight();
 	void moveLeft();
 	void moveUp();

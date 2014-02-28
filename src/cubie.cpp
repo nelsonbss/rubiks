@@ -47,7 +47,7 @@ void cubie::update(){
 			if(myMatrix.size()>=2){
 				//build rotation matrix for all steps up to the one where it was at the moment of a new movement
 				for(int i=0; i<myMatrix.size()-1;i++){
-					SG_POINT protFace = {pointRotate.x,pointRotate.y,0};										 
+					SG_POINT protFace = {pointRotate.x,pointRotate.y,pointRotate.z};										 
 					SG_VECTOR vrotFace = myMatrix.at(i).vector;//  axis; //rotate to do a face move
 					double d = myMatrix.at(i).deg;
 					d = ofDegToRad(d);
@@ -69,7 +69,7 @@ void cubie::update(){
 					}
 				}
 				//we are at the last positon
-				SG_POINT protFace = {pointRotate.x,pointRotate.y,0};										 
+				SG_POINT protFace = {pointRotate.x,pointRotate.y,pointRotate.z};										 
 				SG_VECTOR vrotFace = myMatrix.at(myMatrix.size()-1).vector;//  axis; //rotate to do a face move
 				double tempDeg2 = myMatrix.at(myMatrix.size()-1).deg; //target angle, the last angle it will move to
 				if(sample==false){
@@ -133,7 +133,7 @@ void cubie::update(){
 			///////////////////////////////////applying rotations matrix HISTORY
 			//use vector with matrix(s)
 			for(int i=0; i<myMatrix.size();i++){
-				SG_POINT protFace = {pointRotate.x,pointRotate.y,0};										 
+				SG_POINT protFace = {pointRotate.x,pointRotate.y,pointRotate.z};										 
 				SG_VECTOR vrotFace = myMatrix.at(i).vector;//  axis of rotation
 				double d = myMatrix.at(i).deg;
 				d = ofDegToRad(d);

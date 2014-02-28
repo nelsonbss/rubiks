@@ -240,6 +240,15 @@ void testApp::keyPressed(int key){
 			ofVec3f p = ofVec3f (0,5,0);
 			myGames[0]->moveA(p);
 		}
+		///z movement
+		if(key == 'q') {
+			ofVec3f p = ofVec3f (0,0,5);
+			myGames[0]->moveA(p);
+		}
+		if(key == 'a') {
+			ofVec3f p = ofVec3f (0,0,-5);
+			myGames[0]->moveA(p);
+		}
 		//a puzzle can be made
 		if(key == 'n') {
 			//now we know the offset position from the armature to create-> cutter & slicer

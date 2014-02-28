@@ -1,12 +1,12 @@
 #include "cutter.h"
 #include "sgCore.h"
 
-cutter::cutter(float thick, float tamCutter, float tamCuby,float numCutr, ofVec3f pos){
+cutter::cutter(float thick, float tamCutter, float tamCuby,float numCutr, ofVec3f pos, ofVec3f rot){
 	numCutter = numCutr; //to use when we have more than one cutter
 	//cutterThick = thick; //only used on planes
-
+	///
 	cutterSize = tamCutter; //how big is the cutter cube
-
+	///
 	tamCubie = tamCuby;
 	//planes = (sgCObject**)malloc(6*sizeof(sgCObject*));
 	cubes = (sgCObject**)malloc(27*sizeof(sgCObject*));
@@ -15,12 +15,14 @@ cutter::cutter(float thick, float tamCutter, float tamCuby,float numCutr, ofVec3
 	posCutter.y = pos.y;
 	posCutter.z = pos.z;
 	////
-	rotH = 0;
-	rotV = 0;
+	rotCutter.x = rot.x;
+	rotCutter.y = rot.y;
+	rotCutter.z = rot.z;
 	///
 	centerCube.x = -tamCubie/2;
 	centerCube.y = -tamCubie/2;
 	centerCube.z = -tamCubie/2; 
+	///
 	infinity = (cutterSize-tamCubie)/2;
 }
 //--------------------------------------------------------------
@@ -352,12 +354,17 @@ void cutter::setup(){
 	cubes[26] = c27;
 	//////create group
 	allCubes = sgCGroup::CreateGroup(cubes,27);
-	//move cubes to display position, where cuts are going to be made
+	//move cubes where cuts are going to be made
 	SG_VECTOR transCubies = {posCutter.x,posCutter.y,posCutter.z};
 	allCubes->InitTempMatrix()->Translate(transCubies);
-	//have to put rotation code here after we make translation work well
-	//SG_VECTOR v = {0,0,0};
-	//allCubes->GetTempMatrix()->Translate(v); 
+	//rotating the cutter
+	SG_POINT rot = {posCutter.x,posCutter.y,posCutter.z};
+	SG_VECTOR rotX = {1,0,0};
+	allCubes->GetTempMatrix()->Rotate(rot,rotX,rotCutter.x);
+	SG_VECTOR rotY = {0,1,0};
+	allCubes->GetTempMatrix()->Rotate(rot,rotY,rotCutter.y);
+	SG_VECTOR rotZ = {0,0,1};
+	allCubes->GetTempMatrix()->Rotate(rot,rotZ,rotCutter.z);
 	allCubes->ApplyTempMatrix();  
 	allCubes->DestroyTempMatrix();
 

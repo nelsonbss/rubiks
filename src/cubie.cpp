@@ -2,7 +2,7 @@
 #include "sgCore.h"
 #include "ofRender.h"
 
-cubie::cubie(float x, float y,float z, int idi, int selObjId, ofVec3f offset){
+cubie::cubie(float x, float y,float z, int idi, int selObjId, ofVec3f offset, ofVec3f offrotate){
 	objects = NULL;
 	id = idi;
 	selectedObjectID = selObjId;
@@ -21,11 +21,15 @@ cubie::cubie(float x, float y,float z, int idi, int selObjId, ofVec3f offset){
 	pointRotate.y = offset.y;
 	pointRotate.z = offset.z;
 
+	rotCompensation.x = offrotate.x;//this is coming in as degrees
+	rotCompensation.y = offrotate.y;
+	rotCompensation.z = offrotate.z;
+
 	moving = false;
 
 	/*ct1 = 0.0;
 	ct2 = 0.0;*/
-	animTime = 2;
+	animTime = 2; //this changes the speed of the animations
 
 	sample = true;
 	rotXa = 0.0;

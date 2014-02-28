@@ -17,6 +17,7 @@ public:
     
     ofVec3f center;
 	void moveA(ofVec3f input);
+	void rotateA(ofVec3f input);
 
     float width;
     float height;

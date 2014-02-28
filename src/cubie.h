@@ -10,7 +10,7 @@
 class cubie {
 	
 public:
-	cubie(float x,float y,float z,int id, int selObjId, ofVec3f offset);
+	cubie(float x,float y,float z,int id, int selObjId, ofVec3f offset, ofVec3f offrotate);
     
 	void setup();
 	void update();
@@ -34,10 +34,10 @@ public:
 
 	void setObjects(sgCGroup *objs,int cubieId);
 	
-	//this vector (point) is the offset of the cutter, to rotate correctly when its offcentered by user on the armature stage
+	//this vector (point) is the offset of the cutter, to rotate correctly (when cutter was not rotated) when its offcentered by user on the armature stage
 	ofVec3f pointRotate;
+	ofVec3f rotCompensation; //this works when the cutter has been rotated, this means the axis of rotation anr no longer  plain x,y and z
 	
-
 	///whole puzzle
 	SG_VECTOR pos;
 	void move(SG_VECTOR p);

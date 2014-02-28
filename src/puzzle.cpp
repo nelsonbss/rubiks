@@ -10,12 +10,13 @@
 #define WIDTH 3
 #define DEPTH 3
 
-puzzle::puzzle(SG_VECTOR p, ofVec3f offset){
+puzzle::puzzle(SG_VECTOR p, ofVec3f offset, ofVec3f offRotate){
 	numPieces = 27;
 	myCubies = (cubie**)malloc(numPieces*sizeof(cubie*));
-	
+
 	cubiesOffset = offset;
-	
+	cubiesOffrotate =  offRotate;
+
 	pos.x = p.x;
 	pos.y = p.y;
 	pos.z = p.z;
@@ -102,7 +103,7 @@ void puzzle::loadPieces(sgCGroup **pcs,int selObjId){
 	//create cubies
 	//so each time there is a new boolean operation, whole new cubies get created with variables in zero or blank
 	for(int i=0;i<numPieces;i++){
-		cubie *auxCubie = new cubie(pos.x,pos.y,pos.z,i+1,selObjId,cubiesOffset);// is this really creating independent instances of cubie??
+		cubie *auxCubie = new cubie(pos.x,pos.y,pos.z,i+1,selObjId,cubiesOffset,cubiesOffrotate);// is this really creating independent instances of cubie??
 		//auxCubie->setup();
 		//add this cubie to mycubies[]
 		myCubies[i] = auxCubie;
@@ -381,11 +382,14 @@ void puzzle::colorFaces(int objectID){
 		ofRender *ofr = new ofRender();
 		ofr->colorFaces(myCubies,numPieces,0.01);
 		free(ofr);
+
+	}
+	if((objectID != 4)){
 		//color black all the inside faces of each cubie (after all other face colors have been applied)
 		//all the puzzles have to do this
 		colorCubiesBlackSides();
+		//need to color black sides of bunny in a better way.. will they be colored? or leave it plain?
 	}
-	//need to color black sides of bunny in a better way.. will they be colored? or leave it plain?
 }
 //----------------------------------------------------------------
 void puzzle::colorCubiesBlackSides(){

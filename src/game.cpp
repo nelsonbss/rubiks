@@ -6,7 +6,7 @@
 #include "puzzle.h"
 
 #define planeThicknes 0.001
-#define tamCutter 900
+#define tamCutter 1000
 
 
 game::game(SG_VECTOR gamePos, float w, float h, SG_VECTOR displayPos){
@@ -31,9 +31,13 @@ game::game(SG_VECTOR gamePos, float w, float h, SG_VECTOR displayPos){
 	tamCubie = 0;  //when creating armature this gets a size
 	offsetSlicer.x = 0;
 	offsetSlicer.y = 0;
-	offsetSlicer.z = 0;   ///this is because of the torus!!!, have to fix this dammit!
-	armID = -1;
+	offsetSlicer.z = 0;
+	
+	rotateSlicer.x = 0;
+	rotateSlicer.y = 0;
+	rotateSlicer.z = 0;
 
+	armID = -1; //initialized in -1 when there is no armature selected
 	objectID = -1; //initialized on -1 because on stage=0 there is no object selected
 }
 //--------------------------------------------------------------
@@ -335,17 +339,17 @@ void game::loadArmature(int type){
 //-----------------------------------------------------------------------------------------
 void game::createCutterSlicer(){
 	////////////////////////////////create cutter
-	myCutter = new cutter(planeThicknes,tamCutter,tamCubie,1,offsetSlicer);		
+	myCutter = new cutter(planeThicknes,tamCutter,tamCubie,1,offsetSlicer,rotateSlicer);		
 	myCutter->setup();
 	//////////////////////////////////create slicer
 	mySlicer = new slicer(myCutter);
 	mySlicer->setup();
 }
 //----------------------------------------------------------------------
-void game::createPuzzle(SG_VECTOR p, ofVec3f offset){
+void game::createPuzzle(SG_VECTOR p){
 	if(step == 3){
 		////////////////////////////////create puzzle///////////////////////////////////////
-		myPuzzle = new puzzle(p, offset); // it receives the position to be displayed AND the offset of the armature/cutter to adapt rotations of cubies
+		myPuzzle = new puzzle(p, offsetSlicer,rotateSlicer); // it receives the position to be displayed AND the offset of the armature/cutter to adapt slicing
 		myPuzzle->setup();
 
 		////boolean substraction//////////////////////////////////////////////////////////
@@ -393,6 +397,14 @@ void game::moveA (ofVec3f input){
 	offsetSlicer.z += input.z;
 }
 //----------------------------------------------------------------------
+void game::rotateA (ofVec3f input){
+	myArmature->rotateA(input);
+	//move the offset vector of the cutter at the same time as the armature
+	rotateSlicer.x += input.x;
+	rotateSlicer.y += input.y;
+	rotateSlicer.z += input.z;
+}
+//----------------------------------------------------------------------
 ofVec3f game::giveOffset(){
 	return offsetSlicer;
 }
@@ -434,6 +446,10 @@ void game::restart(){
 	offsetSlicer.x = 0;
 	offsetSlicer.y = 0;
 	offsetSlicer.z = 0;
+
+	rotateSlicer.x = 0;
+	rotateSlicer.y = 0;
+	rotateSlicer.z = 0;
 }
 //----------------------------------------------------------------------
 void game::exit(){

@@ -10,7 +10,7 @@
 
 #define displayX 500
 #define displayY 400
-#define displayZ 100
+#define displayZ 0
 
 //--------------------------------------------------------------
 void testApp::setup(){

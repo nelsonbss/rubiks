@@ -280,7 +280,10 @@ void cubie::setObjects(sgCGroup *objs,int cubieId){
 			o->Triangulate(SG_VERTEX_TRIANGULATION);
 			//convert to ofMEsh with cubie ID!!!
 			//ask if its a plain color puzzle:: bunny torus??
-			if(selectedObjectID == 4){
+			if(selectedObjectID == 1){
+				//torus
+				ofr->sgCoretoOFmesh(o,tempMesh,-1,selectedObjectID);
+			}else if(selectedObjectID == 4){
 				//bunny
 				ofr->sgCoretoOFmesh(o,tempMesh,-3,selectedObjectID);
 			}else{

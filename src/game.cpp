@@ -30,7 +30,7 @@ game::game(SG_VECTOR gamePos, float w, float h, SG_VECTOR displayPos){
 	tamCubie = 0;
 	offsetSlicer.x = 0;
 	offsetSlicer.y = 0;
-	offsetSlicer.z = -100;   ///this is because of the torus!!!, have to fix this dammit!
+	offsetSlicer.z = 0;   ///this is because of the torus!!!, have to fix this dammit!
 	armID = -1;
 
 	objectID = -1; //initialized on -1 because on stage=0 there is no object selected
@@ -362,7 +362,7 @@ void game::createCutterSlicer(){//(float thick, float tamPlane, float tamCuby,fl
 void game::createPuzzle(SG_VECTOR p, ofVec3f offset){
 	if(step == 3){
 		////////////////////////////////create puzzle///////////////////////////////////////
-		myPuzzle = new puzzle(p, offset); // it receives the position to be displayed AND the offset of the armature/cutter
+		myPuzzle = new puzzle(p, offset); // it receives the position to be displayed AND the offset of the armature/cutter to adapt rotations of cubies
 		myPuzzle->setup();
 
 		////boolean substraction//////////////////////////////////////////////////////////

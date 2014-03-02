@@ -62,13 +62,12 @@ void cubie::update(){
 						}
 					}
 					///////
-					//if(vrotFace.z != 0){
-					//	if(rotCompensation.x != 0){
-					//		SG_VECTOR vComp = {0,sin(ofDegToRad(rotCompensation.x)),cos(ofDegToRad(rotCompensation.x))};
-					//		//double c  = cos(ofDegToRad(rotCompensation.x));
-					//		vrotFace = vComp; 
-					//	}
-					//}
+					else if(vrotFace.z != 0){
+						if(rotCompensation.x != 0){
+							SG_VECTOR vComp = {0,(sin(ofDegToRad(rotCompensation.x)))*-1,(cos(ofDegToRad(rotCompensation.x))*1)};
+							vrotFace = vComp; 
+						}
+					}
 					double d = myMatrix.at(i).deg;
 					d = ofDegToRad(d);
 					if(myMatrix.at(i).dir == true){
@@ -139,14 +138,14 @@ void cubie::update(){
 						vrotFace = vComp; 
 					}
 				}
-				///////
-				//if(vrotFace.z != 0){
-				//	if(rotCompensation.x != 0){
-				//		SG_VECTOR vComp = {0,sin(ofDegToRad(rotCompensation.x)),cos(ofDegToRad(rotCompensation.x))};
-				//		//double c  = cos(ofDegToRad(rotCompensation.x));
-				//		vrotFace = vComp; 
-				//	}
-				//}
+				/////
+				else if(vrotFace.z != 0){
+					if(rotCompensation.x != 0){
+						SG_VECTOR vComp = {0,(sin(ofDegToRad(rotCompensation.x)))*-1,(cos(ofDegToRad(rotCompensation.x))*1)};
+						//double c  = cos(ofDegToRad(rotCompensation.x));
+						vrotFace = vComp; 
+					}
+				}
 				double tempDeg2 = myMatrix.at(myMatrix.size()-1).deg; //target angle, the last angle it will move to
 				if(sample==false){
 					//this should only be sampled once during the animation
@@ -221,14 +220,14 @@ void cubie::update(){
 						
 					}
 				}
-				///////
-				//if(vrotFace.z != 0){
-				//	if(rotCompensation.x != 0){
-				//		SG_VECTOR vComp = {0,sin(ofDegToRad(rotCompensation.x)),cos(ofDegToRad(rotCompensation.x))};
-				//		//double c  = cos(ofDegToRad(rotCompensation.x));
-				//		vrotFace = vComp; 
-				//	}
-				//}
+				/////
+				else if(vrotFace.z != 0){
+					if(rotCompensation.x != 0){
+						SG_VECTOR vComp = {0,(sin(ofDegToRad(rotCompensation.x)))*-1,(cos(ofDegToRad(rotCompensation.x))*1)};
+						//double c  = cos(ofDegToRad(rotCompensation.x));
+						vrotFace = vComp; 
+					}
+				}
 				double d = myMatrix.at(i).deg;
 				d = ofDegToRad(d);
 				if(myMatrix.at(i).dir == true){

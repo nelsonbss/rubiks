@@ -258,7 +258,7 @@ void testApp::keyPressed(int key){
 			myGames[0]->rotateA(r);
 		}
 		if(key == 'w') {//rotate up
-			ofVec3f r = ofVec3f (10,0,0); //degrees!!!
+			ofVec3f r = ofVec3f (70,0,0); //degrees!!!
 			myGames[0]->rotateA(r);
 		}
 		if(key == 's') {//rotate down

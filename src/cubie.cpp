@@ -96,40 +96,8 @@ void cubie::update(){
 					if(myMatrix.at(i).dir == true){
 						//c
 						if (objectList[j]->GetTempMatrix()==0){
-
-
-
-							////do rotation compensation if the axis being rotated from armature rotation
-							////if armature was rotated on x, y an z axis ar tilted
-							//if(vrotFace.y == 1){
-							//	if(rotCompensation.x != 0){
-							//		//have to rotate around x axis that amount of degrees
-							//		SG_VECTOR vrotFace2 = {0,0.7,0.7};
-							//		vrotFace.x = vrotFace2.x;
-							//		vrotFace.y = vrotFace2.y;
-							//		vrotFace.z = vrotFace2.z;
-							//	}
-							//}
-
-
-
 							objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,d);
 						}else{
-
-							////do rotation compensation if the axis being rotated from armature rotation
-							////if armature was rotated on x, y an z axis ar tilted
-							//if(vrotFace.y == 1){
-							//	if(rotCompensation.x != 0){
-							//		//have to rotate around x axis that amount of degrees
-							//		SG_VECTOR vrotFace2 = {0,0.7,0.7};
-							//		vrotFace.x = vrotFace2.x;
-							//		vrotFace.y = vrotFace2.y;
-							//		vrotFace.z = vrotFace2.z;
-							//	}
-							//}
-
-
-
 							objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,d);
 						}
 

@@ -55,10 +55,19 @@ void cubie::update(){
 					//build rotation matrix for all steps up to the one where it was at the moment of a new movement
 					SG_POINT protFace = {pointRotate.x,pointRotate.y,pointRotate.z};										 
 					SG_VECTOR vrotFace = myMatrix.at(i).vector;//  axis; //rotate to do a face move
-					if(vrotFace.y != 0){
+					////
+					if(vrotFace.x != 0){
+						if(rotCompensation.y != 0){
+							SG_VECTOR vComp = {(cos(ofDegToRad(rotCompensation.y))*1),0,(sin(ofDegToRad(rotCompensation.y))*-1)};
+							vrotFace = vComp;
+						}
+					}
+					///
+					else if(vrotFace.y != 0){
 						if(rotCompensation.x != 0){
 							SG_VECTOR vComp = {0,cos(ofDegToRad(rotCompensation.x)),sin(ofDegToRad(rotCompensation.x))};
-							vrotFace = vComp;
+							//double c  = cos(ofDegToRad(rotCompensation.x));
+							vrotFace = vComp; 
 						}
 					}
 					///////
@@ -66,6 +75,10 @@ void cubie::update(){
 						if(rotCompensation.x != 0){
 							SG_VECTOR vComp = {0,(sin(ofDegToRad(rotCompensation.x)))*-1,(cos(ofDegToRad(rotCompensation.x))*1)};
 							vrotFace = vComp; 
+						}
+						if(rotCompensation.y != 0){
+							SG_VECTOR vComp = {0,cos(ofDegToRad(rotCompensation.x)),sin(ofDegToRad(rotCompensation.x))};
+							vrotFace = vComp;
 						}
 					}
 					double d = myMatrix.at(i).deg;
@@ -122,16 +135,15 @@ void cubie::update(){
 				//we are at the last positon
 				SG_POINT protFace = {pointRotate.x,pointRotate.y,pointRotate.z};										 
 				SG_VECTOR vrotFace = myMatrix.at(myMatrix.size()-1).vector;//  axis; //rotate to do a face move
-				///////
-				//if(vrotFace.x != 0){
-				//	if(rotCompensation.z != 0){
-				//		//SG_VECTOR vComp = {0,cos(ofDegToRad(rotCompensation.x)),sin(ofDegToRad(rotCompensation.x))};
-				//		////double c  = cos(ofDegToRad(rotCompensation.x));
-				//		//vrotFace = vComp; 
-				//	}
-				//}
-				///////
-				if(vrotFace.y != 0){
+				/////
+				if(vrotFace.x != 0){
+					if(rotCompensation.y != 0){
+						SG_VECTOR vComp = {(cos(ofDegToRad(rotCompensation.y))*1),0,(sin(ofDegToRad(rotCompensation.y))*-1)};
+						vrotFace = vComp;
+					}
+				}
+				/////
+				else if(vrotFace.y != 0){
 					if(rotCompensation.x != 0){
 						SG_VECTOR vComp = {0,cos(ofDegToRad(rotCompensation.x)),sin(ofDegToRad(rotCompensation.x))};
 						//double c  = cos(ofDegToRad(rotCompensation.x));
@@ -144,6 +156,10 @@ void cubie::update(){
 						SG_VECTOR vComp = {0,(sin(ofDegToRad(rotCompensation.x)))*-1,(cos(ofDegToRad(rotCompensation.x))*1)};
 						//double c  = cos(ofDegToRad(rotCompensation.x));
 						vrotFace = vComp; 
+					}
+					if(rotCompensation.y != 0){
+						SG_VECTOR vComp = {0,cos(ofDegToRad(rotCompensation.x)),sin(ofDegToRad(rotCompensation.x))};
+						vrotFace = vComp;
 					}
 				}
 				double tempDeg2 = myMatrix.at(myMatrix.size()-1).deg; //target angle, the last angle it will move to
@@ -211,13 +227,18 @@ void cubie::update(){
 				SG_POINT protFace = {pointRotate.x,pointRotate.y,pointRotate.z};										 
 				SG_VECTOR vrotFace = myMatrix.at(i).vector;//  axis of rotation
 				////
-				if(vrotFace.y != 0){
+				if(vrotFace.x != 0){
+					if(rotCompensation.y != 0){
+						SG_VECTOR vComp = {(cos(ofDegToRad(rotCompensation.y))*1),0,(sin(ofDegToRad(rotCompensation.y))*-1)};
+						vrotFace = vComp;
+					}
+				}
+				////
+				else if(vrotFace.y != 0){
 					if(rotCompensation.x != 0){
-						//if((0<=rotCompensation.x)&&(rotCompensation.x<=135)){
-							SG_VECTOR vComp = {0,cos(ofDegToRad(rotCompensation.x)),sin(ofDegToRad(rotCompensation.x))};
-							vrotFace = vComp;
-						//}
-						
+						SG_VECTOR vComp = {0,cos(ofDegToRad(rotCompensation.x)),sin(ofDegToRad(rotCompensation.x))};
+						//double c  = cos(ofDegToRad(rotCompensation.x));
+						vrotFace = vComp; 
 					}
 				}
 				/////
@@ -226,6 +247,10 @@ void cubie::update(){
 						SG_VECTOR vComp = {0,(sin(ofDegToRad(rotCompensation.x)))*-1,(cos(ofDegToRad(rotCompensation.x))*1)};
 						//double c  = cos(ofDegToRad(rotCompensation.x));
 						vrotFace = vComp; 
+					}
+					if(rotCompensation.y != 0){
+						SG_VECTOR vComp = {0,cos(ofDegToRad(rotCompensation.x)),sin(ofDegToRad(rotCompensation.x))};
+						vrotFace = vComp;
 					}
 				}
 				double d = myMatrix.at(i).deg;

@@ -298,7 +298,8 @@ void cubie::draw(){
 			if (objectList[j]->GetTempMatrix()!=0)
 				glMultMatrixd(objectList[j]->GetTempMatrix()->GetTransparentData());
 			objectList[j]->DestroyTempMatrix();
-			myVbos[j].draw(GL_TRIANGLES, 0,myMeshs[j].getNumIndices());
+			//myVbos[j].draw(GL_TRIANGLES, 0,myMeshs[j].getNumIndices());
+			myMeshs[j].draw();
 			glPopMatrix();
 		}
 	}

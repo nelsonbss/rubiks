@@ -59,8 +59,8 @@ void testApp::setup(){
 	////////////////////////////////create games
 	////////////////////////////////one game for now
 	SG_VECTOR gamePos = {0,0,0}; //one game created at the origin // this will have to change for a game creating function when more stations are anabled
-	SG_VECTOR displayPos = {displayX,displayY,displayZ};
-	game *tempGame = new game(gamePos, 1024, 768,displayPos);
+	SG_VECTOR displayPos = {ofGetWidth() / 2, ofGetHeight() / 2,displayZ};
+	game *tempGame = new game(gamePos, ofGetWidth(), ofGetHeight(),displayPos);
 	myGames.push_back(tempGame);
 
 	///////////////////////////////setup games
@@ -201,7 +201,7 @@ void testApp::draw(){
 	///////////////////END OF RENDERING////////////////////
 	stopOFLights();
 
-	ofEnableDepthTest();
+	//ofEnableDepthTest();
 	SceneManager::Instance()->draw();
 
 	for(std::map<int,gwc::Point>::iterator points_it = active_points.begin(); points_it != active_points.end(); points_it++)
@@ -225,7 +225,7 @@ void testApp::draw(){
 		//Annotate the circle we just drew with the id, x and y values for the corresponding point
 		ofDrawBitmapString("ID: " + ids.str() + "\nX: " + xvals.str() + " Y: " + yvals.str(), x + 40, y - 40, 0);
 	}
-	ofDisableDepthTest();
+	//ofDisableDepthTest();
 }
 
 //--------------------------------------------------------------
@@ -242,7 +242,7 @@ void testApp::keyPressed(int key){
 	////////////////////////////////////////////step 0 inputs
 	if(gStep == 0){
 		SG_VECTOR objectPos = {0,0,0};  //where it gets sliced
-		SG_VECTOR tempPos = {displayX,displayY,displayZ}; // where the temp object will be showed to user
+		SG_VECTOR tempPos = {ofGetWidth() / 2,ofGetHeight() / 2,displayZ}; // where the temp object will be showed to user
 		//waiting for shape to be selected
 		if(key == '1') {
 			//load object recieves (object id, boolean position, display position) 
@@ -389,7 +389,7 @@ void testApp::keyPressed(int key){
 			//now we know the offset position from the armature to create-> cutter & slicer
 			myGames[0]->createCutterSlicer();
 			//do slicing
-			SG_VECTOR viewPuzzle = {displayX,displayY,displayZ};
+			SG_VECTOR viewPuzzle = {ofGetWidth() / 2,ofGetHeight() / 2,displayZ};
 			myGames[0]->createPuzzle(viewPuzzle);//create Puzzle goes to step4 inside the game to show the puzzle
 		}
 	}
@@ -774,7 +774,7 @@ void testApp::update(string _eventName, SubObEvent* _event){
 	}
 	if(_eventName == "cut-object"){
 		SG_VECTOR v = {displayX,displayY,displayZ};
-		myGames[0]->createPuzzle(v, myGames[0]->giveOffset());
+		myGames[0]->createPuzzle(v);
 	}
 	if(_eventName == "goto-step5"){
 		myGames[0]->setCurrentStep(5);

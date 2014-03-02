@@ -91,8 +91,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\..\..\..\Program Files (x86)\Ideum\GestureworksCore\bindings\c++\gwc_c++\GestureWorksCore.cpp" />
-    <ClCompile Include="..\..\..\..\..\..\..\Program Files (x86)\Ideum\GestureworksCore\bindings\c++\gwc_c++\GWCUtils.cpp" />
     <ClCompile Include="..\..\..\addons\ofxXmlSettings\libs\tinyxml.cpp" />
     <ClCompile Include="..\..\..\addons\ofxXmlSettings\libs\tinyxmlerror.cpp" />
     <ClCompile Include="..\..\..\addons\ofxXmlSettings\libs\tinyxmlparser.cpp" />
@@ -105,10 +103,14 @@
     <ClCompile Include="src\GestureManager.cpp" />
     <ClCompile Include="src\gui\GuiButton.cpp" />
     <ClCompile Include="src\gui\GuiConfigurator.cpp" />
+    <ClCompile Include="src\gui\GuiDropArea.cpp" />
+    <ClCompile Include="src\gui\GuiIBox.cpp" />
     <ClCompile Include="src\gui\GuiImage.cpp" />
     <ClCompile Include="src\gui\GuiNode.cpp" />
     <ClCompile Include="src\gui\GuiSheet.cpp" />
     <ClCompile Include="src\gui\Utils.cpp" />
+    <ClCompile Include="src\gwc\GestureWorksCore.cpp" />
+    <ClCompile Include="src\gwc\GWCUtils.cpp" />
     <ClCompile Include="src\history.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\matrix.cpp" />
@@ -138,8 +140,6 @@
     <ClCompile Include="..\..\..\addons\ofxGui\src\ofxToggle.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\..\..\..\..\Program Files (x86)\Ideum\GestureworksCore\bindings\c++\gwc_c++\GestureWorksCore.h" />
-    <ClInclude Include="..\..\..\..\..\..\..\Program Files (x86)\Ideum\GestureworksCore\bindings\c++\gwc_c++\GWCUtils.h" />
     <ClInclude Include="..\..\..\addons\ofxXmlSettings\libs\tinyxml.h" />
     <ClInclude Include="..\..\..\addons\ofxXmlSettings\src\ofxXmlSettings.h" />
     <ClInclude Include="src\3DCamera.h" />
@@ -150,10 +150,14 @@
     <ClInclude Include="src\GestureManager.h" />
     <ClInclude Include="src\gui\GuiButton.h" />
     <ClInclude Include="src\gui\GuiConfigurator.h" />
+    <ClInclude Include="src\gui\GuiDropArea.h" />
+    <ClInclude Include="src\gui\GuiIBox.h" />
     <ClInclude Include="src\gui\GuiImage.h" />
     <ClInclude Include="src\gui\GuiNode.h" />
     <ClInclude Include="src\gui\GuiSheet.h" />
     <ClInclude Include="src\gui\Utils.h" />
+    <ClInclude Include="src\gwc\GestureWorksCore.h" />
+    <ClInclude Include="src\gwc\GWCUtils.h" />
     <ClInclude Include="src\history.h" />
     <ClInclude Include="src\matrix.h" />
     <ClInclude Include="src\myobject3D.h" />

@@ -121,14 +121,20 @@
       <Filter>src\subob</Filter>
     </ClCompile>
     <ClCompile Include="src\history.cpp" />
-    <ClCompile Include="..\..\..\..\..\..\..\Program Files (x86)\Ideum\GestureworksCore\bindings\c++\gwc_c++\GestureWorksCore.cpp">
-      <Filter>src\gwc</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\..\..\Program Files (x86)\Ideum\GestureworksCore\bindings\c++\gwc_c++\GWCUtils.cpp">
-      <Filter>src\gwc</Filter>
-    </ClCompile>
     <ClCompile Include="src\GestureManager.cpp">
       <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gwc\GestureWorksCore.cpp">
+      <Filter>src\gwc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gwc\GWCUtils.cpp">
+      <Filter>src\gwc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gui\GuiDropArea.cpp">
+      <Filter>src\gui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gui\GuiIBox.cpp">
+      <Filter>src\gui</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -398,14 +404,20 @@
       <Filter>src\subob</Filter>
     </ClInclude>
     <ClInclude Include="src\history.h" />
-    <ClInclude Include="..\..\..\..\..\..\..\Program Files (x86)\Ideum\GestureworksCore\bindings\c++\gwc_c++\GestureWorksCore.h">
-      <Filter>src\gwc</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\..\..\..\Program Files (x86)\Ideum\GestureworksCore\bindings\c++\gwc_c++\GWCUtils.h">
-      <Filter>src\gwc</Filter>
-    </ClInclude>
     <ClInclude Include="src\GestureManager.h">
       <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gwc\GestureWorksCore.h">
+      <Filter>src\gwc</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gwc\GWCUtils.h">
+      <Filter>src\gwc</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gui\GuiDropArea.h">
+      <Filter>src\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gui\GuiIBox.h">
+      <Filter>src\gui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

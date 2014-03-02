@@ -7,6 +7,8 @@
 //#include "Pager.h"
 #include "GuiButton.h"
 #include "GuiImage.h"
+#include "GuiIBox.h"
+#include "GuiDropArea.h"
 //#include "GuiScrubber.h"
 #include "GuiSheet.h"
 //#include "GuiMediaPreview.h"

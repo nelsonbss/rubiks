@@ -131,12 +131,13 @@ void GestureManager::getGestures(){
 	}
 	std::vector<gwc::GestureEvent> gestureEvents = consumeGestureEvents();
 	for(std::vector<gwc::GestureEvent>::iterator gIter = gestureEvents.begin(); gIter != gestureEvents.end(); gIter++) {
-		if(gIter->phase < 3){
+		if(gIter->phase < 5){
 			cout << gIter->gesture_type << " - " << gIter->x << ", " << gIter->y << " - " << gIter->phase << endl;
 			SubObEvent* gEvent = new SubObEvent();
 			gEvent->setName("gesture");
-			gEvent->addArg("position", ofVec2f(gIter->x, gIter->y));
-			gEvent->addArg("drag_d", ofVec2f(gIter->values["drag_dx"], gIter->values["drag_dy"]));
+			gEvent->addArg("ID", gIter->ID);
+			gEvent->addArg("absPos", ofVec2f(gIter->x, gIter->y));
+			gEvent->addArg("deltaPos", ofVec2f(gIter->values["drag_dx"], gIter->values["drag_dy"]));
 			gEvent->addArg("type", gIter->gesture_type);
 			gEvent->addArg("target",gIter->target);
 			gEvent->addArg("phase",gIter->phase);

@@ -12,7 +12,7 @@ public:
     GuiImage(map<string,string> &_attrs);
     //void initialize(map<string, string> &_attrs);
     void execute();
-    void draw();
+    void nodeDraw();
     bool processMouse(int _x, int _y, int _state){return false;}
     void update(string _subName, Subject *_sub);
 

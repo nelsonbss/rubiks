@@ -15,6 +15,29 @@ enum{
     MOUSE_STATE_DRAG
 };
 
+class DragData{
+public:
+	DragData(){}
+	DragData(int _ID, int _n, int _phase, ofVec2f _absPos, ofVec2f _deltaPos){ID = _ID;n = _n; phase = _phase; absPos = _absPos; deltaPos = _deltaPos;}
+	int getN(){return n;}
+	void setN(int _n){n = _n;}
+	int getID(){return ID;}
+	void setID(int _ID){ID = _ID;}
+	int getPhase(){return phase;}
+	void setPhase(int _phase){phase = _phase;}
+	ofVec2f getAPos(){return absPos;}
+	void setAPos(ofVec2f _val){absPos = _val;}
+	ofVec2f getDPos(){return absPos;}
+	void setDPos(ofVec2f _val){deltaPos = _val;}
+
+private:
+	int n;
+	int ID;
+	int phase;
+	ofVec2f absPos;
+	ofVec2f deltaPos;
+};
+
 class GuiNode: public Subject, public Observer{
 
 public:
@@ -26,7 +49,9 @@ public:
     virtual bool isDragging(int _x, int _y){return false;}
     virtual bool processMouse(int _x, int _y, int _state) = 0;
 	virtual void setPosition(ofVec2f _pos){pos = _pos;}
-	virtual void adjustPosition(ofVec2f _dPos){drawPos += _dPos;}
+	void draw();
+	void init();
+	virtual void adjustPosition(ofVec2f _dPos, ofVec2f _aPos){}
     virtual void message(map<string,string> _msg){}
     virtual void sendMessage(){}
     virtual void reset(){}
@@ -36,7 +61,6 @@ public:
     virtual bool getClicked(){return 0;}
 	virtual void activate();
 	virtual void deactivate();
-    void initialize();
     string getName(){return name;}
     void setName(string &_name){name = _name;}
     void setName(const char * _name){name = _name;}
@@ -70,10 +94,11 @@ public:
     //Virtual methods that each subclass is responsible for defining.
     virtual void execute();
     virtual void executeDrag(int _x, int _y){}
-    virtual void draw() = 0;
     virtual void drawLoosie(){}
     virtual void update(){}
-	virtual void init(){}
+	virtual void nodeInit(){}
+	virtual void nodeDraw(){}
+	virtual void dragInput(int _ID, int _n, int _phase, ofVec2f _absPos, ofVec2f _deltaPos){}
 
 protected:
 
@@ -82,12 +107,15 @@ protected:
 	vector<SubObEvent*> events;
     ofVec2f pos;
 	ofVec2f drawPos;
+	ofVec2f drawSize;
     float scale;
 	ofVec2f size;
     string name;
     string type;
     string parent;
     int dur;
+	bool bDrawArea;
+	ofVec3f drawColor;
 };
 
 

@@ -87,13 +87,24 @@ void GuiConfigurator::update(string _eventName, SubObEvent* _event){
 	if(_eventName == "gesture"){
 		string target = _event->getArg("target")->getString();
 		string type = _event->getArg("type")->getString();
-		cout << "type = " << type << endl;
 		if(type == "drag" && (activeNodes.count(target))){
 			string draggable = activeNodes[target]->getParam("draggable");
 			if(draggable == "true"){
-				if(_event->getArg("n")->getInt() == 2){
-					cout << "dragging element" << endl;
-					activeNodes[target]->adjustPosition(_event->getArg("drag_d")->getVec2());
+				int n = 1;
+				string targetN = activeNodes[target]->getParam("n");
+				int eventN = _event->getArg("n")->getInt();
+				cout << "event n = " << eventN << endl;
+				if(targetN != "__NONE__"){
+					n = ofToInt(targetN);
+				}
+				if(eventN == n){
+					//activeNodes[target]->adjustPosition(_event->getArg("drag_d")->getVec2(), _event->getArg("position")->getVec2());
+					int cID = _event->getArg("ID")->getInt();
+					int cN = _event->getArg("n")->getInt();
+					int cPhase = _event->getArg("phase")->getInt();
+					ofVec2f cAPos = _event->getArg("absPos")->getVec2();
+					ofVec2f cDPos = _event->getArg("deltaPos")->getVec2();
+					activeNodes[target]->dragInput(cID, cN, cPhase, cAPos, cDPos);
 				}
 			}
 		}
@@ -195,6 +206,10 @@ void GuiConfigurator::loadNodes(string _sheetName){
 		GuiNode* nodePtr = NULL;
 		if(nodeType == "button"){
 			nodePtr = new GuiButton();
+		} else if (nodeType == "ibox") {
+			nodePtr = new GuiIBox();
+		} else if (nodeType == "drop") {
+			nodePtr = new GuiDropArea();
 		} else {
 			continue;
 		}

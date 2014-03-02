@@ -3,7 +3,6 @@
 GuiImage::GuiImage(map<string,string> &_attrs): GuiNode(){
     img.loadImage(_attrs["image"]);
     attrs = _attrs;
-    initialize();
 	size.x = img.getWidth() * scale;
 	size.y = img.getHeight() * scale;
     haveArabic = false;
@@ -20,7 +19,7 @@ GuiImage::GuiImage(map<string,string> &_attrs): GuiNode(){
 void GuiImage::execute(){
 }
 
-void GuiImage::draw(){
+void GuiImage::nodeDraw(){
     //ofSetColor(0,0,255);
     //ofRect(pos.x,pos.y,size.x, size.y);
 	//if(haveArabic && SceneManager::Instance()->getDisplayArabic()){

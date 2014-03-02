@@ -2,29 +2,44 @@
 #include "Utils.h"
 #include "GuiConfigurator.h"
 
+
+GuiNode::GuiNode(){
+    drawColor.set(0,0,0);
+	bDrawArea = false;
+}
+
+void GuiNode::draw(){
+	if(bDrawArea){
+		//cout << "drawing from " << drawPos.x << ", " << drawPos.y << " to " << drawSize.x << ", " << drawSize.y << endl;
+		ofNoFill();
+		ofSetColor(drawColor.x, drawColor.y, drawColor.z);
+		ofRect(drawPos.x, drawPos.y, drawSize.x, drawSize.y);
+	}
+	nodeDraw();
+}
+
 bool GuiNode::isInside(int _x, int _y){
     cout << name << " checking insides " << drawPos.x << ", " << drawPos.x + (scale * size.x) << " - " << drawPos.y << ", " << drawPos.y + (scale * size.y);
 	cout << " against " << _x << ", " << _y << endl;
-    if((_x > drawPos.x && _x < (drawPos.x + (scale * size.x)) &&
-       (_y > drawPos.y && _y < (drawPos.y + (scale * size.y))))){
+    if((_x > drawPos.x && _x < (drawPos.x + (scale * drawSize.x)) &&
+       (_y > drawPos.y && _y < (drawPos.y + (scale * drawSize.y))))){
            cout << "hit" << endl;
 		   return true;
        }
     return false;
 }
 
-GuiNode::GuiNode(){
-    attrs.get_allocator().allocate(100);
-}
-
-void GuiNode::initialize(){
-    type = attrs["type"];
-    name = attrs["name"];
-    pos = stringToVec2f(attrs["pos"]);
-    scale = ofToFloat(attrs["scale"]);
+void GuiNode::init(){
 	setPosition();
-	//cout << "have " << events.size() << " events." << endl;
-	//size = stringToVec2f(attrs["size"]);
+	if(params.count("draw-color")){
+		drawColor = stringToVec3f(params["draw-color"]);
+	}
+	if(params.count("draw-area")){
+		if(params["draw-area"] == "true"){
+			bDrawArea = true;
+		}
+	}
+	nodeInit();
 }
 
 void GuiNode::activate(){
@@ -38,6 +53,8 @@ void GuiNode::deactivate(){
 void GuiNode::setPosition(){
 	drawPos.x = ofGetWidth() * pos.x;
 	drawPos.y = ofGetHeight() * pos.y;
+	drawSize.x = ofGetWidth() * size.x;
+	drawSize.y = ofGetHeight() * size.y;
 }
 
 void GuiNode::_windowResized(){

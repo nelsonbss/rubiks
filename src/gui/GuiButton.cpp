@@ -5,7 +5,6 @@ GuiButton::GuiButton(map<string, string> &_attrs, vector<SubObEvent*> _events) :
 	attrs = _attrs;
 	events = _events;
 	//cout << "button has " << events.size() << endl;
-	initialize();
     if(attrs["image"] != "none"){
         inactive.loadImage(attrs["image"]);
         haveImage = true;
@@ -56,20 +55,27 @@ GuiButton::GuiButton(string _img) : GuiNode(){
 	setChannel("button");
 }
 
-void GuiButton::init(){
+void GuiButton::nodeInit(){
 	if(params.count("image")){
 		cout << "loading image - " << params["image"] << endl;;
 		inactive.loadImage(params["image"]);
-		size.x = inactive.getWidth();
-		size.y = inactive.getHeight();
+		drawSize.x = inactive.getWidth();
+		drawSize.y = inactive.getHeight();
 		haveImage = true;
 	} else {
 		haveImage = false;
 	}
-	setPosition();
 	drawActive = false;
 	haveActive = false;
 	haveArabic = false;
+	bSendActions = false;
+	if(params.count("droppable")){
+		if(params["droppable"] == "true"){
+			cout << "setting droppable on " << name << " to true." << endl;
+			bSendActions = true;
+			SubObMediator::Instance()->addObserver("object-intercepted",this);
+		}
+	}
 }
 
 bool GuiButton::processMouse(int _x, int _y, int _state){
@@ -116,19 +122,41 @@ bool GuiButton::processMouse(int _x, int _y, int _state){
 	return false;
 }
 
+void GuiButton::dragInput(int _ID, int _n, int _phase, ofVec2f _absPos, ofVec2f _deltaPos){
+	drawPos += _deltaPos;
+	if(bSendActions){
+		cout << name << " sending movement." << endl;
+		SubObEvent* ev = new SubObEvent();
+		ev->setName("object-moved");
+		ev->addArg("object-name", name);
+		ev->addArg("position", ofVec2f(drawPos.x, drawPos.y));
+		SubObMediator::Instance()->sendEvent("object-moved", ev);
+	} else {
+		cout << name << " not sending actions." << endl;
+	}
+}
+
 void GuiButton::update(string _subName, Subject* _sub){
 }
 
-void GuiButton::draw(){
+void GuiButton::update(string _eventName, SubObEvent* _event){
+	if(_eventName == "object-intercepted"){
+		setPosition();
+		drawSize.x = inactive.getWidth();
+		drawSize.y = inactive.getHeight();
+	}
+}
+
+void GuiButton::nodeDraw(){
     if(haveImage){
         if(!drawActive){
             //if(haveArabic && SceneManager::Instance()->getDisplayArabic()){
              //   arabic.draw(pos.x,pos.y);
             //} else {
-                inactive.draw(drawPos.x,drawPos.y, scale * size.x,scale * size.y);
+                inactive.draw(drawPos.x,drawPos.y, scale * drawSize.x,scale * drawSize.y);
             //}
         } else {
-            active.draw(drawPos.x,drawPos.y, size.x, size.y);
+            active.draw(drawPos.x,drawPos.y, drawSize.x, drawSize.y);
         }
     } else {
         //ofRect(pos.x, pos.y, size.x, size.y);

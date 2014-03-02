@@ -1,6 +1,7 @@
 #include "cubie.h"
 #include "sgCore.h"
 #include "ofRender.h"
+#include <math.h>
 
 cubie::cubie(float x, float y,float z, int idi, int selObjId, ofVec3f offset, ofVec3f offrotate){
 	objects = NULL;
@@ -15,7 +16,7 @@ cubie::cubie(float x, float y,float z, int idi, int selObjId, ofVec3f offset, of
 	rot.y = 0.0;
 	rot.z = 0.0;
 
-	color = rand()%27;
+	//color = rand()%27;
 
 	pointRotate.x = offset.x;
 	pointRotate.y = offset.y;
@@ -49,17 +50,64 @@ void cubie::update(){
 	for (int j=0; j < numObjs; j++){
 		if(moving==true){
 			if(myMatrix.size()>=2){
-				//build rotation matrix for all steps up to the one where it was at the moment of a new movement
+
 				for(int i=0; i<myMatrix.size()-1;i++){
+					//build rotation matrix for all steps up to the one where it was at the moment of a new movement
 					SG_POINT protFace = {pointRotate.x,pointRotate.y,pointRotate.z};										 
 					SG_VECTOR vrotFace = myMatrix.at(i).vector;//  axis; //rotate to do a face move
+					if(vrotFace.y != 0){
+						if(rotCompensation.x != 0){
+							SG_VECTOR vComp = {0,cos(ofDegToRad(rotCompensation.x)),sin(ofDegToRad(rotCompensation.x))};
+							vrotFace = vComp;
+						}
+					}
+					///////
+					//if(vrotFace.z != 0){
+					//	if(rotCompensation.x != 0){
+					//		SG_VECTOR vComp = {0,sin(ofDegToRad(rotCompensation.x)),cos(ofDegToRad(rotCompensation.x))};
+					//		//double c  = cos(ofDegToRad(rotCompensation.x));
+					//		vrotFace = vComp; 
+					//	}
+					//}
 					double d = myMatrix.at(i).deg;
 					d = ofDegToRad(d);
 					if(myMatrix.at(i).dir == true){
 						//c
 						if (objectList[j]->GetTempMatrix()==0){
+
+
+
+							////do rotation compensation if the axis being rotated from armature rotation
+							////if armature was rotated on x, y an z axis ar tilted
+							//if(vrotFace.y == 1){
+							//	if(rotCompensation.x != 0){
+							//		//have to rotate around x axis that amount of degrees
+							//		SG_VECTOR vrotFace2 = {0,0.7,0.7};
+							//		vrotFace.x = vrotFace2.x;
+							//		vrotFace.y = vrotFace2.y;
+							//		vrotFace.z = vrotFace2.z;
+							//	}
+							//}
+
+
+
 							objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,d);
 						}else{
+
+							////do rotation compensation if the axis being rotated from armature rotation
+							////if armature was rotated on x, y an z axis ar tilted
+							//if(vrotFace.y == 1){
+							//	if(rotCompensation.x != 0){
+							//		//have to rotate around x axis that amount of degrees
+							//		SG_VECTOR vrotFace2 = {0,0.7,0.7};
+							//		vrotFace.x = vrotFace2.x;
+							//		vrotFace.y = vrotFace2.y;
+							//		vrotFace.z = vrotFace2.z;
+							//	}
+							//}
+
+
+
 							objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,d);
 						}
 
@@ -75,6 +123,30 @@ void cubie::update(){
 				//we are at the last positon
 				SG_POINT protFace = {pointRotate.x,pointRotate.y,pointRotate.z};										 
 				SG_VECTOR vrotFace = myMatrix.at(myMatrix.size()-1).vector;//  axis; //rotate to do a face move
+				///////
+				//if(vrotFace.x != 0){
+				//	if(rotCompensation.z != 0){
+				//		//SG_VECTOR vComp = {0,cos(ofDegToRad(rotCompensation.x)),sin(ofDegToRad(rotCompensation.x))};
+				//		////double c  = cos(ofDegToRad(rotCompensation.x));
+				//		//vrotFace = vComp; 
+				//	}
+				//}
+				///////
+				if(vrotFace.y != 0){
+					if(rotCompensation.x != 0){
+						SG_VECTOR vComp = {0,cos(ofDegToRad(rotCompensation.x)),sin(ofDegToRad(rotCompensation.x))};
+						//double c  = cos(ofDegToRad(rotCompensation.x));
+						vrotFace = vComp; 
+					}
+				}
+				///////
+				//if(vrotFace.z != 0){
+				//	if(rotCompensation.x != 0){
+				//		SG_VECTOR vComp = {0,sin(ofDegToRad(rotCompensation.x)),cos(ofDegToRad(rotCompensation.x))};
+				//		//double c  = cos(ofDegToRad(rotCompensation.x));
+				//		vrotFace = vComp; 
+				//	}
+				//}
 				double tempDeg2 = myMatrix.at(myMatrix.size()-1).deg; //target angle, the last angle it will move to
 				if(sample==false){
 					//this should only be sampled once during the animation
@@ -139,6 +211,24 @@ void cubie::update(){
 			for(int i=0; i<myMatrix.size();i++){
 				SG_POINT protFace = {pointRotate.x,pointRotate.y,pointRotate.z};										 
 				SG_VECTOR vrotFace = myMatrix.at(i).vector;//  axis of rotation
+				////
+				if(vrotFace.y != 0){
+					if(rotCompensation.x != 0){
+						//if((0<=rotCompensation.x)&&(rotCompensation.x<=135)){
+							SG_VECTOR vComp = {0,cos(ofDegToRad(rotCompensation.x)),sin(ofDegToRad(rotCompensation.x))};
+							vrotFace = vComp;
+						//}
+						
+					}
+				}
+				///////
+				//if(vrotFace.z != 0){
+				//	if(rotCompensation.x != 0){
+				//		SG_VECTOR vComp = {0,sin(ofDegToRad(rotCompensation.x)),cos(ofDegToRad(rotCompensation.x))};
+				//		//double c  = cos(ofDegToRad(rotCompensation.x));
+				//		vrotFace = vComp; 
+				//	}
+				//}
 				double d = myMatrix.at(i).deg;
 				d = ofDegToRad(d);
 				if(myMatrix.at(i).dir == true){

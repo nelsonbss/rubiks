@@ -209,7 +209,7 @@ void puzzle::rotateByIDandAxis(int id, SG_VECTOR axis, bool dir){
 		}
 	}
 	//now we ask for the cubies on that axis
-	if(axis.x == 1){
+	if(axis.x != 0){
 		//if the move is on an x axis
 		for(int y=0;y<3;y++){
 			for(int z=0; z<3;z++){
@@ -221,7 +221,7 @@ void puzzle::rotateByIDandAxis(int id, SG_VECTOR axis, bool dir){
 		//according to axis of rotation
 		// and actual selected plane: selX = x; selY = y; selZ = z;
 		rearange3dArray(axis,selX,dir);
-	}else if(axis.y == 1){
+	}else if(axis.y != 0){
 		//if the move is on a y axis
 		for(int x=0;x<3;x++){
 			for(int z=0; z<3;z++){
@@ -262,7 +262,7 @@ void puzzle::rearange3dArray(SG_VECTOR axis, int plane, bool dir){
 	int cnstplane = plane;
 	if(dir == true){
 		//clockwise rotations
-		if(axis.x == 1){
+		if(axis.x != 0){
 			//rotation on X
 			//store all the values
 			for(int y=0;y<3;y++){
@@ -279,7 +279,7 @@ void puzzle::rearange3dArray(SG_VECTOR axis, int plane, bool dir){
 					ctr ++;
 				}
 			}
-		}else if(axis.y == 1){
+		}else if(axis.y != 0){
 			//rotation on Y
 			//store all the values
 			for(int x=0;x<3;x++){
@@ -317,7 +317,7 @@ void puzzle::rearange3dArray(SG_VECTOR axis, int plane, bool dir){
 		}
 	}else{
 		//counter clockwise rotations
-		if(axis.x == 1){
+		if(axis.x != 0){
 			//rotation on X
 			//store all the values
 			for(int y=0;y<3;y++){
@@ -335,7 +335,7 @@ void puzzle::rearange3dArray(SG_VECTOR axis, int plane, bool dir){
 				}
 			}
 
-		}else if(axis.y == 1){
+		}else if(axis.y != 0){
 			//rotation on Y
 			//store all the values
 			for(int x=0;x<3;x++){

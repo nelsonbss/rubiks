@@ -51,7 +51,7 @@ void cutter::setup(){
 	////
 	c3 = sgCreateBox(infinity,tamCubie,infinity); //it expands -> x & -> z (z is positive, have to handle this with rotations)
 	c3->InitTempMatrix()->Translate(centerCube);//center box
-	SG_VECTOR transc3 = {tamCubie,0,0};//move to its position
+	SG_VECTOR transc3 = {tamCubie,0,0};//move to its positionnm
 	c3->GetTempMatrix()->Translate(transc3);
 	SG_VECTOR transc31 = {0,0,tamCubie};//move to its position
 	c3->GetTempMatrix()->Translate(transc31);
@@ -360,11 +360,11 @@ void cutter::setup(){
 	//rotating the cutter
 	SG_POINT rot = {posCutter.x,posCutter.y,posCutter.z};
 	SG_VECTOR rotX = {1,0,0};
-	allCubes->GetTempMatrix()->Rotate(rot,rotX,rotCutter.x);
+	allCubes->GetTempMatrix()->Rotate(rot,rotX,ofDegToRad(rotCutter.x));
 	SG_VECTOR rotY = {0,1,0};
-	allCubes->GetTempMatrix()->Rotate(rot,rotY,rotCutter.y);
+	allCubes->GetTempMatrix()->Rotate(rot,rotY,ofDegToRad(rotCutter.y));
 	SG_VECTOR rotZ = {0,0,1};
-	allCubes->GetTempMatrix()->Rotate(rot,rotZ,rotCutter.z);
+	allCubes->GetTempMatrix()->Rotate(rot,rotZ,ofDegToRad(rotCutter.z));
 	allCubes->ApplyTempMatrix();  
 	allCubes->DestroyTempMatrix();
 

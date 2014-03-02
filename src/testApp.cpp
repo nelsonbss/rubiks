@@ -258,11 +258,11 @@ void testApp::keyPressed(int key){
 			myGames[0]->rotateA(r);
 		}
 		if(key == 'w') {//rotate up
-			ofVec3f r = ofVec3f (1,0,0);
+			ofVec3f r = ofVec3f (10,0,0); //degrees!!!
 			myGames[0]->rotateA(r);
 		}
 		if(key == 's') {//rotate down
-			ofVec3f r = ofVec3f (-1,0,0);
+			ofVec3f r = ofVec3f (-10,0,0);
 			myGames[0]->rotateA(r);
 		}
 		/////////////////a puzzle can be made

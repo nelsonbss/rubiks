@@ -4,10 +4,6 @@
 ///////////////////////////////////////////
 #include "sgCore.h"
 
-///////////////////////////////////////////
-#include <math.h>
-#define _USE_MATH_DEFINES
-
 #define displayX 500
 #define displayY 400
 #define displayZ 0
@@ -547,7 +543,6 @@ ofFloatColor testApp::pickColorMouse(){
 	//pixels = image.getPixels();
 	////pix = image.getPixels();
 	//ofFloatColor c = pix.getColor(mouseX, mouseY);
-
 
 	return tc;
 }

@@ -3,10 +3,11 @@
 
 #include "ofMain.h"
 #include "sgCore.h"
+#include "armRotations.h"
 
 class cutter {
 public:
-	cutter(float thick, float tamCutter, float tamCuby,float numCutrc, ofVec3f pos, ofVec3f rot);
+	cutter(float thick, float tamCutter, float tamCuby,float numCutrc, ofVec3f pos, vector<armRotations> armRotH);
     
 	void setup();
 	void update();
@@ -112,6 +113,10 @@ public:
 	sgCObject  **cubes;
     sgCGroup *allCubes;
 	////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+	//cutter rotations vector
+	vector<armRotations> armRotH;
 
 };
 #endif /* defined(__Tcutter__cutter__) */

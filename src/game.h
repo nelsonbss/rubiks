@@ -10,6 +10,9 @@
 #include "puzzle.h"
 #include "ofxAssimpModelLoader.h"
 #include "history.h"
+#include "armRotations.h"
+
+#include <vector>
 
 class game {
 public:
@@ -92,5 +95,8 @@ public:
 	
 	////color change
 	void changeColorToColor(ofFloatColor Sc, ofFloatColor Tc);
+
+	//armature rotation history
+	vector<armRotations> armRotH;
 };
 #endif /* defined(__Tgame__game__) */

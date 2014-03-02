@@ -5,6 +5,8 @@
 #include "cutter.h"
 #include "puzzle.h"
 
+#include <vector>
+
 #define planeThicknes 0.001
 #define tamCutter 1000
 
@@ -199,7 +201,6 @@ void game::update(){
 				//put this move on the game history vector
 				//it only saves the idcubie. 
 				//undo will look for the other 9 cubies involved and do a pop_back on their history
-				/*historyV.push_back(history(idcubie,axis,dir));*/ //save the play
 				historyV.push_back(history(idcubie,axis,!dir)); //new approach save inverse move, to do it at undo, and do 2 pop 
 				faceRotate = false;
 			}
@@ -339,7 +340,7 @@ void game::loadArmature(int type){
 //-----------------------------------------------------------------------------------------
 void game::createCutterSlicer(){
 	////////////////////////////////create cutter
-	myCutter = new cutter(planeThicknes,tamCutter,tamCubie,1,offsetSlicer,rotateSlicer);		
+	myCutter = new cutter(planeThicknes,tamCutter,tamCubie,1,offsetSlicer,armRotH);		
 	myCutter->setup();
 	//////////////////////////////////create slicer
 	mySlicer = new slicer(myCutter);
@@ -403,6 +404,10 @@ void game::rotateA (ofVec3f input){
 	rotateSlicer.x += input.x;
 	rotateSlicer.y += input.y;
 	rotateSlicer.z += input.z;
+	//add this rotation to armRotations history
+	/*armRotations x = armRotations(input);
+	armRotH.push_back(armRotations(input));*/
+
 }
 //----------------------------------------------------------------------
 ofVec3f game::giveOffset(){

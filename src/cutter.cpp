@@ -1,7 +1,8 @@
 #include "cutter.h"
 #include "sgCore.h"
+#include "armRotations.h"
 
-cutter::cutter(float thick, float tamCutter, float tamCuby,float numCutr, ofVec3f pos, ofVec3f rot){
+cutter::cutter(float thick, float tamCutter, float tamCuby,float numCutr, ofVec3f pos, vector<armRotations> armRotHi){
 	numCutter = numCutr; //to use when we have more than one cutter
 	//cutterThick = thick; //only used on planes
 	///
@@ -15,9 +16,10 @@ cutter::cutter(float thick, float tamCutter, float tamCuby,float numCutr, ofVec3
 	posCutter.y = pos.y;
 	posCutter.z = pos.z;
 	////
-	rotCutter.x = rot.x;
+	/*rotCutter.x = rot.x;
 	rotCutter.y = rot.y;
-	rotCutter.z = rot.z;
+	rotCutter.z = rot.z;*/
+	armRotH = armRotHi;
 	///
 	centerCube.x = -tamCubie/2;
 	centerCube.y = -tamCubie/2;
@@ -358,24 +360,21 @@ void cutter::setup(){
 	SG_VECTOR transCubies = {posCutter.x,posCutter.y,posCutter.z};
 	allCubes->InitTempMatrix()->Translate(transCubies);
 	//rotating the cutter
-	SG_POINT rot = {posCutter.x,posCutter.y,posCutter.z};
+
+	/////////////////////////////////////works for only one rotation
+	/*SG_POINT rot = {posCutter.x,posCutter.y,posCutter.z};
 	SG_VECTOR rotX = {1,0,0};
 	allCubes->GetTempMatrix()->Rotate(rot,rotX,ofDegToRad(rotCutter.x));
 	SG_VECTOR rotY = {0,1,0};
 	allCubes->GetTempMatrix()->Rotate(rot,rotY,ofDegToRad(rotCutter.y));
 	SG_VECTOR rotZ = {0,0,1};
-	allCubes->GetTempMatrix()->Rotate(rot,rotZ,ofDegToRad(rotCutter.z));
+	allCubes->GetTempMatrix()->Rotate(rot,rotZ,ofDegToRad(rotCutter.z));*/
+
+	//using history of rotations to have more than one
+	//the order of the rotation doesnt matter
+
 	allCubes->ApplyTempMatrix();  
 	allCubes->DestroyTempMatrix();
-
-	//translate to be able to see it
-	//SG_VECTOR center = {450,400,0};
-	//allCubes->InitTempMatrix()->Translate(center);
-	//SG_POINT rot = {400,400,0};
-	//SG_VECTOR rotD = {1,0,0};
-	//allCubes->GetTempMatrix()->Rotate(rot,rotD,0.0); 
-	//allCubes->ApplyTempMatrix();  
-	//allCubes->DestroyTempMatrix();
 }
 
 //--------------------------------------------------------------

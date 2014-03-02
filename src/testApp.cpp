@@ -359,13 +359,38 @@ void testApp::keyPressed(int key){
 			ofVec3f p = ofVec3f (0,5,0);
 			myGames[0]->moveA(p);
 		}
-		//a puzzle can be made
+		///z movement
+		if(key == 'q') {
+			ofVec3f p = ofVec3f (0,0,5);
+			myGames[0]->moveA(p);
+		}
+		if(key == 'a') {
+			ofVec3f p = ofVec3f (0,0,-5);
+			myGames[0]->moveA(p);
+		}//////////////////////////////rotate all armature
+		if(key == 'c') {//rotate right
+			ofVec3f r = ofVec3f (0,35,0);
+			myGames[0]->rotateA(r);
+		}
+		if(key == 'x') {//rotate left
+			ofVec3f r = ofVec3f (0,-30,0);
+			myGames[0]->rotateA(r);
+		}
+		if(key == 'w') {//rotate up
+			ofVec3f r = ofVec3f (20,0,0); //degrees!!!
+			myGames[0]->rotateA(r);
+		}
+		if(key == 's') {//rotate down
+			ofVec3f r = ofVec3f (-10,0,0);
+			myGames[0]->rotateA(r);
+		}
+		/////////////////a puzzle can be made
 		if(key == 'n') {
 			//now we know the offset position from the armature to create-> cutter & slicer
 			myGames[0]->createCutterSlicer();
 			//do slicing
 			SG_VECTOR viewPuzzle = {displayX,displayY,displayZ};
-			myGames[0]->createPuzzle(viewPuzzle,myGames[0]->giveOffset());//create Puzzle goes to step4 inside the game to show the puzzle
+			myGames[0]->createPuzzle(viewPuzzle);//create Puzzle goes to step4 inside the game to show the puzzle
 		}
 	}
 	////////////////////////////////////////////step 4 inputs

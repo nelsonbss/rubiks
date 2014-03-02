@@ -197,3 +197,9 @@ void armature::moveA(ofVec3f input){
 	center.y += input.y;
 	center.z += input.z;
 }
+//--------------------------------------------------------------
+void armature::rotateA(ofVec3f input){
+	rot.x +=  input.x;
+	rot.y += input.y;
+	rot.z += input.z;
+}

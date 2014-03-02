@@ -94,8 +94,8 @@ void ofRender::sgCoretoOFmesh(sgC3DObject *obj, ofMesh &mesh,int idCubie,int sel
 		}else{
 			//its another object, most probable the cube
 			if(selectedObjectID == 2){
-				c = decideColorCubieBox(dir,idCubie); //we color the cube here so it gets the official colors on its faces
-				//c = decideColorCubieDEBUG(dir,idCubie); //this is to test the offset slicing and rotations
+				//c = decideColorCubieBox(dir,idCubie); //we color the cube here so it gets the official colors on its faces
+				c = decideColorCubieDEBUG(dir,idCubie); //this is to test the offset slicing and rotations
 			}else if(selectedObjectID == 3){
 				//cone(ish)
 				c = decideColor(decideAxisRange(dir,10.0));
@@ -1269,7 +1269,7 @@ ofColor ofRender::decideColorCubieDEBUG(ofPoint normal, int idCubie){
 	}else if (idCubie==2){
 		c = yellow;
 	}else if (idCubie==3){
-		c = black;
+		c = cyan;
 	}else if(idCubie==4){
 		c = green;
 	}else if(idCubie==5){
@@ -1277,7 +1277,7 @@ ofColor ofRender::decideColorCubieDEBUG(ofPoint normal, int idCubie){
 	}else if(idCubie==6){
 		c = white;
 	}else if(idCubie==7){
-		c = black;
+		c = cyan;
 	}else if(idCubie==8){
 		c = blue;
 	}else if(idCubie==9){
@@ -1295,17 +1295,17 @@ ofColor ofRender::decideColorCubieDEBUG(ofPoint normal, int idCubie){
 	}else if(idCubie==15){
 		c = green;
 	}else if(idCubie==16){
-		c = black;
+		c = cyan;
 	}else if(idCubie==17){
 		c = white;
 	}else if(idCubie==18){
-		c = black;
+		c = cyan;
 	}else if(idCubie==19){
 		c = orange;
 	}else if(idCubie==20){
 		c = yellow;
 	}else if(idCubie==21){
-		c = black;
+		c = cyan;
 	}else if(idCubie==22){
 		c = yellow;
 	}else if(idCubie==23){

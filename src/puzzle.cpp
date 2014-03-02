@@ -10,12 +10,13 @@
 #define WIDTH 3
 #define DEPTH 3
 
-puzzle::puzzle(SG_VECTOR p, ofVec3f offset){
+puzzle::puzzle(SG_VECTOR p, ofVec3f offset, ofVec3f offRotate){
 	numPieces = 27;
 	myCubies = (cubie**)malloc(numPieces*sizeof(cubie*));
-	
+
 	cubiesOffset = offset;
-	
+	cubiesOffrotate =  offRotate;
+
 	pos.x = p.x;
 	pos.y = p.y;
 	pos.z = p.z;
@@ -102,7 +103,7 @@ void puzzle::loadPieces(sgCGroup **pcs,int selObjId){
 	//create cubies
 	//so each time there is a new boolean operation, whole new cubies get created with variables in zero or blank
 	for(int i=0;i<numPieces;i++){
-		cubie *auxCubie = new cubie(pos.x,pos.y,pos.z,i+1,selObjId,cubiesOffset);// is this really creating independent instances of cubie??
+		cubie *auxCubie = new cubie(pos.x,pos.y,pos.z,i+1,selObjId,cubiesOffset,cubiesOffrotate);// is this really creating independent instances of cubie??
 		//auxCubie->setup();
 		//add this cubie to mycubies[]
 		myCubies[i] = auxCubie;
@@ -208,7 +209,7 @@ void puzzle::rotateByIDandAxis(int id, SG_VECTOR axis, bool dir){
 		}
 	}
 	//now we ask for the cubies on that axis
-	if(axis.x == 1){
+	if(axis.x != 0){
 		//if the move is on an x axis
 		for(int y=0;y<3;y++){
 			for(int z=0; z<3;z++){
@@ -220,7 +221,7 @@ void puzzle::rotateByIDandAxis(int id, SG_VECTOR axis, bool dir){
 		//according to axis of rotation
 		// and actual selected plane: selX = x; selY = y; selZ = z;
 		rearange3dArray(axis,selX,dir);
-	}else if(axis.y == 1){
+	}else if(axis.y != 0){
 		//if the move is on a y axis
 		for(int x=0;x<3;x++){
 			for(int z=0; z<3;z++){
@@ -261,7 +262,7 @@ void puzzle::rearange3dArray(SG_VECTOR axis, int plane, bool dir){
 	int cnstplane = plane;
 	if(dir == true){
 		//clockwise rotations
-		if(axis.x == 1){
+		if(axis.x != 0){
 			//rotation on X
 			//store all the values
 			for(int y=0;y<3;y++){
@@ -278,7 +279,7 @@ void puzzle::rearange3dArray(SG_VECTOR axis, int plane, bool dir){
 					ctr ++;
 				}
 			}
-		}else if(axis.y == 1){
+		}else if(axis.y != 0){
 			//rotation on Y
 			//store all the values
 			for(int x=0;x<3;x++){
@@ -316,7 +317,7 @@ void puzzle::rearange3dArray(SG_VECTOR axis, int plane, bool dir){
 		}
 	}else{
 		//counter clockwise rotations
-		if(axis.x == 1){
+		if(axis.x != 0){
 			//rotation on X
 			//store all the values
 			for(int y=0;y<3;y++){
@@ -334,7 +335,7 @@ void puzzle::rearange3dArray(SG_VECTOR axis, int plane, bool dir){
 				}
 			}
 
-		}else if(axis.y == 1){
+		}else if(axis.y != 0){
 			//rotation on Y
 			//store all the values
 			for(int x=0;x<3;x++){
@@ -381,11 +382,14 @@ void puzzle::colorFaces(int objectID){
 		ofRender *ofr = new ofRender();
 		ofr->colorFaces(myCubies,numPieces,0.01);
 		free(ofr);
+
+	}
+	if((objectID != 4)){
 		//color black all the inside faces of each cubie (after all other face colors have been applied)
 		//all the puzzles have to do this
 		colorCubiesBlackSides();
+		//need to color black sides of bunny in a better way.. will they be colored? or leave it plain?
 	}
-	//need to color black sides of bunny in a better way.. will they be colored? or leave it plain?
 }
 //----------------------------------------------------------------
 void puzzle::colorCubiesBlackSides(){

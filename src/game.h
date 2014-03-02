@@ -39,7 +39,7 @@ public:
 	int armID;
 	void createCutterSlicer();//(float thick, float tamPlane, float tamCuby,float numCutr, float x, float y, float z);
 
-	void createPuzzle(SG_VECTOR p, ofVec3f offset);
+	void createPuzzle(SG_VECTOR p);
 
 	int getCurrentStep();
 	void setCurrentStep(int step);
@@ -55,6 +55,8 @@ public:
 	//offset vars
 	ofVec3f offsetSlicer;
 	ofVec3f giveOffset();
+	ofVec3f rotateSlicer;
+	ofVec3f giveRotation();
 	float tamCubie;
 
 	//face rotations

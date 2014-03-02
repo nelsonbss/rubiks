@@ -250,7 +250,7 @@ void testApp::keyPressed(int key){
 			myGames[0]->moveA(p);
 		}//////////////////////////////rotate all armature
 		if(key == 'c') {//rotate right
-			ofVec3f r = ofVec3f (0,70,0);
+			ofVec3f r = ofVec3f (0,130,0);
 			myGames[0]->rotateA(r);
 		}
 		if(key == 'x') {//rotate left

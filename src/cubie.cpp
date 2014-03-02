@@ -77,7 +77,7 @@ void cubie::update(){
 							vrotFace = vComp; 
 						}
 						if(rotCompensation.y != 0){
-							SG_VECTOR vComp = {0,cos(ofDegToRad(rotCompensation.x)),sin(ofDegToRad(rotCompensation.x))};
+							SG_VECTOR vComp = {(sin(ofDegToRad(rotCompensation.y))*1),0,(cos(ofDegToRad(rotCompensation.y))*1)};
 							vrotFace = vComp;
 						}
 					}
@@ -158,7 +158,7 @@ void cubie::update(){
 						vrotFace = vComp; 
 					}
 					if(rotCompensation.y != 0){
-						SG_VECTOR vComp = {0,cos(ofDegToRad(rotCompensation.x)),sin(ofDegToRad(rotCompensation.x))};
+						SG_VECTOR vComp = {(sin(ofDegToRad(rotCompensation.y))*1),0,(cos(ofDegToRad(rotCompensation.y))*1)};
 						vrotFace = vComp;
 					}
 				}
@@ -249,7 +249,7 @@ void cubie::update(){
 						vrotFace = vComp; 
 					}
 					if(rotCompensation.y != 0){
-						SG_VECTOR vComp = {0,cos(ofDegToRad(rotCompensation.x)),sin(ofDegToRad(rotCompensation.x))};
+						SG_VECTOR vComp = {(sin(ofDegToRad(rotCompensation.y))*1),0,(cos(ofDegToRad(rotCompensation.y))*1)};
 						vrotFace = vComp;
 					}
 				}

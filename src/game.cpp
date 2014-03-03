@@ -429,6 +429,351 @@ void game::unDo(){
 	}
 }
 //----------------------------------------------------------------------
+void game::guiLoad(int _obj){
+	/*
+	SG_VECTOR objectPos = {0,0,0};
+	loadObject(_obj, objectPos, posP);
+	*/
+	bHaveNewObject = true;
+	newObject = _obj;
+}
+//----------------------------------------------------------------------
+void game::guiInput(int in){
+	////////////////////////////////////////////step 0 inputs
+	////////////////////////////////////////////step 0 inputs
+	////////////////////////////////////////////step 0 inputs
+	if(step == 0){
+		SG_VECTOR objectPos = {0,0,0};  //where it gets sliced
+		//SG_VECTOR posP = {ofGetWidth() / 2,ofGetHeight() / 2,displayZ}; // where the temp object will be showed to user
+		//waiting for shape to be selected
+		if(in == '1') {
+			//load object recieves (object id, boolean position, display position) 
+			loadObject(1,objectPos,posP);
+		}
+		if(in == '2') {
+			loadObject(2,objectPos,posP);
+		}
+		if(in == '3') {
+			loadObject(3,objectPos,posP);
+		}
+		if(in == '4') {
+			loadObject(4,objectPos,posP);
+		}
+		if(in == '5') {
+			loadObject(5,objectPos,posP);
+		}
+		if(in == '6') {
+			loadObject(6,objectPos,posP);
+		}
+		if(in == '7') { 
+			loadObject(7,objectPos,posP);
+		}
+		if(in == '8') { 
+			loadObject(8,objectPos,posP);
+		}
+	}
+	if(in == 'b'){
+		ofToggleFullscreen();
+	}
+	////////////////////////////////////////////step 1 inputs
+	////////////////////////////////////////////step 1 inputs
+	////////////////////////////////////////////step 1 inputs
+	if(step == 1){
+		//is showing object with flat color
+		//selected an object
+		if(in == 'n') {
+			//go to step 2
+			setCurrentStep(2);
+			//show armature
+		} 
+		//user can change the selected object
+		SG_VECTOR objectPos = {0,0,0}; 
+		//waiting for shape to be selected
+		if(in == '1') {
+			//load object recieves (object id, boolean position, display position) 
+			loadObject(1,objectPos,posP); //pos.z its the torus radious
+		}
+		if(in == '2') {
+			loadObject(2,objectPos,posP);
+		}
+		if(in == '3') {
+			loadObject(3,objectPos,posP);
+		}
+		if(in == '4') {
+			loadObject(4,objectPos,posP);
+		}
+		if(in == '5') {
+			loadObject(5,objectPos,posP);
+		}
+		if(in == '6') {
+			loadObject(6,objectPos,posP);
+		}
+		if(in == '7') {
+			loadObject(7,objectPos,posP);
+		}
+		if(in == '8') { 
+			loadObject(8,objectPos,posP);
+		}
+	}
+	////////////////////////////////////////////step 2 inputs
+	////////////////////////////////////////////step 2 inputs
+	////////////////////////////////////////////step 2 inputs
+	if(step == 2){
+		//waiting for armature to be selected
+		if(in == '1') {
+			//select armature 1
+			loadArmature(1); 
+		}
+		if(in == '2') {
+			//select armature 2
+			loadArmature(2);
+		}
+	}
+	////////////////////////////////////////////step 3 inputs
+	////////////////////////////////////////////step 3 inputs
+	////////////////////////////////////////////step 3 inputs
+	if(step == 3){
+		//armature was selected
+		////showing armature    another armature can be selected
+		if(in == '1') {
+			//select armature 1
+			loadArmature(1); 
+		}
+		if(in == '2') {
+			//select armature 2
+			loadArmature(2);
+		}
+		//////////////////////////////move all armature
+		if(in == 'l') {
+			ofVec3f p = ofVec3f (5,0,0);
+			moveA(p);
+		}
+		if(in == 'j') {
+			ofVec3f p = ofVec3f (-5,0,0);
+			moveA(p);
+		}
+		if(in == 'i') {
+			ofVec3f p = ofVec3f (0,-5,0);
+			moveA(p);
+		}
+		if(in == 'k') {
+			ofVec3f p = ofVec3f (0,5,0);
+			moveA(p);
+		}
+		///z movement
+		if(in == 'q') {
+			ofVec3f p = ofVec3f (0,0,5);
+			moveA(p);
+		}
+		if(in == 'a') {
+			ofVec3f p = ofVec3f (0,0,-5);
+			moveA(p);
+		}//////////////////////////////rotate all armature
+		if(in == 'c') {//rotate right
+			ofVec3f r = ofVec3f (0,35,0);
+			rotateA(r);
+		}
+		if(in == 'x') {//rotate left
+			ofVec3f r = ofVec3f (0,-30,0);
+			rotateA(r);
+		}
+		if(in == 'w') {//rotate up
+			ofVec3f r = ofVec3f (20,0,0); //degrees!!!
+			rotateA(r);
+		}
+		if(in == 's') {//rotate down
+			ofVec3f r = ofVec3f (-10,0,0);
+			rotateA(r);
+		}
+		/////////////////a puzzle can be made
+		if(in == 'n') {
+			//now we know the offset position from the armature to create-> cutter & slicer
+			createCutterSlicer();
+			//do slicing
+			//SG_VECTOR viewPuzzle = {ofGetWidth() / 2,ofGetHeight() / 2,displayZ};
+			createPuzzle(posP);//create Puzzle goes to step4 inside the game to show the puzzle
+		}
+	}
+	////////////////////////////////////////////step 4 inputs
+	////////////////////////////////////////////step 4 inputs
+	////////////////////////////////////////////step 4 inputs
+	if(step == 4){
+		//showing puzzle with colors
+		//waiting for color change
+		if(in == '1') {
+			//call color change funtion
+			ofFloatColor sc = ofFloatColor (1, 1, 0); //yellow
+			ofFloatColor menuColor = ofFloatColor (1, 0, 1); //this color comes from the GUI
+			changeColorToColor(sc,menuColor);
+		}
+		//pressed NEXT
+		if(in == 'n') {
+			//go to step 5
+			setCurrentStep(5);
+		}
+		///////////////////////////////move all puzzle
+		if(in == 'l') {
+			SG_VECTOR p = {10,0,0};
+			moveP(p);
+		}
+		if(in == 'j') {
+			SG_VECTOR p = {-10,0,0};
+			moveP(p);
+		}
+		if(in == 'i') {
+			SG_VECTOR p = {0,-10,0};
+			moveP(p);
+		}
+		if(in == 'k') {
+			SG_VECTOR p = {0,10,0};
+			moveP(p);
+		}
+		///////////rotate all puzzle  // two finger swipe gesture
+		if(in == 'm') {//rotate right
+			SG_VECTOR r = {0,0.1,0};
+			rotateP(r);
+		}
+		if(in == 'n') {//rotate left
+			SG_VECTOR r = {0,-0.1,0};
+			rotateP(r);
+		}
+		if(in == 'y') {//rotate up
+			SG_VECTOR r = {0.1,0,0};
+			rotateP(r);
+		}
+		if(in == 'h') {//rotate down
+			SG_VECTOR r = {-0.1,0,0};
+			ofVec3f v;
+			rotateP(r);
+		}
+	}
+	////////////////////////////////////////////step 5 inputs
+	////////////////////////////////////////////step 5 inputs
+	////////////////////////////////////////////step 5 inputs
+	if(step == 5){
+		//selected color (or not, its not mandatory)
+		//pressed next on color palette step
+		//showing puzzle
+		//now the puzzle can be played with
+
+
+		int idcubie = 11;//to follow this cubie for now //this will be decided upon touch, or click on top of puzzle
+		int randcubie=0;
+		if(myPuzzle->isMoving() == false){ //this is to prevent from reading events while puzzle is moving
+			if(in == 'u'){
+				//undo last move 
+				unDo();
+			}
+			////////////////////////////////////////////// FACE ROTATIONS //////////////////////////////
+			////////  x axis  ////  x axis
+			if(in == 'q') {
+				//if(rotateB == true) {//c
+					randcubie = 11;//rand()%26;
+					//clockwise
+					SG_VECTOR axis = {1,0,0};
+					rotateByIDandAxis(randcubie,axis,true);
+					/*rotateB = false;
+				}*/
+			}
+			if(in == 'a') {
+				//if(rotateB == true) {//cc
+					randcubie = 11;//rand()%26;
+					//clockwise
+					SG_VECTOR axis = {1,0,0};
+					rotateByIDandAxis(randcubie,axis,false);
+				/*	rotateB = false;
+				}*/
+			}
+			////////  y axis  ////  y axis
+			if(in == 'w') {
+				//if(rotateB == true) {
+					randcubie = 11;//rand()%26;
+					//clockwise
+					SG_VECTOR axis = {0,1,0};
+					rotateByIDandAxis(randcubie,axis,true);
+					/*rotateB = false;
+				}*/
+			}if(in == 's') {
+				//counter clockwise
+				//if(rotateB == true) {
+					randcubie = 11;//rand()%26;
+					SG_VECTOR axis = {0,1,0};
+					rotateByIDandAxis(randcubie,axis,false);
+					/*rotateB = false;
+				}*/
+			}
+			////////  z axis  ////  z axis
+			if(in == 'e') {
+				//if(rotateB == true) {
+					randcubie = 11;//rand()%26;
+					//clockwise
+					SG_VECTOR axis = {0,0,1};
+					rotateByIDandAxis(randcubie,axis,true);
+					/*rotateB = false;
+				}*/
+			}if(in == 'd') {
+				//if(rotateB == true) {
+					//counter clockwise
+					randcubie = 11;//rand()%26;
+					SG_VECTOR axis = {0,0,1};
+					rotateByIDandAxis(randcubie,axis,false);
+					/*rotateB = false;
+				}*/
+			}
+		}
+		////////////////////////////////////move all puzzle
+		if(in == 'l') {
+			SG_VECTOR p = {10,0,0};
+			moveP(p);
+		}
+		if(in == 'j') {
+			SG_VECTOR p = {-10,0,0};
+			moveP(p);
+		}
+		if(in == 'i') {
+			SG_VECTOR p = {0,-10,0};
+			moveP(p);
+		}
+		if(in == 'k') {
+			SG_VECTOR p = {0,10,0};
+			moveP(p);
+		}
+		//////////////////rotate all puzzle  // two finger swipe gesture
+		if(in == 'm') {//rotate right
+			SG_VECTOR r = {0,0.1,0};
+			rotateP(r);
+		}
+		if(in == 'n') {//rotate left
+			SG_VECTOR r = {0,-0.1,0};
+			rotateP(r);
+		}
+		if(in == 'y') {//rotate up
+			SG_VECTOR r = {0.1,0,0};
+			rotateP(r);
+		}
+		if(in == 'h') {//rotate down
+			SG_VECTOR r = {-0.1,0,0};
+			ofVec3f v;
+			rotateP(r);
+		}
+	}
+
+	/////////////////////////////////////////////////////////////////
+	////////////////RESART button can work on any step, its not showed on step 1 (object selected)
+	if(in == 'r'){
+		//tell a game to restart 
+		restart();
+	}
+	//if(puzzleExists == true){
+	//	if(in == 'f') {
+	//		cout << "nu cubies " << myPuzzle->giveNumCubies() << endl;
+	//	}
+	//	if(in == 'g') {
+	//		cout << "nu pieces " << mySlicer->countPieces() << endl;
+	//	}
+	//}
+}
+//----------------------------------------------------------------------
 void game::restart(){
 	if(step==4 || step==5){
 		myPuzzle->exit();

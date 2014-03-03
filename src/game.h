@@ -37,6 +37,13 @@ public:
 
 	void loadObject (int objID,SG_VECTOR p,SG_VECTOR t);
 	int objectID;
+
+	/*
+	Paul's
+	*/
+	void guiLoad(int _obj);
+	bool bHaveNewObject;
+	int newObject;
 	
 	void loadArmature(int type);
 	int armID;
@@ -98,5 +105,9 @@ public:
 
 	//armature rotation history
 	vector<armRotations> armRotH;
+
+	//gui communication
+	bool rotateB;
+	void guiInput(int in);
 };
 #endif /* defined(__Tgame__game__) */

@@ -25,6 +25,7 @@ public:
 
 	////////////////
 	vector<game*> myGames;
+	int currentGame;
 
 	myobject3D *objectDisplayed;
 	cutter *myCutter;
@@ -53,7 +54,4 @@ public:
 	bool bSmoothLighting;
 	bool bPointLight, bSpotLight, bDirLight;
 	bool bUseTexture;
-
-	///for color changing //first version
-	ofFloatColor pickColorMouse();
 };

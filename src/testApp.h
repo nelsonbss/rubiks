@@ -33,6 +33,7 @@ public:
 
 	////////////////
 	vector<game*> myGames;
+	int currentGame;
 
 	myobject3D *objectDisplayed;
 	cutter *myCutter;
@@ -56,9 +57,9 @@ public:
 	ofImage ofLogoImage;
 
 	//face rotations
-	float tempDeg;
+	/*float tempDeg;
 	bool faceRotateC;
-	bool faceRotateCC;
+	bool faceRotateCC;*/
 
 	//subob stuff
 	map<string,string> attrs;

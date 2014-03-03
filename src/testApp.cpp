@@ -12,17 +12,10 @@ std::map<int,gwc::Point> active_points;
 //--------------------------------------------------------------
 void testApp::setup(){
 
-	//gm = new GestureManager();
-	//gm.loadGMLFile("C:\\Users\\pp\\dev\\of_v0.8.0_vs_release\\apps\\myApps\\rubiks\\bin\\basic_manipulation.gml");
-	//gm.init("rubiksWindow", ofGetWidth(), ofGetHeight());
-	gm.start();
-
-	vector<string> gestureList;
-	gestureList.push_back("n-drag");
-	gestureList.push_back("n-scale");
-	gestureList.push_back("n-rotate");
-
-	gm.addObjectAndGestures("touchReceiver", &gestureList);
+	gm = new GestureManager();
+	gm->loadGMLFile("basic_manipulation.gml");
+	gm->init("rubiksWindow", ofGetWidth(), ofGetHeight());
+	gm->start();
 
 	/*
 	if(loadGestureWorks("GestureworksCore32.dll")) { 
@@ -73,8 +66,7 @@ void testApp::setup(){
 
 	string guiFile = "sheets.xml";
 	GuiConfigurator::Instance()->addFile(guiFile);
-	GuiConfigurator::Instance()->getTags();
-	GuiConfigurator::Instance()->makeGUI();
+	GuiConfigurator::Instance()->loadGui();
 
 	SubObMediator::Instance()->addObserver("button", this);
 	SubObMediator::Instance()->addObserver("object-selected", this);
@@ -786,8 +778,9 @@ void testApp::update(string _eventName, SubObEvent* _event){
 		cout << "received touch point" << endl;
 		_event->setActive(false);
 	}
-	if(_eventName == "gesture"){
-	
+	if(_eventName == "object-area-drag"){
+		ofVec2f delta = _event->getArg("deltaPos")->getVec2();
+
 	}
 }
 

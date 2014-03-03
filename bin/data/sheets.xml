@@ -1,20 +1,6 @@
 <gui>
 	<sheet name="attract" pos="0,0">
-    <!--
-    <node type="image" name="background" image="stationBlue.png">
-			<pos>0.0,0.0</pos>
-			<size>200,200</size>
-      <scale>1.0</scale>
-		</node>
-    -->
-    <!--
-    <node type="button" name="grey1" action="new-object" target="none" message"id:1" image="grey1.png" clicked="none">
-      <pos>0.2,0.3</pos>
-      <size>150,150</size>
-      <scale>0.3</scale>
-    </node>
-    -->
-    <node type="button" name="grey1" action="replace" target="step2" message="cut" image="grey1.png" clicked="none" draggable="true" tacky="true">
+    <node type="button" name="grey1">
 			<pos>0.04,0.13</pos>
 			<size>150,150</size>
       <scale>0.15</scale>
@@ -24,8 +10,24 @@
           <val>6</val>
         </arg>
       </event>
+      <param>
+        <name>image</name>
+        <val>grey1.png</val>
+      </param>
+      <param>
+        <name>draggable</name>
+        <val>true</val>
+      </param>
+      <param>
+        <name>n</name>
+        <val>1</val>
+      </param>
+      <param>
+        <name>droppable</name>
+        <val>true</val>
+      </param>
 		</node>
-    <node type="button" name="grey8" action="replace" target="step2" message="cut" image="grey8.png" clicked="none" draggable="true" tacky="true">
+    <node type="button" name="grey8">
       <pos>0.12,0.13</pos>
       <size>150,150</size>
       <scale>0.15</scale>
@@ -35,8 +37,24 @@
           <val>1</val>
         </arg>
       </event>
+      <param>
+        <name>image</name>
+        <val>grey8.png</val>
+      </param>
+      <param>
+        <name>draggable</name>
+        <val>true</val>
+      </param>
+      <param>
+        <name>n</name>
+        <val>1</val>
+      </param>
+      <param>
+        <name>droppable</name>
+        <val>true</val>
+      </param>
     </node>
-    <node type="button" name="grey2" action="replace" target="step2" message="cut" image="grey2.png" clicked="none" draggable="true" tacky="true">
+    <node type="button" name="grey2">
       <pos>0.04,0.32</pos>
       <size>150,150</size>
       <scale>0.15</scale>
@@ -46,8 +64,24 @@
           <val>8</val>
         </arg>
       </event>
+      <param>
+        <name>image</name>
+        <val>grey2.png</val>
+      </param>
+      <param>
+        <name>draggable</name>
+        <val>true</val>
+      </param>
+      <param>
+        <name>n</name>
+        <val>1</val>
+      </param>
+      <param>
+        <name>droppable</name>
+        <val>true</val>
+      </param>
     </node>
-    <node type="button" name="grey3" action="replace" target="step2" message="cut" image="grey3.png" clicked="none" draggable="true" tacky="true">
+    <node type="button" name="grey3">
       <pos>0.12,0.32</pos>
       <size>150,150</size>
       <scale>0.15</scale>
@@ -57,8 +91,24 @@
           <val>2</val>
         </arg>
       </event>
+      <param>
+        <name>image</name>
+        <val>grey3.png</val>
+      </param>
+      <param>
+        <name>draggable</name>
+        <val>true</val>
+      </param>
+      <param>
+        <name>n</name>
+        <val>1</val>
+      </param>
+      <param>
+        <name>droppable</name>
+        <val>true</val>
+      </param>
     </node>
-    <node type="button" name="grey4" action="replace" target="step2" message="cut" image="grey4.png" clicked="none" draggable="true" tacky="true">
+    <node type="button" name="grey4">
       <pos>0.04,0.51</pos>
       <size>150,150</size>
       <scale>0.15</scale>
@@ -68,8 +118,24 @@
           <val>7</val>
         </arg>
       </event>
+      <param>
+        <name>image</name>
+        <val>grey4.png</val>
+      </param>
+      <param>
+        <name>draggable</name>
+        <val>true</val>
+      </param>
+      <param>
+        <name>n</name>
+        <val>1</val>
+      </param>
+      <param>
+        <name>droppable</name>
+        <val>true</val>
+      </param>
     </node>
-    <node type="button" name="grey6" action="replace" target="step2" message="cut" image="grey6.png" clicked="none" draggable="true" tacky="true">
+    <node type="button" name="grey6">
       <pos>0.12,0.51</pos>
       <size>150,150</size>
       <scale>0.15</scale>
@@ -79,8 +145,24 @@
           <val>3</val>
         </arg>
       </event>
+      <param>
+        <name>image</name>
+        <val>grey6.png</val>
+      </param>
+      <param>
+        <name>draggable</name>
+        <val>true</val>
+      </param>
+      <param>
+        <name>n</name>
+        <val>1</val>
+      </param>
+      <param>
+        <name>droppable</name>
+        <val>true</val>
+      </param>
     </node>
-    <node type="button" name="grey7" action="replace" target="step2" message="cut" image="grey7.png" clicked="none" draggable="true" tacky="true">
+    <node type="button" name="grey7">
       <pos>0.04,0.7</pos>
       <size>150,150</size>
       <scale>0.15</scale>
@@ -90,8 +172,24 @@
           <val>4</val>
         </arg>
       </event>
+      <param>
+        <name>image</name>
+        <val>grey7.png</val>
+      </param>
+      <param>
+        <name>draggable</name>
+        <val>true</val>
+      </param>
+      <param>
+        <name>n</name>
+        <val>1</val>
+      </param>
+      <param>
+        <name>droppable</name>
+        <val>true</val>
+      </param>
     </node>
-    <node type="button" name="attract-next" action="replace" target="attract" message="cut" image="btnNext.png" clicked="none">
+    <node type="button" name="attract-next">
       <pos>0.8,0.85</pos>
       <size>150,150</size>
       <scale>0.9</scale>
@@ -101,25 +199,24 @@
           <val>step2</val>
         </arg>
       </event>
+      <param>
+        <name>image</name>
+        <val>btnNext.png</val>
+      </param>
     </node>
-    <!--
-    <node type="button" name="arrow-left" action="control" target="none" message="rotate-left" image="arrow-left.png" clicked="none">
-      <pos>170,70</pos>
-      <size>150,150</size>
+    <node type="drop" name="object-drop">
+      <pos>0.37, 0.27</pos>
+      <size>0.26,0.46</size>
+      <scale>1.0</scale>
+      <param>
+        <name>draw-area</name>
+        <val>true</val>
+      </param>
+      <param>
+        <name>draw-color</name>
+        <val>255,0,0</val>
+      </param>
     </node>
-    <node type="button" name="arrow-up" action="control" target="none" message="rotate-up" image="arrow-up.png" clicked="none">
-      <pos>280,-35</pos>
-      <size>150,150</size>
-    </node>
-    <node type="button" name="arrow-right" action="control" target="none" message="rotate-right" image="arrow-right.png" clicked="none">
-      <pos>390,70</pos>
-      <size>150,150</size>
-    </node>
-    <node type="button" name="arrow-down" action="control" target="none" message="rotate-down" image="arrow-down.png" clicked="none">
-      <pos>280,165</pos>
-      <size>150,150</size>
-    </node>
-    -->
 	</sheet>
   <sheet name="step2" pos="0,0">
     <!--

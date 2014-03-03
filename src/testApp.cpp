@@ -57,7 +57,8 @@ void testApp::setup(){
 	myGames.push_back(tempGame);
 	currentGame = 1;
 	//create a second game
-
+	game *tempGame2 = new game(gamePos, ofGetWidth(), ofGetHeight(),displayPos);
+	myGames.push_back(tempGame2);
 	///////////////////////////////setup games
 	for(int i = 0; i < myGames.size(); i++){
 		myGames[i]->setup();
@@ -140,7 +141,7 @@ void testApp::draw(){
 	for(int i = 0; i < myGames.size(); i++){
 		int gStep=0;
 		//get current step of game
-		gStep = myGames[i]->getCurrentStep();
+		gStep = myGames[0]->getCurrentStep();
 		if(gStep == 0){
 			//waiting for object to be selected from menu //drag behavior
 			//show object menu
@@ -443,6 +444,9 @@ void testApp::dragEvent(ofDragInfo dragInfo){
 void testApp::exit(){
 	myGames[0]->restart();
 	myGames[0]->exit();
+
+	myGames[1]->restart();
+	myGames[1]->exit();
 	sgFreeKernel();
 }
 //-----------------------------------------------------------------------------

@@ -91,6 +91,8 @@ public:
 	///other objects
 	ofxAssimpModelLoader bunny;
 	sgCObject *sgBunny;
+	ofxAssimpModelLoader tetrahedron;
+	sgCObject *sgTetrahedron;
 	ofxAssimpModelLoader dodecahedron;
 	sgCObject *sgDodecahedron;
 	ofxAssimpModelLoader icosahedron;

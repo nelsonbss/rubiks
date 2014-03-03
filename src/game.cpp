@@ -34,7 +34,7 @@ game::game(SG_VECTOR gamePos, float w, float h, SG_VECTOR displayPos){
 	offsetSlicer.x = 0;
 	offsetSlicer.y = 0;
 	offsetSlicer.z = 0;
-	
+
 	rotateSlicer.x = 0;
 	rotateSlicer.y = 0;
 	rotateSlicer.z = 0;
@@ -76,6 +76,30 @@ void game::setup(){
 	sgBunny = sgFileManager::ObjectFromTriangles(vert,bunnyVert.size(),indexes,bunnyIndices.size()/3); 
 	delete [] vert;
 	delete [] indexes;
+	////////////////////////////////////////load heavy models
+	tetrahedron.loadModel("tetrahedron.obj");
+	//need to make it an sgCore3DObject to be able to slice it
+	ofMesh tempMesh1 = tetrahedron.getMesh(0);
+	//get vertices from mesh
+	vector<ofVec3f> tetrahedronVert = tempMesh1.getVertices();
+	//make an array[] from this vector
+	SG_POINT *vert1 = new SG_POINT[tetrahedronVert.size()];
+	for(int i=0;i<tetrahedronVert.size(); i++){
+		vert1[i].x = tetrahedronVert[i].x;
+		vert1[i].y = tetrahedronVert[i].y;
+		vert1[i].z = tetrahedronVert[i].z;
+	}
+	//get indices from mesh
+	vector<ofIndexType>  tetrahedronIndices = tempMesh1.getIndices();
+	//make an array[] from this vector
+	SG_INDEX_TRIANGLE *indexes1 = new SG_INDEX_TRIANGLE[tetrahedronIndices.size()];
+	for(int i=0;i<tetrahedronIndices.size(); i++){
+		indexes1->ver_indexes[i] = tetrahedronIndices[i];
+	}
+	//generate sgC3DObject from geometry information
+	sgTetrahedron = sgFileManager::ObjectFromTriangles(vert1,tetrahedronVert.size(),indexes1,tetrahedronIndices.size()/3); 
+	delete [] vert1;
+	delete [] indexes1;
 	////////////////////////////////////////load heavy models
 	dodecahedron.loadModel("dodecahedron.obj");
 	//need to make it an sgCore3DObject to be able to slice it
@@ -278,7 +302,8 @@ void game::loadObject(int objID, SG_VECTOR p, SG_VECTOR t){
 			objectDisplayed->loadObject(sgCreateBox(300,300,300),2);//(tamX,tamY,tamZ)
 		}if(objID == 3){
 			//cone
-			objectDisplayed->loadObject(sgCreateCone(250,1,250,3),3);
+			//objectDisplayed->loadObject(sgCreateCone(250,1,250,3),3);
+			objectDisplayed->loadObject((sgC3DObject *)sgTetrahedron->Clone(),3);
 		}
 		if(objID == 4){
 			//try to load the bunny
@@ -668,56 +693,56 @@ void game::guiInput(int in){
 			////////  x axis  ////  x axis
 			if(in == 'q') {
 				//if(rotateB == true) {//c
-					randcubie = 11;//rand()%26;
-					//clockwise
-					SG_VECTOR axis = {1,0,0};
-					rotateByIDandAxis(randcubie,axis,true);
-					/*rotateB = false;
+				randcubie = 11;//rand()%26;
+				//clockwise
+				SG_VECTOR axis = {1,0,0};
+				rotateByIDandAxis(randcubie,axis,true);
+				/*rotateB = false;
 				}*/
 			}
 			if(in == 'a') {
 				//if(rotateB == true) {//cc
-					randcubie = 11;//rand()%26;
-					//clockwise
-					SG_VECTOR axis = {1,0,0};
-					rotateByIDandAxis(randcubie,axis,false);
+				randcubie = 11;//rand()%26;
+				//clockwise
+				SG_VECTOR axis = {1,0,0};
+				rotateByIDandAxis(randcubie,axis,false);
 				/*	rotateB = false;
 				}*/
 			}
 			////////  y axis  ////  y axis
 			if(in == 'w') {
 				//if(rotateB == true) {
-					randcubie = 11;//rand()%26;
-					//clockwise
-					SG_VECTOR axis = {0,1,0};
-					rotateByIDandAxis(randcubie,axis,true);
-					/*rotateB = false;
+				randcubie = 11;//rand()%26;
+				//clockwise
+				SG_VECTOR axis = {0,1,0};
+				rotateByIDandAxis(randcubie,axis,true);
+				/*rotateB = false;
 				}*/
 			}if(in == 's') {
 				//counter clockwise
 				//if(rotateB == true) {
-					randcubie = 11;//rand()%26;
-					SG_VECTOR axis = {0,1,0};
-					rotateByIDandAxis(randcubie,axis,false);
-					/*rotateB = false;
+				randcubie = 11;//rand()%26;
+				SG_VECTOR axis = {0,1,0};
+				rotateByIDandAxis(randcubie,axis,false);
+				/*rotateB = false;
 				}*/
 			}
 			////////  z axis  ////  z axis
 			if(in == 'e') {
 				//if(rotateB == true) {
-					randcubie = 11;//rand()%26;
-					//clockwise
-					SG_VECTOR axis = {0,0,1};
-					rotateByIDandAxis(randcubie,axis,true);
-					/*rotateB = false;
+				randcubie = 11;//rand()%26;
+				//clockwise
+				SG_VECTOR axis = {0,0,1};
+				rotateByIDandAxis(randcubie,axis,true);
+				/*rotateB = false;
 				}*/
 			}if(in == 'd') {
 				//if(rotateB == true) {
-					//counter clockwise
-					randcubie = 11;//rand()%26;
-					SG_VECTOR axis = {0,0,1};
-					rotateByIDandAxis(randcubie,axis,false);
-					/*rotateB = false;
+				//counter clockwise
+				randcubie = 11;//rand()%26;
+				SG_VECTOR axis = {0,0,1};
+				rotateByIDandAxis(randcubie,axis,false);
+				/*rotateB = false;
 				}*/
 			}
 		}
@@ -804,6 +829,7 @@ void game::restart(){
 //----------------------------------------------------------------------
 void game::exit(){
 	sgDeleteObject(sgBunny);
+	sgDeleteObject(sgTetrahedron);
 	sgDeleteObject(sgDodecahedron);
 	sgDeleteObject(sgIcosahedron);
 	sgDeleteObject(sgOctahedron);

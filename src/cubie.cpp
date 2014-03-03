@@ -322,22 +322,7 @@ void cubie::faceRotate(SG_VECTOR axis,bool di){
 					//ct1 = ofGetElapsedTimeMillis();
 					if(di == true){
 						//c
-						//if(axis.x == 1){
-						//movingXC = true;
-						//rotX += 90;
 						myMatrix.push_back(matrix(axis,90,di));
-						//cout << "history: " << myMatrix.size() << " rotX: " << rotX << endl;
-						//}else if(axis.y == 1){
-						//	//movingYC = true;
-						//	sample = false;
-						//	//rotY += 90;
-						//	myMatrix.push_back(matrix(axis,90,di));
-						//}else{
-						//	//movingZC = true;
-						//	sample = false;
-						//	//rotZ += 90;
-						//	myMatrix.push_back(matrix(axis,90,di));
-						//}
 					}else{
 						//cc
 						//if(axis.x == 1){

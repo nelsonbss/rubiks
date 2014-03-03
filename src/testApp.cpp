@@ -62,6 +62,8 @@ void testApp::setup(){
 	SG_VECTOR displayPos = {ofGetWidth() / 2, ofGetHeight() / 2,displayZ};
 	game *tempGame = new game(gamePos, ofGetWidth(), ofGetHeight(),displayPos);
 	myGames.push_back(tempGame);
+	currentGame = 1;
+	//create a second game
 
 	///////////////////////////////setup games
 	for(int i = 0; i < myGames.size(); i++){
@@ -230,347 +232,9 @@ void testApp::draw(){
 
 //--------------------------------------------------------------
 void testApp::keyPressed(int key){
-
-	//right now we only have one game, ideal: the master gui will tell a game wich object to load on drag and drop gestures
-
-	int gStep=0;
-	//verify in which step the game is, so that "input" action works well
-	gStep = myGames[0]->getCurrentStep();
-
-	////////////////////////////////////////////step 0 inputs
-	////////////////////////////////////////////step 0 inputs
-	////////////////////////////////////////////step 0 inputs
-	if(gStep == 0){
-		SG_VECTOR objectPos = {0,0,0};  //where it gets sliced
-		SG_VECTOR tempPos = {ofGetWidth() / 2,ofGetHeight() / 2,displayZ}; // where the temp object will be showed to user
-		//waiting for shape to be selected
-		if(key == '1') {
-			//load object recieves (object id, boolean position, display position) 
-			myGames[0]->loadObject(1,objectPos,tempPos);
-		}
-		if(key == '2') {
-			myGames[0]->loadObject(2,objectPos,tempPos);
-		}
-		if(key == '3') {
-			myGames[0]->loadObject(3,objectPos,tempPos);
-		}
-		if(key == '4') {
-			myGames[0]->loadObject(4,objectPos,tempPos);
-		}
-		if(key == '5') {
-			myGames[0]->loadObject(5,objectPos,tempPos);
-		}
-		if(key == '6') {
-			myGames[0]->loadObject(6,objectPos,tempPos);
-		}
-		if(key == '7') { 
-			myGames[0]->loadObject(7,objectPos,tempPos);
-		}
-		if(key == '8') { 
-			myGames[0]->loadObject(8,objectPos,tempPos);
-		}
+	if(currentGame == 1){
+		myGames[0]->guiInput(key);
 	}
-	if(key == 'b'){
-		ofToggleFullscreen();
-	}
-	////////////////////////////////////////////step 1 inputs
-	////////////////////////////////////////////step 1 inputs
-	////////////////////////////////////////////step 1 inputs
-	if(gStep == 1){
-		//is showing object with flat color
-		//selected an object
-		if(key == 'n') {
-			//go to step 2
-			myGames[0]->setCurrentStep(2);
-			//show armature
-		} 
-		//user can change the selected object
-		SG_VECTOR objectPos = {0,0,0}; 
-		SG_VECTOR tempPos = {displayX,displayY,displayZ};
-		//waiting for shape to be selected
-		if(key == '1') {
-			//load object recieves (object id, boolean position, display position) 
-			myGames[0]->loadObject(1,objectPos,tempPos); //pos.z its the torus radious
-		}
-		if(key == '2') {
-			myGames[0]->loadObject(2,objectPos,tempPos);
-		}
-		if(key == '3') {
-			myGames[0]->loadObject(3,objectPos,tempPos);
-		}
-		if(key == '4') {
-			myGames[0]->loadObject(4,objectPos,tempPos);
-		}
-		if(key == '5') {
-			myGames[0]->loadObject(5,objectPos,tempPos);
-		}
-		if(key == '6') {
-			myGames[0]->loadObject(6,objectPos,tempPos);
-		}
-		if(key == '7') {
-			myGames[0]->loadObject(7,objectPos,tempPos);
-		}
-		if(key == '8') { 
-			myGames[0]->loadObject(8,objectPos,tempPos);
-		}
-	}
-	////////////////////////////////////////////step 2 inputs
-	////////////////////////////////////////////step 2 inputs
-	////////////////////////////////////////////step 2 inputs
-	if(gStep == 2){
-		//waiting for armature to be selected
-		if(key == '1') {
-			//select armature 1
-			myGames[0]->loadArmature(1); 
-		}
-		if(key == '2') {
-			//select armature 2
-			myGames[0]->loadArmature(2);
-		}
-	}
-	////////////////////////////////////////////step 3 inputs
-	////////////////////////////////////////////step 3 inputs
-	////////////////////////////////////////////step 3 inputs
-	if(gStep == 3){
-		//armature was selected
-		////showing armature    another armature can be selected
-		if(key == '1') {
-			//select armature 1
-			myGames[0]->loadArmature(1); 
-		}
-		if(key == '2') {
-			//select armature 2
-			myGames[0]->loadArmature(2);
-		}
-		//////////////////////////////move all armature
-		if(key == 'l') {
-			ofVec3f p = ofVec3f (5,0,0);
-			myGames[0]->moveA(p);
-		}
-		if(key == 'j') {
-			ofVec3f p = ofVec3f (-5,0,0);
-			myGames[0]->moveA(p);
-		}
-		if(key == 'i') {
-			ofVec3f p = ofVec3f (0,-5,0);
-			myGames[0]->moveA(p);
-		}
-		if(key == 'k') {
-			ofVec3f p = ofVec3f (0,5,0);
-			myGames[0]->moveA(p);
-		}
-		///z movement
-		if(key == 'q') {
-			ofVec3f p = ofVec3f (0,0,5);
-			myGames[0]->moveA(p);
-		}
-		if(key == 'a') {
-			ofVec3f p = ofVec3f (0,0,-5);
-			myGames[0]->moveA(p);
-		}//////////////////////////////rotate all armature
-		if(key == 'c') {//rotate right
-			ofVec3f r = ofVec3f (0,35,0);
-			myGames[0]->rotateA(r);
-		}
-		if(key == 'x') {//rotate left
-			ofVec3f r = ofVec3f (0,-30,0);
-			myGames[0]->rotateA(r);
-		}
-		if(key == 'w') {//rotate up
-			ofVec3f r = ofVec3f (20,0,0); //degrees!!!
-			myGames[0]->rotateA(r);
-		}
-		if(key == 's') {//rotate down
-			ofVec3f r = ofVec3f (-10,0,0);
-			myGames[0]->rotateA(r);
-		}
-		/////////////////a puzzle can be made
-		if(key == 'n') {
-			//now we know the offset position from the armature to create-> cutter & slicer
-			myGames[0]->createCutterSlicer();
-			//do slicing
-			SG_VECTOR viewPuzzle = {ofGetWidth() / 2,ofGetHeight() / 2,displayZ};
-			myGames[0]->createPuzzle(viewPuzzle);//create Puzzle goes to step4 inside the game to show the puzzle
-		}
-	}
-	////////////////////////////////////////////step 4 inputs
-	////////////////////////////////////////////step 4 inputs
-	////////////////////////////////////////////step 4 inputs
-	if(gStep == 4){
-		//showing puzzle with colors
-		//waiting for color change
-		if(key == '1') {
-			//call color change funtion
-			ofFloatColor sc = pickColorMouse();
-			ofFloatColor menuColor = ofFloatColor (1, 0, 1); //this color comes from the GUI
-			myGames[0]->changeColorToColor(sc,menuColor);
-		}
-		//pressed NEXT
-		if(key == 'n') {
-			//go to step 5
-			myGames[0]->setCurrentStep(5);
-		}
-		///////////////////////////////move all puzzle
-		if(key == 'l') {
-			SG_VECTOR p = {10,0,0};
-			myGames[0]->moveP(p);
-		}
-		if(key == 'j') {
-			SG_VECTOR p = {-10,0,0};
-			myGames[0]->moveP(p);
-		}
-		if(key == 'i') {
-			SG_VECTOR p = {0,-10,0};
-			myGames[0]->moveP(p);
-		}
-		if(key == 'k') {
-			SG_VECTOR p = {0,10,0};
-			myGames[0]->moveP(p);
-		}
-		///////////rotate all puzzle  // two finger swipe gesture
-		if(key == 'm') {//rotate right
-			SG_VECTOR r = {0,0.1,0};
-			myGames[0]->rotateP(r);
-		}
-		if(key == 'n') {//rotate left
-			SG_VECTOR r = {0,-0.1,0};
-			myGames[0]->rotateP(r);
-		}
-		if(key == 'y') {//rotate up
-			SG_VECTOR r = {0.1,0,0};
-			myGames[0]->rotateP(r);
-		}
-		if(key == 'h') {//rotate down
-			SG_VECTOR r = {-0.1,0,0};
-			ofVec3f v;
-			myGames[0]->rotateP(r);
-		}
-	}
-	////////////////////////////////////////////step 5 inputs
-	////////////////////////////////////////////step 5 inputs
-	////////////////////////////////////////////step 5 inputs
-	if(gStep == 5){
-		//selected color (or not, its not mandatory)
-		//pressed next on color palette step
-		//showing puzzle
-		//now the puzzle can be played with
-
-
-		int idcubie = 11;//to follow this cubie for now //this will be decided upon touch, or click on top of puzzle
-		int randcubie=0;
-		if(myGames[0]->myPuzzle->isMoving() == false){ //thi sis to prevent from reading keypress events while puzzle is moving
-			if(key == 'u'){
-				//undo last move 
-				myGames[0]->unDo();
-			}
-			////////////////////////////////////////////// FACE ROTATIONS //////////////////////////////
-			////////  x axis  ////  x axis
-			if(key == 'q') {
-				if(rotate == true) {//c
-					randcubie = 11;//rand()%26;
-					//clockwise
-					SG_VECTOR axis = {1,0,0};
-					myGames[0]->rotateByIDandAxis(randcubie,axis,true);
-					rotate = false;
-				}
-			}
-			if(key == 'a') {
-				if(rotate == true) {//cc
-					randcubie = 11;//rand()%26;
-					//clockwise
-					SG_VECTOR axis = {1,0,0};
-					myGames[0]->rotateByIDandAxis(randcubie,axis,false);
-					rotate = false;
-				}
-			}
-			////////  y axis  ////  y axis
-			if(key == 'w') {
-				if(rotate == true) {
-					randcubie = 11;//rand()%26;
-					//clockwise
-					SG_VECTOR axis = {0,1,0};
-					myGames[0]->rotateByIDandAxis(randcubie,axis,true);
-					rotate = false;
-				}
-			}if(key == 's') {
-				//counter clockwise
-				if(rotate == true) {
-					randcubie = 11;//rand()%26;
-					SG_VECTOR axis = {0,1,0};
-					myGames[0]->rotateByIDandAxis(randcubie,axis,false);
-					rotate = false;
-				}
-			}
-			////////  z axis  ////  z axis
-			if(key == 'e') {
-				if(rotate == true) {
-					randcubie = 11;//rand()%26;
-					//clockwise
-					SG_VECTOR axis = {0,0,1};
-					myGames[0]->rotateByIDandAxis(randcubie,axis,true);
-					rotate = false;
-				}
-			}if(key == 'd') {
-				if(rotate == true) {
-					//counter clockwise
-					randcubie = 11;//rand()%26;
-					SG_VECTOR axis = {0,0,1};
-					myGames[0]->rotateByIDandAxis(randcubie,axis,false);
-					rotate = false;
-				}
-			}
-		}
-		////////////////////////////////////move all puzzle
-		if(key == 'l') {
-			SG_VECTOR p = {10,0,0};
-			myGames[0]->moveP(p);
-		}
-		if(key == 'j') {
-			SG_VECTOR p = {-10,0,0};
-			myGames[0]->moveP(p);
-		}
-		if(key == 'i') {
-			SG_VECTOR p = {0,-10,0};
-			myGames[0]->moveP(p);
-		}
-		if(key == 'k') {
-			SG_VECTOR p = {0,10,0};
-			myGames[0]->moveP(p);
-		}
-		//////////////////rotate all puzzle  // two finger swipe gesture
-		if(key == 'm') {//rotate right
-			SG_VECTOR r = {0,0.1,0};
-			myGames[0]->rotateP(r);
-		}
-		if(key == 'n') {//rotate left
-			SG_VECTOR r = {0,-0.1,0};
-			myGames[0]->rotateP(r);
-		}
-		if(key == 'y') {//rotate up
-			SG_VECTOR r = {0.1,0,0};
-			myGames[0]->rotateP(r);
-		}
-		if(key == 'h') {//rotate down
-			SG_VECTOR r = {-0.1,0,0};
-			ofVec3f v;
-			myGames[0]->rotateP(r);
-		}
-	}
-
-	/////////////////////////////////////////////////////////////////
-	////////////////RESART button can work on any step, its not showed on step 1 (object selected)
-	if(key == 'r'){
-		//tell a game to restart 
-		myGames[0]->restart();
-	}
-	//if(puzzleExists == true){
-	//	if(key == 'f') {
-	//		cout << "nu cubies " << myPuzzle->giveNumCubies() << endl;
-	//	}
-	//	if(key == 'g') {
-	//		cout << "nu pieces " << mySlicer->countPieces() << endl;
-	//	}
-	//}
 }
 //--------------------------------------------------------------
 void testApp::keyReleased(int key){
@@ -610,65 +274,49 @@ void testApp::keyReleased(int key){
 	//}
 	/////////////////////face rotations//no rotations comming in from gui
 	//send: SG_VECTOR axis = {0,0,0};
-	if(key == 'q') {
-		if(rotate == false) {//c
-			SG_VECTOR axis = {0,0,0};
-			myGames[0]->rotateByIDandAxis(0,axis,true);
-			rotate = true;
-		}
-	}
-	if(key == 'a') {
-		if(rotate == false) {//cc
-			SG_VECTOR axis = {0,0,0};
-			myGames[0]->rotateByIDandAxis(0,axis,false);
-			rotate = true;
-		}
-	}
-	//y axis
-	if(key == 'w') {
-		if(rotate == false) {
-			SG_VECTOR axis = {0,0,0};
-			myGames[0]->rotateByIDandAxis(0,axis,true);
-			rotate = true;
-		}
-	}if(key == 's') {
-		//counter clockwise
-		if(rotate == false) {
-			SG_VECTOR axis = {0,0,0};
-			myGames[0]->rotateByIDandAxis(0,axis,false);
-			rotate = true;
-		}
-	}
-	//z axis
-	if(key == 'e') {
-		if(rotate == false) {
-			SG_VECTOR axis = {0,0,0};
-			myGames[0]->rotateByIDandAxis(0,axis,true);
-			rotate = true;
-		}
-	}if(key == 'd') {
-		if(rotate == false) {
-			SG_VECTOR axis = {0,0,0};
-			myGames[0]->rotateByIDandAxis(0,axis,false);
-			rotate = true;
-		}
-	}
-}
-//--------------------------------------------------------------
-ofFloatColor testApp::pickColorMouse(){
-	//temporary way of picking a color to change
-	ofFloatColor tc = ofFloatColor(1,1,0);
-	//ofImage pix;
-	//ofImage image;
-	//image.grabScreen(mouseX,mouseY,1,1);
-	//PixelType *p;
-	//ofPixels *pixels;
-	//pixels = image.getPixels();
-	////pix = image.getPixels();
-	//ofFloatColor c = pix.getColor(mouseX, mouseY);
-
-
-	return tc;
+	//if(key == 'q') {
+	//	if(rotate == false) {//c
+	//		SG_VECTOR axis = {0,0,0};
+	//		myGames[0]->rotateByIDandAxis(0,axis,true);
+	//		rotate = true;
+	//	}
+	//}
+	//if(key == 'a') {
+	//	if(rotate == false) {//cc
+	//		SG_VECTOR axis = {0,0,0};
+	//		myGames[0]->rotateByIDandAxis(0,axis,false);
+	//		rotate = true;
+	//	}
+	//}
+	////y axis
+	//if(key == 'w') {
+	//	if(rotate == false) {
+	//		SG_VECTOR axis = {0,0,0};
+	//		myGames[0]->rotateByIDandAxis(0,axis,true);
+	//		rotate = true;
+	//	}
+	//}if(key == 's') {
+	//	//counter clockwise
+	//	if(rotate == false) {
+	//		SG_VECTOR axis = {0,0,0};
+	//		myGames[0]->rotateByIDandAxis(0,axis,false);
+	//		rotate = true;
+	//	}
+	//}
+	////z axis
+	//if(key == 'e') {
+	//	if(rotate == false) {
+	//		SG_VECTOR axis = {0,0,0};
+	//		myGames[0]->rotateByIDandAxis(0,axis,true);
+	//		rotate = true;
+	//	}
+	//}if(key == 'd') {
+	//	if(rotate == false) {
+	//		SG_VECTOR axis = {0,0,0};
+	//		myGames[0]->rotateByIDandAxis(0,axis,false);
+	//		rotate = true;
+	//	}
+	//}
 }
 //--------------------------------------------------------------
 void testApp::mouseMoved(int x, int y ){

@@ -92,5 +92,9 @@ public:
 	
 	////color change
 	void changeColorToColor(ofFloatColor Sc, ofFloatColor Tc);
+
+	//gui communication
+	bool rotateB;
+	void guiInput(int in);
 };
 #endif /* defined(__Tgame__game__) */

@@ -33,6 +33,7 @@ public:
 
 	////////////////
 	vector<game*> myGames;
+	int currentGame;
 
 	myobject3D *objectDisplayed;
 	cutter *myCutter;
@@ -56,9 +57,9 @@ public:
 	ofImage ofLogoImage;
 
 	//face rotations
-	float tempDeg;
+	/*float tempDeg;
 	bool faceRotateC;
-	bool faceRotateCC;
+	bool faceRotateCC;*/
 
 	//subob stuff
 	map<string,string> attrs;
@@ -78,9 +79,6 @@ public:
 	bool bSmoothLighting;
 	bool bPointLight, bSpotLight, bDirLight;
 	bool bUseTexture;
-
-	///for color changing //first version
-	ofFloatColor pickColorMouse();
 
 	GestureManager gm;
 };

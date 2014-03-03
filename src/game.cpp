@@ -396,9 +396,9 @@ void game::guiInput(int in){
 		if(in == '7') {
 			loadObject(7,objectPos,posP);
 		}
-		if(in == '8') { 
+		/*if(in == '8') { 
 			loadObject(8,objectPos,posP);
-		}
+		}*/
 	}
 	////////////////////////////////////////////step 2 inputs
 	////////////////////////////////////////////step 2 inputs

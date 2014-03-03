@@ -16,8 +16,10 @@ void testApp::setup(){
 	/////////////////////////////initialize openFrameworks rendering
 	initOFRender();
 
-	////////////////////////////////create games
-	////////////////////////////////one game for now
+	/////////////////////////////load obj files into sgCore objects
+	loadOBJfiles();
+	//////////////////////////////create games
+	//////////////////////////////one game for now
 	SG_VECTOR gamePos = {0,0,0}; //one game created at the origin // this will have to change for a game creating function when more stations are anabled
 	SG_VECTOR displayPos = {ofGetWidth() / 2, ofGetHeight() / 2,displayZ};
 	game *tempGame = new game(gamePos, ofGetWidth(), ofGetHeight(),displayPos);
@@ -28,7 +30,7 @@ void testApp::setup(){
 	myGames.push_back(tempGame2);
 	///////////////////////////////setup games
 	for(int i = 0; i < myGames.size(); i++){
-		myGames[i]->setup();
+		myGames[i]->setup(sgBunny->Clone(),sgTetrahedron->Clone(),sgDodecahedron->Clone(),sgIcosahedron->Clone(),sgOctahedron->Clone());//,sgTeapot->Clone());
 	}
 
 	rotate = true;
@@ -227,7 +229,160 @@ void testApp::exit(){
 
 	myGames[1]->restart();
 	myGames[1]->exit();
+	sgDeleteObject(sgBunny);
+	sgDeleteObject(sgTetrahedron);
+	sgDeleteObject(sgDodecahedron);
+	sgDeleteObject(sgIcosahedron);
+	sgDeleteObject(sgOctahedron);
+	//sgDeleteObject(sgTeapot);
 	sgFreeKernel();
+}
+//------------------------------------------------------------------------------
+void testApp::loadOBJfiles(){
+	////////////////////////////////////////load heavy models
+	bunny.loadModel("bunny.obj");
+	//need to make it an sgCore3DObject to be able to slice it
+	ofMesh tempMesh = bunny.getMesh(0);
+	//get vertices from mesh
+	vector<ofVec3f> bunnyVert = tempMesh.getVertices();
+	//make an array[] from this vector
+	SG_POINT *vert = new SG_POINT[bunnyVert.size()];
+	for(int i=0;i<bunnyVert.size(); i++){
+		vert[i].x = bunnyVert[i].x;
+		vert[i].y = bunnyVert[i].y;
+		vert[i].z = bunnyVert[i].z;
+	}
+	//get indices from mesh
+	vector<ofIndexType> bunnyIndices = tempMesh.getIndices();
+	//make an array[] from this vector
+	SG_INDEX_TRIANGLE *indexes = new SG_INDEX_TRIANGLE[bunnyIndices.size()];
+	for(int i=0;i<bunnyIndices.size(); i++){
+		indexes->ver_indexes[i] = bunnyIndices[i];
+	}
+	//generate sgC3DObject from geometry information
+	sgBunny = sgFileManager::ObjectFromTriangles(vert,bunnyVert.size(),indexes,bunnyIndices.size()/3); 
+	delete [] vert;
+	delete [] indexes;
+	////////////////////////////////////////load heavy models
+	tetrahedron.loadModel("tetrahedron.obj");
+	//need to make it an sgCore3DObject to be able to slice it
+	ofMesh tempMesh1 = tetrahedron.getMesh(0);
+	//get vertices from mesh
+	vector<ofVec3f> tetrahedronVert = tempMesh1.getVertices();
+	//make an array[] from this vector
+	SG_POINT *vert1 = new SG_POINT[tetrahedronVert.size()];
+	for(int i=0;i<tetrahedronVert.size(); i++){
+		vert1[i].x = tetrahedronVert[i].x;
+		vert1[i].y = tetrahedronVert[i].y;
+		vert1[i].z = tetrahedronVert[i].z;
+	}
+	//get indices from mesh
+	vector<ofIndexType>  tetrahedronIndices = tempMesh1.getIndices();
+	//make an array[] from this vector
+	SG_INDEX_TRIANGLE *indexes1 = new SG_INDEX_TRIANGLE[tetrahedronIndices.size()];
+	for(int i=0;i<tetrahedronIndices.size(); i++){
+		indexes1->ver_indexes[i] = tetrahedronIndices[i];
+	}
+	//generate sgC3DObject from geometry information
+	sgTetrahedron = sgFileManager::ObjectFromTriangles(vert1,tetrahedronVert.size(),indexes1,tetrahedronIndices.size()/3); 
+	delete [] vert1;
+	delete [] indexes1;
+	////////////////////////////////////////load heavy models
+	dodecahedron.loadModel("dodecahedron.obj");
+	//need to make it an sgCore3DObject to be able to slice it
+	ofMesh tempMesh2 = dodecahedron.getMesh(0);
+	//get vertices from mesh
+	vector<ofVec3f> dodecahedronVert = tempMesh2.getVertices();
+	//make an array[] from this vector
+	SG_POINT *vert2 = new SG_POINT[dodecahedronVert.size()];
+	for(int i=0;i<dodecahedronVert.size(); i++){
+		vert2[i].x = dodecahedronVert[i].x;
+		vert2[i].y = dodecahedronVert[i].y;
+		vert2[i].z = dodecahedronVert[i].z;
+	}
+	//get indices from mesh
+	vector<ofIndexType>  dodecahedronIndices = tempMesh2.getIndices();
+	//make an array[] from this vector
+	SG_INDEX_TRIANGLE *indexes2 = new SG_INDEX_TRIANGLE[dodecahedronIndices.size()];
+	for(int i=0;i<dodecahedronIndices.size(); i++){
+		indexes2->ver_indexes[i] = dodecahedronIndices[i];
+	}
+	//generate sgC3DObject from geometry information
+	sgDodecahedron = sgFileManager::ObjectFromTriangles(vert2,dodecahedronVert.size(),indexes2,dodecahedronIndices.size()/3); 
+	delete [] vert2;
+	delete [] indexes2;
+	////////////////////////////////////////load heavy models
+	icosahedron.loadModel("icosahedron.obj");
+	//need to make it an sgCore3DObject to be able to slice it
+	ofMesh tempMesh3 = icosahedron.getMesh(0);
+	//get vertices from mesh
+	vector<ofVec3f> icosahedronVert = tempMesh3.getVertices();
+	//make an array[] from this vector
+	SG_POINT *vert3 = new SG_POINT[icosahedronVert.size()];
+	for(int i=0;i<icosahedronVert.size(); i++){
+		vert3[i].x = icosahedronVert[i].x;
+		vert3[i].y = icosahedronVert[i].y;
+		vert3[i].z = icosahedronVert[i].z;
+	}
+	//get indices from mesh
+	vector<ofIndexType>  icosahedronIndices = tempMesh3.getIndices();
+	//make an array[] from this vector
+	SG_INDEX_TRIANGLE *indexes3 = new SG_INDEX_TRIANGLE[icosahedronIndices.size()];
+	for(int i=0;i<icosahedronIndices.size(); i++){
+		indexes3->ver_indexes[i] = icosahedronIndices[i];
+	}
+	//generate sgC3DObject from geometry information
+	sgIcosahedron = sgFileManager::ObjectFromTriangles(vert3,icosahedronVert.size(),indexes3,icosahedronIndices.size()/3); 
+	delete [] vert3;
+	delete [] indexes3;
+	////////////////////////////////////////load heavy models
+	octahedron.loadModel("octahedron.obj");
+	//need to make it an sgCore3DObject to be able to slice it
+	ofMesh tempMesh4 = octahedron.getMesh(0);
+	//get vertices from mesh
+	vector<ofVec3f> octahedronVert = tempMesh4.getVertices();
+	//make an array[] from this vector
+	SG_POINT *vert4 = new SG_POINT[octahedronVert.size()];
+	for(int i=0;i<octahedronVert.size(); i++){
+		vert4[i].x = octahedronVert[i].x;
+		vert4[i].y = octahedronVert[i].y;
+		vert4[i].z = octahedronVert[i].z;
+	}
+	//get indices from mesh
+	vector<ofIndexType>  octahedronIndices = tempMesh4.getIndices();
+	//make an array[] from this vector
+	SG_INDEX_TRIANGLE *indexes4 = new SG_INDEX_TRIANGLE[octahedronIndices.size()];
+	for(int i=0;i<octahedronIndices.size(); i++){
+		indexes4->ver_indexes[i] = octahedronIndices[i];
+	}
+	//generate sgC3DObject from geometry information
+	sgOctahedron = sgFileManager::ObjectFromTriangles(vert4,octahedronVert.size(),indexes4,octahedronIndices.size()/3); 
+	delete [] vert4;
+	delete [] indexes4;
+	//////////////////////////////////////////load heavy models
+	//pot.loadModel("teapot.obj");
+	////need to make it an sgCore3DObject to be able to slice it
+	//ofMesh tempMesh5 = pot.getMesh(0);
+	////get vertices from mesh
+	//vector<ofVec3f> teapot3Vert = tempMesh5.getVertices();
+	////make an array[] from this vector
+	//SG_POINT *vert5 = new SG_POINT[teapot3Vert.size()];
+	//for(int i=0;i<teapot3Vert.size(); i++){
+	//	vert5[i].x = teapot3Vert[i].x;
+	//	vert5[i].y = teapot3Vert[i].y;
+	//	vert5[i].z = teapot3Vert[i].z;
+	//}
+	////get indices from mesh
+	//vector<ofIndexType>  teapot3Indices = tempMesh5.getIndices();
+	////make an array[] from this vector
+	//SG_INDEX_TRIANGLE *indexes5 = new SG_INDEX_TRIANGLE[teapot3Indices.size()];
+	//for(int i=0;i<teapot3Indices.size(); i++){
+	//	indexes5->ver_indexes[i] = teapot3Indices[i];
+	//}
+	////generate sgC3DObject from geometry information
+	//sgTeapot = (sgC3DObject *) sgFileManager::ObjectFromTriangles(vert5,teapot3Vert.size(),indexes5,teapot3Vert.size()/3); 
+	//delete [] vert5;
+	//delete [] indexes5;
 }
 //-----------------------------------------------------------------------------
 /////////////////////////////////////////////////////////////////////////////////////

@@ -124,6 +124,7 @@
     <ClCompile Include="src\GestureManager.cpp">
       <Filter>src</Filter>
     </ClCompile>
+<<<<<<< HEAD
     <ClCompile Include="src\gwc\GestureWorksCore.cpp">
       <Filter>src\gwc</Filter>
     </ClCompile>
@@ -135,6 +136,10 @@
     </ClCompile>
     <ClCompile Include="src\gui\GuiIBox.cpp">
       <Filter>src\gui</Filter>
+=======
+    <ClCompile Include="src\armRotations.cpp">
+      <Filter>src</Filter>
+>>>>>>> 1133c62e9eccf09ecb7f25243edc3e807a90437e
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -407,6 +412,7 @@
     <ClInclude Include="src\GestureManager.h">
       <Filter>src</Filter>
     </ClInclude>
+<<<<<<< HEAD
     <ClInclude Include="src\gwc\GestureWorksCore.h">
       <Filter>src\gwc</Filter>
     </ClInclude>
@@ -418,6 +424,10 @@
     </ClInclude>
     <ClInclude Include="src\gui\GuiIBox.h">
       <Filter>src\gui</Filter>
+=======
+    <ClInclude Include="src\armRotations.h">
+      <Filter>src</Filter>
+>>>>>>> 1133c62e9eccf09ecb7f25243edc3e807a90437e
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

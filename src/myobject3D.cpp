@@ -53,12 +53,12 @@ void myobject3D::update(){
 		SG_VECTOR offset = {-150,-150,-150}; //for the cube to be in place
 		temp->GetTempMatrix()->Translate(offset);//this translates the object to be cut!!
 	}else if(objectId == 3){
-		//cone..pyramid
-		SG_POINT rotP = transP;
-		SG_VECTOR rotV = {1,0,0};
-		temp->GetTempMatrix()->Rotate(rotP,rotV,ofDegToRad(90));
-		SG_VECTOR offset = {0,100,0}; 
-		temp->GetTempMatrix()->Translate(offset);
+		////cone..pyramid
+		//SG_POINT rotP = transP;
+		//SG_VECTOR rotV = {1,0,0};
+		//temp->GetTempMatrix()->Rotate(rotP,rotV,ofDegToRad(90));
+		//SG_VECTOR offset = {0,100,0}; 
+		//temp->GetTempMatrix()->Translate(offset);
 	}else if(objectId == 4){
 		//rabbit
 		SG_POINT rotP2 = transP;//{tempPos.x,tempPos.y,tempPos.z};
@@ -107,13 +107,13 @@ void myobject3D::loadObject(sgC3DObject *obj, int ID){
 		object->DestroyTempMatrix();
 	}else if(objectId == 3){
 		//cone..pyramid
-		SG_POINT rotP = {0,0,0};
+		/*SG_POINT rotP = {0,0,0};
 		SG_VECTOR rotV = {1,0,0};
 		object->InitTempMatrix()->Rotate(rotP,rotV,ofDegToRad(90));
 		SG_VECTOR offset = {0,100,0}; 
 		object->GetTempMatrix()->Translate(offset);
 		object->ApplyTempMatrix();  
-		object->DestroyTempMatrix();
+		object->DestroyTempMatrix();*/
 	}else if(objectId == 4){
 		//rabbit
 		SG_POINT rotP = {0,0,0};

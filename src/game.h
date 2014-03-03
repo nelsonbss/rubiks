@@ -10,12 +10,15 @@
 #include "puzzle.h"
 #include "ofxAssimpModelLoader.h"
 #include "history.h"
+#include "armRotations.h"
+
+#include <vector>
 
 class game {
 public:
 	game(SG_VECTOR p, float w, float h, SG_VECTOR puzzlePos);
 
-	void setup();
+	void setup(sgCObject *sgBunnyi,sgCObject *sgTetrahedroni,sgCObject *sgDodecahedroni,sgCObject *sgIcosahedroni,sgCObject *sgOctahedroni);//,sgCObject *sgTeapoti);
 	void update();
 	void draw();
 	void exit();
@@ -32,6 +35,15 @@ public:
 	armature *myArmature;
 	puzzle *myPuzzle;
 
+
+	///OBJ file loading and convertion
+	sgCObject *sgBunny;
+	sgCObject *sgTetrahedron;
+	sgCObject *sgDodecahedron;
+	sgCObject *sgIcosahedron;
+	sgCObject *sgOctahedron;
+	sgCObject *sgTeapot;
+	////
 	void loadObject (int objID,SG_VECTOR p,SG_VECTOR t);
 	int objectID;
 
@@ -85,20 +97,11 @@ public:
 	SG_VECTOR rotA;
 	void rotateA(ofVec3f input);
 
-	///other objects
-	ofxAssimpModelLoader bunny;
-	sgCObject *sgBunny;
-	ofxAssimpModelLoader dodecahedron;
-	sgCObject *sgDodecahedron;
-	ofxAssimpModelLoader icosahedron;
-	sgCObject *sgIcosahedron;
-	ofxAssimpModelLoader octahedron;
-	sgCObject *sgOctahedron;
-	ofxAssimpModelLoader pot;
-	sgC3DObject *sgTeapot;
-	
 	////color change
 	void changeColorToColor(ofFloatColor Sc, ofFloatColor Tc);
+
+	//armature rotation history
+	vector<armRotations> armRotH;
 
 	//gui communication
 	bool rotateB;

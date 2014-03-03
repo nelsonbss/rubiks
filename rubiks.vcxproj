@@ -97,6 +97,7 @@
     <ClCompile Include="..\..\..\addons\ofxXmlSettings\src\ofxXmlSettings.cpp" />
     <ClCompile Include="src\3DCamera.cpp" />
     <ClCompile Include="src\armature.cpp" />
+    <ClCompile Include="src\armRotations.cpp" />
     <ClCompile Include="src\cubie.cpp" />
     <ClCompile Include="src\cutter.cpp" />
     <ClCompile Include="src\game.cpp" />
@@ -144,6 +145,7 @@
     <ClInclude Include="..\..\..\addons\ofxXmlSettings\src\ofxXmlSettings.h" />
     <ClInclude Include="src\3DCamera.h" />
     <ClInclude Include="src\armature.h" />
+    <ClInclude Include="src\armRotations.h" />
     <ClInclude Include="src\cubie.h" />
     <ClInclude Include="src\cutter.h" />
     <ClInclude Include="src\game.h" />

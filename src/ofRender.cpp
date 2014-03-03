@@ -68,13 +68,13 @@ void ofRender::sgCoretoOFmesh(sgC3DObject *obj, ofMesh &mesh,int idCubie,int sel
 
 		//make indices & add normals to each index
 		mesh.addIndex(i);
-		mesh.addNormal(ofVec3f(normals[i].x,normals[i].y,normals[i].z));
+		mesh.addNormal(ofVec3f((normals[i].x)*1,(normals[i].y)*1,(normals[i].z)*1));
 
 		mesh.addIndex(i + 1);
-		mesh.addNormal(ofVec3f(normals[i+1].x,normals[i+1].y,normals[i+1].z));
+		mesh.addNormal(ofVec3f((normals[i+1].x)*1,(normals[i+1].y)*1,(normals[i+1].z)*1));
 
 		mesh.addIndex(i + 2);
-		mesh.addNormal(ofVec3f(normals[i+2].x,normals[i+2].y,normals[i+2].z));
+		mesh.addNormal(ofVec3f((normals[i+2].x)*1,(normals[i+2].y)*1,(normals[i+2].z)*1));
 
 		//look at normal
 		////Compute the triangle's normal

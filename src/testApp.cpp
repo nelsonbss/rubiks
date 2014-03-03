@@ -189,7 +189,7 @@ void testApp::draw(){
 	////////////////////////PUZZLE //////////////////////
 	///////////////////////////////draw games
 	for(int i = 0; i < myGames.size(); i++){
-		myGames[i]->draw();
+		myGames[0]->draw();
 	}
 
 	///////////////////END OF RENDERING////////////////////
@@ -403,11 +403,12 @@ void testApp::update(string _subName, Subject *_sub){
 void testApp::update(string _eventName, SubObEvent* _event){
 	cout << "event named - " << _eventName << endl;
 	if(_eventName == "object-selected"){
-		int obj = _event->getArg("object")->getInt();
-		SG_VECTOR objectPos = {0,0,0};  //where it gets sliced
-		SG_VECTOR tempPos = {displayX,displayY,displayZ}; // where the temp object will be showed to user
-		cout << "dropping object - " << obj << endl;
-		myGames[0]->loadObject(obj,objectPos,tempPos);
+		if(myGames[0]->getCurrentStep() == 0  || myGames[0]->getCurrentStep() == 1){
+			int obj = _event->getArg("object")->getInt();
+			SG_VECTOR objectPos = {0,0,0};  //where it gets sliced
+			cout << "dropping object - " << obj << endl;
+			myGames[0]->guiLoad(obj);
+		}
 	}
 	if(_eventName == "armature-selected"){
 		myGames[0]->setCurrentStep(3);

@@ -39,6 +39,8 @@ game::game(SG_VECTOR gamePos, float w, float h, SG_VECTOR displayPos){
 
 	armID = -1; //initialized in -1 when there is no armature selected
 	objectID = -1; //initialized on -1 because on stage=0 there is no object selected
+
+	bHaveNewObject = false;
 }
 //--------------------------------------------------------------
 void game::setup(){
@@ -176,6 +178,12 @@ void game::setup(){
 }
 //----------------------------------------------------------------------
 void game::update(){
+
+	if(bHaveNewObject){
+		SG_VECTOR objectPos = {0,0,0};
+		loadObject(newObject, objectPos, posP);
+		bHaveNewObject = false;
+	}
 
 	if(step == 1 || step == 2 || step == 3){
 		//if there is an object selected
@@ -422,6 +430,15 @@ void game::unDo(){
 		myPuzzle->unDo(idcubie,axis,dir);
 		historyV.pop_back();
 	}
+}
+
+void game::guiLoad(int _obj){
+	/*
+	SG_VECTOR objectPos = {0,0,0};
+	loadObject(_obj, objectPos, posP);
+	*/
+	bHaveNewObject = true;
+	newObject = _obj;
 }
 //----------------------------------------------------------------------
 void game::guiInput(int in){

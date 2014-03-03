@@ -141,10 +141,12 @@ void GuiButton::update(string _subName, Subject* _sub){
 
 void GuiButton::update(string _eventName, SubObEvent* _event){
 	if(_eventName == "object-intercepted"){
-		setPosition();
-		drawSize.x = inactive.getWidth();
-		drawSize.y = inactive.getHeight();
-		execute();
+		if(_event->getArg("object-name")->getString() == name){
+			setPosition();
+			drawSize.x = inactive.getWidth();
+			drawSize.y = inactive.getHeight();
+			execute();
+		}
 	}
 }
 

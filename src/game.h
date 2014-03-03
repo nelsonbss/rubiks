@@ -34,6 +34,13 @@ public:
 
 	void loadObject (int objID,SG_VECTOR p,SG_VECTOR t);
 	int objectID;
+
+	/*
+	Paul's
+	*/
+	void guiLoad(int _obj);
+	bool bHaveNewObject;
+	int newObject;
 	
 	void loadArmature(int type);
 	int armID;

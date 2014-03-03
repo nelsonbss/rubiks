@@ -144,6 +144,7 @@ void GuiButton::update(string _eventName, SubObEvent* _event){
 		setPosition();
 		drawSize.x = inactive.getWidth();
 		drawSize.y = inactive.getHeight();
+		execute();
 	}
 }
 

@@ -80,5 +80,8 @@ public:
 	bool bPointLight, bSpotLight, bDirLight;
 	bool bUseTexture;
 
-	GestureManager gm;
+	///for color changing //first version
+	ofFloatColor pickColorMouse();
+
+	GestureManager *gm;
 };

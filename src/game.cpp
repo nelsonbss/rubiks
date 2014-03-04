@@ -529,24 +529,24 @@ void game::guiInput(int in){
 			SG_VECTOR p = {0,10,0};
 			moveP(p);
 		}
-		///////////rotate all puzzle  // two finger swipe gesture
-		if(in == 'm') {//rotate right
-			SG_VECTOR r = {0,10,0};//{0,0.1,0};
-			rotateP(r);
-		}
-		if(in == 'n') {//rotate left
-			SG_VECTOR r = {0,-10,0};//{0,-0.1,0};
-			rotateP(r);
-		}
-		if(in == 'y') {//rotate up
-			SG_VECTOR r =  {10,0,0};// {0.1,0,0};
-			rotateP(r);
-		}
-		if(in == 'h') {//rotate down
-			SG_VECTOR r = {-10,0,0};//{-0.1,0,0};
-			ofVec3f v;
-			rotateP(r);
-		}
+		/////////////rotate all puzzle  // two finger swipe gesture
+		//if(in == 'm') {//rotate right
+		//	SG_VECTOR r = {0,10,0};//{0,0.1,0};
+		//	rotateP(r);
+		//}
+		//if(in == 'n') {//rotate left
+		//	SG_VECTOR r = {0,-10,0};//{0,-0.1,0};
+		//	rotateP(r);
+		//}
+		//if(in == 'y') {//rotate up
+		//	SG_VECTOR r =  {10,0,0};// {0.1,0,0};
+		//	rotateP(r);
+		//}
+		//if(in == 'h') {//rotate down
+		//	SG_VECTOR r = {-10,0,0};//{-0.1,0,0};
+		//	ofVec3f v;
+		//	rotateP(r);
+		//}
 	}
 	////////////////////////////////////////////step 5 inputs
 	////////////////////////////////////////////step 5 inputs
@@ -639,33 +639,33 @@ void game::guiInput(int in){
 			SG_VECTOR p = {0,10,0};
 			moveP(p);
 		}
-		///////////rotate all puzzle  // two finger swipe gesture
-		if(in == 'm') {//rotate right
-			SG_VECTOR r = {0,2,0};//{0,0.1,0};
-			rotateP(r);
-		}
-		if(in == 'n') {//rotate left
-			SG_VECTOR r = {0,-2,0};//{0,-0.1,0};
-			rotateP(r);
-		}
-		if(in == 'y') {//rotate up
-			SG_VECTOR r =  {2,0,0};// {0.1,0,0};
-			rotateP(r);
-		}
-		if(in == 'h') {//rotate down
-			SG_VECTOR r = {-2,0,0};//{-0.1,0,0};
-			ofVec3f v;
-			rotateP(r);
-		}
-		if(in == 'o') {//rotate c
-			SG_VECTOR r =  {0,0,-2};// {0.1,0,0};
-			rotateP(r);
-		}
-		if(in == 'p') {//rotate cc
-			SG_VECTOR r = {0,0,2};//{-0.1,0,0};
-			ofVec3f v;
-			rotateP(r);
-		}
+		/////////////rotate all puzzle  // two finger swipe gesture
+		//if(in == 'm') {//rotate right
+		//	SG_VECTOR r = {0,2,0};//{0,0.1,0};
+		//	rotateP(r);
+		//}
+		//if(in == 'n') {//rotate left
+		//	SG_VECTOR r = {0,-2,0};//{0,-0.1,0};
+		//	rotateP(r);
+		//}
+		//if(in == 'y') {//rotate up
+		//	SG_VECTOR r =  {2,0,0};// {0.1,0,0};
+		//	rotateP(r);
+		//}
+		//if(in == 'h') {//rotate down
+		//	SG_VECTOR r = {-2,0,0};//{-0.1,0,0};
+		//	ofVec3f v;
+		//	rotateP(r);
+		//}
+		//if(in == 'o') {//rotate c
+		//	SG_VECTOR r =  {0,0,-2};// {0.1,0,0};
+		//	rotateP(r);
+		//}
+		//if(in == 'p') {//rotate cc
+		//	SG_VECTOR r = {0,0,2};//{-0.1,0,0};
+		//	ofVec3f v;
+		//	rotateP(r);
+		//}
 	}
 
 	/////////////////////////////////////////////////////////////////

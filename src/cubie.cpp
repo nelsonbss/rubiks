@@ -12,9 +12,9 @@ cubie::cubie(float x, float y,float z, int idi, int selObjId, ofVec3f offset, of
 	pos.y = y;
 	pos.z = z;
 
-	rot.x = 0.0;
+	/*rot.x = 0.0;
 	rot.y = 0.0;
-	rot.z = 0.0;
+	rot.z = 0.0;*/
 
 	//color = rand()%27;
 
@@ -419,9 +419,9 @@ void cubie::setObjects(sgCGroup *objs,int cubieId){
 	}
 }
 //-------------------------------------------------------------------------------------------------------------------------------------------
-void cubie::rotate(SG_VECTOR r){
-	rot = r;
-}
+//void cubie::rotate(SG_VECTOR r){
+//	//rot = r;
+//}
 //--------------------------------------------------------------
 void cubie::move(SG_VECTOR p){
 	pos = p;

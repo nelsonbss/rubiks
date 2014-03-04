@@ -265,7 +265,7 @@ void game::createPuzzle(SG_VECTOR p){
 
 
 		//trackball
-		myTB = new ofxTrackball(ofGetWidth()/2, ofGetHeight()/2, 0, 200, myPuzzle);
+		myTB = new ofxTrackball(ofGetWidth()/2, ofGetHeight()/2, 0, 2000, myPuzzle,false);
 
 		updatePuzzle = true;
 		step = 4;

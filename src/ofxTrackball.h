@@ -27,7 +27,7 @@
 #ifndef __TofxTrackball__ofxTrackball__
 #define __TofxTrackball__ofxTrackball__
 
-#define NO_CONSTRAIN_AXIS -1
+#define NO_CONSTRAIN_AXIS  -1
 #define X_CONSTRAIN_AXIS   0
 #define Y_CONSTRAIN_AXIS   1
 #define Z_CONSTRAIN_AXIS   2
@@ -42,7 +42,7 @@ class ofxTrackball{
         
 public:
         //ofxTrackball();
-        ofxTrackball( float x, float y, float z, float radius, puzzle *pzl );
+        ofxTrackball( float x, float y, float z, float radius, puzzle *pzl, bool dtb );
         ~ofxTrackball();
         
         void rotate();
@@ -64,6 +64,7 @@ public:
         void cursorReleased( ofMouseEventArgs &args );
 
 		puzzle *tbPuzzle;
+		bool drawTrackBall;
         
 private:
         ofVec3f *center;

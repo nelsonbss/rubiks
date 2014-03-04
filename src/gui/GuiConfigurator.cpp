@@ -75,21 +75,42 @@ void GuiConfigurator::update(string _eventName, SubObEvent* _event){
 		replaceSheet(target);
 	}
 	if(_eventName == "touch-point"){
+		vector<GuiNode*> nodesHit;
 		for(map<string, GuiNode*>::iterator nIter =  activeNodes.begin(); nIter != activeNodes.end(); ++nIter){
 			if(nIter->second->isInside(_event->getArg("x")->getFloat(), _event->getArg("y")->getFloat())){
-				_event->getArg("hit")->setInt(1);
-				_event->addArg("target",nIter->first);
-				break;
+				//_event->getArg("hit")->setInt(1);
+				//_event->addArg("target",nIter->first);
+				//break;
+				nodesHit.push_back(nIter->second);
 			}
+		}
+		if(nodesHit.size()){
+			cout << "hit " << nodesHit.size() << " nodes." << endl;
+			float highestZ = -10000.0;
+			GuiNode* highestNode;
+			for(vector<GuiNode*>::iterator nIter = nodesHit.begin(); nIter != nodesHit.end(); ++nIter){
+				float nodeZ = (*nIter)->getZ();
+				cout << "checking node with z = " << nodeZ << endl;
+				if(nodeZ > highestZ){
+					cout << "setting " << (*nIter)->getName() << " to highest z. Z = " << nodeZ << endl;
+					highestNode = *nIter;
+					highestZ = nodeZ;
+				}
+			}
+			_event->getArg("hit")->setInt(1);
+			_event->addArg("target", highestNode->getName());
 		}
 		_event->getArg("receivers")->setInt(_event->getArg("receivers")->getInt() + 1);
 	}
 	if(_eventName == "gesture"){
 		string target = _event->getArg("target")->getString();
 		string type = _event->getArg("type")->getString();
+		cout << "have " << type << " going to " << target << endl;
 		if(type == "drag" && (activeNodes.count(target))){
 			string draggable = activeNodes[target]->getParam("draggable");
+			cout << draggable << endl;
 			if(draggable == "true"){
+				cout << "...and we're draggable." << endl;
 				int n = 1;
 				string targetN = activeNodes[target]->getParam("n");
 				int eventN = _event->getArg("n")->getInt();
@@ -99,6 +120,7 @@ void GuiConfigurator::update(string _eventName, SubObEvent* _event){
 				}
 				if(eventN == n){
 					//activeNodes[target]->adjustPosition(_event->getArg("drag_d")->getVec2(), _event->getArg("position")->getVec2());
+					cout << "sending drag." << endl;
 					int cID = _event->getArg("ID")->getInt();
 					int cN = _event->getArg("n")->getInt();
 					int cPhase = _event->getArg("phase")->getInt();
@@ -106,7 +128,11 @@ void GuiConfigurator::update(string _eventName, SubObEvent* _event){
 					ofVec2f cDPos = _event->getArg("deltaPos")->getVec2();
 					activeNodes[target]->dragInput(cID, cN, cPhase, cAPos, cDPos);
 				}
+			} else {
+				cout << "...but we're not draggable." << endl;
 			}
+		} else {
+			cout << "gesture fail" << endl;
 		}
 	}
 }

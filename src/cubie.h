@@ -2,12 +2,13 @@
 #define __Tcubie__cubie__
 
 #include "ofMain.h"
+#include "GuiNode.h"
 #include "sgCore.h"
 #include "matrix.h"
 
 #include <vector>
 
-class cubie {
+class cubie: public GuiNode{
 	
 public:
 	cubie(float x,float y,float z,int id, int selObjId, ofVec3f offset, ofVec3f offrotate);
@@ -66,6 +67,23 @@ public:
 	void changeColorToColor(ofFloatColor Sc, ofFloatColor Tc);
 	void colorBlackSides(int cubieId, float playRoom);
 	
+	/*
+	Paul's
+	*/
+
+	bool processMouse(int _x, int _y, int _state){return false;}
+	void dragInput(int _ID, int _n, int _phase, ofVec2f _absPos, ofVec2f _deltaPos);
+	void update(string _subName, Subject* _sub){}
+	void update(string _eventName, SubObEvent* _event);
+	void execute();
+
+	bool bDraw;
+
+	void getCentroid();
+	void projectCentroid();
+	ofVec3f centroid3d;
+	ofVec3f centroid2d;
+	ofVec3f centroidColor;
 };
 
 #endif /* defined(__Tcubie__cubie__) */

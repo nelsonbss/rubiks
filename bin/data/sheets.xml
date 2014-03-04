@@ -216,6 +216,10 @@
         <name>draw-color</name>
         <val>255,0,0</val>
       </param>
+      <param>
+        <name>z</name>
+        <val>-1000.0</val>
+      </param>
     </node>
 	</sheet>
   <sheet name="step2" pos="0,0">

@@ -90,6 +90,11 @@ public:
 			return "__NONE__";
 		}
 	}
+	
+	float drawZ;
+
+	float getZ(){return drawZ;}
+	void setZ(float _z){drawZ = _z;}
 
     //Virtual methods that each subclass is responsible for defining.
     virtual void execute();
@@ -98,7 +103,7 @@ public:
     virtual void update(){}
 	virtual void nodeInit(){}
 	virtual void nodeDraw(){}
-	virtual void dragInput(int _ID, int _n, int _phase, ofVec2f _absPos, ofVec2f _deltaPos){}
+	virtual void dragInput(int _ID, int _n, int _phase, ofVec2f _absPos, ofVec2f _deltaPos){cout << "node drag" << endl;}
 
 protected:
 

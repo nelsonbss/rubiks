@@ -19,7 +19,7 @@ void GuiNode::draw(){
 }
 
 bool GuiNode::isInside(int _x, int _y){
-    cout << name << " checking insides " << drawPos.x << ", " << drawPos.x + (scale * size.x) << " - " << drawPos.y << ", " << drawPos.y + (scale * size.y);
+    cout << name << " checking insides " << drawPos.x << ", " << drawPos.x + (scale * drawSize.x) << " - " << drawPos.y << ", " << drawPos.y + (scale * drawSize.y);
 	cout << " against " << _x << ", " << _y << endl;
     if((_x > drawPos.x && _x < (drawPos.x + (scale * drawSize.x)) &&
        (_y > drawPos.y && _y < (drawPos.y + (scale * drawSize.y))))){
@@ -38,6 +38,10 @@ void GuiNode::init(){
 		if(params["draw-area"] == "true"){
 			bDrawArea = true;
 		}
+	}
+	drawZ = 0.0;
+	if(params.count("z")){
+		drawZ = ofToFloat(params["z"]);
 	}
 	nodeInit();
 }

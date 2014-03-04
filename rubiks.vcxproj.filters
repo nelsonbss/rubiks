@@ -115,31 +115,27 @@
     <ClCompile Include="src\SceneManager.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\armRotations.cpp" />
     <ClCompile Include="src\game.cpp" />
-    <ClCompile Include="src\ofRender.cpp" />
-    <ClCompile Include="src\subob\SubObEvent.cpp">
-      <Filter>src\subob</Filter>
-    </ClCompile>
     <ClCompile Include="src\history.cpp" />
-    <ClCompile Include="src\GestureManager.cpp">
-      <Filter>src</Filter>
+    <ClCompile Include="src\ofRender.cpp" />
+    <ClCompile Include="src\gwc\GWCUtils.cpp">
+      <Filter>src\gwc</Filter>
     </ClCompile>
-<<<<<<< HEAD
     <ClCompile Include="src\gwc\GestureWorksCore.cpp">
       <Filter>src\gwc</Filter>
     </ClCompile>
-    <ClCompile Include="src\gwc\GWCUtils.cpp">
-      <Filter>src\gwc</Filter>
+    <ClCompile Include="src\GestureManager.cpp">
+      <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\gui\GuiDropArea.cpp">
       <Filter>src\gui</Filter>
     </ClCompile>
     <ClCompile Include="src\gui\GuiIBox.cpp">
       <Filter>src\gui</Filter>
-=======
-    <ClCompile Include="src\armRotations.cpp">
-      <Filter>src</Filter>
->>>>>>> 1133c62e9eccf09ecb7f25243edc3e807a90437e
+    </ClCompile>
+    <ClCompile Include="src\subob\SubObEvent.cpp">
+      <Filter>src\subob</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -195,7 +191,7 @@
       <UniqueIdentifier>{4a8e9d2e-28ca-4ed1-9cbf-ea0f07bdc01e}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\gwc">
-      <UniqueIdentifier>{d4ee8651-9590-4046-8114-ea86b73cac6f}</UniqueIdentifier>
+      <UniqueIdentifier>{02d788c6-5e0d-479d-abaf-15f1c475fdc6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -403,31 +399,27 @@
     <ClInclude Include="src\SceneManager.h">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="src\armRotations.h" />
     <ClInclude Include="src\game.h" />
-    <ClInclude Include="src\ofRender.h" />
-    <ClInclude Include="src\subob\SubObEvent.h">
-      <Filter>src\subob</Filter>
-    </ClInclude>
     <ClInclude Include="src\history.h" />
-    <ClInclude Include="src\GestureManager.h">
-      <Filter>src</Filter>
+    <ClInclude Include="src\ofRender.h" />
+    <ClInclude Include="src\gwc\GWCUtils.h">
+      <Filter>src\gwc</Filter>
     </ClInclude>
-<<<<<<< HEAD
     <ClInclude Include="src\gwc\GestureWorksCore.h">
       <Filter>src\gwc</Filter>
     </ClInclude>
-    <ClInclude Include="src\gwc\GWCUtils.h">
-      <Filter>src\gwc</Filter>
+    <ClInclude Include="src\GestureManager.h">
+      <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\gui\GuiDropArea.h">
       <Filter>src\gui</Filter>
     </ClInclude>
     <ClInclude Include="src\gui\GuiIBox.h">
       <Filter>src\gui</Filter>
-=======
-    <ClInclude Include="src\armRotations.h">
-      <Filter>src</Filter>
->>>>>>> 1133c62e9eccf09ecb7f25243edc3e807a90437e
+    </ClInclude>
+    <ClInclude Include="src\subob\SubObEvent.h">
+      <Filter>src\subob</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

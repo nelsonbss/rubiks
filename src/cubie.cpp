@@ -40,11 +40,18 @@ cubie::cubie(float x, float y,float z, int idi, int selObjId, ofVec3f offset, of
 	myMatrix.push_back(matrix(axis,0.0,true));
 	//to control undo
 	undoing = false;
+	addParam("draggable", "true");
+	addParam("n", "1");
+	bDraw = true;
+	scale = 1.0;
+	name = "cubie-" + ofToString(id);
+	activate();
 }
 //--------------------------------------------------------------
 void cubie::setup(){
-
+	
 }
+
 //--------------------------------------------------------------
 void cubie::update(){
 	for (int j=0; j < numObjs; j++){
@@ -290,19 +297,41 @@ void cubie::draw(){
 	//each cubie draws its own sgCGroup *objects;
 	//now it draws its vector of Vbos, myVbos
 	//use this cubies objectList[]
-
 	if(objects != NULL){
 		for (int j=0; j < numObjs; j++){
 			glPushMatrix();
 			//ofScale(1.2,1.2,1.2);
 			if (objectList[j]->GetTempMatrix()!=0)
-				glMultMatrixd(objectList[j]->GetTempMatrix()->GetTransparentData());
+			glMultMatrixd(objectList[j]->GetTempMatrix()->GetTransparentData());
 			objectList[j]->DestroyTempMatrix();
-			//myVbos[j].draw(GL_TRIANGLES, 0,myMeshs[j].getNumIndices());
-			myMeshs[j].draw();
+			/*
+			if(bDraw){
+				myVbos[j].draw(GL_TRIANGLES, 0,myMeshs[j].getNumIndices());
+			}
+			*/
+			if(bDraw){
+				myMeshs[j].drawWireframe();
+			}
+			ofPushMatrix();
+			ofTranslate(centroid3d.x, centroid3d.y, centroid3d.z);
+			ofSetColor(centroidColor.x, centroidColor.y, centroidColor.z);
+			ofDrawSphere(0,0,0,10);
+			projectCentroid();
+			ofPopMatrix();
 			glPopMatrix();
 		}
 	}
+	/*
+	if(!bDraw){
+		bDraw = true;
+	}
+	*/
+	ofFill();
+	ofSetColor(centroidColor.x, centroidColor.y, centroidColor.z);
+	ofPushMatrix();
+	ofTranslate(0,0,centroid2d.z);
+	ofRect(drawPos.x - (drawSize.x / 2), drawPos.y - (drawSize.y / 2),drawSize.x, drawSize.y); 
+	ofPopMatrix();
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 void cubie::faceRotate(SG_VECTOR axis,bool di){
@@ -404,7 +433,58 @@ void cubie::setObjects(sgCGroup *objs,int cubieId){
 		numObjs = 0;
 		objects = NULL;
 	}
+	getCentroid();
 }
+
+void cubie::getCentroid(){
+	centroid3d.set(0,0,0);
+	int count = 0;
+	for(vector<ofMesh>::iterator mIter = myMeshs.begin(); mIter != myMeshs.end(); mIter++){
+		ofVec3f tVec = mIter->getCentroid();
+		centroid3d += tVec;
+		count++;
+	}
+	centroid3d /= count;
+	//cout << "Centroid = " << centroid3d.x << ", " << centroid3d.y << ", " << centroid3d.z << endl;
+	//cout << count << endl;
+	centroidColor.set(ofRandom(0, 255),ofRandom(0, 255),ofRandom(0, 255));
+	//centroidColor.set(255,255,255);
+}
+
+void cubie::projectCentroid(){
+	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	GLdouble x;
+	GLdouble y;
+	GLdouble z;
+	GLdouble modelView[16];
+	glGetDoublev(GL_MODELVIEW_MATRIX, modelView);
+	GLdouble projection[16];
+	glGetDoublev(GL_PROJECTION_MATRIX, projection);
+	GLint viewport[4];
+	glGetIntegerv(GL_VIEWPORT, viewport);
+	gluProject(0, 0, 0, modelView, projection, viewport, &x, &y, &z);
+	y = ofGetHeight() - y;
+	centroid2d.set(x, y, z);
+	//cout << "made pick point " << centroid2d.x << ", " << centroid2d.y << endl;
+	drawPos.x = centroid2d.x;
+	drawPos.y = centroid2d.y;
+	drawSize.set(50,50);
+	setZ(centroid2d.z);
+	//cout << "Cubie " << id << " z = " << centroid2d.z << endl;
+}
+
+void cubie::update(string _eventName, SubObEvent* _event){
+}
+
+void cubie::dragInput(int _ID, int _n, int _phase, ofVec2f _absPos, ofVec2f _deltaPos){
+	bDraw = false;
+	cout << "cubie - " << name << " being dragged." << endl;
+}
+
+void cubie::execute(){
+	
+}
+
 //-------------------------------------------------------------------------------------------------------------------------------------------
 void cubie::rotate(SG_VECTOR r){
 	rot = r;
@@ -491,4 +571,5 @@ void cubie::exit(){
 		free(objectList);
 		sgCObject::DeleteObject(objects);
 	}
+	deactivate();
 }

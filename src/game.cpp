@@ -641,6 +641,15 @@ void game::guiInput(int in){
 			ofVec3f v;
 			rotateP(r);
 		}
+		if(in == 'o') {//rotate c
+			SG_VECTOR r =  {0,0,-2};// {0.1,0,0};
+			rotateP(r);
+		}
+		if(in == 'p') {//rotate cc
+			SG_VECTOR r = {0,0,2};//{-0.1,0,0};
+			ofVec3f v;
+			rotateP(r);
+		}
 	}
 
 	/////////////////////////////////////////////////////////////////

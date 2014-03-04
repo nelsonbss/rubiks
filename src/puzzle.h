@@ -57,6 +57,7 @@ public:
 	///quaternions
 	ofQuaternion qx;
 	ofQuaternion qy;
+	ofQuaternion qz;
 	ofQuaternion qt;
 };
 

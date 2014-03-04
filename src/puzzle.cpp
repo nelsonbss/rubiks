@@ -74,11 +74,12 @@ void puzzle::update(){
 			myCubies[i]->update();
 		}
 	}
-	//ofPushMatrix();
+
 	qx = ofQuaternion(rot.x,ofVec3f(1,0,0));
 	qy = ofQuaternion (rot.y,ofVec3f(0,1,0));
-	qt = qx * qy;// * qh
-	//ofPopMatrix();
+	qz = ofQuaternion (rot.z,ofVec3f(0,0,1));
+	qt = qx * qy * qz;
+	
 }
 //--------------------------------------------------------------
 void puzzle::draw(){  
@@ -86,7 +87,9 @@ void puzzle::draw(){
 	ofTranslate(pos.x,pos.y,pos.z);
 	ofVec3f qaxis; float qangle;  
 	qt.getRotate(qangle, qaxis);  
-	ofRotate(qangle, qaxis.x, qaxis.y, qaxis.z); 
+
+	ofVec3f qaxis2 = qt.getEuler();
+	//ofRotate(qangle, qaxis.x, qaxis.y, qaxis.z); 
 
 	/*ofRotateX(rot.x);
 	ofRotateY(rot.y);*/

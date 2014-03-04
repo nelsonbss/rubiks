@@ -23,6 +23,10 @@
  *
  */
 
+
+#ifndef __TofxTrackball__ofxTrackball__
+#define __TofxTrackball__ofxTrackball__
+
 #define NO_CONSTRAIN_AXIS -1
 #define X_CONSTRAIN_AXIS   0
 #define Y_CONSTRAIN_AXIS   1
@@ -30,10 +34,9 @@
 
 
 #include "ofMain.h"
-#include "ofEvents.h";
+#include "ofEvents.h"
 
-class ofxTrackball
-{
+class ofxTrackball{
         
 public:
         ofxTrackball();
@@ -63,7 +66,8 @@ private:
         ofVec3f *center;
         float radius;
         float damping;
-		ofCoreEvents p;
+
+		ofCoreEvents *p;///////////
         
         ofVec3f *vecDown, *vecDrag;
         ofQuaternion *quatNow, *quatDown, *quatDrag, *quatRot;
@@ -84,3 +88,4 @@ private:
         // convenience for drawing the sphere
         GLUquadricObj *quadratic;
 };
+#endif /* defined(__TofxTrackball__ofxTrackball__) */

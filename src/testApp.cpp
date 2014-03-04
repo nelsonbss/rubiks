@@ -1,6 +1,7 @@
 #include "testApp.h"
 #include <vector>
 #include "game.h"
+#include "ofxTrackball.h"
 ///////////////////////////////////////////
 #include "sgCore.h"
 
@@ -33,9 +34,9 @@ void testApp::setup(){
 		myGames[i]->setup(sgBunny->Clone(),sgTetrahedron->Clone(),sgDodecahedron->Clone(),sgIcosahedron->Clone(),sgOctahedron->Clone());//,sgTeapot->Clone());
 	}
 
-	rotate = true;
-	
-	//3012992610
+	//rotate = true;
+	//trackball
+	myTB = new ofxTrackball(ofGetWidth()/2, ofGetHeight()/2, 0, ofGetHeight());
 }
 //--------------------------------------------------------------
 void testApp::update(){
@@ -46,6 +47,8 @@ void testApp::update(){
 	for(int i = 0; i < myGames.size(); i++){
 		myGames[i]->update();
 	}
+	///trackball
+	//myTB.update();
 }
 //--------------------------------------------------------------
 void testApp::draw(){
@@ -111,6 +114,9 @@ void testApp::draw(){
 	for(int i = 0; i < myGames.size(); i++){
 		myGames[i]->draw();
 	}
+
+	///trackball
+	myTB->draw();
 
 	///////////////////END OF RENDERING////////////////////
 	stopOFLights();

@@ -74,15 +74,33 @@ void puzzle::update(){
 			myCubies[i]->update();
 		}
 	}
+
+	//qx = ofQuaternion(rot.x,ofVec3f(1,0,0));
+	//qy = ofQuaternion (rot.y,ofVec3f(0,1,0));
+	//qz = ofQuaternion (rot.z,ofVec3f(0,0,1));
+	//qt = qx * qy * qz;
+	
 }
 //--------------------------------------------------------------
 void puzzle::draw(){  
+	ofPushMatrix();
+	ofTranslate(pos.x,pos.y,pos.z);
+	/*ofVec3f qaxis; float qangle;  
+	qt.getRotate(qangle, qaxis); 
+	ofRotate(qangle, qaxis.x, qaxis.y, qaxis.z); */ 
+
+
+	ofRotate(qangle, qaxis.x,qaxis.y,qaxis.z);
+
+
 	//puzzle tells every cubie to attach objects to scene
 	for(int i=0;i<numPieces;i++){
 		if(myCubies[i] != NULL){
 			myCubies[i]->draw();
 		}
 	}
+
+	ofPopMatrix();
 }
 //--------------------------------------------------------------
 int puzzle::giveNumCubies(){
@@ -151,12 +169,18 @@ void puzzle::loadPieces(sgCGroup **pcs,int selObjId){
 //----------------------------------------------------------------
 void puzzle::rotate(SG_VECTOR r){  
 	//puzzle tells every cubie to rotate
-	rot.x +=  r.x;
+	/*rot.x +=  r.x;
 	rot.y +=  r.y;
-	rot.z +=  r.z;
-	for(int i=0;i<numPieces;i++){
-		myCubies[i]->rotate(rot);
-	}
+	rot.z +=  r.z;*/
+	//for(int i=0;i<numPieces;i++){
+	//	myCubies[i]->rotate(rot);
+	//}
+}
+//---------------------------------------------------------------
+void puzzle::rotateTB(float anglei, ofVec3f axisi){
+	//gets info from trackball object
+	qaxis = axisi; 
+	qangle = anglei;
 }
 //----------------------------------------------------------------
 void puzzle::move(SG_VECTOR p){

@@ -1,6 +1,7 @@
 #include "testApp.h"
 #include <vector>
 #include "game.h"
+
 ///////////////////////////////////////////
 #include "sgCore.h"
 
@@ -26,14 +27,14 @@ void testApp::setup(){
 	myGames.push_back(tempGame);
 	currentGame = 1;
 	//create a second game
-	game *tempGame2 = new game(gamePos, ofGetWidth(), ofGetHeight(),displayPos);
-	myGames.push_back(tempGame2);
+	//game *tempGame2 = new game(gamePos, ofGetWidth(), ofGetHeight(),displayPos);
+	//myGames.push_back(tempGame2);
 	///////////////////////////////setup games
 	for(int i = 0; i < myGames.size(); i++){
 		myGames[i]->setup(sgBunny->Clone(),sgTetrahedron->Clone(),sgDodecahedron->Clone(),sgIcosahedron->Clone(),sgOctahedron->Clone());//,sgTeapot->Clone());
 	}
 
-	rotate = true;
+	//rotate = true;
 }
 //--------------------------------------------------------------
 void testApp::update(){
@@ -107,7 +108,7 @@ void testApp::draw(){
 	////////////////////////PUZZLE //////////////////////
 	///////////////////////////////draw games
 	for(int i = 0; i < myGames.size(); i++){
-		myGames[i]->draw();
+		myGames[0]->draw();
 	}
 
 	///////////////////END OF RENDERING////////////////////
@@ -209,6 +210,7 @@ void testApp::mouseDragged(int x, int y, int button){
 }
 //--------------------------------------------------------------
 void testApp::mousePressed(int x, int y, int button){
+	
 }
 //--------------------------------------------------------------
 void testApp::mouseReleased(int x, int y, int button){

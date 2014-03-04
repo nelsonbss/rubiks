@@ -7,7 +7,7 @@
 
 class cutter {
 public:
-	cutter(float thick, float tamCutter, float tamCuby,float numCutrc, ofVec3f pos, vector<armRotations> armRotH);
+	cutter(float thick, float tamCutter, float tamCuby,float numCutrc, ofVec3f pos, ofVec3f rot);//vector<armRotations> armRotH);
     
 	void setup();
 	void update();

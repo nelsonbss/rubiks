@@ -3,6 +3,7 @@
 #include "ofMain.h"
 #include "sgCore.h"
 #include "game.h"
+#include "ofxTrackball.h"
 #include <vector>
 
 class testApp : public ofBaseApp{
@@ -47,7 +48,7 @@ public:
 	slicer *mySlicer;
 	puzzle *myPuzzle;
 
-	bool rotate;
+	//bool rotate;
 
 	////////////////rendering  and textures
 	void initOFRender();

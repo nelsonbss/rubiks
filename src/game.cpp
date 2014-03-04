@@ -4,6 +4,7 @@
 #include "slicer.h"
 #include "cutter.h"
 #include "puzzle.h"
+#include "ofxTrackball.h"
 
 #include <vector>
 
@@ -59,6 +60,8 @@ void game::setup(sgCObject *sgBunnyi,sgCObject *sgTetrahedroni,sgCObject *sgDode
 	updatePuzzle = false;
 	//
 	faceRotate = false;
+
+
 }
 //----------------------------------------------------------------------
 void game::update(){
@@ -116,16 +119,25 @@ void game::draw(){
 		objectDisplayed->draw();
 	}
 	if(step == 4 ){
+		 
+
 		//made the cuts
 		//show color palette
 		//show puzzle
 		myPuzzle->draw();
+
+		
 	}
 	if(step == 5){
+		//trackball
+		myTB->draw();
+		
 		//show puzzle
 		//rotations can be made
 		myPuzzle->draw();
 	}
+
+	
 }
 //----------------------------------------------------------------------
 void game::rotateByIDandAxis(int id, SG_VECTOR axs, bool d){
@@ -226,7 +238,7 @@ void game::loadArmature(int type){
 //-----------------------------------------------------------------------------------------
 void game::createCutterSlicer(){
 	////////////////////////////////create cutter
-	myCutter = new cutter(planeThicknes,tamCutter,tamCubie,1,offsetSlicer,armRotH);		
+	myCutter = new cutter(planeThicknes,tamCutter,tamCubie,1,offsetSlicer,rotateSlicer);//,armRotH);		
 	myCutter->setup();
 	//////////////////////////////////create slicer
 	mySlicer = new slicer(myCutter);
@@ -250,6 +262,10 @@ void game::createPuzzle(SG_VECTOR p){
 		///////////////////////////////  color puzzle   ////////////////////////////////// 
 		//color all the faces for platonic solids!! colors outside for most objects(not bunny), black on the insides
 		myPuzzle->colorFaces(objectID);
+
+
+		//trackball
+		myTB = new ofxTrackball(ofGetWidth()/2, ofGetHeight()/2, 0, 2000, myPuzzle,false);
 
 		updatePuzzle = true;
 		step = 4;
@@ -396,9 +412,9 @@ void game::guiInput(int in){
 		if(in == '7') {
 			loadObject(7,objectPos,posP);
 		}
-		if(in == '8') { 
-			loadObject(8,objectPos,posP);
-		}
+		/*if(in == '8') { 
+		loadObject(8,objectPos,posP);
+		}*/
 	}
 	////////////////////////////////////////////step 2 inputs
 	////////////////////////////////////////////step 2 inputs
@@ -515,19 +531,19 @@ void game::guiInput(int in){
 		}
 		///////////rotate all puzzle  // two finger swipe gesture
 		if(in == 'm') {//rotate right
-			SG_VECTOR r = {0,0.1,0};
+			SG_VECTOR r = {0,10,0};//{0,0.1,0};
 			rotateP(r);
 		}
 		if(in == 'n') {//rotate left
-			SG_VECTOR r = {0,-0.1,0};
+			SG_VECTOR r = {0,-10,0};//{0,-0.1,0};
 			rotateP(r);
 		}
 		if(in == 'y') {//rotate up
-			SG_VECTOR r = {0.1,0,0};
+			SG_VECTOR r =  {10,0,0};// {0.1,0,0};
 			rotateP(r);
 		}
 		if(in == 'h') {//rotate down
-			SG_VECTOR r = {-0.1,0,0};
+			SG_VECTOR r = {-10,0,0};//{-0.1,0,0};
 			ofVec3f v;
 			rotateP(r);
 		}
@@ -623,21 +639,30 @@ void game::guiInput(int in){
 			SG_VECTOR p = {0,10,0};
 			moveP(p);
 		}
-		//////////////////rotate all puzzle  // two finger swipe gesture
+		///////////rotate all puzzle  // two finger swipe gesture
 		if(in == 'm') {//rotate right
-			SG_VECTOR r = {0,0.1,0};
+			SG_VECTOR r = {0,2,0};//{0,0.1,0};
 			rotateP(r);
 		}
 		if(in == 'n') {//rotate left
-			SG_VECTOR r = {0,-0.1,0};
+			SG_VECTOR r = {0,-2,0};//{0,-0.1,0};
 			rotateP(r);
 		}
 		if(in == 'y') {//rotate up
-			SG_VECTOR r = {0.1,0,0};
+			SG_VECTOR r =  {2,0,0};// {0.1,0,0};
 			rotateP(r);
 		}
 		if(in == 'h') {//rotate down
-			SG_VECTOR r = {-0.1,0,0};
+			SG_VECTOR r = {-2,0,0};//{-0.1,0,0};
+			ofVec3f v;
+			rotateP(r);
+		}
+		if(in == 'o') {//rotate c
+			SG_VECTOR r =  {0,0,-2};// {0.1,0,0};
+			rotateP(r);
+		}
+		if(in == 'p') {//rotate cc
+			SG_VECTOR r = {0,0,2};//{-0.1,0,0};
 			ofVec3f v;
 			rotateP(r);
 		}

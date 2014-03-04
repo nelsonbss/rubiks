@@ -55,6 +55,11 @@ void cubie::update(){
 					//build rotation matrix for all steps up to the one where it was at the moment of a new movement
 					SG_POINT protFace = {pointRotate.x,pointRotate.y,pointRotate.z};										 
 					SG_VECTOR vrotFace = myMatrix.at(i).vector;//  axis; //rotate to do a face move
+
+					ofQuaternion qx;
+					ofQuaternion qy;
+
+					ofQuaternion qt;
 					////
 					if(vrotFace.x != 0){
 						if(rotCompensation.y != 0){
@@ -91,6 +96,10 @@ void cubie::update(){
 
 						vrotFace = vc;*/
 					}
+					qx.set(1,0,0,rotCompensation.x);
+					qy.set(0,1,0,rotCompensation.y);
+
+					qt = qx * qy;// * qh
 					double d = myMatrix.at(i).deg;
 					d = ofDegToRad(d);
 					if(myMatrix.at(i).dir == true){
@@ -113,6 +122,10 @@ void cubie::update(){
 				//we are at the last positon
 				SG_POINT protFace = {pointRotate.x,pointRotate.y,pointRotate.z};										 
 				SG_VECTOR vrotFace = myMatrix.at(myMatrix.size()-1).vector;//  axis; //rotate to do a face move
+				ofQuaternion qx;
+				ofQuaternion qy;
+
+				ofQuaternion qt;
 				/////
 				if(vrotFace.x != 0){
 					if(rotCompensation.y != 0){
@@ -143,12 +156,16 @@ void cubie::update(){
 						vrotFace = vComp;
 					}
 
-					/*vc.x = va.x + vb.x;
-					vc.y = va.y + vb.y;
-					vc.z = va.z + vb.z;
+					//	/*vc.x = va.x + vb.x;
+					//	vc.y = va.y + vb.y;
+					//	vc.z = va.z + vb.z;
 
-					vrotFace = vc;*/
+					//	vrotFace = vc;*/
 				}
+				qx.set(1,0,0,rotCompensation.x);
+				qy.set(0,1,0,rotCompensation.y);
+
+				qt = qx * qy;// * qh
 				double tempDeg2 = myMatrix.at(myMatrix.size()-1).deg; //target angle, the last angle it will move to
 				if(sample==false){
 					//this should only be sampled once during the animation
@@ -213,7 +230,11 @@ void cubie::update(){
 			for(int i=0; i<myMatrix.size();i++){
 				SG_POINT protFace = {pointRotate.x,pointRotate.y,pointRotate.z};										 
 				SG_VECTOR vrotFace = myMatrix.at(i).vector;//  axis of rotation
-				////
+				ofQuaternion qx;
+				ofQuaternion qy;
+
+				ofQuaternion qt;
+				//
 				if(vrotFace.x != 0){
 					if(rotCompensation.y != 0){
 						SG_VECTOR vComp = {(cos(ofDegToRad(rotCompensation.y))*1),0,(sin(ofDegToRad(rotCompensation.y))*-1)};
@@ -230,9 +251,9 @@ void cubie::update(){
 				}
 				/////
 				else if(vrotFace.z != 0){
-					SG_VECTOR va = {0,0,0};
-					SG_VECTOR vb = {0,0,0};
-					SG_VECTOR vc = {0,0,0};
+					SG_VECTOR vx = {0,0,0};
+					SG_VECTOR vy = {0,0,0};
+					SG_VECTOR vz = {0,0,0};
 					if(rotCompensation.x != 0){
 						SG_VECTOR vComp = {0,(sin(ofDegToRad(rotCompensation.x)))*-1,(cos(ofDegToRad(rotCompensation.x))*1)};
 						//double c  = cos(ofDegToRad(rotCompensation.x));
@@ -242,13 +263,16 @@ void cubie::update(){
 						SG_VECTOR vComp = {(sin(ofDegToRad(rotCompensation.y))*1),0,(cos(ofDegToRad(rotCompensation.y))*1)};
 						vrotFace = vComp;
 					}
-
-					/*vc.x = va.x + vb.x;
-					vc.y = va.y + vb.y;
-					vc.z = va.z + vb.z;
-
-					vrotFace = vc;*/
+					//vrotFace = vc;
 				}
+
+				qx.set(1,0,0,rotCompensation.x);
+				qy.set(0,1,0,rotCompensation.y);
+
+				qt = qx * qy;// * qh
+				ofVec3f qaxis; float qangle;  
+				qt.getRotate(qangle, qaxis);
+
 				double d = myMatrix.at(i).deg;
 				d = ofDegToRad(d);
 				if(myMatrix.at(i).dir == true){

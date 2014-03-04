@@ -43,7 +43,6 @@ cubie::cubie(float x, float y,float z, int idi, int selObjId, ofVec3f offset, of
 }
 //--------------------------------------------------------------
 void cubie::setup(){
-
 }
 //--------------------------------------------------------------
 void cubie::update(){

@@ -46,6 +46,14 @@ void cubie::setup(){
 }
 //--------------------------------------------------------------
 void cubie::update(){
+	ofQuaternion qx;
+	ofQuaternion qy;
+	ofQuaternion qz;
+	ofQuaternion qt;
+
+	ofVec3f qaxis; 
+	float qangle;
+
 	for (int j=0; j < numObjs; j++){
 		if(moving==true){
 			if(myMatrix.size()>=2){
@@ -54,11 +62,6 @@ void cubie::update(){
 					//build rotation matrix for all steps up to the one where it was at the moment of a new movement
 					SG_POINT protFace = {pointRotate.x,pointRotate.y,pointRotate.z};										 
 					SG_VECTOR vrotFace = myMatrix.at(i).vector;//  axis; //rotate to do a face move
-
-					ofQuaternion qx;
-					ofQuaternion qy;
-
-					ofQuaternion qt;
 					////
 					if(vrotFace.x != 0){
 						if(rotCompensation.y != 0){
@@ -118,13 +121,10 @@ void cubie::update(){
 						}
 					}
 				}
+				/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 				//we are at the last positon
 				SG_POINT protFace = {pointRotate.x,pointRotate.y,pointRotate.z};										 
 				SG_VECTOR vrotFace = myMatrix.at(myMatrix.size()-1).vector;//  axis; //rotate to do a face move
-				ofQuaternion qx;
-				ofQuaternion qy;
-
-				ofQuaternion qt;
 				/////
 				if(vrotFace.x != 0){
 					if(rotCompensation.y != 0){
@@ -161,10 +161,6 @@ void cubie::update(){
 
 					//	vrotFace = vc;*/
 				}
-				qx.set(1,0,0,rotCompensation.x);
-				qy.set(0,1,0,rotCompensation.y);
-
-				qt = qx * qy;// * qh
 				double tempDeg2 = myMatrix.at(myMatrix.size()-1).deg; //target angle, the last angle it will move to
 				if(sample==false){
 					//this should only be sampled once during the animation
@@ -260,11 +256,9 @@ void cubie::update(){
 					//vrotFace = vc;
 				}
 
-				ofQuaternion qx (rotCompensation.x,ofVec3f(1,0,0));
-				ofQuaternion qy (rotCompensation.y,ofVec3f(0,1,0));
-				ofQuaternion qt;
+				qx = ofQuaternion (rotCompensation.x,ofVec3f(1,0,0));
+				qy = ofQuaternion (rotCompensation.y,ofVec3f(0,1,0));
 				qt = qx * qy;// * qh
-				ofVec3f qaxis; float qangle;  
 				qt.getRotate(qangle, qaxis);
 
 				double d = myMatrix.at(i).deg;
@@ -286,6 +280,8 @@ void cubie::update(){
 				}
 			}
 		}
+
+
 		///////////////////////////////////////////////////////////
 		////////rotate and move with the whole puzzle
 		//SG_VECTOR vrotH = {1,0,0}; //rotate v         

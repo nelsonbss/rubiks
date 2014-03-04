@@ -36,7 +36,7 @@ void testApp::setup(){
 
 	//rotate = true;
 	//trackball
-	myTB = new ofxTrackball(ofGetWidth()/2, ofGetHeight()/2, 0, ofGetHeight());
+	myTB = new ofxTrackball(ofGetWidth()/2, ofGetHeight()/2, 0, 90);//ofGetHeight());
 }
 //--------------------------------------------------------------
 void testApp::update(){
@@ -48,7 +48,7 @@ void testApp::update(){
 		myGames[i]->update();
 	}
 	///trackball
-	//myTB.update();
+	//myTB->update();
 }
 //--------------------------------------------------------------
 void testApp::draw(){
@@ -214,9 +214,12 @@ void testApp::mouseMoved(int x, int y ){
 }
 //--------------------------------------------------------------
 void testApp::mouseDragged(int x, int y, int button){
+	/*ofMouseEventArgs s;
+	myTB->update(s);*/
 }
 //--------------------------------------------------------------
 void testApp::mousePressed(int x, int y, int button){
+	
 }
 //--------------------------------------------------------------
 void testApp::mouseReleased(int x, int y, int button){

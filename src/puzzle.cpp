@@ -89,7 +89,7 @@ void puzzle::draw(){
 	qt.getRotate(qangle, qaxis);  
 
 	ofVec3f qaxis2 = qt.getEuler();
-	//ofRotate(qangle, qaxis.x, qaxis.y, qaxis.z); 
+	ofRotate(qangle, qaxis.x, qaxis.y, qaxis.z); 
 
 	/*ofRotateX(rot.x);
 	ofRotateY(rot.y);*/

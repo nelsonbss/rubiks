@@ -40,7 +40,7 @@ ofxTrackball::ofxTrackball( float x, float y, float z, float radius )
 	
         this->center = new ofVec3f( x, y, z );
         this->radius = radius;
-        this->damping = 5.0;
+        this->damping = 1.0;
         
         this->vecDown  = new ofVec3f();
         this->vecDrag  = new ofVec3f();
@@ -63,7 +63,7 @@ ofxTrackball::ofxTrackball( float x, float y, float z, float radius )
         
         // setup event handler
         enableMouse();
-        ofAddListener(p->update, this, &ofxTrackball::update );
+        ofAddListener(ofEvents().update, this, &ofxTrackball::update );
         
         // setup drawing
         quadratic=gluNewQuadric();
@@ -128,7 +128,7 @@ void ofxTrackball::draw()
                 rotate();
                 ofTranslate( center->x, center->y, center->z);
                 ofEnableAlphaBlending();
-                ofSetColor( 255, 255, 255, 64 );
+                ofSetColor( 255, 255, 255, 255 );
                 gluSphere( quadratic, radius, 32, 32 ); 
                 glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
                 glDisable( GL_DEPTH_TEST );
@@ -259,17 +259,16 @@ const float ofxTrackball::getDamping()
 
 void ofxTrackball::enableMouse()
 {
-	
-        ofAddListener( p->mousePressed,  this, &ofxTrackball::cursorPressed );
-        ofAddListener( p->mouseDragged,  this, &ofxTrackball::cursorDragged );
-        ofAddListener( p->mouseReleased, this, &ofxTrackball::cursorReleased );
+		ofAddListener( ofEvents().mousePressed,  this, &ofxTrackball::cursorPressed );
+        ofAddListener( ofEvents().mouseDragged,  this, &ofxTrackball::cursorDragged );
+        ofAddListener( ofEvents().mouseReleased, this, &ofxTrackball::cursorReleased );
 }
 
 void ofxTrackball::disableMouse()
 {
-        ofRemoveListener( p->mousePressed,  this, &ofxTrackball::cursorPressed );
-        ofRemoveListener( p->mouseDragged,  this, &ofxTrackball::cursorDragged );
-        ofRemoveListener( p->mouseReleased, this, &ofxTrackball::cursorReleased );
+        ofRemoveListener(ofEvents().mousePressed,  this, &ofxTrackball::cursorPressed );
+        ofRemoveListener( ofEvents().mouseDragged,  this, &ofxTrackball::cursorDragged );
+        ofRemoveListener( ofEvents().mouseReleased, this, &ofxTrackball::cursorReleased );
 }
 
 void ofxTrackball::cursorPressed( ofMouseEventArgs &args )

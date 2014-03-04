@@ -61,13 +61,15 @@ public:
         void cursorDragged ( ofMouseEventArgs &args );
         void cursorReleased( ofMouseEventArgs &args );
         
+		ofCoreEvents *p;///////////
+
         
 private:
         ofVec3f *center;
         float radius;
         float damping;
 
-		ofCoreEvents *p;///////////
+		
         
         ofVec3f *vecDown, *vecDrag;
         ofQuaternion *quatNow, *quatDown, *quatDrag, *quatRot;

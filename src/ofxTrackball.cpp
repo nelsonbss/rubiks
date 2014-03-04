@@ -105,8 +105,11 @@ void ofxTrackball::rotate()
                 quatNow->getRotate( angle, x, y, z );
                 ofRotate( ofRadToDeg(angle), x, y, z );
 
-				//send this rotation to puzzle???
+				/////////////////////////////////////////////
+				//send this rotation to puzzle
                 tbPuzzle->rotateTB( ofRadToDeg(angle), ofVec3f(x,y,z));
+				///////////////////////////////////////////////
+				//send this rotation to armature??
         }       
         ofTranslate( -center->x, -center->y, -center->z );
 }

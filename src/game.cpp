@@ -26,9 +26,9 @@ game::game(SG_VECTOR gamePos, float w, float h, SG_VECTOR displayPos){
 	posA.y = displayPos.y;
 	posA.z = displayPos.z;
 
-	rotP.x = 0; //rotation of puzzle
-	rotP.y = 0;
-	rotP.z = 0;
+	//rotP.x = 0; //rotation of puzzle
+	//rotP.y = 0;
+	//rotP.z = 0;
 
 	//offset
 	tamCubie = 0;  //when creating armature this gets a size
@@ -119,14 +119,13 @@ void game::draw(){
 		objectDisplayed->draw();
 	}
 	if(step == 4 ){
-		 
+		 //trackball
+		myTB->draw();
 
 		//made the cuts
 		//show color palette
 		//show puzzle
 		myPuzzle->draw();
-
-		
 	}
 	if(step == 5){
 		//trackball
@@ -276,9 +275,9 @@ void game::moveP(SG_VECTOR p){
 	myPuzzle->move(p);
 }
 //----------------------------------------------------------------------
-void game::rotateP(SG_VECTOR r){
-	myPuzzle->rotate(r);
-}
+//void game::rotateP(SG_VECTOR r){
+//	/*myPuzzle->rotate(r);*/
+//}
 //----------------------------------------------------------------------
 int game::getCurrentStep(){
 	return step;
@@ -379,7 +378,7 @@ void game::guiInput(int in){
 	////////////////////////////////////////////step 1 inputs
 	////////////////////////////////////////////step 1 inputs
 	////////////////////////////////////////////step 1 inputs
-	if(step == 1){
+	else if(step == 1){
 		//is showing object with flat color
 		//selected an object
 		if(in == 'n') {
@@ -419,7 +418,7 @@ void game::guiInput(int in){
 	////////////////////////////////////////////step 2 inputs
 	////////////////////////////////////////////step 2 inputs
 	////////////////////////////////////////////step 2 inputs
-	if(step == 2){
+	else if(step == 2){
 		//waiting for armature to be selected
 		if(in == '1') {
 			//select armature 1
@@ -433,7 +432,7 @@ void game::guiInput(int in){
 	////////////////////////////////////////////step 3 inputs
 	////////////////////////////////////////////step 3 inputs
 	////////////////////////////////////////////step 3 inputs
-	if(step == 3){
+	else if(step == 3){
 		//armature was selected
 		////showing armature    another armature can be selected
 		if(in == '1') {
@@ -498,7 +497,7 @@ void game::guiInput(int in){
 	////////////////////////////////////////////step 4 inputs
 	////////////////////////////////////////////step 4 inputs
 	////////////////////////////////////////////step 4 inputs
-	if(step == 4){
+	else if(step == 4){
 		//showing puzzle with colors
 		//waiting for color change
 		if(in == '1') {
@@ -551,7 +550,7 @@ void game::guiInput(int in){
 	////////////////////////////////////////////step 5 inputs
 	////////////////////////////////////////////step 5 inputs
 	////////////////////////////////////////////step 5 inputs
-	if(step == 5){
+	else if(step == 5){
 		//selected color (or not, its not mandatory)
 		//pressed next on color palette step
 		//showing puzzle

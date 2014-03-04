@@ -70,8 +70,8 @@ public:
 	/////////////////////////////rotate all puzzle
 	///trackball
 	ofxTrackball *myTB;
-	SG_VECTOR rotP;
-	void rotateP(SG_VECTOR r);
+	/*SG_VECTOR rotP;
+	void rotateP(SG_VECTOR r);*/
 
 	////////////////puzzle movements
 	//offset vars

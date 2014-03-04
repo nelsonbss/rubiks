@@ -74,15 +74,31 @@ void puzzle::update(){
 			myCubies[i]->update();
 		}
 	}
+	//ofPushMatrix();
+	qx = ofQuaternion(rot.x,ofVec3f(1,0,0));
+	qy = ofQuaternion (rot.y,ofVec3f(0,1,0));
+	qt = qx * qy;// * qh
+	//ofPopMatrix();
 }
 //--------------------------------------------------------------
 void puzzle::draw(){  
+	ofPushMatrix();
+	ofTranslate(pos.x,pos.y,pos.z);
+	ofVec3f qaxis; float qangle;  
+	qt.getRotate(qangle, qaxis);  
+	ofRotate(qangle, qaxis.x, qaxis.y, qaxis.z); 
+
+	/*ofRotateX(rot.x);
+	ofRotateY(rot.y);*/
+
 	//puzzle tells every cubie to attach objects to scene
 	for(int i=0;i<numPieces;i++){
 		if(myCubies[i] != NULL){
 			myCubies[i]->draw();
 		}
 	}
+	//ofCircle(ofPoint(500,400,0),30);
+	ofPopMatrix();
 }
 //--------------------------------------------------------------
 int puzzle::giveNumCubies(){
@@ -154,9 +170,9 @@ void puzzle::rotate(SG_VECTOR r){
 	rot.x +=  r.x;
 	rot.y +=  r.y;
 	rot.z +=  r.z;
-	for(int i=0;i<numPieces;i++){
-		myCubies[i]->rotate(rot);
-	}
+	//for(int i=0;i<numPieces;i++){
+	//	myCubies[i]->rotate(rot);
+	//}
 }
 //----------------------------------------------------------------
 void puzzle::move(SG_VECTOR p){

@@ -33,9 +33,9 @@ public:
 	SG_VECTOR rot;
 	void rotate(SG_VECTOR r);
 
-    typedef std::vector<int>OneDimension;
-    typedef std::vector<OneDimension>TwoDimensions;
-    typedef std::vector<TwoDimensions>ThreeDimensions;
+	typedef std::vector<int>OneDimension;
+	typedef std::vector<OneDimension>TwoDimensions;
+	typedef std::vector<TwoDimensions>ThreeDimensions;
 	ThreeDimensions three_dim1;
 	void rotateByIDandAxis(int id, SG_VECTOR axis,bool dir);
 	void rearange3dArray(SG_VECTOR axis, int plane, bool dir);
@@ -50,6 +50,14 @@ public:
 	void colorCubiesBlackSides();
 	///color change
 	void changeColorToColor(ofFloatColor Sc, ofFloatColor Tc);
+
+
+
+
+	///quaternions
+	ofQuaternion qx;
+	ofQuaternion qy;
+	ofQuaternion qt;
 };
 
 #endif /* defined(__Tpuzzle__puzzle__) */

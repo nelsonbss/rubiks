@@ -230,11 +230,6 @@ void cubie::update(){
 			for(int i=0; i<myMatrix.size();i++){
 				SG_POINT protFace = {pointRotate.x,pointRotate.y,pointRotate.z};										 
 				SG_VECTOR vrotFace = myMatrix.at(i).vector;//  axis of rotation
-				ofQuaternion qx;
-				ofQuaternion qy;
-
-				ofQuaternion qt;
-				//
 				if(vrotFace.x != 0){
 					if(rotCompensation.y != 0){
 						SG_VECTOR vComp = {(cos(ofDegToRad(rotCompensation.y))*1),0,(sin(ofDegToRad(rotCompensation.y))*-1)};
@@ -266,9 +261,9 @@ void cubie::update(){
 					//vrotFace = vc;
 				}
 
-				qx.set(1,0,0,rotCompensation.x);
-				qy.set(0,1,0,rotCompensation.y);
-
+				ofQuaternion qx (rotCompensation.x,ofVec3f(1,0,0));
+				ofQuaternion qy (rotCompensation.y,ofVec3f(0,1,0));
+				ofQuaternion qt;
 				qt = qx * qy;// * qh
 				ofVec3f qaxis; float qangle;  
 				qt.getRotate(qangle, qaxis);
@@ -294,19 +289,19 @@ void cubie::update(){
 		}
 		///////////////////////////////////////////////////////////
 		////////rotate and move with the whole puzzle
-		SG_VECTOR vrotH = {0,1,0}; //rotate H         
-		SG_VECTOR puzzleRotate = {0,0,0};
-		if (objectList[j]->GetTempMatrix()==0){
-			objectList[j]->InitTempMatrix()->Rotate(puzzleRotate,vrotH,rot.y);
-		}else{
-			objectList[j]->GetTempMatrix()->Rotate(puzzleRotate,vrotH,rot.y);
-		}
-		SG_VECTOR vrotV = {1,0,0}; //rotate V								 
-		objectList[j]->GetTempMatrix()->Rotate(puzzleRotate,vrotV,rot.x);
-		//translations
-		SG_VECTOR transBox11 = {pos.x,pos.y,pos.z}; 
-		objectList[j]->GetTempMatrix()->Translate(transBox11);
-		objectList[j]->ApplyTempMatrix();
+		//SG_VECTOR vrotH = {1,0,0}; //rotate v         
+		//SG_VECTOR puzzleRotate = {0,0,0};
+		//if (objectList[j]->GetTempMatrix()==0){
+		//	objectList[j]->InitTempMatrix()->Rotate(puzzleRotate,vrotH,0);//rot.x);
+		//}else{
+		//	objectList[j]->GetTempMatrix()->Rotate(puzzleRotate,vrotH,0);//rot.x);
+		//}
+		//SG_VECTOR vrotV = {0,1,0}; //rotate h								 
+		//objectList[j]->GetTempMatrix()->Rotate(puzzleRotate,vrotV,0);//rot.y);
+		////translations
+		//SG_VECTOR transBox11 = {pos.x,pos.y,pos.z}; 
+		//objectList[j]->GetTempMatrix()->Translate(transBox11);
+		//objectList[j]->ApplyTempMatrix();
 	}
 }
 //------------------------------------------------------------------------------------------------------------------------------------------

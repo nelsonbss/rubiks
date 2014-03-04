@@ -70,8 +70,4 @@ public:
 	bool bSmoothLighting;
 	bool bPointLight, bSpotLight, bDirLight;
 	bool bUseTexture;
-
-
-	///trackball
-	ofxTrackball *myTB;
 };

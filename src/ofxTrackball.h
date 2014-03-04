@@ -36,11 +36,13 @@
 #include "ofMain.h"
 #include "ofEvents.h"
 
+#include "puzzle.h"
+
 class ofxTrackball{
         
 public:
-        ofxTrackball();
-        ofxTrackball( float x, float y, float z, float radius );
+        //ofxTrackball();
+        ofxTrackball( float x, float y, float z, float radius, puzzle *pzl );
         ~ofxTrackball();
         
         void rotate();
@@ -60,17 +62,14 @@ public:
         void cursorPressed ( ofMouseEventArgs &args );
         void cursorDragged ( ofMouseEventArgs &args );
         void cursorReleased( ofMouseEventArgs &args );
-        
-		ofCoreEvents *p;///////////
 
+		puzzle *tbPuzzle;
         
 private:
         ofVec3f *center;
         float radius;
         float damping;
 
-		
-        
         ofVec3f *vecDown, *vecDrag;
         ofQuaternion *quatNow, *quatDown, *quatDrag, *quatRot;
         

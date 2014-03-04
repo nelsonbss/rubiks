@@ -85,14 +85,13 @@ void puzzle::update(){
 void puzzle::draw(){  
 	ofPushMatrix();
 	ofTranslate(pos.x,pos.y,pos.z);
-	ofVec3f qaxis; float qangle;  
-	qt.getRotate(qangle, qaxis);  
+	/*ofVec3f qaxis; float qangle;  
+	qt.getRotate(qangle, qaxis); 
+	ofRotate(qangle, qaxis.x, qaxis.y, qaxis.z); */ 
 
-	ofVec3f qaxis2 = qt.getEuler();
-	ofRotate(qangle, qaxis.x, qaxis.y, qaxis.z); 
 
-	/*ofRotateX(rot.x);
-	ofRotateY(rot.y);*/
+	ofRotate(qangle, qaxis.x,qaxis.y,qaxis.z);
+
 
 	//puzzle tells every cubie to attach objects to scene
 	for(int i=0;i<numPieces;i++){
@@ -100,7 +99,7 @@ void puzzle::draw(){
 			myCubies[i]->draw();
 		}
 	}
-	//ofCircle(ofPoint(500,400,0),30);
+
 	ofPopMatrix();
 }
 //--------------------------------------------------------------
@@ -176,6 +175,12 @@ void puzzle::rotate(SG_VECTOR r){
 	//for(int i=0;i<numPieces;i++){
 	//	myCubies[i]->rotate(rot);
 	//}
+}
+//---------------------------------------------------------------
+void puzzle::rotateTB(float anglei, ofVec3f axisi){
+	//gets info from trackball object
+	qaxis = axisi; 
+	qangle = anglei;
 }
 //----------------------------------------------------------------
 void puzzle::move(SG_VECTOR p){

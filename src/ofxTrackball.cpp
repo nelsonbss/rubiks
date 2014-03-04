@@ -25,22 +25,22 @@
 
 #include "ofxTrackball.h"
 #include "ofMain.h"
+#include "puzzle.h"
 
-//#pragma mark constructors and destructor
+#pragma mark constructors and destructor
 
-ofxTrackball::ofxTrackball()
+//ofxTrackball::ofxTrackball()
+//{
+//        ofxTrackball( ofGetWidth()/2, ofGetHeight()/2, 0, ofGetHeight());
+//}
+
+ofxTrackball::ofxTrackball( float x, float y, float z, float radius, puzzle *pzl )
 {
-        ofxTrackball( ofGetWidth()/2, ofGetHeight()/2, 0, ofGetHeight() );
-}
+		this->tbPuzzle = pzl;
 
-ofxTrackball::ofxTrackball( float x, float y, float z, float radius )
-{
-		p = new ofCoreEvents();
-		p->enable();
-	
         this->center = new ofVec3f( x, y, z );
         this->radius = radius;
-        this->damping = 1.0;
+        this->damping = 5.0;
         
         this->vecDown  = new ofVec3f();
         this->vecDrag  = new ofVec3f();
@@ -84,7 +84,7 @@ ofxTrackball::~ofxTrackball()
         delete velocity;
         
         disableMouse();
-        ofRemoveListener( p->update, this, &ofxTrackball::update );
+        ofRemoveListener(ofEvents().update, this, &ofxTrackball::update );
 }
 
 
@@ -104,7 +104,9 @@ void ofxTrackball::rotate()
                 float angle, x, y, z;
                 quatNow->getRotate( angle, x, y, z );
                 ofRotate( ofRadToDeg(angle), x, y, z );
-                
+
+				//send this rotation to puzzle???
+                tbPuzzle->rotateTB( ofRadToDeg(angle), ofVec3f(x,y,z));
         }       
         ofTranslate( -center->x, -center->y, -center->z );
 }
@@ -112,64 +114,64 @@ void ofxTrackball::rotate()
 void ofxTrackball::draw()
 {
 
-        glDisable( GL_DEPTH_TEST );
+        //glDisable( GL_DEPTH_TEST );
         
         // radius
-        ofNoFill();
+        /*ofNoFill();
         ofSetColor( 255, 255, 255 );
         ofDrawBitmapString( "radius "+ofToString(radius, 2), 20, 20 );
-        ofCircle( center->x, center->y, radius );
+        ofCircle( center->x, center->y, radius );*/
         
         // trackball
         ofPushMatrix();
         {
-                glEnable( GL_DEPTH_TEST );
-                glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
-                rotate();
-                ofTranslate( center->x, center->y, center->z);
-                ofEnableAlphaBlending();
-                ofSetColor( 255, 255, 255, 255 );
-                gluSphere( quadratic, radius, 32, 32 ); 
-                glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
-                glDisable( GL_DEPTH_TEST );
+               // glEnable( GL_DEPTH_TEST );
+                //glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
+          rotate();
+                //ofTranslate( center->x, center->y, center->z);
+                //ofEnableAlphaBlending();
+                //ofSetColor( 255, 255, 255, 255 );
+                //gluSphere( quadratic, radius, 32, 32 ); 
+                //glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
+                //glDisable( GL_DEPTH_TEST );
         }
         ofPopMatrix();
         
         // center
-        ofSetColor( 255, 255, 255 );
+       /* ofSetColor( 255, 255, 255 );
         ofLine( center->x-5, center->y, center->x+5, center->y );
-        ofLine( center->x, center->y-5, center->x, center->y+5 );
+        ofLine( center->x, center->y-5, center->x, center->y+5 );*/
         
         // quatNow
-        float angle, x, y, z;
+        /*float angle, x, y, z;
         quatNow->getRotate( angle, x, y, z );
         ofDrawBitmapString( "w "+ofToString( ofRadToDeg(angle), 2), 20, 50 );
         ofDrawBitmapString( "x "+ofToString( x, 2), 20, 70 );
         ofDrawBitmapString( "y "+ofToString( y, 2), 20, 90 );
         ofDrawBitmapString( "z "+ofToString( z, 2), 20, 110 );
-        ofSetColor(255, 0, 0);
+        ofSetColor(255, 0, 0);*/
         
         //vecDrag
-        ofSetColor( 255, 255, 255 );
+       /* ofSetColor( 255, 255, 255 );
         ofDrawBitmapString( "vecDrag", center->x+vecDrag->x*radius+10, center->y+vecDrag->y*radius-10 );        
         ofLine( center->x, center->y, center->x+vecDrag->x*radius, center->y+vecDrag->y*radius );
         ofFill();       
         ofSetColor( 0, 255, 0 );
-        ofCircle( center->x+vecDrag->x*radius, center->y+vecDrag->y*radius, 5 );
+        ofCircle( center->x+vecDrag->x*radius, center->y+vecDrag->y*radius, 5 );*/
         
         // vecDown
-        ofSetColor( 255, 255, 255 );
+      /*  ofSetColor( 255, 255, 255 );
         ofDrawBitmapString( "vecDown", center->x+vecDown->x*radius+10, center->y+vecDown->y*radius-10 );        
         ofLine( center->x, center->y, center->x+vecDown->x*radius, center->y+vecDown->y*radius );
         ofFill();       
         ofSetColor( 0, 255, 0 );
-        ofCircle( center->x+vecDown->x*radius, center->y+vecDown->y*radius, 5 );
+        ofCircle( center->x+vecDown->x*radius, center->y+vecDown->y*radius, 5 );*/
         
         // velocity
-        ofSetColor( 255, 0, 0 );
-        ofLine( center->x+vecDown->x*radius, center->y+vecDown->y*radius, center->x+vecDown->x*radius+velocity->x, center->y+vecDown->y*radius+velocity->y );
+        /*ofSetColor( 255, 0, 0 );
+        ofLine( center->x+vecDown->x*radius, center->y+vecDown->y*radius, center->x+vecDown->x*radius+velocity->x, center->y+vecDown->y*radius+velocity->y );*/
         
-        glEnable( GL_DEPTH_TEST );
+        //glEnable( GL_DEPTH_TEST );
 }
 
 

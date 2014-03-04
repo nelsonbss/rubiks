@@ -1,7 +1,7 @@
 #include "testApp.h"
 #include <vector>
 #include "game.h"
-#include "ofxTrackball.h"
+
 ///////////////////////////////////////////
 #include "sgCore.h"
 
@@ -27,16 +27,14 @@ void testApp::setup(){
 	myGames.push_back(tempGame);
 	currentGame = 1;
 	//create a second game
-	game *tempGame2 = new game(gamePos, ofGetWidth(), ofGetHeight(),displayPos);
-	myGames.push_back(tempGame2);
+	//game *tempGame2 = new game(gamePos, ofGetWidth(), ofGetHeight(),displayPos);
+	//myGames.push_back(tempGame2);
 	///////////////////////////////setup games
 	for(int i = 0; i < myGames.size(); i++){
 		myGames[i]->setup(sgBunny->Clone(),sgTetrahedron->Clone(),sgDodecahedron->Clone(),sgIcosahedron->Clone(),sgOctahedron->Clone());//,sgTeapot->Clone());
 	}
 
 	//rotate = true;
-	//trackball
-	myTB = new ofxTrackball(ofGetWidth()/2, ofGetHeight()/2, 0, 90);//ofGetHeight());
 }
 //--------------------------------------------------------------
 void testApp::update(){
@@ -47,8 +45,6 @@ void testApp::update(){
 	for(int i = 0; i < myGames.size(); i++){
 		myGames[i]->update();
 	}
-	///trackball
-	//myTB->update();
 }
 //--------------------------------------------------------------
 void testApp::draw(){
@@ -112,11 +108,8 @@ void testApp::draw(){
 	////////////////////////PUZZLE //////////////////////
 	///////////////////////////////draw games
 	for(int i = 0; i < myGames.size(); i++){
-		myGames[i]->draw();
+		myGames[0]->draw();
 	}
-
-	///trackball
-	myTB->draw();
 
 	///////////////////END OF RENDERING////////////////////
 	stopOFLights();

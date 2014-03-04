@@ -4,6 +4,7 @@
 #include "slicer.h"
 #include "cutter.h"
 #include "puzzle.h"
+#include "ofxTrackball.h"
 
 #include <vector>
 
@@ -59,6 +60,8 @@ void game::setup(sgCObject *sgBunnyi,sgCObject *sgTetrahedroni,sgCObject *sgDode
 	updatePuzzle = false;
 	//
 	faceRotate = false;
+
+
 }
 //----------------------------------------------------------------------
 void game::update(){
@@ -116,16 +119,25 @@ void game::draw(){
 		objectDisplayed->draw();
 	}
 	if(step == 4 ){
+		 
+
 		//made the cuts
 		//show color palette
 		//show puzzle
 		myPuzzle->draw();
+
+		
 	}
 	if(step == 5){
+		//trackball
+		myTB->draw();
+		
 		//show puzzle
 		//rotations can be made
 		myPuzzle->draw();
 	}
+
+	
 }
 //----------------------------------------------------------------------
 void game::rotateByIDandAxis(int id, SG_VECTOR axs, bool d){
@@ -250,6 +262,10 @@ void game::createPuzzle(SG_VECTOR p){
 		///////////////////////////////  color puzzle   ////////////////////////////////// 
 		//color all the faces for platonic solids!! colors outside for most objects(not bunny), black on the insides
 		myPuzzle->colorFaces(objectID);
+
+
+		//trackball
+		myTB = new ofxTrackball(ofGetWidth()/2, ofGetHeight()/2, 0, 200, myPuzzle);
 
 		updatePuzzle = true;
 		step = 4;
@@ -397,7 +413,7 @@ void game::guiInput(int in){
 			loadObject(7,objectPos,posP);
 		}
 		/*if(in == '8') { 
-			loadObject(8,objectPos,posP);
+		loadObject(8,objectPos,posP);
 		}*/
 	}
 	////////////////////////////////////////////step 2 inputs

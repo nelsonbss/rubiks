@@ -32,6 +32,9 @@ public:
 
 	SG_VECTOR rot;
 	void rotate(SG_VECTOR r);
+	void rotateTB(float angle, ofVec3f axis);
+	ofVec3f qaxis; 
+	float qangle; 
 
 	typedef std::vector<int>OneDimension;
 	typedef std::vector<OneDimension>TwoDimensions;

@@ -32,7 +32,7 @@ public:
 
 	float color;
 
-	void setObjects(sgCGroup *objs,int cubieId);
+	void setObjects(sgCGroup *objs,int cubieId,ofVec3f v);
 	
 	//this vector (point) is the offset of the cutter, to rotate correctly (when cutter was not rotated) when its offcentered by user on the armature stage
 	ofVec3f pointRotate;

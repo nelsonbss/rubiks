@@ -382,9 +382,17 @@ void cubie::undoArmRotations(ofVec3f v){
 	//}
 }
 //-------------------------------------------------------------------------------------------------------------------------------------------
-void cubie::setObjects(sgCGroup *objs,int cubieId){
+void cubie::setObjects(sgCGroup *objs,int cubieId,ofVec3f v){
 	////it receives a group, when Puzzle loadsPieces(ySlicer->getPieces())  on main
 	////it takes the input group and breaks it, to put parts on cubie group "objects"
+
+	v = (v)*-1;
+	SG_POINT rotP = {0,0,0};
+	SG_VECTOR rotV = {1,0,0};
+	SG_VECTOR rotV2 = {0,1,0};
+	SG_VECTOR rotV3 = {0,0,1};
+
+
 	if(objs != NULL){
 		sgCObject **objcts = (sgCObject**)malloc(50*sizeof(sgCObject*));
 		int objctr = 0;
@@ -405,6 +413,15 @@ void cubie::setObjects(sgCGroup *objs,int cubieId){
 			objectList[j] = (sgC3DObject*)temp->Clone();
 			objcts[objctr] = (sgC3DObject*)temp->Clone();
 			objctr ++;
+
+			///////rotate back the pieces
+			temp->InitTempMatrix()->Rotate(rotP,rotV3,ofDegToRad(v.z));
+				temp->GetTempMatrix()->Rotate(rotP,rotV2,ofDegToRad(v.y));
+				temp->GetTempMatrix()->Rotate(rotP,rotV,ofDegToRad(v.x));
+				temp->ApplyTempMatrix();
+				temp->DestroyTempMatrix();
+
+
 			//////////////////////create ofMEsh
 			ofMesh tempMesh;
 			ofRender *ofr = new ofRender(); //class that has the metods to transform sgCore to OF mesh and set the normals (in one function)

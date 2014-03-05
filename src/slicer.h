@@ -21,7 +21,7 @@ public:
 	//!!!important
 	//its an array of groups because in one siliced piece, there might be 1 or more 3Dobjects
 	//as the result of the boolean operation!!!
-	sgCGroup** getPieces(ofVec3f input); //returns the array of * of groups of objects for each volume(smallCube) of the puzzle
+	sgCGroup** getPieces(); //returns the array of * of groups of objects for each volume(smallCube) of the puzzle
 	int countPieces();
 
 	//// algorithms variables

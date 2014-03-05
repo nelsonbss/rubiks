@@ -478,28 +478,36 @@ void game::guiInput(int in){
 			moveA(p);
 		}
 		///z movement
-		if(in == 'q') {
+		if(in == 'o') {
 			ofVec3f p = ofVec3f (0,0,5);
 			moveA(p);
 		}
-		if(in == 'a') {
+		if(in == 'p') {
 			ofVec3f p = ofVec3f (0,0,-5);
 			moveA(p);
 		}//////////////////////////////rotate all armature
-		if(in == 'c') {//rotate right
+		if(in == 'c') {//rotate around y
 			ofVec3f r = ofVec3f (0,5,0);
 			rotateA(r);
 		}
-		if(in == 'x') {//rotate left
+		if(in == 'x') {//rotate around y
 			ofVec3f r = ofVec3f (0,-5,0);
 			rotateA(r);
 		}
-		if(in == 'w') {//rotate up
+		if(in == 'w') {//rotate around x
 			ofVec3f r = ofVec3f (5,0,0); //degrees!!!
 			rotateA(r);
 		}
-		if(in == 's') {//rotate down
+		if(in == 's') {//rotate around x
 			ofVec3f r = ofVec3f (-5,0,0);
+			rotateA(r);
+		}
+		if(in == 'e') {//rotate around z
+			ofVec3f r = ofVec3f (0,0,5); //degrees!!!
+			rotateA(r);
+		}
+		if(in == 'd') {//rotate around z
+			ofVec3f r = ofVec3f (0,0,-5);
 			rotateA(r);
 		}
 		/////////////////a puzzle can be made

@@ -21,7 +21,13 @@ void slicer::update(){
 void slicer::draw(){  
 }
 //--------------------------------------------------------------
-sgCGroup** slicer::getPieces(){
+sgCGroup** slicer::getPieces(ofVec3f v){
+	v = (v)*-1;
+	SG_POINT rotP = {0,0,0};
+	SG_VECTOR rotV = {1,0,0};
+	SG_VECTOR rotV2 = {0,1,0};
+	SG_VECTOR rotV3 = {0,0,1};
+
 	//make a copy of the group** to send outside pieces[]
 	aux = (sgCGroup**)malloc(27*sizeof(sgCGroup*));
 	for(int i =0; i<27; i ++){
@@ -38,6 +44,16 @@ sgCGroup** slicer::getPieces(){
 			for (int j=0; j < ChCnt; j++){
 				//clone each object
 				sgCObject *temp = allParts[j];
+
+				temp->InitTempMatrix()->Rotate(rotP,rotV3,ofDegToRad(v.z));
+				temp->GetTempMatrix()->Rotate(rotP,rotV2,ofDegToRad(v.y));
+				temp->GetTempMatrix()->Rotate(rotP,rotV,ofDegToRad(v.x));
+				temp->ApplyTempMatrix();
+				temp->DestroyTempMatrix();
+
+
+
+
 				//put clone on *[] tomake new group
 				objcts[objctr] = temp->Clone();
 				objcts1[objctr] = temp->Clone();

@@ -266,10 +266,10 @@ void game::createPuzzle(SG_VECTOR p){
 
 		/////////////  undo armature axis rotations (x-y-z) to the puzzles' **myCubies  //////
 		//to show it centered, as the sample 3d object
-		undoArmRotations();
+		//undoArmRotations();
 
 		//now slicer has all the parts inside sgCGroup ** pieces[]
-		myPuzzle->loadPieces(mySlicer->getPieces(),objectID);
+		myPuzzle->loadPieces(mySlicer->getPieces(rotateSlicer),objectID);
 		////////////////////////////////end create puzzle/////////////////////////////////
 
 		///////////////  undo armature axis rotations (x-y-z) to the puzzles' **myCubies  //////

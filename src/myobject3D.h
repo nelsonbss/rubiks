@@ -25,7 +25,8 @@ public:
 
 	SG_VECTOR pos;
 	SG_VECTOR tempPos;
-	float deg;
+	ofVec3f armRot;
+	void applyArmRotations(ofVec3f v);
 
 	string name; // may be usefull to call by first name
 };

@@ -103,8 +103,9 @@ public:
 	////color change
 	void changeColorToColor(ofFloatColor Sc, ofFloatColor Tc);
 
-	//armature rotation history
-	vector<armRotations> armRotH;
+	//armature rotation
+	void applyArmRotations();
+	//vector<armRotations> armRotH;
 
 	//gui communication
 	bool rotateB;

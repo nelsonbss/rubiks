@@ -11,7 +11,7 @@
 class puzzle {
 
 public:
-	puzzle(SG_VECTOR p, ofVec3f offset, ofVec3f offRotate);
+	puzzle(SG_VECTOR p, ofVec3f offset);
 
 	void setup();
 	void update();
@@ -25,7 +25,7 @@ public:
 	float numPieces;
 	cubie **myCubies; //malloc numPieces of these
 	ofVec3f cubiesOffset;
-	ofVec3f cubiesOffrotate;
+	//ofVec3f cubiesOffrotate;
 
 	SG_VECTOR pos;
 	void move(SG_VECTOR p);

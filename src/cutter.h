@@ -7,7 +7,7 @@
 
 class cutter {
 public:
-	cutter(float thick, float tamCutter, float tamCuby,float numCutrc, ofVec3f pos, ofVec3f rot);//vector<armRotations> armRotH);
+	cutter(float thick, float tamCutter, float tamCuby,float numCutrc, ofVec3f pos);
     
 	void setup();
 	void update();
@@ -27,11 +27,7 @@ public:
 	void moveUp();
 	void moveDown();
 
-	ofVec3f rotCutter;
-	void rotateHright();
-	void rotateHleft();
-	void rotateVup();
-	void rotateVdown();
+	//ofVec3f rotCutter;
 
 	float numCutter;
 

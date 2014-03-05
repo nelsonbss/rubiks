@@ -235,19 +235,23 @@ void game::loadArmature(int type){
 	setCurrentStep(3);
 }
 //-----------------------------------------------------------------------------------------
+void game::applyArmRotations(){
+	objectDisplayed->applyArmRotations(rotateSlicer);
+}
+//-----------------------------------------------------------------------------------------
 void game::createCutterSlicer(){
 	////////////////////////////////create cutter
-	myCutter = new cutter(planeThicknes,tamCutter,tamCubie,1,offsetSlicer,rotateSlicer);//,armRotH);		
+	myCutter = new cutter(planeThicknes,tamCutter,tamCubie,1,offsetSlicer);		
 	myCutter->setup();
 	//////////////////////////////////create slicer
 	mySlicer = new slicer(myCutter);
 	mySlicer->setup();
 }
-//----------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------
 void game::createPuzzle(SG_VECTOR p){
 	if(step == 3){
 		////////////////////////////////create puzzle///////////////////////////////////////
-		myPuzzle = new puzzle(p, offsetSlicer,rotateSlicer); // it receives the position to be displayed AND the offset of the armature/cutter to adapt slicing
+		myPuzzle = new puzzle(p, offsetSlicer); // it receives the position to be displayed AND the offset of the armature/cutter to adapt slicing
 		myPuzzle->setup();
 
 		////boolean substraction//////////////////////////////////////////////////////////
@@ -306,7 +310,7 @@ void game::rotateA (ofVec3f input){
 	rotateSlicer.y += input.y;
 	rotateSlicer.z += input.z;
 	//add this rotation to armRotations history
-	armRotH.push_back(armRotations(input));
+	//armRotH.push_back(armRotations(input));
 }
 //----------------------------------------------------------------------
 ofVec3f game::giveOffset(){
@@ -486,6 +490,8 @@ void game::guiInput(int in){
 		}
 		/////////////////a puzzle can be made
 		if(in == 'n') {
+			//send the armature rotations to the 3dObject
+			applyArmRotations();
 			//now we know the offset position from the armature to create-> cutter & slicer
 			createCutterSlicer();
 			//do slicing

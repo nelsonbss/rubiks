@@ -73,7 +73,7 @@ public:
 	/*SG_VECTOR rotP;
 	void rotateP(SG_VECTOR r);*/
 
-	////////////////puzzle movements
+	////////////////armature offset
 	//offset vars
 	ofVec3f offsetSlicer;
 	ofVec3f giveOffset();

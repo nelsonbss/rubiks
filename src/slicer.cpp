@@ -21,13 +21,7 @@ void slicer::update(){
 void slicer::draw(){  
 }
 //--------------------------------------------------------------
-sgCGroup** slicer::getPieces(ofVec3f v){
-	v = (v)*-1;
-	SG_POINT rotP = {0,0,0};
-	SG_VECTOR rotV = {1,0,0};
-	SG_VECTOR rotV2 = {0,1,0};
-	SG_VECTOR rotV3 = {0,0,1};
-
+sgCGroup** slicer::getPieces(){
 	//make a copy of the group** to send outside pieces[]
 	aux = (sgCGroup**)malloc(27*sizeof(sgCGroup*));
 	for(int i =0; i<27; i ++){
@@ -44,16 +38,6 @@ sgCGroup** slicer::getPieces(ofVec3f v){
 			for (int j=0; j < ChCnt; j++){
 				//clone each object
 				sgCObject *temp = allParts[j];
-
-				temp->InitTempMatrix()->Rotate(rotP,rotV3,ofDegToRad(v.z));
-				temp->GetTempMatrix()->Rotate(rotP,rotV2,ofDegToRad(v.y));
-				temp->GetTempMatrix()->Rotate(rotP,rotV,ofDegToRad(v.x));
-				temp->ApplyTempMatrix();
-				temp->DestroyTempMatrix();
-
-
-
-
 				//put clone on *[] tomake new group
 				objcts[objctr] = temp->Clone();
 				objcts1[objctr] = temp->Clone();
@@ -105,48 +89,32 @@ void slicer::intersectCubes(sgCObject *obj){
 }
 //---------------------------------------------------------------
 void slicer::undoArmRotations(ofVec3f v){
-	v = (v)*-1;
-	SG_POINT rotP = {0,0,0};
-	SG_VECTOR rotV = {1,0,0};
-	SG_VECTOR rotV2 = {0,1,0};
-	SG_VECTOR rotV3 = {0,0,1};
-
-	for(int i =0; i<27; i ++){
-
-		sgCObject **objcts = (sgCObject**)malloc(50*sizeof(sgCObject*));
-		int objctr = 0;
-		//break each pieces[i]
-		//sgCGroup *parts = pieces[i];
-		if(pieces[i] != NULL){
-			const int ChCnt = pieces[i]->GetChildrenList()->GetCount();
-			sgCObject** allParts = (sgCObject**)malloc(ChCnt*sizeof(sgCObject*));
-			pieces[i]->BreakGroup(allParts);
-			sgDeleteObject(pieces[i]); //break group and delete each object?
-			for (int j=0; j < ChCnt; j++){
-				//clone each object
-				sgCObject *temp = allParts[j];
-
-
-				temp->InitTempMatrix()->Rotate(rotP,rotV3,ofDegToRad(v.z));
-				temp->GetTempMatrix()->Rotate(rotP,rotV2,ofDegToRad(v.y));
-				temp->GetTempMatrix()->Rotate(rotP,rotV,ofDegToRad(v.x));
-				temp->ApplyTempMatrix();
-				//temp->DestroyTempMatrix();
-
-
-				//put clone on *[] tomake new group
-				objcts[objctr] = temp->Clone();
-				objctr ++;
-				sgCObject::DeleteObject(temp);
-			}
-			free(allParts);
-			//put that new group inside aux**[]
-			pieces[i] = sgCGroup::CreateGroup(objcts,objctr); //so pieces[] has the data again, and keeps it for future requests
-		}else{
-			pieces[i] = NULL;
-		}
-		free(objcts);
-	}
+	//for(int i =0; i<27; i ++){
+	//	sgCObject **objcts = (sgCObject**)malloc(50*sizeof(sgCObject*));
+	//	int objctr = 0;
+	//	//break each pieces[i]
+	//	//sgCGroup *parts = pieces[i];
+	//	if(pieces[i] != NULL){
+	//		const int ChCnt = pieces[i]->GetChildrenList()->GetCount();
+	//		sgCObject** allParts = (sgCObject**)malloc(ChCnt*sizeof(sgCObject*));
+	//		pieces[i]->BreakGroup(allParts);
+	//		sgDeleteObject(pieces[i]); //break group and delete each object?
+	//		for (int j=0; j < ChCnt; j++){
+	//			//clone each object
+	//			sgCObject *temp = allParts[j];
+	//			//put clone on *[] tomake new group
+	//			objcts[objctr] = temp->Clone();
+	//			objctr ++;
+	//			sgCObject::DeleteObject(temp);
+	//		}
+	//		free(allParts);
+	//		//put that new group inside aux**[]
+	//		pieces[i] = sgCGroup::CreateGroup(objcts,objctr); //so pieces[] has the data again, and keeps it for future requests
+	//	}else{
+	//		pieces[i] = NULL;
+	//	}
+	//	free(objcts);
+	//}
 }
 //---------------------------------------------------------------
 void slicer::exit(){

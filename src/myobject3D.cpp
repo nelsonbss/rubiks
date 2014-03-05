@@ -51,6 +51,7 @@ void myobject3D::update(){
 		SG_VECTOR rotV3 = {0,0,1};
 		object->GetTempMatrix()->Rotate(rotP,rotV3,ofDegToRad(armRot.z));
 		object->ApplyTempMatrix(); 
+		object->DestroyTempMatrix(); 
 	}else if(objectId == 3){
 		////cone..pyramid
 		//SG_POINT rotP = transP;

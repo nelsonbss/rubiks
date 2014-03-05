@@ -93,6 +93,9 @@ void ofRender::sgCoretoOFmesh(sgC3DObject *obj, ofMesh &mesh,int idCubie,int sel
 			c = cyan;
 		}else{
 			//its another object
+			//we only want to color PLAIN the sample object
+			//the face coloring will be done separately
+
 			//if(selectedObjectID == 2){
 			//	c = decideColorCubieBox(dir,idCubie); //we color the cube here so it gets the official colors on its faces
 			//	//c = decideColorCubieDEBUG(dir,idCubie); //this is to test the offset slicing and rotations

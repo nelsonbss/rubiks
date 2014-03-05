@@ -230,8 +230,8 @@ void testApp::exit(){
 	myGames[0]->restart();
 	myGames[0]->exit();
 
-	myGames[1]->restart();
-	myGames[1]->exit();
+	/*myGames[1]->restart();
+	myGames[1]->exit();*/
 	sgDeleteObject(sgBunny);
 	sgDeleteObject(sgTetrahedron);
 	sgDeleteObject(sgDodecahedron);

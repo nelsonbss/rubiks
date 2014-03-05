@@ -33,7 +33,7 @@
 //{
 //        ofxTrackball( ofGetWidth()/2, ofGetHeight()/2, 0, ofGetHeight());
 //}
-
+//-----------------------------------------------------------------------------------------
 ofxTrackball::ofxTrackball( float x, float y, float z, float radius, puzzle *pzl, bool dtb )
 {
 	this->tbPuzzle = pzl;
@@ -83,7 +83,7 @@ ofxTrackball::ofxTrackball( float x, float y, float z, float radius, puzzle *pzl
 	quatDown->set( quatNow->x(), quatNow->y(), quatNow->z(), quatNow->w() );
 	quatDrag->set( 0, 0, 0, 1 );
 }
-
+//-----------------------------------------------------------------------------------------
 ofxTrackball::~ofxTrackball()
 {
 	delete center;
@@ -98,8 +98,7 @@ ofxTrackball::~ofxTrackball()
 	disableMouse();
 	ofRemoveListener(ofEvents().update, this, &ofxTrackball::update );
 }
-
-
+//-----------------------------------------------------------------------------------------
 #pragma mark apply rotation
 void ofxTrackball::rotate()
 {
@@ -119,13 +118,13 @@ void ofxTrackball::rotate()
 
 		/////////////////////////////////////////////
 		//send this rotation to puzzle
-		tbPuzzle->rotateTB( ofRadToDeg(angle), ofVec3f(x,y,z));
+		tbPuzzle->rotateTB(ofRadToDeg(angle), ofVec3f(x,y,z));
 		///////////////////////////////////////////////
 		//send this rotation to armature??
 	}       
 	ofTranslate( -center->x, -center->y, -center->z );
 }
-
+//-----------------------------------------------------------------------------------------
 void ofxTrackball::draw()
 {
 
@@ -201,8 +200,7 @@ void ofxTrackball::draw()
 
 	//glEnable( GL_DEPTH_TEST );
 }
-
-
+//-----------------------------------------------------------------------------------------
 void ofxTrackball::update( ofEventArgs &args )
 {
 	// calculate elapsed time since last update
@@ -242,7 +240,7 @@ void ofxTrackball::update( ofEventArgs &args )
 	// update timestamp
 	elapsedTime = currentTime;
 }
-
+//-----------------------------------------------------------------------------------------
 void ofxTrackball::reset()
 {
 	vecDown->set ( 0, 0, 0 );
@@ -254,37 +252,35 @@ void ofxTrackball::reset()
 	previousCursor->set( 0, 0 );
 	velocity->set( 0, 0 );
 }
-
-
+//-----------------------------------------------------------------------------------------
 #pragma mark getter and setter
 void ofxTrackball::setCenter( float x, float y, float z )
 {
 	center->set( x, y, z );
 }
-
+//-----------------------------------------------------------------------------------------
 void ofxTrackball::setRadius( float r )
 {
 	if ( radius <= 0 ) this->radius = 1;
 	else this->radius = r;
 }
-
+//-----------------------------------------------------------------------------------------
 const float ofxTrackball::getRadius()
 {
 	return radius;
 }
-
+//-----------------------------------------------------------------------------------------
 void ofxTrackball::setDamping( float damping )
 {
 	if ( damping < 0 ) damping = 0;
 	this->damping = damping;
 }
-
+//-----------------------------------------------------------------------------------------
 const float ofxTrackball::getDamping()
 {
 	return damping;
 }
-
-
+//-----------------------------------------------------------------------------------------
 #pragma mark event handling
 
 void ofxTrackball::enableMouse()
@@ -293,14 +289,14 @@ void ofxTrackball::enableMouse()
 	ofAddListener( ofEvents().mouseDragged,  this, &ofxTrackball::cursorDragged );
 	ofAddListener( ofEvents().mouseReleased, this, &ofxTrackball::cursorReleased );
 }
-
+//-----------------------------------------------------------------------------------------
 void ofxTrackball::disableMouse()
 {
 	ofRemoveListener(ofEvents().mousePressed,  this, &ofxTrackball::cursorPressed );
 	ofRemoveListener( ofEvents().mouseDragged,  this, &ofxTrackball::cursorDragged );
 	ofRemoveListener( ofEvents().mouseReleased, this, &ofxTrackball::cursorReleased );
 }
-
+//-----------------------------------------------------------------------------------------
 void ofxTrackball::cursorPressed( ofMouseEventArgs &args )
 {
 	if ( args.button == 0 )
@@ -315,7 +311,7 @@ void ofxTrackball::cursorPressed( ofMouseEventArgs &args )
 		quatDrag->set( 0, 0, 0, 1 );
 	}
 }
-
+//-----------------------------------------------------------------------------------------
 void ofxTrackball::cursorDragged( ofMouseEventArgs &args )
 {
 	if ( args.button == 0 )
@@ -351,13 +347,12 @@ void ofxTrackball::update(string _eventName, SubObEvent* _event){
 		quatDrag->makeRotate( *vecDown, *vecDrag );
 	}
 }
-
+//-----------------------------------------------------------------------------------------
 void ofxTrackball::cursorReleased( ofMouseEventArgs &args )
 {
 	isCursorPressed = false;
 }
-
-
+//-----------------------------------------------------------------------------------------
 # pragma mark calculations
 void ofxTrackball::mouseToSphere( float x, float y, ofVec3f *v )
 {
@@ -375,7 +370,7 @@ void ofxTrackball::mouseToSphere( float x, float y, ofVec3f *v )
 	}
 	if (constrainAxis != -1) constrainVector( v, axisSet[constrainAxis] );
 }
-
+//-----------------------------------------------------------------------------------------
 void ofxTrackball::constrainVector( ofVec3f *v, ofVec3f *axis )
 {
 	float dot = v->dot(*axis);

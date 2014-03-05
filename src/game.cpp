@@ -128,7 +128,7 @@ void game::draw(){
 		objectDisplayed->draw();
 	}
 	if(step == 4 ){
-		 //trackball
+		//trackball
 		myTB->draw();
 
 		//made the cuts
@@ -139,13 +139,13 @@ void game::draw(){
 	if(step == 5){
 		//trackball
 		myTB->draw();
-		
+
 		//show puzzle
 		//rotations can be made
 		myPuzzle->draw();
 	}
 
-	
+
 }
 //----------------------------------------------------------------------
 void game::rotateByIDandAxis(int id, SG_VECTOR axs, bool d){
@@ -240,41 +240,59 @@ void game::loadArmature(int type){
 	}
 
 	myArmature->setup();
-	setCurrentStep(3);
+	step =3;
+}
+//-----------------------------------------------------------------------------------------
+void game::applyArmRotations(){
+	objectDisplayed->applyArmRotations(rotateSlicer);
+}
+//-----------------------------------------------------------------------------------------
+void game::undoArmRotations(){
+	//myPuzzle->undoArmRotations(rotateSlicer);
+	mySlicer->undoArmRotations(rotateSlicer);
 }
 //-----------------------------------------------------------------------------------------
 void game::createCutterSlicer(){
 	////////////////////////////////create cutter
-	myCutter = new cutter(planeThicknes,tamCutter,tamCubie,1,offsetSlicer,rotateSlicer);//,armRotH);		
+	myCutter = new cutter(planeThicknes,tamCutter,tamCubie,1,offsetSlicer);		
 	myCutter->setup();
 	//////////////////////////////////create slicer
 	mySlicer = new slicer(myCutter);
 	mySlicer->setup();
 }
-//----------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------
 void game::createPuzzle(SG_VECTOR p){
 	if(step == 3){
 		////////////////////////////////create puzzle///////////////////////////////////////
-		myPuzzle = new puzzle(p, offsetSlicer,rotateSlicer); // it receives the position to be displayed AND the offset of the armature/cutter to adapt slicing
+		myPuzzle = new puzzle(p, offsetSlicer); // it receives the position to be displayed AND the offset of the armature/cutter to adapt slicing
 		myPuzzle->setup();
 
 		////boolean substraction//////////////////////////////////////////////////////////
 		//mySlicer->xSlicing(*mySlicer->myCutter,objectDisplayed->getObject(),1,1);
 		///////////////  BOOLEAN INTERSECTION          ///////////////////////////////////
 		mySlicer->intersectCubes((sgCObject*)objectDisplayed->getObject()); 
-		//now slicer has all the parts inside sgCGroup ** = pieces[]
-		myPuzzle->loadPieces(mySlicer->getPieces(),objectID);
+
+		/////////////  undo armature axis rotations (x-y-z) to the puzzles' **myCubies  //////
+		//to show it centered, as the sample 3d object
+		//undoArmRotations();
+
+		//now slicer has all the parts inside sgCGroup ** pieces[]
+		myPuzzle->loadPieces(mySlicer->getPieces(rotateSlicer),objectID);
 		////////////////////////////////end create puzzle/////////////////////////////////
+
+		///////////////  undo armature axis rotations (x-y-z) to the puzzles' **myCubies  //////
+		////to show it centered, as the sample 3d objrnect
+		//undoArmRotations();
 
 		///////////////////////////////  color puzzle   ////////////////////////////////// 
 		//color all the faces for platonic solids!! colors outside for most objects(not bunny), black on the insides
 		myPuzzle->colorFaces(objectID);
 
-
-		//trackball
+		////////////////////////   give puzzle trackball  //////////////////////////////
 		myTB = new ofxTrackball(ofGetWidth()/2, ofGetHeight()/2, 0, 2000, myPuzzle,false);
 
 		updatePuzzle = true;
+
 		step = 4;
 	}
 }
@@ -314,8 +332,7 @@ void game::rotateA (ofVec3f input){
 	rotateSlicer.y += input.y;
 	rotateSlicer.z += input.z;
 	//add this rotation to armRotations history
-	/*armRotations x = armRotations(input);
-	armRotH.push_back(armRotations(input));*/
+	//armRotH.push_back(armRotations(input));
 }
 //----------------------------------------------------------------------
 ofVec3f game::giveOffset(){
@@ -479,7 +496,7 @@ void game::guiInput(int in){
 			moveA(p);
 		}//////////////////////////////rotate all armature
 		if(in == 'c') {//rotate right
-			ofVec3f r = ofVec3f (0,35,0);
+			ofVec3f r = ofVec3f (0,30,0);
 			rotateA(r);
 		}
 		if(in == 'x') {//rotate left
@@ -487,7 +504,7 @@ void game::guiInput(int in){
 			rotateA(r);
 		}
 		if(in == 'w') {//rotate up
-			ofVec3f r = ofVec3f (20,0,0); //degrees!!!
+			ofVec3f r = ofVec3f (25,0,0); //degrees!!!
 			rotateA(r);
 		}
 		if(in == 's') {//rotate down
@@ -496,11 +513,12 @@ void game::guiInput(int in){
 		}
 		/////////////////a puzzle can be made
 		if(in == 'n') {
+			//send the armature rotations to the 3dObject
+			applyArmRotations();
 			//now we know the offset position from the armature to create-> cutter & slicer
 			createCutterSlicer();
 			//do slicing
-			//SG_VECTOR viewPuzzle = {ofGetWidth() / 2,ofGetHeight() / 2,displayZ};
-			createPuzzle(posP);//create Puzzle goes to step4 inside the game to show the puzzle
+			createPuzzle(posP);//create Puzzle goes to step 4 to show the puzzle
 		}
 	}
 	////////////////////////////////////////////step 4 inputs
@@ -702,7 +720,7 @@ void game::restart(){
 		step = 0;
 		armID = -1;
 	}else if (step==3){
-		objectDisplayed->exit();
+		objectDisplayed->exit();             //clean displayed object after puzzle is created, so we dont keep it until the exit or restart
 		step = 0;
 		objectID = -1;
 		armID = -1;

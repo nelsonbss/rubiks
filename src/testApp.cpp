@@ -14,7 +14,7 @@ void testApp::setup(){
 	gm = new GestureManager();
 	gm->loadGMLFile("basic_manipulation.gml");
 	gm->init("rubiksWindow", ofGetWidth(), ofGetHeight());
-	gm->start();
+	//gm->start();
 
 	/*
 	if(loadGestureWorks("GestureworksCore32.dll")) { 

@@ -11,7 +11,7 @@
 class puzzle {
 
 public:
-	puzzle(SG_VECTOR p, ofVec3f offset, ofVec3f offRotate);
+	puzzle(SG_VECTOR p, ofVec3f offset);
 
 	void setup();
 	void update();
@@ -25,12 +25,13 @@ public:
 	float numPieces;
 	cubie **myCubies; //malloc numPieces of these
 	ofVec3f cubiesOffset;
-	ofVec3f cubiesOffrotate;
+	//ofVec3f cubiesOffrotate;
 
 	SG_VECTOR pos;
 	void move(SG_VECTOR p);
 
 	SG_VECTOR rot;
+	void undoArmRotations(ofVec3f v);
 	void rotate(SG_VECTOR r);
 	void rotateTB(float angle, ofVec3f axis);
 	ofVec3f qaxis; 
@@ -54,14 +55,6 @@ public:
 	///color change
 	void changeColorToColor(ofFloatColor Sc, ofFloatColor Tc);
 
-
-
-
-	///quaternions
-	ofQuaternion qx;
-	ofQuaternion qy;
-	ofQuaternion qz;
-	ofQuaternion qt;
 };
 
 #endif /* defined(__Tpuzzle__puzzle__) */

@@ -328,18 +328,18 @@ void cubie::draw(){
 			if (objectList[j]->GetTempMatrix()!=0)
 			glMultMatrixd(objectList[j]->GetTempMatrix()->GetTransparentData());
 			objectList[j]->DestroyTempMatrix();
-			/*
 			if(bDraw){
 				myVbos[j].draw(GL_TRIANGLES, 0,myMeshs[j].getNumIndices());
 			}
-			*/
+			/*
 			if(bDraw){
 				myMeshs[j].drawWireframe();
 			}
+			*/
 			ofPushMatrix();
 			ofTranslate(centroid3d.x, centroid3d.y, centroid3d.z);
 			ofSetColor(centroidColor.x, centroidColor.y, centroidColor.z);
-			ofDrawSphere(0,0,0,10);
+			//ofDrawSphere(0,0,0,10);
 			projectCentroid();
 			ofPopMatrix();
 			glPopMatrix();
@@ -350,12 +350,14 @@ void cubie::draw(){
 		bDraw = true;
 	}
 	*/
+	/*
 	ofFill();
 	ofSetColor(centroidColor.x, centroidColor.y, centroidColor.z);
 	ofPushMatrix();
 	ofTranslate(0,0,centroid2d.z);
 	ofRect(drawPos.x - (drawSize.x / 2), drawPos.y - (drawSize.y / 2),drawSize.x, drawSize.y); 
 	ofPopMatrix();
+	*/
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 void cubie::faceRotate(SG_VECTOR axis,bool di){
@@ -490,9 +492,9 @@ void cubie::projectCentroid(){
 	y = ofGetHeight() - y;
 	centroid2d.set(x, y, z);
 	//cout << "made pick point " << centroid2d.x << ", " << centroid2d.y << endl;
-	drawPos.x = centroid2d.x;
-	drawPos.y = centroid2d.y;
-	drawSize.set(50,50);
+	drawPos.x = centroid2d.x - 50;
+	drawPos.y = centroid2d.y - 50;
+	drawSize.set(100,100);
 	setZ(centroid2d.z);
 	//cout << "Cubie " << id << " z = " << centroid2d.z << endl;
 }

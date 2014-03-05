@@ -110,13 +110,13 @@ void GestureManager::getGestures(){
 				e->addArg("point", ofVec2f(eIter->position.getX(), eIter->position.getY()));
 				e->addArg("x",eIter->position.getX());
 				e->addArg("y",eIter->position.getY());
-				cout << "sending touch event" << endl;
+				//cout << "sending touch event" << endl;
 				SubObMediator::Instance()->sendEvent("touch-point",e);
 				while(e->getArg("receivers")->getInt() < receivers){}
-				cout << "hit = " << e->getArg("hit")->getInt() << endl;
+				//cout << "hit = " << e->getArg("hit")->getInt() << endl;
 				if(e->getArg("hit")->getInt()){
 					if(e->hasArg("target")){
-						cout << "assigning " << e->getArg("target")->getString() << " to gesture" << endl;
+						//cout << "assigning " << e->getArg("target")->getString() << " to gesture" << endl;
 						assignTouchPoint(e->getArg("target")->getString(), eIter->point_id);
 					}
 				}
@@ -131,19 +131,20 @@ void GestureManager::getGestures(){
 	}
 	std::vector<gwc::GestureEvent> gestureEvents = consumeGestureEvents();
 	for(std::vector<gwc::GestureEvent>::iterator gIter = gestureEvents.begin(); gIter != gestureEvents.end(); gIter++) {
-		if(gIter->phase < 5){
-			cout << gIter->gesture_type << " - " << gIter->x << ", " << gIter->y << " - " << gIter->phase << endl;
-			SubObEvent* gEvent = new SubObEvent();
-			gEvent->setName("gesture");
-			gEvent->addArg("ID", gIter->ID);
-			gEvent->addArg("absPos", ofVec2f(gIter->x, gIter->y));
-			gEvent->addArg("deltaPos", ofVec2f(gIter->values["drag_dx"], gIter->values["drag_dy"]));
-			gEvent->addArg("type", gIter->gesture_type);
-			gEvent->addArg("target",gIter->target);
-			gEvent->addArg("phase",gIter->phase);
-			gEvent->addArg("id", gIter->gesture_id);
-			gEvent->addArg("n", gIter->n);
-			SubObMediator::Instance()->sendEvent("gesture", gEvent);
+		cout << gIter->gesture_type << " - " << gIter->x << ", " << gIter->y << " - " << gIter->phase << endl;
+		if(gIter->gesture_type == "tap"){
+			cout << "tap" << endl;
 		}
+		SubObEvent* gEvent = new SubObEvent();
+		gEvent->setName("gesture");
+		gEvent->addArg("ID", gIter->ID);
+		gEvent->addArg("absPos", ofVec2f(gIter->x, gIter->y));
+		gEvent->addArg("deltaPos", ofVec2f(gIter->values["drag_dx"], gIter->values["drag_dy"]));
+		gEvent->addArg("type", gIter->gesture_type);
+		gEvent->addArg("target",gIter->target);
+		gEvent->addArg("phase",gIter->phase);
+		gEvent->addArg("id", gIter->gesture_id);
+		gEvent->addArg("n", gIter->n);
+		SubObMediator::Instance()->sendEvent("gesture", gEvent);
 	}
 }

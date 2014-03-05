@@ -3,7 +3,7 @@
 #include "ofRender.h"
 #include <math.h>
 
-cubie::cubie(float x, float y,float z, int idi, int selObjId, ofVec3f offset, ofVec3f offrotate){
+cubie::cubie(float x, float y,float z, int idi, int selObjId, ofVec3f offset, ofVec3f offrotate) : GuiNode(){
 	objects = NULL;
 	id = idi;
 	selectedObjectID = selObjId;
@@ -40,10 +40,13 @@ cubie::cubie(float x, float y,float z, int idi, int selObjId, ofVec3f offset, of
 	myMatrix.push_back(matrix(axis,0.0,true));
 	//to control undo
 	undoing = false;
+	
+	init();
 	addParam("draggable", "true");
 	addParam("n", "1");
 	bDraw = true;
 	scale = 1.0;
+	bRotate = false;
 	name = "cubie-" + ofToString(id);
 	activate();
 }
@@ -493,8 +496,23 @@ void cubie::update(string _eventName, SubObEvent* _event){
 }
 
 void cubie::dragInput(int _ID, int _n, int _phase, ofVec2f _absPos, ofVec2f _deltaPos){
+	int rotationDirection = ROTATE_UP;
+	if(abs(_deltaPos.x) > abs(_deltaPos.y)){
+		if(_deltaPos.x > 0){
+			rotationDirection = ROTATE_RIGHT;
+		} else {
+			rotationDirection = ROTATE_LEFT;
+		} 
+	} else {
+		if(_deltaPos.y > 0){
+			rotationDirection = ROTATE_DOWN;
+		} else {
+			rotationDirection = ROTATE_UP;
+		}
+	}
+	bRotate = true;
 	bDraw = false;
-	cout << "cubie - " << name << " being dragged." << endl;
+	//cout << "cubie - " << name << " being dragged." << endl;
 }
 
 void cubie::execute(){

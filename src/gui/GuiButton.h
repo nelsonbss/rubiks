@@ -17,8 +17,9 @@ class GuiButton : public GuiNode
         GuiButton(){}
         virtual ~GuiButton(){}
 		void nodeInit();
+		void nodeExecute();
         bool processMouse(int _x, int _y, int _state);
-		void dragInput(int _ID, int _n, int _phase, ofVec2f _absPos, ofVec2f _deltaPos);
+		void input(string _type, int _ID, int _n, int _phase, ofVec2f _absPos, ofVec2f _deltaPos);
         virtual void update(string _subName, Subject* _sub);
         void update(string _eventName, SubObEvent* _event);
 		void setMessage(map<string,string> _msg){}

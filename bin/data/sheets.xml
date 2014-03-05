@@ -3,7 +3,7 @@
     <node type="button" name="grey1">
 			<pos>0.04,0.13</pos>
 			<size>150,150</size>
-      <scale>0.15</scale>
+      <scale>0.25</scale>
       <event name="object-selected">
         <arg name="object">
           <type>int</type>
@@ -15,7 +15,7 @@
         <val>grey1.png</val>
       </param>
       <param>
-        <name>draggable</name>
+        <name>drag</name>
         <val>true</val>
       </param>
       <param>
@@ -30,7 +30,7 @@
     <node type="button" name="grey8">
       <pos>0.12,0.13</pos>
       <size>150,150</size>
-      <scale>0.15</scale>
+      <scale>0.25</scale>
       <event name="object-selected">
         <arg name="object">
           <type>int</type>
@@ -42,7 +42,7 @@
         <val>grey8.png</val>
       </param>
       <param>
-        <name>draggable</name>
+        <name>drag</name>
         <val>true</val>
       </param>
       <param>
@@ -57,7 +57,7 @@
     <node type="button" name="grey2">
       <pos>0.04,0.32</pos>
       <size>150,150</size>
-      <scale>0.15</scale>
+      <scale>0.25</scale>
       <event name="object-selected">
         <arg name="object">
           <type>int</type>
@@ -69,7 +69,7 @@
         <val>grey2.png</val>
       </param>
       <param>
-        <name>draggable</name>
+        <name>drag</name>
         <val>true</val>
       </param>
       <param>
@@ -84,7 +84,7 @@
     <node type="button" name="grey3">
       <pos>0.12,0.32</pos>
       <size>150,150</size>
-      <scale>0.15</scale>
+      <scale>0.25</scale>
       <event name="object-selected">
         <arg name="object">
           <type>int</type>
@@ -96,7 +96,7 @@
         <val>grey3.png</val>
       </param>
       <param>
-        <name>draggable</name>
+        <name>drag</name>
         <val>true</val>
       </param>
       <param>
@@ -111,7 +111,7 @@
     <node type="button" name="grey4">
       <pos>0.04,0.51</pos>
       <size>150,150</size>
-      <scale>0.15</scale>
+      <scale>0.25</scale>
       <event name="object-selected">
         <arg name="object">
           <type>int</type>
@@ -123,7 +123,7 @@
         <val>grey4.png</val>
       </param>
       <param>
-        <name>draggable</name>
+        <name>drag</name>
         <val>true</val>
       </param>
       <param>
@@ -138,7 +138,7 @@
     <node type="button" name="grey6">
       <pos>0.12,0.51</pos>
       <size>150,150</size>
-      <scale>0.15</scale>
+      <scale>0.25</scale>
       <event name="object-selected">
         <arg name="object">
           <type>int</type>
@@ -150,7 +150,7 @@
         <val>grey6.png</val>
       </param>
       <param>
-        <name>draggable</name>
+        <name>drag</name>
         <val>true</val>
       </param>
       <param>
@@ -165,7 +165,7 @@
     <node type="button" name="grey7">
       <pos>0.04,0.7</pos>
       <size>150,150</size>
-      <scale>0.15</scale>
+      <scale>0.25</scale>
       <event name="object-selected">
         <arg name="object">
           <type>int</type>
@@ -177,7 +177,7 @@
         <val>grey7.png</val>
       </param>
       <param>
-        <name>draggable</name>
+        <name>drag</name>
         <val>true</val>
       </param>
       <param>
@@ -192,7 +192,7 @@
     <node type="button" name="attract-next">
       <pos>0.8,0.85</pos>
       <size>150,150</size>
-      <scale>0.9</scale>
+      <scale>1.0</scale>
       <event name="replace-sheet">
         <arg name="target">
           <type>string</type>
@@ -202,6 +202,14 @@
       <param>
         <name>image</name>
         <val>btnNext.png</val>
+      </param>
+      <param>
+        <name>tap</name>
+        <val>true</val>
+      </param>
+      <param>
+        <name>n</name>
+        <val>0</val>
       </param>
     </node>
     <node type="drop" name="object-drop">
@@ -219,6 +227,31 @@
       <param>
         <name>z</name>
         <val>-1000.0</val>
+      </param>
+    </node>
+    <node type="ibox" name="main-drag">
+      <pos>0.64, 0.27</pos>
+      <size>0.26,0.46</size>
+      <scale>1.0</scale>
+      <param>
+        <name>draw-area</name>
+        <val>true</val>
+      </param>
+      <param>
+        <name>draw-color</name>
+        <val>0,255,0</val>
+      </param>
+      <param>
+        <name>z</name>
+        <val>-1000.0</val>
+      </param>
+      <param>
+        <name>draggable</name>
+        <val>true</val>
+      </param>
+      <param>
+        <name>n</name>
+        <val>2</val>
       </param>
     </node>
 	</sheet>

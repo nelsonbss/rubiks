@@ -105,34 +105,35 @@ void GuiConfigurator::update(string _eventName, SubObEvent* _event){
 	if(_eventName == "gesture"){
 		string target = _event->getArg("target")->getString();
 		string type = _event->getArg("type")->getString();
-		cout << "have " << type << " going to " << target << endl;
-		if(type == "drag" && (activeNodes.count(target))){
-			string draggable = activeNodes[target]->getParam("draggable");
-			cout << draggable << endl;
-			if(draggable == "true"){
-				cout << "...and we're draggable." << endl;
-				int n = 1;
-				string targetN = activeNodes[target]->getParam("n");
-				int eventN = _event->getArg("n")->getInt();
-				cout << "event n = " << eventN << endl;
-				if(targetN != "__NONE__"){
-					n = ofToInt(targetN);
-				}
+		//cout << "have " << type << " going to " << target << endl;
+		if(activeNodes.count(target)){
+			//cout << draggable << endl;
+			int n = 1;
+			string targetN = activeNodes[target]->getParam("n");
+			int eventN = _event->getArg("n")->getInt();
+			if(targetN != "__NONE__"){
+				n = ofToInt(targetN);
+			}
+			cout << "event n = " << eventN << " and target n = " << targetN << endl;
+			if(activeNodes[target]->getParam(type) == "true"){
 				if(eventN == n){
+					cout << activeNodes[target]->getName() << " is getting " << type << endl;
 					//activeNodes[target]->adjustPosition(_event->getArg("drag_d")->getVec2(), _event->getArg("position")->getVec2());
-					cout << "sending drag." << endl;
+					///cout << "sending drag." << endl;
 					int cID = _event->getArg("ID")->getInt();
 					int cN = _event->getArg("n")->getInt();
 					int cPhase = _event->getArg("phase")->getInt();
 					ofVec2f cAPos = _event->getArg("absPos")->getVec2();
 					ofVec2f cDPos = _event->getArg("deltaPos")->getVec2();
-					activeNodes[target]->dragInput(cID, cN, cPhase, cAPos, cDPos);
+					if(activeNodes[target]->getReadyForInput()){
+						activeNodes[target]->input(type, cID, cN, cPhase, cAPos, cDPos);
+					}
+				} else {
+					cout << "n mismatch" << endl;
 				}
 			} else {
-				cout << "...but we're not draggable." << endl;
+				//cout << "...but we're not draggable." << endl;
 			}
-		} else {
-			cout << "gesture fail" << endl;
 		}
 	}
 }

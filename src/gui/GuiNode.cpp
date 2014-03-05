@@ -23,7 +23,6 @@ bool GuiNode::isInside(int _x, int _y){
 	cout << " against " << _x << ", " << _y << endl;
     if((_x > drawPos.x && _x < (drawPos.x + (scale * drawSize.x)) &&
        (_y > drawPos.y && _y < (drawPos.y + (scale * drawSize.y))))){
-           cout << "hit" << endl;
 		   return true;
        }
     return false;
@@ -43,6 +42,7 @@ void GuiNode::init(){
 	if(params.count("z")){
 		drawZ = ofToFloat(params["z"]);
 	}
+	bReadyForInput = true;
 	nodeInit();
 }
 
@@ -67,8 +67,9 @@ void GuiNode::_windowResized(){
 }
 
 void GuiNode::execute(){
-	cout << "sending " << events.size() << " events." << endl;
+	//cout << "sending " << events.size() << " events." << endl;
 	for(vector<SubObEvent*>::iterator sIter = events.begin(); sIter != events.end(); ++sIter){
 		SubObMediator::Instance()->sendEvent((*sIter)->getName(), (*sIter));
 	}
+	nodeExecute();
 }

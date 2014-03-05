@@ -8,6 +8,8 @@
 
 #include <vector>
 
+enum{ROTATE_UP, ROTATE_DOWN, ROTATE_LEFT, ROTATE_RIGHT};
+
 class cubie: public GuiNode{
 	
 public:
@@ -78,6 +80,12 @@ public:
 	void execute();
 
 	bool bDraw;
+	int rotationDirection;
+
+	bool bRotate;
+	bool getRotate(){return bRotate;}
+	int getRotationDirection(){return rotationDirection;}
+	void setRotate(bool _rotate){bRotate = _rotate;}
 
 	void getCentroid();
 	void projectCentroid();

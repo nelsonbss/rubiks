@@ -35,10 +35,13 @@
 
 #include "ofMain.h"
 #include "ofEvents.h"
+#include "Observer.h"
+#include "SubObEvent.h"
+#include "SubObMediator.h"
 
 #include "puzzle.h"
 
-class ofxTrackball{
+class ofxTrackball : public Observer{
         
 public:
         //ofxTrackball();
@@ -62,6 +65,9 @@ public:
         void cursorPressed ( ofMouseEventArgs &args );
         void cursorDragged ( ofMouseEventArgs &args );
         void cursorReleased( ofMouseEventArgs &args );
+
+		void update(string _subName, Subject* _sub){}
+		void update(string _eventName, SubObEvent* _event);
 
 		puzzle *tbPuzzle;
 		bool drawTrackBall;

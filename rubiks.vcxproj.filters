@@ -128,7 +128,6 @@
     <ClCompile Include="src\GestureManager.cpp">
       <Filter>src</Filter>
     </ClCompile>
-<<<<<<< HEAD
     <ClCompile Include="src\gui\GuiDropArea.cpp">
       <Filter>src\gui</Filter>
     </ClCompile>
@@ -137,10 +136,6 @@
     </ClCompile>
     <ClCompile Include="src\subob\SubObEvent.cpp">
       <Filter>src\subob</Filter>
-=======
-    <ClCompile Include="src\ofxTrackball.cpp">
-      <Filter>src</Filter>
->>>>>>> b647c757213251a816e782831c83c7dc4f163ab3
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -417,7 +412,6 @@
     <ClInclude Include="src\GestureManager.h">
       <Filter>src</Filter>
     </ClInclude>
-<<<<<<< HEAD
     <ClInclude Include="src\gui\GuiDropArea.h">
       <Filter>src\gui</Filter>
     </ClInclude>
@@ -426,10 +420,6 @@
     </ClInclude>
     <ClInclude Include="src\subob\SubObEvent.h">
       <Filter>src\subob</Filter>
-=======
-    <ClInclude Include="src\ofxTrackball.h">
-      <Filter>src</Filter>
->>>>>>> b647c757213251a816e782831c83c7dc4f163ab3
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

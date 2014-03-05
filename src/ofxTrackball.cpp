@@ -63,7 +63,8 @@ ofxTrackball::ofxTrackball( float x, float y, float z, float radius, puzzle *pzl
 	isCursorPressed = false;
 
 	// setup event handler
-	enableMouse();
+	
+	//enableMouse();
 	ofAddListener(ofEvents().update, this, &ofxTrackball::update );
 
 	// setup drawing
@@ -71,6 +72,16 @@ ofxTrackball::ofxTrackball( float x, float y, float z, float radius, puzzle *pzl
 
 	// setup time
 	elapsedTime = ofGetElapsedTimef();
+	SubObMediator::Instance()->addObserver("main-drag:2", this);
+
+	isCursorPressed = true;
+	cursor->set( 0, 0);
+	previousCursor->set( 0, 0);
+
+
+	mouseToSphere( cursor->x, cursor->y, vecDown );
+	quatDown->set( quatNow->x(), quatNow->y(), quatNow->z(), quatNow->w() );
+	quatDrag->set( 0, 0, 0, 1 );
 }
 
 ofxTrackball::~ofxTrackball()
@@ -309,8 +320,31 @@ void ofxTrackball::cursorDragged( ofMouseEventArgs &args )
 {
 	if ( args.button == 0 )
 	{
+
+		cout << "mouse dragging - " << args.x << ", " << args.y << ". isCursorPressed = " << isCursorPressed << endl;
+
 		previousCursor->set( cursor->x, cursor->y );
 		cursor->set( args.x, args.y );
+		*velocity = (*cursor - *previousCursor)/ofGetWidth()*90;
+
+		mouseToSphere( cursor->x, cursor->y, vecDrag );
+		quatDrag->makeRotate( *vecDown, *vecDrag );
+	}
+}
+
+void ofxTrackball::update(string _eventName, SubObEvent* _event){
+	cout << "trackball got event - " << _eventName << endl;
+	
+	if(_eventName == "main-drag:2"){
+
+		cout << "trackball moving." << endl;
+
+		ofVec2f pos = _event->getArg("absPos")->getVec2();
+
+		cout << "pos = " << pos.x << ", " << pos.y << endl;
+
+		previousCursor->set( cursor->x, cursor->y );
+		cursor->set( pos.x, pos.y );
 		*velocity = (*cursor - *previousCursor)/ofGetWidth()*90;
 
 		mouseToSphere( cursor->x, cursor->y, vecDrag );

@@ -69,9 +69,18 @@ void puzzle::setup(){
 //--------------------------------------------------------------bbbb
 void puzzle::update(){
 	//iterate through cubies
+	//cout << "UPDATING PUZZLE" << endl;
 	for(int i=0;i<numPieces;i++){
 		if(myCubies[i] != NULL){
 			myCubies[i]->update();
+			if(myCubies[i]->getRotate()){
+				cout << "rotating cubies." << endl;
+				int id = myCubies[i]->getId();
+				int rotationDirection = myCubies[i]->getRotationDirection();
+				myCubies[i]->setRotate(false);
+				SG_VECTOR axis = {1,0,0};
+				rotateByIDandAxis(id, axis, true);
+			}
 		}
 	}
 

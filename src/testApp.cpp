@@ -226,7 +226,7 @@ void testApp::draw(){
 	//ofDisableDepthTest();
 }
 
-//--------------------------------------------------------------
+//-------------------------------------------------------------- 
 void testApp::keyPressed(int key){
 	if(currentGame == 1){
 		myGames[0]->guiInput(key);
@@ -411,7 +411,7 @@ void testApp::update(string _subName, Subject *_sub){
 }
 
 void testApp::update(string _eventName, SubObEvent* _event){
-	cout << "event named - " << _eventName << endl;
+	//cout << "event named - " << _eventName << endl;
 	if(_eventName == "object-selected"){
 		if(myGames[0]->getCurrentStep() == 0  || myGames[0]->getCurrentStep() == 1){
 			int obj = _event->getArg("object")->getInt();

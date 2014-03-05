@@ -28,6 +28,7 @@ public:
 	float getNumObjs();
 	sgC3DObject **objectList;
 	vector<ofMesh> myMeshs; // this will be used to store the objet to be drawn 
+	void crateOfMeshs();
 	vector<ofVbo>  myVbos;
 
 	float color;

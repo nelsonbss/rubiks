@@ -116,8 +116,9 @@ void puzzle::loadPieces(sgCGroup **pcs,int selObjId,ofVec3f v){
 		//add this cubie to mycubies[]
 		myCubies[i] = auxCubie;
 	}
+
 	for(int i=0;i<numPieces;i++){
-		//get group from pieces[] copy
+		//get group from pieces[] copy: pcs[]
 		sgCGroup *part = pcs[i];
 
 		if(part != NULL){
@@ -154,6 +155,10 @@ void puzzle::loadPieces(sgCGroup **pcs,int selObjId,ofVec3f v){
 		}else{
 			myCubies[i]->setObjects(NULL,i,v);
 		}
+	}
+
+	for(int i=0;i<numPieces;i++){
+		myCubies[i]->crateOfMeshs();
 	}
 }
 //----------------------------------------------------------------

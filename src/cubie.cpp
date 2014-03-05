@@ -288,8 +288,8 @@ void cubie::setObjects(sgCGroup *objs,int cubieId,ofVec3f v){
 	////it receives a group, when Puzzle loadsPieces(ySlicer->getPieces())  on main
 	////it takes the input group and breaks it, to put parts on cubie group "objects"
 
-	armRotations = (v);//*-1;
-	
+	armRotations = (v);//*-1; did not have to inverse the angle to compensate due to left hand and right hand rules on sgcore and on openframeworks
+
 	if(objs != NULL){
 		sgCObject **objcts = (sgCObject**)malloc(50*sizeof(sgCObject*));
 		int objctr = 0;
@@ -310,10 +310,25 @@ void cubie::setObjects(sgCGroup *objs,int cubieId,ofVec3f v){
 			objectList[j] = (sgC3DObject*)temp->Clone();
 			objcts[objctr] = (sgC3DObject*)temp->Clone();
 			objctr ++;
+		}
+		free(allParts);
+		//put that new group inside *objects of this class, of every cubie
+		objects = sgCGroup::CreateGroup(objcts,objctr);
+		free(objcts);
+	}else{
+		numObjs = 0;
+		objects = NULL;
+	}
+}
+//-------------------------------------------------------------------------------------------------------------------------------------------
+void cubie::crateOfMeshs(){
+	ofMesh tempMesh;
+	ofRender *ofr = new ofRender(); //class that has the metods to transform sgCore to OF mesh and set the normals (in one function)
+
+	if(objects != NULL){
+		for (int j=0; j < numObjs; j++){
 			//////////////////////create ofMEsh
-			ofMesh tempMesh;
-			ofRender *ofr = new ofRender(); //class that has the metods to transform sgCore to OF mesh and set the normals (in one function)
-			sgC3DObject *o = (sgC3DObject*)temp->Clone();
+			sgC3DObject *o = (sgC3DObject*)objectList[j]->Clone();
 			o->Triangulate(SG_VERTEX_TRIANGULATION);
 			//convert to ofMEsh with cubie ID!!!
 			//ask if its a plain color puzzle:: bunny torus??
@@ -324,23 +339,16 @@ void cubie::setObjects(sgCGroup *objs,int cubieId,ofVec3f v){
 				//bunny
 				ofr->sgCoretoOFmesh(o,tempMesh,-3,selectedObjectID);
 			}else{
-				ofr->sgCoretoOFmesh(o,tempMesh,cubieId,selectedObjectID); //give cubie id!! so that it knows if its a plain color puzzle or not
+				ofr->sgCoretoOFmesh(o,tempMesh,id,selectedObjectID); //give cubie id!! so that it knows if its a plain color puzzle or not
 			}
 			myMeshs.push_back(tempMesh);
 			ofVbo tempVbo;
 			tempVbo.setMesh(tempMesh, GL_STATIC_DRAW);
 			myVbos.push_back(tempVbo);
-			free(ofr);
 			sgDeleteObject(o);
 		}
-		free(allParts);
-		//put that new group inside *objects of this class, of every cubie
-		objects = sgCGroup::CreateGroup(objcts,objctr);
-		free(objcts);
-	}else{
-		numObjs = 0;
-		objects = NULL;
 	}
+	free(ofr);
 }
 //-------------------------------------------------------------------------------------------------------------------------------------------
 void cubie::move(SG_VECTOR p){

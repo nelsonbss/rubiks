@@ -119,7 +119,7 @@ void game::draw(){
 		objectDisplayed->draw();
 	}
 	if(step == 4 ){
-		 //trackball
+		//trackball
 		myTB->draw();
 
 		//made the cuts
@@ -130,13 +130,13 @@ void game::draw(){
 	if(step == 5){
 		//trackball
 		myTB->draw();
-		
+
 		//show puzzle
 		//rotations can be made
 		myPuzzle->draw();
 	}
 
-	
+
 }
 //----------------------------------------------------------------------
 void game::rotateByIDandAxis(int id, SG_VECTOR axs, bool d){
@@ -232,11 +232,16 @@ void game::loadArmature(int type){
 	}
 
 	myArmature->setup();
-	setCurrentStep(3);
+	step =3;
 }
 //-----------------------------------------------------------------------------------------
 void game::applyArmRotations(){
 	objectDisplayed->applyArmRotations(rotateSlicer);
+}
+//-----------------------------------------------------------------------------------------
+void game::undoArmRotations(){
+	//myPuzzle->undoArmRotations(rotateSlicer);
+	mySlicer->undoArmRotations(rotateSlicer);
 }
 //-----------------------------------------------------------------------------------------
 void game::createCutterSlicer(){
@@ -258,19 +263,28 @@ void game::createPuzzle(SG_VECTOR p){
 		//mySlicer->xSlicing(*mySlicer->myCutter,objectDisplayed->getObject(),1,1);
 		///////////////  BOOLEAN INTERSECTION          ///////////////////////////////////
 		mySlicer->intersectCubes((sgCObject*)objectDisplayed->getObject()); 
-		//now slicer has all the parts inside sgCGroup ** = pieces[]
+
+		/////////////  undo armature axis rotations (x-y-z) to the puzzles' **myCubies  //////
+		//to show it centered, as the sample 3d object
+		undoArmRotations();
+
+		//now slicer has all the parts inside sgCGroup ** pieces[]
 		myPuzzle->loadPieces(mySlicer->getPieces(),objectID);
 		////////////////////////////////end create puzzle/////////////////////////////////
+
+		///////////////  undo armature axis rotations (x-y-z) to the puzzles' **myCubies  //////
+		////to show it centered, as the sample 3d objrnect
+		//undoArmRotations();
 
 		///////////////////////////////  color puzzle   ////////////////////////////////// 
 		//color all the faces for platonic solids!! colors outside for most objects(not bunny), black on the insides
 		myPuzzle->colorFaces(objectID);
 
-
-		//trackball
+		////////////////////////   give puzzle trackball  //////////////////////////////
 		myTB = new ofxTrackball(ofGetWidth()/2, ofGetHeight()/2, 0, 2000, myPuzzle,false);
 
 		updatePuzzle = true;
+
 		step = 4;
 	}
 }
@@ -495,8 +509,7 @@ void game::guiInput(int in){
 			//now we know the offset position from the armature to create-> cutter & slicer
 			createCutterSlicer();
 			//do slicing
-			//SG_VECTOR viewPuzzle = {ofGetWidth() / 2,ofGetHeight() / 2,displayZ};
-			createPuzzle(posP);//create Puzzle goes to step4 inside the game to show the puzzle
+			createPuzzle(posP);//create Puzzle goes to step 4 to show the puzzle
 		}
 	}
 	////////////////////////////////////////////step 4 inputs
@@ -698,7 +711,7 @@ void game::restart(){
 		step = 0;
 		armID = -1;
 	}else if (step==3){
-		objectDisplayed->exit();
+		objectDisplayed->exit();             //clean displayed object after puzzle is created, so we dont keep it until the exit or restart
 		step = 0;
 		objectID = -1;
 		armID = -1;

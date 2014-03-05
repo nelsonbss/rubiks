@@ -63,10 +63,10 @@ puzzle::puzzle(SG_VECTOR p, ofVec3f offset){
 	/* or */
 	//std::cout << "It should be 21: " << one_dim.at(2) << "\n";
 }
-//--------------------------------------------------------------
+//----------------------------------------------------------------
 void puzzle::setup(){
 }
-//--------------------------------------------------------------
+//----------------------------------------------------------------
 void puzzle::update(){
 	//iterate through cubies
 	for(int i=0;i<numPieces;i++){
@@ -74,35 +74,25 @@ void puzzle::update(){
 			myCubies[i]->update();
 		}
 	}
-
-	//qx = ofQuaternion(rot.x,ofVec3f(1,0,0));
-	//qy = ofQuaternion (rot.y,ofVec3f(0,1,0));
-	//qz = ofQuaternion (rot.z,ofVec3f(0,0,1));
-	//qt = qx * qy * qz;
-	
 }
-//--------------------------------------------------------------
+//----------------------------------------------------------------
 void puzzle::draw(){  
 	ofPushMatrix();
-	ofTranslate(pos.x,pos.y,pos.z);
-	/*ofVec3f qaxis; float qangle;  
-	qt.getRotate(qangle, qaxis); 
-	ofRotate(qangle, qaxis.x, qaxis.y, qaxis.z); */ 
+		ofTranslate(pos.x,pos.y,pos.z);
 
+		//rotate with data from trackBall
+		ofRotate(qangle, qaxis.x,qaxis.y,qaxis.z);
 
-	ofRotate(qangle, qaxis.x,qaxis.y,qaxis.z);
-
-
-	//puzzle tells every cubie to attach objects to scene
-	for(int i=0;i<numPieces;i++){
-		if(myCubies[i] != NULL){
-			myCubies[i]->draw();
+		//puzzle tells every cubie to attach objects to scene
+		for(int i=0;i<numPieces;i++){
+			if(myCubies[i] != NULL){
+				myCubies[i]->draw();
+			}
 		}
-	}
 
 	ofPopMatrix();
 }
-//--------------------------------------------------------------
+//----------------------------------------------------------------
 int puzzle::giveNumCubies(){
 	//tell how many cubies we have with objects inside
 	int aux=0;
@@ -113,7 +103,7 @@ int puzzle::giveNumCubies(){
 	}
 	return aux;
 }
-//--------------------------------------------------------------
+//----------------------------------------------------------------
 void puzzle::loadPieces(sgCGroup **pcs,int selObjId){
 	//it loads the pieces that the slicer made, the pieces are in a sgCGroup** pieces[], 
 	//this function receives a copy of that sgCGroup** made by mySlicer->getPieces()
@@ -167,6 +157,17 @@ void puzzle::loadPieces(sgCGroup **pcs,int selObjId){
 	}
 }
 //----------------------------------------------------------------
+void puzzle::undoArmRotations(ofVec3f v){
+	v = (v)*-1;
+	//undo armature axis rotations (x-y-z) to all the cubies of the puzzle
+	//to show it centered, as the sample 3d object
+	for(int i=0;i<numPieces;i++){
+		if(myCubies[i] != NULL){
+			myCubies[i]->undoArmRotations(v);
+		}
+	}
+}
+//----------------------------------------------------------------
 void puzzle::rotate(SG_VECTOR r){  
 	//puzzle tells every cubie to rotate
 	/*rot.x +=  r.x;
@@ -176,8 +177,9 @@ void puzzle::rotate(SG_VECTOR r){
 	//	myCubies[i]->rotate(rot);
 	//}
 }
-//---------------------------------------------------------------
+//----------------------------------------------------------------
 void puzzle::rotateTB(float anglei, ofVec3f axisi){
+	//this function is being called from the trackBall object, which has the pointer to the puzzle object
 	//gets info from trackball object
 	qaxis = axisi; 
 	qangle = anglei;
@@ -423,7 +425,7 @@ void puzzle::colorCubiesBlackSides(){
 		myCubies[i]->colorBlackSides(i,0.1);
 	}
 }
-//---------------------------------------------------------------
+//----------------------------------------------------------------
 void puzzle::changeColorToColor(ofFloatColor Sc, ofFloatColor Tc){
 	for(int i=0;i<numPieces;i++){
 		myCubies[i]->changeColorToColor(Sc,Tc);

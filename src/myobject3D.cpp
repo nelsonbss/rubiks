@@ -128,7 +128,7 @@ sgC3DObject* myobject3D::getObject(){
 }
 //----------------------------------------------------------------
 void myobject3D::applyArmRotations(ofVec3f v){
-	armRot = v;
+	armRot = (v)*-1;
 	//apply armature axis rotations (x-y-z) to the real object
 	SG_POINT rotP = {0,0,0};
 	SG_VECTOR rotV = {1,0,0};

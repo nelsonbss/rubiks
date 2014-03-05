@@ -105,6 +105,7 @@ public:
 
 	//armature rotation
 	void applyArmRotations();
+	void undoArmRotations();
 	//vector<armRotations> armRotH;
 
 	//gui communication

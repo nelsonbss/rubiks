@@ -24,7 +24,7 @@ public:
 	sgCGroup** getPieces(); //returns the array of * of groups of objects for each volume(smallCube) of the puzzle
 	int countPieces();
 
-	//// algorithms
+	//// algorithms variables
 	///cubes
 	sgCGroup **aux;
 	void intersectCubes(sgCObject *obj);
@@ -32,5 +32,8 @@ public:
 	void xSlicing(cutter &cut, sgCObject *obj, int turn, int cubePart);
 	void ySlicing(cutter &cut, sgCGroup *grp, int turn, int cubePart);
 	void zSlicing(cutter &cut, sgCGroup *grp, int turn, int cubePart);
+
+	//armature rotations
+	void undoArmRotations(ofVec3f v);
 };
 #endif /* defined(__Tslicer__slicer__) */

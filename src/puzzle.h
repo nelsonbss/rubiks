@@ -31,6 +31,7 @@ public:
 	void move(SG_VECTOR p);
 
 	SG_VECTOR rot;
+	void undoArmRotations(ofVec3f v);
 	void rotate(SG_VECTOR r);
 	void rotateTB(float angle, ofVec3f axis);
 	ofVec3f qaxis; 
@@ -54,14 +55,6 @@ public:
 	///color change
 	void changeColorToColor(ofFloatColor Sc, ofFloatColor Tc);
 
-
-
-
-	///quaternions
-	ofQuaternion qx;
-	ofQuaternion qy;
-	ofQuaternion qz;
-	ofQuaternion qt;
 };
 
 #endif /* defined(__Tpuzzle__puzzle__) */

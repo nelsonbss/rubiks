@@ -52,6 +52,9 @@ void myobject3D::update(){
 		//cube
 		SG_VECTOR offset = {-150,-150,-150}; //for the cube to be in place
 		temp->GetTempMatrix()->Translate(offset);//this translates the object to be cut!!
+		SG_POINT rotP = {0,0,0};
+		SG_VECTOR rotV = {1,0,0};
+		temp->GetTempMatrix()->Rotate(rotP,rotV,ofDegToRad(45));
 	}else if(objectId == 3){
 		////cone..pyramid
 		//SG_POINT rotP = transP;
@@ -100,9 +103,13 @@ void myobject3D::loadObject(sgC3DObject *obj, int ID){
 		//cube
 		SG_VECTOR offset = {-150,-150,-150}; //for the cube to be in center  place, it has sides of 300
 		object->InitTempMatrix()->Translate(offset);//this translates the object to be cut!!
-		//SG_POINT rotP = {0,0,0};
-		//SG_VECTOR rotV = {1,0,0};
-		//object->GetTempMatrix()->Rotate(rotP,rotV,ofDegToRad(45));
+		SG_POINT rotP = {0,0,0};
+		SG_VECTOR rotV = {1,0,0};
+		object->GetTempMatrix()->Rotate(rotP,rotV,ofDegToRad(45));
+		/*SG_VECTOR rotV2 = {0,1,0};
+		object->GetTempMatrix()->Rotate(rotP,rotV2,ofDegToRad(45));
+		SG_VECTOR rotV3 = {0,0,1};
+		object->GetTempMatrix()->Rotate(rotP,rotV3,ofDegToRad(45));*/
 		object->ApplyTempMatrix();  
 		object->DestroyTempMatrix();
 	}else if(objectId == 3){

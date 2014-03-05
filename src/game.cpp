@@ -306,8 +306,7 @@ void game::rotateA (ofVec3f input){
 	rotateSlicer.y += input.y;
 	rotateSlicer.z += input.z;
 	//add this rotation to armRotations history
-	/*armRotations x = armRotations(input);
-	armRotH.push_back(armRotations(input));*/
+	armRotH.push_back(armRotations(input));
 }
 //----------------------------------------------------------------------
 ofVec3f game::giveOffset(){
@@ -470,7 +469,7 @@ void game::guiInput(int in){
 			moveA(p);
 		}//////////////////////////////rotate all armature
 		if(in == 'c') {//rotate right
-			ofVec3f r = ofVec3f (0,35,0);
+			ofVec3f r = ofVec3f (0,30,0);
 			rotateA(r);
 		}
 		if(in == 'x') {//rotate left
@@ -478,7 +477,7 @@ void game::guiInput(int in){
 			rotateA(r);
 		}
 		if(in == 'w') {//rotate up
-			ofVec3f r = ofVec3f (20,0,0); //degrees!!!
+			ofVec3f r = ofVec3f (25,0,0); //degrees!!!
 			rotateA(r);
 		}
 		if(in == 's') {//rotate down

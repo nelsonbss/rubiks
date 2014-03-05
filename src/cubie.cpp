@@ -54,6 +54,11 @@ void cubie::update(){
 	ofVec3f qaxis; 
 	float qangle;
 
+	qx = ofQuaternion (rotCompensation.x,ofVec3f(1,0,0));
+	qy = ofQuaternion (rotCompensation.y,ofVec3f(0,1,0));
+	qt = qx * qy;// * qh
+	qt.getRotate(qangle, qaxis);
+
 	for (int j=0; j < numObjs; j++){
 		if(moving==true){
 			if(myMatrix.size()>=2){
@@ -256,10 +261,8 @@ void cubie::update(){
 					//vrotFace = vc;
 				}
 
-				qx = ofQuaternion (rotCompensation.x,ofVec3f(1,0,0));
-				qy = ofQuaternion (rotCompensation.y,ofVec3f(0,1,0));
-				qt = qx * qy;// * qh
-				qt.getRotate(qangle, qaxis);
+
+
 
 				double d = myMatrix.at(i).deg;
 				d = ofDegToRad(d);

@@ -293,7 +293,7 @@ void cubie::update(){
 
 
 		/////////////////////////////////////////////////////////
-		//////rotate and move with the whole puzzle
+		//////undo rotations of armature in z-y-x order
 		SG_VECTOR vrotZ = {0,0,1};      
 		SG_VECTOR puzzleRotate = {0,0,0};
 		if (objectList[j]->GetTempMatrix()==0){
@@ -305,9 +305,6 @@ void cubie::update(){
 		objectList[j]->GetTempMatrix()->Rotate(puzzleRotate,vrotY,ofDegToRad(armRotations.y));
 		SG_VECTOR vrotX = {1,0,0}; 							 
 		objectList[j]->GetTempMatrix()->Rotate(puzzleRotate,vrotX,ofDegToRad(armRotations.x));
-		//translations
-		//SG_VECTOR transBox11 = {pos.x,pos.y,pos.z}; 
-		//objectList[j]->GetTempMatrix()->Translate(transBox11);
 		objectList[j]->ApplyTempMatrix();
 	}
 }

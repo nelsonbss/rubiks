@@ -94,8 +94,8 @@ void ofRender::sgCoretoOFmesh(sgC3DObject *obj, ofMesh &mesh,int idCubie,int sel
 		}else{
 			//its another object, most probable the cube
 			if(selectedObjectID == 2){
-				c = decideColorCubieBox(dir,idCubie); //we color the cube here so it gets the official colors on its faces
-				//c = decideColorCubieDEBUG(dir,idCubie); //this is to test the offset slicing and rotations
+				//c = decideColorCubieBox(dir,idCubie); //we color the cube here so it gets the official colors on its faces
+				c = decideColorCubieDEBUG(dir,idCubie); //this is to test the offset slicing and rotations
 			}else if(selectedObjectID == 3){
 				//cone(ish)
 				c = decideColor(decideAxisRange(dir,10.0));

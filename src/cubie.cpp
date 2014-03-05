@@ -59,6 +59,11 @@ void cubie::update(){
 	//qt = qx * qy;// * qh
 	//qt.getRotate(qangle, qaxis);
 
+	SG_POINT rotP = {0,0,0};
+	SG_VECTOR rotV = {1,0,0};
+	SG_VECTOR rotV2 = {0,1,0};
+	SG_VECTOR rotV3 = {0,0,1};
+
 	for (int j=0; j < numObjs; j++){
 		if(moving==true){
 			if(myMatrix.size()>=2){
@@ -287,21 +292,23 @@ void cubie::update(){
 		}
 
 
-		///////////////////////////////////////////////////////////
-		////////rotate and move with the whole puzzle
-		//SG_VECTOR vrotH = {1,0,0}; //rotate v         
-		//SG_VECTOR puzzleRotate = {0,0,0};
-		//if (objectList[j]->GetTempMatrix()==0){
-		//	objectList[j]->InitTempMatrix()->Rotate(puzzleRotate,vrotH,0);//rot.x);
-		//}else{
-		//	objectList[j]->GetTempMatrix()->Rotate(puzzleRotate,vrotH,0);//rot.x);
-		//}
-		//SG_VECTOR vrotV = {0,1,0}; //rotate h								 
-		//objectList[j]->GetTempMatrix()->Rotate(puzzleRotate,vrotV,0);//rot.y);
-		////translations
+		/////////////////////////////////////////////////////////
+		//////rotate and move with the whole puzzle
+		SG_VECTOR vrotZ = {0,0,1};      
+		SG_VECTOR puzzleRotate = {0,0,0};
+		if (objectList[j]->GetTempMatrix()==0){
+			objectList[j]->InitTempMatrix()->Rotate(puzzleRotate,vrotZ,ofDegToRad(armRotations.z));
+		}else{
+			objectList[j]->GetTempMatrix()->Rotate(puzzleRotate,vrotZ,ofDegToRad(armRotations.z));
+		}
+		SG_VECTOR vrotY = {0,1,0}; 							 
+		objectList[j]->GetTempMatrix()->Rotate(puzzleRotate,vrotY,ofDegToRad(armRotations.y));
+		SG_VECTOR vrotX = {1,0,0}; 							 
+		objectList[j]->GetTempMatrix()->Rotate(puzzleRotate,vrotX,ofDegToRad(armRotations.x));
+		//translations
 		//SG_VECTOR transBox11 = {pos.x,pos.y,pos.z}; 
 		//objectList[j]->GetTempMatrix()->Translate(transBox11);
-		//objectList[j]->ApplyTempMatrix();
+		objectList[j]->ApplyTempMatrix();
 	}
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
@@ -386,13 +393,8 @@ void cubie::setObjects(sgCGroup *objs,int cubieId,ofVec3f v){
 	////it receives a group, when Puzzle loadsPieces(ySlicer->getPieces())  on main
 	////it takes the input group and breaks it, to put parts on cubie group "objects"
 
-	v = (v)*-1;
-	SG_POINT rotP = {0,0,0};
-	SG_VECTOR rotV = {1,0,0};
-	SG_VECTOR rotV2 = {0,1,0};
-	SG_VECTOR rotV3 = {0,0,1};
-
-
+	armRotations = (v);//*-1;
+	
 	if(objs != NULL){
 		sgCObject **objcts = (sgCObject**)malloc(50*sizeof(sgCObject*));
 		int objctr = 0;
@@ -413,15 +415,6 @@ void cubie::setObjects(sgCGroup *objs,int cubieId,ofVec3f v){
 			objectList[j] = (sgC3DObject*)temp->Clone();
 			objcts[objctr] = (sgC3DObject*)temp->Clone();
 			objctr ++;
-
-			///////rotate back the pieces
-			temp->InitTempMatrix()->Rotate(rotP,rotV3,ofDegToRad(v.z));
-				temp->GetTempMatrix()->Rotate(rotP,rotV2,ofDegToRad(v.y));
-				temp->GetTempMatrix()->Rotate(rotP,rotV,ofDegToRad(v.x));
-				temp->ApplyTempMatrix();
-				temp->DestroyTempMatrix();
-
-
 			//////////////////////create ofMEsh
 			ofMesh tempMesh;
 			ofRender *ofr = new ofRender(); //class that has the metods to transform sgCore to OF mesh and set the normals (in one function)

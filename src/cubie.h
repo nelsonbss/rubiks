@@ -43,6 +43,7 @@ public:
 
 	//armature rotations
 	void undoArmRotations(ofVec3f v);
+	ofVec3f armRotations;
 
 	//this is vector of matrix objects that have all the transformations for each cubie.
 	//its a vector since we don't know how many transformations a cubie is going to have

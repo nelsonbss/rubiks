@@ -240,8 +240,8 @@ void game::applyArmRotations(){
 }
 //-----------------------------------------------------------------------------------------
 void game::undoArmRotations(){
-	//myPuzzle->undoArmRotations(rotateSlicer);
-	mySlicer->undoArmRotations(rotateSlicer);
+	myPuzzle->undoArmRotations(rotateSlicer);
+	//mySlicer->undoArmRotations(rotateSlicer);
 }
 //-----------------------------------------------------------------------------------------
 void game::createCutterSlicer(){
@@ -487,19 +487,19 @@ void game::guiInput(int in){
 			moveA(p);
 		}//////////////////////////////rotate all armature
 		if(in == 'c') {//rotate right
-			ofVec3f r = ofVec3f (0,30,0);
+			ofVec3f r = ofVec3f (0,5,0);
 			rotateA(r);
 		}
 		if(in == 'x') {//rotate left
-			ofVec3f r = ofVec3f (0,-30,0);
+			ofVec3f r = ofVec3f (0,-5,0);
 			rotateA(r);
 		}
 		if(in == 'w') {//rotate up
-			ofVec3f r = ofVec3f (25,0,0); //degrees!!!
+			ofVec3f r = ofVec3f (5,0,0); //degrees!!!
 			rotateA(r);
 		}
 		if(in == 's') {//rotate down
-			ofVec3f r = ofVec3f (-10,0,0);
+			ofVec3f r = ofVec3f (-5,0,0);
 			rotateA(r);
 		}
 		/////////////////a puzzle can be made

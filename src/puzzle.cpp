@@ -134,7 +134,11 @@ void puzzle::loadPieces(sgCGroup **pcs,int selObjId,ofVec3f v){
 				realNumPieces ++;
 			}
 			//make them a group
-			cubieGroup = sgCGroup::CreateGroup(obj,realNumPieces);  
+			cubieGroup = sgCGroup::CreateGroup(obj,realNumPieces);
+
+
+
+
 			//put that gorup inside temp cubie
 			myCubies[i]->setObjects(cubieGroup,i,v);//here goes the group of clones from the iriginal slicing pieces[]
 			//i is the cubie ID

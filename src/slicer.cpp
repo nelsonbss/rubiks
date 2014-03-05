@@ -89,32 +89,32 @@ void slicer::intersectCubes(sgCObject *obj){
 }
 //---------------------------------------------------------------
 void slicer::undoArmRotations(ofVec3f v){
-	for(int i =0; i<27; i ++){
-		sgCObject **objcts = (sgCObject**)malloc(50*sizeof(sgCObject*));
-		int objctr = 0;
-		//break each pieces[i]
-		//sgCGroup *parts = pieces[i];
-		if(pieces[i] != NULL){
-			const int ChCnt = pieces[i]->GetChildrenList()->GetCount();
-			sgCObject** allParts = (sgCObject**)malloc(ChCnt*sizeof(sgCObject*));
-			pieces[i]->BreakGroup(allParts);
-			sgDeleteObject(pieces[i]); //break group and delete each object?
-			for (int j=0; j < ChCnt; j++){
-				//clone each object
-				sgCObject *temp = allParts[j];
-				//put clone on *[] tomake new group
-				objcts[objctr] = temp->Clone();
-				objctr ++;
-				sgCObject::DeleteObject(temp);
-			}
-			free(allParts);
-			//put that new group inside aux**[]
-			pieces[i] = sgCGroup::CreateGroup(objcts,objctr); //so pieces[] has the data again, and keeps it for future requests
-		}else{
-			pieces[i] = NULL;
-		}
-		free(objcts);
-	}
+	//for(int i =0; i<27; i ++){
+	//	sgCObject **objcts = (sgCObject**)malloc(50*sizeof(sgCObject*));
+	//	int objctr = 0;
+	//	//break each pieces[i]
+	//	//sgCGroup *parts = pieces[i];
+	//	if(pieces[i] != NULL){
+	//		const int ChCnt = pieces[i]->GetChildrenList()->GetCount();
+	//		sgCObject** allParts = (sgCObject**)malloc(ChCnt*sizeof(sgCObject*));
+	//		pieces[i]->BreakGroup(allParts);
+	//		sgDeleteObject(pieces[i]); //break group and delete each object?
+	//		for (int j=0; j < ChCnt; j++){
+	//			//clone each object
+	//			sgCObject *temp = allParts[j];
+	//			//put clone on *[] tomake new group
+	//			objcts[objctr] = temp->Clone();
+	//			objctr ++;
+	//			sgCObject::DeleteObject(temp);
+	//		}
+	//		free(allParts);
+	//		//put that new group inside aux**[]
+	//		pieces[i] = sgCGroup::CreateGroup(objcts,objctr); //so pieces[] has the data again, and keeps it for future requests
+	//	}else{
+	//		pieces[i] = NULL;
+	//	}
+	//	free(objcts);
+	//}
 }
 //---------------------------------------------------------------
 void slicer::exit(){

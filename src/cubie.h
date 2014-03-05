@@ -42,7 +42,6 @@ public:
 	void move(SG_VECTOR p);
 
 	//armature rotations
-	void undoArmRotations(ofVec3f v);
 	ofVec3f armRotations;
 
 	//this is vector of matrix objects that have all the transformations for each cubie.

@@ -31,7 +31,6 @@ public:
 	void move(SG_VECTOR p);
 
 	SG_VECTOR rot;
-	void undoArmRotations(ofVec3f v);
 	void rotate(SG_VECTOR r);
 	void rotateTB(float angle, ofVec3f axis);
 	ofVec3f qaxis; 

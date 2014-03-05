@@ -135,10 +135,6 @@ void puzzle::loadPieces(sgCGroup **pcs,int selObjId,ofVec3f v){
 			}
 			//make them a group
 			cubieGroup = sgCGroup::CreateGroup(obj,realNumPieces);
-
-
-
-
 			//put that gorup inside temp cubie
 			myCubies[i]->setObjects(cubieGroup,i,v);//here goes the group of clones from the iriginal slicing pieces[]
 			//i is the cubie ID
@@ -157,17 +153,6 @@ void puzzle::loadPieces(sgCGroup **pcs,int selObjId,ofVec3f v){
 			sgDeleteObject(part);
 		}else{
 			myCubies[i]->setObjects(NULL,i,v);
-		}
-	}
-}
-//----------------------------------------------------------------
-void puzzle::undoArmRotations(ofVec3f v){
-	v = (v)*-1;
-	//undo armature axis rotations (x-y-z) to all the cubies of the puzzle
-	//to show it centered, as the sample 3d object
-	for(int i=0;i<numPieces;i++){
-		if(myCubies[i] != NULL){
-			myCubies[i]->undoArmRotations(v);
 		}
 	}
 }

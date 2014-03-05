@@ -64,7 +64,6 @@ void cubie::update(){
 	for (int j=0; j < numObjs; j++){
 		if(moving==true){
 			if(myMatrix.size()>=2){
-
 				for(int i=0; i<myMatrix.size()-1;i++){
 					//build rotation matrix for all steps up to the one where it was at the moment of a new movement
 					SG_POINT protFace = {pointRotate.x,pointRotate.y,pointRotate.z};										 
@@ -205,8 +204,6 @@ void cubie::update(){
 				}
 			}
 		}
-
-
 		/////////////////////////////////////////////////////////
 		//////undo rotations of armature in z-y-x order
 		SG_VECTOR vrotZ = {0,0,1};      
@@ -285,20 +282,6 @@ void cubie::faceRotate(SG_VECTOR axis,bool di){
 	}else{
 		//cout << "null at face rotation" << endl;
 	}
-}
-//-------------------------------------------------------------------------------------------------------------------------------------------
-void cubie::undoArmRotations(ofVec3f v){
-	//SG_POINT rotP = {0,0,0};
-	//SG_VECTOR rotV = {1,0,0};
-	//SG_VECTOR rotV2 = {0,1,0};
-	//SG_VECTOR rotV3 = {0,0,1};
-	//for (int j=0; j < numObjs; j++){
-	//	objectList[j]->InitTempMatrix()->Rotate(rotP,rotV,ofDegToRad(v.x));
-	//	objectList[j]->GetTempMatrix()->Rotate(rotP,rotV2,ofDegToRad(v.y));
-	//	objectList[j]->GetTempMatrix()->Rotate(rotP,rotV3,ofDegToRad(v.z));
-	//	objectList[j]->ApplyTempMatrix();
-	//	objectList[j]->DestroyTempMatrix();
-	//}
 }
 //-------------------------------------------------------------------------------------------------------------------------------------------
 void cubie::setObjects(sgCGroup *objs,int cubieId,ofVec3f v){

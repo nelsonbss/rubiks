@@ -1,4 +1,5 @@
 #include "testApp.h"
+#include "game.h"
 ///////////////////////////////////////////
 
 #define displayX 500
@@ -84,9 +85,7 @@ void testApp::setup(){
 
 	active_points = std::map<int,gwc::Point>();
 
-	rotate = true;
-	
-	//3012992610
+	//rotate = true;
 }
 //--------------------------------------------------------------
 void testApp::update(){
@@ -169,16 +168,17 @@ void testApp::draw(){
 			ofDrawBitmapString("RESTART: press 'r' " + ofToString("") +"\n" ,20, 80);
 		}else if(gStep == 4){
 			//puzzle has been created
+			ofDrawBitmapString("ROTATE PUZZLE:  mouse DRAG" +ofToString("")+"\n",20, 20);
 			//show color palette menu
-			ofDrawBitmapString("SELECT a COLOR:" + ofToString("") +"\n" + "color 1:  "+ofToString(1)+"\n",20, 20);
+			ofDrawBitmapString("SELECT a COLOR:" + ofToString("") +"\n" + "color 1:  "+ofToString(1)+"\n",20, 40);
 			//show next button.
-			ofDrawBitmapString("NEXT: press 'n' " + ofToString("") +"\n" ,20, 60); //this enables the puzzle to have face rotations
+			ofDrawBitmapString("NEXT: press 'n' " + ofToString("") +"\n" ,20, 80); //this enables the puzzle to have face rotations
 			//show restart button.
-			ofDrawBitmapString("RESTART: press 'r' " + ofToString("") +"\n" ,20, 80);
+			ofDrawBitmapString("RESTART: press 'r' " + ofToString("") +"\n" ,20, 100);
 		}else if(gStep == 5){
 			//puzzle has been created
 			//rotations can happen
-			ofDrawBitmapString("ROTATE PUZZLE:  horizontal: 'm' 'n'              vertial: 'h' 'y'"+ofToString("")+"\n",20, 20);
+			ofDrawBitmapString("ROTATE PUZZLE:  mouse DRAG" +ofToString("")+"\n",20, 20);
 			ofDrawBitmapString("X rotations: 'q' 'a'"+ofToString(" ")+"\n",20, 40);
 			ofDrawBitmapString("Y rotations: 'w' 's'"+ofToString(" ")+"\n",20, 60);
 			ofDrawBitmapString("Z rotations: 'e' 'd'"+ofToString(" ")+"\n",20, 80);
@@ -321,6 +321,7 @@ void testApp::mouseMoved(int x, int y ){
 }
 //--------------------------------------------------------------
 void testApp::mouseDragged(int x, int y, int button){
+	/*
 	if(button == 2){
 		float rotationMultiplier = 5.0;
 		ofVec2f dragNow(x,y);
@@ -350,9 +351,11 @@ void testApp::mouseDragged(int x, int y, int button){
 			lastRightDragPos = dragNow;
 		}
 	}
+	*/
 }
 //--------------------------------------------------------------
 void testApp::mousePressed(int x, int y, int button){
+	/*
 	if(button == 2){
 		lastRightDragPos.set(x,y);
 	}
@@ -363,6 +366,7 @@ void testApp::mousePressed(int x, int y, int button){
 			timeOfLastInput = ofGetElapsedTimef();
 		}
 	}
+	*/
 }
 //--------------------------------------------------------------
 void testApp::mouseReleased(int x, int y, int button){
@@ -450,8 +454,8 @@ void testApp::exit(){
 	myGames[0]->restart();
 	myGames[0]->exit();
 
-	myGames[1]->restart();
-	myGames[1]->exit();
+	/*myGames[1]->restart();
+	myGames[1]->exit();*/
 
 	sgDeleteObject(sgBunny);
 	sgDeleteObject(sgTetrahedron);

@@ -42,8 +42,8 @@ public:
 	///whole puzzle
 	SG_VECTOR pos;
 	void move(SG_VECTOR p);
-	SG_VECTOR rot;
-	void rotate(SG_VECTOR r); //rotates the cubie as part of the whole puzzle object, NOT as a faceMove rotation
+	//SG_VECTOR rot;
+	//void rotate(SG_VECTOR r); //rotates the cubie as part of the whole puzzle object, NOT as a faceMove rotation
 
 	//this is vector of matrix objects that have all the transformations for each cubie.
 	//its a vector since we don't know how many transformations a cubie is going to have

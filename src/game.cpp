@@ -4,6 +4,7 @@
 #include "slicer.h"
 #include "cutter.h"
 #include "puzzle.h"
+#include "ofxTrackball.h"
 
 #include <vector>
 
@@ -25,9 +26,9 @@ game::game(SG_VECTOR gamePos, float w, float h, SG_VECTOR displayPos){
 	posA.y = displayPos.y;
 	posA.z = displayPos.z;
 
-	rotP.x = 0; //rotation of puzzle
-	rotP.y = 0;
-	rotP.z = 0;
+	//rotP.x = 0; //rotation of puzzle
+	//rotP.y = 0;
+	//rotP.z = 0;
 
 	//offset
 	tamCubie = 0;  //when creating armature this gets a size
@@ -62,6 +63,8 @@ void game::setup(sgCObject *sgBunnyi,sgCObject *sgTetrahedroni,sgCObject *sgDode
 	updatePuzzle = false;
 	//
 	faceRotate = false;
+
+
 }
 //----------------------------------------------------------------------
 void game::update(){
@@ -125,16 +128,24 @@ void game::draw(){
 		objectDisplayed->draw();
 	}
 	if(step == 4 ){
+		 //trackball
+		myTB->draw();
+
 		//made the cuts
 		//show color palette
 		//show puzzle
 		myPuzzle->draw();
 	}
 	if(step == 5){
+		//trackball
+		myTB->draw();
+		
 		//show puzzle
 		//rotations can be made
 		myPuzzle->draw();
 	}
+
+	
 }
 //----------------------------------------------------------------------
 void game::rotateByIDandAxis(int id, SG_VECTOR axs, bool d){
@@ -259,6 +270,10 @@ void game::createPuzzle(SG_VECTOR p){
 		//color all the faces for platonic solids!! colors outside for most objects(not bunny), black on the insides
 		myPuzzle->colorFaces(objectID);
 
+
+		//trackball
+		myTB = new ofxTrackball(ofGetWidth()/2, ofGetHeight()/2, 0, 2000, myPuzzle,false);
+
 		updatePuzzle = true;
 		step = 4;
 	}
@@ -268,9 +283,9 @@ void game::moveP(SG_VECTOR p){
 	myPuzzle->move(p);
 }
 //----------------------------------------------------------------------
-void game::rotateP(SG_VECTOR r){
-	myPuzzle->rotate(r);
-}
+//void game::rotateP(SG_VECTOR r){
+//	/*myPuzzle->rotate(r);*/
+//}
 //----------------------------------------------------------------------
 int game::getCurrentStep(){
 	return step;
@@ -372,7 +387,7 @@ void game::guiInput(int in){
 	////////////////////////////////////////////step 1 inputs
 	////////////////////////////////////////////step 1 inputs
 	////////////////////////////////////////////step 1 inputs
-	if(step == 1){
+	else if(step == 1){
 		//is showing object with flat color
 		//selected an object
 		if(in == 'n') {
@@ -406,13 +421,13 @@ void game::guiInput(int in){
 			loadObject(7,objectPos,posP);
 		}
 		/*if(in == '8') { 
-			loadObject(8,objectPos,posP);
+		loadObject(8,objectPos,posP);
 		}*/
 	}
 	////////////////////////////////////////////step 2 inputs
 	////////////////////////////////////////////step 2 inputs
 	////////////////////////////////////////////step 2 inputs
-	if(step == 2){
+	else if(step == 2){
 		//waiting for armature to be selected
 		if(in == '1') {
 			//select armature 1
@@ -426,7 +441,7 @@ void game::guiInput(int in){
 	////////////////////////////////////////////step 3 inputs
 	////////////////////////////////////////////step 3 inputs
 	////////////////////////////////////////////step 3 inputs
-	if(step == 3){
+	else if(step == 3){
 		//armature was selected
 		////showing armature    another armature can be selected
 		if(in == '1') {
@@ -491,7 +506,7 @@ void game::guiInput(int in){
 	////////////////////////////////////////////step 4 inputs
 	////////////////////////////////////////////step 4 inputs
 	////////////////////////////////////////////step 4 inputs
-	if(step == 4){
+	else if(step == 4){
 		//showing puzzle with colors
 		//waiting for color change
 		if(in == '1') {
@@ -522,29 +537,29 @@ void game::guiInput(int in){
 			SG_VECTOR p = {0,10,0};
 			moveP(p);
 		}
-		///////////rotate all puzzle  // two finger swipe gesture
-		if(in == 'm') {//rotate right
-			SG_VECTOR r = {0,0.1,0};
-			rotateP(r);
-		}
-		if(in == 'n') {//rotate left
-			SG_VECTOR r = {0,-0.1,0};
-			rotateP(r);
-		}
-		if(in == 'y') {//rotate up
-			SG_VECTOR r = {0.1,0,0};
-			rotateP(r);
-		}
-		if(in == 'h') {//rotate down
-			SG_VECTOR r = {-0.1,0,0};
-			ofVec3f v;
-			rotateP(r);
-		}
+		/////////////rotate all puzzle  // two finger swipe gesture
+		//if(in == 'm') {//rotate right
+		//	SG_VECTOR r = {0,10,0};//{0,0.1,0};
+		//	rotateP(r);
+		//}
+		//if(in == 'n') {//rotate left
+		//	SG_VECTOR r = {0,-10,0};//{0,-0.1,0};
+		//	rotateP(r);
+		//}
+		//if(in == 'y') {//rotate up
+		//	SG_VECTOR r =  {10,0,0};// {0.1,0,0};
+		//	rotateP(r);
+		//}
+		//if(in == 'h') {//rotate down
+		//	SG_VECTOR r = {-10,0,0};//{-0.1,0,0};
+		//	ofVec3f v;
+		//	rotateP(r);
+		//}
 	}
 	////////////////////////////////////////////step 5 inputs
 	////////////////////////////////////////////step 5 inputs
 	////////////////////////////////////////////step 5 inputs
-	if(step == 5){
+	else if(step == 5){
 		//selected color (or not, its not mandatory)
 		//pressed next on color palette step
 		//showing puzzle
@@ -632,24 +647,33 @@ void game::guiInput(int in){
 			SG_VECTOR p = {0,10,0};
 			moveP(p);
 		}
-		//////////////////rotate all puzzle  // two finger swipe gesture
-		if(in == 'm') {//rotate right
-			SG_VECTOR r = {0,0.1,0};
-			rotateP(r);
-		}
-		if(in == 'n') {//rotate left
-			SG_VECTOR r = {0,-0.1,0};
-			rotateP(r);
-		}
-		if(in == 'y') {//rotate up
-			SG_VECTOR r = {0.1,0,0};
-			rotateP(r);
-		}
-		if(in == 'h') {//rotate down
-			SG_VECTOR r = {-0.1,0,0};
-			ofVec3f v;
-			rotateP(r);
-		}
+		/////////////rotate all puzzle  // two finger swipe gesture
+		//if(in == 'm') {//rotate right
+		//	SG_VECTOR r = {0,2,0};//{0,0.1,0};
+		//	rotateP(r);
+		//}
+		//if(in == 'n') {//rotate left
+		//	SG_VECTOR r = {0,-2,0};//{0,-0.1,0};
+		//	rotateP(r);
+		//}
+		//if(in == 'y') {//rotate up
+		//	SG_VECTOR r =  {2,0,0};// {0.1,0,0};
+		//	rotateP(r);
+		//}
+		//if(in == 'h') {//rotate down
+		//	SG_VECTOR r = {-2,0,0};//{-0.1,0,0};
+		//	ofVec3f v;
+		//	rotateP(r);
+		//}
+		//if(in == 'o') {//rotate c
+		//	SG_VECTOR r =  {0,0,-2};// {0.1,0,0};
+		//	rotateP(r);
+		//}
+		//if(in == 'p') {//rotate cc
+		//	SG_VECTOR r = {0,0,2};//{-0.1,0,0};
+		//	ofVec3f v;
+		//	rotateP(r);
+		//}
 	}
 
 	/////////////////////////////////////////////////////////////////

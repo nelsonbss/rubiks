@@ -12,9 +12,9 @@ cubie::cubie(float x, float y,float z, int idi, int selObjId, ofVec3f offset, of
 	pos.y = y;
 	pos.z = z;
 
-	rot.x = 0.0;
+	/*rot.x = 0.0;
 	rot.y = 0.0;
-	rot.z = 0.0;
+	rot.z = 0.0;*/
 
 	//color = rand()%27;
 
@@ -49,11 +49,18 @@ cubie::cubie(float x, float y,float z, int idi, int selObjId, ofVec3f offset, of
 }
 //--------------------------------------------------------------
 void cubie::setup(){
-	
 }
 
 //--------------------------------------------------------------
 void cubie::update(){
+	ofQuaternion qx;
+	ofQuaternion qy;
+	ofQuaternion qz;
+	ofQuaternion qt;
+
+	ofVec3f qaxis; 
+	float qangle;
+
 	for (int j=0; j < numObjs; j++){
 		if(moving==true){
 			if(myMatrix.size()>=2){
@@ -62,11 +69,6 @@ void cubie::update(){
 					//build rotation matrix for all steps up to the one where it was at the moment of a new movement
 					SG_POINT protFace = {pointRotate.x,pointRotate.y,pointRotate.z};										 
 					SG_VECTOR vrotFace = myMatrix.at(i).vector;//  axis; //rotate to do a face move
-
-					ofQuaternion qx;
-					ofQuaternion qy;
-
-					ofQuaternion qt;
 					////
 					if(vrotFace.x != 0){
 						if(rotCompensation.y != 0){
@@ -126,13 +128,10 @@ void cubie::update(){
 						}
 					}
 				}
+				/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 				//we are at the last positon
 				SG_POINT protFace = {pointRotate.x,pointRotate.y,pointRotate.z};										 
 				SG_VECTOR vrotFace = myMatrix.at(myMatrix.size()-1).vector;//  axis; //rotate to do a face move
-				ofQuaternion qx;
-				ofQuaternion qy;
-
-				ofQuaternion qt;
 				/////
 				if(vrotFace.x != 0){
 					if(rotCompensation.y != 0){
@@ -169,10 +168,6 @@ void cubie::update(){
 
 					//	vrotFace = vc;*/
 				}
-				qx.set(1,0,0,rotCompensation.x);
-				qy.set(0,1,0,rotCompensation.y);
-
-				qt = qx * qy;// * qh
 				double tempDeg2 = myMatrix.at(myMatrix.size()-1).deg; //target angle, the last angle it will move to
 				if(sample==false){
 					//this should only be sampled once during the animation
@@ -237,11 +232,6 @@ void cubie::update(){
 			for(int i=0; i<myMatrix.size();i++){
 				SG_POINT protFace = {pointRotate.x,pointRotate.y,pointRotate.z};										 
 				SG_VECTOR vrotFace = myMatrix.at(i).vector;//  axis of rotation
-				ofQuaternion qx;
-				ofQuaternion qy;
-
-				ofQuaternion qt;
-				//
 				if(vrotFace.x != 0){
 					if(rotCompensation.y != 0){
 						SG_VECTOR vComp = {(cos(ofDegToRad(rotCompensation.y))*1),0,(sin(ofDegToRad(rotCompensation.y))*-1)};
@@ -273,11 +263,9 @@ void cubie::update(){
 					//vrotFace = vc;
 				}
 
-				qx.set(1,0,0,rotCompensation.x);
-				qy.set(0,1,0,rotCompensation.y);
-
+				qx = ofQuaternion (rotCompensation.x,ofVec3f(1,0,0));
+				qy = ofQuaternion (rotCompensation.y,ofVec3f(0,1,0));
 				qt = qx * qy;// * qh
-				ofVec3f qaxis; float qangle;  
 				qt.getRotate(qangle, qaxis);
 
 				double d = myMatrix.at(i).deg;
@@ -299,21 +287,23 @@ void cubie::update(){
 				}
 			}
 		}
+
+
 		///////////////////////////////////////////////////////////
 		////////rotate and move with the whole puzzle
-		SG_VECTOR vrotH = {0,1,0}; //rotate H         
-		SG_VECTOR puzzleRotate = {0,0,0};
-		if (objectList[j]->GetTempMatrix()==0){
-			objectList[j]->InitTempMatrix()->Rotate(puzzleRotate,vrotH,rot.y);
-		}else{
-			objectList[j]->GetTempMatrix()->Rotate(puzzleRotate,vrotH,rot.y);
-		}
-		SG_VECTOR vrotV = {1,0,0}; //rotate V								 
-		objectList[j]->GetTempMatrix()->Rotate(puzzleRotate,vrotV,rot.x);
-		//translations
-		SG_VECTOR transBox11 = {pos.x,pos.y,pos.z}; 
-		objectList[j]->GetTempMatrix()->Translate(transBox11);
-		objectList[j]->ApplyTempMatrix();
+		//SG_VECTOR vrotH = {1,0,0}; //rotate v         
+		//SG_VECTOR puzzleRotate = {0,0,0};
+		//if (objectList[j]->GetTempMatrix()==0){
+		//	objectList[j]->InitTempMatrix()->Rotate(puzzleRotate,vrotH,0);//rot.x);
+		//}else{
+		//	objectList[j]->GetTempMatrix()->Rotate(puzzleRotate,vrotH,0);//rot.x);
+		//}
+		//SG_VECTOR vrotV = {0,1,0}; //rotate h								 
+		//objectList[j]->GetTempMatrix()->Rotate(puzzleRotate,vrotV,0);//rot.y);
+		////translations
+		//SG_VECTOR transBox11 = {pos.x,pos.y,pos.z}; 
+		//objectList[j]->GetTempMatrix()->Translate(transBox11);
+		//objectList[j]->ApplyTempMatrix();
 	}
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
@@ -512,9 +502,9 @@ void cubie::execute(){
 }
 
 //-------------------------------------------------------------------------------------------------------------------------------------------
-void cubie::rotate(SG_VECTOR r){
-	rot = r;
-}
+//void cubie::rotate(SG_VECTOR r){
+//	//rot = r;
+//}
 //--------------------------------------------------------------
 void cubie::move(SG_VECTOR p){
 	pos = p;

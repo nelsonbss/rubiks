@@ -11,6 +11,7 @@
 #include "ofxAssimpModelLoader.h"
 #include "history.h"
 #include "armRotations.h"
+#include "ofxTrackball.h"
 
 #include <vector>
 
@@ -67,8 +68,10 @@ public:
 	SG_VECTOR posP;
 	void moveP (SG_VECTOR p);
 	/////////////////////////////rotate all puzzle
-	SG_VECTOR rotP;
-	void rotateP(SG_VECTOR r);
+	///trackball
+	ofxTrackball *myTB;
+	/*SG_VECTOR rotP;
+	void rotateP(SG_VECTOR r);*/
 
 	////////////////puzzle movements
 	//offset vars

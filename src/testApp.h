@@ -11,6 +11,7 @@
 #include "game.h"
 #include "GestureManager.h"
 #include <math.h>
+#include "ofxTrackball.h"
 
 class testApp : public ofBaseApp, public Observer, public Subject{
 
@@ -55,7 +56,7 @@ public:
 	slicer *mySlicer;
 	puzzle *myPuzzle;
 
-	bool rotate;
+	//bool rotate;
 
 	////////////////rendering  and textures
 	void initOFRender();

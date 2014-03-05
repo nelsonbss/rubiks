@@ -15,6 +15,7 @@ public:
     //void popFromStack();
     void update();
     void activate();
+	void deactivate();
     void draw();
     void touch();
     void setName(string _name){name = _name;}

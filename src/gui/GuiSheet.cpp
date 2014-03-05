@@ -44,6 +44,13 @@ void GuiSheet::activate(){
     }
 }
 
+void GuiSheet::deactivate(){
+	vector<GuiNode*>::iterator gIter;
+    for(gIter = nodes.begin(); gIter != nodes.end(); ++gIter){
+        (*gIter)->deactivate();
+    }
+}
+
 /*
 void GuiSheet::popFromStack(){
     SceneManager::Instance()->popSheet();

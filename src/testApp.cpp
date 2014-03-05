@@ -11,11 +11,6 @@ std::map<int,gwc::Point> active_points;
 //--------------------------------------------------------------
 void testApp::setup(){
 
-	gm = new GestureManager();
-	gm->loadGMLFile("basic_manipulation.gml");
-	gm->init("rubiksWindow", ofGetWidth(), ofGetHeight());
-	//gm->start();
-
 	/*
 	if(loadGestureWorks("GestureworksCore32.dll")) { 
 		std::cout << "Error loading gestureworks dll" << std::endl; 
@@ -69,6 +64,11 @@ void testApp::setup(){
 	//////setup GUI/////////////
 	//ofSetFullscreen(true);
 
+	gm = new GestureManager();
+	gm->loadGMLFile("basic_manipulation.gml");
+	gm->init("rubiksWindow", ofGetWidth(), ofGetHeight());
+	gm->start();
+
 	string guiFile = "sheets.xml";
 	GuiConfigurator::Instance()->addFile(guiFile);
 	GuiConfigurator::Instance()->loadGui();
@@ -84,7 +84,6 @@ void testApp::setup(){
 
 
 	active_points = std::map<int,gwc::Point>();
-
 	//rotate = true;
 }
 //--------------------------------------------------------------
@@ -432,6 +431,7 @@ void testApp::update(string _eventName, SubObEvent* _event){
 	}
 	if(_eventName == "reset"){
 		myGames[0]->restart();
+		SceneManager::Instance()->reset();
 	}
 	if(_eventName == "touch-point"){
 		cout << "received touch point" << endl;

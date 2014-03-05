@@ -63,6 +63,9 @@ void SceneManager::addInfoMask(GuiSheet* _infoMask){
 */
 
 void SceneManager::pushSheet(GuiSheet* _sheet){
+	if(drawStack.size() > 0){
+		drawStack.back()->deactivate();
+	}
 	cout << "drawStack adding sheet - " << _sheet->getName() << endl;
     /*
 	if(haveMask){
@@ -83,7 +86,8 @@ void SceneManager::pushSheet(GuiSheet* _sheet){
 }
 
 void SceneManager::popSheet(){
-    drawStack.pop_back();
+    drawStack.back()->deactivate();
+	drawStack.pop_back();
     /*
 	if(haveMask){
         drawStack.pop_back();

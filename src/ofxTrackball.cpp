@@ -64,7 +64,7 @@ ofxTrackball::ofxTrackball( float x, float y, float z, float radius, puzzle *pzl
 
 	// setup event handler
 	
-	//enableMouse();
+	enableMouse();
 	ofAddListener(ofEvents().update, this, &ofxTrackball::update );
 
 	// setup drawing
@@ -299,7 +299,7 @@ void ofxTrackball::disableMouse()
 //-----------------------------------------------------------------------------------------
 void ofxTrackball::cursorPressed( ofMouseEventArgs &args )
 {
-	if ( args.button == 0 )
+	if ( args.button == 2 )
 	{
 		isCursorPressed = true;
 		cursor->set( args.x, args.y );
@@ -314,10 +314,10 @@ void ofxTrackball::cursorPressed( ofMouseEventArgs &args )
 //-----------------------------------------------------------------------------------------
 void ofxTrackball::cursorDragged( ofMouseEventArgs &args )
 {
-	if ( args.button == 0 )
+	if ( args.button == 2 )
 	{
 
-		cout << "mouse dragging - " << args.x << ", " << args.y << ". isCursorPressed = " << isCursorPressed << endl;
+		//cout << "mouse dragging - " << args.x << ", " << args.y << ". isCursorPressed = " << isCursorPressed << endl;
 
 		previousCursor->set( cursor->x, cursor->y );
 		cursor->set( args.x, args.y );

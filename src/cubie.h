@@ -75,7 +75,7 @@ public:
 	*/
 
 	bool processMouse(int _x, int _y, int _state){return false;}
-	void dragInput(int _ID, int _n, int _phase, ofVec2f _absPos, ofVec2f _deltaPos);
+	void input(string _type, int _ID, int _n, int _phase, ofVec2f _absPos, ofVec2f _deltaPos);
 	void update(string _subName, Subject* _sub){}
 	void update(string _eventName, SubObEvent* _event);
 	void execute();
@@ -84,9 +84,9 @@ public:
 	int rotationDirection;
 
 	bool bRotate;
-	bool getRotate(){return bRotate;}
+	bool getRotate();
 	int getRotationDirection(){return rotationDirection;}
-	void setRotate(bool _rotate){bRotate = _rotate;}
+	void setRotate(bool _rotate);
 
 	void getCentroid();
 	void projectCentroid();

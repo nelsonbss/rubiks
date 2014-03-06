@@ -117,9 +117,9 @@ void GuiConfigurator::update(string _eventName, SubObEvent* _event){
 			//cout << "event n = " << eventN << " and target n = " << targetN << endl;
 			if(activeNodes[target]->getParam(type) == "true"){
 				if(eventN == n){
-					cout << activeNodes[target]->getName() << " is getting " << type << endl;
+					//cout << activeNodes[target]->getName() << " is getting " << type << endl;
 					//activeNodes[target]->adjustPosition(_event->getArg("drag_d")->getVec2(), _event->getArg("position")->getVec2());
-					///cout << "sending drag." << endl;
+					//cout << "sending drag." << endl;
 					int cID = _event->getArg("ID")->getInt();
 					int cN = _event->getArg("n")->getInt();
 					int cPhase = _event->getArg("phase")->getInt();
@@ -129,7 +129,7 @@ void GuiConfigurator::update(string _eventName, SubObEvent* _event){
 						activeNodes[target]->input(type, cID, cN, cPhase, cAPos, cDPos);
 					}
 				} else {
-					cout << "n mismatch" << endl;
+					//cout << "n mismatch" << endl;
 				}
 			} else {
 				//cout << "...but we're not draggable." << endl;
@@ -463,6 +463,7 @@ void GuiConfigurator::addActive(GuiNode* _node){
 	nEvent->setName("add-object");
 	nEvent->addArg("objName", nodeName);
 	SubObMediator::Instance()->sendEvent(nEvent->getName(), nEvent);
+	/*
 	for(vector<string>::iterator aIter = availableGestures.begin(); aIter != availableGestures.end(); ++aIter){
 		SubObEvent* gEvent = new SubObEvent();
 		gEvent->setName("add-gesture");
@@ -470,11 +471,26 @@ void GuiConfigurator::addActive(GuiNode* _node){
 		gEvent->addArg("gesture",*aIter);
 		SubObMediator::Instance()->sendEvent(gEvent->getName(), gEvent);
 	}
+	*/
+	if(_node->getParam("drag") == "true"){
+		SubObEvent gEvent;
+		gEvent.setName("add-gesture");
+		gEvent.addArg("objName",nodeName);
+		gEvent.addArg("gesture","n-drag");
+		SubObMediator::Instance()->sendEvent(gEvent.getName(), &gEvent);
+	}
+	if(_node->getParam("tap") == "true"){
+		SubObEvent gEvent;
+		gEvent.setName("add-gesture");
+		gEvent.addArg("objName",nodeName);
+		gEvent.addArg("gesture","n-tap");
+		SubObMediator::Instance()->sendEvent(gEvent.getName(), &gEvent);
+	}
 }
 
 void GuiConfigurator::removeActive(GuiNode* _node){
 	SubObEvent* gEvent = new SubObEvent();
-	gEvent->setName("add-gesture");
+	gEvent->setName("remove-object");
 	gEvent->addArg("objName",_node->getName());
 	SubObMediator::Instance()->sendEvent(gEvent->getName(), gEvent);
 	activeNodes.erase(_node->getName());

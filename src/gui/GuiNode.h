@@ -6,6 +6,7 @@
 #include "Subject.h"
 #include "Observer.h"
 #include "SubObMediator.h"
+#include "ofxTimer.h"
 
 class SubObEvent;
 
@@ -125,6 +126,7 @@ protected:
     int dur;
 	bool bDrawArea;
 	ofVec3f drawColor;
+	ofxTimer* timer;
 };
 
 

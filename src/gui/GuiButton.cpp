@@ -76,10 +76,13 @@ void GuiButton::nodeInit(){
 			SubObMediator::Instance()->addObserver("object-intercepted",this);
 		}
 	}
+	timeOfLastInteraction = 0;
+	bWatchTime = false;
 }
 
 void GuiButton::nodeExecute(){
 	bReadyForInput = false;
+	timer->addTimer(1000, (int*)&bReadyForInput, 1);
 }
 
 bool GuiButton::processMouse(int _x, int _y, int _state){
@@ -145,11 +148,15 @@ void GuiButton::input(string _type, int _ID, int _n, int _phase, ofVec2f _absPos
 		cout << name << " - executing" << endl;
 		execute();
 	}
+	if(!bWatchTime){
+		bWatchTime = true;
+	}
+	timeOfLastInteraction = ofGetElapsedTimeMillis();
 }
 
 void GuiButton::update(string _subName, Subject* _sub){
 }
-
+ 
 void GuiButton::update(string _eventName, SubObEvent* _event){
 	if(_eventName == "object-intercepted"){
 		if(_event->getArg("object-name")->getString() == name){
@@ -175,4 +182,12 @@ void GuiButton::nodeDraw(){
     } else {
         //ofRect(pos.x, pos.y, size.x, size.y);
     }
+	if(bWatchTime){
+		if(ofGetElapsedTimeMillis() - timeOfLastInteraction > 1000){
+			setPosition();
+			drawSize.x = inactive.getWidth();
+			drawSize.y = inactive.getHeight();
+			bWatchTime = 0;
+		}
+	}
 }

@@ -45,6 +45,8 @@ class GuiButton : public GuiNode
 		bool bTacky;
 		ofVec2f selectionLocation;
 		ofVec2f dragStartLocation;
+		int timeOfLastInteraction;
+		bool bWatchTime;
 };
 
 #endif // GUIBUTTON_H

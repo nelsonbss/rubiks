@@ -137,6 +137,10 @@
     <ClCompile Include="src\subob\SubObEvent.cpp">
       <Filter>src\subob</Filter>
     </ClCompile>
+    <ClCompile Include="src\ofxTrackball.cpp" />
+    <ClCompile Include="src\ofxTimer.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -420,6 +424,10 @@
     </ClInclude>
     <ClInclude Include="src\subob\SubObEvent.h">
       <Filter>src\subob</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ofxTrackball.h" />
+    <ClInclude Include="src\ofxTimer.h">
+      <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

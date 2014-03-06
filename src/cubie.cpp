@@ -43,7 +43,7 @@ cubie::cubie(float x, float y,float z, int idi, int selObjId, ofVec3f offset) : 
 	undoing = false;
 	
 	init();
-	addParam("draggable", "true");
+	addParam("drag", "true");
 	addParam("n", "1");
 	bDraw = true;
 	scale = 1.0;
@@ -525,24 +525,42 @@ void cubie::projectCentroid(){
 void cubie::update(string _eventName, SubObEvent* _event){
 }
 
-void cubie::dragInput(int _ID, int _n, int _phase, ofVec2f _absPos, ofVec2f _deltaPos){
-	int rotationDirection = ROTATE_UP;
-	if(abs(_deltaPos.x) > abs(_deltaPos.y)){
-		if(_deltaPos.x > 0){
-			rotationDirection = ROTATE_RIGHT;
+void cubie::input(string _type, int _ID, int _n, int _phase, ofVec2f _absPos, ofVec2f _deltaPos){
+	cout << "cubie " << id << " got input - " << _type << endl;
+	if(_type == "drag"){
+		int rotationDirection = ROTATE_UP;
+		if(abs(_deltaPos.x) > abs(_deltaPos.y)){
+			if(_deltaPos.x > 0){
+				rotationDirection = ROTATE_RIGHT;
+			} else {
+				rotationDirection = ROTATE_LEFT;
+			} 
 		} else {
-			rotationDirection = ROTATE_LEFT;
-		} 
-	} else {
-		if(_deltaPos.y > 0){
-			rotationDirection = ROTATE_DOWN;
-		} else {
-			rotationDirection = ROTATE_UP;
+			if(_deltaPos.y > 0){
+				rotationDirection = ROTATE_DOWN;
+			} else {
+				rotationDirection = ROTATE_UP;
+			}
 		}
+		bRotate = true;
+		cout << "SETTING BROTATE TO - " << bRotate << endl;
+		bDraw = false;
+		timer->addTimer(1000, (int*)&bDraw, 1);
+		cout << "cubie - " << name << " being dragged." << endl;
+		bReadyForInput = false;
+		timer->addTimer(1000, (int*)&bReadyForInput, 1);
 	}
-	bRotate = true;
-	bDraw = false;
-	//cout << "cubie - " << name << " being dragged." << endl;
+}
+
+bool cubie::getRotate(){
+	if(bRotate){
+		cout << "returning bRotate" << endl;
+	}
+	return bRotate;
+}
+
+void cubie::setRotate(bool _rotate){
+	bRotate = _rotate;
 }
 
 void cubie::execute(){

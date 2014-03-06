@@ -248,7 +248,7 @@ void ofRender::colorFaces(cubie **myCubies, int numPieces, float playRoom, int o
 						//arm rotations
 						if(objectID == 2){
 							//have to use the official colors
-							///rotate normal vectors to compensate for armature rotations
+							///rotate normal vectors to compensate for armature rotations z-y-x
 							//ask direction to color faces of cube 
 							ofVec3f t = tnormals[n].getRotated(armZ,ofVec3f(0,0,1));
 							ofVec3f t2 = t.getRotated(armY,ofVec3f(0,1,0));

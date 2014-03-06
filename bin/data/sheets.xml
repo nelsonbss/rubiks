@@ -61,7 +61,7 @@
       <event name="object-selected">
         <arg name="object">
           <type>int</type>
-          <val>8</val>
+          <val>7</val>
         </arg>
       </event>
       <param>

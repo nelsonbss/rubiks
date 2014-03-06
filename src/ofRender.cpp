@@ -150,6 +150,13 @@ void ofRender::colorFaces(cubie **myCubies, int numPieces, float playRoom, int o
 		for (int j = 0 ; j< meshesCubie; j++){
 			//get the normals of the mesh!
 			tnormals = myCubies[i]->myMeshs[j].getNormals();
+
+
+
+			myCubies[i]->armRotations.z;
+			
+			
+			
 			//verify each normal value on unique normals vector
 			for(int n=0; n< tnormals.size() ; n++){
 				if(uniqueNormals.size() == 0){
@@ -213,7 +220,7 @@ void ofRender::colorFaces(cubie **myCubies, int numPieces, float playRoom, int o
 				for(int n=0; n< tnormals.size() ; n++){
 
 					if(objectID != -2){
-						//not the cube  so any color goes
+						//if there are no arm rotations.. this works for cube official colors
 						if(((uniqueNormals[un].x - playRoom) <= tnormals[n].x) && 
 							(tnormals[n].x <= (uniqueNormals[un].x + playRoom)) &&
 							((uniqueNormals[un].y - playRoom) <= tnormals[n].y) && 
@@ -245,27 +252,10 @@ void ofRender::colorFaces(cubie **myCubies, int numPieces, float playRoom, int o
 							tcolors[n] = green;
 						}
 
+						///rotate normal vectors to comensate for armature rotations
+						//ask direction to color faces of cube 
 						//ofVec3f t = tnormals[n].getRotated(
 
-						/////////////////////////////////////////////////////////////////////
-						/////undo rotations to get the normals correctly to color correctly
-						//for (int c=0; c < myCubies[i]->numObjs; c++){
-						//	/////////////////////////////////////////////////////////
-						//	//////undo rotations of armature in z-y-x order
-						//	SG_VECTOR vrotZ = {0,0,1};      
-						//	SG_VECTOR puzzleRotate = {0,0,0};
-						//	if (myCubies[i]->objectList[c]->GetTempMatrix()==0){
-						//		myCubies[i]->objectList[c]->InitTempMatrix()->Rotate(puzzleRotate,vrotZ,ofDegToRad(myCubies[i]->armRotations.z));
-						//	}else{
-						//		myCubies[i]->objectList[c]->GetTempMatrix()->Rotate(puzzleRotate,vrotZ,ofDegToRad(myCubies[i]->armRotations.z));
-						//	}
-						//	SG_VECTOR vrotY = {0,1,0}; 							 
-						//	myCubies[i]->objectList[c]->GetTempMatrix()->Rotate(puzzleRotate,vrotY,ofDegToRad(myCubies[i]->armRotations.y));
-						//	SG_VECTOR vrotX = {1,0,0}; 							 
-						//	myCubies[i]->objectList[c]->GetTempMatrix()->Rotate(puzzleRotate,vrotX,ofDegToRad(myCubies[i]->armRotations.x));
-						//	myCubies[i]->objectList[c]->ApplyTempMatrix();
-						//	myCubies[i]->objectList[c]->DestroyTempMatrix();
-						//}
 					}
 				}
 			}

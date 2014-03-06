@@ -265,7 +265,7 @@ void game::createPuzzle(SG_VECTOR p){
 
 		///////////////////////////////  color puzzle   ////////////////////////////////// 
 		//color all the faces for platonic solids!! colors outside for most objects(not bunny), black on the insides
-		//myPuzzle->colorFaces(objectID);
+		myPuzzle->colorFaces(objectID);
 
 		////////////////////////   give puzzle trackball  //////////////////////////////
 		myTB = new ofxTrackball(ofGetWidth()/2, ofGetHeight()/2, 0, 2000, myPuzzle,false);

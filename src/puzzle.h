@@ -19,7 +19,7 @@ public:
 
 	void exit();
 
-	void loadPieces(sgCGroup **pcs, int selObjId,ofVec3f v);
+	void loadPieces(sgCGroup **pcs, int selObjId, ofVec3f v);
 	int giveNumCubies();
 	sgCGroup* cubieGroup;
 	float numPieces;

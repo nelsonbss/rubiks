@@ -104,7 +104,7 @@ int puzzle::giveNumCubies(){
 	return aux;
 }
 //----------------------------------------------------------------
-void puzzle::loadPieces(sgCGroup **pcs,int selObjId,ofVec3f v){
+void puzzle::loadPieces(sgCGroup **pcs,int selObjId, ofVec3f v){
 	//it loads the pieces that the slicer made, the pieces are in a sgCGroup** pieces[], 
 	//this function receives a copy of that sgCGroup** made by mySlicer->getPieces()
 	//it loads them into its own cubies
@@ -136,7 +136,6 @@ void puzzle::loadPieces(sgCGroup **pcs,int selObjId,ofVec3f v){
 			}
 			//make them a group
 			cubieGroup = sgCGroup::CreateGroup(obj,realNumPieces);
-			//put that gorup inside temp cubie
 			myCubies[i]->setObjects(cubieGroup,i,v);//here goes the group of clones from the iriginal slicing pieces[]
 			//i is the cubie ID
 			//put that cubie on the cubies[]
@@ -157,6 +156,8 @@ void puzzle::loadPieces(sgCGroup **pcs,int selObjId,ofVec3f v){
 		}
 	}
 
+	//create the meshes from the sgCore objects
+	//so the objects can be renderes by openFrameworks
 	for(int i=0;i<numPieces;i++){
 		myCubies[i]->crateOfMeshs();
 	}
@@ -397,12 +398,11 @@ void puzzle::rearange3dArray(SG_VECTOR axis, int plane, bool dir){
 void puzzle::colorFaces(int objectID){
 	////goes through each cubie and makes sets of normals.. to determine all different normals in the object
 	//and apply colors to those normals
-	if((objectID != 4) && (objectID != 2)){
+	if((objectID != 4)){
 		//not the bunny or the cube -> they were already colored on puzzle::loadPieces->cubie::setObjects
 		ofRender *ofr = new ofRender();
-		ofr->colorFaces(myCubies,numPieces,0.01);
+		ofr->colorFaces(myCubies,numPieces,0.01, objectID);
 		free(ofr);
-
 	}
 	if((objectID != 4)){
 		//color black all the inside faces of each cubie (after all other face colors have been applied)

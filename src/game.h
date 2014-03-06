@@ -54,6 +54,12 @@ public:
 	void guiLoad(int _obj);
 	bool bHaveNewObject;
 	int newObject;
+
+	bool bHaveNext;
+	void guiNext(){bHaveNext = true;}
+
+	bool bHaveReset;
+	void guiReset(){bHaveReset = true;}
 	
 	void loadArmature(int type);
 	int armID;

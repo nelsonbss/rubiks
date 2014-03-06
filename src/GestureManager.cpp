@@ -15,6 +15,9 @@ GestureManager::GestureManager(){
 	SubObMediator::Instance()->addObserver("add-gesture",this);
 	SubObMediator::Instance()->addObserver("add-object-gestures",this);
 	SubObMediator::Instance()->addObserver("remove-object",this);
+	SubObMediator::Instance()->addObserver("add-touch-point",this);
+	SubObMediator::Instance()->addObserver("update-touch-point",this);
+	SubObMediator::Instance()->addObserver("remove-touch-point",this);
 	receivers = 0;
 }
 
@@ -87,6 +90,30 @@ void GestureManager::update(string _eventName, SubObEvent* _event){
 	if(_eventName == "remove-object"){
 		string objName = _event->getArg("objName")->getString();
 		deregisterTouchObject(objName);
+	}
+	if(_eventName == "add-touch-point"){
+		ofVec3f pos = _event->getArg("position")->getVec3();
+		int tId = _event->getArg("touch-id")->getInt();
+		gwc::touchpoint nPoint;
+		nPoint.init(tId, pos.x, pos.y, 0, 1, 1);
+		nPoint.status = gwc::TOUCHADDED;
+		addEvent(nPoint);
+	}
+	if(_eventName == "update-touch-point"){
+		ofVec3f pos = _event->getArg("position")->getVec3();
+		int tId = _event->getArg("touch-id")->getInt();
+		gwc::touchpoint nPoint;
+		nPoint.init(tId, pos.x, pos.y, 0, 1, 1);
+		nPoint.status = gwc::TOUCHUPDATE;
+		addEvent(nPoint);
+	}
+	if(_eventName == "remove-touch-point"){
+		ofVec3f pos = _event->getArg("position")->getVec3();
+		int tId = _event->getArg("touch-id")->getInt();
+		gwc::touchpoint nPoint;
+		nPoint.init(tId, pos.x, pos.y, 0, 1, 1);
+		nPoint.status = gwc::TOUCHREMOVED;
+		addEvent(nPoint);
 	}
 }
 

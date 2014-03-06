@@ -515,9 +515,9 @@ void cubie::projectCentroid(){
 	y = ofGetHeight() - y;
 	centroid2d.set(x, y, z);
 	//cout << "made pick point " << centroid2d.x << ", " << centroid2d.y << endl;
-	drawPos.x = centroid2d.x - 50;
-	drawPos.y = centroid2d.y - 50;
-	drawSize.set(100,100);
+	drawPos.x = centroid2d.x - 25;
+	drawPos.y = centroid2d.y - 25;
+	drawSize.set(50,50);
 	setZ(centroid2d.z);
 	//cout << "Cubie " << id << " z = " << centroid2d.z << endl;
 }
@@ -544,8 +544,8 @@ void cubie::input(string _type, int _ID, int _n, int _phase, ofVec2f _absPos, of
 		}
 		bRotate = true;
 		cout << "SETTING BROTATE TO - " << bRotate << endl;
-		bDraw = false;
-		timer->addTimer(1000, (int*)&bDraw, 1);
+		//bDraw = false;
+		//timer->addTimer(1000, (int*)&bDraw, 1);
 		cout << "cubie - " << name << " being dragged." << endl;
 		bReadyForInput = false;
 		timer->addTimer(1000, (int*)&bReadyForInput, 1);

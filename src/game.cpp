@@ -44,6 +44,7 @@ game::game(SG_VECTOR gamePos, float w, float h, SG_VECTOR displayPos){
 	objectID = -1; //initialized on -1 because on stage=0 there is no object selected
 
 	bHaveNewObject = false;
+	bHaveNext = false;
 }
 //--------------------------------------------------------------
 void game::setup(sgCObject *sgBunnyi,sgCObject *sgTetrahedroni,sgCObject *sgDodecahedroni,sgCObject *sgIcosahedroni,sgCObject *sgOctahedroni){//,sgCObject *sgTeapoti){
@@ -103,6 +104,15 @@ void game::update(){
 			}
 			//updatePuzzle = false;
 		}
+	}
+
+	if(bHaveNext){
+		guiInput('n');
+		bHaveNext = false;
+	}
+	if(bHaveReset){
+		guiInput('r');
+		bHaveReset = false;
 	}
 }
 //----------------------------------------------------------------------
@@ -363,6 +373,7 @@ void game::guiLoad(int _obj){
 	bHaveNewObject = true;
 	newObject = _obj;
 }
+
 //----------------------------------------------------------------------
 void game::guiInput(int in){
 	////////////////////////////////////////////step 0 inputs
@@ -752,5 +763,5 @@ void game::exit(){
 	sgDeleteObject(sgDodecahedron);
 	sgDeleteObject(sgIcosahedron);
 	sgDeleteObject(sgOctahedron);
- 	sgDeleteObject(sgTeapot);
+  	sgDeleteObject(sgTeapot);
 }

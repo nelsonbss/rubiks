@@ -76,6 +76,7 @@ void testApp::setup(){
 	SubObMediator::Instance()->addObserver("button", this);
 	SubObMediator::Instance()->addObserver("object-selected", this);
 	SubObMediator::Instance()->addObserver("armature-selected", this);
+	SubObMediator::Instance()->addObserver("next-step", this);
 	SubObMediator::Instance()->addObserver("cut-object", this);
 	SubObMediator::Instance()->addObserver("goto-step5", this);
 	SubObMediator::Instance()->addObserver("reset", this);
@@ -351,6 +352,13 @@ void testApp::mouseDragged(int x, int y, int button){
 		}
 	}
 	*/
+	if(button == 0){
+		SubObEvent *ev = new SubObEvent();
+		ev->setName("update-touch-point");
+		ev->addArg("position",ofVec3f((float)x / (float)ofGetWidth(),(float)y / (float)ofGetHeight(),0));
+		ev->addArg("touch-id", 1000);
+		SubObMediator::Instance()->sendEvent("update-touch-point", ev);
+	}
 }
 //--------------------------------------------------------------
 void testApp::mousePressed(int x, int y, int button){
@@ -366,11 +374,25 @@ void testApp::mousePressed(int x, int y, int button){
 		}
 	}
 	*/
+	if(button == 0){
+		SubObEvent *ev = new SubObEvent();
+		ev->setName("add-touch-point");
+		ev->addArg("position",ofVec3f((float)x / (float)ofGetWidth(),(float)y / (float)ofGetHeight(),0));
+		ev->addArg("touch-id", 1000);
+		SubObMediator::Instance()->sendEvent("add-touch-point", ev);
+	}
 }
 //--------------------------------------------------------------
 void testApp::mouseReleased(int x, int y, int button){
 	updateMouseState("up", x, y, button);
     timeOfLastInteraction = ofGetElapsedTimef();
+	if(button == 0){
+		SubObEvent *ev = new SubObEvent();
+		ev->setName("remove-touch-point");
+		ev->addArg("position",ofVec3f((float)x / (float)ofGetWidth(),(float)y / (float)ofGetHeight(),0));
+		ev->addArg("touch-id", 1000);
+		SubObMediator::Instance()->sendEvent("remove-touch-point", ev);
+	}
 }
 
 void testApp::updateMouseState(const char * _state, int _x, int _y, int _button){
@@ -419,8 +441,13 @@ void testApp::update(string _eventName, SubObEvent* _event){
 			myGames[0]->guiLoad(obj);
 		}
 	}
+	if(_eventName == "next-step"){
+		myGames[0]->guiNext();
+	}
 	if(_eventName == "armature-selected"){
-		myGames[0]->setCurrentStep(3);
+		string armStr = ofToString(_event->getArg("armature")->getInt());
+		//myGames[0]->setCurrentStep(3);
+		myGames[0]->guiInput(armStr.c_str()[0]);
 	}
 	if(_eventName == "cut-object"){
 		SG_VECTOR v = {displayX,displayY,displayZ};
@@ -430,7 +457,7 @@ void testApp::update(string _eventName, SubObEvent* _event){
 		myGames[0]->setCurrentStep(5);
 	}
 	if(_eventName == "reset"){
-		myGames[0]->restart();
+		myGames[0]->guiReset();
 		SceneManager::Instance()->reset();
 	}
 	if(_eventName == "touch-point"){

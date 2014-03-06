@@ -75,11 +75,31 @@ void puzzle::update(){
 			myCubies[i]->update();
 			if(myCubies[i]->getRotate()){
 				cout << "rotating cubies." << endl;
-				int id = myCubies[i]->getId();
+				int id = myCubies[i]->getId() - 1;
 				int rotationDirection = myCubies[i]->getRotationDirection();
 				myCubies[i]->setRotate(false);
-				SG_VECTOR axis = {1,0,0};
-				rotateByIDandAxis(id, axis, true);
+				SG_VECTOR axis;
+				if(rotationDirection == ROTATE_UP){
+					axis.x = 0;
+					axis.y = 1;
+					axis.z = 0;
+					rotateByIDandAxis(id, axis, true);
+				} else if(rotationDirection == ROTATE_DOWN){
+					axis.x = 0;
+					axis.y = 1;
+					axis.z = 0;
+					rotateByIDandAxis(id, axis, false);
+				} else if(rotationDirection == ROTATE_LEFT){
+					axis.x = 1;
+					axis.y = 0;
+					axis.z = 0;
+					rotateByIDandAxis(id, axis, true);
+				} else {
+					axis.x = 1;
+					axis.y = 0;
+					axis.z = 0;
+					rotateByIDandAxis(id, axis, false);
+				}
 			}
 		}
 	}

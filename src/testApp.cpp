@@ -109,7 +109,10 @@ void testApp::draw(){
 	////////////////////////PUZZLE //////////////////////
 	///////////////////////////////draw games
 	for(int i = 0; i < myGames.size(); i++){
+		ofPushMatrix();
+		//ofTranslate(100,200,100);
 		myGames[0]->draw();
+		ofPopMatrix();
 	}
 
 	///////////////////END OF RENDERING////////////////////

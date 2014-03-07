@@ -78,6 +78,7 @@ void GuiButton::nodeInit(){
 	}
 	timeOfLastInteraction = 0;
 	bWatchTime = false;
+	timer = new ofxTimer();
 }
 
 void GuiButton::nodeExecute(){

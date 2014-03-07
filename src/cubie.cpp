@@ -4,7 +4,7 @@
 #include <math.h>
 
 
-cubie::cubie(float x, float y,float z, int idi, int selObjId, ofVec3f offset) : GuiNode(){
+cubie::cubie(float x, float y,float z, int idi, int selObjId, ofVec3f offset){
 	objects = NULL;
 	id = idi;
 	selectedObjectID = selObjId;
@@ -42,14 +42,8 @@ cubie::cubie(float x, float y,float z, int idi, int selObjId, ofVec3f offset) : 
 	//to control undo
 	undoing = false;
 	
-	init();
-	addParam("drag", "true");
-	addParam("n", "1");
 	bDraw = true;
-	scale = 1.0;
 	bRotate = false;
-	name = "cubie-" + ofToString(id);
-	activate();
 }
 //--------------------------------------------------------------
 void cubie::setup(){
@@ -515,41 +509,7 @@ void cubie::projectCentroid(){
 	y = ofGetHeight() - y;
 	centroid2d.set(x, y, z);
 	//cout << "made pick point " << centroid2d.x << ", " << centroid2d.y << endl;
-	drawPos.x = centroid2d.x - 25;
-	drawPos.y = centroid2d.y - 25;
-	drawSize.set(50,50);
-	setZ(centroid2d.z);
 	//cout << "Cubie " << id << " z = " << centroid2d.z << endl;
-}
-
-void cubie::update(string _eventName, SubObEvent* _event){
-}
-
-void cubie::input(string _type, int _ID, int _n, int _phase, ofVec2f _absPos, ofVec2f _deltaPos){
-	cout << "cubie " << id << " got input - " << _type << endl;
-	if(_type == "drag"){
-		int rotationDirection = ROTATE_UP;
-		if(abs(_deltaPos.x) > abs(_deltaPos.y)){
-			if(_deltaPos.x > 0){
-				rotationDirection = ROTATE_RIGHT;
-			} else {
-				rotationDirection = ROTATE_LEFT;
-			} 
-		} else {
-			if(_deltaPos.y > 0){
-				rotationDirection = ROTATE_DOWN;
-			} else {
-				rotationDirection = ROTATE_UP;
-			}
-		}
-		bRotate = true;
-		cout << "SETTING BROTATE TO - " << bRotate << endl;
-		//bDraw = false;
-		//timer->addTimer(1000, (int*)&bDraw, 1);
-		cout << "cubie - " << name << " being dragged." << endl;
-		bReadyForInput = false;
-		timer->addTimer(1000, (int*)&bReadyForInput, 1);
-	}
 }
 
 bool cubie::getRotate(){
@@ -561,10 +521,6 @@ bool cubie::getRotate(){
 
 void cubie::setRotate(bool _rotate){
 	bRotate = _rotate;
-}
-
-void cubie::execute(){
-	
 }
 
 //-------------------------------------------------------------------------------------------------------------------------------------------
@@ -649,5 +605,4 @@ void cubie::exit(){
 		free(objectList);
 		sgCObject::DeleteObject(objects);
 	}
-	deactivate();
 }

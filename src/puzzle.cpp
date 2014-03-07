@@ -10,7 +10,7 @@
 #define WIDTH 3
 #define DEPTH 3
 
-puzzle::puzzle(SG_VECTOR p, ofVec3f offset){
+puzzle::puzzle(SG_VECTOR p, ofVec3f offset) : GuiNode(){
 	numPieces = 27;
 	myCubies = (cubie**)malloc(numPieces*sizeof(cubie*));
 
@@ -65,6 +65,13 @@ puzzle::puzzle(SG_VECTOR p, ofVec3f offset){
 }
 //----------------------------------------------------------------
 void puzzle::setup(){
+	init();
+	addParam("drag", "true");
+	addParam("n", "1");
+	scale = 1.0;
+	string myName = "puzzle";
+	//name = myName;
+	activate();
 }
 //----------------------------------------------------------------
 void puzzle::update(){
@@ -311,6 +318,40 @@ void puzzle::rotateByIDandAxis(int id, SG_VECTOR axis, bool dir){
 	/////the animation will lock selection of new cubie, so on ly one movement is done at a time
 	/////so the re-aranging of numbers can happen "during" the animation
 }
+
+void puzzle::update(string _eventName, SubObEvent* _event){
+}
+
+bool puzzle::isInside(int _x, int _y){
+	cout << "puzzle checking insides" << endl;
+	ofVec2f mouse(_x,_y);
+	float nearest = 10000.0;
+	int nearestId = -1;
+	for(int i=0;i<numPieces;i++){
+		if(myCubies[i] != NULL){
+			ofVec3f centroid = myCubies[i]->getCentroidScreen();
+			float dist = centroid.distance(mouse);
+			if(dist < nearest){
+				nearestId = myCubies[i]->getId();
+				nearest = dist;
+				if(bDrawLine){
+					lineStart = mouse;
+					lineStop.set(centroid.x, centroid.y);
+				}
+			}
+		}
+	}
+	if(nearestId != -1){
+		if(nearest < MAX_DIST){
+			bHaveLine = true;
+			return true;
+		} else {
+			bHaveLine = false;
+		}
+	}
+	return false;
+}
+
 //----------------------------------------------------------------
 void puzzle::rearange3dArray(SG_VECTOR axis, int plane, bool dir){
 	//rearanges ids of cubies inside the 3d array
@@ -541,4 +582,5 @@ void puzzle::exit(){
 	//}
 	//delete [] three_dim1;
 	free(myCubies);
+	deactivate();
 }

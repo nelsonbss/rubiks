@@ -5,10 +5,11 @@
 #include "sgCore.h"
 #include "cubie.h"
 #include "slicer.h"
-#include <vector>
-#include <iostream>
+#include "GuiNode.h"
 
-class puzzle {
+#define MAX_DIST 200.0
+
+class puzzle : public GuiNode{
 
 public:
 	puzzle(SG_VECTOR p, ofVec3f offset);
@@ -55,6 +56,22 @@ public:
 	///color change
 	void changeColorToColor(ofFloatColor Sc, ofFloatColor Tc);
 
+	/*
+	Cubie picking - GuiNode stuff
+	*/
+
+	bool processMouse(int _x, int _y, int _state){return false;}
+	virtual void update(string _subName, Subject* _sub){}
+	virtual void update(string _eventName, SubObEvent* _event);
+
+	bool isInside(int _x, int _y);
+
+	bool bDrawLine;
+	bool bHaveLine;
+	ofVec2f lineStart;
+	ofVec2f lineStop;
+
+	float maxDist;
 };
 
 #endif /* defined(__Tpuzzle__puzzle__) */

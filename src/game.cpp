@@ -166,15 +166,15 @@ void game::draw(){
 		ofTranslate(posP.x,posP.y,posP.z);
 
 		//new trackball
-		ofRotate(angle, axistb.x, axistb.y, axistb.z);
+		//ofRotate(angle, axistb.x, axistb.y, axistb.z);
 
 		//quaternion to matrix, using the matrix here
 		//glMultMatrixf( m );
 
 		//normal of rotate
-		//ofRotateX(ofRadToDeg(pitch));
-		//ofRotateY(ofRadToDeg(yaw));
-		//ofRotateZ(ofRadToDeg(roll));
+		ofRotateX(ofRadToDeg(pitch));
+		ofRotateY(ofRadToDeg(yaw));
+		ofRotateZ(ofRadToDeg(roll));
 
 		ofTranslate(-posP.x,-posP.y,-posP.z);
 		myPuzzle->draw();

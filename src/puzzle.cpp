@@ -111,7 +111,7 @@ void puzzle::loadPieces(sgCGroup **pcs,int selObjId, ofVec3f v){
 	//create cubies
 	//so each time there is a new boolean operation, whole new cubies get created with variables in zero or blank
 	for(int i=0;i<numPieces;i++){
-		cubie *auxCubie = new cubie(pos.x,pos.y,pos.z,i+1,selObjId,cubiesOffset);
+		cubie *auxCubie = new cubie(pos.x,pos.y,pos.z,i,selObjId,cubiesOffset);
 		//auxCubie->setup();
 		//add this cubie to mycubies[]
 		myCubies[i] = auxCubie;

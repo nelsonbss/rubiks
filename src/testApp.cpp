@@ -208,10 +208,11 @@ void testApp::mouseMoved(int x, int y ){
 }
 //--------------------------------------------------------------
 void testApp::mouseDragged(int x, int y, int button){
+	myGames[0]->mouseDragged(x,y,button);
 }
 //--------------------------------------------------------------
 void testApp::mousePressed(int x, int y, int button){
-	
+	myGames[0]->mousePressed(x,y,button);
 }
 //--------------------------------------------------------------
 void testApp::mouseReleased(int x, int y, int button){

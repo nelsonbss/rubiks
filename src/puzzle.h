@@ -54,6 +54,14 @@ public:
 	///color change
 	void changeColorToColor(ofFloatColor Sc, ofFloatColor Tc);
 
+
+
+	//   //current state of the rotation
+	//ofQuaternion curRot;
+	////a place to store the mouse position so we can measure incremental change
+	//ofVec2f lastMouse;
+	//void mouseDragged(int x, int y, int button);
+	//void mousePressed(int x, int y, int button);
 };
 
 #endif /* defined(__Tpuzzle__puzzle__) */

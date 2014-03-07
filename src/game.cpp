@@ -120,20 +120,36 @@ void game::draw(){
 	}
 	if(step == 4 ){
 		//trackball
-		myTB->draw();
+		//myTB->draw();
 
 		//made the cuts
 		//show color palette
 		//show puzzle
+
+		curRot.getRotate(angle, axistb);
+
+		ofPushMatrix();
+		ofTranslate(posP.x,posP.y,posP.z);
+		//new trackball
+		ofRotate(angle, axistb.x, axistb.y, axistb.z);
+		ofTranslate(-posP.x,-posP.y,-posP.z);
 		myPuzzle->draw();
+		ofPopMatrix();
 	}
 	if(step == 5){
 		//trackball
-		myTB->draw();
+		//myTB->draw();
 
 		//show puzzle
-		//rotations can be made
+		curRot.getRotate(angle, axistb);
+
+		ofPushMatrix();
+		ofTranslate(posP.x,posP.y,posP.z);
+		//new trackball
+		ofRotate(angle, axistb.x, axistb.y, axistb.z);
+		ofTranslate(-posP.x,-posP.y,-posP.z);
 		myPuzzle->draw();
+		ofPopMatrix();
 	}
 
 
@@ -268,7 +284,7 @@ void game::createPuzzle(SG_VECTOR p){
 		myPuzzle->colorFaces(objectID);
 
 		////////////////////////   give puzzle trackball  //////////////////////////////
-		myTB = new ofxTrackball(ofGetWidth()/2, ofGetHeight()/2, 0, 2000, myPuzzle,false);
+		//myTB = new ofxTrackball(ofGetWidth()/2, ofGetHeight()/2, 0, 2000, myPuzzle,false);
 
 		updatePuzzle = true;
 
@@ -731,4 +747,23 @@ void game::exit(){
 	sgDeleteObject(sgIcosahedron);
 	sgDeleteObject(sgOctahedron);
 	//sgDeleteObject(sgTeapot);
+}
+
+
+//--------------------------------------------------------------
+void game::mouseDragged(int x, int y, int button){
+	//myPuzzle->mouseDragged(x,y,button);
+
+	ofVec2f mouse(x,y);
+	ofQuaternion yRot(x-lastMouse.x, ofVec3f(0,1,0));
+	ofQuaternion xRot(y-lastMouse.y, ofVec3f(-1,0,0));
+	curRot *= yRot*xRot;
+	lastMouse = mouse;
+}
+
+//--------------------------------------------------------------
+void game::mousePressed(int x, int y, int button){
+	//myPuzzle->mouseDragged(x,y,button);
+
+	lastMouse = ofVec2f(x,y);
 }

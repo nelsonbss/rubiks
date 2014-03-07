@@ -184,8 +184,8 @@ void armature::draw(){
 	ofFill();
 	cylinder2.draw();
 
-	//ofFill();
-	//cylinder3.draw();
+	ofFill();
+	cylinder3.draw();
 	///////////////////////////////////////////////////////////////////////////////////////
 
 	

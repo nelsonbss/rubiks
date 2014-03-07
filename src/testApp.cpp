@@ -115,6 +115,8 @@ void testApp::draw(){
 		ofPopMatrix();
 	}
 
+	
+
 	///////////////////END OF RENDERING////////////////////
 	stopOFLights();
 }
@@ -211,11 +213,21 @@ void testApp::mouseMoved(int x, int y ){
 }
 //--------------------------------------------------------------
 void testApp::mouseDragged(int x, int y, int button){
-	myGames[0]->mouseDragged(x,y,button);
+	if(myGames[0]->getCurrentStep() == 3){
+		//trackball for armature
+
+	}
+	else if(myGames[0]->getCurrentStep() == 4 || myGames[0]->getCurrentStep() == 5){
+		//track ball for puzzle
+		myGames[0]->mouseDragged(x,y,button);
+	}
 }
 //--------------------------------------------------------------
 void testApp::mousePressed(int x, int y, int button){
-	myGames[0]->mousePressed(x,y,button);
+	if(myGames[0]->getCurrentStep() == 4 || myGames[0]->getCurrentStep() == 5){
+		//track ball for puzzle
+		myGames[0]->mousePressed(x,y,button);
+	}
 }
 //--------------------------------------------------------------
 void testApp::mouseReleased(int x, int y, int button){

@@ -114,7 +114,14 @@ void game::draw(){
 	}
 	if(step == 3){
 		//armature has been selected
+		curRot.getRotate(angle, axistb);
+		ofPushMatrix();
+		ofTranslate(posP.x,posP.y,posP.z);
+		//new trackball
+		ofRotate(angle, axistb.x, axistb.y, axistb.z);
+		ofTranslate(-posP.x,-posP.y,-posP.z);
 		myArmature->draw();
+		ofPopMatrix();
 		//show selected object
 		objectDisplayed->draw();
 	}
@@ -135,6 +142,9 @@ void game::draw(){
 		ofTranslate(-posP.x,-posP.y,-posP.z);
 		myPuzzle->draw();
 		ofPopMatrix();
+
+
+
 	}
 	if(step == 5){
 		//trackball
@@ -143,10 +153,29 @@ void game::draw(){
 		//show puzzle
 		curRot.getRotate(angle, axistb);
 
+		double pitch = atan2(2*(curRot.y()*curRot.z()+curRot.w()*curRot.x()),curRot.w()*curRot.w()-curRot.x()*curRot.x()-curRot.y()*curRot.y()+curRot.z()*curRot.z());
+		double roll = atan2(2*(curRot.x()*curRot.y()+curRot.w()*curRot.z()),curRot.w()*curRot.w()+curRot.x()*curRot.x()-curRot.y()*curRot.y()-curRot.z()*curRot.z());
+		double yaw = asin(-2*(curRot.x()*curRot.z()-curRot.w()*curRot.y()));
+
+		cout << "x:  "  << ofRadToDeg(pitch) << "y: " << ofRadToDeg(yaw) << "z: " << ofRadToDeg(roll) << endl;
+
+		GLfloat* m  = new GLfloat[16];
+		getMatrix( m, curRot.inverse() );//inverse the quaternion to have puzzle move correctly
+
 		ofPushMatrix();
 		ofTranslate(posP.x,posP.y,posP.z);
+
 		//new trackball
 		ofRotate(angle, axistb.x, axistb.y, axistb.z);
+
+		//quaternion to matrix, using the matrix here
+		//glMultMatrixf( m );
+
+		//normal of rotate
+		//ofRotateX(ofRadToDeg(pitch));
+		//ofRotateY(ofRadToDeg(yaw));
+		//ofRotateZ(ofRadToDeg(roll));
+
 		ofTranslate(-posP.x,-posP.y,-posP.z);
 		myPuzzle->draw();
 		ofPopMatrix();
@@ -748,9 +777,7 @@ void game::exit(){
 	sgDeleteObject(sgOctahedron);
 	//sgDeleteObject(sgTeapot);
 }
-
-
-//--------------------------------------------------------------
+//-----------------------------------------------------------------------
 void game::mouseDragged(int x, int y, int button){
 	//myPuzzle->mouseDragged(x,y,button);
 
@@ -761,9 +788,39 @@ void game::mouseDragged(int x, int y, int button){
 	lastMouse = mouse;
 }
 
-//--------------------------------------------------------------
+//-------------------------------------------------------------------------
 void game::mousePressed(int x, int y, int button){
 	//myPuzzle->mouseDragged(x,y,button);
 
 	lastMouse = ofVec2f(x,y);
+}
+
+
+//--------------------------------------------------------------------------
+void game::getMatrix( GLfloat * m, ofQuaternion quat ) {
+    float x2 = quat.x() * quat.x();
+    float y2 = quat.y() * quat.y();
+    float z2 = quat.z() * quat.z();
+    float xy = quat.x() * quat.y();
+    float xz = quat.x() * quat.z();
+    float yz = quat.y() * quat.z();
+    float wx = quat.w() * quat.x();
+    float wy = quat.w() * quat.y();
+    float wz = quat.w() * quat.z();
+    m[0] = 1.0f - 2.0f * (y2 + z2);
+    m[1] = 2.0f * (xy - wz);
+    m[2] = 2.0f * (xz + wy);
+    m[3] = 0.0f;
+    m[4] = 2.0f * (xy + wz);
+    m[5] = 1.0f - 2.0f * (x2 + z2);
+    m[6] = 2.0f * (yz - wx);
+    m[7] = 0.0f;
+    m[8] = 2.0f * (xz - wy);
+    m[9] = 2.0f * (yz + wx);
+    m[10] = 1.0f - 2.0f * (x2 + y2);
+    m[11] = 0.0f;
+    m[12] = 0.0f;
+    m[13] = 0.0f;
+    m[14] = 0.0f;
+    m[15] = 1.0f;
 }

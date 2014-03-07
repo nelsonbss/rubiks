@@ -122,5 +122,7 @@ public:
 	ofVec2f lastMouse;
 	void mouseDragged(int x, int y, int button);
 	void mousePressed(int x, int y, int button);
+
+	void getMatrix( GLfloat * m, ofQuaternion quat );
 };
 #endif /* defined(__Tgame__game__) */

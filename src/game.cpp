@@ -763,5 +763,5 @@ void game::exit(){
 	sgDeleteObject(sgDodecahedron);
 	sgDeleteObject(sgIcosahedron);
 	sgDeleteObject(sgOctahedron);
-  	sgDeleteObject(sgTeapot);
+ 	sgDeleteObject(sgTeapot);
 }

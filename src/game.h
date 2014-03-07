@@ -60,7 +60,10 @@ public:
 
 	bool bHaveReset;
 	void guiReset(){bHaveReset = true;}
-	
+
+	/*
+	*/
+
 	void loadArmature(int type);
 	int armID;
 	void createCutterSlicer();//(float thick, float tamPlane, float tamCuby,float numCutr, float x, float y, float z);

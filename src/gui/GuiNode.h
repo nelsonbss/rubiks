@@ -62,7 +62,7 @@ public:
     virtual bool getClicked(){return 0;}
 	virtual void activate();
 	virtual void deactivate();
-    string getName(){return name;}
+    virtual string getName(){return name;}
     void setName(string &_name){name = _name;}
     void setName(const char * _name){name = _name;}
     string getType(){return type;}

@@ -44,7 +44,7 @@ void GuiNode::init(){
 	}
 	bReadyForInput = true;
 	nodeInit();
-	timer = new ofxTimer();
+	//timer = new ofxTimer();
 }
 
 void GuiNode::activate(){

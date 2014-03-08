@@ -7,7 +7,7 @@
 #include "slicer.h"
 #include "GuiNode.h"
 
-#define MAX_DIST 200.0
+#define MAX_DIST 400.0
 
 class puzzle : public GuiNode{
 
@@ -20,7 +20,7 @@ public:
 
 	void exit();
 
-	void loadPieces(sgCGroup **pcs, int selObjId,ofVec3f v);
+	void loadPieces(sgCGroup **pcs, int selObjId, ofVec3f v);
 	int giveNumCubies();
 	sgCGroup* cubieGroup;
 	float numPieces;
@@ -32,7 +32,6 @@ public:
 	void move(SG_VECTOR p);
 
 	SG_VECTOR rot;
-	void undoArmRotations(ofVec3f v);
 	void rotate(SG_VECTOR r);
 	void rotateTB(float angle, ofVec3f axis);
 	ofVec3f qaxis; 
@@ -65,6 +64,7 @@ public:
 	virtual void update(string _eventName, SubObEvent* _event);
 
 	bool isInside(int _x, int _y);
+	void input(string _type, int _ID, int _n, int _phase, ofVec2f _absPos, ofVec2f _deltaPos);
 
 	bool bDrawLine;
 	bool bHaveLine;
@@ -72,6 +72,11 @@ public:
 	ofVec2f lineStop;
 
 	float maxDist;
+
+	bool bHaveActiveCubie;
+	int activeCubie;
+
+	void keyInput(int _key);
 };
 
 #endif /* defined(__Tpuzzle__puzzle__) */

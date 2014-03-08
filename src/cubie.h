@@ -30,6 +30,7 @@ public:
 	float getNumObjs();
 	sgC3DObject **objectList;
 	vector<ofMesh> myMeshs; // this will be used to store the objet to be drawn 
+	void crateOfMeshs();
 	vector<ofVbo>  myVbos;
 
 	float color;
@@ -44,7 +45,6 @@ public:
 	void move(SG_VECTOR p);
 
 	//armature rotations
-	void undoArmRotations(ofVec3f v);
 	ofVec3f armRotations;
 
 	//this is vector of matrix objects that have all the transformations for each cubie.
@@ -72,6 +72,9 @@ public:
 	/*
 	Paul's
 	*/
+
+	bool bDrawWire;
+	void setDrawWire(bool _drawWire){bDrawWire = _drawWire;}
 
 	bool bDraw;
 	int rotationDirection;

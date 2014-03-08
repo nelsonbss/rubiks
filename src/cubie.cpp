@@ -43,6 +43,7 @@ cubie::cubie(float x, float y,float z, int idi, int selObjId, ofVec3f offset){
 	undoing = false;
 	
 	bDraw = true;
+	bDrawWire = false;
 	bRotate = false;
 }
 //--------------------------------------------------------------
@@ -64,60 +65,15 @@ void cubie::update(){
 	//qt = qx * qy;// * qh
 	//qt.getRotate(qangle, qaxis);
 
-	SG_POINT rotP = {0,0,0};
-	SG_VECTOR rotV = {1,0,0};
-	SG_VECTOR rotV2 = {0,1,0};
-	SG_VECTOR rotV3 = {0,0,1};
+
 
 	for (int j=0; j < numObjs; j++){
 		if(moving==true){
 			if(myMatrix.size()>=2){
-
 				for(int i=0; i<myMatrix.size()-1;i++){
 					//build rotation matrix for all steps up to the one where it was at the moment of a new movement
 					SG_POINT protFace = {pointRotate.x,pointRotate.y,pointRotate.z};										 
 					SG_VECTOR vrotFace = myMatrix.at(i).vector;//  axis; //rotate to do a face move
-					//////
-					//if(vrotFace.x != 0){
-					//	if(rotCompensation.y != 0){
-					//		SG_VECTOR vComp = {(cos(ofDegToRad(rotCompensation.y))*1),0,(sin(ofDegToRad(rotCompensation.y))*-1)};
-					//		vrotFace = vComp;
-					//	}
-					//}
-					/////
-					//else if(vrotFace.y != 0){
-					//	if(rotCompensation.x != 0){
-					//		SG_VECTOR vComp = {0,cos(ofDegToRad(rotCompensation.x)),sin(ofDegToRad(rotCompensation.x))};
-					//		//double c  = cos(ofDegToRad(rotCompensation.x));
-					//		vrotFace = vComp; 
-					//	}
-					//}
-					/////////
-					//else if(vrotFace.z != 0){
-					//	SG_VECTOR va = {0,0,0};
-					//	SG_VECTOR vb = {0,0,0};
-					//	SG_VECTOR vc = {0,0,0};
-					//	if(rotCompensation.x != 0){
-					//		SG_VECTOR vComp = {0,(sin(ofDegToRad(rotCompensation.x)))*-1,(cos(ofDegToRad(rotCompensation.x))*1)};
-					//		//double c  = cos(ofDegToRad(rotCompensation.x));
-					//		vrotFace = vComp; 
-					//	}
-					//	if(rotCompensation.y != 0){
-					//		SG_VECTOR vComp = {(sin(ofDegToRad(rotCompensation.y))*1),0,(cos(ofDegToRad(rotCompensation.y))*1)};
-					//		vrotFace = vComp;
-					//	}
-
-					//	/*vc.x = va.x + vb.x;
-					//	vc.y = va.y + vb.y;
-					//	vc.z = va.z + vb.z;
-
-					//	vrotFace = vc;*/
-					//}
-					//qx.set(1,0,0,rotCompensation.x);
-					//qy.set(0,1,0,rotCompensation.y);
-					//qt = qx * qy;
-
-
 					double d = myMatrix.at(i).deg;
 					d = ofDegToRad(d);
 					if(myMatrix.at(i).dir == true){
@@ -141,43 +97,6 @@ void cubie::update(){
 				//we are at the last positon
 				SG_POINT protFace = {pointRotate.x,pointRotate.y,pointRotate.z};										 
 				SG_VECTOR vrotFace = myMatrix.at(myMatrix.size()-1).vector;//  axis; //rotate to do a face move
-				///////
-				//if(vrotFace.x != 0){
-				//	if(rotCompensation.y != 0){
-				//		SG_VECTOR vComp = {(cos(ofDegToRad(rotCompensation.y))*1),0,(sin(ofDegToRad(rotCompensation.y))*-1)};
-				//		vrotFace = vComp;
-				//	}
-				//}
-				///////
-				//else if(vrotFace.y != 0){
-				//	if(rotCompensation.x != 0){
-				//		SG_VECTOR vComp = {0,cos(ofDegToRad(rotCompensation.x)),sin(ofDegToRad(rotCompensation.x))};
-				//		//double c  = cos(ofDegToRad(rotCompensation.x));
-				//		vrotFace = vComp; 
-				//	}
-				//}
-				///////
-				//else if(vrotFace.z != 0){
-				//	SG_VECTOR va = {0,0,0};
-				//	SG_VECTOR vb = {0,0,0};
-				//	SG_VECTOR vc = {0,0,0};
-				//	if(rotCompensation.x != 0){
-				//		SG_VECTOR vComp = {0,(sin(ofDegToRad(rotCompensation.x)))*-1,(cos(ofDegToRad(rotCompensation.x))*1)};
-				//		//double c  = cos(ofDegToRad(rotCompensation.x));
-				//		vrotFace = vComp; 
-				//	}
-				//	if(rotCompensation.y != 0){
-				//		SG_VECTOR vComp = {(sin(ofDegToRad(rotCompensation.y))*1),0,(cos(ofDegToRad(rotCompensation.y))*1)};
-				//		vrotFace = vComp;
-				//	}
-
-				//	//	/*vc.x = va.x + vb.x;
-				//	//	vc.y = va.y + vb.y;
-				//	//	vc.z = va.z + vb.z;
-
-				//	//	vrotFace = vc;*/
-				//}
-
 				double tempDeg2 = myMatrix.at(myMatrix.size()-1).deg; //target angle, the last angle it will move to
 				if(sample==false){
 					//this should only be sampled once during the animation
@@ -272,10 +191,6 @@ void cubie::update(){
 				//	}
 				//	//vrotFace = vc;
 				//}
-
-
-
-
 				double d = myMatrix.at(i).deg;
 				d = ofDegToRad(d);
 				if(myMatrix.at(i).dir == true){
@@ -295,10 +210,8 @@ void cubie::update(){
 				}
 			}
 		}
-
-
 		/////////////////////////////////////////////////////////
-		//////rotate and move with the whole puzzle
+		//////undo rotations of armature in z-y-x order
 		SG_VECTOR vrotZ = {0,0,1};      
 		SG_VECTOR puzzleRotate = {0,0,0};
 		if (objectList[j]->GetTempMatrix()==0){
@@ -310,9 +223,6 @@ void cubie::update(){
 		objectList[j]->GetTempMatrix()->Rotate(puzzleRotate,vrotY,ofDegToRad(armRotations.y));
 		SG_VECTOR vrotX = {1,0,0}; 							 
 		objectList[j]->GetTempMatrix()->Rotate(puzzleRotate,vrotX,ofDegToRad(armRotations.x));
-		//translations
-		//SG_VECTOR transBox11 = {pos.x,pos.y,pos.z}; 
-		//objectList[j]->GetTempMatrix()->Translate(transBox11);
 		objectList[j]->ApplyTempMatrix();
 	}
 }
@@ -329,7 +239,11 @@ void cubie::draw(){
 			glMultMatrixd(objectList[j]->GetTempMatrix()->GetTransparentData());
 			objectList[j]->DestroyTempMatrix();
 			if(bDraw){
-				myVbos[j].draw(GL_TRIANGLES, 0,myMeshs[j].getNumIndices());
+				if(bDrawWire){
+					myMeshs[j].drawWireframe();
+				} else {
+					myVbos[j].draw(GL_TRIANGLES, 0,myMeshs[j].getNumIndices());
+				}
 			}
 			/*
 			if(bDraw){
@@ -405,26 +319,12 @@ void cubie::faceRotate(SG_VECTOR axis,bool di){
 	}
 }
 //-------------------------------------------------------------------------------------------------------------------------------------------
-void cubie::undoArmRotations(ofVec3f v){
-	//SG_POINT rotP = {0,0,0};
-	//SG_VECTOR rotV = {1,0,0};
-	//SG_VECTOR rotV2 = {0,1,0};
-	//SG_VECTOR rotV3 = {0,0,1};
-	//for (int j=0; j < numObjs; j++){
-	//	objectList[j]->InitTempMatrix()->Rotate(rotP,rotV,ofDegToRad(v.x));
-	//	objectList[j]->GetTempMatrix()->Rotate(rotP,rotV2,ofDegToRad(v.y));
-	//	objectList[j]->GetTempMatrix()->Rotate(rotP,rotV3,ofDegToRad(v.z));
-	//	objectList[j]->ApplyTempMatrix();
-	//	objectList[j]->DestroyTempMatrix();
-	//}
-}
-//-------------------------------------------------------------------------------------------------------------------------------------------
 void cubie::setObjects(sgCGroup *objs,int cubieId,ofVec3f v){
 	////it receives a group, when Puzzle loadsPieces(ySlicer->getPieces())  on main
 	////it takes the input group and breaks it, to put parts on cubie group "objects"
 
-	armRotations = (v);//*-1;
-	
+	armRotations = (v);//*-1; did not have to inverse the angle to compensate due to left hand and right hand rules on sgcore and on openframeworks
+
 	if(objs != NULL){
 		sgCObject **objcts = (sgCObject**)malloc(50*sizeof(sgCObject*));
 		int objctr = 0;
@@ -445,10 +345,25 @@ void cubie::setObjects(sgCGroup *objs,int cubieId,ofVec3f v){
 			objectList[j] = (sgC3DObject*)temp->Clone();
 			objcts[objctr] = (sgC3DObject*)temp->Clone();
 			objctr ++;
+		}
+		free(allParts);
+		//put that new group inside *objects of this class, of every cubie
+		objects = sgCGroup::CreateGroup(objcts,objctr);
+		free(objcts);
+	}else{
+		numObjs = 0;
+		objects = NULL;
+	}
+}
+//-------------------------------------------------------------------------------------------------------------------------------------------
+void cubie::crateOfMeshs(){
+	ofMesh tempMesh;
+	ofRender *ofr = new ofRender(); //class that has the metods to transform sgCore to OF mesh and set the normals (in one function)
+
+	if(objects != NULL){
+		for (int j=0; j < numObjs; j++){
 			//////////////////////create ofMEsh
-			ofMesh tempMesh;
-			ofRender *ofr = new ofRender(); //class that has the metods to transform sgCore to OF mesh and set the normals (in one function)
-			sgC3DObject *o = (sgC3DObject*)temp->Clone();
+			sgC3DObject *o = (sgC3DObject*)objectList[j]->Clone();
 			o->Triangulate(SG_VERTEX_TRIANGULATION);
 			//convert to ofMEsh with cubie ID!!!
 			//ask if its a plain color puzzle:: bunny torus??
@@ -459,24 +374,17 @@ void cubie::setObjects(sgCGroup *objs,int cubieId,ofVec3f v){
 				//bunny
 				ofr->sgCoretoOFmesh(o,tempMesh,-3,selectedObjectID);
 			}else{
-				ofr->sgCoretoOFmesh(o,tempMesh,cubieId,selectedObjectID); //give cubie id!! so that it knows if its a plain color puzzle or not
+				ofr->sgCoretoOFmesh(o,tempMesh,id,selectedObjectID); //give cubie id!! so that it knows if its a plain color puzzle or not
 			}
 			myMeshs.push_back(tempMesh);
 			ofVbo tempVbo;
 			tempVbo.setMesh(tempMesh, GL_STATIC_DRAW);
 			myVbos.push_back(tempVbo);
-			free(ofr);
 			sgDeleteObject(o);
 		}
-		free(allParts);
-		//put that new group inside *objects of this class, of every cubie
-		objects = sgCGroup::CreateGroup(objcts,objctr);
-		free(objcts);
-	}else{
-		numObjs = 0;
-		objects = NULL;
 	}
 	getCentroid();
+	free(ofr);
 }
 
 void cubie::getCentroid(){

@@ -62,6 +62,8 @@ puzzle::puzzle(SG_VECTOR p, ofVec3f offset) : GuiNode(){
 	//std::cout << "It should be 18: " << one_dim[1] << "\n";
 	/* or */
 	//std::cout << "It should be 21: " << one_dim.at(2) << "\n";
+	bDrawLine = false;
+	bHaveActiveCubie = false;
 }
 //----------------------------------------------------------------
 void puzzle::setup(){
@@ -69,8 +71,7 @@ void puzzle::setup(){
 	addParam("drag", "true");
 	addParam("n", "1");
 	scale = 1.0;
-	string myName = "puzzle";
-	//name = myName;
+	setName("puzzle");
 	activate();
 }
 //----------------------------------------------------------------
@@ -127,6 +128,10 @@ void puzzle::draw(){
 		}
 
 	ofPopMatrix();
+	if(bDrawLine && bHaveLine){
+		ofSetColor(255,0,0);
+		ofLine(lineStart.x, lineStart.y, lineStop.x, lineStop.y);
+	}
 }
 //----------------------------------------------------------------
 int puzzle::giveNumCubies(){
@@ -140,20 +145,21 @@ int puzzle::giveNumCubies(){
 	return aux;
 }
 //----------------------------------------------------------------
-void puzzle::loadPieces(sgCGroup **pcs,int selObjId,ofVec3f v){
+void puzzle::loadPieces(sgCGroup **pcs,int selObjId, ofVec3f v){
 	//it loads the pieces that the slicer made, the pieces are in a sgCGroup** pieces[], 
 	//this function receives a copy of that sgCGroup** made by mySlicer->getPieces()
 	//it loads them into its own cubies
 	//create cubies
 	//so each time there is a new boolean operation, whole new cubies get created with variables in zero or blank
 	for(int i=0;i<numPieces;i++){
-		cubie *auxCubie = new cubie(pos.x,pos.y,pos.z,i+1,selObjId,cubiesOffset);
+		cubie *auxCubie = new cubie(pos.x,pos.y,pos.z,i,selObjId,cubiesOffset);
 		//auxCubie->setup();
 		//add this cubie to mycubies[]
 		myCubies[i] = auxCubie;
 	}
+
 	for(int i=0;i<numPieces;i++){
-		//get group from pieces[] copy
+		//get group from pieces[] copy: pcs[]
 		sgCGroup *part = pcs[i];
 
 		if(part != NULL){
@@ -171,11 +177,6 @@ void puzzle::loadPieces(sgCGroup **pcs,int selObjId,ofVec3f v){
 			}
 			//make them a group
 			cubieGroup = sgCGroup::CreateGroup(obj,realNumPieces);
-
-
-
-
-			//put that gorup inside temp cubie
 			myCubies[i]->setObjects(cubieGroup,i,v);//here goes the group of clones from the iriginal slicing pieces[]
 			//i is the cubie ID
 			//put that cubie on the cubies[]
@@ -195,16 +196,11 @@ void puzzle::loadPieces(sgCGroup **pcs,int selObjId,ofVec3f v){
 			myCubies[i]->setObjects(NULL,i,v);
 		}
 	}
-}
-//----------------------------------------------------------------
-void puzzle::undoArmRotations(ofVec3f v){
-	v = (v)*-1;
-	//undo armature axis rotations (x-y-z) to all the cubies of the puzzle
-	//to show it centered, as the sample 3d object
+
+	//create the meshes from the sgCore objects
+	//so the objects can be renderes by openFrameworks
 	for(int i=0;i<numPieces;i++){
-		if(myCubies[i] != NULL){
-			myCubies[i]->undoArmRotations(v);
-		}
+		myCubies[i]->crateOfMeshs();
 	}
 }
 //----------------------------------------------------------------
@@ -324,7 +320,7 @@ void puzzle::update(string _eventName, SubObEvent* _event){
 
 bool puzzle::isInside(int _x, int _y){
 	cout << "puzzle checking insides" << endl;
-	ofVec2f mouse(_x,_y);
+	ofVec3f mouse(_x,_y, 200);
 	float nearest = 10000.0;
 	int nearestId = -1;
 	for(int i=0;i<numPieces;i++){
@@ -335,21 +331,66 @@ bool puzzle::isInside(int _x, int _y){
 				nearestId = myCubies[i]->getId();
 				nearest = dist;
 				if(bDrawLine){
-					lineStart = mouse;
+					lineStart.set(mouse.x, mouse.y);
 					lineStop.set(centroid.x, centroid.y);
 				}
+				cout << "dist = " << dist << endl;
 			}
 		}
 	}
 	if(nearestId != -1){
 		if(nearest < MAX_DIST){
 			bHaveLine = true;
+			if(bHaveActiveCubie){
+				myCubies[activeCubie]->setDrawWire(false);
+			} else {
+				bHaveActiveCubie = true;
+			}
+			activeCubie = nearestId;
+			myCubies[activeCubie]->setDrawWire(true);
 			return true;
 		} else {
 			bHaveLine = false;
+			bHaveActiveCubie = false;
 		}
 	}
 	return false;
+}
+
+void puzzle::input(string _type, int _ID, int _n, int _phase, ofVec2f _absPos, ofVec2f _deltaPos){
+	if(bHaveLine){
+		lineStart = _absPos;
+	}
+	cout << _phase << endl;
+}
+
+void puzzle::keyInput(int _key){
+	if(bHaveActiveCubie){
+		if(_key == '1'){
+			SG_VECTOR axis = {1,0,0};
+			rotateByIDandAxis(activeCubie,axis,true);
+		}
+		if(_key == '2'){
+			SG_VECTOR axis = {1,0,0};
+			rotateByIDandAxis(activeCubie,axis,false);
+		}
+		if(_key == '3'){
+			SG_VECTOR axis = {0,1,0};
+			rotateByIDandAxis(activeCubie,axis,true);
+		}
+		if(_key == '4'){
+			SG_VECTOR axis = {0,1,0};
+			rotateByIDandAxis(activeCubie,axis,false);
+		}
+		if(_key == '5'){
+			SG_VECTOR axis = {0,0,1};
+			rotateByIDandAxis(activeCubie,axis,true);
+		}
+		if(_key == '6'){
+			SG_VECTOR axis = {0,0,1};
+			rotateByIDandAxis(activeCubie,axis,false);
+		}
+	}
 }
 
 //----------------------------------------------------------------
@@ -477,12 +518,11 @@ void puzzle::rearange3dArray(SG_VECTOR axis, int plane, bool dir){
 void puzzle::colorFaces(int objectID){
 	////goes through each cubie and makes sets of normals.. to determine all different normals in the object
 	//and apply colors to those normals
-	if((objectID != 4) && (objectID != 2)){
+	if((objectID != 4)){
 		//not the bunny or the cube -> they were already colored on puzzle::loadPieces->cubie::setObjects
 		ofRender *ofr = new ofRender();
-		ofr->colorFaces(myCubies,numPieces,0.01);
+		ofr->colorFaces(myCubies,numPieces,0.01, objectID);
 		free(ofr);
-
 	}
 	if((objectID != 4)){
 		//color black all the inside faces of each cubie (after all other face colors have been applied)

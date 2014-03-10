@@ -170,12 +170,12 @@ void game::draw(){
 		//ofRotate(angle, axistb.x, axistb.y, axistb.z);
 
 		//quaternion to matrix, using the matrix here
-		//glMultMatrixf( m );
+		glMultMatrixf( m );
 
 		//normal of rotate
-		ofRotateX(ofRadToDeg(pitch));
-		ofRotateY(ofRadToDeg(yaw));
-		ofRotateZ(ofRadToDeg(roll));
+		//ofRotateX(ofRadToDeg(pitch));
+		//ofRotateY(ofRadToDeg(yaw));
+		//ofRotateZ(ofRadToDeg(roll));
 
 		ofTranslate(-posP.x,-posP.y,-posP.z);
 		myPuzzle->draw();
@@ -768,6 +768,7 @@ void game::restart(){
 	rotateSlicer.x = 0;
 	rotateSlicer.y = 0;
 	rotateSlicer.z = 0;
+	curRot.set (ofVec4f(0,0,0,0));
 }
 //----------------------------------------------------------------------
 void game::exit(){
@@ -778,24 +779,28 @@ void game::exit(){
 	sgDeleteObject(sgOctahedron);
 	//sgDeleteObject(sgTeapot);
 }
-//-----------------------------------------------------------------------
+
+
+//--------------------------------------------------------------
 void game::mouseDragged(int x, int y, int button){
 	//myPuzzle->mouseDragged(x,y,button);
-
-	ofVec2f mouse(x,y);
-	ofQuaternion yRot(x-lastMouse.x, ofVec3f(0,1,0));
-	ofQuaternion xRot(y-lastMouse.y, ofVec3f(-1,0,0));
-	curRot *= yRot*xRot;
-	lastMouse = mouse;
+	if(step == 4 || step == 5){
+		ofVec2f mouse(x,y);
+		ofQuaternion yRot(x-lastMouse.x, ofVec3f(0,1,0));
+		ofQuaternion xRot(y-lastMouse.y, ofVec3f(-1,0,0));
+		//curRot *= yRot*xRot;
+		curRot.set(curRot*yRot*xRot);
+		lastMouse = mouse;
+	}
 }
 
-//-------------------------------------------------------------------------
+//--------------------------------------------------------------
 void game::mousePressed(int x, int y, int button){
 	//myPuzzle->mouseDragged(x,y,button);
-
-	lastMouse = ofVec2f(x,y);
+	if(step == 4 || step == 5){
+		lastMouse = ofVec2f(x,y);
+	}
 }
-
 
 //--------------------------------------------------------------------------
 void game::getMatrix( GLfloat * m, ofQuaternion quat ) {

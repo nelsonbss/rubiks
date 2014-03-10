@@ -145,9 +145,6 @@ void game::draw(){
 		objectDisplayed->draw();
 	}
 	if(step == 4 ){
-		//trackball
-		//myTB->draw();
-
 		//made the cuts
 		//show color palette
 		//show puzzle
@@ -163,9 +160,6 @@ void game::draw(){
 		ofPopMatrix();
 	}
 	if(step == 5){
-		//trackball
-		//myTB->draw();
-
 		//show puzzle
 		curRot.getRotate(angle, axistb);
 
@@ -317,9 +311,6 @@ void game::createPuzzle(SG_VECTOR p){
 		///////////////////////////////  color puzzle   ////////////////////////////////// 
 		//color all the faces for platonic solids!! colors outside for most objects(not bunny), black on the insides
 		myPuzzle->colorFaces(objectID);
-
-		////////////////////////   give puzzle trackball  //////////////////////////////
-		//myTB = new ofxTrackball(ofGetWidth()/2, ofGetHeight()/2, 0, 2000, myPuzzle,false);
 
 		updatePuzzle = true;
 

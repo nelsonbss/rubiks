@@ -60,6 +60,7 @@ void game::setup(sgCObject *sgBunnyi,sgCObject *sgTetrahedroni,sgCObject *sgDode
 	updatePuzzle = false;
 	//
 	faceRotate = false;
+	faceRotateB = false;
 
 
 }
@@ -86,13 +87,35 @@ void game::update(){
 			//////////////////////////////////////////make face rotation
 			if(faceRotate == true) {
 				myPuzzle->rotateByIDandAxis(idcubie,axis,dir);
+
 				//put this move on the game history vector
-				//it only saves the idcubie. 
-				//undo will look for the other 9 cubies involved and do a pop_back on their history
-				historyV.push_back(history(idcubie,axis,!dir)); //new approach save inverse move, to do it at undo, and do 2 pop 
+				//undo will look for the other 9 cubies involved and do a pop x2 on their history
+				historyV.push_back(history(idcubie,axis,!dir)); //save inverse move (!), to do it at undo, and do 2 pop 
 				faceRotate = false;
 			}
 			//updatePuzzle = false;
+			if(faceRotateB == true) {
+				int ans = myPuzzle->rotateTwoIds(idcubieA,idcubieB,dir);
+
+				//put this move on the game history vector
+				//undo will look for the other 9 cubies involved and do a pop x2 on their history
+				if(ans/10 == 1){
+					axis.x = 1;
+					axis.y = 0;
+					axis.z = 0;
+				}else if(ans/10 == 2){
+					axis.x = 0;
+					axis.y = 1;
+					axis.z = 0;
+				}else{
+					axis.x = 0;
+					axis.y = 0;
+					axis.z = 1;
+				}
+				bool d = ans%2;
+				historyV.push_back(history(idcubieA,axis,!d)); //save inverse move (!), to do it at undo, and do 2 pop 
+				faceRotateB = false;
+			}
 		}
 	}
 }
@@ -152,6 +175,13 @@ void game::rotateByIDandAxis(int id, SG_VECTOR axs, bool d){
 		faceRotate = true;
 	}
 
+}
+//----------------------------------------------------------------------
+void game::rotateTwoIds(int cubieA, int cubieB,bool inside){
+	faceRotateB = true;
+	idcubieA = cubieA;
+	idcubieB = cubieB;
+	dir = true;
 }
 //----------------------------------------------------------------------
 void game::loadObject(int objID, SG_VECTOR p, SG_VECTOR t){
@@ -568,14 +598,19 @@ void game::guiInput(int in){
 		//pressed next on color palette step
 		//showing puzzle
 		//now the puzzle can be played with
-
-
 		int idcubie = 11;//to follow this cubie for now //this will be decided upon touch, or click on top of puzzle
 		int randcubie=0;
 		if(myPuzzle->isMoving() == false){ //this is to prevent from reading events while puzzle is moving
 			if(in == 'u'){
 				//undo last move 
 				unDo();
+			}
+			////////////////////////////////////////////// FACE ROTATIONS //////////////////////////////
+			if(in == 'z') {
+				//do rotationbased ontwo cubies id
+				int cubieA = 11;
+				int cubieB = 10;
+				rotateTwoIds(cubieA,cubieB,true);
 			}
 			////////////////////////////////////////////// FACE ROTATIONS //////////////////////////////
 			////////  x axis  ////  x axis

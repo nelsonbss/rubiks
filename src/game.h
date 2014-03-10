@@ -81,7 +81,7 @@ public:
 	ofVec3f giveRotation();
 	float tamCubie;
 
-	//face rotations
+	/////////////////face rotations
 	bool updatePuzzle;
 	int idcubie;
 	bool dir;
@@ -91,6 +91,11 @@ public:
 	//history to undo
 	vector<history> historyV; 
 	void unDo();
+	//face rotation bytwo ids
+	void rotateTwoIds(int cubieA, int cubieB,bool inside);
+	bool faceRotateB;
+	int idcubieA;
+	int idcubieB;
 
 	//////////////////////////move  armature
 	float tamSideArmature;

@@ -86,7 +86,7 @@ void puzzle::draw(){
 	//puzzle tells every cubie to attach objects to scene
 	for(int i=0;i<numPieces;i++){
 		if(myCubies[i] != NULL){
-			myCubies[i]->draw();
+			myCubies[13]->draw();
 		}
 	}
 

@@ -619,8 +619,7 @@ void game::guiInput(int in){
 		//pressed next on color palette step
 		//showing puzzle
 		//now the puzzle can be played with
-		int idcubie = 11;//to follow this cubie for now //this will be decided upon touch, or click on top of puzzle
-		int randcubie=0;
+		int randcubie=13;//rand(100)%26;//to follow this cubie for now //this will be decided upon touch, or click on top of puzzle
 		if(myPuzzle->isMoving() == false){ //this is to prevent from reading events while puzzle is moving
 			if(in == 'u'){
 				//undo last move 
@@ -636,58 +635,34 @@ void game::guiInput(int in){
 			////////////////////////////////////////////// FACE ROTATIONS //////////////////////////////
 			////////  x axis  ////  x axis
 			if(in == 'q') {
-				//if(rotateB == true) {//c
-				randcubie = 11;//rand()%26;
 				//clockwise
 				SG_VECTOR axis = {1,0,0};
 				rotateByIDandAxis(randcubie,axis,true);
-				/*rotateB = false;
-				}*/
 			}
 			if(in == 'a') {
-				//if(rotateB == true) {//cc
-				randcubie = 11;//rand()%26;
-				//clockwise
+				//counter clockwise
 				SG_VECTOR axis = {1,0,0};
 				rotateByIDandAxis(randcubie,axis,false);
-				/*	rotateB = false;
-				}*/
 			}
 			////////  y axis  ////  y axis
 			if(in == 'w') {
-				//if(rotateB == true) {
-				randcubie = 11;//rand()%26;
 				//clockwise
 				SG_VECTOR axis = {0,1,0};
 				rotateByIDandAxis(randcubie,axis,true);
-				/*rotateB = false;
-				}*/
 			}if(in == 's') {
 				//counter clockwise
-				//if(rotateB == true) {
-				randcubie = 11;//rand()%26;
 				SG_VECTOR axis = {0,1,0};
 				rotateByIDandAxis(randcubie,axis,false);
-				/*rotateB = false;
-				}*/
 			}
 			////////  z axis  ////  z axis
 			if(in == 'e') {
-				//if(rotateB == true) {
-				randcubie = 11;//rand()%26;
 				//clockwise
 				SG_VECTOR axis = {0,0,1};
 				rotateByIDandAxis(randcubie,axis,true);
-				/*rotateB = false;
-				}*/
 			}if(in == 'd') {
-				//if(rotateB == true) {
 				//counter clockwise
-				randcubie = 11;//rand()%26;
 				SG_VECTOR axis = {0,0,1};
 				rotateByIDandAxis(randcubie,axis,false);
-				/*rotateB = false;
-				}*/
 			}
 		}
 		////////////////////////////////////move all puzzle

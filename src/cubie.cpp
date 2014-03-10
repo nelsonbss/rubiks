@@ -46,21 +46,6 @@ void cubie::setup(){
 }
 //--------------------------------------------------------------
 void cubie::update(){
-	//ofQuaternion qx;
-	//ofQuaternion qy;
-	//ofQuaternion qz;
-	//ofQuaternion qt;
-
-	//ofVec3f qaxis; 
-	//float qangle;
-
-	//qx = ofQuaternion (rotCompensation.x,ofVec3f(1,0,0));
-	//qy = ofQuaternion (rotCompensation.y,ofVec3f(0,1,0));
-	//qt = qx * qy;// * qh
-	//qt.getRotate(qangle, qaxis);
-
-
-
 	for (int j=0; j < numObjs; j++){
 		if(moving==true){
 			if(myMatrix.size()>=2){
@@ -155,36 +140,6 @@ void cubie::update(){
 			for(int i=0; i<myMatrix.size();i++){
 				SG_POINT protFace = {pointRotate.x,pointRotate.y,pointRotate.z};										 
 				SG_VECTOR vrotFace = myMatrix.at(i).vector;//  axis of rotation
-				//if(vrotFace.x != 0){
-				//	if(rotCompensation.y != 0){
-				//		SG_VECTOR vComp = {(cos(ofDegToRad(rotCompensation.y))*1),0,(sin(ofDegToRad(rotCompensation.y))*-1)};
-				//		vrotFace = vComp;
-				//	}
-				//}
-				//////
-				//else if(vrotFace.y != 0){
-				//	if(rotCompensation.x != 0){
-				//		SG_VECTOR vComp = {0,cos(ofDegToRad(rotCompensation.x)),sin(ofDegToRad(rotCompensation.x))};
-				//		//double c  = cos(ofDegToRad(rotCompensation.x));
-				//		vrotFace = vComp; 
-				//	}
-				//}
-				///////
-				//else if(vrotFace.z != 0){
-				//	SG_VECTOR vx = {0,0,0};
-				//	SG_VECTOR vy = {0,0,0};
-				//	SG_VECTOR vz = {0,0,0};
-				//	if(rotCompensation.x != 0){
-				//		SG_VECTOR vComp = {0,(sin(ofDegToRad(rotCompensation.x)))*-1,(cos(ofDegToRad(rotCompensation.x))*1)};
-				//		//double c  = cos(ofDegToRad(rotCompensation.x));
-				//		vrotFace = vComp; 
-				//	}
-				//	if(rotCompensation.y != 0){
-				//		SG_VECTOR vComp = {(sin(ofDegToRad(rotCompensation.y))*1),0,(cos(ofDegToRad(rotCompensation.y))*1)};
-				//		vrotFace = vComp;
-				//	}
-				//	//vrotFace = vc;
-				//}
 				double d = myMatrix.at(i).deg;
 				d = ofDegToRad(d);
 				if(myMatrix.at(i).dir == true){
@@ -246,7 +201,7 @@ void cubie::faceRotate(SG_VECTOR axis,bool di){
 	if(objects != NULL){
 		if(moving == false){
 			if(undoing == false){
-				for (int j=0; j < numObjs; j++){
+				//for (int j=0; j < numObjs; j++){
 					SG_POINT protFace = {0,0,0};
 					SG_VECTOR vrotFace = axis;
 					/*rotX=0;
@@ -276,7 +231,7 @@ void cubie::faceRotate(SG_VECTOR axis,bool di){
 						//	myMatrix.push_back(matrix(axis,-90,di));
 						//}
 					}
-				}
+				//}
 			}
 		}
 	}else{

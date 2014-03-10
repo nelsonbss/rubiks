@@ -70,7 +70,7 @@ void puzzle::setup(){
 	addParam("n", "1");
 	scale = 1.0;
 	string myName = "puzzle";
-	name = myName;
+	//name = myName;
 	activate();
 }
 //----------------------------------------------------------------

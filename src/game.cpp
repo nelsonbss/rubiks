@@ -285,6 +285,7 @@ void game::loadArmature(int type){
 }
 //-----------------------------------------------------------------------------------------
 void game::applyArmRotations(){
+	//this rotates the object sgC3DObject to be sliced
 	objectDisplayed->applyArmRotations(rotateSlicer);
 }
 //-----------------------------------------------------------------------------------------
@@ -309,6 +310,7 @@ void game::createPuzzle(SG_VECTOR p){
 		mySlicer->intersectCubes((sgCObject*)objectDisplayed->getObject()); 
 
 		//now slicer has all the parts inside sgCGroup ** pieces[]
+		//it recieves the armature rotations to undo them and show the puzzle in an original possition
 		myPuzzle->loadPieces(mySlicer->getPieces(),objectID,rotateSlicer);
 		////////////////////////////////end create puzzle/////////////////////////////////
 
@@ -776,6 +778,8 @@ void game::restart(){
 	rotateSlicer.x = 0;
 	rotateSlicer.y = 0;
 	rotateSlicer.z = 0;
+
+	curRot.set (ofVec4f(0,0,0,0));
 }
 //----------------------------------------------------------------------
 void game::exit(){
@@ -791,17 +795,20 @@ void game::exit(){
 //--------------------------------------------------------------
 void game::mouseDragged(int x, int y, int button){
 	//myPuzzle->mouseDragged(x,y,button);
-
-	ofVec2f mouse(x,y);
-	ofQuaternion yRot(x-lastMouse.x, ofVec3f(0,1,0));
-	ofQuaternion xRot(y-lastMouse.y, ofVec3f(-1,0,0));
-	curRot *= yRot*xRot;
-	lastMouse = mouse;
+	if(step == 4 || step == 5){
+		ofVec2f mouse(x,y);
+		ofQuaternion yRot(x-lastMouse.x, ofVec3f(0,1,0));
+		ofQuaternion xRot(y-lastMouse.y, ofVec3f(-1,0,0));
+		//curRot *= yRot*xRot;
+		curRot.set(curRot*yRot*xRot);
+		lastMouse = mouse;
+	}
 }
 
 //--------------------------------------------------------------
 void game::mousePressed(int x, int y, int button){
 	//myPuzzle->mouseDragged(x,y,button);
-
-	lastMouse = ofVec2f(x,y);
+	if(step == 4 || step == 5){
+		lastMouse = ofVec2f(x,y);
+	}
 }

@@ -100,19 +100,22 @@ void game::update(){
 				//put this move on the game history vector
 				//undo will look for the other 9 cubies involved and do a pop x2 on their history
 				if(ans/10 == 1){
+					//1
 					axis.x = 1;
 					axis.y = 0;
 					axis.z = 0;
 				}else if(ans/10 == 2){
+					//2
 					axis.x = 0;
 					axis.y = 1;
 					axis.z = 0;
 				}else{
+					//3
 					axis.x = 0;
 					axis.y = 0;
 					axis.z = 1;
 				}
-				bool d = ans%2;
+				bool d = ans%2;//this is 0 or 1
 				historyV.push_back(history(idcubieA,axis,!d)); //save inverse move (!), to do it at undo, and do 2 pop 
 				faceRotateB = false;
 			}

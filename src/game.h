@@ -11,7 +11,6 @@
 #include "ofxAssimpModelLoader.h"
 #include "history.h"
 #include "armRotations.h"
-#include "ofxTrackball.h"
 
 #include <vector>
 
@@ -67,11 +66,6 @@ public:
 	/////////////////////////////move all puzzle: every cubbie moves the same way
 	SG_VECTOR posP;
 	void moveP (SG_VECTOR p);
-	/////////////////////////////rotate all puzzle
-	///trackball
-	ofxTrackball *myTB;
-	/*SG_VECTOR rotP;
-	void rotateP(SG_VECTOR r);*/
 
 	////////////////armature offset
 	//offset vars
@@ -116,11 +110,9 @@ public:
 	bool rotateB;
 	void guiInput(int in);
 
-
-
-	///////////////////  new puzzle trackball
+	///////////////////  puzzle trackball
 	ofVec3f axistb;
-		float angle;
+	float angle;
 	//current state of the rotation
 	ofQuaternion curRot;
 	//a place to store the mouse position so we can measure incremental change

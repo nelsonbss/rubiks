@@ -4,7 +4,6 @@
 #include "slicer.h"
 #include "cutter.h"
 #include "puzzle.h"
-#include "ofxTrackball.h"
 
 #include <vector>
 

@@ -166,6 +166,8 @@ void game::draw(){
 		ofTranslate(posP.x,posP.y,posP.z);
 		//new trackball
 		ofRotate(angle, axistb.x, axistb.y, axistb.z);
+
+
 		ofTranslate(-posP.x,-posP.y,-posP.z);
 		myPuzzle->draw();
 		ofPopMatrix();

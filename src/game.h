@@ -124,5 +124,7 @@ public:
 	void mousePressed(int x, int y, int button);
 
 	void getMatrix( GLfloat * m, ofQuaternion quat );
+
+	GLdouble model[16];
 };
 #endif /* defined(__Tgame__game__) */

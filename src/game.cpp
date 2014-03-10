@@ -42,6 +42,8 @@ game::game(SG_VECTOR gamePos, float w, float h, SG_VECTOR displayPos){
 
 	armID = -1; //initialized in -1 when there is no armature selected
 	objectID = -1; //initialized on -1 because on stage=0 there is no object selected
+	
+
 }
 //--------------------------------------------------------------
 void game::setup(sgCObject *sgBunnyi,sgCObject *sgTetrahedroni,sgCObject *sgDodecahedroni,sgCObject *sgIcosahedroni,sgCObject *sgOctahedroni){//,sgCObject *sgTeapoti){
@@ -147,9 +149,12 @@ void game::draw(){
 
 
 	}
+
 	if(step == 5){
 		//trackball
 		//myTB->draw();
+
+		glMatrixMode(GL_MODELVIEW);
 
 		//show puzzle
 		curRot.getRotate(angle, axistb);
@@ -163,14 +168,30 @@ void game::draw(){
 		GLfloat* m  = new GLfloat[16];
 		getMatrix( m, curRot.inverse() );//inverse the quaternion to have puzzle move correctly
 
+		
+
 		ofPushMatrix();
-		ofTranslate(posP.x,posP.y,posP.z);
+		glTranslatef(posP.x,posP.y,posP.z);
 
 		//new trackball
-		//ofRotate(angle, axistb.x, axistb.y, axistb.z);
+		glRotated(angle, axistb.x, axistb.y, axistb.z);
 
 		//quaternion to matrix, using the matrix here
-		glMultMatrixf( m );
+		//glMultMatrixf(m);
+
+		
+		glGetDoublev(GL_MODELVIEW_MATRIX, model);// here I have the current matrix with the rotations that I need
+		//upper 3x3 elements is the rotation matrix
+		ofMatrix4x4 s = ofMatrix4x4(model[0],model[1],model[2],model[3],model[4],model[5],model[6],model[7],model[8],model[9],model[10],model[11],model[12],model[12],model[14],model[15]);
+		//invert matrix
+		ofMatrix4x4 inverseModel = ofMatrix4x4::getInverseOf(s);
+		//use inverse matrix to apply rotations
+		curRot = inverseModel.getRotate();
+		curRot.getRotate(angle, axistb);
+		glRotated(angle, axistb.x, axistb.y, axistb.z);
+		//it should do nothing. no rotations at the end
+
+
 
 		//normal of rotate
 		//ofRotateX(ofRadToDeg(pitch));
@@ -179,7 +200,11 @@ void game::draw(){
 
 		ofTranslate(-posP.x,-posP.y,-posP.z);
 		myPuzzle->draw();
+
+		free(m);
 		ofPopMatrix();
+
+		
 	}
 
 
@@ -804,29 +829,29 @@ void game::mousePressed(int x, int y, int button){
 
 //--------------------------------------------------------------------------
 void game::getMatrix( GLfloat * m, ofQuaternion quat ) {
-    float x2 = quat.x() * quat.x();
-    float y2 = quat.y() * quat.y();
-    float z2 = quat.z() * quat.z();
-    float xy = quat.x() * quat.y();
-    float xz = quat.x() * quat.z();
-    float yz = quat.y() * quat.z();
-    float wx = quat.w() * quat.x();
-    float wy = quat.w() * quat.y();
-    float wz = quat.w() * quat.z();
-    m[0] = 1.0f - 2.0f * (y2 + z2);
-    m[1] = 2.0f * (xy - wz);
-    m[2] = 2.0f * (xz + wy);
-    m[3] = 0.0f;
-    m[4] = 2.0f * (xy + wz);
-    m[5] = 1.0f - 2.0f * (x2 + z2);
-    m[6] = 2.0f * (yz - wx);
-    m[7] = 0.0f;
-    m[8] = 2.0f * (xz - wy);
-    m[9] = 2.0f * (yz + wx);
-    m[10] = 1.0f - 2.0f * (x2 + y2);
-    m[11] = 0.0f;
-    m[12] = 0.0f;
-    m[13] = 0.0f;
-    m[14] = 0.0f;
-    m[15] = 1.0f;
+	float x2 = quat.x() * quat.x();
+	float y2 = quat.y() * quat.y();
+	float z2 = quat.z() * quat.z();
+	float xy = quat.x() * quat.y();
+	float xz = quat.x() * quat.z();
+	float yz = quat.y() * quat.z();
+	float wx = quat.w() * quat.x();
+	float wy = quat.w() * quat.y();
+	float wz = quat.w() * quat.z();
+	m[0] = 1.0f - 2.0f * (y2 + z2);
+	m[1] = 2.0f * (xy - wz);
+	m[2] = 2.0f * (xz + wy);
+	m[3] = 0.0f;
+	m[4] = 2.0f * (xy + wz);
+	m[5] = 1.0f - 2.0f * (x2 + z2);
+	m[6] = 2.0f * (yz - wx);
+	m[7] = 0.0f;
+	m[8] = 2.0f * (xz - wy);
+	m[9] = 2.0f * (yz + wx);
+	m[10] = 1.0f - 2.0f * (x2 + y2);
+	m[11] = 0.0f;
+	m[12] = 0.0f;
+	m[13] = 0.0f;
+	m[14] = 0.0f;
+	m[15] = 1.0f;
 }

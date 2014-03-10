@@ -154,7 +154,7 @@ void game::draw(){
 		//trackball
 		//myTB->draw();
 
-		glMatrixMode(GL_MODELVIEW);
+		//glMatrixMode(GL_MODELVIEW);
 
 		//show puzzle
 		curRot.getRotate(angle, axistb);
@@ -186,9 +186,11 @@ void game::draw(){
 		//invert matrix
 		ofMatrix4x4 inverseModel = ofMatrix4x4::getInverseOf(s);
 		//use inverse matrix to apply rotations
-		curRot = inverseModel.getRotate();
-		curRot.getRotate(angle, axistb);
-		glRotated(angle, axistb.x, axistb.y, axistb.z);
+		invRot = inverseModel.getRotate();
+		invRot.getRotate(angle, axistb);
+		
+		///apply rotation cancelation by rotting wth the inverse
+		//glRotated(angle, axistb.x, axistb.y, axistb.z);
 		//it should do nothing. no rotations at the end
 
 

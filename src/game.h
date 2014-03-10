@@ -118,6 +118,7 @@ public:
 		float angle;
 	//current state of the rotation
 	ofQuaternion curRot;
+	ofQuaternion invRot;
 	//a place to store the mouse position so we can measure incremental change
 	ofVec2f lastMouse;
 	void mouseDragged(int x, int y, int button);

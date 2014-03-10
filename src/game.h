@@ -90,7 +90,7 @@ public:
 	ofVec3f giveRotation();
 	float tamCubie;
 
-	//face rotations
+	/////////////////face rotations
 	bool updatePuzzle;
 	int idcubie;
 	bool dir;
@@ -100,6 +100,11 @@ public:
 	//history to undo
 	vector<history> historyV; 
 	void unDo();
+	//face rotation bytwo ids
+	void rotateTwoIds(int cubieA, int cubieB,bool inside);
+	bool faceRotateB;
+	int idcubieA;
+	int idcubieB;
 
 	//////////////////////////move  armature
 	float tamSideArmature;
@@ -119,5 +124,17 @@ public:
 	//gui communication
 	bool rotateB;
 	void guiInput(int in);
+
+
+
+	///////////////////  new puzzle trackball
+	ofVec3f axistb;
+		float angle;
+	//current state of the rotation
+	ofQuaternion curRot;
+	//a place to store the mouse position so we can measure incremental change
+	ofVec2f lastMouse;
+	void mouseDragged(int x, int y, int button);
+	void mousePressed(int x, int y, int button);
 };
 #endif /* defined(__Tgame__game__) */

@@ -114,18 +114,18 @@ void puzzle::update(){
 }
 //----------------------------------------------------------------
 void puzzle::draw(){  
+
 	ofPushMatrix();
-		ofTranslate(pos.x,pos.y,pos.z);
+	ofTranslate(pos.x,pos.y,pos.z);
+	//rotate with data from trackBall
+	//ofRotate(qangle, qaxis.x,qaxis.y,qaxis.z);
 
-		//rotate with data from trackBall
-		ofRotate(qangle, qaxis.x,qaxis.y,qaxis.z);
-
-		//puzzle tells every cubie to attach objects to scene
-		for(int i=0;i<numPieces;i++){
-			if(myCubies[i] != NULL){
-				myCubies[i]->draw();
-			}
+	//puzzle tells every cubie to attach objects to scene
+	for(int i=0;i<numPieces;i++){
+		if(myCubies[i] != NULL){
+			myCubies[13]->draw();
 		}
+	}
 
 	ofPopMatrix();
 	if(bDrawLine && bHaveLine){
@@ -248,6 +248,163 @@ bool puzzle::isMoving(){
 	return moving;
 }
 //---------------------------------------------------------------
+//----------------------------------------------------------------------
+int puzzle::rotateTwoIds(int cubieA, int cubieB,bool inside){
+	//receives two ids, from two cubies
+	//each cubie con do 6 possible moves
+	//each cubie ahs 6 possible gestures, starting from him
+	//6 starting from cubie, + 4 ending at cubie. 
+
+	///////////////////////////////////////////////////////////
+	//it returns an int
+	//the first number of the int is x-1, y-2,z-3
+	//the second number of the int is 0-false, 1-true
+	///////////////////////////////////////////////////////////
+	int selected[9];
+	int counter=0;
+	int x1 =0;
+	int y1 =0;
+	int z1 =0;
+	int x2 =0;
+	int y2 =0;
+	int z2 =0;
+
+	// first find the x-y-z of both cubies
+	//look for positon of cubie 1 on the 3d data structure
+	for(int x=0;x<3;x++){
+		for(int y=0;y<3;y++){
+			for(int z=0;z<3;z++){
+				if(three_dim1[x][y][z] == cubieA){
+					//when selected cubie is found
+					x1 = x;
+					y1 = y;
+					z1 = z;
+				}
+			}
+		}
+	}
+	//look for positon of cubie 2 on the 3d data structure
+	for(int x=0;x<3;x++){
+		for(int y=0;y<3;y++){
+			for(int z=0;z<3;z++){
+				if(three_dim1[x][y][z] == cubieB){
+					//when selected cubie is found
+					x2 = x;
+					y2 = y;
+					z2 = z;
+				}
+			}
+		}
+	}
+
+	//decide which are the two possible planes to rotate
+	SG_VECTOR axx = {1,0,0};
+	SG_VECTOR axy = {0,1,0};
+	SG_VECTOR axz = {0,0,1};
+	//look for the similar axis components
+	if(x1 == x2 && y1 == y2){
+		// x & y ==
+		//se the other component
+		if(z1 > z2){
+			//z decreases
+			//x-cc//y-cc
+			//for now the choice (x or y) is made randomly
+			string u = ofToString( ofRandom(0,100));
+			int ug = ofToInt(u);
+			if(ug%2 == 0 ){
+				//x-cc
+				rotateByIDandAxis(cubieA, axx, false);
+				return 10;
+			}else{
+				//y-cc
+				rotateByIDandAxis(cubieA, axy, false);
+				return 20;
+			}
+		}else{
+			//z increases
+			//x-c//y-c
+			//for now the choice (x or y) is made randomly
+			string u = ofToString( ofRandom(0,100));
+			int ug = ofToInt(u);
+			if(ug%2 == 0 ){
+				//x-c
+				rotateByIDandAxis(cubieA, axx, true);
+				return 11;
+			}else{
+				//y-c
+				rotateByIDandAxis(cubieA, axy, true);
+				return 21;
+			}
+		}
+	}else if (x1 == x2 && z1 == z2){
+		// x & z ==
+		//se the other component
+		if(y1 > y2){
+			//y decreases
+			//x-c//z-cc
+			//for now the choice (x or y) is made randomly
+			string u = ofToString( ofRandom(0,100));
+			int ug = ofToInt(u);
+			if(ug%2 == 0 ){
+				//x-c
+				rotateByIDandAxis(cubieA, axx, true);
+				return 11;
+			}else{
+				//z-cc
+				rotateByIDandAxis(cubieA, axz, false);
+				return 30;
+			}
+		}else{
+			//y increases
+			//x-cc//z-c
+			//for now the choice (x or y) is made randomly
+			string u = ofToString( ofRandom(0,100));
+			int ug = ofToInt(u);
+			if(ug%2 == 0 ){
+				//x-cc
+				rotateByIDandAxis(cubieA, axx, false);
+				return 10;
+			}else{
+				//z-c
+				rotateByIDandAxis(cubieA, axz, true);
+				return 31;
+			}
+		}
+	}else if(y1 == y2 && z1 == z2){
+		// y & z ==
+		//se the other component
+		if(x1 > x2){
+			//x decreases
+			//y-cc//z-cc
+			string u = ofToString( ofRandom(0,100));
+			int ug = ofToInt(u);
+			if(ug%2 == 0 ){
+				//y-cc
+				rotateByIDandAxis(cubieA, axy, false);
+				return 20;
+			}else{
+				//z-cc
+				rotateByIDandAxis(cubieA, axz, false);
+				return 30;
+			}
+		}else{
+			//x increases
+			//y-c//z-c
+			string u = ofToString( ofRandom(0,100));
+			int ug = ofToInt(u);
+			if(ug%2 == 0 ){
+				//y-c
+				rotateByIDandAxis(cubieA, axy, true);
+				return 21;
+			}else{
+				//z-c
+				rotateByIDandAxis(cubieA, axz, true);
+				return 31;
+			}
+		}
+	}
+}
+//---------------------------------------------------------------------------
 void puzzle::rotateByIDandAxis(int id, SG_VECTOR axis, bool dir){
 	//it receives the id of a cubie,the axis and the direction of rotation
 	//it looks for the other 9 ids, according to the axis

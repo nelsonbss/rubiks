@@ -359,21 +359,11 @@ void testApp::mouseDragged(int x, int y, int button){
 		ev->addArg("touch-id", 1000);
 		SubObMediator::Instance()->sendEvent("update-touch-point", ev);
 	}
+	myGames[0]->mouseDragged(x,y,button);
 }
+
 //--------------------------------------------------------------
 void testApp::mousePressed(int x, int y, int button){
-	/*
-	if(button == 2){
-		lastRightDragPos.set(x,y);
-	}
-	if(button == 0){
-		if(ofGetElapsedTimef() - timeOfLastInput > inputDelayTime){
-		    updateMouseState("down", x, y, button);
-			timeOfLastInteraction = ofGetElapsedTimef();
-			timeOfLastInput = ofGetElapsedTimef();
-		}
-	}
-	*/
 	if(button == 0){
 		SubObEvent *ev = new SubObEvent();
 		ev->setName("add-touch-point");
@@ -381,6 +371,7 @@ void testApp::mousePressed(int x, int y, int button){
 		ev->addArg("touch-id", 1000);
 		SubObMediator::Instance()->sendEvent("add-touch-point", ev);
 	}
+	myGames[0]->mousePressed(x,y,button);
 }
 //--------------------------------------------------------------
 void testApp::mouseReleased(int x, int y, int button){

@@ -257,11 +257,6 @@ void game::applyArmRotations(){
 	objectDisplayed->applyArmRotations(rotateSlicer);
 }
 //-----------------------------------------------------------------------------------------
-void game::undoArmRotations(){
-	myPuzzle->undoArmRotations(rotateSlicer);
-	//mySlicer->undoArmRotations(rotateSlicer);
-}
-//-----------------------------------------------------------------------------------------
 void game::createCutterSlicer(){
 	////////////////////////////////create cutter
 	myCutter = new cutter(planeThicknes,tamCutter,tamCubie,1,offsetSlicer);		
@@ -282,17 +277,9 @@ void game::createPuzzle(SG_VECTOR p){
 		///////////////  BOOLEAN INTERSECTION          ///////////////////////////////////
 		mySlicer->intersectCubes((sgCObject*)objectDisplayed->getObject()); 
 
-		/////////////  undo armature axis rotations (x-y-z) to the puzzles' **myCubies  //////
-		//to show it centered, as the sample 3d object
-		//undoArmRotations();
-
 		//now slicer has all the parts inside sgCGroup ** pieces[]
 		myPuzzle->loadPieces(mySlicer->getPieces(),objectID,rotateSlicer);
 		////////////////////////////////end create puzzle/////////////////////////////////
-
-		///////////////  undo armature axis rotations (x-y-z) to the puzzles' **myCubies  //////
-		////to show it centered, as the sample 3d objrnect
-		//undoArmRotations();
 
 		///////////////////////////////  color puzzle   ////////////////////////////////// 
 		//color all the faces for platonic solids!! colors outside for most objects(not bunny), black on the insides
@@ -592,6 +579,7 @@ void game::guiInput(int in){
 		//	ofVec3f v;
 		//	rotateP(r);
 		//}
+		myPuzzle->keyInput(in);
 	}
 	////////////////////////////////////////////step 5 inputs
 	////////////////////////////////////////////step 5 inputs
@@ -711,6 +699,7 @@ void game::guiInput(int in){
 		//	ofVec3f v;
 		//	rotateP(r);
 		//}
+		myPuzzle->keyInput(in);
 	}
 
 	/////////////////////////////////////////////////////////////////
@@ -763,5 +752,5 @@ void game::exit(){
 	sgDeleteObject(sgDodecahedron);
 	sgDeleteObject(sgIcosahedron);
 	sgDeleteObject(sgOctahedron);
- 	sgDeleteObject(sgTeapot);
+ 	//sgDeleteObject(sgTeapot);
 }

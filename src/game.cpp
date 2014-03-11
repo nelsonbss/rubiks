@@ -317,7 +317,7 @@ void game::loadArmature(int type){
 void game::applyArmRotations(){
 	//1 is for regular euler angle rotation inside rotateSlicer
 	//2 is for quaternion rotate angle and vector info
-	objectDisplayed->applyArmRotations(rotateSlicer,angleA, axistbA,2);
+	objectDisplayed->applyArmRotations(rotateSlicer,angleA, axistbA,1);
 }
 //-----------------------------------------------------------------------------------------
 void game::createCutterSlicer(){
@@ -343,7 +343,7 @@ void game::createPuzzle(SG_VECTOR p){
 		//now slicer has all the parts inside sgCGroup ** pieces[]
 		//1 is for regular euler angle rotation inside rotateSlicer
 		//2 is for quaternion rotate angle and vector info
-		myPuzzle->loadPieces(mySlicer->getPieces(),objectID,rotateSlicer,angleAinv, axistbAinv,2);
+		myPuzzle->loadPieces(mySlicer->getPieces(),objectID,rotateSlicer,angleAinv, axistbAinv,1);
 		////////////////////////////////end create puzzle/////////////////////////////////
 
 		///////////////////////////////  color puzzle   ////////////////////////////////// 

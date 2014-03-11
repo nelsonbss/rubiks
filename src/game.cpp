@@ -821,10 +821,23 @@ void game::exit(){
 void game::mouseDragged(int x, int y, int button){
 	if(step == 3){
 		ofVec2f mouseA(x,y);
-		ofQuaternion yRotA(x-lastMouseA.x, ofVec3f(0,1,0));
-		ofQuaternion xRotA(y-lastMouseA.y, ofVec3f(-1,0,0));
-		//curRot *= yRot*xRot;
-		curRotA.set(curRotA*yRotA*xRotA);
+		//look for difference in x
+		if(mouseA.x > lastMouseA.x){
+			//moved right
+			rotateSlicer.y += 1;
+		}else if(mouseA.x < lastMouseA.x){
+			//moved left
+			rotateSlicer.y -= 1;
+		}
+
+		//look for difference in y
+		if(mouseA.y > lastMouseA.y){
+			//moved up
+			rotateSlicer.x -= 1;
+		}else if(mouseA.y < lastMouseA.y){
+			//moved down
+			rotateSlicer.x += 1;
+		}
 		lastMouseA = mouseA;
 	}
 	else if(step == 4 || step == 5){

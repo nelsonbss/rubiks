@@ -45,6 +45,9 @@ game::game(SG_VECTOR gamePos, float w, float h, SG_VECTOR displayPos){
 
 	bHaveNewObject = false;
 	bHaveNext = false;
+
+	SubObMediator::Instance()->addObserver("main-drag:2", this);
+	SubObMediator::Instance()->addObserver("main-drag-tap", this);
 }
 //--------------------------------------------------------------
 void game::setup(sgCObject *sgBunnyi,sgCObject *sgTetrahedroni,sgCObject *sgDodecahedroni,sgCObject *sgIcosahedroni,sgCObject *sgOctahedroni){//,sgCObject *sgTeapoti){
@@ -139,6 +142,18 @@ void game::update(){
 	if(bHaveReset){
 		guiInput('r');
 		bHaveReset = false;
+	}
+}
+//----------------------------------------------------------------------
+void game::update(string _eventName, SubObEvent* _event){
+	if(_eventName == "main-drag-tap"){
+		ofVec3f pos = _event->getArg("absPos")->getVec2();
+		mousePressed(pos.x, pos.y, 2);
+	}
+	
+	if(_eventName == "main-drag:2"){
+		ofVec2f pos = _event->getArg("absPos")->getVec2();
+		mouseDragged(pos.x, pos.y, 2);
 	}
 }
 //----------------------------------------------------------------------
@@ -791,6 +806,7 @@ void game::exit(){
 //--------------------------------------------------------------
 void game::mouseDragged(int x, int y, int button){
 	//myPuzzle->mouseDragged(x,y,button);
+	cout << "game dragged." << endl;
 	if(step == 4 || step == 5){
 		ofVec2f mouse(x,y);
 		ofQuaternion yRot(x-lastMouse.x, ofVec3f(0,1,0));
@@ -804,6 +820,7 @@ void game::mouseDragged(int x, int y, int button){
 //--------------------------------------------------------------
 void game::mousePressed(int x, int y, int button){
 	//myPuzzle->mouseDragged(x,y,button);
+	cout << "game selected." << endl;
 	if(step == 4 || step == 5){
 		lastMouse = ofVec2f(x,y);
 	}

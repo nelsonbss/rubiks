@@ -230,33 +230,6 @@
         <val>-1000.0</val>
       </param>
     </node>
-    <!--
-    <node type="ibox" name="main-drag">
-      <pos>0.64, 0.27</pos>
-      <size>0.26,0.46</size>
-      <scale>1.0</scale>
-      <param>
-        <name>draw-area</name>
-        <val>true</val>
-      </param>
-      <param>
-        <name>draw-color</name>
-        <val>0,255,0</val>
-      </param>
-      <param>
-        <name>z</name>
-        <val>-1000.0</val>
-      </param>
-      <param>
-        <name>draggable</name>
-        <val>true</val>
-      </param>
-      <param>
-        <name>n</name>
-        <val>2</val>
-      </param>
-    </node>
-    -->
 	</sheet>
   <sheet name="step2" pos="0,0">
     <node type="button" name="arm1">
@@ -504,6 +477,35 @@
       </param>
       <param>
         <name>attach-sample</name>
+        <val>true</val>
+      </param>
+    </node>
+    <node type="ibox" name="main-drag">
+      <pos>0.64, 0.27</pos>
+      <size>0.26,0.46</size>
+      <scale>1.0</scale>
+      <param>
+        <name>draw-area</name>
+        <val>true</val>
+      </param>
+      <param>
+        <name>draw-color</name>
+        <val>0,255,0</val>
+      </param>
+      <param>
+        <name>z</name>
+        <val>-1000.0</val>
+      </param>
+      <param>
+        <name>drag</name>
+        <val>true</val>
+      </param>
+      <param>
+        <name>n</name>
+        <val>2</val>
+      </param>
+      <param>
+        <name>send-select</name>
         <val>true</val>
       </param>
     </node>

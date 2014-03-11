@@ -72,7 +72,6 @@ ofxTrackball::ofxTrackball( float x, float y, float z, float radius, puzzle *pzl
 
 	// setup time
 	elapsedTime = ofGetElapsedTimef();
-	SubObMediator::Instance()->addObserver("main-drag:2", this);
 
 	isCursorPressed = true;
 	cursor->set( 0, 0);
@@ -328,25 +327,6 @@ void ofxTrackball::cursorDragged( ofMouseEventArgs &args )
 	}
 }
 
-void ofxTrackball::update(string _eventName, SubObEvent* _event){
-	cout << "trackball got event - " << _eventName << endl;
-	
-	if(_eventName == "main-drag:2"){
-
-		cout << "trackball moving." << endl;
-
-		ofVec2f pos = _event->getArg("absPos")->getVec2();
-
-		cout << "pos = " << pos.x << ", " << pos.y << endl;
-
-		previousCursor->set( cursor->x, cursor->y );
-		cursor->set( pos.x, pos.y );
-		*velocity = (*cursor - *previousCursor)/ofGetWidth()*90;
-
-		mouseToSphere( cursor->x, cursor->y, vecDrag );
-		quatDrag->makeRotate( *vecDown, *vecDrag );
-	}
-}
 //-----------------------------------------------------------------------------------------
 void ofxTrackball::cursorReleased( ofMouseEventArgs &args )
 {

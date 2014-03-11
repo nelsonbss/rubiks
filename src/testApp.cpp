@@ -359,7 +359,7 @@ void testApp::mouseDragged(int x, int y, int button){
 		ev->addArg("touch-id", 1000);
 		SubObMediator::Instance()->sendEvent("update-touch-point", ev);
 	}
-	myGames[0]->mouseDragged(x,y,button);
+	//myGames[0]->mouseDragged(x,y,button);
 }
 
 //--------------------------------------------------------------
@@ -371,7 +371,7 @@ void testApp::mousePressed(int x, int y, int button){
 		ev->addArg("touch-id", 1000);
 		SubObMediator::Instance()->sendEvent("add-touch-point", ev);
 	}
-	myGames[0]->mousePressed(x,y,button);
+	//myGames[0]->mousePressed(x,y,button);
 }
 //--------------------------------------------------------------
 void testApp::mouseReleased(int x, int y, int button){

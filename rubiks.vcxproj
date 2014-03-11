@@ -118,7 +118,6 @@
     <ClCompile Include="src\myobject3D.cpp" />
     <ClCompile Include="src\ofRender.cpp" />
     <ClCompile Include="src\ofxTimer.cpp" />
-    <ClCompile Include="src\ofxTrackball.cpp" />
     <ClCompile Include="src\Painter.cpp" />
     <ClCompile Include="src\puzzle.cpp" />
     <ClCompile Include="src\SceneManager.cpp" />
@@ -167,7 +166,6 @@
     <ClInclude Include="src\myobject3D.h" />
     <ClInclude Include="src\ofRender.h" />
     <ClInclude Include="src\ofxTimer.h" />
-    <ClInclude Include="src\ofxTrackball.h" />
     <ClInclude Include="src\Painter.h" />
     <ClInclude Include="src\puzzle.h" />
     <ClInclude Include="src\SceneManager.h" />

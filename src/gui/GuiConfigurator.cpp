@@ -114,7 +114,7 @@ void GuiConfigurator::update(string _eventName, SubObEvent* _event){
 			if(targetN != "__NONE__"){
 				n = ofToInt(targetN);
 			}
-			//cout << "event n = " << eventN << " and target n = " << targetN << endl;
+			cout << "event n = " << eventN << " and target n = " << targetN << endl;
 			if(activeNodes[target]->getParam(type) == "true"){
 				if(eventN == n){
 					//cout << activeNodes[target]->getName() << " is getting " << type << endl;

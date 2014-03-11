@@ -12,10 +12,14 @@
 #include "history.h"
 #include "armRotations.h"
 #include "ofxTrackball.h"
+#include "Observer.h"
+#include "SubObEvent.h"
+#include "SubObMediator.h"
+
 
 #include <vector>
 
-class game {
+class game : public Observer{
 public:
 	game(SG_VECTOR p, float w, float h, SG_VECTOR puzzlePos);
 
@@ -51,6 +55,7 @@ public:
 	/*
 	Paul's
 	*/
+
 	void guiLoad(int _obj);
 	bool bHaveNewObject;
 	int newObject;
@@ -60,6 +65,8 @@ public:
 
 	bool bHaveReset;
 	void guiReset(){bHaveReset = true;}
+
+	void update(string _eventName, SubObEvent* _event);
 
 	/*
 	*/

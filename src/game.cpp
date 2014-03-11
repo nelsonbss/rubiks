@@ -116,13 +116,14 @@ void game::draw(){
 	}
 	if(step == 3){
 		//armature has been selected
-		curRot.getRotate(angle, axistb);
+		curRotA.getRotate(angleA, axistbA);
 		ofPushMatrix();
-		ofTranslate(posP.x,posP.y,posP.z);
-		//new trackball
-		ofRotate(angle, axistb.x, axistb.y, axistb.z);
-		ofTranslate(-posP.x,-posP.y,-posP.z);
-		myArmature->draw();
+			ofTranslate(posP.x,posP.y,posP.z);
+			//new trackball
+			ofRotate(angleA, axistbA.x, axistbA.y, axistbA.z);
+			cout << "rotArm: " << axistbA.x << endl;
+			ofTranslate(-posP.x,-posP.y,-posP.z);
+			myArmature->draw();
 		ofPopMatrix();
 		//show selected object
 		objectDisplayed->draw();
@@ -135,16 +136,16 @@ void game::draw(){
 		//show color palette
 		//show puzzle
 
-		curRot.getRotate(angle, axistb);
+		//curRot.getRotate(angle, axistb);
 
-		ofPushMatrix();
-		ofTranslate(posP.x,posP.y,posP.z);
-		//new trackball
-		ofRotate(angle, axistb.x, axistb.y, axistb.z);
+		//ofPushMatrix();
+		//ofTranslate(posP.x,posP.y,posP.z);
+		////new trackball
+		//ofRotate(angle, axistb.x, axistb.y, axistb.z);
 
-		ofTranslate(-posP.x,-posP.y,-posP.z);
+		//ofTranslate(-posP.x,-posP.y,-posP.z);
 		myPuzzle->draw();
-		ofPopMatrix();
+		//ofPopMatrix();
 
 
 
@@ -168,8 +169,6 @@ void game::draw(){
 		GLfloat* m  = new GLfloat[16];
 		getMatrix( m, curRot.inverse() );//inverse the quaternion to have puzzle move correctly
 
-		
-
 		ofPushMatrix();
 		glTranslatef(posP.x,posP.y,posP.z);
 
@@ -179,9 +178,9 @@ void game::draw(){
 		//quaternion to matrix, using the matrix here
 		//glMultMatrixf(m);
 
-		
-		glGetDoublev(GL_MODELVIEW_MATRIX, model);// here I have the current matrix with the rotations that I need
-		//upper 3x3 elements is the rotation matrix
+		glGetDoublev(GL_MODELVIEW_MATRIX, model);// here I have the current matrix with the rotations that I need, after rotation has been applied 
+		//model has the current model view matrix
+		//with it we create an ofMatrix4x4
 		ofMatrix4x4 s = ofMatrix4x4(model[0],model[1],model[2],model[3],model[4],model[5],model[6],model[7],model[8],model[9],model[10],model[11],model[12],model[12],model[14],model[15]);
 		//invert matrix
 		ofMatrix4x4 inverseModel = ofMatrix4x4::getInverseOf(s);
@@ -189,7 +188,7 @@ void game::draw(){
 		invRot = inverseModel.getRotate();
 		invRot.getRotate(angle, axistb);
 		
-		///apply rotation cancelation by rotting wth the inverse
+		///apply rotation cancelation by rotting with the inverse
 		//glRotated(angle, axistb.x, axistb.y, axistb.z);
 		//it should do nothing. no rotations at the end
 
@@ -205,11 +204,7 @@ void game::draw(){
 
 		free(m);
 		ofPopMatrix();
-
-		
 	}
-
-
 }
 //----------------------------------------------------------------------
 void game::rotateByIDandAxis(int id, SG_VECTOR axs, bool d){
@@ -795,7 +790,8 @@ void game::restart(){
 	rotateSlicer.x = 0;
 	rotateSlicer.y = 0;
 	rotateSlicer.z = 0;
-	curRot.set (ofVec4f(0,0,0,0));
+	//curRot.set (ofVec4f(0,0,0,0));
+	//curRotA.set (ofVec4f(0,0,0,0));
 }
 //----------------------------------------------------------------------
 void game::exit(){
@@ -810,8 +806,15 @@ void game::exit(){
 
 //--------------------------------------------------------------
 void game::mouseDragged(int x, int y, int button){
-	//myPuzzle->mouseDragged(x,y,button);
-	if(step == 4 || step == 5){
+	if(step == 3){
+		ofVec2f mouseA(x,y);
+		ofQuaternion yRotA(x-lastMouseA.x, ofVec3f(0,1,0));
+		ofQuaternion xRotA(y-lastMouseA.y, ofVec3f(-1,0,0));
+		//curRot *= yRot*xRot;
+		curRotA.set(curRotA*yRotA*xRotA);
+		lastMouseA = mouseA;
+	}
+	else if(step == 4 || step == 5){
 		ofVec2f mouse(x,y);
 		ofQuaternion yRot(x-lastMouse.x, ofVec3f(0,1,0));
 		ofQuaternion xRot(y-lastMouse.y, ofVec3f(-1,0,0));
@@ -824,7 +827,10 @@ void game::mouseDragged(int x, int y, int button){
 //--------------------------------------------------------------
 void game::mousePressed(int x, int y, int button){
 	//myPuzzle->mouseDragged(x,y,button);
-	if(step == 4 || step == 5){
+	if(step == 3){
+		lastMouseA = ofVec2f(x,y);
+	}
+	else if(step == 4 || step == 5){
 		lastMouse = ofVec2f(x,y);
 	}
 }

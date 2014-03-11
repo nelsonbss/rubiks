@@ -26,7 +26,13 @@ public:
 	SG_VECTOR pos;
 	SG_VECTOR tempPos;
 	ofVec3f armRot;
-	void applyArmRotations(ofVec3f v);
+	void applyArmRotations(ofVec3f v, float angleA, ofVec3f axistbA, int mode);
+	int mode;
+	float quatAngle;
+	SG_VECTOR rotVQuat;
+	//mode:
+	//1 is for regular euler angle rotation inside rotateSlicer
+	//2 is for quaternion rotate angle and vector info
 
 	string name; // may be usefull to call by first name
 };

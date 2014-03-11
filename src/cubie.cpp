@@ -206,18 +206,33 @@ void cubie::update(){
 		}
 		/////////////////////////////////////////////////////////
 		//////undo rotations of armature in z-y-x order
-		SG_VECTOR vrotZ = {0,0,1};      
-		SG_VECTOR puzzleRotate = {0,0,0};
-		if (objectList[j]->GetTempMatrix()==0){
-			objectList[j]->InitTempMatrix()->Rotate(puzzleRotate,vrotZ,ofDegToRad(armRotations.z));
-		}else{
-			objectList[j]->GetTempMatrix()->Rotate(puzzleRotate,vrotZ,ofDegToRad(armRotations.z));
+		if(mode == 1){ 
+			SG_VECTOR vrotZ = {0,0,1};      
+			SG_POINT puzzleRotatePoint = {0,0,0};
+			if (objectList[j]->GetTempMatrix()==0){
+				objectList[j]->InitTempMatrix()->Rotate(puzzleRotatePoint,vrotZ,ofDegToRad(armRotations.z));
+			}else{
+				objectList[j]->GetTempMatrix()->Rotate(puzzleRotatePoint,vrotZ,ofDegToRad(armRotations.z));
+			}
+			SG_VECTOR vrotY = {0,1,0}; 							 
+			objectList[j]->GetTempMatrix()->Rotate(puzzleRotatePoint,vrotY,ofDegToRad(armRotations.y));
+			SG_VECTOR vrotX = {1,0,0}; 							 
+			objectList[j]->GetTempMatrix()->Rotate(puzzleRotatePoint,vrotX,ofDegToRad(armRotations.x));
+			objectList[j]->ApplyTempMatrix();
+		}else if (mode == 2){
+			//only have to apply one rotation
+			SG_POINT puzzleRotatePoint = {0,0,0};
+			SG_VECTOR vrotTB;
+			vrotTB.x = armRotations.x;
+			vrotTB.y = armRotations.y;
+			vrotTB.z = armRotations.z;
+			if (objectList[j]->GetTempMatrix()==0){
+				objectList[j]->InitTempMatrix()->Rotate(puzzleRotatePoint,vrotTB,angleAinv);
+			}else{
+				objectList[j]->GetTempMatrix()->Rotate(puzzleRotatePoint,vrotTB,angleAinv);
+			}
+			objectList[j]->ApplyTempMatrix();
 		}
-		SG_VECTOR vrotY = {0,1,0}; 							 
-		objectList[j]->GetTempMatrix()->Rotate(puzzleRotate,vrotY,ofDegToRad(armRotations.y));
-		SG_VECTOR vrotX = {1,0,0}; 							 
-		objectList[j]->GetTempMatrix()->Rotate(puzzleRotate,vrotX,ofDegToRad(armRotations.x));
-		objectList[j]->ApplyTempMatrix();
 	}
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
@@ -284,11 +299,17 @@ void cubie::faceRotate(SG_VECTOR axis,bool di){
 	}
 }
 //-------------------------------------------------------------------------------------------------------------------------------------------
-void cubie::setObjects(sgCGroup *objs,int cubieId,ofVec3f v){
+void cubie::setObjects(sgCGroup *objs,int cubieId,ofVec3f v, float angleAinvi, ofVec3f axistbAinv, int modei){
+	mode = modei;
+
 	////it receives a group, when Puzzle loadsPieces(ySlicer->getPieces())  on main
 	////it takes the input group and breaks it, to put parts on cubie group "objects"
-
-	armRotations = (v);//*-1; did not have to inverse the angle to compensate due to left hand and right hand rules on sgcore and on openframeworks
+	if(mode ==1 ){
+		armRotations = (v);//*-1; did not have to inverse the angle to compensate due to left hand and right hand rules on sgcore and on openframeworks
+	}else if(mode ==2 ){
+		armRotations = axistbAinv;
+		angleAinv = angleAinvi;
+	}
 
 	if(objs != NULL){
 		sgCObject **objcts = (sgCObject**)malloc(50*sizeof(sgCObject*));

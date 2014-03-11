@@ -42,16 +42,17 @@ void myobject3D::update(){
 		//cube
 		SG_VECTOR offset = {-150,-150,-150}; //for the cube to be in place
 		temp->GetTempMatrix()->Translate(offset);//this translates the object to be cut!!
-		//apply armature axis rotations (x-y-z) to the real object
-		SG_POINT rotP = {0,0,0};
-		SG_VECTOR rotV = {1,0,0};
-		object->InitTempMatrix()->Rotate(rotP,rotV,ofDegToRad(armRot.x));
-		SG_VECTOR rotV2 = {0,1,0};
-		object->GetTempMatrix()->Rotate(rotP,rotV2,ofDegToRad(armRot.y));
-		SG_VECTOR rotV3 = {0,0,1};
-		object->GetTempMatrix()->Rotate(rotP,rotV3,ofDegToRad(armRot.z));
-		object->ApplyTempMatrix(); 
-		object->DestroyTempMatrix(); 
+
+		////apply armature axis rotations (x-y-z) to the real object
+		//SG_POINT rotP = {0,0,0};
+		//SG_VECTOR rotV = {1,0,0};
+		//object->InitTempMatrix()->Rotate(rotP,rotV,ofDegToRad(armRot.x));
+		//SG_VECTOR rotV2 = {0,1,0};
+		//object->GetTempMatrix()->Rotate(rotP,rotV2,ofDegToRad(armRot.y));
+		//SG_VECTOR rotV3 = {0,0,1};
+		//object->GetTempMatrix()->Rotate(rotP,rotV3,ofDegToRad(armRot.z));
+		//object->ApplyTempMatrix(); 
+		//object->DestroyTempMatrix(); 
 	}else if(objectId == 3){
 		////cone..pyramid
 		//SG_POINT rotP = transP;
@@ -128,18 +129,33 @@ sgC3DObject* myobject3D::getObject(){
 	return object;
 }
 //----------------------------------------------------------------
-void myobject3D::applyArmRotations(ofVec3f v){
-	armRot = (v)*-1;
-	//apply armature axis rotations (x-y-z) to the real object
-	SG_POINT rotP = {0,0,0};
-	SG_VECTOR rotV = {1,0,0};
-	object->InitTempMatrix()->Rotate(rotP,rotV,ofDegToRad(armRot.x));
-	SG_VECTOR rotV2 = {0,1,0};
-	object->GetTempMatrix()->Rotate(rotP,rotV2,ofDegToRad(armRot.y));
-	SG_VECTOR rotV3 = {0,0,1};
-	object->GetTempMatrix()->Rotate(rotP,rotV3,ofDegToRad(armRot.z));
-	object->ApplyTempMatrix();
-	object->DestroyTempMatrix(); 
+void myobject3D::applyArmRotations(ofVec3f v, float angleA, ofVec3f axistbA, int modei){
+	//mode:
+	//1 is for regular euler angle rotation inside rotateSlicer
+	//2 is for quaternion rotate angle and vector info
+	mode = modei;
+	if(mode ==1 ){
+		armRot = (v)*-1;
+		//apply armature axis rotations (x-y-z) to the real object
+		SG_POINT rotP = {0,0,0};
+		SG_VECTOR rotV = {1,0,0};
+		object->InitTempMatrix()->Rotate(rotP,rotV,ofDegToRad(armRot.x));
+		SG_VECTOR rotV2 = {0,1,0};
+		object->GetTempMatrix()->Rotate(rotP,rotV2,ofDegToRad(armRot.y));
+		SG_VECTOR rotV3 = {0,0,1};
+		object->GetTempMatrix()->Rotate(rotP,rotV3,ofDegToRad(armRot.z));
+		object->ApplyTempMatrix();
+		object->DestroyTempMatrix(); 
+	}else if (mode == 2){
+		quatAngle = angleA;
+		SG_POINT rotP = {0,0,0};
+		rotVQuat.x = axistbA.x;
+		rotVQuat.y = axistbA.y;
+		rotVQuat.z = axistbA.z;
+		object->InitTempMatrix()->Rotate(rotP,rotVQuat,quatAngle);
+		object->ApplyTempMatrix();
+		object->DestroyTempMatrix(); 
+	}
 }
 //----------------------------------------------------------------
 void myobject3D::exit(){

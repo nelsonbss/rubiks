@@ -33,8 +33,13 @@ public:
 
 	float color;
 
-	void setObjects(sgCGroup *objs,int cubieId,ofVec3f v);
-	
+	void setObjects(sgCGroup *objs,int cubieId,ofVec3f v, float angleA, ofVec3f axistbA, int modei);
+	int mode;
+	float angleAinv;
+	//mode:
+	//1 is for regular euler angle rotation inside rotateSlicer
+	//2 is for quaternion rotate angle and vector info
+
 	//this vector (point) is the offset of the cutter, to rotate correctly (when cutter was not rotated) when its offcentered by user on the armature stage
 	ofVec3f pointRotate;
 	

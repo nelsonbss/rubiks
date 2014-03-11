@@ -123,17 +123,20 @@ public:
 	ofVec2f lastMouse;
 
 	///////////////////  new armature trackball
-	ofVec3f axistbA;
-	float angleA;
-	//current state of the rotation
+	//current angle - to do slicing
 	ofQuaternion curRotA;
 	ofQuaternion invRotA;
+	ofVec3f axistbA;
+	float angleA;
+	// inverted info - to place puzzle with no rotations
+	ofVec3f axistbAinv;
+	float angleAinv;	
 	//a place to store the mouse position so we can measure incremental change
 	ofVec2f lastMouseA;
 
 	void mouseDragged(int x, int y, int button);
 	void mousePressed(int x, int y, int button);
-
+	//function and matrix to get the inverse rotations
 	void getMatrix( GLfloat * m, ofQuaternion quat );
 	GLdouble model[16];
 };

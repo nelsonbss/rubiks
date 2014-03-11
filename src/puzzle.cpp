@@ -104,7 +104,7 @@ int puzzle::giveNumCubies(){
 	return aux;
 }
 //----------------------------------------------------------------
-void puzzle::loadPieces(sgCGroup **pcs,int selObjId, ofVec3f v){
+void puzzle::loadPieces(sgCGroup **pcs,int selObjId, ofVec3f v, float angleAinv, ofVec3f axistbAinv, int modei){
 	//it loads the pieces that the slicer made, the pieces are in a sgCGroup** pieces[], 
 	//this function receives a copy of that sgCGroup** made by mySlicer->getPieces()
 	//it loads them into its own cubies
@@ -136,7 +136,7 @@ void puzzle::loadPieces(sgCGroup **pcs,int selObjId, ofVec3f v){
 			}
 			//make them a group
 			cubieGroup = sgCGroup::CreateGroup(obj,realNumPieces);
-			myCubies[i]->setObjects(cubieGroup,i,v);//here goes the group of clones from the iriginal slicing pieces[]
+			myCubies[i]->setObjects(cubieGroup,i,v, angleAinv, axistbAinv, modei);//here goes the group of clones from the iriginal slicing pieces[]
 			//i is the cubie ID
 			//put that cubie on the cubies[]
 
@@ -152,7 +152,7 @@ void puzzle::loadPieces(sgCGroup **pcs,int selObjId, ofVec3f v){
 			}
 			sgDeleteObject(part);
 		}else{
-			myCubies[i]->setObjects(NULL,i,v);
+			myCubies[i]->setObjects(NULL,i,v, angleAinv, axistbAinv, modei);
 		}
 	}
 

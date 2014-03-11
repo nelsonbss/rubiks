@@ -19,7 +19,10 @@ public:
 
 	void exit();
 
-	void loadPieces(sgCGroup **pcs, int selObjId, ofVec3f v);
+	void loadPieces(sgCGroup **pcs, int selObjId, ofVec3f v, float angleA, ofVec3f axistbA, int mode);
+	//mode:
+	//1 is for regular euler angle rotation inside rotateSlicer
+	//2 is for quaternion rotate angle and vector info
 	int giveNumCubies();
 	sgCGroup* cubieGroup;
 	float numPieces;

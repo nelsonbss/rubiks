@@ -42,7 +42,7 @@ game::game(SG_VECTOR gamePos, float w, float h, SG_VECTOR displayPos){
 
 	armID = -1; //initialized in -1 when there is no armature selected
 	objectID = -1; //initialized on -1 because on stage=0 there is no object selected
-	
+
 
 }
 //--------------------------------------------------------------
@@ -118,43 +118,53 @@ void game::draw(){
 		//armature has been selected
 		curRotA.getRotate(angleA, axistbA);
 		ofPushMatrix();
-			ofTranslate(posP.x,posP.y,posP.z);
-			//new trackball
-			ofRotate(angleA, axistbA.x, axistbA.y, axistbA.z);
-			cout << "rotArm: " << axistbA.x << endl;
-			ofTranslate(-posP.x,-posP.y,-posP.z);
-			myArmature->draw();
+		ofTranslate(posP.x,posP.y,posP.z);
+
+		//euler
+		ofRotateX(rotateSlicer.x);
+		ofRotateY(rotateSlicer.y);
+		ofRotateZ(rotateSlicer.z);
+
+		//new trackball
+		ofRotate(angleA, axistbA.x, axistbA.y, axistbA.z);
+
+		glGetDoublev(GL_MODELVIEW_MATRIX, model);// here I have the current matrix with the rotations that I need, after rotation has been applied 
+		//model has the current model view matrix
+		//with it we create an ofMatrix4x4
+		ofMatrix4x4 armRotTB = ofMatrix4x4(model[0],model[1],model[2],model[3],model[4],model[5],model[6],model[7],model[8],model[9],model[10],model[11],model[12],model[12],model[14],model[15]);
+		//invert matrix
+		ofMatrix4x4 inverseArmRotation = ofMatrix4x4::getInverseOf(armRotTB);
+		//use inverse matrix to apply rotations
+		invRotA = inverseArmRotation.getRotate();
+		//now I have a new quaternion with the inverse rotations.. to rotate puzzle back
+		invRotA.getRotate(angleAinv, axistbAinv);
+		//now I have an angle and a vector to rotate
+
+
+		ofTranslate(-posP.x,-posP.y,-posP.z);
+		myArmature->draw();
 		ofPopMatrix();
 		//show selected object
 		objectDisplayed->draw();
 	}
 	if(step == 4 ){
-		//trackball
-		//myTB->draw();
-
 		//made the cuts
 		//show color palette
 		//show puzzle
 
-		//curRot.getRotate(angle, axistb);
+		curRot.getRotate(angle, axistb);
 
-		//ofPushMatrix();
-		//ofTranslate(posP.x,posP.y,posP.z);
-		////new trackball
-		//ofRotate(angle, axistb.x, axistb.y, axistb.z);
+		ofPushMatrix();
+		ofTranslate(posP.x,posP.y,posP.z);
+		//new trackball
+		ofRotate(angle, axistb.x, axistb.y, axistb.z);
 
-		//ofTranslate(-posP.x,-posP.y,-posP.z);
+		ofTranslate(-posP.x,-posP.y,-posP.z);
 		myPuzzle->draw();
-		//ofPopMatrix();
-
-
-
+		ofPopMatrix();
 	}
 
 	if(step == 5){
-		//trackball
-		//myTB->draw();
-
 		//glMatrixMode(GL_MODELVIEW);
 
 		//show puzzle
@@ -173,9 +183,10 @@ void game::draw(){
 		glTranslatef(posP.x,posP.y,posP.z);
 
 		//new trackball
+		//rotate using quaternion data
 		glRotated(angle, axistb.x, axistb.y, axistb.z);
 
-		//quaternion to matrix, using the matrix here
+		//quaternion to matrix, rotate using the matrix
 		//glMultMatrixf(m);
 
 		glGetDoublev(GL_MODELVIEW_MATRIX, model);// here I have the current matrix with the rotations that I need, after rotation has been applied 
@@ -187,7 +198,7 @@ void game::draw(){
 		//use inverse matrix to apply rotations
 		invRot = inverseModel.getRotate();
 		invRot.getRotate(angle, axistb);
-		
+
 		///apply rotation cancelation by rotting with the inverse
 		//glRotated(angle, axistb.x, axistb.y, axistb.z);
 		//it should do nothing. no rotations at the end
@@ -304,7 +315,9 @@ void game::loadArmature(int type){
 }
 //-----------------------------------------------------------------------------------------
 void game::applyArmRotations(){
-	objectDisplayed->applyArmRotations(rotateSlicer);
+	//1 is for regular euler angle rotation inside rotateSlicer
+	//2 is for quaternion rotate angle and vector info
+	objectDisplayed->applyArmRotations(rotateSlicer,angleA, axistbA,2);
 }
 //-----------------------------------------------------------------------------------------
 void game::createCutterSlicer(){
@@ -328,7 +341,9 @@ void game::createPuzzle(SG_VECTOR p){
 		mySlicer->intersectCubes((sgCObject*)objectDisplayed->getObject()); 
 
 		//now slicer has all the parts inside sgCGroup ** pieces[]
-		myPuzzle->loadPieces(mySlicer->getPieces(),objectID,rotateSlicer);
+		//1 is for regular euler angle rotation inside rotateSlicer
+		//2 is for quaternion rotate angle and vector info
+		myPuzzle->loadPieces(mySlicer->getPieces(),objectID,rotateSlicer,angleAinv, axistbAinv,2);
 		////////////////////////////////end create puzzle/////////////////////////////////
 
 		///////////////////////////////  color puzzle   ////////////////////////////////// 
@@ -802,8 +817,6 @@ void game::exit(){
 	sgDeleteObject(sgOctahedron);
 	//sgDeleteObject(sgTeapot);
 }
-
-
 //--------------------------------------------------------------
 void game::mouseDragged(int x, int y, int button){
 	if(step == 3){

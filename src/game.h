@@ -54,7 +54,7 @@ public:
 	void guiLoad(int _obj);
 	bool bHaveNewObject;
 	int newObject;
-	
+
 	void loadArmature(int type);
 	int armID;
 	void createCutterSlicer();//(float thick, float tamPlane, float tamCuby,float numCutr, float x, float y, float z);
@@ -115,17 +115,26 @@ public:
 
 	///////////////////  new puzzle trackball
 	ofVec3f axistb;
-		float angle;
+	float angle;
 	//current state of the rotation
 	ofQuaternion curRot;
 	ofQuaternion invRot;
 	//a place to store the mouse position so we can measure incremental change
 	ofVec2f lastMouse;
+
+	///////////////////  new armature trackball
+	ofVec3f axistbA;
+	float angleA;
+	//current state of the rotation
+	ofQuaternion curRotA;
+	ofQuaternion invRotA;
+	//a place to store the mouse position so we can measure incremental change
+	ofVec2f lastMouseA;
+
 	void mouseDragged(int x, int y, int button);
 	void mousePressed(int x, int y, int button);
 
 	void getMatrix( GLfloat * m, ofQuaternion quat );
-
 	GLdouble model[16];
 };
 #endif /* defined(__Tgame__game__) */

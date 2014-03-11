@@ -822,6 +822,8 @@ void game::mouseDragged(int x, int y, int button){
 	if(step == 3){
 		ofVec2f mouseA(x,y);
 		//look for difference in x
+
+		/*
 		if(mouseA.x > lastMouseA.x){
 			//moved right
 			rotateSlicer.y += 1;
@@ -838,6 +840,10 @@ void game::mouseDragged(int x, int y, int button){
 			//moved down
 			rotateSlicer.x += 1;
 		}
+				*/
+		rotateSlicer.y-=mouseA.x-lastMouseA.x;
+		rotateSlicer.x+=mouseA.y-lastMouseA.y;
+
 		lastMouseA = mouseA;
 	}
 	else if(step == 4 || step == 5){

@@ -71,14 +71,17 @@ void testApp::draw(){
 		else if(gStep == 0){
 			//waiting for object to be selected from menu //drag behavior
 			//show object menu
-			ofDrawBitmapString("SELECT AN OBJECT from MENU:" + ofToString("") +"\n" + "torus "+ofToString(1)+"\n"+ "box "+ofToString(2)+"\n"+ "cone "+ofToString(3)+"\n",20, 20);
+			ofDrawBitmapString("SELECT AN OBJECT from MENU:" + ofToString("") +"\n" + "1 - 7: objects"+ofToString("")+"\n"+ "9 : extrusion"+ofToString("")+"\n",20, 20);
 			//show select object or drag gui graphic
-			ofDrawBitmapString("or drag a shape from above:" + ofToString("") +"\n",20, 40);
+			ofDrawBitmapString("or drag a shape from above:" + ofToString("") +"\n",20, 80);
 		}else if(gStep == 1){
 			//an object has been selected
-			ofDrawBitmapString("SELECT AN OBJECT:" + ofToString("") +"\n" + "torus "+ofToString(1)+"\n"+ "box "+ofToString(2)+"\n"+ "cone "+ofToString(3)+"\n",20, 20);
+			//show object menu
+			ofDrawBitmapString("SELECT AN OBJECT from MENU:" + ofToString("") +"\n" + "1 - 7: objects"+ofToString("")+"\n"+ "9 : extrusion"+ofToString("")+"\n",20, 20);
+			//show select object or drag gui graphic
+			ofDrawBitmapString("or drag a shape from above:" + ofToString("") +"\n",20, 80);
 			//show next button.
-			ofDrawBitmapString("NEXT: press 'n' " + ofToString("") +"\n" ,20, 80);
+			ofDrawBitmapString("NEXT: press 'n' " + ofToString("") +"\n" ,20, 100);
 		}else if(gStep ==2){
 			//waiting for armature to be selected from menu //drag behavior
 			//show armature menu
@@ -114,9 +117,11 @@ void testApp::draw(){
 			ofDrawBitmapString("RESTART: press 'r' " + ofToString("") +"\n" ,20, 140);
 		}else if(gStep == 6){
 			//create object by extrusion
-			ofDrawBitmapString("show drawing area" +ofToString("")+"\n",20, 20);
+			ofDrawBitmapString("sSHOW DRAWING AREA!" +ofToString("")+"\n",20, 20);
+			//testing
+			ofDrawBitmapString("TEST: press 'e' to extrude: " + ofToString("") +"\n" ,20, 40);
 			//show restart button.
-			ofDrawBitmapString("RESTART: press 'r' " + ofToString("") +"\n" ,20, 140);
+			ofDrawBitmapString("RESTART: press 'r' " + ofToString("") +"\n" ,20, 60);
 		}
 	}
 

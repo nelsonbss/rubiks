@@ -8,7 +8,7 @@
 #define displayX 500
 #define displayY 400
 #define displayZ 0
-
+#define iddleTime 100
 //--------------------------------------------------------------
 void testApp::setup(){
 	/////////////////////////////initialize sgCore library
@@ -23,11 +23,11 @@ void testApp::setup(){
 	//////////////////////////////one game for now
 	SG_VECTOR gamePos = {0,0,0}; //one game created at the origin // this will have to change for a game creating function when more stations are anabled
 	SG_VECTOR displayPos = {ofGetWidth() / 2, ofGetHeight() / 2,displayZ};
-	game *tempGame = new game(gamePos, ofGetWidth(), ofGetHeight(),displayPos);
+	game *tempGame = new game(gamePos, ofGetWidth(), ofGetHeight(),displayPos,iddleTime);
 	myGames.push_back(tempGame);
 	currentGame = 1;
 	//create a second game
-	//game *tempGame2 = new game(gamePos, ofGetWidth(), ofGetHeight(),displayPos);
+	//game *tempGame2 = new game(gamePos, ofGetWidth(), ofGetHeight(),displayPos,iddleTime);
 	//myGames.push_back(tempGame2);
 	///////////////////////////////setup games
 	for(int i = 0; i < myGames.size(); i++){
@@ -60,10 +60,20 @@ void testApp::draw(){
 		int gStep=0;
 		//get current step of game
 		gStep = myGames[i]->getCurrentStep();
-		if(gStep == 0){
+
+		if(gStep == -1){
+			//standby mode
+			//showing attract / inactive banner
+			ofDrawBitmapString("Press anything to begin" + ofToString("") +"\n",20, 20);
+			//waiting for any touch event to begin
+			//to go to step 0
+		}
+		else if(gStep == 0){
 			//waiting for object to be selected from menu //drag behavior
 			//show object menu
-			ofDrawBitmapString("SELECT AN OBJECT:" + ofToString("") +"\n" + "torus "+ofToString(1)+"\n"+ "box "+ofToString(2)+"\n"+ "cone "+ofToString(3)+"\n",20, 20);
+			ofDrawBitmapString("SELECT AN OBJECT from MENU:" + ofToString("") +"\n" + "torus "+ofToString(1)+"\n"+ "box "+ofToString(2)+"\n"+ "cone "+ofToString(3)+"\n",20, 20);
+			//show select object or drag gui graphic
+			ofDrawBitmapString("or drag a shape from above:" + ofToString("") +"\n",20, 40);
 		}else if(gStep == 1){
 			//an object has been selected
 			ofDrawBitmapString("SELECT AN OBJECT:" + ofToString("") +"\n" + "torus "+ofToString(1)+"\n"+ "box "+ofToString(2)+"\n"+ "cone "+ofToString(3)+"\n",20, 20);
@@ -100,6 +110,11 @@ void testApp::draw(){
 			ofDrawBitmapString("Z rotations: 'e' 'd'"+ofToString(" ")+"\n",20, 80);
 			//undo move
 			ofDrawBitmapString("UNDO: press 'u' " + ofToString("") +"\n" ,20, 120);
+			//show restart button.
+			ofDrawBitmapString("RESTART: press 'r' " + ofToString("") +"\n" ,20, 140);
+		}else if(gStep == 6){
+			//create object by extrusion
+			ofDrawBitmapString("show drawing area" +ofToString("")+"\n",20, 20);
 			//show restart button.
 			ofDrawBitmapString("RESTART: press 'r' " + ofToString("") +"\n" ,20, 140);
 		}

@@ -11,10 +11,12 @@
 #define tamCutter 1000
 
 
-game::game(SG_VECTOR gamePos, float w, float h, SG_VECTOR displayPos){
+game::game(SG_VECTOR gamePos, float w, float h, SG_VECTOR displayPos, float iddleTime){
 	posGame = gamePos;
 	width = w;
 	height = h;
+
+	iddleTimer = iddleTime;
 
 	posP.x = displayPos.x; //for the puzzle & sample object
 	posP.y = displayPos.y;
@@ -52,23 +54,31 @@ void game::setup(sgCObject *sgBunnyi,sgCObject *sgTetrahedroni,sgCObject *sgDode
 	sgOctahedron = sgOctahedroni;
 	//sgTeapot = sgTeapoti;
 
-	step = 0;
+	step = -1;
 	idcubie=0;
 
 	/////////////////////////////////////////PUZzLE //////////
 	updatePuzzle = false;
 	//
 	faceRotate = false;
-	faceRotateB = false;
-
-
+	faceRotateB = false;//used in the 2 id rotation function
 }
 //----------------------------------------------------------------------
 void game::update(){
 
+	if(step != -1){
+		/////take time sample to see if game has to go to standBy mode
+		goToAttractStepS = ofGetElapsedTimef();
+		cout << goToAttractStepS << endl;
+		if(goToAttractStepS - goToAttractStepI >= iddleTimer){
+			restart();
+			step = -1;
+		}
+	}
+
 	if(step == 1 || step == 2 || step == 3){
 		//if there is an object selected
-		objectDisplayed->update(); //rotates the selected object...just for show
+		objectDisplayed->update();
 	}
 
 	//if(step == 3){
@@ -123,9 +133,15 @@ void game::update(){
 }
 //----------------------------------------------------------------------
 void game::draw(){  
-	////////////////////////////////Draw the pieces////////////////////////////////////
+	////////////////////////////////Draw game steps////////////////////////////////////
+	if(step == -1){
+		//waiting for initializing touch
+	}
 	if(step == 0){
 		//is waiting for a shape to be selected
+		//object menuu is showing
+		//it can load an object from menu
+		//or from puzzle menu in the middle
 	}
 	if (step == 1){
 		//show selected object
@@ -172,8 +188,15 @@ void game::draw(){
 		myPuzzle->draw();
 		ofPopMatrix();
 	}
+	if(step == 6){
+		//show drawing area
 
-
+	}
+	if(step == 7){
+		//show extruded object as a selected object
+		//same as step 1
+		step = 1;
+	}
 }
 //----------------------------------------------------------------------
 void game::rotateByIDandAxis(int id, SG_VECTOR axs, bool d){
@@ -197,6 +220,9 @@ void game::rotateTwoIds(int cubieA, int cubieB,bool inside){
 	idcubieB = cubieB;
 	dir = true;
 }
+//----------------------------------------------------------------------
+void game::loadPuzzle(int puzzleMenuObject){
+} //load a puzzle from the puzzle menu on the center
 //----------------------------------------------------------------------
 void game::loadObject(int objID, SG_VECTOR p, SG_VECTOR t){
 	if (objectID == -1){
@@ -386,10 +412,40 @@ void game::guiLoad(int _obj){
 }
 //----------------------------------------------------------------------
 void game::guiInput(int in){
+
+	//any gui input resets reset timer
+	//start timer to go back to inactive state
+	if(step != -1){
+		goToAttractStepI =  ofGetElapsedTimef();
+	}
+
+	if(step == -1){
+		//on attract / inactive state
+		step = 0;
+		goToAttractStepI =  ofGetElapsedTimef();
+	}
 	////////////////////////////////////////////step 0 inputs
 	////////////////////////////////////////////step 0 inputs
 	////////////////////////////////////////////step 0 inputs
-	if(step == 0){
+	else if(step == 0){
+		//waiting for an object to be selected
+		//it cam be from the shapes on the center
+		// or from the object menu on the side
+
+		////////////////////////////////////////////////////////
+		///////////from shapes in the center
+		if(in == 'p'){
+			loadPuzzle(100);
+		}
+		if(in == 'o'){
+			loadPuzzle(101);
+		}
+		if(in == 'i'){
+			loadPuzzle(102);
+		}
+
+		////////////////////////////////////////////////////////
+		//////////////////object menu on the side
 		SG_VECTOR objectPos = {0,0,0};  //where it gets sliced
 		//SG_VECTOR posP = {ofGetWidth() / 2,ofGetHeight() / 2,displayZ}; // where the temp object will be showed to user
 		//waiting for shape to be selected

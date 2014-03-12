@@ -16,7 +16,7 @@
 
 class game {
 public:
-	game(SG_VECTOR p, float w, float h, SG_VECTOR puzzlePos);
+	game(SG_VECTOR p, float w, float h, SG_VECTOR puzzlePos, float iddleTime);
 
 	void setup(sgCObject *sgBunnyi,sgCObject *sgTetrahedroni,sgCObject *sgDodecahedroni,sgCObject *sgIcosahedroni,sgCObject *sgOctahedroni);//,sgCObject *sgTeapoti);
 	void update();
@@ -119,5 +119,13 @@ public:
 	ofVec2f lastMouse;
 	void mouseDragged(int x, int y, int button);
 	void mousePressed(int x, int y, int button);
+
+	///////interaction with puzzles on the center
+	void loadPuzzle(int puzzleMenuObject); //load a puzzle from the puzzle menu on the center
+
+	//inactive state timer
+	int goToAttractStepI;
+	int goToAttractStepS;
+	float iddleTimer;
 };
 #endif /* defined(__Tgame__game__) */

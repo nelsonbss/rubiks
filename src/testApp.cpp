@@ -4,7 +4,7 @@
 
 #define displayX 500
 #define displayY 400
-#define displayZ 0
+#define displayZ -400
 
 std::map<int,gwc::Point> active_points;
 

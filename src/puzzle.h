@@ -7,7 +7,7 @@
 #include "slicer.h"
 #include "GuiNode.h"
 
-#define MAX_DIST 400.0
+#define MAX_DIST 800.0
 
 class puzzle : public GuiNode{
 
@@ -70,8 +70,8 @@ public:
 
 	bool bDrawLine;
 	bool bHaveLine;
-	ofVec2f lineStart;
-	ofVec2f lineStop;
+	ofVec3f lineStart;
+	ofVec3f lineStop;
 
 	float maxDist;
 

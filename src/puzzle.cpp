@@ -62,7 +62,7 @@ puzzle::puzzle(SG_VECTOR p, ofVec3f offset) : GuiNode(){
 	//std::cout << "It should be 18: " << one_dim[1] << "\n";
 	/* or */
 	//std::cout << "It should be 21: " << one_dim.at(2) << "\n";
-	bDrawLine = false;
+	bDrawLine = true;
 	bHaveActiveCubie = false;
 }
 //----------------------------------------------------------------
@@ -130,7 +130,7 @@ void puzzle::draw(){
 	ofPopMatrix();
 	if(bDrawLine && bHaveLine){
 		ofSetColor(255,0,0);
-		ofLine(lineStart.x, lineStart.y, lineStop.x, lineStop.y);
+		ofLine(lineStart.x, lineStart.y, lineStart.z, lineStop.x, lineStop.y, lineStop.z);
 	}
 }
 //----------------------------------------------------------------
@@ -477,19 +477,22 @@ void puzzle::update(string _eventName, SubObEvent* _event){
 
 bool puzzle::isInside(int _x, int _y){
 	cout << "puzzle checking insides" << endl;
-	ofVec3f mouse(_x,_y, 200);
+	ofVec3f mouse(_x,_y, 0);
 	float nearest = 10000.0;
 	int nearestId = -1;
 	for(int i=0;i<numPieces;i++){
 		if(myCubies[i] != NULL){
-			ofVec3f centroid = myCubies[i]->getCentroidScreen();
-			float dist = centroid.distance(mouse);
+			//ofVec3f centroid = myCubies[i]->getCentroidScreen();
+			//float dist = centroid.distance(mouse);
+			float dist = myCubies[i]->getDistanceByVertex(mouse);
 			if(dist < nearest){
 				nearestId = myCubies[i]->getId();
+				cout << "nearest = " << i << endl;
 				nearest = dist;
+				ofVec3f tVertex = myCubies[i]->getNearestVertex();
 				if(bDrawLine){
-					lineStart.set(mouse.x, mouse.y);
-					lineStop.set(centroid.x, centroid.y);
+					lineStart.set(mouse.x, mouse.y, mouse.z);
+					lineStop.set(tVertex.x, tVertex.y, tVertex.z);
 				}
 				cout << "dist = " << dist << endl;
 			}

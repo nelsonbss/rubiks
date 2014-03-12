@@ -224,12 +224,12 @@ void cubie::draw(){
 				myMeshs[j].drawWireframe();
 			}
 			*/
-			ofPushMatrix();
-			ofTranslate(centroid3d.x, centroid3d.y, centroid3d.z);
-			ofSetColor(centroidColor.x, centroidColor.y, centroidColor.z);
+			//ofPushMatrix();
+			//ofTranslate(centroid3d.x, centroid3d.y, centroid3d.z);
+			//ofSetColor(centroidColor.x, centroidColor.y, centroidColor.z);
 			//ofDrawSphere(0,0,0,10);
-			projectCentroid();
-			ofPopMatrix();
+			centroid2d = projectPoint(centroid3d);
+			//ofPopMatrix();
 			glPopMatrix();
 		}
 	}
@@ -376,7 +376,7 @@ void cubie::getCentroid(){
 	//centroidColor.set(255,255,255);
 }
 
-void cubie::projectCentroid(){
+ofVec3f cubie::projectPoint(ofVec3f _pnt){
 	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	GLdouble x;
 	GLdouble y;
@@ -387,11 +387,33 @@ void cubie::projectCentroid(){
 	glGetDoublev(GL_PROJECTION_MATRIX, projection);
 	GLint viewport[4];
 	glGetIntegerv(GL_VIEWPORT, viewport);
-	gluProject(0, 0, 0, modelView, projection, viewport, &x, &y, &z);
+	gluProject(_pnt.x, _pnt.y, _pnt.z, modelView, projection, viewport, &x, &y, &z);
 	y = ofGetHeight() - y;
-	centroid2d.set(x, y, z);
+	return ofVec3f(x, y, z);
 	//cout << "made pick point " << centroid2d.x << ", " << centroid2d.y << endl;
 	//cout << "Cubie " << id << " z = " << centroid2d.z << endl;
+}
+
+float cubie::getDistanceByVertex(ofVec3f _pos){
+	float nearestDist = 10000;
+	ofVec3f nearestVertex;
+	int nearestMesh = 0;
+	int counter = 0;
+	for(int i = 0; i < myMeshs.size(); i++){
+		int numVertices = myMeshs[i].getNumVertices();
+		for(int j = 0; j < numVertices; j++){
+			float cDist = _pos.distance(myMeshs[i].getVertex(i));
+			if(cDist < nearestDist){
+				nearestDist = cDist;
+				nearestVertex = myMeshs[i].getVertex(i);
+				nearestMesh = counter;
+			}
+		}
+		counter++;
+	}
+	selectedVertex = nearestVertex;
+	selectedMesh = nearestMesh;
+	return nearestDist;
 }
 
 bool cubie::getRotate(){

@@ -841,8 +841,12 @@ void game::mouseDragged(int x, int y, int button){
 			rotateSlicer.x += 1;
 		}
 				*/
-		rotateSlicer.y-=mouseA.x-lastMouseA.x;
-		rotateSlicer.x+=mouseA.y-lastMouseA.y;
+		rotateSlicer.y+=mouseA.x-lastMouseA.x;
+		rotateSlicer.x-=mouseA.y-lastMouseA.y;
+
+		//if(rotateSlicer.x >= 135){
+		//	rotateSlicer.x = -45;
+		//}
 
 		lastMouseA = mouseA;
 	}

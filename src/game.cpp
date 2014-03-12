@@ -192,6 +192,9 @@ void game::draw(){
 	}
 	if(step == 6){
 		//show drawing area
+		ofSetColor(ofColor(255,255,255));
+		ofRect(300,200,300,300);
+
 		//show build button to get drawing data
 	}
 }
@@ -230,8 +233,7 @@ void game::loadObject(int objID, SG_VECTOR p, SG_VECTOR t){
 		objectDisplayed = new myobject3D(p,t);
 	}
 	objectID = objID;
-	if(step == 0 || step==1){
-
+	if(step == 0 || step==1 || step == 6){
 		if(objID == 1){
 			//torus
 			objectDisplayed->loadObject(sgCreateTorus(100,70,50,50),1);//(radius,thickness,meridiansDonut,meridiansDonutCut)
@@ -264,9 +266,6 @@ void game::loadObject(int objID, SG_VECTOR p, SG_VECTOR t){
 		//	//try to load the Teapot
 		//	objectDisplayed->loadObject((sgC3DObject *)sgTeapot->Clone(),8);
 		//}
-		objectDisplayed->setup();
-		step = 1;
-	}else if(step == 6){
 		if(objID == 200){
 			//load extruded object
 			objectDisplayed->loadObject((sgC3DObject *)extrudedObject->Clone(),200);
@@ -423,6 +422,11 @@ void game::guiInput(int in){
 		goToAttractStepI =  ofGetElapsedTimef();
 	}
 
+	if(in == 'b'){
+		ofToggleFullscreen();
+	}
+
+	//////
 	if(step == -1){
 		//on attract / inactive state
 		step = 0;
@@ -450,8 +454,6 @@ void game::guiInput(int in){
 
 		////////////////////////////////////////////////////////
 		//////////////////object menu on the side
-
-		//SG_VECTOR posP = {ofGetWidth() / 2,ofGetHeight() / 2,displayZ}; // where the temp object will be showed to user
 		//waiting for shape to be selected
 		if(in == '1') {
 			//load object recieves (object id, boolean position, display position) 
@@ -483,9 +485,6 @@ void game::guiInput(int in){
 			step = 6;
 		}
 	}
-	if(in == 'b'){
-		ofToggleFullscreen();
-	}
 	////////////////////////////////////////////step 1 inputs
 	////////////////////////////////////////////step 1 inputs
 	////////////////////////////////////////////step 1 inputs
@@ -498,7 +497,11 @@ void game::guiInput(int in){
 			//show armature
 		} 
 		//user can change the selected object
-		SG_VECTOR objectPos = {0,0,0}; 
+		if (objectID != -1){
+				objectDisplayed->exit();
+				delete objectDisplayed;
+				objectID = -1;
+			}
 		//waiting for shape to be selected
 		if(in == '1') {
 			//load object recieves (object id, boolean position, display position) 
@@ -526,6 +529,11 @@ void game::guiInput(int in){
 		loadObject(8,objectPos,posP);
 		}*/
 		if(in == '9') { 
+			if (objectID != -1){
+				objectDisplayed->exit();
+				delete objectDisplayed;
+				objectID = -1;
+			}
 			//extrusion
 			//go to show drawing area
 			step = 6;
@@ -777,6 +785,38 @@ void game::guiInput(int in){
 			//make extruded object
 			extrudeObject();
 		}
+		////////////////////////////////////////////////////////
+		//////////////////object menu on the side
+		//waiting for shape to be selected
+		if(in == '1') {
+			//load object recieves (object id, boolean position, display position) 
+			loadObject(1,slicingPos,posP);
+		}
+		if(in == '2') {
+			loadObject(2,slicingPos,posP);
+		}
+		if(in == '3') {
+			loadObject(3,slicingPos,posP);
+		}
+		if(in == '4') {
+			loadObject(4,slicingPos,posP);
+		}
+		if(in == '5') {
+			loadObject(5,slicingPos,posP);
+		}
+		if(in == '6') {
+			loadObject(6,slicingPos,posP);
+		}
+		if(in == '7') { 
+			loadObject(7,slicingPos,posP);
+		}
+		//if(in == '8') { 
+		//	loadObject(8,objectPos,posP);
+		//}
+		if(in == '9') { 
+			/////extrusion
+			step = 6;
+		}
 	}
 
 	/////////////////////////////////////////////////////////////////
@@ -827,13 +867,21 @@ void game::extrudeObject(){
 
 	////extrude along vector
 	SG_VECTOR extVec = {0,-300,0};  
-	extrudedObject = (sgC3DObject*)sgKinematic::Extrude((const sgC2DObject&)(*cr),NULL,0,extVec,true);
+
+	if (objectID == -1){
+		extrudedObject = (sgC3DObject*)sgKinematic::Extrude((const sgC2DObject&)(*cr),NULL,0,extVec,true);
+	}else{
+		free(extrudedObject);
+		extrudedObject = (sgC3DObject*)sgKinematic::Extrude((const sgC2DObject&)(*cr),NULL,0,extVec,true);
+	}
+
+
 	extrudedObject->SetAttribute(SG_OA_COLOR,30);  
 	sgDeleteObject(spl2_obj);
 	sgDeleteObject(cr);
 
 	//we  have the sg3DObjcect to pass along to selectedObject
-	loadObject(200,slicingPos,posP);
+	loadObject(200,slicingPos,posP);//using id=200
 
 }
 //----------------------------------------------------------------------

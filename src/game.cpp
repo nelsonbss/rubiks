@@ -13,6 +13,7 @@
 
 game::game(SG_VECTOR gamePos, float w, float h, SG_VECTOR displayPos, float iddleTime){
 	posGame = gamePos;
+	slicingPos = posGame;
 	width = w;
 	height = h;
 
@@ -43,6 +44,8 @@ game::game(SG_VECTOR gamePos, float w, float h, SG_VECTOR displayPos, float iddl
 
 	armID = -1; //initialized in -1 when there is no armature selected
 	objectID = -1; //initialized on -1 because on stage=0 there is no object selected
+
+	extrudedObject = NULL;
 }
 //--------------------------------------------------------------
 void game::setup(sgCObject *sgBunnyi,sgCObject *sgTetrahedroni,sgCObject *sgDodecahedroni,sgCObject *sgIcosahedroni,sgCObject *sgOctahedroni){//,sgCObject *sgTeapoti){
@@ -69,7 +72,6 @@ void game::update(){
 	if(step != -1){
 		/////take time sample to see if game has to go to standBy mode
 		goToAttractStepS = ofGetElapsedTimef();
-		cout << goToAttractStepS << endl;
 		if(goToAttractStepS - goToAttractStepI >= iddleTimer){
 			restart();
 			step = -1;
@@ -190,12 +192,7 @@ void game::draw(){
 	}
 	if(step == 6){
 		//show drawing area
-
-	}
-	if(step == 7){
-		//show extruded object as a selected object
-		//same as step 1
-		step = 1;
+		//show build button to get drawing data
 	}
 }
 //----------------------------------------------------------------------
@@ -267,6 +264,13 @@ void game::loadObject(int objID, SG_VECTOR p, SG_VECTOR t){
 		//	//try to load the Teapot
 		//	objectDisplayed->loadObject((sgC3DObject *)sgTeapot->Clone(),8);
 		//}
+		objectDisplayed->setup();
+		step = 1;
+	}else if(step == 6){
+		if(objID == 200){
+			//load extruded object
+			objectDisplayed->loadObject((sgC3DObject *)extrudedObject->Clone(),200);
+		}
 		objectDisplayed->setup();
 		step = 1;
 	}
@@ -433,7 +437,7 @@ void game::guiInput(int in){
 		// or from the object menu on the side
 
 		////////////////////////////////////////////////////////
-		///////////from shapes in the center
+		///////////from puzzles in the center
 		if(in == 'p'){
 			loadPuzzle(100);
 		}
@@ -446,36 +450,36 @@ void game::guiInput(int in){
 
 		////////////////////////////////////////////////////////
 		//////////////////object menu on the side
-		SG_VECTOR objectPos = {0,0,0};  //where it gets sliced
+
 		//SG_VECTOR posP = {ofGetWidth() / 2,ofGetHeight() / 2,displayZ}; // where the temp object will be showed to user
 		//waiting for shape to be selected
 		if(in == '1') {
 			//load object recieves (object id, boolean position, display position) 
-			loadObject(1,objectPos,posP);
+			loadObject(1,slicingPos,posP);
 		}
 		if(in == '2') {
-			loadObject(2,objectPos,posP);
+			loadObject(2,slicingPos,posP);
 		}
 		if(in == '3') {
-			loadObject(3,objectPos,posP);
+			loadObject(3,slicingPos,posP);
 		}
 		if(in == '4') {
-			loadObject(4,objectPos,posP);
+			loadObject(4,slicingPos,posP);
 		}
 		if(in == '5') {
-			loadObject(5,objectPos,posP);
+			loadObject(5,slicingPos,posP);
 		}
 		if(in == '6') {
-			loadObject(6,objectPos,posP);
+			loadObject(6,slicingPos,posP);
 		}
 		if(in == '7') { 
-			loadObject(7,objectPos,posP);
+			loadObject(7,slicingPos,posP);
 		}
 		//if(in == '8') { 
 		//	loadObject(8,objectPos,posP);
 		//}
 		if(in == '9') { 
-			//extrusion
+			/////extrusion
 			step = 6;
 		}
 	}
@@ -498,31 +502,32 @@ void game::guiInput(int in){
 		//waiting for shape to be selected
 		if(in == '1') {
 			//load object recieves (object id, boolean position, display position) 
-			loadObject(1,objectPos,posP); //pos.z its the torus radious
+			loadObject(1,slicingPos,posP); //pos.z its the torus radious
 		}
 		if(in == '2') {
-			loadObject(2,objectPos,posP);
+			loadObject(2,slicingPos,posP);
 		}
 		if(in == '3') {
-			loadObject(3,objectPos,posP);
+			loadObject(3,slicingPos,posP);
 		}
 		if(in == '4') {
-			loadObject(4,objectPos,posP);
+			loadObject(4,slicingPos,posP);
 		}
 		if(in == '5') {
-			loadObject(5,objectPos,posP);
+			loadObject(5,slicingPos,posP);
 		}
 		if(in == '6') {
-			loadObject(6,objectPos,posP);
+			loadObject(6,slicingPos,posP);
 		}
 		if(in == '7') {
-			loadObject(7,objectPos,posP);
+			loadObject(7,slicingPos,posP);
 		}
 		/*if(in == '8') { 
 		loadObject(8,objectPos,posP);
 		}*/
 		if(in == '9') { 
 			//extrusion
+			//go to show drawing area
 			step = 6;
 		}
 	}
@@ -765,6 +770,13 @@ void game::guiInput(int in){
 		//	ofVec3f v;
 		//	rotateP(r);
 		//}
+	}else if(step == 6){
+		//extrusion
+		if(in == 'e') {
+			//take drawing data
+			//make extruded object
+			extrudeObject();
+		}
 	}
 
 	/////////////////////////////////////////////////////////////////
@@ -781,6 +793,48 @@ void game::guiInput(int in){
 	//		cout << "nu pieces " << mySlicer->countPieces() << endl;
 	//	}
 	//}
+}
+//----------------------------------------------------------------------
+void game::extrudeObject(){
+	SG_POINT tmpPnt;   
+	SG_SPLINE* spl2 = SG_SPLINE::Create();  
+	int fl=0;  
+
+	for (double i=0.0;i<2.0*3.14159265;i+=0.13)  {  
+		tmpPnt.x = ((double)(fl%3+2))*cos(i);  
+		tmpPnt.y = ((double)(fl%3+2))*sin(i);  
+		tmpPnt.z = 0.0;  
+		spl2->AddKnot(tmpPnt,fl);  
+		fl++;  
+	}  
+
+	spl2->Close();  
+	sgCSpline* spl2_obj = sgCreateSpline(*spl2);  
+	SG_SPLINE::Delete(spl2);  
+	spl2_obj->SetAttribute(SG_OA_COLOR,12);  
+	spl2_obj->SetAttribute(SG_OA_LINE_THICKNESS, 2);
+
+	SG_POINT   crCen = {0,0,0.0};  
+	SG_VECTOR  crNor;  
+	crNor.x = 0.0;  
+	crNor.y = 3.0;  
+	crNor.z = 0.0;
+	sgSpaceMath::NormalVector(crNor); 
+	SG_CIRCLE  crGeo;  
+	crGeo.FromCenterRadiusNormal( crCen, 300, crNor);  
+	sgCCircle* cr = sgCreateCircle(crGeo);   
+
+
+	////extrude along vector
+	SG_VECTOR extVec = {0,-300,0};  
+	extrudedObject = (sgC3DObject*)sgKinematic::Extrude((const sgC2DObject&)(*cr),NULL,0,extVec,true);
+	extrudedObject->SetAttribute(SG_OA_COLOR,30);  
+	sgDeleteObject(spl2_obj);
+	sgDeleteObject(cr);
+
+	//we  have the sg3DObjcect to pass along to selectedObject
+	loadObject(200,slicingPos,posP);
+
 }
 //----------------------------------------------------------------------
 void game::restart(){
@@ -811,6 +865,10 @@ void game::restart(){
 	rotateSlicer.z = 0;
 
 	curRot.set (ofVec4f(0,0,0,0));
+
+	if(extrudedObject != NULL){
+		sgDeleteObject(extrudedObject);
+	}
 }
 //----------------------------------------------------------------------
 void game::exit(){

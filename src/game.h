@@ -29,6 +29,7 @@ public:
 	float width;
 	float height;
 
+	SG_VECTOR slicingPos;  //where it gets sliced
 	myobject3D *objectDisplayed;
 	cutter *myCutter;
 	slicer *mySlicer;
@@ -127,5 +128,9 @@ public:
 	int goToAttractStepI;
 	int goToAttractStepS;
 	float iddleTimer;
+
+	//object extrusion
+	void extrudeObject();
+	sgC3DObject* extrudedObject;
 };
 #endif /* defined(__Tgame__game__) */

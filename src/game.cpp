@@ -281,6 +281,9 @@ void game::loadObject(int objID, SG_VECTOR p, SG_VECTOR t){
 void game::loadArmature(int type){
 	//loads armature and creates cutter and slicer
 	//have to clear myArmature, to load the new one, like load objects!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	rotateSlicer.x=0;
+	rotateSlicer.y=0;
+	rotateSlicer.z=0;
 	if (armID == -1){
 		//first time
 		if(type == 1){
@@ -495,48 +498,49 @@ void game::guiInput(int in){
 			//go to step 2
 			setCurrentStep(2);
 			//show armature
-		} 
-		//user can change the selected object
-		if (objectID != -1){
-				objectDisplayed->exit();
-				delete objectDisplayed;
-				objectID = -1;
-			}
-		//waiting for shape to be selected
-		if(in == '1') {
-			//load object recieves (object id, boolean position, display position) 
-			loadObject(1,slicingPos,posP); //pos.z its the torus radious
-		}
-		if(in == '2') {
-			loadObject(2,slicingPos,posP);
-		}
-		if(in == '3') {
-			loadObject(3,slicingPos,posP);
-		}
-		if(in == '4') {
-			loadObject(4,slicingPos,posP);
-		}
-		if(in == '5') {
-			loadObject(5,slicingPos,posP);
-		}
-		if(in == '6') {
-			loadObject(6,slicingPos,posP);
-		}
-		if(in == '7') {
-			loadObject(7,slicingPos,posP);
-		}
-		/*if(in == '8') { 
-		loadObject(8,objectPos,posP);
-		}*/
-		if(in == '9') { 
+		} else{
+			//user can change the selected object
 			if (objectID != -1){
 				objectDisplayed->exit();
 				delete objectDisplayed;
 				objectID = -1;
 			}
-			//extrusion
-			//go to show drawing area
-			step = 6;
+			//waiting for shape to be selected
+			if(in == '1') {
+				//load object recieves (object id, boolean position, display position) 
+				loadObject(1,slicingPos,posP); //pos.z its the torus radious
+			}
+			if(in == '2') {
+				loadObject(2,slicingPos,posP);
+			}
+			if(in == '3') {
+				loadObject(3,slicingPos,posP);
+			}
+			if(in == '4') {
+				loadObject(4,slicingPos,posP);
+			}
+			if(in == '5') {
+				loadObject(5,slicingPos,posP);
+			}
+			if(in == '6') {
+				loadObject(6,slicingPos,posP);
+			}
+			if(in == '7') {
+				loadObject(7,slicingPos,posP);
+			}
+			/*if(in == '8') { 
+			loadObject(8,objectPos,posP);
+			}*/
+			if(in == '9') { 
+				if (objectID != -1){
+					objectDisplayed->exit();
+					delete objectDisplayed;
+					objectID = -1;
+				}
+				//extrusion
+				//go to show drawing area
+				step = 6;
+			}
 		}
 	}
 	////////////////////////////////////////////step 2 inputs
@@ -874,7 +878,6 @@ void game::extrudeObject(){
 		free(extrudedObject);
 		extrudedObject = (sgC3DObject*)sgKinematic::Extrude((const sgC2DObject&)(*cr),NULL,0,extVec,true);
 	}
-
 
 	extrudedObject->SetAttribute(SG_OA_COLOR,30);  
 	sgDeleteObject(spl2_obj);

@@ -458,6 +458,10 @@ void game::guiInput(int in){
 		//if(in == '8') { 
 		//	loadObject(8,objectPos,posP);
 		//}
+		if(in == 10){
+			//go to extrussion mode
+			step = 6;
+		}
 	}
 	if(in == 'b'){
 		ofToggleFullscreen();
@@ -501,6 +505,9 @@ void game::guiInput(int in){
 		/*if(in == '8') { 
 		loadObject(8,objectPos,posP);
 		}*/
+		if(in == 10){
+			//go to extrussion mode
+		}
 	}
 	////////////////////////////////////////////step 2 inputs
 	////////////////////////////////////////////step 2 inputs

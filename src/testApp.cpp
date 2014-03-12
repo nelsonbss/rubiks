@@ -121,7 +121,7 @@ void testApp::draw(){
 			//testing
 			ofDrawBitmapString("TEST: press 'e' to extrude: " + ofToString("") +"\n" ,20, 40);
 			//show restart button.
-			ofDrawBitmapString("RESTART: press 'r' " + ofToString("") +"\n" ,20, 60);
+			ofDrawBitmapString("RESTART: press 'r' " + ofToString("") +"\n" ,20, 60);//
 		}
 	}
 

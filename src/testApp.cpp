@@ -86,6 +86,9 @@ void testApp::setup(){
 
 	active_points = std::map<int,gwc::Point>();
 	//rotate = true;
+
+	touchId = 0;
+	touchIdOffset = 1000;
 }
 //--------------------------------------------------------------
 void testApp::update(){
@@ -356,7 +359,7 @@ void testApp::mouseDragged(int x, int y, int button){
 		SubObEvent *ev = new SubObEvent();
 		ev->setName("update-touch-point");
 		ev->addArg("position",ofVec3f((float)x / (float)ofGetWidth(),(float)y / (float)ofGetHeight(),0));
-		ev->addArg("touch-id", 1000);
+		ev->addArg("touch-id", touchId + touchIdOffset);
 		SubObMediator::Instance()->sendEvent("update-touch-point", ev);
 	}
 	//myGames[0]->mouseDragged(x,y,button);
@@ -365,10 +368,12 @@ void testApp::mouseDragged(int x, int y, int button){
 //--------------------------------------------------------------
 void testApp::mousePressed(int x, int y, int button){
 	if(button == 0){
+		touchId = nextTouchId;
+		//nextTouchId = (nextTouchId + 1) % 16;
 		SubObEvent *ev = new SubObEvent();
 		ev->setName("add-touch-point");
 		ev->addArg("position",ofVec3f((float)x / (float)ofGetWidth(),(float)y / (float)ofGetHeight(),0));
-		ev->addArg("touch-id", 1000);
+		ev->addArg("touch-id", touchId + touchIdOffset);
 		SubObMediator::Instance()->sendEvent("add-touch-point", ev);
 	}
 	//myGames[0]->mousePressed(x,y,button);
@@ -381,7 +386,7 @@ void testApp::mouseReleased(int x, int y, int button){
 		SubObEvent *ev = new SubObEvent();
 		ev->setName("remove-touch-point");
 		ev->addArg("position",ofVec3f((float)x / (float)ofGetWidth(),(float)y / (float)ofGetHeight(),0));
-		ev->addArg("touch-id", 1000);
+		ev->addArg("touch-id", touchId + touchIdOffset);
 		SubObMediator::Instance()->sendEvent("remove-touch-point", ev);
 	}
 }

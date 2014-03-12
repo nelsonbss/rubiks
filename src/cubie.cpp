@@ -402,11 +402,18 @@ float cubie::getDistanceByVertex(ofVec3f _pos){
 	for(int i = 0; i < myMeshs.size(); i++){
 		int numVertices = myMeshs[i].getNumVertices();
 		for(int j = 0; j < numVertices; j++){
-			float cDist = _pos.distance(myMeshs[i].getVertex(i));
-			if(cDist < nearestDist){
-				nearestDist = cDist;
-				nearestVertex = myMeshs[i].getVertex(i);
-				nearestMesh = counter;
+			if (objectList[i]->GetTempMatrix()!=0){
+				glPushMatrix();
+				glMultMatrixd(objectList[j]->GetTempMatrix()->GetTransparentData());
+				objectList[j]->DestroyTempMatrix();
+				ofVec3f vScreen = projectPoint(myMeshs[i].getVertex(j));
+				glPopMatrix();
+				float cDist = _pos.distance(myMeshs[i].getVertex(i));
+				if(cDist < nearestDist){
+					nearestDist = cDist;
+					nearestVertex = myMeshs[i].getVertex(i);
+					nearestMesh = counter;
+				}
 			}
 		}
 		counter++;

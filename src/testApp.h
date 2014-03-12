@@ -100,4 +100,7 @@ public:
 	ofFloatColor pickColorMouse();
 
 	GestureManager *gm;
+	int touchId;
+	int nextTouchId;
+	int touchIdOffset;
 };

@@ -68,6 +68,7 @@ void GestureManager::threadedFunction(){
 			getGestures();
 			timeOfLastUpdate = ofGetElapsedTimeMillis();
 		}
+		//ofSleepMillis(100);
 	}
 }	
 

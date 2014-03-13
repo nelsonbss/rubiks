@@ -131,6 +131,7 @@ public:
 	//drawing canvas
 	ofVec3f posCanvas;
 	drawingCanvas *myCanvas;
+	bool canvasB;
 	void prepareDrawing();
 
 	//object extrusion

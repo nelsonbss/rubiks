@@ -30,9 +30,10 @@ game::game(SG_VECTOR gamePos, float w, float h, SG_VECTOR displayPos, float iddl
 	posA.z = displayPos.z;
 
 	//drawing canvas
-	posCanvas.x = displayPos.x - 150;
-	posCanvas.y = displayPos.y - 150;
+	posCanvas.x = displayPos.x;
+	posCanvas.y = displayPos.y;
 	posCanvas.z = displayPos.z;
+	canvasB = false;
 
 	//rotP.x = 0; //rotation of puzzle
 	//rotP.y = 0;
@@ -878,31 +879,39 @@ void game::guiInput(int in){
 		//////////////////object menu on the side
 		//waiting for shape to be selected
 		else if(in == '1') {
+			clearDisplayedObject();
 			//load object recieves (object id, boolean position, display position) 
 			loadObject(1,slicingPos,posP);
 		}
 		else if(in == '2') {
+			clearDisplayedObject();
 			loadObject(2,slicingPos,posP);
 		}
 		else if(in == '3') {
+			clearDisplayedObject();
 			loadObject(3,slicingPos,posP);
 		}
 		else if(in == '4') {
+			clearDisplayedObject();
 			loadObject(4,slicingPos,posP);
 		}
 		else if(in == '5') {
+			clearDisplayedObject();
 			loadObject(5,slicingPos,posP);
 		}
 		else if(in == '6') {
+			clearDisplayedObject();
 			loadObject(6,slicingPos,posP);
 		}
 		else if(in == '7') { 
+			clearDisplayedObject();
 			loadObject(7,slicingPos,posP);
 		}
 		//if(in == '8') { 
 		//	loadObject(8,objectPos,posP);
 		//}
 		else if(in == '9') { 
+			clearDisplayedObject();
 			prepareDrawing();
 		}
 	}
@@ -950,12 +959,12 @@ void game::extrudeObject(ofPolyline *drawing){
 	extrudedB = true;
 	sgDeleteObject(win_cont);
 	free(drawing);
-	//sgDeleteObject(*cont_objcts);
+	////////free(cont_objcts);
 
 	//we  have the sg3DObjcect to load
 	loadObject(200,slicingPos,posP);//using id=200
 }
-//------------------------------------------------------------------------
+//---------------------------------------------------------------------34---
 void game::extrudeObject(){
 	//create and use circle
 	SG_POINT   crCen = {0,0,0.0};  
@@ -989,8 +998,17 @@ void game::extrudeObject(){
 }
 //----------------------------------------------------------------------
 void game::prepareDrawing(){
-	//create canvas object
-	myCanvas = new drawingCanvas(posCanvas,500,500);
+	if(canvasB == false){
+		//create canvas object
+		myCanvas = new drawingCanvas(posCanvas,500,500);
+		canvasB = true;
+	}
+	else{
+		myCanvas->exit();
+		delete myCanvas;
+		//create canvas object
+		myCanvas = new drawingCanvas(posCanvas,500,500);
+	}
 	//extrusion
 	step = 6;
 }
@@ -1000,6 +1018,11 @@ void game::clearDisplayedObject(){
 		objectDisplayed->exit();
 		delete objectDisplayed;
 		objectID = -1;
+	}
+	if(canvasB){
+		myCanvas->exit();
+		delete myCanvas;
+		canvasB = false;
 	}
 }
 //----------------------------------------------------------------------
@@ -1039,6 +1062,12 @@ void game::restart(){
 	if(extrudedB){
 		sgDeleteObject(extrudedObject);
 		extrudedB = false;
+	}
+
+	if(canvasB){
+		myCanvas->exit();
+		delete myCanvas;
+		canvasB = false;
 	}
 }
 //----------------------------------------------------------------------

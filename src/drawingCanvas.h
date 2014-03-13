@@ -13,6 +13,8 @@ public:
 	void update();
 	void draw();
 
+	void exit();
+
 	ofVec3f posCanvas;
 	int width;
 	int height;

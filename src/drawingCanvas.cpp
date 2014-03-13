@@ -22,3 +22,6 @@ void drawingCanvas::draw(){
 	ofBox(0,0,0,width,height,0);
 	glPopMatrix();
 }
+//--------------------------------------------------------------
+void drawingCanvas::exit(){
+}

@@ -64,10 +64,10 @@ void testApp::setup(){
 	//////setup GUI/////////////
 	//ofSetFullscreen(true);
 
-	gm = new GestureManager();
-	gm->loadGMLFile("basic_manipulation.gml");
-	gm->init("rubiksWindow", ofGetWidth(), ofGetHeight());
-	gm->start();
+	//gm = new GestureManager();
+	gm.loadGMLFile("basic_manipulation.gml");
+	gm.init("rubiksWindow", ofGetWidth(), ofGetHeight());
+	//gm->start();
 
 	string guiFile = "sheets.xml";
 	GuiConfigurator::Instance()->addFile(guiFile);
@@ -94,6 +94,8 @@ void testApp::setup(){
 void testApp::update(){
 	//////////////////////////////open frameworks lights 
 	updateOFLights();
+
+	gm.update();
 
 	///////////////////////////////////////////update games
 	for(int i = 0; i < myGames.size(); i++){
@@ -362,7 +364,9 @@ void testApp::mouseDragged(int x, int y, int button){
 		ev->addArg("touch-id", touchId + touchIdOffset);
 		SubObMediator::Instance()->sendEvent("update-touch-point", ev);
 	}
-	//myGames[0]->mouseDragged(x,y,button);
+	if(button == 2){
+		myGames[0]->mouseDragged(x,y,button);
+	}
 }
 
 //--------------------------------------------------------------
@@ -376,7 +380,9 @@ void testApp::mousePressed(int x, int y, int button){
 		ev->addArg("touch-id", touchId + touchIdOffset);
 		SubObMediator::Instance()->sendEvent("add-touch-point", ev);
 	}
-	//myGames[0]->mousePressed(x,y,button);
+	if(button == 2){
+		myGames[0]->mousePressed(x,y,button);
+	}
 }
 //--------------------------------------------------------------
 void testApp::mouseReleased(int x, int y, int button){

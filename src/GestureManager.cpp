@@ -72,6 +72,13 @@ void GestureManager::threadedFunction(){
 	}
 }	
 
+void GestureManager::update(){
+	if(ofGetElapsedTimeMillis() - timeOfLastUpdate > frameDelay){
+		getGestures();
+		timeOfLastUpdate = ofGetElapsedTimeMillis();
+	}
+}
+
 void GestureManager::update(string _eventName, SubObEvent* _event){
 	if(_eventName == "add-gesture-receiver"){
 		cout << "adding gesture receiver." << endl;
@@ -140,7 +147,7 @@ void GestureManager::getGestures(){
 				e.addArg("y",eIter->position.getY());
 				//cout << "sending touch event" << endl;
 				SubObMediator::Instance()->sendEvent("touch-point",&e);
-				while(e.getArg("receivers")->getInt() < receivers){}
+				//while(e.getArg("receivers")->getInt() < receivers){}
 				//cout << "hit = " << e->getArg("hit")->getInt() << endl;
 				if(e.getArg("hit")->getInt()){
 					if(e.hasArg("target")){

@@ -31,6 +31,7 @@ public:
 	void setFrameRate(int _rate){frameDelay = 1000 / _rate;}
 
 	void update(string _eventName, SubObEvent* _event);
+	void update();
 
 private:
 

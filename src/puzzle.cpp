@@ -484,12 +484,15 @@ bool puzzle::isInside(int _x, int _y){
 		if(myCubies[i] != NULL){
 			//ofVec3f centroid = myCubies[i]->getCentroidScreen();
 			//float dist = centroid.distance(mouse);
-			float dist = myCubies[i]->getDistanceByVertex(mouse);
+			//float dist = myCubies[i]->getDistanceByVertex(mouse);
+			//cout << "dist = " << dist << endl;
+			float dist = myCubies[i]->getDistanceByCentroid(mouse);
 			if(dist < nearest){
 				nearestId = myCubies[i]->getId();
 				cout << "nearest = " << i << endl;
 				nearest = dist;
-				ofVec3f tVertex = myCubies[i]->getNearestVertex();
+				//ofVec3f tVertex = myCubies[i]->getNearestVertex();
+				ofVec3f tVertex = myCubies[i]->getCentroidScreen();
 				if(bDrawLine){
 					lineStart.set(mouse.x, mouse.y, mouse.z);
 					lineStop.set(tVertex.x, tVertex.y, tVertex.z);

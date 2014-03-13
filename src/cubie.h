@@ -87,7 +87,9 @@ public:
 	void getCentroid();
 	ofVec3f projectPoint(ofVec3f _pnt);
 	float getDistanceByVertex(ofVec3f _pos);
+	float getDistanceByCentroid(ofVec3f _pos);
 	ofVec3f getCentroidScreen(){return centroid2d;}
+	ofVec3f getCentroidWorld(){return centroid3d;}
 	ofVec3f centroid3d;
 	ofVec3f centroid2d;
 	ofVec3f centroidColor;

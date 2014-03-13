@@ -99,7 +99,7 @@ public:
 	///for color changing //first version
 	ofFloatColor pickColorMouse();
 
-	GestureManager *gm;
+	GestureManager gm;
 	int touchId;
 	int nextTouchId;
 	int touchIdOffset;

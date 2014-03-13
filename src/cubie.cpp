@@ -211,7 +211,7 @@ void cubie::draw(){
 			//ofScale(1.2,1.2,1.2);
 			if (objectList[j]->GetTempMatrix()!=0)
 			glMultMatrixd(objectList[j]->GetTempMatrix()->GetTransparentData());
-			objectList[j]->DestroyTempMatrix();
+			//objectList[j]->DestroyTempMatrix();
 			if(bDraw){
 				if(bDrawWire){
 					myMeshs[j].drawWireframe();
@@ -402,18 +402,20 @@ float cubie::getDistanceByVertex(ofVec3f _pos){
 	for(int i = 0; i < myMeshs.size(); i++){
 		int numVertices = myMeshs[i].getNumVertices();
 		for(int j = 0; j < numVertices; j++){
-			if (objectList[i]->GetTempMatrix()!=0){
-				glPushMatrix();
-				glMultMatrixd(objectList[j]->GetTempMatrix()->GetTransparentData());
-				objectList[j]->DestroyTempMatrix();
-				ofVec3f vScreen = projectPoint(myMeshs[i].getVertex(j));
-				glPopMatrix();
-				float cDist = _pos.distance(myMeshs[i].getVertex(i));
-				if(cDist < nearestDist){
-					nearestDist = cDist;
-					nearestVertex = myMeshs[i].getVertex(i);
-					nearestMesh = counter;
-				}
+			glPushMatrix();
+			if (objectList[i]->GetTempMatrix()==0){
+				objectList[i]->InitTempMatrix();
+			}
+			glMultMatrixd(objectList[i]->GetTempMatrix()->GetTransparentData());
+			objectList[i]->DestroyTempMatrix();
+			ofVec3f vScreen = projectPoint(myMeshs[i].getVertex(j));
+			glPopMatrix();
+			float cDist = _pos.distance(vScreen);
+			//cout << "comparing " << _pos.x << ", " << _pos.y << " against " << vScreen.x << ", " << vScreen.y << endl;
+			if(cDist < nearestDist){
+				nearestDist = cDist;
+				nearestVertex = myMeshs[i].getVertex(i);
+				nearestMesh = counter;
 			}
 		}
 		counter++;
@@ -421,6 +423,10 @@ float cubie::getDistanceByVertex(ofVec3f _pos){
 	selectedVertex = nearestVertex;
 	selectedMesh = nearestMesh;
 	return nearestDist;
+}
+
+float cubie::getDistanceByCentroid(ofVec3f _pos){
+	return centroid3d.distance(_pos);
 }
 
 bool cubie::getRotate(){

@@ -499,33 +499,69 @@ void game::guiInput(int in){
 			setCurrentStep(2);
 			//show armature
 		} else{
-			//user can change the selected object
-			if (objectID != -1){
-				objectDisplayed->exit();
-				delete objectDisplayed;
-				objectID = -1;
-			}
 			//waiting for shape to be selected
 			if(in == '1') {
+				//user can change the selected object
+				if (objectID != -1){
+					objectDisplayed->exit();
+					delete objectDisplayed;
+					objectID = -1;
+				}
 				//load object recieves (object id, boolean position, display position) 
 				loadObject(1,slicingPos,posP); //pos.z its the torus radious
 			}
 			if(in == '2') {
+				//user can change the selected object
+				if (objectID != -1){
+					objectDisplayed->exit();
+					delete objectDisplayed;
+					objectID = -1;
+				}
 				loadObject(2,slicingPos,posP);
 			}
 			if(in == '3') {
+				//user can change the selected object
+				if (objectID != -1){
+					objectDisplayed->exit();
+					delete objectDisplayed;
+					objectID = -1;
+				}
 				loadObject(3,slicingPos,posP);
 			}
 			if(in == '4') {
+				//user can change the selected object
+				if (objectID != -1){
+					objectDisplayed->exit();
+					delete objectDisplayed;
+					objectID = -1;
+				}
 				loadObject(4,slicingPos,posP);
 			}
 			if(in == '5') {
+				//user can change the selected object
+				if (objectID != -1){
+					objectDisplayed->exit();
+					delete objectDisplayed;
+					objectID = -1;
+				}
 				loadObject(5,slicingPos,posP);
 			}
 			if(in == '6') {
+				//user can change the selected object
+				if (objectID != -1){
+					objectDisplayed->exit();
+					delete objectDisplayed;
+					objectID = -1;
+				}
 				loadObject(6,slicingPos,posP);
 			}
 			if(in == '7') {
+				//user can change the selected object
+				if (objectID != -1){
+					objectDisplayed->exit();
+					delete objectDisplayed;
+					objectID = -1;
+				}
 				loadObject(7,slicingPos,posP);
 			}
 			/*if(in == '8') { 
@@ -788,6 +824,18 @@ void game::guiInput(int in){
 			//take drawing data
 			//make extruded object
 			extrudeObject();
+		}else if(in == 'c'){
+			ofPolyline *draw =  new ofPolyline();
+			float i = 0;
+			while (i < TWO_PI) { // make a heart
+				float r = (2-2*sin(i) + sin(i)*sqrt(abs(cos(i))) / (sin(i)+1.4)) * -80;
+				float x = ofGetWidth()/2 + cos(i) * r;
+				float y = ofGetHeight()/2 + sin(i) * r;
+				draw->addVertex(ofVec2f(x,y));
+				i+=0.1;//0.005*HALF_PI*0.5;
+			}
+			draw->close(); // close the shape
+			extrudeObject(draw);
 		}
 		////////////////////////////////////////////////////////
 		//////////////////object menu on the side
@@ -839,25 +887,49 @@ void game::guiInput(int in){
 	//}
 }
 //----------------------------------------------------------------------
-void game::extrudeObject(){
+void game::extrudeObject(ofPolyline *drawing){
+
+	vector< ofPoint > points = drawing->getVertices();
+
+
+	//create and use spline
 	SG_POINT tmpPnt;   
 	SG_SPLINE* spl2 = SG_SPLINE::Create();  
 	int fl=0;  
 
-	for (double i=0.0;i<2.0*3.14159265;i+=0.13)  {  
-		tmpPnt.x = ((double)(fl%3+2))*cos(i);  
-		tmpPnt.y = ((double)(fl%3+2))*sin(i);  
-		tmpPnt.z = 0.0;  
+	for (int i =0; i < points.size() ; i ++)  {  
+		tmpPnt.x = points[i].x;  
+		tmpPnt.y = points[i].y;  
+		tmpPnt.z = 0;  
 		spl2->AddKnot(tmpPnt,fl);  
 		fl++;  
 	}  
-
+	free(drawing);
 	spl2->Close();  
 	sgCSpline* spl2_obj = sgCreateSpline(*spl2);  
 	SG_SPLINE::Delete(spl2);  
 	spl2_obj->SetAttribute(SG_OA_COLOR,12);  
 	spl2_obj->SetAttribute(SG_OA_LINE_THICKNESS, 2);
 
+	////extrude along vector
+	SG_VECTOR extVec = {0,-300,0};  
+
+	if (objectID == -1){
+		extrudedObject = (sgC3DObject*)sgKinematic::Extrude((const sgC2DObject&)(*spl2_obj),NULL,0,extVec,true);
+	}else{
+		free(extrudedObject);
+		extrudedObject = (sgC3DObject*)sgKinematic::Extrude((const sgC2DObject&)(*spl2_obj),NULL,0,extVec,true);
+	}
+
+	extrudedObject->SetAttribute(SG_OA_COLOR,30);  
+	sgDeleteObject(spl2_obj);
+
+	//we  have the sg3DObjcect to load
+	loadObject(200,slicingPos,posP);//using id=200
+}
+//------------------------------------------------------------------------
+void game::extrudeObject(){
+	//create and use circle
 	SG_POINT   crCen = {0,0,0.0};  
 	SG_VECTOR  crNor;  
 	crNor.x = 0.0;  
@@ -865,7 +937,7 @@ void game::extrudeObject(){
 	crNor.z = 0.0;
 	sgSpaceMath::NormalVector(crNor); 
 	SG_CIRCLE  crGeo;  
-	crGeo.FromCenterRadiusNormal( crCen, 300, crNor);  
+	crGeo.FromCenterRadiusNormal( crCen, 150, crNor);  
 	sgCCircle* cr = sgCreateCircle(crGeo);   
 
 
@@ -880,10 +952,9 @@ void game::extrudeObject(){
 	}
 
 	extrudedObject->SetAttribute(SG_OA_COLOR,30);  
-	sgDeleteObject(spl2_obj);
 	sgDeleteObject(cr);
 
-	//we  have the sg3DObjcect to pass along to selectedObject
+	//we  have the sg3DObjcect to load
 	loadObject(200,slicingPos,posP);//using id=200
 
 }

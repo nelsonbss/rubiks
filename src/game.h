@@ -131,6 +131,7 @@ public:
 
 	//object extrusion
 	void extrudeObject();
+	void extrudeObject(ofPolyline *drawing);
 	sgC3DObject* extrudedObject;
 };
 #endif /* defined(__Tgame__game__) */

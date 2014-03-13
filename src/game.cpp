@@ -197,12 +197,26 @@ void game::draw(){
 
 		ofPushMatrix();
 		ofTranslate(posP.x,posP.y,posP.z);
-			draw->addVertex(ofVec2f(-40,50));
-			draw->addVertex(ofVec2f(40,50));
-			draw->addVertex(ofVec2f(50,0));
-			draw->addVertex(ofVec2f(0,-50));
-			draw->addVertex(ofVec2f(-50,0));
-			draw->addVertex(ofVec2f(-40,50));
+		//pentagon
+		//draw->addVertex(ofVec2f(-40,50));
+		//draw->addVertex(ofVec2f(40,50));
+		//draw->addVertex(ofVec2f(50,0));
+		//draw->addVertex(ofVec2f(0,-50));
+		//draw->addVertex(ofVec2f(-50,0));
+		//draw->addVertex(ofVec2f(-40,50));
+
+		//star
+		draw->addVertex(ofVec2f(-5,-210));
+		draw->addVertex(ofVec2f(60,-60));
+		draw->addVertex(ofVec2f(210,-45));
+		draw->addVertex(ofVec2f(105,60));
+		draw->addVertex(ofVec2f(150,210));
+		draw->addVertex(ofVec2f(-5,135));
+		draw->addVertex(ofVec2f(-150,210));
+		draw->addVertex(ofVec2f(-105,60));
+		draw->addVertex(ofVec2f(-210,-45));
+		draw->addVertex(ofVec2f(-60,-60));
+		draw->addVertex(ofVec2f(-5,-210));
 
 		//draw->close(); // close the shape
 		draw->draw();
@@ -866,14 +880,28 @@ void game::guiInput(int in){
 			//take drawing data
 			//make extruded object
 			extrudeObject();
-		}else if(in == 'c'){
+		}else if(in == 's'){
 			ofPolyline *draw =  new ofPolyline();
-			draw->addVertex(ofVec2f(-40,50));
-			draw->addVertex(ofVec2f(40,50));
-			draw->addVertex(ofVec2f(50,0));
-			draw->addVertex(ofVec2f(0,-50));
-			draw->addVertex(ofVec2f(-50,0));
-			draw->addVertex(ofVec2f(-40,50));
+			//pentagon
+			//draw->addVertex(ofVec2f(-40,50));
+			//draw->addVertex(ofVec2f(40,50));
+			//draw->addVertex(ofVec2f(50,0));
+			//draw->addVertex(ofVec2f(0,-50));
+			//draw->addVertex(ofVec2f(-50,0));
+			//draw->addVertex(ofVec2f(-40,50));
+
+			//star
+			draw->addVertex(ofVec2f(-5,-210));
+			draw->addVertex(ofVec2f(60,-60));
+			draw->addVertex(ofVec2f(210,-45));
+			draw->addVertex(ofVec2f(105,60));
+			draw->addVertex(ofVec2f(150,210));
+			draw->addVertex(ofVec2f(-5,135));
+			draw->addVertex(ofVec2f(-150,210));
+			draw->addVertex(ofVec2f(-105,60));
+			draw->addVertex(ofVec2f(-210,-45));
+			draw->addVertex(ofVec2f(-60,-60));
+			draw->addVertex(ofVec2f(-5,-210));
 
 			//draw->close(); // close the shape
 			extrudeObject(draw);

@@ -1019,7 +1019,15 @@ void game::clearDisplayedObject(){
 }
 //----------------------------------------------------------------------
 void game::restart(){
-	if(step==4 || step==5){
+	if(step == 6){
+		myCanvas->exit();
+		if(canvasB){
+			delete myCanvas;
+			canvasB = false;
+		}
+		step = 0;
+		objectID = -1;
+	}else if(step==4 || step==5){
 		myPuzzle->exit();
 		myCutter->exit();
 		mySlicer->exit();
@@ -1037,10 +1045,7 @@ void game::restart(){
 		step = 0;
 		objectID = -1;
 	}
-	else if (step==6){
-		step = 0;
-		objectID = -1;
-	}
+
 	offsetSlicer.x = 0;
 	offsetSlicer.y = 0;
 	offsetSlicer.z = 0;
@@ -1056,11 +1061,7 @@ void game::restart(){
 		extrudedB = false;
 	}
 
-	if(canvasB){
-		myCanvas->exit();
-		delete myCanvas;
-		canvasB = false;
-	}
+
 }
 //----------------------------------------------------------------------
 void game::exit(){

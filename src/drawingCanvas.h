@@ -5,7 +5,7 @@
 #include "ofMain.h"
 
 class drawingCanvas {
-	
+
 public:
 	drawingCanvas(ofVec3f posCanvas, int width, int heigh);
 
@@ -15,9 +15,15 @@ public:
 
 	void exit();
 
+	void mouseDragged(int x, int y, int button);
+	void mousePressed(int x, int y, int button);
+	void mouseReleased(int x, int y, int button);
+
 	ofVec3f posCanvas;
 	int width;
 	int height;
+
+	ofPolyline *myPolyline;
 };
 
 #endif /* defined(__TdrawingCanvas__drawingCanvas__) */

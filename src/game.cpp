@@ -847,8 +847,11 @@ void game::guiInput(int in){
 		////////////////////////////extrusion
 		if(in == 'e') {
 			//take drawing data
-			//make extruded object
-			extrudeObject(myCanvas->getPolyline());
+			//check for existing drawing
+			if(myCanvas->drawingExists()){
+				//make extruded object
+				extrudeObject(myCanvas->getPolyline());
+			}
 		}else if(in == 's'){
 			ofPolyline *draw =  new ofPolyline();
 			//pentagon
@@ -940,22 +943,31 @@ void game::extrudeObject(ofPolyline *drawing){
 	}  
 
 	sgCContour* win_cont = sgCContour::CreateContour(cont_objcts, points.size()-1);
-	////extrude along vector
-	SG_VECTOR extVec = {0,-300,0};  
-	if (objectID == -1){
-		extrudedObject = (sgC3DObject*)sgKinematic::Extrude(*win_cont,NULL,0,extVec,true);
+
+	//check if its self intersecting
+	if(win_cont->IsSelfIntersecting()){
+		//its self intersecting
+		//abort!!!
+		//for now
 	}else{
-		free(extrudedObject);
-		extrudedObject = (sgC3DObject*)sgKinematic::Extrude(*win_cont,NULL,0,extVec,true);
+		////extrude along vector
+		SG_VECTOR extVec = {0,-300,0};  
+		if (objectID == -1){
+			extrudedObject = (sgC3DObject*)sgKinematic::Extrude(*win_cont,NULL,0,extVec,true);
+		}else{
+			free(extrudedObject);
+			extrudedObject = (sgC3DObject*)sgKinematic::Extrude(*win_cont,NULL,0,extVec,true);
+		}
+
+		extrudedB = true;
+		//we  have the sg3DObjcect to load
+		loadObject(200,slicingPos,posP);//using id=200
 	}
 
-	extrudedB = true;
 	sgDeleteObject(win_cont);
 	free(drawing);
 	////////free(cont_objcts);
 
-	//we  have the sg3DObjcect to load
-	loadObject(200,slicingPos,posP);//using id=200
 }
 //----------------------------------------------------------------------
 void game::extrudeObject(){
@@ -1045,6 +1057,11 @@ void game::restart(){
 		objectDisplayed->exit();
 		step = 0;
 		objectID = -1;
+		myCanvas->exit();
+		if(canvasB){
+			delete myCanvas;
+			canvasB = false;
+		}
 	}
 
 	offsetSlicer.x = 0;

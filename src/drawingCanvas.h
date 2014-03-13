@@ -25,6 +25,8 @@ public:
 
 	ofPolyline *myPolyline;
 	ofPolyline *myPolyline2;
+	bool poly2exists;
+	bool drawingExists();
 	ofVec2f lastMouse;
 	ofVec2f firstMouse;
 	void makeLine(ofVec2f mouse);

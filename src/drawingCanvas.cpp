@@ -8,6 +8,8 @@ drawingCanvas::drawingCanvas(ofVec3f posCanvasi, int widthi, int heighti){
 
 	myPolyline = new ofPolyline();
 	myPolyline2 = new ofPolyline();
+
+	poly2exists = false;
 }
 //--------------------------------------------------------------
 void drawingCanvas::setup(){
@@ -38,12 +40,19 @@ void drawingCanvas::makeLine(ofVec2f mouse){
 }
 //--------------------------------------------------------------
 ofPolyline* drawingCanvas::getPolyline(){
-		return myPolyline2;
+	poly2exists = false;
+	return myPolyline2;
+}
+//--------------------------------------------------------------
+bool drawingCanvas::drawingExists(){
+	return poly2exists;
 }
 //--------------------------------------------------------------
 void drawingCanvas::exit(){
 	free(myPolyline);
+	if(poly2exists){
 	free(myPolyline2);
+	}
 }
 //--------------------------------------------------------------
 void drawingCanvas::mouseDragged(int x, int y, int button){
@@ -64,6 +73,7 @@ void drawingCanvas::mousePressed(int x, int y, int button){
 			firstMouse = lastMouse;
 			myPolyline->addVertex(lastMouse);
 			myPolyline2->addVertex(ofVec2f(lastMouse.x-posCanvas.x,lastMouse.y-posCanvas.y));
+			poly2exists = true;
 		}
 	}
 }

@@ -959,30 +959,11 @@ void game::guiInput(int in){
 void game::extrudeObject(ofPolyline *drawing){
 
 	vector< ofPoint > points = drawing->getVertices();
-
 	//create and use spline
 	SG_POINT tmpPnt;  
 	SG_POINT tmpPnt2;  
-	//SG_SPLINE* spl2 = SG_SPLINE::Create();  
-
-	//////tmpPnt.x = 100.0; tmpPnt.z = -300.0; tmpPnt.y = 0.0;  
-	//////spl2->AddKnot(tmpPnt,0);
-	//////tmpPnt.x = 300.0; tmpPnt.z = -200.0; tmpPnt.y = 0.0;  
-	//////spl2->AddKnot(tmpPnt,1);  
-	//////tmpPnt.x = 200.0; tmpPnt.z = -100.0; tmpPnt.y = 0.0;  
-	//////spl2->AddKnot(tmpPnt,2);  
-	//////tmpPnt.x = 300.0; tmpPnt.z = 100.0; tmpPnt.y = 0.0;  
-	//////spl2->AddKnot(tmpPnt,3);  
-	//////tmpPnt.x = 200.0; tmpPnt.z = 400.0; tmpPnt.y = 0.0;  
-	//////spl2->AddKnot(tmpPnt,4);  
-	//////tmpPnt.x =400.0; tmpPnt.z = 500.0; tmpPnt.y = 0.0;  
-	//////spl2->AddKnot(tmpPnt,5);  
 
 	sgCObject*  cont_objcts[2000];
-	//tmpPnt.x = -40; tmpPnt.z = 50; tmpPnt.y = 0.0;  
-	//tmpPnt2.x = 40; tmpPnt2.z = 50; tmpPnt2.y = 0.0; 
-	//cont_objcts[0] = sgCreateLine(tmpPnt.x, tmpPnt.y, tmpPnt.z, tmpPnt2.x, tmpPnt2.y, tmpPnt2.z);
-
 	for (int i =0; i < points.size() ; i ++)  {
 		if(i!= points.size()-1){
 			cont_objcts[i] = sgCreateLine(points[i].x, 0, points[i].y,points[i+1].x, 0, points[i+1].y);
@@ -994,11 +975,7 @@ void game::extrudeObject(ofPolyline *drawing){
 
 	sgCContour* win_cont = sgCContour::CreateContour(cont_objcts, points.size()-1);
 
-
 	free(drawing);
-	//spl2->Close();  
-	//sgCSpline* spl2_obj = sgCreateSpline(*spl2);  
-	//SG_SPLINE::Delete(spl2);
 
 	////extrude along vector
 	SG_VECTOR extVec = {0,-300,0};  
@@ -1011,7 +988,6 @@ void game::extrudeObject(ofPolyline *drawing){
 	}
 
 	extrudedB = true;
-	//sgDeleteObject(spl2_obj);
 	sgDeleteObject(win_cont);
 	//sgDeleteObject(*cont_objcts);
 

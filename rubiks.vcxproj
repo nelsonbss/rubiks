@@ -95,6 +95,7 @@
     <ClCompile Include="src\armature.cpp" />
     <ClCompile Include="src\cubie.cpp" />
     <ClCompile Include="src\cutter.cpp" />
+    <ClCompile Include="src\drawingCanvas.cpp" />
     <ClCompile Include="src\game.cpp" />
     <ClCompile Include="src\history.cpp" />
     <ClCompile Include="src\main.cpp" />
@@ -125,6 +126,7 @@
     <ClInclude Include="src\armature.h" />
     <ClInclude Include="src\cubie.h" />
     <ClInclude Include="src\cutter.h" />
+    <ClInclude Include="src\drawingCanvas.h" />
     <ClInclude Include="src\game.h" />
     <ClInclude Include="src\history.h" />
     <ClInclude Include="src\matrix.h" />

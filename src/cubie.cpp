@@ -12,19 +12,9 @@ cubie::cubie(float x, float y,float z, int idi, int selObjId, ofVec3f offset){
 	pos.y = y;
 	pos.z = z;
 
-	/*rot.x = 0.0;
-	rot.y = 0.0;
-	rot.z = 0.0;*/
-
-	//color = rand()%27;
-
 	pointRotate.x = offset.x;
 	pointRotate.y = offset.y;
 	pointRotate.z = offset.z;
-
-	//rotCompensation.x = offrotate.x;//this is coming in as degrees
-	//rotCompensation.y = offrotate.y;
-	//rotCompensation.z = offrotate.z;
 
 	moving = false;
 
@@ -220,12 +210,8 @@ void cubie::faceRotate(SG_VECTOR axis,bool di){
 	if(objects != NULL){
 		if(moving == false){
 			if(undoing == false){
-				//for (int j=0; j < numObjs; j++){
 				SG_POINT protFace = {0,0,0};
 				SG_VECTOR vrotFace = axis;
-				/*rotX=0;
-				rotY=0;
-				rotZ=0;*/
 				moving = true;
 				sample = false;
 				//ct1 = ofGetElapsedTimeMillis();
@@ -234,23 +220,8 @@ void cubie::faceRotate(SG_VECTOR axis,bool di){
 					myMatrix.push_back(matrix(axis,90,di));
 				}else{
 					//cc
-					//if(axis.x == 1){
-					//movingXCC = true;
-					//rotX -= 90;
 					myMatrix.push_back(matrix(axis,-90,di));
-					//}else if(axis.y == 1){
-					//	//movingYCC = true;
-					//	sample = false;
-					//	//rotY -= 90;
-					//	myMatrix.push_back(matrix(axis,-90,di));
-					//}else{
-					//	//movingZCC = true;
-					//	sample = false;
-					//	//rotZ -= 90;
-					//	myMatrix.push_back(matrix(axis,-90,di));
-					//}
 				}
-				//}
 			}
 		}
 	}else{
@@ -345,20 +316,20 @@ void cubie::unDo(SG_VECTOR axis,bool di){
 		if(undoing==false){
 			if(moving == false){
 				//for (int j=0; j < numObjs; j++){
-					SG_POINT protFace = {0,0,0};
-					SG_VECTOR vrotFace = axis;
-					moving = true;
-					undoing = true;
-					sample = false;
-					//ct1 = ofGetElapsedTimeMillis();
-					if(di == true){
-						//c
-						myMatrix.push_back(matrix(axis,90,di));
+				SG_POINT protFace = {0,0,0};
+				SG_VECTOR vrotFace = axis;
+				moving = true;
+				undoing = true;
+				sample = false;
+				//ct1 = ofGetElapsedTimeMillis();
+				if(di == true){
+					//c
+					myMatrix.push_back(matrix(axis,90,di));
 
-					}else{
-						//cc
-						myMatrix.push_back(matrix(axis,-90,di));
-					}
+				}else{
+					//cc
+					myMatrix.push_back(matrix(axis,-90,di));
+				}
 				//}
 			}
 		}

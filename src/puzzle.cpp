@@ -15,7 +15,6 @@ puzzle::puzzle(SG_VECTOR p, ofVec3f offset){
 	myCubies = (cubie**)malloc(numPieces*sizeof(cubie*));
 
 	cubiesOffset = offset;
-	//cubiesOffrotate =  offRotate;
 
 	pos.x = p.x;
 	pos.y = p.y;

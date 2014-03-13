@@ -25,7 +25,6 @@ public:
 	float numPieces;
 	cubie **myCubies; //malloc numPieces of these
 	ofVec3f cubiesOffset;
-	//ofVec3f cubiesOffrotate;
 
 	SG_VECTOR pos;
 	void move(SG_VECTOR p);
@@ -55,7 +54,6 @@ public:
 	void colorCubiesBlackSides();
 	///color change
 	void changeColorToColor(ofFloatColor Sc, ofFloatColor Tc);
-
 
 
 	//   //current state of the rotation

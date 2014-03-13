@@ -441,8 +441,6 @@ void game::rotateA (ofVec3f input){
 	rotateSlicer.x += input.x;
 	rotateSlicer.y += input.y;
 	rotateSlicer.z += input.z;
-	//add this rotation to armRotations history
-	//armRotH.push_back(armRotations(input));
 }
 //----------------------------------------------------------------------
 ofVec3f game::giveOffset(){

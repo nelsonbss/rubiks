@@ -1,6 +1,5 @@
 #include "cutter.h"
 #include "sgCore.h"
-#include "armRotations.h"
 
 cutter::cutter(float thick, float tamCutter, float tamCuby,float numCutr, ofVec3f pos){
 	numCutter = numCutr; //to use when we have more than one cutter
@@ -430,7 +429,7 @@ void cutter::exit(){
 
 
 
-//////////////////////// BOX 1 -> 6////////////////////////////////////
+//////////////////////// planes 1 -> 6////////////////////////////////////
 	//x1 = sgCreateBox(cutterSize,cutterSize,cutterThick); 
 	////move plane to the middle of its side
 	//SG_VECTOR transBox1 = {0,-cutterSize/2,0}; 

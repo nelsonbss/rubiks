@@ -82,9 +82,6 @@
     <ClCompile Include="src\history.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\armRotations.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="src\ofxTrackball.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -306,9 +303,6 @@
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\history.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\armRotations.h">
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\ofxTrackball.h">

@@ -15,7 +15,6 @@ public:
 	void setup();
 	void update();
 	void draw();
-	//void unDraw();// has legacy of how to detach from scene
 	void exit();
 
 	int id; //id of the cuie to be used on the selection of the cuie to rotate

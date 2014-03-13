@@ -10,7 +10,6 @@
 #include "puzzle.h"
 #include "ofxAssimpModelLoader.h"
 #include "history.h"
-#include "armRotations.h"
 
 #include <vector>
 
@@ -105,7 +104,6 @@ public:
 
 	//armature rotation
 	void applyArmRotations();
-	//vector<armRotations> armRotH;
 
 	//gui communication
 	bool rotateB;

@@ -238,7 +238,6 @@ void game::rotateByIDandAxis(int id, SG_VECTOR axs, bool d){
 		//updatePuzzle = true;
 		faceRotate = true;
 	}
-
 }
 //----------------------------------------------------------------------
 void game::rotateTwoIds(int cubieA, int cubieB,bool inside){

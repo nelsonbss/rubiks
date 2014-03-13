@@ -781,7 +781,7 @@ void game::guiInput(int in){
 		//pressed next on color palette step
 		//showing puzzle
 		//now the puzzle can be played with
-		//int randcubie=13;//rand()%26;//to follow this cubie for now //this will be decided upon touch, or click on top of puzzle
+		int randcubie=13;//rand()%26;//to follow this cubie for now //this will be decided upon touch, or click on top of puzzle
 		if(myPuzzle->isMoving() == false){ //this is to prevent from reading events while puzzle is moving
 			if(in == 'u'){
 				//undo last move 

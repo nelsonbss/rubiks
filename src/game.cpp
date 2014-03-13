@@ -956,7 +956,7 @@ void game::extrudeObject(ofPolyline *drawing){
 	//we  have the sg3DObjcect to load
 	loadObject(200,slicingPos,posP);//using id=200
 }
-//---------------------------------------------------------------------34---
+//----------------------------------------------------------------------
 void game::extrudeObject(){
 	//create and use circle
 	SG_POINT   crCen = {0,0,0.0};  

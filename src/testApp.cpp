@@ -120,12 +120,10 @@ void testApp::draw(){
 			ofDrawBitmapString("sSHOW DRAWING AREA!" +ofToString("")+"\n",20, 20);
 			//testing
 			ofDrawBitmapString("TEST: press 'e' to extrude: " + ofToString("") +"\n" ,20, 40);
-
-				//show object menu
+			//show object menu
 			ofDrawBitmapString("SELECT AN OBJECT from MENU:" + ofToString("") +"\n" + "1 - 7: objects"+ofToString("")+"\n"+ "9 : extrusion"+ofToString("")+"\n",20, 60);
 			//show select object or drag gui graphic
 			ofDrawBitmapString("or drag a shape from above:" + ofToString("") +"\n",20, 100);
-
 			//show restart button.
 			ofDrawBitmapString("RESTART: press 'r' " + ofToString("") +"\n" ,20, 120);//
 		}

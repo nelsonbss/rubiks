@@ -1082,7 +1082,7 @@ void game::mouseDragged(int x, int y, int button){
 		curRot.set(curRot*yRot*xRot);
 		lastMouse = mouse;
 	}else if(step == 6){
-		ofVec2f mouse(x,y);
+		myCanvas->mouseDragged(x,y,button);
 	}
 }
 //--------------------------------------------------------------
@@ -1090,6 +1090,6 @@ void game::mousePressed(int x, int y, int button){
 	if(step == 4 || step == 5){
 		lastMouse = ofVec2f(x,y);
 	}else if(step == 6){
-		myCanvas->lastMouse = ofVec2f(x,y);
+		myCanvas->mousePressed(x,y,button);
 	}
 }

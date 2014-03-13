@@ -25,6 +25,7 @@ public:
 
 	ofPolyline *myPolyline;
 	ofVec2f lastMouse;
+	void makeLine(ofVec2f mouse);
 };
 
 #endif /* defined(__TdrawingCanvas__drawingCanvas__) */

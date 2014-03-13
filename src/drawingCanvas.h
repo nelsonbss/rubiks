@@ -6,7 +6,7 @@
 class drawingCanvas {
 	
 public:
-	drawingCanvas();
+	//drawingCanvas();
 };
 
 #endif /* defined(__TdrawingCanvas__drawingCanvas__) */

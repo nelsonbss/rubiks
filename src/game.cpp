@@ -922,14 +922,6 @@ void game::guiInput(int in){
 		//tell a game to restart 
 		restart();
 	}
-	//if(puzzleExists == true){
-	//	if(in == 'f') {
-	//		cout << "nu cubies " << myPuzzle->giveNumCubies() << endl;
-	//	}
-	//	if(in == 'g') {
-	//		cout << "nu pieces " << mySlicer->countPieces() << endl;
-	//	}
-	//}
 }
 //----------------------------------------------------------------------
 void game::extrudeObject(ofPolyline *drawing){

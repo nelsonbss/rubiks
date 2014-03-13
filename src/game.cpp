@@ -848,7 +848,7 @@ void game::guiInput(int in){
 		if(in == 'e') {
 			//take drawing data
 			//make extruded object
-			extrudeObject();
+			extrudeObject(myCanvas->myPolyline);
 		}else if(in == 's'){
 			ofPolyline *draw =  new ofPolyline();
 			//pentagon
@@ -1091,5 +1091,11 @@ void game::mousePressed(int x, int y, int button){
 		lastMouse = ofVec2f(x,y);
 	}else if(step == 6){
 		myCanvas->mousePressed(x,y,button);
+	}
+}
+//--------------------------------------------------------------
+void game::mouseReleased(int x, int y, int button){
+	if(step == 6){
+		myCanvas->mouseReleased(x,y,button);
 	}
 }

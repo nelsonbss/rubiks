@@ -119,7 +119,7 @@ public:
 	ofVec2f lastMouse;
 	void mouseDragged(int x, int y, int button);
 	void mousePressed(int x, int y, int button);
-
+	void mouseReleased(int x, int y, int button);
 	///////interaction with puzzles on the center
 	void loadPuzzle(int puzzleMenuObject); //load a puzzle from the puzzle menu on the center
 

@@ -8,7 +8,7 @@
 #define displayX 500
 #define displayY 400
 #define displayZ 0
-#define iddleTime 100
+#define iddleTime 120
 //--------------------------------------------------------------
 void testApp::setup(){
 	/////////////////////////////initialize sgCore library
@@ -240,6 +240,7 @@ void testApp::mousePressed(int x, int y, int button){
 }
 //--------------------------------------------------------------
 void testApp::mouseReleased(int x, int y, int button){
+	myGames[0]->mouseReleased(x,y,button);
 }
 //--------------------------------------------------------------
 void testApp::windowResized(int w, int h){

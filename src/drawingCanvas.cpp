@@ -16,17 +16,20 @@ void drawingCanvas::update(){
 }
 //--------------------------------------------------------------
 void drawingCanvas::draw(){  
-	glPushMatrix();
-	glTranslatef(0,0,0);
-
+	//glPushMatrix();
 	ofFill();
-	ofSetColor(ofColor(255,255,255));
-	ofBox(posCanvas.x,posCanvas.y,posCanvas.z,width,height,0);
-	glPopMatrix();
+	ofSetColor(ofColor(255,255,0));
+	//ofBox(posCanvas.x,posCanvas.y,posCanvas.z,width,height,0);
+	ofSetColor(ofColor(255,0,0));
+	myPolyline->draw();
+
+	//glPopMatrix();
 }
 //--------------------------------------------------------------
 void drawingCanvas::makeLine(ofVec2f mouse){
-
+	if(mouse.distance(lastMouse) > 5){
+		myPolyline->addVertex(mouse);
+	}
 }
 //--------------------------------------------------------------
 void drawingCanvas::exit(){
@@ -41,12 +44,14 @@ void drawingCanvas::mouseDragged(int x, int y, int button){
 //--------------------------------------------------------------
 void drawingCanvas::mousePressed(int x, int y, int button){
 	//check if its inside the area to be able to draw
-	if((posCanvas.x < x) && (x < posCanvas.x + width)){
-		if((posCanvas.y < y) && (y < posCanvas.y + height)){
+	if((posCanvas.x-(width/2) < x) && (x < posCanvas.x+(width/2))){
+		if((posCanvas.y-(height/2) < y) && (y < posCanvas.y+(height/2))){
 			lastMouse = ofVec2f(x,y);
+			myPolyline->addVertex(lastMouse);
 		}
 	}
 }
 //--------------------------------------------------------------
 void drawingCanvas::mouseReleased(int x, int y, int button){
+	myPolyline->close();
 }

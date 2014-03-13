@@ -1007,6 +1007,8 @@ void game::extrudeObject(ofPolyline *drawing){
 
 	extrudedB = true;
 	sgDeleteObject(spl2_obj);
+	sgDeleteObject(win_cont);
+	////////////////free(cont_objcts);
 
 	//we  have the sg3DObjcect to load
 	loadObject(200,slicingPos,posP);//using id=200

@@ -4,6 +4,7 @@
 #include "slicer.h"
 #include "cutter.h"
 #include "puzzle.h"
+#include "drawingCanvas.h"
 
 #include <vector>
 
@@ -27,6 +28,11 @@ game::game(SG_VECTOR gamePos, float w, float h, SG_VECTOR displayPos, float iddl
 	posA.x = displayPos.x; //for the armature
 	posA.y = displayPos.y;
 	posA.z = displayPos.z;
+
+	//drawing canvas
+	posCanvas.x = displayPos.x - 150;
+	posCanvas.y = displayPos.y - 150;
+	posCanvas.z = displayPos.z;
 
 	//rotP.x = 0; //rotation of puzzle
 	//rotP.y = 0;
@@ -192,7 +198,10 @@ void game::draw(){
 	}
 	if(step == 6){
 		//show drawing area
-		ofSetColor(ofColor(255,255,255));
+
+		myCanvas->draw();
+
+
 		ofPolyline *draw =  new ofPolyline();
 
 		ofPushMatrix();
@@ -536,9 +545,8 @@ void game::guiInput(int in){
 		//if(in == '8') { 
 		//	loadObject(8,objectPos,posP);
 		//}
-		if(in == '9') { 
-			/////extrusion
-			step = 6;
+		if(in == '9') {
+			prepareDrawing();
 		}
 	}
 	////////////////////////////////////////////step 1 inputs
@@ -555,80 +563,43 @@ void game::guiInput(int in){
 			//waiting for shape to be selected
 			if(in == '1') {
 				//user can change the selected object
-				if (objectID != -1){
-					objectDisplayed->exit();
-					delete objectDisplayed;
-					objectID = -1;
-				}
+				clearDisplayedObject();
 				//load object recieves (object id, boolean position, display position) 
 				loadObject(1,slicingPos,posP); //pos.z its the torus radious
 			}
 			if(in == '2') {
-				//user can change the selected object
-				if (objectID != -1){
-					objectDisplayed->exit();
-					delete objectDisplayed;
-					objectID = -1;
-				}
+				clearDisplayedObject();
 				loadObject(2,slicingPos,posP);
 			}
 			if(in == '3') {
-				//user can change the selected object
-				if (objectID != -1){
-					objectDisplayed->exit();
-					delete objectDisplayed;
-					objectID = -1;
-				}
+				clearDisplayedObject();
 				loadObject(3,slicingPos,posP);
 			}
 			if(in == '4') {
-				//user can change the selected object
-				if (objectID != -1){
-					objectDisplayed->exit();
-					delete objectDisplayed;
-					objectID = -1;
-				}
+				clearDisplayedObject();
 				loadObject(4,slicingPos,posP);
 			}
 			if(in == '5') {
-				//user can change the selected object
-				if (objectID != -1){
-					objectDisplayed->exit();
-					delete objectDisplayed;
-					objectID = -1;
-				}
+				clearDisplayedObject();
 				loadObject(5,slicingPos,posP);
 			}
 			if(in == '6') {
 				//user can change the selected object
-				if (objectID != -1){
-					objectDisplayed->exit();
-					delete objectDisplayed;
-					objectID = -1;
-				}
+				clearDisplayedObject();
 				loadObject(6,slicingPos,posP);
 			}
 			if(in == '7') {
 				//user can change the selected object
-				if (objectID != -1){
-					objectDisplayed->exit();
-					delete objectDisplayed;
-					objectID = -1;
-				}
+				clearDisplayedObject();
+
 				loadObject(7,slicingPos,posP);
 			}
 			/*if(in == '8') { 
 			loadObject(8,objectPos,posP);
 			}*/
 			if(in == '9') { 
-				if (objectID != -1){
-					objectDisplayed->exit();
-					delete objectDisplayed;
-					objectID = -1;
-				}
-				//extrusion
-				//go to show drawing area
-				step = 6;
+				clearDisplayedObject();
+				prepareDrawing();
 			}
 		}
 	}
@@ -872,7 +843,7 @@ void game::guiInput(int in){
 		//	rotateP(r);
 		//}
 	}else if(step == 6){
-		//extrusion
+		////////////////////////////extrusion
 		if(in == 'e') {
 			//take drawing data
 			//make extruded object
@@ -906,34 +877,33 @@ void game::guiInput(int in){
 		////////////////////////////////////////////////////////
 		//////////////////object menu on the side
 		//waiting for shape to be selected
-		if(in == '1') {
+		else if(in == '1') {
 			//load object recieves (object id, boolean position, display position) 
 			loadObject(1,slicingPos,posP);
 		}
-		if(in == '2') {
+		else if(in == '2') {
 			loadObject(2,slicingPos,posP);
 		}
-		if(in == '3') {
+		else if(in == '3') {
 			loadObject(3,slicingPos,posP);
 		}
-		if(in == '4') {
+		else if(in == '4') {
 			loadObject(4,slicingPos,posP);
 		}
-		if(in == '5') {
+		else if(in == '5') {
 			loadObject(5,slicingPos,posP);
 		}
-		if(in == '6') {
+		else if(in == '6') {
 			loadObject(6,slicingPos,posP);
 		}
-		if(in == '7') { 
+		else if(in == '7') { 
 			loadObject(7,slicingPos,posP);
 		}
 		//if(in == '8') { 
 		//	loadObject(8,objectPos,posP);
 		//}
-		if(in == '9') { 
-			/////extrusion
-			step = 6;
+		else if(in == '9') { 
+			prepareDrawing();
 		}
 	}
 
@@ -1018,6 +988,21 @@ void game::extrudeObject(){
 
 }
 //----------------------------------------------------------------------
+void game::prepareDrawing(){
+	//create canvas object
+	myCanvas = new drawingCanvas(posCanvas,500,500);
+	//extrusion
+	step = 6;
+}
+//----------------------------------------------------------------------
+void game::clearDisplayedObject(){
+	if (objectID != -1){
+		objectDisplayed->exit();
+		delete objectDisplayed;
+		objectID = -1;
+	}
+}
+//----------------------------------------------------------------------
 void game::restart(){
 	if(step==4 || step==5){
 		myPuzzle->exit();
@@ -1065,8 +1050,6 @@ void game::exit(){
 	sgDeleteObject(sgOctahedron);
 	//sgDeleteObject(sgTeapot);
 }
-
-
 //--------------------------------------------------------------
 void game::mouseDragged(int x, int y, int button){
 	//myPuzzle->mouseDragged(x,y,button);

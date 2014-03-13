@@ -10,6 +10,7 @@
 #include "puzzle.h"
 #include "ofxAssimpModelLoader.h"
 #include "history.h"
+#include "drawingCanvas.h"
 
 #include <vector>
 
@@ -127,7 +128,13 @@ public:
 	int goToAttractStepS;
 	float iddleTimer;
 
+	//drawing canvas
+	ofVec3f posCanvas;
+	drawingCanvas *myCanvas;
+	void prepareDrawing();
+
 	//object extrusion
+	void clearDisplayedObject();
 	void extrudeObject();
 	void extrudeObject(ofPolyline *drawing);
 	sgC3DObject* extrudedObject;

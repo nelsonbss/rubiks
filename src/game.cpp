@@ -203,33 +203,33 @@ void game::draw(){
 		myCanvas->draw();
 
 
-		ofPolyline *draw =  new ofPolyline();
+		////////////ofPolyline *draw =  new ofPolyline();
 
-		ofPushMatrix();
-		ofTranslate(posP.x,posP.y,posP.z);
-		//pentagon
-		//draw->addVertex(ofVec2f(-40,50));
-		//draw->addVertex(ofVec2f(40,50));
-		//draw->addVertex(ofVec2f(50,0));
-		//draw->addVertex(ofVec2f(0,-50));
-		//draw->addVertex(ofVec2f(-50,0));
-		//draw->addVertex(ofVec2f(-40,50));
+		////////////ofPushMatrix();
+		////////////ofTranslate(posP.x,posP.y,posP.z);
+		//////////////pentagon
+		//////////////draw->addVertex(ofVec2f(-40,50));
+		//////////////draw->addVertex(ofVec2f(40,50));
+		//////////////draw->addVertex(ofVec2f(50,0));
+		//////////////draw->addVertex(ofVec2f(0,-50));
+		//////////////draw->addVertex(ofVec2f(-50,0));
+		//////////////draw->addVertex(ofVec2f(-40,50));
 
-		//star
-		draw->addVertex(ofVec2f(-5,-210));
-		draw->addVertex(ofVec2f(60,-60));
-		draw->addVertex(ofVec2f(210,-45));
-		draw->addVertex(ofVec2f(105,60));
-		draw->addVertex(ofVec2f(150,210));
-		draw->addVertex(ofVec2f(-5,135));
-		draw->addVertex(ofVec2f(-150,210));
-		draw->addVertex(ofVec2f(-105,60));
-		draw->addVertex(ofVec2f(-210,-45));
-		draw->addVertex(ofVec2f(-60,-60));
-		draw->addVertex(ofVec2f(-5,-210));
+		//////////////star
+		////////////draw->addVertex(ofVec2f(-5,-210));
+		////////////draw->addVertex(ofVec2f(60,-60));
+		////////////draw->addVertex(ofVec2f(210,-45));
+		////////////draw->addVertex(ofVec2f(105,60));
+		////////////draw->addVertex(ofVec2f(150,210));
+		////////////draw->addVertex(ofVec2f(-5,135));
+		////////////draw->addVertex(ofVec2f(-150,210));
+		////////////draw->addVertex(ofVec2f(-105,60));
+		////////////draw->addVertex(ofVec2f(-210,-45));
+		////////////draw->addVertex(ofVec2f(-60,-60));
+		////////////draw->addVertex(ofVec2f(-5,-210));
 
-		//draw->close(); // close the shape
-		draw->draw();
+		//////////////draw->close(); // close the shape
+		////////////draw->draw();
 		ofPopMatrix();
 
 		//show build button to get drawing data

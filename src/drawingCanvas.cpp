@@ -17,15 +17,15 @@ void drawingCanvas::update(){
 //--------------------------------------------------------------
 void drawingCanvas::draw(){  
 	glPushMatrix();
-	glTranslatef(posCanvas.x,posCanvas.y,posCanvas.z);
-	
+	glTranslatef(0,0,0);
+
 	ofFill();
 	ofSetColor(ofColor(255,255,255));
-	ofBox(0,0,0,width,height,0);
+	ofBox(posCanvas.x,posCanvas.y,posCanvas.z,width,height,0);
 	glPopMatrix();
 }
 //--------------------------------------------------------------
-void makeLine(ofVec2f mouse){
+void drawingCanvas::makeLine(ofVec2f mouse){
 
 }
 //--------------------------------------------------------------
@@ -40,7 +40,12 @@ void drawingCanvas::mouseDragged(int x, int y, int button){
 }
 //--------------------------------------------------------------
 void drawingCanvas::mousePressed(int x, int y, int button){
-	lastMouse = ofVec2f(x,y);
+	//check if its inside the area to be able to draw
+	if((posCanvas.x < x) && (x < posCanvas.x + width)){
+		if((posCanvas.y < y) && (y < posCanvas.y + height)){
+			lastMouse = ofVec2f(x,y);
+		}
+	}
 }
 //--------------------------------------------------------------
 void drawingCanvas::mouseReleased(int x, int y, int button){

@@ -79,16 +79,12 @@ void puzzle::draw(){
 
 	ofPushMatrix();
 	ofTranslate(pos.x,pos.y,pos.z);
-	//rotate with data from trackBall
-	//ofRotate(qangle, qaxis.x,qaxis.y,qaxis.z);
-
 	//puzzle tells every cubie to attach objects to scene
 	for(int i=0;i<numPieces;i++){
 		if(myCubies[i] != NULL){
 			myCubies[i]->draw();
 		}
 	}
-
 	ofPopMatrix();
 }
 //----------------------------------------------------------------
@@ -206,7 +202,6 @@ bool puzzle::isMoving(){
 	return moving;
 }
 //---------------------------------------------------------------
-//----------------------------------------------------------------------
 int puzzle::rotateTwoIds(int cubieA, int cubieB,bool inside){
 	//receives two ids, from two cubies
 	//each cubie con do 6 possible moves
@@ -659,18 +654,3 @@ void puzzle::exit(){
 	//delete [] three_dim1;
 	free(myCubies);
 }
-//
-//
-////--------------------------------------------------------------
-//void puzzle::mouseDragged(int x, int y, int button){
-//	ofVec2f mouse(x,y);
-//    ofQuaternion yRot(x-lastMouse.x, ofVec3f(0,1,0));
-//    ofQuaternion xRot(y-lastMouse.y, ofVec3f(-1,0,0));
-//    curRot *= yRot*xRot;
-//    lastMouse = mouse;
-//}
-//
-////--------------------------------------------------------------
-//void puzzle::mousePressed(int x, int y, int button){
-//	lastMouse = ofVec2f(x,y);
-//}

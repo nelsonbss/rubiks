@@ -1082,13 +1082,14 @@ void game::mouseDragged(int x, int y, int button){
 		//curRot *= yRot*xRot;
 		curRot.set(curRot*yRot*xRot);
 		lastMouse = mouse;
+	}else if(step == 6){
 	}
 }
-
 //--------------------------------------------------------------
 void game::mousePressed(int x, int y, int button){
 	//myPuzzle->mouseDragged(x,y,button);
 	if(step == 4 || step == 5){
 		lastMouse = ofVec2f(x,y);
+	}else if(step == 6){
 	}
 }

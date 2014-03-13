@@ -197,11 +197,14 @@ void game::draw(){
 
 		ofPushMatrix();
 		ofTranslate(posP.x,posP.y,posP.z);
-		draw->addVertex(ofVec2f(-140,150));
-		draw->addVertex(ofVec2f(140,150));
-		draw->addVertex(ofVec2f(150,0));
+			draw->addVertex(ofVec2f(-40,50));
+			draw->addVertex(ofVec2f(40,50));
+			draw->addVertex(ofVec2f(50,0));
+			draw->addVertex(ofVec2f(0,-50));
+			draw->addVertex(ofVec2f(-50,0));
+			draw->addVertex(ofVec2f(-40,50));
 
-		draw->close(); // close the shape
+		//draw->close(); // close the shape
 		draw->draw();
 		ofPopMatrix();
 
@@ -865,19 +868,14 @@ void game::guiInput(int in){
 			extrudeObject();
 		}else if(in == 'c'){
 			ofPolyline *draw =  new ofPolyline();
-			float i = 0;
-			//while (i < TWO_PI) { // make a heart
-			//	float r = (2-2*sin(i) + sin(i)*sqrt(abs(cos(i))) / (sin(i)+1.4)) * -80;
-			//	float x = ofGetWidth()/2 + cos(i) * r;
-			//	float y = ofGetHeight()/2 + sin(i) * r;
-			//	draw->addVertex(ofVec2f(x,y));
-			//	i+=0.1;//0.005*HALF_PI*0.5;
-			//}
 			draw->addVertex(ofVec2f(-40,50));
 			draw->addVertex(ofVec2f(40,50));
 			draw->addVertex(ofVec2f(50,0));
+			draw->addVertex(ofVec2f(0,-50));
+			draw->addVertex(ofVec2f(-50,0));
+			draw->addVertex(ofVec2f(-40,50));
 
-			draw->close(); // close the shape
+			//draw->close(); // close the shape
 			extrudeObject(draw);
 		}
 		////////////////////////////////////////////////////////
@@ -934,21 +932,10 @@ void game::extrudeObject(ofPolyline *drawing){
 
 	vector< ofPoint > points = drawing->getVertices();
 
-
 	//create and use spline
 	SG_POINT tmpPnt;  
 	SG_POINT tmpPnt2;  
-	SG_SPLINE* spl2 = SG_SPLINE::Create();  
-	int fl=0;  
-
-	//for (int i =0; i < points.size() ; i ++)  {  
-	//	tmpPnt.x = points[i].x;  
-	//	tmpPnt.y = 0;  
-	//	tmpPnt.z = points[i].y;  
-	//	spl2->AddKnot(tmpPnt,fl);  
-	//	fl++;  
-	//}  
-
+	//SG_SPLINE* spl2 = SG_SPLINE::Create();  
 
 	//////tmpPnt.x = 100.0; tmpPnt.z = -300.0; tmpPnt.y = 0.0;  
 	//////spl2->AddKnot(tmpPnt,0);
@@ -963,35 +950,27 @@ void game::extrudeObject(ofPolyline *drawing){
 	//////tmpPnt.x =400.0; tmpPnt.z = 500.0; tmpPnt.y = 0.0;  
 	//////spl2->AddKnot(tmpPnt,5);  
 
-	////tmpPnt.x = -40; tmpPnt.z = 50; tmpPnt.y = 0.0;  
-	////spl2->AddKnot(tmpPnt,0);
-	////tmpPnt.x = 40; tmpPnt.z = 50; tmpPnt.y = 0.0; 
-	////spl2->AddKnot(tmpPnt,1);
-	////tmpPnt.x = 50; tmpPnt.z = 0; tmpPnt.y = 0.0;
-	////spl2->AddKnot(tmpPnt,2);
+	sgCObject*  cont_objcts[2000];
+	//tmpPnt.x = -40; tmpPnt.z = 50; tmpPnt.y = 0.0;  
+	//tmpPnt2.x = 40; tmpPnt2.z = 50; tmpPnt2.y = 0.0; 
+	//cont_objcts[0] = sgCreateLine(tmpPnt.x, tmpPnt.y, tmpPnt.z, tmpPnt2.x, tmpPnt2.y, tmpPnt2.z);
 
-	sgCObject*  cont_objcts[4];
-	tmpPnt.x = -40; tmpPnt.z = 50; tmpPnt.y = 0.0;  
-	tmpPnt2.x = 40; tmpPnt2.z = 50; tmpPnt2.y = 0.0; 
-	cont_objcts[0] = sgCreateLine(tmpPnt.x, tmpPnt.y, tmpPnt.z, tmpPnt2.x, tmpPnt2.y, tmpPnt2.z);
+	for (int i =0; i < points.size() ; i ++)  {
+		if(i!= points.size()-1){
+			cont_objcts[i] = sgCreateLine(points[i].x, 0, points[i].y,points[i+1].x, 0, points[i+1].y);
+		}else{
+			//its the last point.. make the line with the first point
+			cont_objcts[i] = sgCreateLine(points[i].x, 0, points[i].y,points[0].x, 0, points[0].y);
+		}
+	}  
 
-	tmpPnt.x = 40; tmpPnt.z = 50; tmpPnt.y = 0.0; 
-	tmpPnt2.x = 50; tmpPnt2.z = 0; tmpPnt2.y = 0.0;
-	cont_objcts[1] = sgCreateLine(tmpPnt.x, tmpPnt.y, tmpPnt.z, tmpPnt2.x, tmpPnt2.y, tmpPnt2.z);
-
-	tmpPnt.x = 50; tmpPnt.z = 0; tmpPnt.y = 0.0;
-	tmpPnt2.x = -40; tmpPnt2.z = 50; tmpPnt2.y = 0.0;
-	cont_objcts[2] = sgCreateLine(tmpPnt.x, tmpPnt.y, tmpPnt.z, tmpPnt2.x, tmpPnt2.y, tmpPnt2.z);
-
-	sgCContour* win_cont = sgCContour::CreateContour(cont_objcts, 3);
+	sgCContour* win_cont = sgCContour::CreateContour(cont_objcts, points.size()-1);
 
 
 	free(drawing);
 	//spl2->Close();  
-	sgCSpline* spl2_obj = sgCreateSpline(*spl2);  
-	SG_SPLINE::Delete(spl2);  
-	//spl2_obj->SetAttribute(SG_OA_COLOR,12);  
-	//spl2_obj->SetAttribute(SG_OA_LINE_THICKNESS, 2);
+	//sgCSpline* spl2_obj = sgCreateSpline(*spl2);  
+	//SG_SPLINE::Delete(spl2);
 
 	////extrude along vector
 	SG_VECTOR extVec = {0,-300,0};  
@@ -1003,12 +982,10 @@ void game::extrudeObject(ofPolyline *drawing){
 		extrudedObject = (sgC3DObject*)sgKinematic::Extrude(*win_cont,NULL,0,extVec,true);
 	}
 
-	extrudedObject->SetAttribute(SG_OA_COLOR,30);  
-
 	extrudedB = true;
-	sgDeleteObject(spl2_obj);
+	//sgDeleteObject(spl2_obj);
 	sgDeleteObject(win_cont);
-	////////////////free(cont_objcts);
+	//sgDeleteObject(*cont_objcts);
 
 	//we  have the sg3DObjcect to load
 	loadObject(200,slicingPos,posP);//using id=200

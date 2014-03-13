@@ -24,6 +24,7 @@ public:
 	int height;
 
 	ofPolyline *myPolyline;
+	ofVec2f lastMouse;
 };
 
 #endif /* defined(__TdrawingCanvas__drawingCanvas__) */

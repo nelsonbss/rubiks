@@ -1074,7 +1074,6 @@ void game::exit(){
 }
 //--------------------------------------------------------------
 void game::mouseDragged(int x, int y, int button){
-	//myPuzzle->mouseDragged(x,y,button);
 	if(step == 4 || step == 5){
 		ofVec2f mouse(x,y);
 		ofQuaternion yRot(x-lastMouse.x, ofVec3f(0,1,0));
@@ -1083,13 +1082,14 @@ void game::mouseDragged(int x, int y, int button){
 		curRot.set(curRot*yRot*xRot);
 		lastMouse = mouse;
 	}else if(step == 6){
+		ofVec2f mouse(x,y);
 	}
 }
 //--------------------------------------------------------------
 void game::mousePressed(int x, int y, int button){
-	//myPuzzle->mouseDragged(x,y,button);
 	if(step == 4 || step == 5){
 		lastMouse = ofVec2f(x,y);
 	}else if(step == 6){
+		myCanvas->lastMouse = ofVec2f(x,y);
 	}
 }

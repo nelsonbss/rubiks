@@ -959,9 +959,6 @@ void game::guiInput(int in){
 void game::extrudeObject(ofPolyline *drawing){
 
 	vector< ofPoint > points = drawing->getVertices();
-	//create and use spline
-	SG_POINT tmpPnt;  
-	SG_POINT tmpPnt2;  
 
 	sgCObject*  cont_objcts[2000];
 	for (int i =0; i < points.size() ; i ++)  {
@@ -974,12 +971,8 @@ void game::extrudeObject(ofPolyline *drawing){
 	}  
 
 	sgCContour* win_cont = sgCContour::CreateContour(cont_objcts, points.size()-1);
-
-	free(drawing);
-
 	////extrude along vector
 	SG_VECTOR extVec = {0,-300,0};  
-
 	if (objectID == -1){
 		extrudedObject = (sgC3DObject*)sgKinematic::Extrude(*win_cont,NULL,0,extVec,true);
 	}else{
@@ -989,6 +982,7 @@ void game::extrudeObject(ofPolyline *drawing){
 
 	extrudedB = true;
 	sgDeleteObject(win_cont);
+	free(drawing);
 	//sgDeleteObject(*cont_objcts);
 
 	//we  have the sg3DObjcect to load

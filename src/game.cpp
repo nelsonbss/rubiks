@@ -45,7 +45,7 @@ game::game(SG_VECTOR gamePos, float w, float h, SG_VECTOR displayPos, float iddl
 	armID = -1; //initialized in -1 when there is no armature selected
 	objectID = -1; //initialized on -1 because on stage=0 there is no object selected
 
-	extrudedObject = NULL;
+	extrudedB = false;
 }
 //--------------------------------------------------------------
 void game::setup(sgCObject *sgBunnyi,sgCObject *sgTetrahedroni,sgCObject *sgDodecahedroni,sgCObject *sgIcosahedroni,sgCObject *sgOctahedroni){//,sgCObject *sgTeapoti){
@@ -193,7 +193,17 @@ void game::draw(){
 	if(step == 6){
 		//show drawing area
 		ofSetColor(ofColor(255,255,255));
-		ofRect(300,200,300,300);
+		ofPolyline *draw =  new ofPolyline();
+
+		ofPushMatrix();
+		ofTranslate(posP.x,posP.y,posP.z);
+		draw->addVertex(ofVec2f(-140,150));
+		draw->addVertex(ofVec2f(140,150));
+		draw->addVertex(ofVec2f(150,0));
+
+		draw->close(); // close the shape
+		draw->draw();
+		ofPopMatrix();
 
 		//show build button to get drawing data
 	}
@@ -237,30 +247,59 @@ void game::loadObject(int objID, SG_VECTOR p, SG_VECTOR t){
 		if(objID == 1){
 			//torus
 			objectDisplayed->loadObject(sgCreateTorus(100,70,50,50),1);//(radius,thickness,meridiansDonut,meridiansDonutCut)
+			if(extrudedB){
+				sgDeleteObject(extrudedObject);
+				extrudedB = false;
+			}
 		}
 		if(objID == 2){
 			//cube
 			objectDisplayed->loadObject(sgCreateBox(300,300,300),2);//(tamX,tamY,tamZ)
+			if(extrudedB){
+				sgDeleteObject(extrudedObject);
+				extrudedB = false;
+			}
 		}if(objID == 3){
 			//cone
 			//objectDisplayed->loadObject(sgCreateCone(250,1,250,3),3);
 			objectDisplayed->loadObject((sgC3DObject *)sgTetrahedron->Clone(),3);
+			if(extrudedB){
+				sgDeleteObject(extrudedObject);
+				extrudedB = false;
+			}
 		}
 		if(objID == 4){
 			//try to load the bunny
 			objectDisplayed->loadObject((sgC3DObject *)sgBunny->Clone(),4);
+			if(extrudedB){
+				sgDeleteObject(extrudedObject);
+				extrudedB = false;
+			}
 		}
 		if(objID == 5){
 			//try to load the dodecahedron
 			objectDisplayed->loadObject((sgC3DObject *)sgDodecahedron->Clone(),5);
+			if(extrudedB){
+				sgDeleteObject(extrudedObject);
+				extrudedB = false;
+			}
 		}
 		if(objID == 6){
 			//try to load the Icosahedron
 			objectDisplayed->loadObject((sgC3DObject *)sgIcosahedron->Clone(),6);
+			if(extrudedB){
+				sgDeleteObject(extrudedObject);
+				extrudedB = false;
+			}
 		}
 		if(objID == 7){
 			//try to load the Octahedron
 			objectDisplayed->loadObject((sgC3DObject *)sgOctahedron->Clone(),7);
+			if(extrudedB){
+				sgDeleteObject(extrudedObject);
+				extrudedB = false;
+			}
+
 		}
 		//if(objID == 8){
 		//	//try to load the Teapot
@@ -827,13 +866,17 @@ void game::guiInput(int in){
 		}else if(in == 'c'){
 			ofPolyline *draw =  new ofPolyline();
 			float i = 0;
-			while (i < TWO_PI) { // make a heart
-				float r = (2-2*sin(i) + sin(i)*sqrt(abs(cos(i))) / (sin(i)+1.4)) * -80;
-				float x = ofGetWidth()/2 + cos(i) * r;
-				float y = ofGetHeight()/2 + sin(i) * r;
-				draw->addVertex(ofVec2f(x,y));
-				i+=0.1;//0.005*HALF_PI*0.5;
-			}
+			//while (i < TWO_PI) { // make a heart
+			//	float r = (2-2*sin(i) + sin(i)*sqrt(abs(cos(i))) / (sin(i)+1.4)) * -80;
+			//	float x = ofGetWidth()/2 + cos(i) * r;
+			//	float y = ofGetHeight()/2 + sin(i) * r;
+			//	draw->addVertex(ofVec2f(x,y));
+			//	i+=0.1;//0.005*HALF_PI*0.5;
+			//}
+			draw->addVertex(ofVec2f(-40,50));
+			draw->addVertex(ofVec2f(40,50));
+			draw->addVertex(ofVec2f(50,0));
+
 			draw->close(); // close the shape
 			extrudeObject(draw);
 		}
@@ -897,15 +940,39 @@ void game::extrudeObject(ofPolyline *drawing){
 	SG_SPLINE* spl2 = SG_SPLINE::Create();  
 	int fl=0;  
 
-	for (int i =0; i < points.size() ; i ++)  {  
-		tmpPnt.x = points[i].x;  
-		tmpPnt.y = points[i].y;  
-		tmpPnt.z = 0;  
-		spl2->AddKnot(tmpPnt,fl);  
-		fl++;  
-	}  
+	//for (int i =0; i < points.size() ; i ++)  {  
+	//	tmpPnt.x = points[i].x;  
+	//	tmpPnt.y = 0;  
+	//	tmpPnt.z = points[i].y;  
+	//	spl2->AddKnot(tmpPnt,fl);  
+	//	fl++;  
+	//}  
+
+
+	tmpPnt.x = 100.0; tmpPnt.z = -300.0; tmpPnt.y = 0.0;  
+	spl2->AddKnot(tmpPnt,0);
+	tmpPnt.x = 300.0; tmpPnt.z = -200.0; tmpPnt.y = 0.0;  
+	spl2->AddKnot(tmpPnt,1);  
+	tmpPnt.x = 200.0; tmpPnt.z = -100.0; tmpPnt.y = 0.0;  
+	spl2->AddKnot(tmpPnt,2);  
+	tmpPnt.x = 300.0; tmpPnt.z = 100.0; tmpPnt.y = 0.0;  
+	spl2->AddKnot(tmpPnt,3);  
+	tmpPnt.x = 200.0; tmpPnt.z = 400.0; tmpPnt.y = 0.0;  
+	spl2->AddKnot(tmpPnt,4);  
+	tmpPnt.x =400.0; tmpPnt.z = 500.0; tmpPnt.y = 0.0;  
+	spl2->AddKnot(tmpPnt,5);  
+
+	//tmpPnt.x = -40; tmpPnt.z = 50; tmpPnt.y = 0.0;  
+	//spl2->AddKnot(tmpPnt,0);
+	//tmpPnt.x = 40; tmpPnt.z = 50; tmpPnt.y = 0.0; 
+	//spl2->AddKnot(tmpPnt,1);
+	//tmpPnt.x = 50; tmpPnt.z = 0; tmpPnt.y = 0.0;
+	//spl2->AddKnot(tmpPnt,2);
+
+
+
 	free(drawing);
-	spl2->Close();  
+	//spl2->Close();  
 	sgCSpline* spl2_obj = sgCreateSpline(*spl2);  
 	SG_SPLINE::Delete(spl2);  
 	spl2_obj->SetAttribute(SG_OA_COLOR,12);  
@@ -915,13 +982,15 @@ void game::extrudeObject(ofPolyline *drawing){
 	SG_VECTOR extVec = {0,-300,0};  
 
 	if (objectID == -1){
-		extrudedObject = (sgC3DObject*)sgKinematic::Extrude((const sgC2DObject&)(*spl2_obj),NULL,0,extVec,true);
+		extrudedObject = (sgC3DObject*)sgKinematic::Extrude(*spl2_obj,NULL,0,extVec,true);
 	}else{
 		free(extrudedObject);
-		extrudedObject = (sgC3DObject*)sgKinematic::Extrude((const sgC2DObject&)(*spl2_obj),NULL,0,extVec,true);
+		extrudedObject = (sgC3DObject*)sgKinematic::Extrude(*spl2_obj,NULL,0,extVec,true);
 	}
 
 	extrudedObject->SetAttribute(SG_OA_COLOR,30);  
+
+	extrudedB = true;
 	sgDeleteObject(spl2_obj);
 
 	//we  have the sg3DObjcect to load
@@ -951,7 +1020,8 @@ void game::extrudeObject(){
 		extrudedObject = (sgC3DObject*)sgKinematic::Extrude((const sgC2DObject&)(*cr),NULL,0,extVec,true);
 	}
 
-	extrudedObject->SetAttribute(SG_OA_COLOR,30);  
+	extrudedObject->SetAttribute(SG_OA_COLOR,30);
+	extrudedB = true;
 	sgDeleteObject(cr);
 
 	//we  have the sg3DObjcect to load
@@ -992,8 +1062,9 @@ void game::restart(){
 
 	curRot.set (ofVec4f(0,0,0,0));
 
-	if(extrudedObject != NULL){
+	if(extrudedB){
 		sgDeleteObject(extrudedObject);
+		extrudedB = false;
 	}
 }
 //----------------------------------------------------------------------

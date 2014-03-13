@@ -133,5 +133,6 @@ public:
 	void extrudeObject();
 	void extrudeObject(ofPolyline *drawing);
 	sgC3DObject* extrudedObject;
+	bool extrudedB;
 };
 #endif /* defined(__Tgame__game__) */

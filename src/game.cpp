@@ -936,7 +936,8 @@ void game::extrudeObject(ofPolyline *drawing){
 
 
 	//create and use spline
-	SG_POINT tmpPnt;   
+	SG_POINT tmpPnt;  
+	SG_POINT tmpPnt2;  
 	SG_SPLINE* spl2 = SG_SPLINE::Create();  
 	int fl=0;  
 
@@ -949,43 +950,57 @@ void game::extrudeObject(ofPolyline *drawing){
 	//}  
 
 
-	tmpPnt.x = 100.0; tmpPnt.z = -300.0; tmpPnt.y = 0.0;  
-	spl2->AddKnot(tmpPnt,0);
-	tmpPnt.x = 300.0; tmpPnt.z = -200.0; tmpPnt.y = 0.0;  
-	spl2->AddKnot(tmpPnt,1);  
-	tmpPnt.x = 200.0; tmpPnt.z = -100.0; tmpPnt.y = 0.0;  
-	spl2->AddKnot(tmpPnt,2);  
-	tmpPnt.x = 300.0; tmpPnt.z = 100.0; tmpPnt.y = 0.0;  
-	spl2->AddKnot(tmpPnt,3);  
-	tmpPnt.x = 200.0; tmpPnt.z = 400.0; tmpPnt.y = 0.0;  
-	spl2->AddKnot(tmpPnt,4);  
-	tmpPnt.x =400.0; tmpPnt.z = 500.0; tmpPnt.y = 0.0;  
-	spl2->AddKnot(tmpPnt,5);  
+	//////tmpPnt.x = 100.0; tmpPnt.z = -300.0; tmpPnt.y = 0.0;  
+	//////spl2->AddKnot(tmpPnt,0);
+	//////tmpPnt.x = 300.0; tmpPnt.z = -200.0; tmpPnt.y = 0.0;  
+	//////spl2->AddKnot(tmpPnt,1);  
+	//////tmpPnt.x = 200.0; tmpPnt.z = -100.0; tmpPnt.y = 0.0;  
+	//////spl2->AddKnot(tmpPnt,2);  
+	//////tmpPnt.x = 300.0; tmpPnt.z = 100.0; tmpPnt.y = 0.0;  
+	//////spl2->AddKnot(tmpPnt,3);  
+	//////tmpPnt.x = 200.0; tmpPnt.z = 400.0; tmpPnt.y = 0.0;  
+	//////spl2->AddKnot(tmpPnt,4);  
+	//////tmpPnt.x =400.0; tmpPnt.z = 500.0; tmpPnt.y = 0.0;  
+	//////spl2->AddKnot(tmpPnt,5);  
 
-	//tmpPnt.x = -40; tmpPnt.z = 50; tmpPnt.y = 0.0;  
-	//spl2->AddKnot(tmpPnt,0);
-	//tmpPnt.x = 40; tmpPnt.z = 50; tmpPnt.y = 0.0; 
-	//spl2->AddKnot(tmpPnt,1);
-	//tmpPnt.x = 50; tmpPnt.z = 0; tmpPnt.y = 0.0;
-	//spl2->AddKnot(tmpPnt,2);
+	////tmpPnt.x = -40; tmpPnt.z = 50; tmpPnt.y = 0.0;  
+	////spl2->AddKnot(tmpPnt,0);
+	////tmpPnt.x = 40; tmpPnt.z = 50; tmpPnt.y = 0.0; 
+	////spl2->AddKnot(tmpPnt,1);
+	////tmpPnt.x = 50; tmpPnt.z = 0; tmpPnt.y = 0.0;
+	////spl2->AddKnot(tmpPnt,2);
 
+	sgCObject*  cont_objcts[4];
+	tmpPnt.x = -40; tmpPnt.z = 50; tmpPnt.y = 0.0;  
+	tmpPnt2.x = 40; tmpPnt2.z = 50; tmpPnt2.y = 0.0; 
+	cont_objcts[0] = sgCreateLine(tmpPnt.x, tmpPnt.y, tmpPnt.z, tmpPnt2.x, tmpPnt2.y, tmpPnt2.z);
+
+	tmpPnt.x = 40; tmpPnt.z = 50; tmpPnt.y = 0.0; 
+	tmpPnt2.x = 50; tmpPnt2.z = 0; tmpPnt2.y = 0.0;
+	cont_objcts[1] = sgCreateLine(tmpPnt.x, tmpPnt.y, tmpPnt.z, tmpPnt2.x, tmpPnt2.y, tmpPnt2.z);
+
+	tmpPnt.x = 50; tmpPnt.z = 0; tmpPnt.y = 0.0;
+	tmpPnt2.x = -40; tmpPnt2.z = 50; tmpPnt2.y = 0.0;
+	cont_objcts[2] = sgCreateLine(tmpPnt.x, tmpPnt.y, tmpPnt.z, tmpPnt2.x, tmpPnt2.y, tmpPnt2.z);
+
+	sgCContour* win_cont = sgCContour::CreateContour(cont_objcts, 3);
 
 
 	free(drawing);
 	//spl2->Close();  
 	sgCSpline* spl2_obj = sgCreateSpline(*spl2);  
 	SG_SPLINE::Delete(spl2);  
-	spl2_obj->SetAttribute(SG_OA_COLOR,12);  
-	spl2_obj->SetAttribute(SG_OA_LINE_THICKNESS, 2);
+	//spl2_obj->SetAttribute(SG_OA_COLOR,12);  
+	//spl2_obj->SetAttribute(SG_OA_LINE_THICKNESS, 2);
 
 	////extrude along vector
 	SG_VECTOR extVec = {0,-300,0};  
 
 	if (objectID == -1){
-		extrudedObject = (sgC3DObject*)sgKinematic::Extrude(*spl2_obj,NULL,0,extVec,true);
+		extrudedObject = (sgC3DObject*)sgKinematic::Extrude(*win_cont,NULL,0,extVec,true);
 	}else{
 		free(extrudedObject);
-		extrudedObject = (sgC3DObject*)sgKinematic::Extrude(*spl2_obj,NULL,0,extVec,true);
+		extrudedObject = (sgC3DObject*)sgKinematic::Extrude(*win_cont,NULL,0,extVec,true);
 	}
 
 	extrudedObject->SetAttribute(SG_OA_COLOR,30);  

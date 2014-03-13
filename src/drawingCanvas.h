@@ -24,8 +24,11 @@ public:
 	int height;
 
 	ofPolyline *myPolyline;
+	ofPolyline *myPolyline2;
 	ofVec2f lastMouse;
+	ofVec2f firstMouse;
 	void makeLine(ofVec2f mouse);
+	ofPolyline* getPolyline();
 };
 
 #endif /* defined(__TdrawingCanvas__drawingCanvas__) */

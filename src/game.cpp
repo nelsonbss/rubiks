@@ -848,7 +848,7 @@ void game::guiInput(int in){
 		if(in == 'e') {
 			//take drawing data
 			//make extruded object
-			extrudeObject(myCanvas->myPolyline);
+			extrudeObject(myCanvas->getPolyline());
 		}else if(in == 's'){
 			ofPolyline *draw =  new ofPolyline();
 			//pentagon
@@ -925,6 +925,7 @@ void game::guiInput(int in){
 }
 //----------------------------------------------------------------------
 void game::extrudeObject(ofPolyline *drawing){
+	//this functino extrudes the input ofPolylne
 
 	vector< ofPoint > points = drawing->getVertices();
 

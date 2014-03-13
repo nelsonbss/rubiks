@@ -7,6 +7,7 @@ drawingCanvas::drawingCanvas(ofVec3f posCanvasi, int widthi, int heighti){
 	height = heighti;
 
 	myPolyline = new ofPolyline();
+	myPolyline2 = new ofPolyline();
 }
 //--------------------------------------------------------------
 void drawingCanvas::setup(){
@@ -17,9 +18,10 @@ void drawingCanvas::update(){
 //--------------------------------------------------------------
 void drawingCanvas::draw(){  
 	//glPushMatrix();
-	ofFill();
-	ofSetColor(ofColor(255,255,0));
-	//ofBox(posCanvas.x,posCanvas.y,posCanvas.z,width,height,0);
+	ofNoFill();
+	ofSetColor(ofColor(0,0,0));
+	//the coordinates for this box are from the center!!!! not the left/up corner!!!
+	ofBox(posCanvas.x,posCanvas.y,posCanvas.z,width,height,0);
 	ofSetColor(ofColor(255,0,0));
 	myPolyline->draw();
 
@@ -29,17 +31,29 @@ void drawingCanvas::draw(){
 void drawingCanvas::makeLine(ofVec2f mouse){
 	if(mouse.distance(lastMouse) > 5){
 		myPolyline->addVertex(mouse);
+		//fix offset of point since they are in in the "middle" of the screen
+		//they have to be where the slicing takes place
+		myPolyline2->addVertex(ofVec2f(mouse.x-posCanvas.x,mouse.y-posCanvas.y));
 	}
+}
+//--------------------------------------------------------------
+ofPolyline* drawingCanvas::getPolyline(){
+		return myPolyline2;
 }
 //--------------------------------------------------------------
 void drawingCanvas::exit(){
 	free(myPolyline);
+	free(myPolyline2);
 }
 //--------------------------------------------------------------
 void drawingCanvas::mouseDragged(int x, int y, int button){
-	ofVec2f mouse(x,y);
-	makeLine(mouse);
-	lastMouse = mouse;
+	if((posCanvas.x-(width/2) < x) && (x < posCanvas.x+(width/2))){
+		if((posCanvas.y-(height/2) < y) && (y < posCanvas.y+(height/2))){
+			ofVec2f mouse(x,y);
+			makeLine(mouse);
+			lastMouse = mouse;
+		}
+	}
 }
 //--------------------------------------------------------------
 void drawingCanvas::mousePressed(int x, int y, int button){
@@ -47,11 +61,16 @@ void drawingCanvas::mousePressed(int x, int y, int button){
 	if((posCanvas.x-(width/2) < x) && (x < posCanvas.x+(width/2))){
 		if((posCanvas.y-(height/2) < y) && (y < posCanvas.y+(height/2))){
 			lastMouse = ofVec2f(x,y);
+			firstMouse = lastMouse;
 			myPolyline->addVertex(lastMouse);
+			myPolyline2->addVertex(ofVec2f(lastMouse.x-posCanvas.x,lastMouse.y-posCanvas.y));
 		}
 	}
 }
 //--------------------------------------------------------------
 void drawingCanvas::mouseReleased(int x, int y, int button){
-	myPolyline->close();
+	//add last point
+	myPolyline->addVertex(firstMouse);
+	myPolyline2->addVertex(ofVec2f(firstMouse.x-posCanvas.x,firstMouse.y-posCanvas.y));
+	//myPolyline->close();
 }

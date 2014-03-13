@@ -854,14 +854,6 @@ void game::guiInput(int in){
 			}
 		}else if(in == 's'){
 			ofPolyline *draw =  new ofPolyline();
-			//pentagon
-			//draw->addVertex(ofVec2f(-40,50));
-			//draw->addVertex(ofVec2f(40,50));
-			//draw->addVertex(ofVec2f(50,0));
-			//draw->addVertex(ofVec2f(0,-50));
-			//draw->addVertex(ofVec2f(-50,0));
-			//draw->addVertex(ofVec2f(-40,50));
-
 			//star
 			draw->addVertex(ofVec2f(-5,-210));
 			draw->addVertex(ofVec2f(60,-60));

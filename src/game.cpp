@@ -978,6 +978,10 @@ void game::restart(){
 		step = 0;
 		objectID = -1;
 	}
+	else if (step==6){
+		step = 0;
+		objectID = -1;
+	}
 	offsetSlicer.x = 0;
 	offsetSlicer.y = 0;
 	offsetSlicer.z = 0;

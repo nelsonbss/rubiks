@@ -23,14 +23,17 @@ public:
 	int width;
 	int height;
 
-	ofPolyline *myPolyline;
-	ofPolyline *myPolyline2;
+	ofPolyline *myPolyline;//the user sees
+	ofPolyline *myPolyline2;//its on the slicing position
 	bool poly2exists;
 	bool drawingExists();
+	bool closed;
 	ofVec2f lastMouse;
 	ofVec2f firstMouse;
 	void makeLine(ofVec2f mouse);
 	ofPolyline* getPolyline();
+
+	bool intersection(ofVec2f line1A,ofVec2f line1B,ofVec2f line2A,ofVec2f line2B);
 };
 
 #endif /* defined(__TdrawingCanvas__drawingCanvas__) */

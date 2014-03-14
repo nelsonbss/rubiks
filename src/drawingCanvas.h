@@ -33,7 +33,8 @@ public:
 	void makeLine(ofVec2f mouse);
 	ofPolyline* getPolyline();
 
-	bool intersection(ofVec2f line1A,ofVec2f line1B,ofVec2f line2A,ofVec2f line2B);
+	int intersection(ofVec2f line1A,ofVec2f line1B,ofVec2f line2A,ofVec2f line2B);
+	bool same_sign(float a, float b);
 };
 
 #endif /* defined(__TdrawingCanvas__drawingCanvas__) */

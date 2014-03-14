@@ -39,16 +39,16 @@ void drawingCanvas::makeLine(ofVec2f mouse){
 	if(mouse.distance(lastMouse) > 3){
 		//check for intersection first!!
 		if(size > 10){
-			//chekk lines on the ofPolyline
+			//check lines on the ofPolyline
 			for(int i=0; i< myPolyline->size()-1; i ++){
 				//only check if line is close to mouse
-				if((mouse.distance(points[i]) > 6) || (mouse.distance(points[i+1]) > 6) ){
+				//if((mouse.distance(points[i]) < 6) || (mouse.distance(points[i+1]) < 6) ){
 					intersect = intersection(points[i],points[i+1],lastMouse,mouse);
 					if(intersect){
 						//intersection found
 						i = myPolyline->size();//escape for loop
 					}
-				}
+				//}
 			}
 		}
 		if(!intersect){

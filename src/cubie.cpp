@@ -426,7 +426,7 @@ float cubie::getDistanceByVertex(ofVec3f _pos){
 }
 
 float cubie::getDistanceByCentroid(ofVec3f _pos){
-	return centroid3d.distance(_pos);
+	return centroid2d.distance(_pos);
 }
 
 bool cubie::getRotate(){

@@ -11,17 +11,14 @@
 #include "ofxAssimpModelLoader.h"
 #include "history.h"
 #include "armRotations.h"
-#include "ofxTrackball.h"
 #include "Observer.h"
 #include "SubObEvent.h"
 #include "SubObMediator.h"
-
-
 #include <vector>
 
 class game : public Observer{
 public:
-	game(SG_VECTOR p, float w, float h, SG_VECTOR puzzlePos);
+	game(SG_VECTOR p, float w, float h, SG_VECTOR puzzlePos, float iddleTime);
 
 	void setup(sgCObject *sgBunnyi,sgCObject *sgTetrahedroni,sgCObject *sgDodecahedroni,sgCObject *sgIcosahedroni,sgCObject *sgOctahedroni);//,sgCObject *sgTeapoti);
 	void update();
@@ -34,6 +31,7 @@ public:
 	float width;
 	float height;
 
+	SG_VECTOR slicingPos;  //where it gets sliced
 	myobject3D *objectDisplayed;
 	cutter *myCutter;
 	slicer *mySlicer;
@@ -83,11 +81,6 @@ public:
 	/////////////////////////////move all puzzle: every cubbie moves the same way
 	SG_VECTOR posP;
 	void moveP (SG_VECTOR p);
-	/////////////////////////////rotate all puzzle
-	///trackball
-	ofxTrackball *myTB;
-	/*SG_VECTOR rotP;
-	void rotateP(SG_VECTOR r);*/
 
 	////////////////armature offset
 	//offset vars
@@ -132,16 +125,26 @@ public:
 	bool rotateB;
 	void guiInput(int in);
 
-
-
-	///////////////////  new puzzle trackball
+	///////////////////  puzzle trackball
 	ofVec3f axistb;
-		float angle;
+	float angle;
 	//current state of the rotation
 	ofQuaternion curRot;
 	//a place to store the mouse position so we can measure incremental change
 	ofVec2f lastMouse;
 	void mouseDragged(int x, int y, int button);
 	void mousePressed(int x, int y, int button);
+
+	///////interaction with puzzles on the center
+	void loadPuzzle(int puzzleMenuObject); //load a puzzle from the puzzle menu on the center
+
+	//inactive state timer
+	int goToAttractStepI;
+	int goToAttractStepS;
+	float iddleTimer;
+
+	//object extrusion
+	void extrudeObject();
+	sgC3DObject* extrudedObject;
 };
 #endif /* defined(__Tgame__game__) */

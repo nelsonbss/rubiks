@@ -5,6 +5,7 @@
 #define displayX 500
 #define displayY 400
 #define displayZ -400
+#define iddleTime 100
 
 std::map<int,gwc::Point> active_points;
 
@@ -49,14 +50,12 @@ void testApp::setup(){
 	//////////////////////////////one game for now
 	SG_VECTOR gamePos = {0,0,0}; //one game created at the origin // this will have to change for a game creating function when more stations are anabled
 	SG_VECTOR displayPos = {ofGetWidth() / 2, ofGetHeight() / 2,displayZ};
-	game *tempGame = new game(gamePos, ofGetWidth(), ofGetHeight(),displayPos);
+	game *tempGame = new game(gamePos, ofGetWidth(), ofGetHeight(),displayPos,iddleTime);
 	myGames.push_back(tempGame);
 	currentGame = 1;
 	//create a second game
-	/*
-	game *tempGame2 = new game(gamePos, ofGetWidth(), ofGetHeight(),displayPos);
-	myGames.push_back(tempGame2);
-	*/
+	//game *tempGame2 = new game(gamePos, ofGetWidth(), ofGetHeight(),displayPos,iddleTime);
+	//myGames.push_back(tempGame2);
 	///////////////////////////////setup games
 	for(int i = 0; i < myGames.size(); i++){
 		myGames[i]->setup(sgBunny->Clone(),sgTetrahedron->Clone(),sgDodecahedron->Clone(),sgIcosahedron->Clone(),sgOctahedron->Clone());//,sgTeapot->Clone());
@@ -148,16 +147,29 @@ void testApp::draw(){
 	for(int i = 0; i < myGames.size(); i++){
 		int gStep=0;
 		//get current step of game
-		gStep = myGames[0]->getCurrentStep();
-		if(gStep == 0){
+		gStep = myGames[i]->getCurrentStep();
+
+		if(gStep == -1){
+			//standby mode
+			//showing attract / inactive banner
+			ofDrawBitmapString("Press anything to begin" + ofToString("") +"\n",20, 20);
+			//waiting for any touch event to begin
+			//to go to step 0
+		}
+		else if(gStep == 0){
 			//waiting for object to be selected from menu //drag behavior
 			//show object menu
-			ofDrawBitmapString("SELECT AN OBJECT:" + ofToString("") +"\n" + "torus "+ofToString(1)+"\n"+ "box "+ofToString(2)+"\n"+ "cone "+ofToString(3)+"\n",20, 20);
+			ofDrawBitmapString("SELECT AN OBJECT from MENU:" + ofToString("") +"\n" + "1 - 7: objects"+ofToString("")+"\n"+ "9 : extrusion"+ofToString("")+"\n",20, 20);
+			//show select object or drag gui graphic
+			ofDrawBitmapString("or drag a shape from above:" + ofToString("") +"\n",20, 80);
 		}else if(gStep == 1){
 			//an object has been selected
-			ofDrawBitmapString("SELECT AN OBJECT:" + ofToString("") +"\n" + "torus "+ofToString(1)+"\n"+ "box "+ofToString(2)+"\n"+ "cone "+ofToString(3)+"\n",20, 20);
+			//show object menu
+			ofDrawBitmapString("SELECT AN OBJECT from MENU:" + ofToString("") +"\n" + "1 - 7: objects"+ofToString("")+"\n"+ "9 : extrusion"+ofToString("")+"\n",20, 20);
+			//show select object or drag gui graphic
+			ofDrawBitmapString("or drag a shape from above:" + ofToString("") +"\n",20, 80);
 			//show next button.
-			ofDrawBitmapString("NEXT: press 'n' " + ofToString("") +"\n" ,20, 80);
+			ofDrawBitmapString("NEXT: press 'n' " + ofToString("") +"\n" ,20, 100);
 		}else if(gStep ==2){
 			//waiting for armature to be selected from menu //drag behavior
 			//show armature menu
@@ -191,6 +203,19 @@ void testApp::draw(){
 			ofDrawBitmapString("UNDO: press 'u' " + ofToString("") +"\n" ,20, 120);
 			//show restart button.
 			ofDrawBitmapString("RESTART: press 'r' " + ofToString("") +"\n" ,20, 140);
+		}else if(gStep == 6){
+			//create object by extrusion
+			ofDrawBitmapString("sSHOW DRAWING AREA!" +ofToString("")+"\n",20, 20);
+			//testing
+			ofDrawBitmapString("TEST: press 'e' to extrude: " + ofToString("") +"\n" ,20, 40);
+
+				//show object menu
+			ofDrawBitmapString("SELECT AN OBJECT from MENU:" + ofToString("") +"\n" + "1 - 7: objects"+ofToString("")+"\n"+ "9 : extrusion"+ofToString("")+"\n",20, 60);
+			//show select object or drag gui graphic
+			ofDrawBitmapString("or drag a shape from above:" + ofToString("") +"\n",20, 100);
+
+			//show restart button.
+			ofDrawBitmapString("RESTART: press 'r' " + ofToString("") +"\n" ,20, 120);//
 		}
 	}
 

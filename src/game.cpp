@@ -4,7 +4,6 @@
 #include "slicer.h"
 #include "cutter.h"
 #include "puzzle.h"
-#include "ofxTrackball.h"
 
 #include <vector>
 
@@ -12,10 +11,13 @@
 #define tamCutter 1000
 
 
-game::game(SG_VECTOR gamePos, float w, float h, SG_VECTOR displayPos){
+game::game(SG_VECTOR gamePos, float w, float h, SG_VECTOR displayPos, float iddleTime){
 	posGame = gamePos;
+	slicingPos = posGame;
 	width = w;
 	height = h;
+
+	iddleTimer = iddleTime;
 
 	posP.x = displayPos.x; //for the puzzle & sample object
 	posP.y = displayPos.y;
@@ -48,6 +50,8 @@ game::game(SG_VECTOR gamePos, float w, float h, SG_VECTOR displayPos){
 
 	SubObMediator::Instance()->addObserver("main-drag:2", this);
 	SubObMediator::Instance()->addObserver("main-drag-tap", this);
+
+	extrudedObject = NULL;
 }
 //--------------------------------------------------------------
 void game::setup(sgCObject *sgBunnyi,sgCObject *sgTetrahedroni,sgCObject *sgDodecahedroni,sgCObject *sgIcosahedroni,sgCObject *sgOctahedroni){//,sgCObject *sgTeapoti){
@@ -59,30 +63,34 @@ void game::setup(sgCObject *sgBunnyi,sgCObject *sgTetrahedroni,sgCObject *sgDode
 	sgOctahedron = sgOctahedroni;
 	//sgTeapot = sgTeapoti;
 
-	step = 0;
-	rotateB = true;
+	step = -1;
 	idcubie=0;
 
 	/////////////////////////////////////////PUZzLE //////////
 	updatePuzzle = false;
 	//
 	faceRotate = false;
-	faceRotateB = false;
-
-
+	faceRotateB = false;//used in the 2 id rotation function
 }
 //----------------------------------------------------------------------
 void game::update(){
 
+	if(step != -1){
+		/////take time sample to see if game has to go to standBy mode
+		goToAttractStepS = ofGetElapsedTimef();
+		if(goToAttractStepS - goToAttractStepI >= iddleTimer){
+			restart();
+			step = -1;
+		}
+	}
 	if(bHaveNewObject){
 		SG_VECTOR objectPos = {0,0,0};
 		loadObject(newObject, objectPos, posP);
 		bHaveNewObject = false;
 	}
-
 	if(step == 1 || step == 2 || step == 3){
 		//if there is an object selected
-		objectDisplayed->update(); //rotates the selected object...just for show
+		objectDisplayed->update();
 	}
 
 	//if(step == 3){
@@ -158,9 +166,15 @@ void game::update(string _eventName, SubObEvent* _event){
 }
 //----------------------------------------------------------------------
 void game::draw(){  
-	////////////////////////////////Draw the pieces////////////////////////////////////
+	////////////////////////////////Draw game steps////////////////////////////////////
+	if(step == -1){
+		//waiting for initializing touch
+	}
 	if(step == 0){
 		//is waiting for a shape to be selected
+		//object menuu is showing
+		//it can load an object from menu
+		//or from puzzle menu in the middle
 	}
 	if (step == 1){
 		//show selected object
@@ -179,9 +193,6 @@ void game::draw(){
 		objectDisplayed->draw();
 	}
 	if(step == 4 ){
-		//trackball
-		//myTB->draw();
-
 		//made the cuts
 		//show color palette
 		//show puzzle
@@ -197,9 +208,6 @@ void game::draw(){
 		ofPopMatrix();
 	}
 	if(step == 5){
-		//trackball
-		//myTB->draw();
-
 		//show puzzle
 		curRot.getRotate(angle, axistb);
 
@@ -207,12 +215,19 @@ void game::draw(){
 		ofTranslate(posP.x,posP.y,posP.z);
 		//new trackball
 		ofRotate(angle, axistb.x, axistb.y, axistb.z);
+
+
 		ofTranslate(-posP.x,-posP.y,-posP.z);
 		myPuzzle->draw();
 		ofPopMatrix();
 	}
+	if(step == 6){
+		//show drawing area
+		ofSetColor(ofColor(255,255,255));
+		ofRect(300,200,300,300);
 
-
+		//show build button to get drawing data
+	}
 }
 //----------------------------------------------------------------------
 void game::rotateByIDandAxis(int id, SG_VECTOR axs, bool d){
@@ -236,6 +251,9 @@ void game::rotateTwoIds(int cubieA, int cubieB,bool inside){
 	dir = true;
 }
 //----------------------------------------------------------------------
+void game::loadPuzzle(int puzzleMenuObject){
+} //load a puzzle from the puzzle menu on the center
+//----------------------------------------------------------------------
 void game::loadObject(int objID, SG_VECTOR p, SG_VECTOR t){
 	if (objectID == -1){
 		objectDisplayed = new myobject3D(p,t);
@@ -245,8 +263,7 @@ void game::loadObject(int objID, SG_VECTOR p, SG_VECTOR t){
 		objectDisplayed = new myobject3D(p,t);
 	}
 	objectID = objID;
-	if(step == 0 || step==1){
-
+	if(step == 0 || step==1 || step == 6){
 		if(objID == 1){
 			//torus
 			objectDisplayed->loadObject(sgCreateTorus(100,70,50,50),1);//(radius,thickness,meridiansDonut,meridiansDonutCut)
@@ -279,6 +296,10 @@ void game::loadObject(int objID, SG_VECTOR p, SG_VECTOR t){
 		//	//try to load the Teapot
 		//	objectDisplayed->loadObject((sgC3DObject *)sgTeapot->Clone(),8);
 		//}
+		if(objID == 200){
+			//load extruded object
+			objectDisplayed->loadObject((sgC3DObject *)extrudedObject->Clone(),200);
+		}
 		objectDisplayed->setup();
 		step = 1;
 	}
@@ -290,6 +311,9 @@ void game::loadObject(int objID, SG_VECTOR p, SG_VECTOR t){
 void game::loadArmature(int type){
 	//loads armature and creates cutter and slicer
 	//have to clear myArmature, to load the new one, like load objects!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	rotateSlicer.x=0;
+	rotateSlicer.y=0;
+	rotateSlicer.z=0;
 	if (armID == -1){
 		//first time
 		if(type == 1){
@@ -350,9 +374,6 @@ void game::createPuzzle(SG_VECTOR p){
 		///////////////////////////////  color puzzle   ////////////////////////////////// 
 		//color all the faces for platonic solids!! colors outside for most objects(not bunny), black on the insides
 		myPuzzle->colorFaces(objectID);
-
-		////////////////////////   give puzzle trackball  //////////////////////////////
-		//myTB = new ofxTrackball(ofGetWidth()/2, ofGetHeight()/2, 0, 2000, myPuzzle,false);
 
 		updatePuzzle = true;
 
@@ -429,41 +450,75 @@ void game::guiLoad(int _obj){
 
 //----------------------------------------------------------------------
 void game::guiInput(int in){
+
+	//any gui input resets reset timer
+	//start timer to go back to inactive state
+	if(step != -1){
+		goToAttractStepI =  ofGetElapsedTimef();
+	}
+
+	if(in == 'b'){
+		ofToggleFullscreen();
+	}
+
+	//////
+	if(step == -1){
+		//on attract / inactive state
+		step = 0;
+		goToAttractStepI =  ofGetElapsedTimef();
+	}
 	////////////////////////////////////////////step 0 inputs
 	////////////////////////////////////////////step 0 inputs
 	////////////////////////////////////////////step 0 inputs
-	if(step == 0){
-		SG_VECTOR objectPos = {0,0,0};  //where it gets sliced
-		//SG_VECTOR posP = {ofGetWidth() / 2,ofGetHeight() / 2,displayZ}; // where the temp object will be showed to user
+	else if(step == 0){
+		//waiting for an object to be selected
+		//it cam be from the shapes on the center
+		// or from the object menu on the side
+
+		////////////////////////////////////////////////////////
+		///////////from puzzles in the center
+		if(in == 'p'){
+			loadPuzzle(100);
+		}
+		if(in == 'o'){
+			loadPuzzle(101);
+		}
+		if(in == 'i'){
+			loadPuzzle(102);
+		}
+
+		////////////////////////////////////////////////////////
+		//////////////////object menu on the side
 		//waiting for shape to be selected
 		if(in == '1') {
 			//load object recieves (object id, boolean position, display position) 
-			loadObject(1,objectPos,posP);
+			loadObject(1,slicingPos,posP);
 		}
 		if(in == '2') {
-			loadObject(2,objectPos,posP);
+			loadObject(2,slicingPos,posP);
 		}
 		if(in == '3') {
-			loadObject(3,objectPos,posP);
+			loadObject(3,slicingPos,posP);
 		}
 		if(in == '4') {
-			loadObject(4,objectPos,posP);
+			loadObject(4,slicingPos,posP);
 		}
 		if(in == '5') {
-			loadObject(5,objectPos,posP);
+			loadObject(5,slicingPos,posP);
 		}
 		if(in == '6') {
-			loadObject(6,objectPos,posP);
+			loadObject(6,slicingPos,posP);
 		}
 		if(in == '7') { 
-			loadObject(7,objectPos,posP);
+			loadObject(7,slicingPos,posP);
 		}
 		//if(in == '8') { 
 		//	loadObject(8,objectPos,posP);
 		//}
-	}
-	if(in == 'b'){
-		ofToggleFullscreen();
+		if(in == '9') { 
+			/////extrusion
+			step = 6;
+		}
 	}
 	////////////////////////////////////////////step 1 inputs
 	////////////////////////////////////////////step 1 inputs
@@ -475,35 +530,50 @@ void game::guiInput(int in){
 			//go to step 2
 			setCurrentStep(2);
 			//show armature
-		} 
-		//user can change the selected object
-		SG_VECTOR objectPos = {0,0,0}; 
-		//waiting for shape to be selected
-		if(in == '1') {
-			//load object recieves (object id, boolean position, display position) 
-			loadObject(1,objectPos,posP); //pos.z its the torus radious
+		} else{
+			//user can change the selected object
+			if (objectID != -1){
+				objectDisplayed->exit();
+				delete objectDisplayed;
+				objectID = -1;
+			}
+			//waiting for shape to be selected
+			if(in == '1') {
+				//load object recieves (object id, boolean position, display position) 
+				loadObject(1,slicingPos,posP); //pos.z its the torus radious
+			}
+			if(in == '2') {
+				loadObject(2,slicingPos,posP);
+			}
+			if(in == '3') {
+				loadObject(3,slicingPos,posP);
+			}
+			if(in == '4') {
+				loadObject(4,slicingPos,posP);
+			}
+			if(in == '5') {
+				loadObject(5,slicingPos,posP);
+			}
+			if(in == '6') {
+				loadObject(6,slicingPos,posP);
+			}
+			if(in == '7') {
+				loadObject(7,slicingPos,posP);
+			}
+			/*if(in == '8') { 
+			loadObject(8,objectPos,posP);
+			}*/
+			if(in == '9') { 
+				if (objectID != -1){
+					objectDisplayed->exit();
+					delete objectDisplayed;
+					objectID = -1;
+				}
+				//extrusion
+				//go to show drawing area
+				step = 6;
+			}
 		}
-		if(in == '2') {
-			loadObject(2,objectPos,posP);
-		}
-		if(in == '3') {
-			loadObject(3,objectPos,posP);
-		}
-		if(in == '4') {
-			loadObject(4,objectPos,posP);
-		}
-		if(in == '5') {
-			loadObject(5,objectPos,posP);
-		}
-		if(in == '6') {
-			loadObject(6,objectPos,posP);
-		}
-		if(in == '7') {
-			loadObject(7,objectPos,posP);
-		}
-		/*if(in == '8') { 
-		loadObject(8,objectPos,posP);
-		}*/
 	}
 	////////////////////////////////////////////step 2 inputs
 	////////////////////////////////////////////step 2 inputs
@@ -746,6 +816,45 @@ void game::guiInput(int in){
 		//	rotateP(r);
 		//}
 		myPuzzle->keyInput(in);
+	}else if(step == 6){
+		//extrusion
+		if(in == 'e') {
+			//take drawing data
+			//make extruded object
+			extrudeObject();
+		}
+		////////////////////////////////////////////////////////
+		//////////////////object menu on the side
+		//waiting for shape to be selected
+		if(in == '1') {
+			//load object recieves (object id, boolean position, display position) 
+			loadObject(1,slicingPos,posP);
+		}
+		if(in == '2') {
+			loadObject(2,slicingPos,posP);
+		}
+		if(in == '3') {
+			loadObject(3,slicingPos,posP);
+		}
+		if(in == '4') {
+			loadObject(4,slicingPos,posP);
+		}
+		if(in == '5') {
+			loadObject(5,slicingPos,posP);
+		}
+		if(in == '6') {
+			loadObject(6,slicingPos,posP);
+		}
+		if(in == '7') { 
+			loadObject(7,slicingPos,posP);
+		}
+		//if(in == '8') { 
+		//	loadObject(8,objectPos,posP);
+		//}
+		if(in == '9') { 
+			/////extrusion
+			step = 6;
+		}
 	}
 
 	/////////////////////////////////////////////////////////////////
@@ -762,6 +871,55 @@ void game::guiInput(int in){
 	//		cout << "nu pieces " << mySlicer->countPieces() << endl;
 	//	}
 	//}
+}
+//----------------------------------------------------------------------
+void game::extrudeObject(){
+	SG_POINT tmpPnt;   
+	SG_SPLINE* spl2 = SG_SPLINE::Create();  
+	int fl=0;  
+
+	for (double i=0.0;i<2.0*3.14159265;i+=0.13)  {  
+		tmpPnt.x = ((double)(fl%3+2))*cos(i);  
+		tmpPnt.y = ((double)(fl%3+2))*sin(i);  
+		tmpPnt.z = 0.0;  
+		spl2->AddKnot(tmpPnt,fl);  
+		fl++;  
+	}  
+
+	spl2->Close();  
+	sgCSpline* spl2_obj = sgCreateSpline(*spl2);  
+	SG_SPLINE::Delete(spl2);  
+	spl2_obj->SetAttribute(SG_OA_COLOR,12);  
+	spl2_obj->SetAttribute(SG_OA_LINE_THICKNESS, 2);
+
+	SG_POINT   crCen = {0,0,0.0};  
+	SG_VECTOR  crNor;  
+	crNor.x = 0.0;  
+	crNor.y = 3.0;  
+	crNor.z = 0.0;
+	sgSpaceMath::NormalVector(crNor); 
+	SG_CIRCLE  crGeo;  
+	crGeo.FromCenterRadiusNormal( crCen, 300, crNor);  
+	sgCCircle* cr = sgCreateCircle(crGeo);   
+
+
+	////extrude along vector
+	SG_VECTOR extVec = {0,-300,0};  
+
+	if (objectID == -1){
+		extrudedObject = (sgC3DObject*)sgKinematic::Extrude((const sgC2DObject&)(*cr),NULL,0,extVec,true);
+	}else{
+		free(extrudedObject);
+		extrudedObject = (sgC3DObject*)sgKinematic::Extrude((const sgC2DObject&)(*cr),NULL,0,extVec,true);
+	}
+
+	extrudedObject->SetAttribute(SG_OA_COLOR,30);  
+	sgDeleteObject(spl2_obj);
+	sgDeleteObject(cr);
+
+	//we  have the sg3DObjcect to pass along to selectedObject
+	loadObject(200,slicingPos,posP);//using id=200
+
 }
 //----------------------------------------------------------------------
 void game::restart(){
@@ -792,6 +950,10 @@ void game::restart(){
 	rotateSlicer.z = 0;
 
 	curRot.set (ofVec4f(0,0,0,0));
+
+	if(extrudedObject != NULL){
+		sgDeleteObject(extrudedObject);
+	}
 }
 //----------------------------------------------------------------------
 void game::exit(){

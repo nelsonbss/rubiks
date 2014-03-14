@@ -5,7 +5,7 @@
 #define displayX 500
 #define displayY 400
 #define displayZ -400
-#define iddleTime 100
+#define iddleTime 120
 
 std::map<int,gwc::Point> active_points;
 
@@ -208,12 +208,10 @@ void testApp::draw(){
 			ofDrawBitmapString("sSHOW DRAWING AREA!" +ofToString("")+"\n",20, 20);
 			//testing
 			ofDrawBitmapString("TEST: press 'e' to extrude: " + ofToString("") +"\n" ,20, 40);
-
-				//show object menu
+			//show object menu
 			ofDrawBitmapString("SELECT AN OBJECT from MENU:" + ofToString("") +"\n" + "1 - 7: objects"+ofToString("")+"\n"+ "9 : extrusion"+ofToString("")+"\n",20, 60);
 			//show select object or drag gui graphic
 			ofDrawBitmapString("or drag a shape from above:" + ofToString("") +"\n",20, 100);
-
 			//show restart button.
 			ofDrawBitmapString("RESTART: press 'r' " + ofToString("") +"\n" ,20, 120);//
 		}
@@ -420,6 +418,7 @@ void testApp::mouseReleased(int x, int y, int button){
 		ev->addArg("touch-id", touchId + touchIdOffset);
 		SubObMediator::Instance()->sendEvent("remove-touch-point", ev);
 	}
+	myGames[0]->mouseReleased(x,y,button);
 }
 
 void testApp::updateMouseState(const char * _state, int _x, int _y, int _button){
@@ -517,7 +516,7 @@ void testApp::exit(){
 	sgDeleteObject(sgIcosahedron);
 	sgDeleteObject(sgOctahedron);
 	//sgDeleteObject(sgTeapot);
-	sgFreeKernel();
+	//sgFreeKernel();
 }
 //------------------------------------------------------------------------------
 void testApp::loadOBJfiles(){

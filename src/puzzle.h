@@ -26,7 +26,6 @@ public:
 	float numPieces;
 	cubie **myCubies; //malloc numPieces of these
 	ofVec3f cubiesOffset;
-	//ofVec3f cubiesOffrotate;
 
 	SG_VECTOR pos;
 	void move(SG_VECTOR p);
@@ -77,8 +76,6 @@ public:
 
 	bool bHaveActiveCubie;
 	int activeCubie;
-
-	void keyInput(int _key);
 
 	//   //current state of the rotation
 	//ofQuaternion curRot;

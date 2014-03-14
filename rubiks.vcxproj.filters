@@ -115,6 +115,7 @@
     <ClCompile Include="src\SceneManager.cpp">
       <Filter>src</Filter>
     </ClCompile>
+<<<<<<< HEAD
     <ClCompile Include="src\armRotations.cpp" />
     <ClCompile Include="src\game.cpp" />
     <ClCompile Include="src\history.cpp" />
@@ -138,6 +139,12 @@
       <Filter>src\subob</Filter>
     </ClCompile>
     <ClCompile Include="src\ofxTimer.cpp">
+=======
+    <ClCompile Include="src\ofxTrackball.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\drawingCanvas.cpp">
+>>>>>>> f9dcbbd578ecba31f64825c703ba59017e483f71
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
@@ -402,6 +409,7 @@
     <ClInclude Include="src\SceneManager.h">
       <Filter>src</Filter>
     </ClInclude>
+<<<<<<< HEAD
     <ClInclude Include="src\armRotations.h" />
     <ClInclude Include="src\game.h" />
     <ClInclude Include="src\history.h" />
@@ -425,6 +433,12 @@
       <Filter>src\subob</Filter>
     </ClInclude>
     <ClInclude Include="src\ofxTimer.h">
+=======
+    <ClInclude Include="src\ofxTrackball.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\drawingCanvas.h">
+>>>>>>> f9dcbbd578ecba31f64825c703ba59017e483f71
       <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>

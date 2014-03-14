@@ -1,7 +1,6 @@
 #ifndef __Tmatrix__matrix__
 #define __Tmatrix__matrix__
 
-#include "matrix.h"
 #include "sgCore.h"
 
 class matrix {

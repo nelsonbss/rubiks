@@ -15,7 +15,6 @@ puzzle::puzzle(SG_VECTOR p, ofVec3f offset) : GuiNode(){
 	myCubies = (cubie**)malloc(numPieces*sizeof(cubie*));
 
 	cubiesOffset = offset;
-	//cubiesOffrotate =  offRotate;
 
 	pos.x = p.x;
 	pos.y = p.y;
@@ -117,16 +116,12 @@ void puzzle::draw(){
 
 	ofPushMatrix();
 	ofTranslate(pos.x,pos.y,pos.z);
-	//rotate with data from trackBall
-	//ofRotate(qangle, qaxis.x,qaxis.y,qaxis.z);
-
 	//puzzle tells every cubie to attach objects to scene
 	for(int i=0;i<numPieces;i++){
 		if(myCubies[i] != NULL){
 			myCubies[i]->draw();
 		}
 	}
-
 	ofPopMatrix();
 	if(bDrawLine && bHaveLine){
 		ofSetColor(255,0,0);
@@ -248,7 +243,6 @@ bool puzzle::isMoving(){
 	return moving;
 }
 //---------------------------------------------------------------
-//----------------------------------------------------------------------
 int puzzle::rotateTwoIds(int cubieA, int cubieB,bool inside){
 	//receives two ids, from two cubies
 	//each cubie con do 6 possible moves
@@ -526,36 +520,6 @@ void puzzle::input(string _type, int _ID, int _n, int _phase, ofVec2f _absPos, o
 	}
 	cout << _phase << endl;
 }
-
-void puzzle::keyInput(int _key){
-	if(bHaveActiveCubie){
-		if(_key == '1'){
-			SG_VECTOR axis = {1,0,0};
-			rotateByIDandAxis(activeCubie,axis,true);
-		}
-		if(_key == '2'){
-			SG_VECTOR axis = {1,0,0};
-			rotateByIDandAxis(activeCubie,axis,false);
-		}
-		if(_key == '3'){
-			SG_VECTOR axis = {0,1,0};
-			rotateByIDandAxis(activeCubie,axis,true);
-		}
-		if(_key == '4'){
-			SG_VECTOR axis = {0,1,0};
-			rotateByIDandAxis(activeCubie,axis,false);
-		}
-		if(_key == '5'){
-			SG_VECTOR axis = {0,0,1};
-			rotateByIDandAxis(activeCubie,axis,true);
-		}
-		if(_key == '6'){
-			SG_VECTOR axis = {0,0,1};
-			rotateByIDandAxis(activeCubie,axis,false);
-		}
-	}
-}
-
 //----------------------------------------------------------------
 void puzzle::rearange3dArray(SG_VECTOR axis, int plane, bool dir){
 	//rearanges ids of cubies inside the 3d array

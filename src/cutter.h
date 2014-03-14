@@ -3,7 +3,6 @@
 
 #include "ofMain.h"
 #include "sgCore.h"
-#include "armRotations.h"
 
 class cutter {
 public:
@@ -109,10 +108,6 @@ public:
 	sgCObject  **cubes;
     sgCGroup *allCubes;
 	////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-	//cutter rotations vector
-	vector<armRotations> armRotH;
 
 };
 #endif /* defined(__Tcutter__cutter__) */

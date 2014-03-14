@@ -10,11 +10,10 @@
 #include "puzzle.h"
 #include "ofxAssimpModelLoader.h"
 #include "history.h"
-#include "armRotations.h"
 #include "Observer.h"
 #include "SubObEvent.h"
 #include "SubObMediator.h"
-#include <vector>
+#include "drawingCanvas.h"
 
 class game : public Observer{
 public:
@@ -119,7 +118,6 @@ public:
 
 	//armature rotation
 	void applyArmRotations();
-	//vector<armRotations> armRotH;
 
 	//gui communication
 	bool rotateB;
@@ -134,7 +132,7 @@ public:
 	ofVec2f lastMouse;
 	void mouseDragged(int x, int y, int button);
 	void mousePressed(int x, int y, int button);
-
+	void mouseReleased(int x, int y, int button);
 	///////interaction with puzzles on the center
 	void loadPuzzle(int puzzleMenuObject); //load a puzzle from the puzzle menu on the center
 
@@ -143,8 +141,17 @@ public:
 	int goToAttractStepS;
 	float iddleTimer;
 
+	//drawing canvas
+	ofVec3f posCanvas;
+	drawingCanvas *myCanvas;
+	bool canvasB;
+	void prepareDrawing();
+
 	//object extrusion
+	void clearDisplayedObject();
 	void extrudeObject();
+	void extrudeObject(ofPolyline *drawing);
 	sgC3DObject* extrudedObject;
+	bool extrudedB;
 };
 #endif /* defined(__Tgame__game__) */

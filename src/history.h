@@ -5,7 +5,7 @@
 #include "sgCore.h"
 
 class history {
-	
+	//to store cubie history of rotations
 public:
 	history(int idcubie, SG_VECTOR axis, bool di);
    

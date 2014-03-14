@@ -73,8 +73,9 @@ void myobject3D::update(){
 }
 //--------------------------------------------------------------
 void myobject3D::draw(){
+	
 	ofPushMatrix();
-	//ofScale(1.2,1.2,1.2);
+	//ofScale(1,1,1);
 	glMultMatrixd(temp->GetTempMatrix()->GetTransparentData());
 	temp->DestroyTempMatrix();
 	myVbo.draw(GL_TRIANGLES, 0,myMesh.getNumIndices());

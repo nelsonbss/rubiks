@@ -43,11 +43,11 @@ void drawingCanvas::makeLine(ofVec2f mouse){
 			for(int i=0; i< myPolyline->size()-1; i ++){
 				//only check if line is close to mouse
 				//if((mouse.distance(points[i]) < 6) || (mouse.distance(points[i+1]) < 6) ){
-					intersect = intersection(points[i],points[i+1],lastMouse,mouse);
-					if(intersect){
-						//intersection found
-						i = myPolyline->size();//escape for loop
-					}
+				//intersect = intersection(points[i],points[i+1],lastMouse,mouse);
+				//if(intersect){
+				//	//intersection found
+				//	i = myPolyline->size();//escape for loop
+				//}
 				//}
 			}
 		}
@@ -77,11 +77,13 @@ bool drawingCanvas::intersection(ofVec2f line1A,ofVec2f line1B,ofVec2f line2A,of
 }
 //--------------------------------------------------------------
 void drawingCanvas::mouseDragged(int x, int y, int button){
-	if((posCanvas.x-(width/2) < x) && (x < posCanvas.x+(width/2))){
-		if((posCanvas.y-(height/2) < y) && (y < posCanvas.y+(height/2))){
-			ofVec2f mouse(x,y);
-			makeLine(mouse);
-			lastMouse = mouse;
+	if(closed == false){
+		if((posCanvas.x-(width/2) < x) && (x < posCanvas.x+(width/2))){
+			if((posCanvas.y-(height/2) < y) && (y < posCanvas.y+(height/2))){
+				ofVec2f mouse(x,y);
+				makeLine(mouse);
+				lastMouse = mouse;
+			}
 		}
 	}
 }

@@ -31,27 +31,11 @@ void drawingCanvas::draw(){
 }
 //--------------------------------------------------------------
 void drawingCanvas::makeLine(ofVec2f mouse){
-	if(mouse.distance(lastMouse) > 5){
+	if(mouse.distance(lastMouse) > 3){
 		myPolyline->addVertex(mouse);
 		//fix offset of point since they are in in the "middle" of the screen
 		//they have to be where the slicing takes place
 		myPolyline2->addVertex(ofVec2f(mouse.x-posCanvas.x,mouse.y-posCanvas.y));
-	}
-}
-//--------------------------------------------------------------
-ofPolyline* drawingCanvas::getPolyline(){
-	poly2exists = false;
-	return myPolyline2;
-}
-//--------------------------------------------------------------
-bool drawingCanvas::drawingExists(){
-	return poly2exists;
-}
-//--------------------------------------------------------------
-void drawingCanvas::exit(){
-	free(myPolyline);
-	if(poly2exists){
-	free(myPolyline2);
 	}
 }
 //--------------------------------------------------------------
@@ -83,4 +67,20 @@ void drawingCanvas::mouseReleased(int x, int y, int button){
 	myPolyline->addVertex(firstMouse);
 	myPolyline2->addVertex(ofVec2f(firstMouse.x-posCanvas.x,firstMouse.y-posCanvas.y));
 	//myPolyline->close();
+}
+//--------------------------------------------------------------
+ofPolyline* drawingCanvas::getPolyline(){
+	poly2exists = false;
+	return myPolyline2;
+}
+//--------------------------------------------------------------
+bool drawingCanvas::drawingExists(){
+	return poly2exists;
+}
+//--------------------------------------------------------------
+void drawingCanvas::exit(){
+	free(myPolyline);
+	if(poly2exists){
+	free(myPolyline2);
+	}
 }

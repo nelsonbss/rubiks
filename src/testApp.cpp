@@ -264,7 +264,7 @@ void testApp::exit(){
 	sgDeleteObject(sgIcosahedron);
 	sgDeleteObject(sgOctahedron);
 	//sgDeleteObject(sgTeapot);
-	//sgFreeKernel();
+	sgFreeKernel();
 }
 //------------------------------------------------------------------------------
 void testApp::loadOBJfiles(){

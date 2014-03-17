@@ -913,11 +913,11 @@ bool game::extrudeObject(ofPolyline *drawing){
 		//abort!!!
 		//for now
 		extrudedB = false;
-		////clear ofpolylines!!!
-		//myCanvas->myPolyline->clear();
-		//free(myCanvas->myPolyline);
-		//myCanvas->myPolyline2->clear();
-		//free(drawing);
+		//clear ofpolylines!!!
+		myCanvas->myPolyline->clear();
+		free(myCanvas->myPolyline);
+		myCanvas->myPolyline2->clear();
+		free(drawing);
 		sgDeleteObject(win_cont);
 		return false;
 	}else{
@@ -1004,8 +1004,8 @@ void game::clearDisplayedObject(){
 //----------------------------------------------------------------------
 void game::restart(){
 	if(step == 6){
-		myCanvas->exit();
 		if(canvasB){
+			myCanvas->exit();
 			delete myCanvas;
 			canvasB = false;
 		}
@@ -1028,8 +1028,8 @@ void game::restart(){
 		objectDisplayed->exit();
 		step = 0;
 		objectID = -1;
-		myCanvas->exit();
 		if(canvasB){
+			myCanvas->exit();
 			delete myCanvas;
 			canvasB = false;
 		}

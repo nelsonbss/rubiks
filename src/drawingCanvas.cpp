@@ -12,6 +12,8 @@ drawingCanvas::drawingCanvas(ofVec3f posCanvasi, int widthi, int heighti){
 	poly2exists = false;
 	closed = false;
 	drawDummy = false;
+
+	//myCanvasImage.loadImage("drawingGrid.png");
 }
 //--------------------------------------------------------------
 void drawingCanvas::setup(){
@@ -28,11 +30,16 @@ void drawingCanvas::draw(){
 	ofSetLineWidth(2);
 	//the coordinates for this box are from the center!!!! not the left/up corner!!!
 	ofBox(posCanvas.x,posCanvas.y,posCanvas.z,width,height,0);
+
+	//ofDisableDepthTest();
+	//myCanvasImage.draw(posCanvas.x-width/2,posCanvas.y-height/2,posCanvas.z,width,height);
+	//ofEnableDepthTest();
+
 	ofFill();
-	ofSetColor(ofColor(255,0,0));
+	ofSetColor(ofColor(0,255,0,255));
 	myPolyline->draw();
 	if(drawDummy){
-		ofSetColor(ofColor(255,0,0));
+		ofSetColor(ofColor(255,255,255,255));
 		ofSetLineWidth(5);
 		myDummyLine->draw();
 
@@ -270,4 +277,5 @@ void drawingCanvas::exit(){
 	if(poly2exists){
 		free(myPolyline2);
 	}
+	//myCanvasImage.clear();
 }

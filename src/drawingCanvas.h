@@ -23,6 +23,8 @@ public:
 	int width;
 	int height;
 
+	//ofImage myCanvasImage; //DrawingGrid_555x35.png
+
 	ofPolyline *myPolyline;//the user sees
 	ofPolyline *myPolyline2;//its on the slicing position
 	ofPolyline *myDummyLine;

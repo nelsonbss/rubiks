@@ -817,7 +817,11 @@ void game::guiInput(int in){
 			//check for existing drawing
 			if(myCanvas->drawingExists()){
 				//make extruded object
-				extrudeObject(myCanvas->getPolyline());
+				if(extrudeObject(myCanvas->getPolyline())){
+
+				}else{
+					prepareDrawing();
+				}
 			}
 		}else if(in == 's'){
 			ofPolyline *draw =  new ofPolyline();
@@ -886,12 +890,12 @@ void game::guiInput(int in){
 	}
 }
 //----------------------------------------------------------------------
-void game::extrudeObject(ofPolyline *drawing){
+bool game::extrudeObject(ofPolyline *drawing){
 	//this functino extrudes the input ofPolylne
 
 	vector< ofPoint > points = drawing->getVertices();
 
-	sgCObject*  cont_objcts[2000];
+	sgCObject*  cont_objcts[2000];///////////////////////////////////////////////////////////////////////////////clean this memeory!!!
 	for (int i =0; i < points.size() ; i ++)  {
 		if(i!= points.size()-1){
 			cont_objcts[i] = sgCreateLine(points[i].x, 0, points[i].y,points[i+1].x, 0, points[i+1].y);
@@ -909,11 +913,13 @@ void game::extrudeObject(ofPolyline *drawing){
 		//abort!!!
 		//for now
 		extrudedB = false;
-		//clear ofpolylines!!!
-		myCanvas->myPolyline->clear();
-		free(myCanvas->myPolyline);
-		myCanvas->myPolyline2->clear();
-		free(drawing);
+		////clear ofpolylines!!!
+		//myCanvas->myPolyline->clear();
+		//free(myCanvas->myPolyline);
+		//myCanvas->myPolyline2->clear();
+		//free(drawing);
+		sgDeleteObject(win_cont);
+		return false;
 	}else{
 		////extrude along vector
 		SG_VECTOR extVec = {0,-300,0};  
@@ -929,11 +935,10 @@ void game::extrudeObject(ofPolyline *drawing){
 		loadObject(200,slicingPos,posP);//using id=200
 
 		free(drawing);
+		sgDeleteObject(win_cont);
+		return true;
 	}
-
-	sgDeleteObject(win_cont);
 	////////free(cont_objcts);
-
 }
 //----------------------------------------------------------------------
 void game::extrudeObject(){

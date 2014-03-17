@@ -137,7 +137,7 @@ public:
 	//object extrusion
 	void clearDisplayedObject();
 	void extrudeObject();
-	void extrudeObject(ofPolyline *drawing);
+	bool extrudeObject(ofPolyline *drawing);
 	sgC3DObject* extrudedObject;
 	bool extrudedB;
 };

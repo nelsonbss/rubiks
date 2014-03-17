@@ -37,6 +37,8 @@ public:
 	int intersection(ofVec2f line1A,ofVec2f line1B,ofVec2f line2A,ofVec2f line2B);
 	bool same_sign(float a, float b);
 	bool drawDummy;
+	ofVec2f dummyA;
+	ofVec2f dummyB;
 };
 
 #endif /* defined(__TdrawingCanvas__drawingCanvas__) */

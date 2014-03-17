@@ -114,7 +114,7 @@ void game::update(){
 			//updatePuzzle = false;
 			if(faceRotateB == true) {
 				int ans = myPuzzle->rotateTwoIds(idcubieA,idcubieB,dir);
-
+				//ans has encripted the axis and the direction 10-x 20-y 30-z 1 or 0 direction
 				//put this move on the game history vector
 				//undo will look for the other 9 cubies involved and do a pop x2 on their history
 				if(ans/10 == 1){
@@ -199,40 +199,7 @@ void game::draw(){
 	}
 	if(step == 6){
 		//show drawing area
-
 		myCanvas->draw();
-
-
-		//////////////////////ofPolyline *draw =  new ofPolyline();
-
-		//////////////////////ofPushMatrix();
-		//////////////////////ofTranslate(posP.x,posP.y,posP.z);
-		////////////////////////pentagon
-		////////////////////////draw->addVertex(ofVec2f(-40,50));
-		////////////////////////draw->addVertex(ofVec2f(40,50));
-		////////////////////////draw->addVertex(ofVec2f(50,0));
-		////////////////////////draw->addVertex(ofVec2f(0,-50));
-		////////////////////////draw->addVertex(ofVec2f(-50,0));
-		////////////////////////draw->addVertex(ofVec2f(-40,50));
-
-		////////////////////////star
-		//////////////////////draw->addVertex(ofVec2f(-5,-210));
-		//////////////////////draw->addVertex(ofVec2f(60,-60));
-		//////////////////////draw->addVertex(ofVec2f(210,-45));
-		//////////////////////draw->addVertex(ofVec2f(105,60));
-		//////////////////////draw->addVertex(ofVec2f(150,210));
-		//////////////////////draw->addVertex(ofVec2f(-5,135));
-		//////////////////////draw->addVertex(ofVec2f(-150,210));
-		//////////////////////draw->addVertex(ofVec2f(-105,60));
-		//////////////////////draw->addVertex(ofVec2f(-210,-45));
-		//////////////////////draw->addVertex(ofVec2f(-60,-60));
-		//////////////////////draw->addVertex(ofVec2f(-5,-210));
-
-		////////////////////////draw->close(); // close the shape
-		//////////////////////draw->draw();
-		//////////////////////ofPopMatrix();
-
-		//show build button to get drawing data
 	}
 }
 //----------------------------------------------------------------------
@@ -941,6 +908,12 @@ void game::extrudeObject(ofPolyline *drawing){
 		//its self intersecting
 		//abort!!!
 		//for now
+		extrudedB = false;
+		//clear ofpolylines!!!
+		myCanvas->myPolyline->clear();
+		free(myCanvas->myPolyline);
+		myCanvas->myPolyline2->clear();
+		free(drawing);
 	}else{
 		////extrude along vector
 		SG_VECTOR extVec = {0,-300,0};  
@@ -954,10 +927,11 @@ void game::extrudeObject(ofPolyline *drawing){
 		extrudedB = true;
 		//we  have the sg3DObjcect to load
 		loadObject(200,slicingPos,posP);//using id=200
+
+		free(drawing);
 	}
 
 	sgDeleteObject(win_cont);
-	free(drawing);
 	////////free(cont_objcts);
 
 }

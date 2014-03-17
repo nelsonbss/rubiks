@@ -24,16 +24,19 @@ void drawingCanvas::draw(){
 
 	//glPushMatrix();
 	ofNoFill();
-	ofSetColor(ofColor(0,0,0));
+	ofSetColor(ofColor(1,0,0));
 	ofSetLineWidth(2);
 	//the coordinates for this box are from the center!!!! not the left/up corner!!!
 	ofBox(posCanvas.x,posCanvas.y,posCanvas.z,width,height,0);
+	ofFill();
 	ofSetColor(ofColor(255,0,0));
 	myPolyline->draw();
 	if(drawDummy){
-		ofSetColor(ofColor(1,0,0));
-		ofSetLineWidth(4);
+		ofSetColor(ofColor(255,0,0));
+		ofSetLineWidth(5);
 		myDummyLine->draw();
+
+		//ofLine(dummyA,dummyB);
 	}
 	//glPopMatrix();
 
@@ -51,11 +54,15 @@ void drawingCanvas::makeLine(ofVec2f mouse){
 			if(drawDummy==false){
 				for(int i=0; i< myPolyline->size()-2; i ++){
 					//only check if line is close to mouse
-					intersect = intersection(points[i],points[i+1],lastMouse,mouse);
-					if(intersect == 2){
-						//intersection found
-						i = myPolyline->size();//escape for loop
-					}
+					//if((points[i].x > mouse.x-6) && (points[i].x < mouse.x+6)){
+					//	if((points[i].y > mouse.y-6) && (points[i].y < mouse.y+6)){
+							intersect = intersection(points[i],points[i+1],lastMouse,mouse);
+							if(intersect == 2){
+								//intersection found
+								i = myPolyline->size();//escape for loop
+							}
+					//	}
+					//}
 				}
 				if(intersect == 0){
 					//no intersection
@@ -71,6 +78,9 @@ void drawingCanvas::makeLine(ofVec2f mouse){
 					myDummyLine = new ofPolyline();//////////////////////////////////////////////////////////////remember to dlete this *memory
 					myDummyLine->addVertex(points[points.size()-1]);
 					myDummyLine->addVertex(mouse);
+
+					//dummyA = points[points.size()-1];
+					//dummyB = mouse;
 				}
 			}else{
 				//do comparison wih dummyline, until there is no intersection with dummy line, there is no more adition to the real polyline
@@ -91,6 +101,10 @@ void drawingCanvas::makeLine(ofVec2f mouse){
 					myDummyLine->clear();
 					myDummyLine->addVertex(points[points.size()-1]);
 					myDummyLine->addVertex(mouse);
+
+					//dummyA = points[points.size()-1];
+					//dummyB = mouse;
+
 				}else{
 					//no intersection
 					//return to real polyline

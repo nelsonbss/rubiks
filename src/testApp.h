@@ -70,4 +70,7 @@ public:
 	bool bSmoothLighting;
 	bool bPointLight, bSpotLight, bDirLight;
 	bool bUseTexture;
+
+	//middle puzzles
+	vector<puzzle*> middlePuzzles;
 };

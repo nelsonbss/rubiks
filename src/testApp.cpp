@@ -35,6 +35,40 @@ void testApp::setup(){
 	}
 
 	//rotate = true;
+
+
+	//////////////////////////////generate puzzles for middle area
+	////////////////////////////////create puzzle///////////////////////////////////////
+	////////////////////////////////create cutter
+	ofVec3f offsetSlicer = ofVec3f(0,0,0);
+	myCutter = new cutter(0.01,1000,100,1,offsetSlicer);		
+	myCutter->setup();
+	//////////////////////////////////create slicer
+	mySlicer = new slicer(myCutter);
+	mySlicer->setup();
+	//////////////////////////////////////////////////////
+	SG_VECTOR middlePuzzlePos = {200,100,0};
+	myPuzzle = new puzzle(middlePuzzlePos, offsetSlicer); // it receives the position to be displayed AND the offset of the armature/cutter to adapt slicing
+	myPuzzle->setup();
+
+	////boolean substraction//////////////////////////////////////////////////////////
+	//mySlicer->xSlicing(*mySlicer->myCutter,objectDisplayed->getObject(),1,1);
+	///////////////  BOOLEAN INTERSECTION          ///////////////////////////////////
+	SG_POINT slicingPos = {0,0,0};
+	objectDisplayed = new myobject3D(gamePos,displayPos);
+	objectDisplayed->loadObject(sgCreateBox(300,300,300),2);
+	mySlicer->intersectCubes((sgCObject*)objectDisplayed->getObject()); 
+
+	//now slicer has all the parts inside sgCGroup ** pieces[]
+	//it recieves the armature rotations to undo them and show the puzzle in an original possition
+	ofVec3f rotateSlicer = ofVec3f (0,0,0);
+	myPuzzle->loadPieces(mySlicer->getPieces(),101,rotateSlicer);
+	////////////////////////////////end create puzzle/////////////////////////////////
+
+	///////////////////////////////  color puzzle   ////////////////////////////////// 
+	//color all the faces for platonic solids!! colors outside for most objects(not bunny), black on the insides
+	myPuzzle->colorFaces(101);
+	middlePuzzles.push_back(myPuzzle);
 }
 //--------------------------------------------------------------
 void testApp::update(){
@@ -134,6 +168,11 @@ void testApp::draw(){
 	///////////////////////////////draw games
 	for(int i = 0; i < myGames.size(); i++){
 		myGames[0]->draw();
+	}
+
+	//middle puzzles
+	for(int i=0; i < middlePuzzles.size();i++){
+		middlePuzzles[i]->draw();
 	}
 
 	///////////////////END OF RENDERING////////////////////

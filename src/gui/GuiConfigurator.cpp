@@ -10,7 +10,10 @@ GuiConfigurator::GuiConfigurator(){
 	availableGestures.push_back("n-tap");
 	SubObMediator::Instance()->addObserver("touch-point",this);
 	SubObMediator::Instance()->addObserver("gesture",this);
+	SubObMediator::Instance()->addObserver("hide-node", this);
+	SubObMediator::Instance()->addObserver("unhide-node", this);
 	SubObMediator::Instance()->sendEvent("add-gesture-receiver",new SubObEvent());
+	setCurrentLanguage("english");
 }
 
 GuiConfigurator* GuiConfigurator::Instance(){
@@ -136,6 +139,14 @@ void GuiConfigurator::update(string _eventName, SubObEvent* _event){
 			}
 		}
 	}
+	if(_eventName == "hide-node"){
+		string target = _event->getArg("target")->getString();
+		activeNodes[target]->hide();
+	}
+	if(_eventName == "unhide-node"){
+		string target = _event->getArg("target")->getString();
+		activeNodes[target]->unhide();
+	}
 }
 
 void GuiConfigurator::getTags(){
@@ -202,6 +213,34 @@ void GuiConfigurator::loadGui(){
 	string main = mXML.getValue("main-sheet","attract");
 	loadSheets();
 	SceneManager::Instance()->pushSheet(sheets[main]);
+	loadText("assets.xml");
+}
+
+void GuiConfigurator::loadText(string _file){
+	mXML.loadFile(_file);
+	mXML.pushTag("texts");
+	int numTexts = mXML.getNumTags("text");
+	cout << "have " << numTexts << " texts" << endl;
+	for(int i = 0; i < numTexts; i++){
+		mXML.pushTag("text", i);
+		string name = mXML.getValue("name", "none");
+		cout << "loading string - " << name << endl;
+		if(name != "none"){
+			int numVals = mXML.getNumTags("value");
+			if(!texts.count(name)){
+				texts[name] = GuiText();
+			}
+			for(int j = 0; j < numVals; j++){
+				string lang = mXML.getAttribute("value", "language", "none", j);
+				string text = mXML.getValue("value", "none", j);
+				ofStringReplace(text, "\\n", "\n");
+				//string text = mXML.getAttribute("value", "val", "none", j);
+				texts[name].setText(lang, text);
+				cout << "loading text - " << text << endl;
+			}
+		}
+		mXML.popTag();
+	}
 }
 
 void GuiConfigurator::loadSheets(){
@@ -214,19 +253,26 @@ void GuiConfigurator::loadSheets(){
 		sheets[sheetName] = new GuiSheet();
 		sheets[sheetName]->setName(sheetName);
 		mXML.pushTag("sheet", i);
-		loadNodes(sheetName);
+		loadNodes(sheetName, NULL);
 		mXML.popTag();
 	}
 }
 
-void GuiConfigurator::loadNodes(string _sheetName){
+void GuiConfigurator::loadNodes(string _sheetName, GuiWindow* _win){
+	bool bSheet = true;
+	if(_win != NULL){
+		bSheet = false;
+	}
+	cout << "bSheet = " << bSheet << endl; 
 	int numNodes = mXML.getNumTags("node");
+	cout << "have " << numNodes << " nodes." << endl;
 	for(int i = 0; i < numNodes; i++){
 		string nodeName = mXML.getAttribute("node","name","none",i);
 		if(nodeName == "none"){
 			continue;
 		}
 		string nodeType = mXML.getAttribute("node","type","none",i);
+		cout << "have node of type - " << nodeType << endl;
 		if(nodeType == "none"){
 			continue;
 		}
@@ -237,6 +283,11 @@ void GuiConfigurator::loadNodes(string _sheetName){
 			nodePtr = new GuiIBox();
 		} else if (nodeType == "drop") {
 			nodePtr = new GuiDropArea();
+		} else if (nodeType == "window"){	
+			nodePtr = new GuiWindow();
+			mXML.pushTag("node",i);
+			loadNodes("",(GuiWindow*)nodePtr);
+			mXML.popTag();
 		} else {
 			continue;
 		}
@@ -254,7 +305,11 @@ void GuiConfigurator::loadNodes(string _sheetName){
 		loadParams(nodePtr);
 		loadEvents(nodePtr);
 		nodePtr->init();
-		sheets[_sheetName]->addNode(nodePtr);
+		if(bSheet){
+			sheets[_sheetName]->addNode(nodePtr);
+		} else {
+			_win->addNode(nodePtr);
+		}
 		mXML.popTag();
 	}
 }

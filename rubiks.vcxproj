@@ -109,6 +109,7 @@
     <ClCompile Include="src\gui\GuiImage.cpp" />
     <ClCompile Include="src\gui\GuiNode.cpp" />
     <ClCompile Include="src\gui\GuiSheet.cpp" />
+    <ClCompile Include="src\gui\GuiWindow.cpp" />
     <ClCompile Include="src\gui\Utils.cpp" />
     <ClCompile Include="src\gwc\GestureWorksCore.cpp" />
     <ClCompile Include="src\gwc\GWCUtils.cpp" />
@@ -158,6 +159,7 @@
     <ClInclude Include="src\gui\GuiImage.h" />
     <ClInclude Include="src\gui\GuiNode.h" />
     <ClInclude Include="src\gui\GuiSheet.h" />
+    <ClInclude Include="src\gui\GuiWindow.h" />
     <ClInclude Include="src\gui\Utils.h" />
     <ClInclude Include="src\gwc\GestureWorksCore.h" />
     <ClInclude Include="src\gwc\GWCUtils.h" />

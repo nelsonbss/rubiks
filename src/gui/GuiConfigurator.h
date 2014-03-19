@@ -9,6 +9,7 @@
 #include "GuiImage.h"
 #include "GuiIBox.h"
 #include "GuiDropArea.h"
+#include "GuiWindow.h"
 //#include "GuiScrubber.h"
 #include "GuiSheet.h"
 //#include "GuiMediaPreview.h"
@@ -21,6 +22,17 @@
 #include "Utils.h"
 
 class GuiCreator;
+
+class GuiText{
+	
+public:
+	GuiText(){}
+	void setText(string _lang, string _text){texts[_lang] = _text;}
+	string getText(string _lang){return texts[_lang];}
+
+private:
+	map<string, string> texts;
+};
 
 class GuiConfigurator : public Observer, public Subject{
 
@@ -53,10 +65,19 @@ public:
 	*/
 	void loadGui();
 	void loadSheets();
-	void loadNodes(string _sheetName);
+	void loadNodes(string _sheetName, GuiWindow* _win);
 	void loadParams(GuiNode* _node);
 	void loadEvents(GuiNode* _node);
 	void loadArgs(SubObEvent* _event);
+	void loadText(string _file);
+
+	map<string, GuiText> texts;
+	void addText(string _name, GuiText _t){texts[_name] = _t;}
+
+	string currentLanguage;
+	void setCurrentLanguage(string _l){currentLanguage = _l;}
+
+	string getText(string _text){return texts[_text].getText(currentLanguage);}
 
 	/*
     Subject/Observer interface

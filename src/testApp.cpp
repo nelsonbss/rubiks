@@ -259,6 +259,9 @@ void testApp::keyPressed(int key){
 	if(currentGame == 1){
 		myGames[0]->guiInput(key);
 	}
+	if(key == 's'){
+		ofToggleFullscreen();
+	}
 }
 //--------------------------------------------------------------
 void testApp::keyReleased(int key){

@@ -131,19 +131,9 @@ bool GuiButton::processMouse(int _x, int _y, int _state){
 }
 
 void GuiButton::input(string _type, int _ID, int _n, int _phase, ofVec2f _absPos, ofVec2f _deltaPos){
-	cout << "Type = " << _type << " dX, dY = " << _deltaPos.x << ", " << _deltaPos.y << endl;
+	//cout << "Type = " << _type << " dX, dY = " << _deltaPos.x << ", " << _deltaPos.y << endl;
 	if(_type == "drag"){
 		drawPos += _deltaPos;
-		if(bSendActions){
-			cout << name << " sending movement." << endl;
-			SubObEvent* ev = new SubObEvent();
-			ev->setName("object-moved");
-			ev->addArg("object-name", name);
-			ev->addArg("position", ofVec2f(drawPos.x, drawPos.y));
-			SubObMediator::Instance()->sendEvent("object-moved", ev);
-		} else {
-			cout << name << " not sending actions." << endl;
-		}
 	}
 	if(_type == "tap"){
 		cout << name << " - executing" << endl;
@@ -189,6 +179,15 @@ void GuiButton::nodeDraw(){
 			drawSize.x = inactive.getWidth();
 			drawSize.y = inactive.getHeight();
 			bWatchTime = 0;
+		}
+		if(ofGetElapsedTimeMillis() - timeOfLastInteraction > 500){
+			if(bSendActions){
+				SubObEvent ev;
+				ev.setName("object-moved");
+				ev.addArg("object-name", name);
+				ev.addArg("position", ofVec2f(drawPos.x, drawPos.y));
+				SubObMediator::Instance()->sendEvent("object-moved", &ev);
+			}
 		}
 	}
 }

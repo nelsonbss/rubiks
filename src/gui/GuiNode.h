@@ -7,6 +7,7 @@
 #include "Observer.h"
 #include "SubObMediator.h"
 #include "ofxTimer.h"
+#include "Utils.h"
 
 class SubObEvent;
 
@@ -81,6 +82,19 @@ public:
 	void _windowResized();
 	virtual void windowResized(){}
 
+	void hide();
+	void unhide();
+
+	virtual void setupText();
+
+	bool bHaveText;
+	ofTrueTypeFont font;
+	string text;
+	string textAlign;
+
+	ofVec3f textColor;
+	ofVec2f textPosition;
+
 	//new event and param
 	void addEvent(SubObEvent* _event){events.push_back(_event);}
 	void addParam(string _name, string _val){params[_name] = _val;}
@@ -108,6 +122,8 @@ public:
 	virtual void nodeInit(){}
 	virtual void nodeDraw(){}
 	virtual void nodeExecute(){}
+	virtual void nodeActivate(){}
+	virtual void nodeDeactivate(){}
 	virtual void input(string _type, int _ID, int _n, int _phase, ofVec2f _absPos, ofVec2f _deltaPos){cout << "node input" << endl;}
 
 protected:
@@ -127,6 +143,8 @@ protected:
 	bool bDrawArea;
 	ofVec3f drawColor;
 	ofxTimer* timer;
+	bool bHidden;
+	bool bActive;
 };
 
 

@@ -75,5 +75,4 @@ public:
 	//middle puzzles
 	vector<menuPuzzle*> middlePuzzles;
 	int puzzleCounter;
-	int givePuzzleCounter();
 };

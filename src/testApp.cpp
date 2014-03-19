@@ -9,6 +9,7 @@
 #define displayY 400
 #define displayZ 0
 #define iddleTime 120
+#define puzzleItems 2
 //--------------------------------------------------------------
 void testApp::setup(){
 	/////////////////////////////initialize sgCore library
@@ -47,34 +48,25 @@ void testApp::setup(){
 	//////////////////////////////////create slicer
 	mySlicer = new slicer(myCutter);
 	mySlicer->setup();
-	//////////////////////////////////////////////////////
-	SG_VECTOR middlePuzzlePos = {200,100,0};
-	myPuzzle = new puzzle(middlePuzzlePos, offsetSlicer); // it receives the position to be displayed AND the offset of the armature/cutter to adapt slicing
-	myPuzzle->setup();
-
-	////boolean substraction//////////////////////////////////////////////////////////
-	//mySlicer->xSlicing(*mySlicer->myCutter,objectDisplayed->getObject(),1,1);
-	///////////////  BOOLEAN INTERSECTION          ///////////////////////////////////
 	SG_POINT slicingPos = {0,0,0};
-	objectDisplayed = new myobject3D(gamePos,displayPos);
-	objectDisplayed->loadObject(sgCreateBox(300,300,300),2);
-	mySlicer->intersectCubes((sgCObject*)objectDisplayed->getObject()); 
-
-	//now slicer has all the parts inside sgCGroup ** pieces[]
-	//it recieves the armature rotations to undo them and show the puzzle in an original possition
+	SG_VECTOR middlePuzzlePos = {200,100,0};
 	ofVec3f rotateSlicer = ofVec3f (0,0,0);
-	myPuzzle->loadPieces(mySlicer->getPieces(),101,rotateSlicer);
-	////////////////////////////////end create puzzle/////////////////////////////////
 
-	///////////////////////////////  color puzzle   ////////////////////////////////// 
-	//color all the faces for platonic solids!! colors outside for most objects(not bunny), black on the insides
-	myPuzzle->colorFaces(101);
-	middlePuzzles.push_back(new menuPuzzle(myPuzzle,puzzleCounter));
-	puzzleCounter ++;
-}
-//----------------------------------------------------------------------------------------------------------------------------
-int testApp::givePuzzleCounter(){
-	return puzzleCounter;
+	objectDisplayed = new myobject3D(gamePos,displayPos);
+
+	for(int i=0; i < puzzleItems; i++){
+		objectDisplayed->loadObject(sgCreateBox(300,300,300),2);
+		mySlicer->intersectCubes((sgCObject*)objectDisplayed->getObject());
+
+		middlePuzzlePos.x = 200 + (i*300) + (i*100);
+		myPuzzle = new puzzle(middlePuzzlePos, offsetSlicer); // it receives the position to be displayed AND the offset of the armature/cutter to adapt slicing
+		myPuzzle->setup();
+
+		myPuzzle->loadPieces(mySlicer->getPieces(),101,rotateSlicer);//selected object id is used for coloring
+		myPuzzle->colorFaces(101);
+		middlePuzzles.push_back(new menuPuzzle(myPuzzle,puzzleCounter));
+		//puzzleCounter ++;
+	}
 }
 //--------------------------------------------------------------
 void testApp::update(){
@@ -309,6 +301,13 @@ void testApp::exit(){
 	sgDeleteObject(sgIcosahedron);
 	sgDeleteObject(sgOctahedron);
 	//sgDeleteObject(sgTeapot);
+
+	myCutter->exit();
+	mySlicer->exit();
+	//objectDisplayed->exit();
+	//delete menu puzzles correctly
+
+
 	sgFreeKernel();
 }
 //------------------------------------------------------------------------------

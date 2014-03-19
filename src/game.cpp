@@ -294,8 +294,11 @@ void game::loadPuzzle(puzzle *inputPuzzle){
 	//////////////////////////////////////////////////////////
 	//load a puzzle from the puzzle menu on the center
 	myPuzzle = inputPuzzle;
+	myPuzzle->pos.x = posP.x;
+	myPuzzle->pos.y = posP.y;
+	myPuzzle->pos.z = posP.z;
 	step = 7;
-	//objectID = -1; ////???????????do we need this
+	objectID = -1;
 } 
 //----------------------------------------------------------------------
 void game::loadObject(int objID, SG_VECTOR p, SG_VECTOR t){

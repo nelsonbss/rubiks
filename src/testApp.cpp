@@ -181,14 +181,15 @@ void testApp::keyPressed(int key){
 	if(currentGame == 1){
 		myGames[0]->guiInput(key);
 	}
-
-	////////////////////////////////////////////////////////
-	///////////from puzzles in the center
-	if(key == 'p'){
-		myGames[0]->loadPuzzle(middlePuzzles[0]->getPuzzle());
-	}
-	if(key == 'o'){
-		myGames[0]->loadPuzzle(middlePuzzles[1]->getPuzzle());
+	if(myGames[0]->getCurrentStep() != -1){
+		////////////////////////////////////////////////////////
+		///////////from puzzles in the center
+		if(key == 'p'){
+			myGames[0]->loadPuzzle(middlePuzzles[0]->getPuzzle());
+		}
+		if(key == 'o'){
+			myGames[0]->loadPuzzle(middlePuzzles[1]->getPuzzle());
+		}
 	}
 }
 //--------------------------------------------------------------

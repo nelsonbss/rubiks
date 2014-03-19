@@ -39,6 +39,7 @@ void testApp::setup(){
 
 	//////////////////////////////generate puzzles for middle area
 	////////////////////////////////create puzzle///////////////////////////////////////
+	puzzleCounter =1000;
 	////////////////////////////////create cutter
 	ofVec3f offsetSlicer = ofVec3f(0,0,0);
 	myCutter = new cutter(0.01,1000,100,1,offsetSlicer);		
@@ -68,7 +69,12 @@ void testApp::setup(){
 	///////////////////////////////  color puzzle   ////////////////////////////////// 
 	//color all the faces for platonic solids!! colors outside for most objects(not bunny), black on the insides
 	myPuzzle->colorFaces(101);
-	middlePuzzles.push_back(myPuzzle);
+	middlePuzzles.push_back(new menuPuzzle(myPuzzle,puzzleCounter));
+	puzzleCounter ++;
+}
+//----------------------------------------------------------------------------------------------------------------------------
+int testApp::givePuzzleCounter(){
+	return puzzleCounter;
 }
 //--------------------------------------------------------------
 void testApp::update(){

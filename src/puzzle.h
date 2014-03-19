@@ -13,6 +13,8 @@ class puzzle {
 public:
 	puzzle(SG_VECTOR p, ofVec3f offset);
 
+	int id;
+
 	void setup();
 	void update();
 	void draw();

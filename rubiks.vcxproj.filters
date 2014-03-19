@@ -88,6 +88,9 @@
     <ClCompile Include="src\drawingCanvas.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\menuPuzzle.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -312,6 +315,9 @@
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\drawingCanvas.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\menuPuzzle.h">
       <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>

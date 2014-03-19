@@ -3,7 +3,8 @@
 #include "ofMain.h"
 #include "sgCore.h"
 #include "game.h"
-#include "ofxTrackball.h"
+#include "menuPuzzle.h"
+
 #include <vector>
 
 class testApp : public ofBaseApp{
@@ -72,5 +73,7 @@ public:
 	bool bUseTexture;
 
 	//middle puzzles
-	vector<puzzle*> middlePuzzles;
+	vector<menuPuzzle*> middlePuzzles;
+	int puzzleCounter;
+	int givePuzzleCounter();
 };

@@ -100,6 +100,7 @@
     <ClCompile Include="src\history.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\matrix.cpp" />
+    <ClCompile Include="src\menuPuzzle.cpp" />
     <ClCompile Include="src\myobject3D.cpp" />
     <ClCompile Include="src\ofRender.cpp" />
     <ClCompile Include="src\ofxTrackball.cpp" />
@@ -130,6 +131,7 @@
     <ClInclude Include="src\game.h" />
     <ClInclude Include="src\history.h" />
     <ClInclude Include="src\matrix.h" />
+    <ClInclude Include="src\menuPuzzle.h" />
     <ClInclude Include="src\myobject3D.h" />
     <ClInclude Include="src\ofRender.h" />
     <ClInclude Include="src\ofxTrackball.h" />

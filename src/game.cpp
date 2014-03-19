@@ -53,6 +53,8 @@ game::game(SG_VECTOR gamePos, float w, float h, SG_VECTOR displayPos, float iddl
 	objectID = -1; //initialized on -1 because on stage=0 there is no object selected
 
 	extrudedB = false;
+
+	myCanvasImage.loadImage("drawingGrid.png");
 }
 //--------------------------------------------------------------
 void game::setup(sgCObject *sgBunnyi,sgCObject *sgTetrahedroni,sgCObject *sgDodecahedroni,sgCObject *sgIcosahedroni,sgCObject *sgOctahedroni){//,sgCObject *sgTeapoti){
@@ -200,6 +202,7 @@ void game::draw(){
 	if(step == 6){
 		//show drawing area
 		myCanvas->draw();
+		myCanvasImage.draw(posCanvas.x-500/2,posCanvas.y-500/2,posCanvas.z,500,500);
 	}
 }
 //----------------------------------------------------------------------
@@ -914,9 +917,9 @@ bool game::extrudeObject(ofPolyline *drawing){
 		//for now
 		extrudedB = false;
 		//clear ofpolylines!!!
-		myCanvas->myPolyline->clear();
-		free(myCanvas->myPolyline);
-		myCanvas->myPolyline2->clear();
+		//myCanvas->myPolyline->clear();
+		//free(myCanvas->myPolyline);
+		//myCanvas->myPolyline2->clear();
 		free(drawing);
 		sgDeleteObject(win_cont);
 		return false;

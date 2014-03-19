@@ -204,6 +204,20 @@ void game::draw(){
 		myCanvas->draw();
 		myCanvasImage.draw(posCanvas.x-500/2,posCanvas.y-500/2,posCanvas.z,500,500);
 	}
+	if(step == 7){
+		//show puzzle
+		curRot.getRotate(angle, axistb);
+
+		ofPushMatrix();
+		ofTranslate(posP.x,posP.y,posP.z);
+		//new trackball
+		ofRotate(angle, axistb.x, axistb.y, axistb.z);
+
+
+		ofTranslate(-posP.x,-posP.y,-posP.z);
+		myPuzzle->draw();
+		ofPopMatrix();
+	}
 }
 //----------------------------------------------------------------------
 void game::rotateByIDandAxis(int id, SG_VECTOR axs, bool d){
@@ -227,8 +241,62 @@ void game::rotateTwoIds(int cubieA, int cubieB,bool inside){
 	dir = true;
 }
 //----------------------------------------------------------------------
-void game::loadPuzzle(int puzzleMenuObject){
-} //load a puzzle from the puzzle menu on the center
+void game::loadPuzzle(puzzle *inputPuzzle){
+	
+	/////////////////////////////////////////////////////////
+	///////////do game reset..because loading a puzzle can happen at anytime
+	if(step == 6){
+		if(canvasB){
+			myCanvas->exit();
+			delete myCanvas;
+			canvasB = false;
+		}
+		step = 0;
+		objectID = -1;
+	}else if(step==4 || step==5){
+		myPuzzle->exit();
+		myCutter->exit();
+		mySlicer->exit();
+		objectDisplayed->exit();
+		objectID = -1;
+		step = 0;
+		armID = -1;
+	}else if (step==3){
+		objectDisplayed->exit();             //clean displayed object after puzzle is created, so we dont keep it until the exit or restart
+		step = 0;
+		objectID = -1;
+		armID = -1;
+	}else if (step==1 || step==2){
+		objectDisplayed->exit();
+		step = 0;
+		objectID = -1;
+		if(canvasB){
+			myCanvas->exit();
+			delete myCanvas;
+			canvasB = false;
+		}
+	}
+
+	offsetSlicer.x = 0;
+	offsetSlicer.y = 0;
+	offsetSlicer.z = 0;
+
+	rotateSlicer.x = 0;
+	rotateSlicer.y = 0;
+	rotateSlicer.z = 0;
+
+	curRot.set (ofVec4f(0,0,0,0));
+
+	if(extrudedB){
+		sgDeleteObject(extrudedObject);
+		extrudedB = false;
+	}
+	//////////////////////////////////////////////////////////
+	//load a puzzle from the puzzle menu on the center
+	myPuzzle = inputPuzzle;
+	step = 7;
+	//objectID = -1; ////???????????do we need this
+} 
 //----------------------------------------------------------------------
 void game::loadObject(int objID, SG_VECTOR p, SG_VECTOR t){
 	if (objectID == -1){
@@ -475,19 +543,6 @@ void game::guiInput(int in){
 		//waiting for an object to be selected
 		//it cam be from the shapes on the center
 		// or from the object menu on the side
-
-		////////////////////////////////////////////////////////
-		///////////from puzzles in the center
-		if(in == 'p'){
-			loadPuzzle(100);
-		}
-		if(in == 'o'){
-			loadPuzzle(101);
-		}
-		if(in == 'i'){
-			loadPuzzle(102);
-		}
-
 		////////////////////////////////////////////////////////
 		//////////////////object menu on the side
 		//waiting for shape to be selected
@@ -1006,7 +1061,11 @@ void game::clearDisplayedObject(){
 }
 //----------------------------------------------------------------------
 void game::restart(){
-	if(step == 6){
+	if(step == 7){
+		myPuzzle->exit();
+		step = 0;
+		objectID = -1;
+	}else if(step == 6){
 		if(canvasB){
 			myCanvas->exit();
 			delete myCanvas;
@@ -1052,8 +1111,6 @@ void game::restart(){
 		sgDeleteObject(extrudedObject);
 		extrudedB = false;
 	}
-
-
 }
 //----------------------------------------------------------------------
 void game::exit(){

@@ -10,3 +10,15 @@ menuPuzzle::menuPuzzle(puzzle *inpuzzle, int idi){
 void menuPuzzle::draw(){  
 	myMenuPuzzle->draw();
 }
+//-------------------------------------------------------
+puzzle * menuPuzzle::getPuzzle(){
+	return myMenuPuzzle;
+}
+void menuPuzzle::mouseDragged(int x, int y, int button){
+}
+//--------------------------------------------------------------
+void menuPuzzle::mousePressed(int x, int y, int button){
+}
+//--------------------------------------------------------------
+void menuPuzzle::mouseReleased(int x, int y, int button){
+}

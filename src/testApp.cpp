@@ -181,88 +181,18 @@ void testApp::keyPressed(int key){
 	if(currentGame == 1){
 		myGames[0]->guiInput(key);
 	}
+
+	////////////////////////////////////////////////////////
+	///////////from puzzles in the center
+	if(key == 'p'){
+		myGames[0]->loadPuzzle(middlePuzzles[0]->getPuzzle());
+	}
+	if(key == 'o'){
+		myGames[0]->loadPuzzle(middlePuzzles[1]->getPuzzle());
+	}
 }
 //--------------------------------------------------------------
 void testApp::keyReleased(int key){
-	///////////////////////////////move all puzzle
-	//if(key == 'l') {
-	//	SG_VECTOR p = {0,0,0};
-	//	myGames[0]->moveP(p);
-	//}
-	//if(key == 'j') {
-	//	SG_VECTOR p = {0,0,0};
-	//	myGames[0]->moveP(p);
-	//}
-	//if(key == 'i') {
-	//	SG_VECTOR p = {0,0,0};
-	//	myGames[0]->moveP(p);
-	//}
-	//if(key == 'k') {
-	//	SG_VECTOR p = {0,0,0};
-	//	myGames[0]->moveP(p);
-	//}
-	///////////////////////////////rotate all puzzle
-	//if(key == 'm') {//rotate 
-	//	SG_VECTOR r = {0.0,0,0};
-	//	myGames[0]->rotateP(r);
-	//}
-	//if(key == 'n') {//rotate left
-	//	SG_VECTOR r = {0.0,0,0};
-	//	myGames[0]->rotateP(r);
-	//}
-	//if(key == 'y') {//rotate up
-	//	SG_VECTOR r = {0.0,0,0};
-	//	myGames[0]->rotateP(r);
-	//}
-	//if(key == 'h') {//rotate down
-	//	SG_VECTOR r = {0.0,0,0};
-	//	myGames[0]->rotateP(r);
-	//}
-	///////////////////////face rotations//no rotations comming in from gui
-	////send: SG_VECTOR axis = {0,0,0};
-	//if(key == 'q') {
-	//	if(rotate == false) {//c
-	//		SG_VECTOR axis = {0,0,0};
-	//		myGames[0]->rotateByIDandAxis(0,axis,true);
-	//		rotate = true;
-	//	}
-	//}
-	//if(key == 'a') {
-	//	if(rotate == false) {//cc
-	//		SG_VECTOR axis = {0,0,0};
-	//		myGames[0]->rotateByIDandAxis(0,axis,false);
-	//		rotate = true;
-	//	}
-	//}
-	////y axis
-	//if(key == 'w') {
-	//	if(rotate == false) {
-	//		SG_VECTOR axis = {0,0,0};
-	//		myGames[0]->rotateByIDandAxis(0,axis,true);
-	//		rotate = true;
-	//	}
-	//}if(key == 's') {
-	//	//counter clockwise
-	//	if(rotate == false) {
-	//		SG_VECTOR axis = {0,0,0};
-	//		myGames[0]->rotateByIDandAxis(0,axis,false);
-	//		rotate = true;
-	//	}
-	//}
-	////z axis
-	//if(key == 'e') {
-	//	if(rotate == false) {
-	//		SG_VECTOR axis = {0,0,0};
-	//		myGames[0]->rotateByIDandAxis(0,axis,true);
-	//		rotate = true;
-	//	}
-	//}if(key == 'd') {
-	//	if(rotate == false) {
-	//		SG_VECTOR axis = {0,0,0};
-	//		myGames[0]->rotateByIDandAxis(0,axis,false);
-	//		rotate = true;
-	//	}
-	//}
 }
 //--------------------------------------------------------------
 void testApp::mouseMoved(int x, int y ){

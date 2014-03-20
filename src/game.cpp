@@ -512,6 +512,7 @@ void game::moveA (ofVec3f input){
 	offsetSlicer.x += input.x;
 	offsetSlicer.y += input.y;
 	offsetSlicer.z += input.z;
+	//this offsetSlicer is passed to the slicer
 }
 //----------------------------------------------------------------------
 void game::rotateA (ofVec3f input){

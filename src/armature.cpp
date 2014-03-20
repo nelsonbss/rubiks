@@ -1,9 +1,7 @@
 #include "armature.h"
 
 armature::armature(ofVec3f cntr, float w, float h, float d, float bs){
-	center.x = cntr.x;
-	center.y = cntr.y;
-	center.z = cntr.z;
+	center = cntr;
 
 	width  = w;
 	height = h;
@@ -105,7 +103,7 @@ void armature::togglePlanes(){
 //--------------------------------------------------------------
 void armature::draw(){
 	glPushMatrix();
-	glTranslatef(center.x,center.y,center.z);
+	glTranslatef(center.x,center.y,0);//center.z);
 	glRotatef(rot.x,1,0,0);
 	glRotatef(rot.y,0,1,0);
 	glRotatef(rot.z,0,0,1);

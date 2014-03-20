@@ -166,7 +166,34 @@ void game::draw(){
 	}
 	if(step == 3){
 		//armature has been selected
+		curRotA.getRotate(angleA, axistbA);
+		ofPushMatrix();
+		ofTranslate(posP.x,posP.y,posP.z);
+
+		//euler
+		ofRotateX(rotateSlicer.x);
+		ofRotateY(rotateSlicer.y);
+		ofRotateZ(rotateSlicer.z);
+
+		//new trackball
+		ofRotate(angleA, axistbA.x, axistbA.y, axistbA.z);
+
+		glGetDoublev(GL_MODELVIEW_MATRIX, model);// here I have the current matrix with the rotations that I need, after rotation has been applied 
+		//model has the current model view matrix
+		//with it we create an ofMatrix4x4
+		ofMatrix4x4 armRotTB = ofMatrix4x4(model[0],model[1],model[2],model[3],model[4],model[5],model[6],model[7],model[8],model[9],model[10],model[11],model[12],model[12],model[14],model[15]);
+		//invert matrix
+		ofMatrix4x4 inverseArmRotation = ofMatrix4x4::getInverseOf(armRotTB);
+		//use inverse matrix to apply rotations
+		invRotA = inverseArmRotation.getRotate();
+		//now I have a new quaternion with the inverse rotations.. to rotate puzzle back
+		invRotA.getRotate(angleAinv, axistbAinv);
+		//now I have an angle and a vector to rotate
+
+
+		ofTranslate(-posP.x,-posP.y,-posP.z);
 		myArmature->draw();
+		ofPopMatrix();
 		//show selected object
 		objectDisplayed->draw();
 	}
@@ -419,8 +446,9 @@ void game::loadArmature(int type){
 }
 //-----------------------------------------------------------------------------------------
 void game::applyArmRotations(){
-	//this rotates the object sgC3DObject to be sliced
-	objectDisplayed->applyArmRotations(rotateSlicer);
+	//1 is for regular euler angle rotation inside rotateSlicer
+	//2 is for quaternion rotate angle and vector info
+	objectDisplayed->applyArmRotations(rotateSlicer,angleA, axistbA,1);
 }
 //-----------------------------------------------------------------------------------------
 void game::createCutterSlicer(){
@@ -430,7 +458,7 @@ void game::createCutterSlicer(){
 	//////////////////////////////////create slicer
 	mySlicer = new slicer(myCutter);
 	mySlicer->setup();
-}
+
 //-----------------------------------------------------------------------------------------
 void game::createPuzzle(SG_VECTOR p){
 	if(step == 3){
@@ -1127,7 +1155,33 @@ void game::exit(){
 }
 //--------------------------------------------------------------
 void game::mouseDragged(int x, int y, int button){
-	if(step == 4 || step == 5){
+	if(step == 3){
+		ofVec2f mouseA(x,y);
+		//look for difference in x
+		/*
+		if(mouseA.x > lastMouseA.x){
+			//moved right
+			rotateSlicer.y += 1;
+		}else if(mouseA.x < lastMouseA.x){
+			//moved left
+			rotateSlicer.y -= 1;
+		}
+
+		//look for difference in y
+		if(mouseA.y > lastMouseA.y){
+			//moved up
+			rotateSlicer.x -= 1;
+		}else if(mouseA.y < lastMouseA.y){
+			//moved down
+			rotateSlicer.x += 1;
+		}
+				*/
+		rotateSlicer.y += mouseA.x-lastMouseA.x;
+		rotateSlicer.x -= mouseA.y-lastMouseA.y;
+
+		lastMouseA = mouseA;
+	}
+	elseif(step == 4 || step == 5){
 		ofVec2f mouse(x,y);
 		ofQuaternion yRot(x-lastMouse.x, ofVec3f(0,1,0));
 		ofQuaternion xRot(y-lastMouse.y, ofVec3f(-1,0,0));
@@ -1140,7 +1194,9 @@ void game::mouseDragged(int x, int y, int button){
 }
 //--------------------------------------------------------------
 void game::mousePressed(int x, int y, int button){
-	if(step == 4 || step == 5){
+	if(step == 3){
+		lastMouseA = ofVec2f(x,y);
+	}else if(step == 4 || step == 5){
 		lastMouse = ofVec2f(x,y);
 	}else if(step == 6){
 		myCanvas->mousePressed(x,y,button);
@@ -1151,4 +1207,33 @@ void game::mouseReleased(int x, int y, int button){
 	if(step == 6){
 		myCanvas->mouseReleased(x,y,button);
 	}
+}
+
+//--------------------------------------------------------------------------
+void game::getMatrix( GLfloat * m, ofQuaternion quat ) {
+	float x2 = quat.x() * quat.x();
+	float y2 = quat.y() * quat.y();
+	float z2 = quat.z() * quat.z();
+	float xy = quat.x() * quat.y();
+	float xz = quat.x() * quat.z();
+	float yz = quat.y() * quat.z();
+	float wx = quat.w() * quat.x();
+	float wy = quat.w() * quat.y();
+	float wz = quat.w() * quat.z();
+	m[0] = 1.0f - 2.0f * (y2 + z2);
+	m[1] = 2.0f * (xy - wz);
+	m[2] = 2.0f * (xz + wy);
+	m[3] = 0.0f;
+	m[4] = 2.0f * (xy + wz);
+	m[5] = 1.0f - 2.0f * (x2 + z2);
+	m[6] = 2.0f * (yz - wx);
+	m[7] = 0.0f;
+	m[8] = 2.0f * (xz - wy);
+	m[9] = 2.0f * (yz + wx);
+	m[10] = 1.0f - 2.0f * (x2 + y2);
+	m[11] = 0.0f;
+	m[12] = 0.0f;
+	m[13] = 0.0f;
+	m[14] = 0.0f;
+	m[15] = 1.0f;
 }

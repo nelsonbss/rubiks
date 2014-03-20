@@ -233,8 +233,8 @@ void testApp::exit(){
 	sgDeleteObject(sgOctahedron);
 	//sgDeleteObject(sgTeapot);
 
-	myCutter->exit();
-	mySlicer->exit();
+	//myCutter->exit();
+	//mySlicer->exit();
 	//objectDisplayed->exit();
 	//delete menu puzzles correctly
 

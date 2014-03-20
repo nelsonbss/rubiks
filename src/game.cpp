@@ -1136,8 +1136,8 @@ void game::restart(){
 	rotateSlicer.x = 0;
 	rotateSlicer.y = 0;
 	rotateSlicer.z = 0;
-
 	curRot.set (ofVec4f(0,0,0,0));
+	curRotA.set (ofVec4f(0,0,0,0));
 
 	if(extrudedB){
 		sgDeleteObject(extrudedObject);

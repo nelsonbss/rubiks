@@ -226,11 +226,11 @@ void testApp::exit(){
 
 	/*myGames[1]->restart();
 	myGames[1]->exit();*/
-	sgDeleteObject(sgBunny);
+	sgDeleteObject(sgBunny);/*
 	sgDeleteObject(sgTetrahedron);
 	sgDeleteObject(sgDodecahedron);
 	sgDeleteObject(sgIcosahedron);
-	sgDeleteObject(sgOctahedron);
+	sgDeleteObject(sgOctahedron);*/
 	//sgDeleteObject(sgTeapot);
 
 	//myCutter->exit();

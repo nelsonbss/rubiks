@@ -62,6 +62,7 @@ void testApp::setup(){
 	for(int i = 0; i < myGames.size(); i++){
 		myGames[i]->setup(sgBunny->Clone(),sgTetrahedron->Clone(),sgDodecahedron->Clone(),sgIcosahedron->Clone(),sgOctahedron->Clone());//,sgTeapot->Clone());
 	}
+
 	//////setup GUI/////////////
 	//ofSetFullscreen(true);
 

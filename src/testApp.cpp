@@ -238,7 +238,6 @@ void testApp::exit(){
 	//objectDisplayed->exit();
 	//delete menu puzzles correctly
 
-
 	sgFreeKernel();
 }
 //------------------------------------------------------------------------------

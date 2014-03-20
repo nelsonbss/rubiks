@@ -458,7 +458,7 @@ void game::createCutterSlicer(){
 	//////////////////////////////////create slicer
 	mySlicer = new slicer(myCutter);
 	mySlicer->setup();
-
+}
 //-----------------------------------------------------------------------------------------
 void game::createPuzzle(SG_VECTOR p){
 	if(step == 3){
@@ -1180,8 +1180,7 @@ void game::mouseDragged(int x, int y, int button){
 		rotateSlicer.x -= mouseA.y-lastMouseA.y;
 
 		lastMouseA = mouseA;
-	}
-	elseif(step == 4 || step == 5){
+	}else if(step == 4 || step == 5){
 		ofVec2f mouse(x,y);
 		ofQuaternion yRot(x-lastMouse.x, ofVec3f(0,1,0));
 		ofQuaternion xRot(y-lastMouse.y, ofVec3f(-1,0,0));

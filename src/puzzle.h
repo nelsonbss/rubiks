@@ -6,10 +6,14 @@
 #include "cubie.h"
 #include "slicer.h"
 #include "GuiNode.h"
+#include "Observer.h"
+#include "Subject.h"
+#include "SubObMediator.h"
+#include "SubObEvent.h"
 
 #define MAX_DIST 800.0
 
-class puzzle : public GuiNode{
+class puzzle : public Observer{
 
 public:
 	puzzle(SG_VECTOR p, ofVec3f offset);
@@ -78,6 +82,7 @@ public:
 
 	bool bHaveActiveCubie;
 	int activeCubie;
+	int rotationCubie;
 
 	//   //current state of the rotation
 	//ofQuaternion curRot;

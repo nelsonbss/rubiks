@@ -121,9 +121,9 @@ void GuiConfigurator::update(string _eventName, SubObEvent* _event){
 			if(targetN != "__NONE__"){
 				n = ofToInt(targetN);
 			}
-			cout << "event n = " << eventN << " and target n = " << targetN << endl;
+			//cout << "event n = " << eventN << " and target n = " << targetN << endl;
 			if(activeNodes[target]->getParam(type) == "true"){
-				if(eventN == n){
+				if(eventN == n || n == -1){
 					//cout << activeNodes[target]->getName() << " is getting " << type << endl;
 					//activeNodes[target]->adjustPosition(_event->getArg("drag_d")->getVec2(), _event->getArg("position")->getVec2());
 					//cout << "sending drag." << endl;

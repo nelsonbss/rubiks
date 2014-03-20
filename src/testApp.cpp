@@ -477,8 +477,14 @@ void testApp::update(string _eventName, SubObEvent* _event){
 			ev->setName("hide-node");
 			ev->addArg("target","3d-window-box");
 			SubObMediator::Instance()->sendEvent("hide-node", ev);
+			ev->setName("hide-node");
+			ev->addArg("target","object-drop");
+			SubObMediator::Instance()->sendEvent("hide-node", ev);
 			ev->setName("unhide-node");
 			ev->addArg("target","puzzle-help-bl");
+			SubObMediator::Instance()->sendEvent("unhide-node", ev);
+			ev->setName("unhide-node");
+			ev->addArg("target","ibox-bl");
 			SubObMediator::Instance()->sendEvent("unhide-node", ev);
 		}
 	}

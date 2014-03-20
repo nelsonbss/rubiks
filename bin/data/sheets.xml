@@ -1108,6 +1108,39 @@
         <val>-1000.0</val>
       </param>
     </node>
+    <node type="ibox" name="ibox-bl">
+      <pos>0.2, 0.68</pos>
+      <size>0.3,0.25</size>
+      <scale>1.0</scale>
+      <param>
+        <name>draw-area</name>
+        <val>true</val>
+      </param>
+      <param>
+        <name>draw-color</name>
+        <val>0,255,0</val>
+      </param>
+      <param>
+        <name>z</name>
+        <val>-1000.0</val>
+      </param>
+      <param>
+        <name>drag</name>
+        <val>true</val>
+      </param>
+      <param>
+        <name>n</name>
+        <val>-1</val>
+      </param>
+      <param>
+        <name>hidden</name>
+        <val>true</val>
+      </param>
+      <param>
+        <name>active</name>
+        <val>false</val>
+      </param>
+    </node>
     <!--
     <node type="button" name="object-help-bl">
       <pos>0.154, 0.67</pos>

@@ -10,7 +10,7 @@
 #define WIDTH 3
 #define DEPTH 3
 
-puzzle::puzzle(SG_VECTOR p, ofVec3f offset) : GuiNode(){
+puzzle::puzzle(SG_VECTOR p, ofVec3f offset){
 	numPieces = 27;
 	myCubies = (cubie**)malloc(numPieces*sizeof(cubie*));
 
@@ -61,17 +61,20 @@ puzzle::puzzle(SG_VECTOR p, ofVec3f offset) : GuiNode(){
 	//std::cout << "It should be 18: " << one_dim[1] << "\n";
 	/* or */
 	//std::cout << "It should be 21: " << one_dim.at(2) << "\n";
+	SubObMediator::Instance()->addObserver("ibox-bl:1", this);
 	bDrawLine = true;
 	bHaveActiveCubie = false;
 }
 //----------------------------------------------------------------
 void puzzle::setup(){
+	/*
 	init();
 	addParam("drag", "true");
 	addParam("n", "1");
 	scale = 1.0;
 	setName("puzzle");
-	activate();
+	*/
+	//activate();
 }
 //----------------------------------------------------------------
 void puzzle::update(){
@@ -467,6 +470,14 @@ void puzzle::rotateByIDandAxis(int id, SG_VECTOR axis, bool dir){
 }
 
 void puzzle::update(string _eventName, SubObEvent* _event){
+	if(_eventName == "ibox-bl:1"){
+		if(_event->getArg("phase")->getInt() == 0){
+			ofVec2f pos = _event->getArg("absPos")->getVec2();
+			if(isInside(pos.x, pos.y)){
+				cout << "puzzle got cubie." << endl;
+			}
+		}
+	}
 }
 
 bool puzzle::isInside(int _x, int _y){
@@ -749,5 +760,5 @@ void puzzle::exit(){
 	//}
 	//delete [] three_dim1;
 	free(myCubies);
-	deactivate();
+	//deactivate();
 }

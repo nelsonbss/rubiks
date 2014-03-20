@@ -55,8 +55,8 @@ game::game(SG_VECTOR gamePos, float w, float h, SG_VECTOR displayPos, float iddl
 	bHaveNewObject = false;
 	bHaveNext = false;
 
-	SubObMediator::Instance()->addObserver("main-drag:2", this);
-	SubObMediator::Instance()->addObserver("main-drag-tap", this);
+	SubObMediator::Instance()->addObserver("ibox-bl:2", this);
+	SubObMediator::Instance()->addObserver("ibox-bl-tap", this);
 
 	extrudedB = false;
 
@@ -84,6 +84,7 @@ void game::setup(sgCObject *sgBunnyi,sgCObject *sgTetrahedroni,sgCObject *sgDode
 //----------------------------------------------------------------------
 void game::update(){
 
+	/*
 	if(step != -1){
 		/////take time sample to see if game has to go to standBy mode
 		goToAttractStepS = ofGetElapsedTimef();
@@ -92,6 +93,7 @@ void game::update(){
 			step = -1;
 		}
 	}
+	*/
 	if(bHaveNewObject){
 		SG_VECTOR objectPos = {0,0,0};
 		if(step == 1){
@@ -170,14 +172,20 @@ void game::update(){
 }
 //----------------------------------------------------------------------
 void game::update(string _eventName, SubObEvent* _event){
-	if(_eventName == "main-drag-tap"){
+	if(_eventName == "ibox-bl-tap"){
 		ofVec3f pos = _event->getArg("absPos")->getVec2();
 		mousePressed(pos.x, pos.y, 2);
 	}
 	
-	if(_eventName == "main-drag:2"){
-		ofVec2f pos = _event->getArg("absPos")->getVec2();
-		mouseDragged(pos.x, pos.y, 2);
+	if(_eventName == "ibox-bl:2"){
+		//cout << "game drag - " << _event->getArg("phase")->getInt() << endl;
+		if(_event->getArg("phase")->getInt() == 0){
+			ofVec2f pos = _event->getArg("absPos")->getVec2();
+			mousePressed(pos.x, pos.y, 2);
+		} else {
+			ofVec2f pos = _event->getArg("absPos")->getVec2();
+			mouseDragged(pos.x, pos.y, 2);
+		}
 	}
 }
 //----------------------------------------------------------------------

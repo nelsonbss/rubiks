@@ -26,13 +26,14 @@ void GuiIBox::input(string _type, int _ID, int _n, int _phase, ofVec2f _absPos, 
 		SubObMediator::Instance()->sendEvent(evName, &ev);
 	}
 	if(_type == "drag"){
-		cout << "ibox sending - " << _deltaPos.x << ", " << _deltaPos.y << endl;
+		cout << "ibox sending - " << _deltaPos.x << ", " << _deltaPos.y << ". N = " << _n << endl;
 		SubObEvent ev;
 		string evName = name + ":" + ofToString(_n);
 		ev.setName(evName);
 		ev.addArg("n",_n);
 		ev.addArg("absPos",_absPos);
 		ev.addArg("deltaPos",_deltaPos);
+		ev.addArg("phase",_phase);
 		SubObMediator::Instance()->sendEvent(evName, &ev);
 	}
 }

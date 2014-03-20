@@ -169,7 +169,7 @@ void GestureManager::getGestures(){
 	for(std::vector<gwc::GestureEvent>::iterator gIter = gestureEvents.begin(); gIter != gestureEvents.end(); gIter++) {
 		//cout << gIter->gesture_type << " - " << gIter->x << ", " << gIter->y << " - " << gIter->phase << endl;
 		if(gIter->gesture_type == "tap"){
-			cout << "tap" << endl;
+			cout << "tap to " << gIter->target << endl;
 		}
 		//SubObEvent gEvent;
 		gEvent->setName("gesture");
@@ -181,8 +181,8 @@ void GestureManager::getGestures(){
 		gEvent->addArg("phase",gIter->phase);
 		gEvent->addArg("id", gIter->gesture_id);
 		gEvent->addArg("n", gIter->n);
-		if(gIter->phase < 3){
-			SubObMediator::Instance()->sendEvent("gesture", gEvent);
-		}
+		//if(gIter->phase < 3){
+		SubObMediator::Instance()->sendEvent("gesture", gEvent);
+		//}
 	}
 }

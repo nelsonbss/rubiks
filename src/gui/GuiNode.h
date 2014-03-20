@@ -82,8 +82,11 @@ public:
 	void _windowResized();
 	virtual void windowResized(){}
 
-	void hide();
-	void unhide();
+	virtual void hide();
+	virtual void unhide();
+
+	bool isHidden(){return bHidden;}
+	bool isActive(){return bActive;}
 
 	virtual void setupText();
 

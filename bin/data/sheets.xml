@@ -1,18 +1,169 @@
 <gui>
+  <main-sheet>attract</main-sheet>
+  <assets>assets.xml</assets>
 	<sheet name="attract" pos="0,0">
-    <node type="button" name="grey1">
-			<pos>0.04,0.13</pos>
-			<size>150,150</size>
-      <scale>0.25</scale>
+    <node type="button" name="bg-top">
+      <pos>0.0,0.0</pos>
+      <size>1.0,1.0</size>
+      <scale>1.0</scale>
+      <param>
+        <name>image</name>
+        <val>Exports/Background_Top.png</val>
+      </param>
+      <param>
+        <name>z</name>
+        <val>-10000</val>
+      </param>
+      <param>
+        <name>active</name>
+        <val>false</val>
+      </param>
+    </node>
+    <node type="button" name="bg-middle">
+      <pos>0.0,0.351</pos>
+      <size>1.0,1.0</size>
+      <scale>1.0</scale>
+      <param>
+        <name>image</name>
+        <val>Exports/Background_Middle.png</val>
+      </param>
+      <param>
+        <name>z</name>
+        <val>-10000</val>
+      </param>
+      <param>
+        <name>active</name>
+        <val>false</val>
+      </param>
+    </node>
+    <node type="button" name="bg-bottom">
+      <pos>0.0,0.6475</pos>
+      <size>1.0,1.0</size>
+      <scale>1.0</scale>
+      <param>
+        <name>image</name>
+        <val>Exports/Background_Bottom.png</val>
+      </param>
+      <param>
+        <name>z</name>
+        <val>-10000</val>
+      </param>
+      <param>
+        <name>active</name>
+        <val>false</val>
+      </param>
+    </node>
+    <node type="button" name="bg-shape-bl">
+      <pos>0.0,0.6475</pos>
+      <size>1.0,1.0</size>
+      <scale>1.0</scale>
+      <param>
+        <name>image</name>
+        <val>Exports/Background_Shapes_BottomLeft.png</val>
+      </param>
+      <param>
+        <name>z</name>
+        <val>-10000</val>
+      </param>
+      <param>
+        <name>active</name>
+        <val>false</val>
+      </param>
+    </node>
+    <node type="button" name="3d-window-box">
+      <pos>0.0,0.73</pos>
+      <size>1.0,1.0</size>
+      <scale>1.0</scale>
+      <param>
+        <name>image</name>
+        <val>Exports/Rectangle_0x89.png</val>
+      </param>
+      <param>
+        <name>z</name>
+        <val>-10000</val>
+      </param>
+      <param>
+        <name>active</name>
+        <val>false</val>
+      </param>
+    </node>
+    <node type="button" name="bg-language-bl">
+      <pos>0.0,0.6475</pos>
+      <size>1.0,1.0</size>
+      <scale>1.0</scale>
+      <param>
+        <name>image</name>
+        <val>Exports/Button_Language_0x0.png</val>
+      </param>
+      <param>
+        <name>z</name>
+        <val>-10000</val>
+      </param>
+      <param>
+        <name>active</name>
+        <val>false</val>
+      </param>
+    </node>
+    <node type="button" name="bg-info-bl">
+      <pos>0.055,0.6475</pos>
+      <size>1.0,1.0</size>
+      <scale>1.0</scale>
+      <param>
+        <name>image</name>
+        <val>Exports/Button_Info_106x0.png</val>
+      </param>
+      <param>
+        <name>z</name>
+        <val>-10000</val>
+      </param>
+      <param>
+        <name>active</name>
+        <val>false</val>
+      </param>
+    </node>
+    <node type="window" name="3d-window">
+      <pos>0.0,0.73</pos>
+      <size>0.154,0.225</size>
+      <scale>1.0</scale>
+      <param>
+        <name>z</name>
+        <val>-10000</val>
+      </param>
+      <param>
+        <name>draw-area</name>
+        <val>false</val>
+      </param>
+      <param>
+        <name>scrollable</name>
+        <val>true</val>
+      </param>
+      <node type="button" name="blue1">
+			<pos>0.01,0.74</pos>
+			<size>1.0,1.0</size>
+      <scale>1.0</scale>
       <event name="object-selected">
         <arg name="object">
           <type>int</type>
           <val>6</val>
         </arg>
       </event>
+      <!--
+      <event name="hide-node">
+        <arg name="target">
+          <type>string</type>
+          <val>next-inactive</val>  
+        </arg>
+      </event>
+      <event name="unhide-node">
+        <arg name="target">
+          <type>string</type>
+          <val>next-active</val>
+        </arg>
+      </event>
+      -->
       <param>
         <name>image</name>
-        <val>grey1.png</val>
+        <val>Exports/3dAssets/blue1.png</val>
       </param>
       <param>
         <name>drag</name>
@@ -27,199 +178,421 @@
         <val>true</val>
       </param>
 		</node>
-    <node type="button" name="grey8">
-      <pos>0.12,0.13</pos>
-      <size>150,150</size>
-      <scale>0.25</scale>
-      <event name="object-selected">
-        <arg name="object">
-          <type>int</type>
-          <val>1</val>
-        </arg>
-      </event>
-      <param>
-        <name>image</name>
-        <val>grey8.png</val>
-      </param>
-      <param>
-        <name>drag</name>
-        <val>true</val>
-      </param>
-      <param>
-        <name>n</name>
-        <val>1</val>
-      </param>
-      <param>
-        <name>droppable</name>
-        <val>true</val>
-      </param>
-    </node>
-    <node type="button" name="grey2">
-      <pos>0.04,0.32</pos>
-      <size>150,150</size>
-      <scale>0.25</scale>
-      <event name="object-selected">
-        <arg name="object">
-          <type>int</type>
-          <val>7</val>
-        </arg>
-      </event>
-      <param>
-        <name>image</name>
-        <val>grey2.png</val>
-      </param>
-      <param>
-        <name>drag</name>
-        <val>true</val>
-      </param>
-      <param>
-        <name>n</name>
-        <val>1</val>
-      </param>
-      <param>
-        <name>droppable</name>
-        <val>true</val>
-      </param>
-    </node>
-    <node type="button" name="grey3">
-      <pos>0.12,0.32</pos>
-      <size>150,150</size>
-      <scale>0.25</scale>
-      <event name="object-selected">
-        <arg name="object">
-          <type>int</type>
-          <val>2</val>
-        </arg>
-      </event>
-      <param>
-        <name>image</name>
-        <val>grey3.png</val>
-      </param>
-      <param>
-        <name>drag</name>
-        <val>true</val>
-      </param>
-      <param>
-        <name>n</name>
-        <val>1</val>
-      </param>
-      <param>
-        <name>droppable</name>
-        <val>true</val>
-      </param>
-    </node>
-    <node type="button" name="grey4">
-      <pos>0.04,0.51</pos>
-      <size>150,150</size>
-      <scale>0.25</scale>
-      <event name="object-selected">
-        <arg name="object">
-          <type>int</type>
-          <val>5</val>
-        </arg>
-      </event>
-      <param>
-        <name>image</name>
-        <val>grey4.png</val>
-      </param>
-      <param>
-        <name>drag</name>
-        <val>true</val>
-      </param>
-      <param>
-        <name>n</name>
-        <val>1</val>
-      </param>
-      <param>
-        <name>droppable</name>
-        <val>true</val>
-      </param>
-    </node>
-    <node type="button" name="grey6">
-      <pos>0.12,0.51</pos>
-      <size>150,150</size>
-      <scale>0.25</scale>
-      <event name="object-selected">
-        <arg name="object">
-          <type>int</type>
-          <val>3</val>
-        </arg>
-      </event>
-      <param>
-        <name>image</name>
-        <val>grey6.png</val>
-      </param>
-      <param>
-        <name>drag</name>
-        <val>true</val>
-      </param>
-      <param>
-        <name>n</name>
-        <val>1</val>
-      </param>
-      <param>
-        <name>droppable</name>
-        <val>true</val>
-      </param>
-    </node>
-    <node type="button" name="grey7">
-      <pos>0.04,0.7</pos>
-      <size>150,150</size>
-      <scale>0.25</scale>
-      <event name="object-selected">
-        <arg name="object">
-          <type>int</type>
-          <val>4</val>
-        </arg>
-      </event>
-      <param>
-        <name>image</name>
-        <val>grey7.png</val>
-      </param>
-      <param>
-        <name>drag</name>
-        <val>true</val>
-      </param>
-      <param>
-        <name>n</name>
-        <val>1</val>
-      </param>
-      <param>
-        <name>droppable</name>
-        <val>true</val>
-      </param>
-    </node>
-    <node type="button" name="attract-next">
-      <pos>0.8,0.85</pos>
-      <size>150,150</size>
+    <node type="button" name="blue2">
+			<pos>0.01,0.805</pos>
+			<size>1.0,1.0</size>
       <scale>1.0</scale>
-      <event name="replace-sheet">
-        <arg name="target">
-          <type>string</type>
-          <val>step2</val>
+      <event name="object-selected">
+        <arg name="object">
+          <type>int</type>
+          <val>6</val>
         </arg>
       </event>
-      <event name="next-step"></event>
       <param>
         <name>image</name>
-        <val>btnNext.png</val>
+        <val>Exports/3dAssets/blue2.png</val>
       </param>
       <param>
-        <name>tap</name>
+        <name>drag</name>
         <val>true</val>
       </param>
       <param>
         <name>n</name>
-        <val>0</val>
+        <val>1</val>
       </param>
-    </node>
-    <node type="drop" name="object-drop">
-      <pos>0.37, 0.27</pos>
-      <size>0.26,0.46</size>
+      <param>
+        <name>droppable</name>
+        <val>true</val>
+      </param>
+		</node>
+    <node type="button" name="blue6">
+			<pos>0.01,0.87</pos>
+			<size>1.0,1.0</size>
       <scale>1.0</scale>
+      <event name="object-selected">
+        <arg name="object">
+          <type>int</type>
+          <val>6</val>
+        </arg>
+      </event>
+      <param>
+        <name>image</name>
+        <val>Exports/3dAssets/blue6.png</val>
+      </param>
+      <param>
+        <name>drag</name>
+        <val>true</val>
+      </param>
+      <param>
+        <name>n</name>
+        <val>1</val>
+      </param>
+      <param>
+        <name>droppable</name>
+        <val>true</val>
+      </param>
+		</node>
+    <node type="button" name="blue7">
+			<pos>0.055,0.74</pos>
+			<size>1.0,1.0</size>
+      <scale>1.0</scale>
+      <event name="object-selected">
+        <arg name="object">
+          <type>int</type>
+          <val>6</val>
+        </arg>
+      </event>
+      <param>
+        <name>image</name>
+        <val>Exports/3dAssets/blue7.png</val>
+      </param>
+      <param>
+        <name>drag</name>
+        <val>true</val>
+      </param>
+      <param>
+        <name>n</name>
+        <val>1</val>
+      </param>
+      <param>
+        <name>droppable</name>
+        <val>true</val>
+      </param>
+		</node>
+    <node type="button" name="blue4">
+			<pos>0.055,0.805</pos>
+			<size>1.0,1.0</size>
+      <scale>1.0</scale>
+      <event name="object-selected">
+        <arg name="object">
+          <type>int</type>
+          <val>6</val>
+        </arg>
+      </event>
+      <param>
+        <name>image</name>
+        <val>Exports/3dAssets/blue4.png</val>
+      </param>
+      <param>
+        <name>drag</name>
+        <val>true</val>
+      </param>
+      <param>
+        <name>n</name>
+        <val>1</val>
+      </param>
+      <param>
+        <name>droppable</name>
+        <val>true</val>
+      </param>
+		</node>
+    <node type="button" name="blue0">
+			<pos>0.055,0.87</pos>
+			<size>1.0,1.0</size>
+      <scale>1.0</scale>
+      <event name="object-selected">
+        <arg name="object">
+          <type>int</type>
+          <val>6</val>
+        </arg>
+      </event>
+      <param>
+        <name>image</name>
+        <val>Exports/3dAssets/blue0.png</val>
+      </param>
+      <param>
+        <name>drag</name>
+        <val>true</val>
+      </param>
+      <param>
+        <name>n</name>
+        <val>1</val>
+      </param>
+      <param>
+        <name>droppable</name>
+        <val>true</val>
+      </param>
+		</node>
+    <node type="button" name="blue3">
+			<pos>0.1,0.74</pos>
+			<size>1.0,1.0</size>
+      <scale>1.0</scale>
+      <event name="object-selected">
+        <arg name="object">
+          <type>int</type>
+          <val>6</val>
+        </arg>
+      </event>
+      <param>
+        <name>image</name>
+        <val>Exports/3dAssets/blue3.png</val>
+      </param>
+      <param>
+        <name>drag</name>
+        <val>true</val>
+      </param>
+      <param>
+        <name>n</name>
+        <val>1</val>
+      </param>
+      <param>
+        <name>droppable</name>
+        <val>true</val>
+      </param>
+		</node>
+    <node type="button" name="blue5">
+			<pos>0.1,0.805</pos>
+			<size>1.0,1.0</size>
+      <scale>1.0</scale>
+      <event name="object-selected">
+        <arg name="object">
+          <type>int</type>
+          <val>6</val>
+        </arg>
+      </event>
+      <param>
+        <name>image</name>
+        <val>Exports/3dAssets/blue5.png</val>
+      </param>
+      <param>
+        <name>drag</name>
+        <val>true</val>
+      </param>
+      <param>
+        <name>n</name>
+        <val>1</val>
+      </param>
+      <param>
+        <name>droppable</name>
+        <val>true</val>
+      </param>
+		</node>
+    </node>
+    <node type="window" name="arm-window">
+      <pos>0.0,0.73</pos>
+      <size>0.154,0.225</size>
+      <scale>1.0</scale>
+      <param>
+        <name>z</name>
+        <val>-10000</val>
+      </param>
       <param>
         <name>draw-area</name>
         <val>false</val>
+      </param>
+      <param>
+        <name>scrollable</name>
+        <val>true</val>
+      </param>
+      <param>
+        <name>hidden</name>
+        <val>true</val>
+      </param>
+      <param>
+        <name>active</name>
+        <val>false</val>
+      </param>
+      <node type="button" name="arm1">
+        <pos>0.01,0.74</pos>
+        <size>1.0,1.0</size>
+        <scale>0.25</scale>
+        <event name="armature-selected">
+          <arg name="armature">
+            <type>int</type>
+            <val>1</val>
+          </arg>
+        </event>
+        <!--
+      <event name="hide-node">
+        <arg name="target">
+          <type>string</type>
+          <val>next-inactive</val>  
+        </arg>
+      </event>
+      <event name="unhide-node">
+        <arg name="target">
+          <type>string</type>
+          <val>next-active</val>
+        </arg>
+      </event>
+      -->
+        <param>
+          <name>image</name>
+          <val>armature1.png</val>
+        </param>
+        <param>
+          <name>drag</name>
+          <val>true</val>
+        </param>
+        <param>
+          <name>n</name>
+          <val>1</val>
+        </param>
+        <param>
+          <name>droppable</name>
+          <val>true</val>
+        </param>
+        <param>
+          <name>hidden</name>
+          <val>true</val>
+        </param>
+        <param>
+          <name>active</name>
+          <val>false</val>
+        </param>
+      </node>
+      <node type="button" name="arm2">
+        <pos>0.01,0.805</pos>
+        <size>1.0,1.0</size>
+        <scale>0.25</scale>
+        <event name="armature-selected">
+          <arg name="armature">
+            <type>int</type>
+            <val>2</val>
+          </arg>
+        </event>
+        <param>
+          <name>image</name>
+          <val>armature2.png</val>
+        </param>
+        <param>
+          <name>drag</name>
+          <val>true</val>
+        </param>
+        <param>
+          <name>n</name>
+          <val>1</val>
+        </param>
+        <param>
+          <name>droppable</name>
+          <val>true</val>
+        </param>
+        <param>
+          <name>hidden</name>
+          <val>true</val>
+        </param>
+        <param>
+          <name>active</name>
+          <val>false</val>
+        </param>
+      </node>
+    </node>
+    <node type="window" name="color-window">
+      <pos>0.0,0.73</pos>
+      <size>0.154,0.225</size>
+      <scale>1.0</scale>
+      <param>
+        <name>z</name>
+        <val>-10000</val>
+      </param>
+      <param>
+        <name>draw-area</name>
+        <val>false</val>
+      </param>
+      <param>
+        <name>scrollable</name>
+        <val>true</val>
+      </param>
+      <param>
+        <name>hidden</name>
+        <val>true</val>
+      </param>
+      <param>
+        <name>active</name>
+        <val>false</val>
+      </param>
+      <node type="button" name="color1">
+        <pos>0.01,0.74</pos>
+        <size>1.0,1.0</size>
+        <scale>0.25</scale>
+        <event name="color-selected">
+        </event>
+        <!--
+      <event name="hide-node">
+        <arg name="target">
+          <type>string</type>
+          <val>next-inactive</val>  
+        </arg>
+      </event>
+      <event name="unhide-node">
+        <arg name="target">
+          <type>string</type>
+          <val>next-active</val>
+        </arg>
+      </event>
+      -->
+        <param>
+          <name>image</name>
+          <val>armature1.png</val>
+        </param>
+        <param>
+          <name>drag</name>
+          <val>true</val>
+        </param>
+        <param>
+          <name>n</name>
+          <val>1</val>
+        </param>
+        <param>
+          <name>droppable</name>
+          <val>true</val>
+        </param>
+        <param>
+          <name>hidden</name>
+          <val>true</val>
+        </param>
+        <param>
+          <name>active</name>
+          <val>false</val>
+        </param>
+        <param>
+          <name>attach-sample</name>
+          <val>true</val>
+        </param>
+      </node>
+      <node type="button" name="arm2">
+        <pos>0.01,0.805</pos>
+        <size>1.0,1.0</size>
+        <scale>0.25</scale>
+        <event name="armature-selected">
+          <arg name="armature">
+            <type>int</type>
+            <val>2</val>
+          </arg>
+        </event>
+        <param>
+          <name>image</name>
+          <val>armature2.png</val>
+        </param>
+        <param>
+          <name>drag</name>
+          <val>true</val>
+        </param>
+        <param>
+          <name>n</name>
+          <val>1</val>
+        </param>
+        <param>
+          <name>droppable</name>
+          <val>true</val>
+        </param>
+        <param>
+          <name>hidden</name>
+          <val>true</val>
+        </param>
+        <param>
+          <name>active</name>
+          <val>false</val>
+        </param>
+      </node>
+    </node>
+    <node type="drop" name="object-drop">
+      <pos>0.3, 0.68</pos>
+      <size>0.2,0.25</size>
+      <scale>1.0</scale>
+      <param>
+        <name>draw-area</name>
+        <val>true</val>
       </param>
       <param>
         <name>draw-color</name>
@@ -230,78 +603,107 @@
         <val>-1000.0</val>
       </param>
     </node>
-	</sheet>
-  <sheet name="step2" pos="0,0">
-    <node type="button" name="arm1">
-      <pos>0.04,0.13</pos>
-      <size>150,150</size>
-      <scale>0.5</scale>
-      <event name="armature-selected">
-        <arg name="armature">
-          <type>int</type>
-          <val>1</val>
-        </arg>
-      </event>
-      <param>
-        <name>image</name>
-        <val>armature1.png</val>
-      </param>
-      <param>
-        <name>drag</name>
-        <val>true</val>
-      </param>
-      <param>
-        <name>n</name>
-        <val>1</val>
-      </param>
-      <param>
-        <name>droppable</name>
-        <val>true</val>
-      </param>
-    </node>
-    <node type="button" name="arm2">
-      <pos>0.12,0.13</pos>
-      <size>150,150</size>
-      <scale>0.5</scale>
-      <event name="armature-selected">
-        <arg name="armature">
-          <type>int</type>
-          <val>2</val>
-        </arg>
-      </event>
-      <param>
-        <name>image</name>
-        <val>armature2.png</val>
-      </param>
-      <param>
-        <name>drag</name>
-        <val>true</val>
-      </param>
-      <param>
-        <name>n</name>
-        <val>1</val>
-      </param>
-      <param>
-        <name>droppable</name>
-        <val>true</val>
-      </param>
-    </node>
-    <node type="button" name="arm-next">
-      <pos>0.8,0.85</pos>
-      <size>150,150</size>
+    <node type="button" name="object-help-ll">
+      <pos>0.154, 0.67</pos>
+      <size>1.0,1.0</size>
       <scale>1.0</scale>
-      <event name="replace-sheet">
-        <arg name="target">
-          <type>string</type>
-          <val>step3</val>
-        </arg>
-      </event>
+      <param>
+        <name>image</name>
+        <val>Exports/SelectShape_Textbox_295x33_Blue.png</val>
+      </param>
+      <param>
+        <name>text</name>
+        <val>bl-start</val>
+      </param>
+      <param>
+        <name>font</name>
+        <val>Fonts/GothamRnd-Medium.otf</val>
+      </param>
+      <param>
+        <name>font-size</name>
+        <val>10</val>
+      </param>
+      <param>
+        <name>text-position</name>
+        <val>25,78</val>
+      </param>
+      <param>
+        <name>text-color</name>
+        <val>255,255,255</val>
+      </param>
+    </node>
+    <node type="button" name="reset">
+      <pos>0.33,0.95</pos>
+      <size>1.0,1.0</size>
+      <scale>1.0</scale>
+      <param>
+        <name>image</name>
+        <val>Exports/Button_Reset_651x328.png</val>
+      </param>
+      <param>
+        <name>text</name>
+        <val>reset</val>
+      </param>
+      <param>
+        <name>font</name>
+        <val>Fonts/Gotham-Bold.otf</val>
+      </param>
+      <param>
+        <name>font-size</name>
+        <val>10</val>
+      </param>
+      <param>
+        <name>text-align</name>
+        <val>center</val>
+      </param>
+      <param>
+        <name>text-position</name>
+        <val>10,20</val>
+      </param>
+      <param>
+        <name>text-color</name>
+        <val>0,0,0</val>
+      </param>
+    </node>
+    <node type="button" name="next-inactive">
+      <pos>0.4,0.95</pos>
+      <size>1.0,1.0</size>
+      <scale>1.0</scale>
+      <param>
+        <name>image</name>
+        <val>Exports/Button_Next_789x328_Blue1.png</val>
+      </param>
+      <param>
+        <name>text</name>
+        <val>next</val>
+      </param>
+      <param>
+        <name>font</name>
+        <val>Fonts/Gotham-Bold.otf</val>
+      </param>
+      <param>
+        <name>font-size</name>
+        <val>10</val>
+      </param>
+      <param>
+        <name>text-align</name>
+        <val>center</val>
+      </param>
+      <param>
+        <name>text-position</name>
+        <val>10,20</val>
+      </param>
+      <param>
+        <name>text-color</name>
+        <val>255,255,255</val>
+      </param>
+    </node>
+    <node type="button" name="next-active">
+      <pos>0.4,0.95</pos>
+      <size>1.0,1.0</size>
+      <scale>1.0</scale>
       <event name="next-step"></event>
       <param>
-        <name>image</name>
-        <val>btnNext.png</val>
-      </param>
-      <param>
         <name>tap</name>
         <val>true</val>
       </param>
@@ -309,266 +711,41 @@
         <name>n</name>
         <val>0</val>
       </param>
-    </node>
-    <node type="button" name="arm-reset">
-      <pos>0.87,0.85</pos>
-      <size>150,150</size>
-      <scale>1.0</scale>
-      <event name="reset"></event>
       <param>
         <name>image</name>
-        <val>btnReset.png</val>
+        <val>Exports/Button_Next_789x328_Blue2.png</val>
       </param>
       <param>
-        <name>tap</name>
+        <name>active</name>
+        <val>false</val>
+      </param>
+      <param>
+        <name>hidden</name>
         <val>true</val>
       </param>
       <param>
-        <name>n</name>
-        <val>0</val>
-      </param>
-    </node>
-  </sheet>
-  <sheet name="step3" pos="0,0">
-    <node type="button" name="F79720">
-      <pos>0.04,0.32</pos>
-      <size>150,150</size>
-      <scale>2.0</scale>
-      <param>
-        <name>image</name>
-        <val>clr_F79720.png</val>
+        <name>text</name>
+        <val>next</val>
       </param>
       <param>
-        <name>drag</name>
-        <val>true</val>
+        <name>font</name>
+        <val>Fonts/Gotham-Bold.otf</val>
       </param>
       <param>
-        <name>n</name>
-        <val>1</val>
+        <name>font-size</name>
+        <val>10</val>
       </param>
       <param>
-        <name>droppable</name>
-        <val>true</val>
+        <name>text-align</name>
+        <val>center</val>
       </param>
       <param>
-        <name>attach-sample</name>
-        <val>true</val>
-      </param>
-    </node>
-    <node type="button" name="0779BE">
-      <pos>0.12,0.32</pos>
-      <size>150,150</size>
-      <scale>2.0</scale>
-      <param>
-        <name>image</name>
-        <val>clr_0779BE.png</val>
+        <name>text-position</name>
+        <val>10,20</val>
       </param>
       <param>
-        <name>drag</name>
-        <val>true</val>
-      </param>
-      <param>
-        <name>n</name>
-        <val>1</val>
-      </param>
-      <param>
-        <name>droppable</name>
-        <val>true</val>
-      </param>
-      <param>
-        <name>attach-sample</name>
-        <val>true</val>
-      </param>
-    </node>
-    <node type="button" name="EC2224">
-      <pos>0.04,0.51</pos>
-      <size>150,150</size>
-      <scale>2.0</scale>
-      <param>
-        <name>image</name>
-        <val>clr_EC2224.png</val>
-      </param>
-      <param>
-        <name>drag</name>
-        <val>true</val>
-      </param>
-      <param>
-        <name>n</name>
-        <val>1</val>
-      </param>
-      <param>
-        <name>droppable</name>
-        <val>true</val>
-      </param>
-      <param>
-        <name>attach-sample</name>
-        <val>true</val>
-      </param>
-    </node>
-    <node type="button" name="FFCD00">
-      <pos>0.12,0.51</pos>
-      <size>150,150</size>
-      <scale>2.0</scale>
-      <param>
-        <name>image</name>
-        <val>clr_FFCD00.png</val>
-      </param>
-      <param>
-        <name>drag</name>
-        <val>true</val>
-      </param>
-      <param>
-        <name>n</name>
-        <val>1</val>
-      </param>
-      <param>
-        <name>droppable</name>
-        <val>true</val>
-      </param>
-      <param>
-        <name>attach-sample</name>
-        <val>true</val>
-      </param>
-    </node>
-    <node type="button" name="00AC68">
-      <pos>0.04,0.7</pos>
-      <size>150,150</size>
-      <scale>2.0</scale>
-      <param>
-        <name>image</name>
-        <val>clr_00AC68.png</val>
-      </param>
-      <param>
-        <name>drag</name>
-        <val>true</val>
-      </param>
-      <param>
-        <name>n</name>
-        <val>1</val>
-      </param>
-      <param>
-        <name>droppable</name>
-        <val>true</val>
-      </param>
-      <param>
-        <name>attach-sample</name>
-        <val>true</val>
-      </param>
-    </node>
-    <node type="button" name="989897">
-      <pos>0.12,0.7</pos>
-      <size>150,150</size>
-      <scale>2.0</scale>
-      <param>
-        <name>image</name>
-        <val>clr_989897.png</val>
-      </param>
-      <param>
-        <name>drag</name>
-        <val>true</val>
-      </param>
-      <param>
-        <name>n</name>
-        <val>1</val>
-      </param>
-      <param>
-        <name>droppable</name>
-        <val>true</val>
-      </param>
-      <param>
-        <name>attach-sample</name>
-        <val>true</val>
-      </param>
-    </node>
-    <node type="ibox" name="main-drag">
-      <pos>0.64, 0.27</pos>
-      <size>0.26,0.46</size>
-      <scale>1.0</scale>
-      <param>
-        <name>draw-area</name>
-        <val>true</val>
-      </param>
-      <param>
-        <name>draw-color</name>
-        <val>0,255,0</val>
-      </param>
-      <param>
-        <name>z</name>
-        <val>-1000.0</val>
-      </param>
-      <param>
-        <name>drag</name>
-        <val>true</val>
-      </param>
-      <param>
-        <name>n</name>
-        <val>2</val>
-      </param>
-      <param>
-        <name>send-select</name>
-        <val>true</val>
-      </param>
-    </node>
-    <node type="button" name="step4-next">
-      <pos>0.8,0.85</pos>
-      <size>150,150</size>
-      <scale>1.0</scale>
-      <event name="replace-sheet">
-        <arg name="target">
-          <type>string</type>
-          <val>step4</val>
-        </arg>
-      </event>
-      <event name="next-step"></event>
-      <param>
-        <name>image</name>
-        <val>btnNext.png</val>
-      </param>
-      <param>
-        <name>tap</name>
-        <val>true</val>
-      </param>
-      <param>
-        <name>n</name>
-        <val>0</val>
-      </param>
-    </node>
-    <node type="button" name="step4-reset">
-      <pos>0.87,0.85</pos>
-      <size>150,150</size>
-      <scale>1.0</scale>
-      <event name="reset"></event>
-      <param>
-        <name>image</name>
-        <val>btnReset.png</val>
-      </param>
-      <param>
-        <name>tap</name>
-        <val>true</val>
-      </param>
-      <param>
-        <name>n</name>
-        <val>0</val>
-      </param>
-    </node>
-  </sheet>
-  <sheet name="step4">
-    <node type="button" name="step4-reset">
-      <pos>0.87,0.85</pos>
-      <size>150,150</size>
-      <scale>1.0</scale>
-      <event name="reset"></event>
-      <param>
-        <name>image</name>
-        <val>btnReset.png</val>
-      </param>
-      <param>
-        <name>tap</name>
-        <val>true</val>
-      </param>
-      <param>
-        <name>n</name>
-        <val>0</val>
+        <name>text-color</name>
+        <val>255,255,255</val>
       </param>
     </node>
   </sheet>

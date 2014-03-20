@@ -59,6 +59,8 @@ game::game(SG_VECTOR gamePos, float w, float h, SG_VECTOR displayPos, float iddl
 	SubObMediator::Instance()->addObserver("main-drag-tap", this);
 
 	extrudedB = false;
+
+	myCanvasImage.loadImage("drawingGrid.png");
 }
 //--------------------------------------------------------------
 void game::setup(sgCObject *sgBunnyi,sgCObject *sgTetrahedroni,sgCObject *sgDodecahedroni,sgCObject *sgIcosahedroni,sgCObject *sgOctahedroni){//,sgCObject *sgTeapoti){
@@ -124,7 +126,7 @@ void game::update(){
 			//updatePuzzle = false;
 			if(faceRotateB == true) {
 				int ans = myPuzzle->rotateTwoIds(idcubieA,idcubieB,dir);
-
+				//ans has encripted the axis and the direction 10-x 20-y 30-z 1 or 0 direction
 				//put this move on the game history vector
 				//undo will look for the other 9 cubies involved and do a pop x2 on their history
 				if(ans/10 == 1){
@@ -230,40 +232,22 @@ void game::draw(){
 	}
 	if(step == 6){
 		//show drawing area
-
 		myCanvas->draw();
+		myCanvasImage.draw(posCanvas.x-500/2,posCanvas.y-500/2,posCanvas.z,500,500);
+	}
+	if(step == 7){
+		//show puzzle
+		curRot.getRotate(angle, axistb);
+
+		ofPushMatrix();
+		ofTranslate(posP.x,posP.y,posP.z);
+		//new trackball
+		ofRotate(angle, axistb.x, axistb.y, axistb.z);
 
 
-		//////////////////////ofPolyline *draw =  new ofPolyline();
-
-		//////////////////////ofPushMatrix();
-		//////////////////////ofTranslate(posP.x,posP.y,posP.z);
-		////////////////////////pentagon
-		////////////////////////draw->addVertex(ofVec2f(-40,50));
-		////////////////////////draw->addVertex(ofVec2f(40,50));
-		////////////////////////draw->addVertex(ofVec2f(50,0));
-		////////////////////////draw->addVertex(ofVec2f(0,-50));
-		////////////////////////draw->addVertex(ofVec2f(-50,0));
-		////////////////////////draw->addVertex(ofVec2f(-40,50));
-
-		////////////////////////star
-		//////////////////////draw->addVertex(ofVec2f(-5,-210));
-		//////////////////////draw->addVertex(ofVec2f(60,-60));
-		//////////////////////draw->addVertex(ofVec2f(210,-45));
-		//////////////////////draw->addVertex(ofVec2f(105,60));
-		//////////////////////draw->addVertex(ofVec2f(150,210));
-		//////////////////////draw->addVertex(ofVec2f(-5,135));
-		//////////////////////draw->addVertex(ofVec2f(-150,210));
-		//////////////////////draw->addVertex(ofVec2f(-105,60));
-		//////////////////////draw->addVertex(ofVec2f(-210,-45));
-		//////////////////////draw->addVertex(ofVec2f(-60,-60));
-		//////////////////////draw->addVertex(ofVec2f(-5,-210));
-
-		////////////////////////draw->close(); // close the shape
-		//////////////////////draw->draw();
-		//////////////////////ofPopMatrix();
-
-		//show build button to get drawing data
+		ofTranslate(-posP.x,-posP.y,-posP.z);
+		myPuzzle->draw();
+		ofPopMatrix();
 	}
 }
 //----------------------------------------------------------------------
@@ -288,8 +272,65 @@ void game::rotateTwoIds(int cubieA, int cubieB,bool inside){
 	dir = true;
 }
 //----------------------------------------------------------------------
-void game::loadPuzzle(int puzzleMenuObject){
-} //load a puzzle from the puzzle menu on the center
+void game::loadPuzzle(puzzle *inputPuzzle){
+	
+	/////////////////////////////////////////////////////////
+	///////////do game reset..because loading a puzzle can happen at anytime
+	if(step == 6){
+		if(canvasB){
+			myCanvas->exit();
+			delete myCanvas;
+			canvasB = false;
+		}
+		step = 0;
+		objectID = -1;
+	}else if(step==4 || step==5){
+		myPuzzle->exit();
+		myCutter->exit();
+		mySlicer->exit();
+		objectDisplayed->exit();
+		objectID = -1;
+		step = 0;
+		armID = -1;
+	}else if (step==3){
+		objectDisplayed->exit();             //clean displayed object after puzzle is created, so we dont keep it until the exit or restart
+		step = 0;
+		objectID = -1;
+		armID = -1;
+	}else if (step==1 || step==2){
+		objectDisplayed->exit();
+		step = 0;
+		objectID = -1;
+		if(canvasB){
+			myCanvas->exit();
+			delete myCanvas;
+			canvasB = false;
+		}
+	}
+
+	offsetSlicer.x = 0;
+	offsetSlicer.y = 0;
+	offsetSlicer.z = 0;
+
+	rotateSlicer.x = 0;
+	rotateSlicer.y = 0;
+	rotateSlicer.z = 0;
+
+	curRot.set (ofVec4f(0,0,0,0));
+
+	if(extrudedB){
+		sgDeleteObject(extrudedObject);
+		extrudedB = false;
+	}
+	//////////////////////////////////////////////////////////
+	//load a puzzle from the puzzle menu on the center
+	myPuzzle = inputPuzzle;
+	myPuzzle->pos.x = posP.x;
+	myPuzzle->pos.y = posP.y;
+	myPuzzle->pos.z = posP.z;
+	step = 7;
+	objectID = -1;
+} 
 //----------------------------------------------------------------------
 void game::loadObject(int objID, SG_VECTOR p, SG_VECTOR t){
 	if (objectID == -1){
@@ -538,19 +579,6 @@ void game::guiInput(int in){
 		//waiting for an object to be selected
 		//it cam be from the shapes on the center
 		// or from the object menu on the side
-
-		////////////////////////////////////////////////////////
-		///////////from puzzles in the center
-		if(in == 'p'){
-			loadPuzzle(100);
-		}
-		if(in == 'o'){
-			loadPuzzle(101);
-		}
-		if(in == 'i'){
-			loadPuzzle(102);
-		}
-
 		////////////////////////////////////////////////////////
 		//////////////////object menu on the side
 		//waiting for shape to be selected
@@ -883,7 +911,11 @@ void game::guiInput(int in){
 			//check for existing drawing
 			if(myCanvas->drawingExists()){
 				//make extruded object
-				extrudeObject(myCanvas->getPolyline());
+				if(extrudeObject(myCanvas->getPolyline())){
+
+				}else{
+					prepareDrawing();
+				}
 			}
 		}else if(in == 's'){
 			ofPolyline *draw =  new ofPolyline();
@@ -952,12 +984,12 @@ void game::guiInput(int in){
 	}
 }
 //----------------------------------------------------------------------
-void game::extrudeObject(ofPolyline *drawing){
+bool game::extrudeObject(ofPolyline *drawing){
 	//this functino extrudes the input ofPolylne
 
 	vector< ofPoint > points = drawing->getVertices();
 
-	sgCObject*  cont_objcts[2000];
+	sgCObject*  cont_objcts[2000];///////////////////////////////////////////////////////////////////////////////clean this memeory!!!
 	for (int i =0; i < points.size() ; i ++)  {
 		if(i!= points.size()-1){
 			cont_objcts[i] = sgCreateLine(points[i].x, 0, points[i].y,points[i+1].x, 0, points[i+1].y);
@@ -974,6 +1006,14 @@ void game::extrudeObject(ofPolyline *drawing){
 		//its self intersecting
 		//abort!!!
 		//for now
+		extrudedB = false;
+		//clear ofpolylines!!!
+		//myCanvas->myPolyline->clear();
+		//free(myCanvas->myPolyline);
+		//myCanvas->myPolyline2->clear();
+		free(drawing);
+		sgDeleteObject(win_cont);
+		return false;
 	}else{
 		////extrude along vector
 		SG_VECTOR extVec = {0,-300,0};  
@@ -987,12 +1027,12 @@ void game::extrudeObject(ofPolyline *drawing){
 		extrudedB = true;
 		//we  have the sg3DObjcect to load
 		loadObject(200,slicingPos,posP);//using id=200
+
+		free(drawing);
+		sgDeleteObject(win_cont);
+		return true;
 	}
-
-	sgDeleteObject(win_cont);
-	free(drawing);
 	////////free(cont_objcts);
-
 }
 //----------------------------------------------------------------------
 void game::extrudeObject(){
@@ -1057,9 +1097,13 @@ void game::clearDisplayedObject(){
 }
 //----------------------------------------------------------------------
 void game::restart(){
-	if(step == 6){
-		myCanvas->exit();
+	if(step == 7){
+		myPuzzle->exit();
+		step = 0;
+		objectID = -1;
+	}else if(step == 6){
 		if(canvasB){
+			myCanvas->exit();
 			delete myCanvas;
 			canvasB = false;
 		}
@@ -1082,8 +1126,8 @@ void game::restart(){
 		objectDisplayed->exit();
 		step = 0;
 		objectID = -1;
-		myCanvas->exit();
 		if(canvasB){
+			myCanvas->exit();
 			delete myCanvas;
 			canvasB = false;
 		}
@@ -1103,8 +1147,6 @@ void game::restart(){
 		sgDeleteObject(extrudedObject);
 		extrudedB = false;
 	}
-
-
 }
 //----------------------------------------------------------------------
 void game::exit(){

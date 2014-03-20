@@ -18,6 +18,8 @@ public:
 	void nodeActivate();
 	void nodeDeactivate();
 	void calculateArea();
+	void hide();
+	void unhide();
 
 private:
 	vector<GuiNode*> nodes;

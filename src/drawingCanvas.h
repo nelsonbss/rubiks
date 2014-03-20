@@ -23,14 +23,24 @@ public:
 	int width;
 	int height;
 
-	ofPolyline *myPolyline;
-	ofPolyline *myPolyline2;
+	//ofImage myCanvasImage; //DrawingGrid_555x35.png
+
+	ofPolyline *myPolyline;//the user sees
+	ofPolyline *myPolyline2;//its on the slicing position
+	ofPolyline *myDummyLine;
 	bool poly2exists;
 	bool drawingExists();
+	bool closed;
 	ofVec2f lastMouse;
 	ofVec2f firstMouse;
 	void makeLine(ofVec2f mouse);
 	ofPolyline* getPolyline();
+
+	int intersection(ofVec2f line1A,ofVec2f line1B,ofVec2f line2A,ofVec2f line2B);
+	bool same_sign(float a, float b);
+	bool drawDummy;
+	ofVec2f dummyA;
+	ofVec2f dummyB;
 };
 
 #endif /* defined(__TdrawingCanvas__drawingCanvas__) */

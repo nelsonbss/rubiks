@@ -165,7 +165,8 @@ void GuiButton::nodeDraw(){
             //if(haveArabic && SceneManager::Instance()->getDisplayArabic()){
              //   arabic.draw(pos.x,pos.y);
             //} else {
-                inactive.draw(drawPos.x,drawPos.y, scale * drawSize.x,scale * drawSize.y);
+            //cout << name << " drawing image at " << drawPos.x << ", " << drawPos.y << endl;    
+			inactive.draw(drawPos.x,drawPos.y, scale * drawSize.x,scale * drawSize.y);
             //}
         } else {
             active.draw(drawPos.x,drawPos.y, drawSize.x, drawSize.y);

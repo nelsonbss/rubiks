@@ -80,17 +80,19 @@ void GuiConfigurator::update(string _eventName, SubObEvent* _event){
 	if(_eventName == "touch-point"){
 		vector<GuiNode*> nodesHit;
 		for(map<string, GuiNode*>::iterator nIter =  activeNodes.begin(); nIter != activeNodes.end(); ++nIter){
-			if(nIter->second->isInside(_event->getArg("x")->getFloat(), _event->getArg("y")->getFloat())){
-				//_event->getArg("hit")->setInt(1);
-				//_event->addArg("target",nIter->first);
-				//break;
-				nodesHit.push_back(nIter->second);
+			if(nIter->second->isActive()){
+				if(nIter->second->isInside(_event->getArg("x")->getFloat(), _event->getArg("y")->getFloat())){
+					//_event->getArg("hit")->setInt(1);
+					//_event->addArg("target",nIter->first);
+					//break;
+					nodesHit.push_back(nIter->second);
+				}
 			}
 		}
 		if(nodesHit.size()){
 			cout << "hit " << nodesHit.size() << " nodes." << endl;
-			float highestZ = -10000.0;
-			GuiNode* highestNode;
+			float highestZ = -100000.0;
+			GuiNode* highestNode = NULL;
 			for(vector<GuiNode*>::iterator nIter = nodesHit.begin(); nIter != nodesHit.end(); ++nIter){
 				float nodeZ = (*nIter)->getZ();
 				cout << "checking node with z = " << nodeZ << endl;
@@ -100,8 +102,10 @@ void GuiConfigurator::update(string _eventName, SubObEvent* _event){
 					highestZ = nodeZ;
 				}
 			}
-			_event->getArg("hit")->setInt(1);
-			_event->addArg("target", highestNode->getName());
+			if(highestNode != NULL){
+				_event->getArg("hit")->setInt(1);
+				_event->addArg("target", highestNode->getName());
+			}
 		}
 		_event->getArg("receivers")->setInt(_event->getArg("receivers")->getInt() + 1);
 	}
@@ -141,11 +145,15 @@ void GuiConfigurator::update(string _eventName, SubObEvent* _event){
 	}
 	if(_eventName == "hide-node"){
 		string target = _event->getArg("target")->getString();
-		activeNodes[target]->hide();
+		if(!activeNodes[target]->isHidden()){
+			activeNodes[target]->hide();
+		}
 	}
 	if(_eventName == "unhide-node"){
 		string target = _event->getArg("target")->getString();
-		activeNodes[target]->unhide();
+		if(activeNodes[target]->isHidden()){
+			activeNodes[target]->unhide();
+		}
 	}
 }
 

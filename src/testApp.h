@@ -11,7 +11,9 @@
 #include "game.h"
 #include "GestureManager.h"
 #include <math.h>
-#include "ofxTrackball.h"
+#include "menuPuzzle.h"
+
+#include <vector>
 
 class testApp : public ofBaseApp, public Observer, public Subject{
 
@@ -103,4 +105,9 @@ public:
 	int touchId;
 	int nextTouchId;
 	int touchIdOffset;
+	//middle puzzles
+	vector<menuPuzzle*> middlePuzzles;
+	int puzzleCounter; 
+
+	SubObEvent* ev;
 };

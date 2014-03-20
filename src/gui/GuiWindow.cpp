@@ -32,6 +32,22 @@ void GuiWindow::nodeDraw(){
 	}
 }
 
+void GuiWindow::hide(){
+	bHidden = true;
+	bActive = false;
+	for(vector<GuiNode*>::iterator nIter = nodes.begin(); nIter != nodes.end(); nIter++){
+		(*nIter)->hide();
+	}
+}
+
+void GuiWindow::unhide(){
+	bHidden = false;
+	bActive = true;
+	for(vector<GuiNode*>::iterator nIter = nodes.begin(); nIter != nodes.end(); nIter++){
+		(*nIter)->unhide();
+	}
+}
+
 void GuiWindow::calculateArea(){
 	
 }

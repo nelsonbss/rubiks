@@ -133,8 +133,6 @@ public:
 	void mouseDragged(int x, int y, int button);
 	void mousePressed(int x, int y, int button);
 	void mouseReleased(int x, int y, int button);
-	///////interaction with puzzles on the center
-	void loadPuzzle(int puzzleMenuObject); //load a puzzle from the puzzle menu on the center
 
 	//inactive state timer
 	int goToAttractStepI;
@@ -146,12 +144,17 @@ public:
 	drawingCanvas *myCanvas;
 	bool canvasB;
 	void prepareDrawing();
+	ofImage myCanvasImage; //DrawingGrid_555x35.png
 
 	//object extrusion
 	void clearDisplayedObject();
 	void extrudeObject();
-	void extrudeObject(ofPolyline *drawing);
+	bool extrudeObject(ofPolyline *drawing);
 	sgC3DObject* extrudedObject;
 	bool extrudedB;
+
+
+	///////interaction with puzzles on the center
+	void loadPuzzle(puzzle *inputPuzzle); //load a puzzle from the puzzle menu on the center
 };
 #endif /* defined(__Tgame__game__) */

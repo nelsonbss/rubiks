@@ -4,8 +4,9 @@
 
 #define displayX 500
 #define displayY 400
-#define displayZ -400
+#define displayZ -800
 #define iddleTime 120
+#define puzzleItems 2
 
 std::map<int,gwc::Point> active_points;
 
@@ -49,7 +50,8 @@ void testApp::setup(){
 	//////////////////////////////create games
 	//////////////////////////////one game for now
 	SG_VECTOR gamePos = {0,0,0}; //one game created at the origin // this will have to change for a game creating function when more stations are anabled
-	SG_VECTOR displayPos = {ofGetWidth() / 2, ofGetHeight() / 2,displayZ};
+	//SG_VECTOR displayPos = {ofGetWidth() / 2, ofGetHeight() / 2,displayZ};
+	SG_VECTOR displayPos = {550, 1150,displayZ};
 	game *tempGame = new game(gamePos, ofGetWidth(), ofGetHeight(),displayPos,iddleTime);
 	myGames.push_back(tempGame);
 	currentGame = 1;
@@ -82,12 +84,44 @@ void testApp::setup(){
 	SubObMediator::Instance()->addObserver("touch-point", this);
 	SubObMediator::Instance()->addObserver("gesture", this);
 
+	ev = new SubObEvent();
 
 	active_points = std::map<int,gwc::Point>();
 	//rotate = true;
 
 	touchId = 0;
 	touchIdOffset = 1000;
+
+	//////////////////////////////generate puzzles for middle area
+	////////////////////////////////create puzzle///////////////////////////////////////
+	puzzleCounter =1000;
+	////////////////////////////////create cutter
+	ofVec3f offsetSlicer = ofVec3f(0,0,0);
+	myCutter = new cutter(0.01,1000,100,1,offsetSlicer);		
+	myCutter->setup();
+	//////////////////////////////////create slicer
+	mySlicer = new slicer(myCutter);
+	mySlicer->setup();
+	SG_POINT slicingPos = {0,0,0};
+	SG_VECTOR middlePuzzlePos = {200,100,0};
+	ofVec3f rotateSlicer = ofVec3f (0,0,0);
+
+	objectDisplayed = new myobject3D(gamePos,displayPos);
+
+	for(int i=0; i < puzzleItems; i++){
+		objectDisplayed->loadObject(sgCreateBox(300,300,300),2);
+		mySlicer->intersectCubes((sgCObject*)objectDisplayed->getObject());
+
+		middlePuzzlePos.x = 200 + (i*300) + (i*100);
+		myPuzzle = new puzzle(middlePuzzlePos, offsetSlicer); // it receives the position to be displayed AND the offset of the armature/cutter to adapt slicing
+		myPuzzle->setup();
+
+		myPuzzle->loadPieces(mySlicer->getPieces(),101,rotateSlicer);//selected object id is used for coloring
+		myPuzzle->colorFaces(101);
+		middlePuzzles.push_back(new menuPuzzle(myPuzzle,puzzleCounter));
+		//puzzleCounter ++;
+	}
+	ofEnableAntiAliasing();
 }
 //--------------------------------------------------------------
 void testApp::update(){
@@ -137,6 +171,12 @@ void testApp::update(){
 }
 //--------------------------------------------------------------
 void testApp::draw(){
+	//ofEnableDepthTest();
+	ofEnableAlphaBlending();
+	ofDisableDepthTest();
+	SceneManager::Instance()->draw();
+	ofEnableDepthTest();
+	ofDisableAlphaBlending();
 	///////////////////START OF RENDERING////////////////////
 	startOFLights();
 
@@ -224,11 +264,13 @@ void testApp::draw(){
 		myGames[0]->draw();
 	}
 
+	//middle puzzles
+	//for(int i=0; i < middlePuzzles.size();i++){
+	//	middlePuzzles[i]->draw();
+	//}
+
 	///////////////////END OF RENDERING////////////////////
 	stopOFLights();
-
-	//ofEnableDepthTest();
-	SceneManager::Instance()->draw();
 
 	for(std::map<int,gwc::Point>::iterator points_it = active_points.begin(); points_it != active_points.end(); points_it++)
 	{
@@ -262,90 +304,19 @@ void testApp::keyPressed(int key){
 	if(key == 's'){
 		ofToggleFullscreen();
 	}
+	if(myGames[0]->getCurrentStep() != -1){
+		////////////////////////////////////////////////////////
+		///////////from puzzles in the center
+		if(key == 'p'){
+			myGames[0]->loadPuzzle(middlePuzzles[0]->getPuzzle());
+		}
+		if(key == 'o'){
+			myGames[0]->loadPuzzle(middlePuzzles[1]->getPuzzle());
+		}
+	}
 }
 //--------------------------------------------------------------
 void testApp::keyReleased(int key){
-	///////////////////////////////move all puzzle
-	//if(key == 'l') {
-	//	SG_VECTOR p = {0,0,0};
-	//	myGames[0]->moveP(p);
-	//}
-	//if(key == 'j') {
-	//	SG_VECTOR p = {0,0,0};
-	//	myGames[0]->moveP(p);
-	//}
-	//if(key == 'i') {
-	//	SG_VECTOR p = {0,0,0};
-	//	myGames[0]->moveP(p);
-	//}
-	//if(key == 'k') {
-	//	SG_VECTOR p = {0,0,0};
-	//	myGames[0]->moveP(p);
-	//}
-	///////////////////////////////rotate all puzzle
-	//if(key == 'm') {//rotate 
-	//	SG_VECTOR r = {0.0,0,0};
-	//	myGames[0]->rotateP(r);
-	//}
-	//if(key == 'n') {//rotate left
-	//	SG_VECTOR r = {0.0,0,0};
-	//	myGames[0]->rotateP(r);
-	//}
-	//if(key == 'y') {//rotate up
-	//	SG_VECTOR r = {0.0,0,0};
-	//	myGames[0]->rotateP(r);
-	//}
-	//if(key == 'h') {//rotate down
-	//	SG_VECTOR r = {0.0,0,0};
-	//	myGames[0]->rotateP(r);
-	//}
-	/////////////////////face rotations//no rotations comming in from gui
-	//send: SG_VECTOR axis = {0,0,0};
-	///////////////////////face rotations//no rotations comming in from gui
-	////send: SG_VECTOR axis = {0,0,0};
-	//if(key == 'q') {
-	//	if(rotate == false) {//c
-	//		SG_VECTOR axis = {0,0,0};
-	//		myGames[0]->rotateByIDandAxis(0,axis,true);
-	//		rotate = true;
-	//	}
-	//}
-	//if(key == 'a') {
-	//	if(rotate == false) {//cc
-	//		SG_VECTOR axis = {0,0,0};
-	//		myGames[0]->rotateByIDandAxis(0,axis,false);
-	//		rotate = true;
-	//	}
-	//}
-	////y axis
-	//if(key == 'w') {
-	//	if(rotate == false) {
-	//		SG_VECTOR axis = {0,0,0};
-	//		myGames[0]->rotateByIDandAxis(0,axis,true);
-	//		rotate = true;
-	//	}
-	//}if(key == 's') {
-	//	//counter clockwise
-	//	if(rotate == false) {
-	//		SG_VECTOR axis = {0,0,0};
-	//		myGames[0]->rotateByIDandAxis(0,axis,false);
-	//		rotate = true;
-	//	}
-	//}
-	////z axis
-	//if(key == 'e') {
-	//	if(rotate == false) {
-	//		SG_VECTOR axis = {0,0,0};
-	//		myGames[0]->rotateByIDandAxis(0,axis,true);
-	//		rotate = true;
-	//	}
-	//}if(key == 'd') {
-	//	if(rotate == false) {
-	//		SG_VECTOR axis = {0,0,0};
-	//		myGames[0]->rotateByIDandAxis(0,axis,false);
-	//		rotate = true;
-	//	}
-	//}
 }
 //--------------------------------------------------------------
 void testApp::mouseMoved(int x, int y ){
@@ -463,6 +434,15 @@ void testApp::update(string _subName, Subject *_sub){
 void testApp::update(string _eventName, SubObEvent* _event){
 	//cout << "event named - " << _eventName << endl;
 	if(_eventName == "object-selected"){
+		if(myGames[0]->getCurrentStep() == 0){
+			//SubObEvent *ev = new SubObEvent();
+			ev->setName("hide-node");
+			ev->addArg("target","next-inactive");
+			SubObMediator::Instance()->sendEvent("hide-node", ev);
+			ev->setName("unhide-node");
+			ev->addArg("target","next-active");
+			SubObMediator::Instance()->sendEvent("unhide-node", ev);
+		}
 		if(myGames[0]->getCurrentStep() == 0  || myGames[0]->getCurrentStep() == 1){
 			int obj = _event->getArg("object")->getInt();
 			SG_VECTOR objectPos = {0,0,0};  //where it gets sliced
@@ -472,6 +452,24 @@ void testApp::update(string _eventName, SubObEvent* _event){
 	}
 	if(_eventName == "next-step"){
 		myGames[0]->guiNext();
+		int currStep = myGames[0]->getCurrentStep();
+		cout << "set game to - " << currStep << endl;
+		if(currStep == 1){
+			ev->setName("hide-node");
+			ev->addArg("target","3d-window");
+			SubObMediator::Instance()->sendEvent("hide-node", ev);
+			ev->setName("unhide-node");
+			ev->addArg("target","arm-window");
+			SubObMediator::Instance()->sendEvent("unhide-node", ev);
+		}
+		if(currStep == 2){
+			ev->setName("hide-node");
+			ev->addArg("target","arm-window");
+			SubObMediator::Instance()->sendEvent("hide-node", ev);
+			ev->setName("unhide-node");
+			ev->addArg("target","color-window");
+			SubObMediator::Instance()->sendEvent("unhide-node", ev);
+		}
 	}
 	if(_eventName == "armature-selected"){
 		string armStr = ofToString(_event->getArg("armature")->getInt());
@@ -519,6 +517,13 @@ void testApp::exit(){
 	sgDeleteObject(sgIcosahedron);
 	sgDeleteObject(sgOctahedron);
 	//sgDeleteObject(sgTeapot);
+
+	myCutter->exit();
+	mySlicer->exit();
+	//objectDisplayed->exit();
+	//delete menu puzzles correctly
+
+
 	//sgFreeKernel();
 }
 //------------------------------------------------------------------------------

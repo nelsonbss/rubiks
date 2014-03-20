@@ -12,6 +12,7 @@ GuiNode::GuiNode(){
 }
 
 void GuiNode::draw(){
+	ofEnableBlendMode(OF_BLENDMODE_ALPHA);
 	if(!bHidden){
 		if(bDrawArea){
 			//cout << "drawing from " << drawPos.x << ", " << drawPos.y << " to " << drawSize.x << ", " << drawSize.y << endl;
@@ -119,12 +120,14 @@ void GuiNode::deactivate(){
 
 void GuiNode::hide(){
 	bHidden = true;
-	deactivate();
+	bActive = false;
+	//deactivate();
 }
 
 void GuiNode::unhide(){
 	bHidden = false;
-	activate();
+	bActive = true;
+	//activate();
 }
 
 void GuiNode::setPosition(){

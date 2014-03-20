@@ -39,6 +39,8 @@ void drawingCanvas::draw(){
 	ofSetColor(ofColor(0,255,0,255));
 	myPolyline->draw();
 	ofCircle(posCanvas, 10.0);
+	ofSetColor(ofColor(255,0,0,255));
+	ofCircle(728,910,-800, 10.0);
 	if(drawDummy){
 		ofSetColor(ofColor(255,255,255,255));
 		ofSetLineWidth(5);
@@ -224,8 +226,10 @@ bool drawingCanvas::same_sign(float a, float b){
 //--------------------------------------------------------------
 void drawingCanvas::mouseDragged(int x, int y, int button){
 	if(closed == false){
-		if((posCanvas.x-(width/2) < x) && (x < posCanvas.x+(width/2))){
-			if((posCanvas.y-(height) < y) && (y < posCanvas.y+(height))){
+		//if((posCanvas.x-(width/2) < x) && (x < posCanvas.x+(width/2))){
+		//	if((posCanvas.y-(height/2) < y) && (y < posCanvas.y+(height/2))){
+		if((590 < x) && (x < 870)){
+			if((770 < y) && (y < 1050)){
 				ofVec2f mouse(x,y);
 				makeLine(mouse);
 				if(!drawDummy){
@@ -239,8 +243,10 @@ void drawingCanvas::mouseDragged(int x, int y, int button){
 void drawingCanvas::mousePressed(int x, int y, int button){
 	if(closed == false){
 		//check if its inside the area to be able to draw
-		if((posCanvas.x-(width/2) < x) && (x < posCanvas.x+(width/2))){
-			if((posCanvas.y-(height) < y) && (y < posCanvas.y+(height))){
+		//if((posCanvas.x-(width/2) < x) && (x < posCanvas.x+(width/2))){
+		//	if((posCanvas.y-(height/2) < y) && (y < posCanvas.y+(height/2))){
+		if((590 < x) && (x < 870)){
+			if((770 < y) && (y < 1050)){
 				lastMouse = ofVec2f(x,y);
 				firstMouse = lastMouse; //to be able to close shape
 				myPolyline->addVertex(lastMouse);//first vertex

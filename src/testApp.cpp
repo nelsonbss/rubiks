@@ -2,8 +2,8 @@
 #include "game.h"
 ///////////////////////////////////////////
 
-#define displayX 500
-#define displayY 400
+#define displayXBlue 550
+#define displayYBlue 1150
 #define displayZ -800
 #define iddleTime 120
 #define puzzleItems 2
@@ -51,7 +51,7 @@ void testApp::setup(){
 	//////////////////////////////one game for now
 	SG_VECTOR gamePos = {0,0,0}; //one game created at the origin // this will have to change for a game creating function when more stations are anabled
 	//SG_VECTOR displayPos = {ofGetWidth() / 2, ofGetHeight() / 2,displayZ};
-	SG_VECTOR displayPos = {550, 1150,displayZ};
+	SG_VECTOR displayPos = {displayXBlue,displayYBlue,displayZ};
 	game *tempGame = new game(gamePos, ofGetWidth(), ofGetHeight(),displayPos,iddleTime);
 	myGames.push_back(tempGame);
 	currentGame = 1;
@@ -305,12 +305,12 @@ void testApp::keyPressed(int key){
 	if(myGames[0]->getCurrentStep() != -1){
 		////////////////////////////////////////////////////////
 		///////////from puzzles in the center
-		if(key == 'p'){
-			myGames[0]->loadPuzzle(middlePuzzles[0]->getPuzzle());
-		}
-		if(key == 'o'){
-			myGames[0]->loadPuzzle(middlePuzzles[1]->getPuzzle());
-		}
+		//if(key == 'p'){
+		//	myGames[0]->loadPuzzle(middlePuzzles[0]->getPuzzle());
+		//}
+		//if(key == 'o'){
+		//	myGames[0]->loadPuzzle(middlePuzzles[1]->getPuzzle());
+		//}
 	}
 }
 //--------------------------------------------------------------
@@ -488,7 +488,7 @@ void testApp::update(string _eventName, SubObEvent* _event){
 		myGames[0]->guiInput(armStr.c_str()[0]);
 	}
 	if(_eventName == "cut-object"){
-		SG_VECTOR v = {displayX,displayY,displayZ};
+		SG_VECTOR v = {displayXBlue,displayYBlue,displayZ};
 		myGames[0]->createPuzzle(v);
 	}
 	if(_eventName == "goto-step5"){

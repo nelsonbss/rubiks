@@ -11,6 +11,7 @@
 #define planeThicknes 0.001
 #define tamCutter 1000
 
+#define canvasSide 500
 
 game::game(SG_VECTOR gamePos, float w, float h, SG_VECTOR displayPos, float iddleTime){
 	posGame = gamePos;
@@ -84,14 +85,14 @@ void game::setup(sgCObject *sgBunnyi,sgCObject *sgTetrahedroni,sgCObject *sgDode
 //----------------------------------------------------------------------
 void game::update(){
 
-	if(step != -1){
-		/////take time sample to see if game has to go to standBy mode
-		goToAttractStepS = ofGetElapsedTimef();
-		if(goToAttractStepS - goToAttractStepI >= iddleTimer){
-			restart();
-			step = -1;
-		}
-	}
+	//if(step != -1){
+	//	/////take time sample to see if game has to go to standBy mode
+	//	goToAttractStepS = ofGetElapsedTimef();
+	//	if(goToAttractStepS - goToAttractStepI >= iddleTimer){
+	//		restart();
+	//		step = -1;
+	//	}
+	//}
 	if(bHaveNewObject){
 		SG_VECTOR objectPos = {0,0,0};
 		if(step == 1){
@@ -241,7 +242,7 @@ void game::draw(){
 		//show drawing area
 		myCanvas->draw();
 		ofSetColor(255,255,255);
-		myCanvasImage.draw(posCanvas.x-500/2,posCanvas.y-500/2,posCanvas.z,500,500);
+		myCanvasImage.draw(posCanvas.x-canvasSide/2,posCanvas.y-canvasSide/2,posCanvas.z,canvasSide,canvasSide);
 	}
 	if(step == 7){
 		//show puzzle
@@ -1078,14 +1079,14 @@ void game::extrudeObject(){
 void game::prepareDrawing(){
 	if(canvasB == false){
 		//create canvas object
-		myCanvas = new drawingCanvas(posCanvas,500,500);
+		myCanvas = new drawingCanvas(posCanvas,canvasSide,canvasSide);
 		canvasB = true;
 	}
 	else{
 		myCanvas->exit();
 		delete myCanvas;
 		//create canvas object
-		myCanvas = new drawingCanvas(posCanvas,500,500);
+		myCanvas = new drawingCanvas(posCanvas,canvasSide,canvasSide);
 	}
 	//extrusion
 	step = 6;

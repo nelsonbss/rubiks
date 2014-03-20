@@ -31,16 +31,13 @@ void drawingCanvas::draw(){
 	//the coordinates for this box are from the center!!!! not the left/up corner!!!
 	ofBox(posCanvas.x,posCanvas.y,posCanvas.z,width,height,0);
 
-	//ofDisableDepthTest();
-	//myCanvasImage.draw(posCanvas.x-width/2,posCanvas.y-height/2,posCanvas.z,width,height);
-	//ofEnableDepthTest();
 
 	ofFill();
 	ofSetColor(ofColor(0,255,0,255));
 	myPolyline->draw();
-	ofCircle(posCanvas, 10.0);
-	ofSetColor(ofColor(255,0,0,255));
-	ofCircle(728,910,-800, 10.0);
+	//ofCircle(posCanvas, 10.0);
+	//ofSetColor(ofColor(255,0,0,255));
+	//ofCircle(728,910,-800, 10.0);
 	if(drawDummy){
 		ofSetColor(ofColor(255,255,255,255));
 		ofSetLineWidth(5);
@@ -57,7 +54,7 @@ void drawingCanvas::makeLine(ofVec2f mouse){
 	vector< ofPoint > points = myPolyline->getVertices();
 	int size = points.size();
 
-	if(mouse.distance(lastMouse) > 3){
+	if(mouse.distance(lastMouse) > 2){
 		//check for intersection first!!
 		if(size > 10){
 			//check lines on the ofPolyline

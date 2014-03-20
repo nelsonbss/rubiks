@@ -46,6 +46,9 @@ private:
 	int timeOfLastUpdate;
 
 	int receivers;
+
+	SubObEvent *gEvent;
+	SubObEvent *tEvent;
 };
 
 #endif

@@ -94,7 +94,14 @@ void game::update(){
 	}
 	if(bHaveNewObject){
 		SG_VECTOR objectPos = {0,0,0};
-		loadObject(newObject, objectPos, posP);
+		if(step == 1){
+			clearDisplayedObject();
+		}
+		if(newObject == 9){
+			prepareDrawing();
+		} else {
+			loadObject(newObject, objectPos, posP);
+		}
 		bHaveNewObject = false;
 	}
 	if(step == 1 || step == 2 || step == 3){
@@ -233,6 +240,7 @@ void game::draw(){
 	if(step == 6){
 		//show drawing area
 		myCanvas->draw();
+		ofSetColor(255,255,255);
 		myCanvasImage.draw(posCanvas.x-500/2,posCanvas.y-500/2,posCanvas.z,500,500);
 	}
 	if(step == 7){

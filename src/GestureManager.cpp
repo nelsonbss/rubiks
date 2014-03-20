@@ -19,6 +19,7 @@ GestureManager::GestureManager(){
 	SubObMediator::Instance()->addObserver("update-touch-point",this);
 	SubObMediator::Instance()->addObserver("remove-touch-point",this);
 	receivers = 0;
+	gEvent = new SubObEvent();
 }
 
 GestureManager::GestureManager(string _gwcDLL){
@@ -68,7 +69,7 @@ void GestureManager::threadedFunction(){
 			getGestures();
 			timeOfLastUpdate = ofGetElapsedTimeMillis();
 		}
-		//ofSleepMillis(100);
+		ofSleepMillis(100);
 	}
 }	
 
@@ -170,16 +171,18 @@ void GestureManager::getGestures(){
 		if(gIter->gesture_type == "tap"){
 			cout << "tap" << endl;
 		}
-		SubObEvent gEvent;
-		gEvent.setName("gesture");
-		gEvent.addArg("ID", gIter->ID);
-		gEvent.addArg("absPos", ofVec2f(gIter->x, gIter->y));
-		gEvent.addArg("deltaPos", ofVec2f(gIter->values["drag_dx"], gIter->values["drag_dy"]));
-		gEvent.addArg("type", gIter->gesture_type);
-		gEvent.addArg("target",gIter->target);
-		gEvent.addArg("phase",gIter->phase);
-		gEvent.addArg("id", gIter->gesture_id);
-		gEvent.addArg("n", gIter->n);
-		SubObMediator::Instance()->sendEvent("gesture", &gEvent);
+		//SubObEvent gEvent;
+		gEvent->setName("gesture");
+		gEvent->addArg("ID", gIter->ID);
+		gEvent->addArg("absPos", ofVec2f(gIter->x, gIter->y));
+		gEvent->addArg("deltaPos", ofVec2f(gIter->values["drag_dx"], gIter->values["drag_dy"]));
+		gEvent->addArg("type", gIter->gesture_type);
+		gEvent->addArg("target",gIter->target);
+		gEvent->addArg("phase",gIter->phase);
+		gEvent->addArg("id", gIter->gesture_id);
+		gEvent->addArg("n", gIter->n);
+		if(gIter->phase < 3){
+			SubObMediator::Instance()->sendEvent("gesture", gEvent);
+		}
 	}
 }

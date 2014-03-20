@@ -91,12 +91,15 @@ public:
 	virtual void setupText();
 
 	bool bHaveText;
+	bool bHaveText2;
 	ofTrueTypeFont font;
 	string text;
+	string text2;
 	string textAlign;
 
 	ofVec3f textColor;
 	ofVec2f textPosition;
+	ofVec2f textPosition2;
 
 	//new event and param
 	void addEvent(SubObEvent* _event){events.push_back(_event);}

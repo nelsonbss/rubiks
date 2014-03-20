@@ -7,6 +7,7 @@ GuiNode::GuiNode(){
     drawColor.set(0,0,0);
 	bDrawArea = false;
 	bHaveText = false;
+	bHaveText2 = false;
 	bHidden = false;
 	bActive = true;
 }
@@ -28,6 +29,10 @@ void GuiNode::draw(){
 			//cout << "drawing text - " << currentText << endl;
 			if(textAlign == "position"){
 				font.drawString(currentText, drawPos.x + textPosition.x, drawPos.y + textPosition.y);
+				if(bHaveText2){
+					currentText = GuiConfigurator::Instance()->getText(text2);
+					font.drawString(currentText, drawPos.x + textPosition2.x, drawPos.y + textPosition2.y);
+				}
 			} else {
 				ofRectangle box = font.getStringBoundingBox(currentText,0,0);
 				float cx = 0;
@@ -105,6 +110,11 @@ void GuiNode::setupText(){
 	textPosition.set(0,0);
 	if(params.count("text-position")){
 		textPosition = stringToVec2f(params["text-position"]);
+	}
+	if(params.count("text2")){
+		bHaveText2 = true;
+		text2 = params["text2"];
+		textPosition2 = stringToVec2f(params["text-position2"]);
 	}
 }
 

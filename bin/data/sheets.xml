@@ -121,6 +121,35 @@
         <val>false</val>
       </param>
     </node>
+    <node type="button" name="start-help-bl">
+      <pos>0.25, 0.7</pos>
+      <size>1.0,1.0</size>
+      <scale>1.0</scale>
+      <param>
+        <name>image</name>
+        <val>Exports/Start_Textbox_456x53_Blue.png</val>
+      </param>
+      <param>
+        <name>text</name>
+        <val>start-help-bl</val>
+      </param>
+      <param>
+        <name>font</name>
+        <val>Fonts/GothamRnd-Medium.otf</val>
+      </param>
+      <param>
+        <name>font-size</name>
+        <val>10</val>
+      </param>
+      <param>
+        <name>text-position</name>
+        <val>25,140</val>
+      </param>
+      <param>
+        <name>text-color</name>
+        <val>255,255,255</val>
+      </param>
+    </node>
     <node type="window" name="3d-window">
       <pos>0.0,0.73</pos>
       <size>0.154,0.225</size>
@@ -185,7 +214,7 @@
       <event name="object-selected">
         <arg name="object">
           <type>int</type>
-          <val>6</val>
+          <val>7</val>
         </arg>
       </event>
       <param>
@@ -212,7 +241,7 @@
       <event name="object-selected">
         <arg name="object">
           <type>int</type>
-          <val>6</val>
+          <val>4</val>
         </arg>
       </event>
       <param>
@@ -239,7 +268,7 @@
       <event name="object-selected">
         <arg name="object">
           <type>int</type>
-          <val>6</val>
+          <val>1</val>
         </arg>
       </event>
       <param>
@@ -266,7 +295,7 @@
       <event name="object-selected">
         <arg name="object">
           <type>int</type>
-          <val>6</val>
+          <val>5</val>
         </arg>
       </event>
       <param>
@@ -293,7 +322,7 @@
       <event name="object-selected">
         <arg name="object">
           <type>int</type>
-          <val>6</val>
+          <val>9</val>
         </arg>
       </event>
       <param>
@@ -320,7 +349,7 @@
       <event name="object-selected">
         <arg name="object">
           <type>int</type>
-          <val>6</val>
+          <val>2</val>
         </arg>
       </event>
       <param>
@@ -347,7 +376,7 @@
       <event name="object-selected">
         <arg name="object">
           <type>int</type>
-          <val>6</val>
+          <val>3</val>
         </arg>
       </event>
       <param>
@@ -502,28 +531,14 @@
         <val>false</val>
       </param>
       <node type="button" name="color1">
-        <pos>0.01,0.74</pos>
+        <pos>0.01,0.758</pos>
         <size>1.0,1.0</size>
-        <scale>0.25</scale>
+        <scale>1.0</scale>
         <event name="color-selected">
         </event>
-        <!--
-      <event name="hide-node">
-        <arg name="target">
-          <type>string</type>
-          <val>next-inactive</val>  
-        </arg>
-      </event>
-      <event name="unhide-node">
-        <arg name="target">
-          <type>string</type>
-          <val>next-active</val>
-        </arg>
-      </event>
-      -->
         <param>
           <name>image</name>
-          <val>armature1.png</val>
+          <val>Exports/ColorSwatch_01.png</val>
         </param>
         <param>
           <name>drag</name>
@@ -550,19 +565,15 @@
           <val>true</val>
         </param>
       </node>
-      <node type="button" name="arm2">
-        <pos>0.01,0.805</pos>
+      <node type="button" name="color2">
+        <pos>0.04,0.758</pos>
         <size>1.0,1.0</size>
-        <scale>0.25</scale>
-        <event name="armature-selected">
-          <arg name="armature">
-            <type>int</type>
-            <val>2</val>
-          </arg>
+        <scale>1.0</scale>
+        <event name="color-selected">
         </event>
         <param>
           <name>image</name>
-          <val>armature2.png</val>
+          <val>Exports/ColorSwatch_02.png</val>
         </param>
         <param>
           <name>drag</name>
@@ -584,11 +595,505 @@
           <name>active</name>
           <val>false</val>
         </param>
+        <param>
+          <name>attach-sample</name>
+          <val>true</val>
+        </param>
+      </node>
+      <node type="button" name="color3">
+        <pos>0.07,0.758</pos>
+        <size>1.0,1.0</size>
+        <scale>1.0</scale>
+        <event name="color-selected">
+        </event>
+        <param>
+          <name>image</name>
+          <val>Exports/ColorSwatch_03.png</val>
+        </param>
+        <param>
+          <name>drag</name>
+          <val>true</val>
+        </param>
+        <param>
+          <name>n</name>
+          <val>1</val>
+        </param>
+        <param>
+          <name>droppable</name>
+          <val>true</val>
+        </param>
+        <param>
+          <name>hidden</name>
+          <val>true</val>
+        </param>
+        <param>
+          <name>active</name>
+          <val>false</val>
+        </param>
+        <param>
+          <name>attach-sample</name>
+          <val>true</val>
+        </param>
+      </node>
+      <node type="button" name="color4">
+        <pos>0.1,0.758</pos>
+        <size>1.0,1.0</size>
+        <scale>1.0</scale>
+        <event name="color-selected">
+        </event>
+        <param>
+          <name>image</name>
+          <val>Exports/ColorSwatch_04.png</val>
+        </param>
+        <param>
+          <name>drag</name>
+          <val>true</val>
+        </param>
+        <param>
+          <name>n</name>
+          <val>1</val>
+        </param>
+        <param>
+          <name>droppable</name>
+          <val>true</val>
+        </param>
+        <param>
+          <name>hidden</name>
+          <val>true</val>
+        </param>
+        <param>
+          <name>active</name>
+          <val>false</val>
+        </param>
+        <param>
+          <name>attach-sample</name>
+          <val>true</val>
+        </param>
+      </node>
+      <node type="button" name="color5">
+        <pos>0.01,0.803</pos>
+        <size>1.0,1.0</size>
+        <scale>1.0</scale>
+        <event name="color-selected">
+        </event>
+        <param>
+          <name>image</name>
+          <val>Exports/ColorSwatch_05.png</val>
+        </param>
+        <param>
+          <name>drag</name>
+          <val>true</val>
+        </param>
+        <param>
+          <name>n</name>
+          <val>1</val>
+        </param>
+        <param>
+          <name>droppable</name>
+          <val>true</val>
+        </param>
+        <param>
+          <name>hidden</name>
+          <val>true</val>
+        </param>
+        <param>
+          <name>active</name>
+          <val>false</val>
+        </param>
+        <param>
+          <name>attach-sample</name>
+          <val>true</val>
+        </param>
+      </node>
+      <node type="button" name="color6">
+        <pos>0.04,0.803</pos>
+        <size>1.0,1.0</size>
+        <scale>1.0</scale>
+        <event name="color-selected">
+        </event>
+        <param>
+          <name>image</name>
+          <val>Exports/ColorSwatch_06.png</val>
+        </param>
+        <param>
+          <name>drag</name>
+          <val>true</val>
+        </param>
+        <param>
+          <name>n</name>
+          <val>1</val>
+        </param>
+        <param>
+          <name>droppable</name>
+          <val>true</val>
+        </param>
+        <param>
+          <name>hidden</name>
+          <val>true</val>
+        </param>
+        <param>
+          <name>active</name>
+          <val>false</val>
+        </param>
+        <param>
+          <name>attach-sample</name>
+          <val>true</val>
+        </param>
+      </node>
+      <node type="button" name="color7">
+        <pos>0.07,0.803</pos>
+        <size>1.0,1.0</size>
+        <scale>1.0</scale>
+        <event name="color-selected">
+        </event>
+        <param>
+          <name>image</name>
+          <val>Exports/ColorSwatch_07.png</val>
+        </param>
+        <param>
+          <name>drag</name>
+          <val>true</val>
+        </param>
+        <param>
+          <name>n</name>
+          <val>1</val>
+        </param>
+        <param>
+          <name>droppable</name>
+          <val>true</val>
+        </param>
+        <param>
+          <name>hidden</name>
+          <val>true</val>
+        </param>
+        <param>
+          <name>active</name>
+          <val>false</val>
+        </param>
+        <param>
+          <name>attach-sample</name>
+          <val>true</val>
+        </param>
+      </node>
+      <node type="button" name="color8">
+        <pos>0.1,0.803</pos>
+        <size>1.0,1.0</size>
+        <scale>1.0</scale>
+        <event name="color-selected">
+        </event>
+        <param>
+          <name>image</name>
+          <val>Exports/ColorSwatch_08.png</val>
+        </param>
+        <param>
+          <name>drag</name>
+          <val>true</val>
+        </param>
+        <param>
+          <name>n</name>
+          <val>1</val>
+        </param>
+        <param>
+          <name>droppable</name>
+          <val>true</val>
+        </param>
+        <param>
+          <name>hidden</name>
+          <val>true</val>
+        </param>
+        <param>
+          <name>active</name>
+          <val>false</val>
+        </param>
+        <param>
+          <name>attach-sample</name>
+          <val>true</val>
+        </param>
+      </node>
+      <node type="button" name="color9">
+        <pos>0.01,0.848</pos>
+        <size>1.0,1.0</size>
+        <scale>1.0</scale>
+        <event name="color-selected">
+        </event>
+        <param>
+          <name>image</name>
+          <val>Exports/ColorSwatch_09.png</val>
+        </param>
+        <param>
+          <name>drag</name>
+          <val>true</val>
+        </param>
+        <param>
+          <name>n</name>
+          <val>1</val>
+        </param>
+        <param>
+          <name>droppable</name>
+          <val>true</val>
+        </param>
+        <param>
+          <name>hidden</name>
+          <val>true</val>
+        </param>
+        <param>
+          <name>active</name>
+          <val>false</val>
+        </param>
+        <param>
+          <name>attach-sample</name>
+          <val>true</val>
+        </param>
+      </node>
+      <node type="button" name="color10">
+        <pos>0.04,0.848</pos>
+        <size>1.0,1.0</size>
+        <scale>1.0</scale>
+        <event name="color-selected">
+        </event>
+        <param>
+          <name>image</name>
+          <val>Exports/ColorSwatch_10.png</val>
+        </param>
+        <param>
+          <name>drag</name>
+          <val>true</val>
+        </param>
+        <param>
+          <name>n</name>
+          <val>1</val>
+        </param>
+        <param>
+          <name>droppable</name>
+          <val>true</val>
+        </param>
+        <param>
+          <name>hidden</name>
+          <val>true</val>
+        </param>
+        <param>
+          <name>active</name>
+          <val>false</val>
+        </param>
+        <param>
+          <name>attach-sample</name>
+          <val>true</val>
+        </param>
+      </node>
+      <node type="button" name="color11">
+        <pos>0.07,0.848</pos>
+        <size>1.0,1.0</size>
+        <scale>1.0</scale>
+        <event name="color-selected">
+        </event>
+        <param>
+          <name>image</name>
+          <val>Exports/ColorSwatch_11.png</val>
+        </param>
+        <param>
+          <name>drag</name>
+          <val>true</val>
+        </param>
+        <param>
+          <name>n</name>
+          <val>1</val>
+        </param>
+        <param>
+          <name>droppable</name>
+          <val>true</val>
+        </param>
+        <param>
+          <name>hidden</name>
+          <val>true</val>
+        </param>
+        <param>
+          <name>active</name>
+          <val>false</val>
+        </param>
+        <param>
+          <name>attach-sample</name>
+          <val>true</val>
+        </param>
+      </node>
+      <node type="button" name="color12">
+        <pos>0.1,0.848</pos>
+        <size>1.0,1.0</size>
+        <scale>1.0</scale>
+        <event name="color-selected">
+        </event>
+        <param>
+          <name>image</name>
+          <val>Exports/ColorSwatch_12.png</val>
+        </param>
+        <param>
+          <name>drag</name>
+          <val>true</val>
+        </param>
+        <param>
+          <name>n</name>
+          <val>1</val>
+        </param>
+        <param>
+          <name>droppable</name>
+          <val>true</val>
+        </param>
+        <param>
+          <name>hidden</name>
+          <val>true</val>
+        </param>
+        <param>
+          <name>active</name>
+          <val>false</val>
+        </param>
+        <param>
+          <name>attach-sample</name>
+          <val>true</val>
+        </param>
+      </node>
+      <node type="button" name="color13">
+        <pos>0.01,0.893</pos>
+        <size>1.0,1.0</size>
+        <scale>1.0</scale>
+        <event name="color-selected">
+        </event>
+        <param>
+          <name>image</name>
+          <val>Exports/ColorSwatch_13.png</val>
+        </param>
+        <param>
+          <name>drag</name>
+          <val>true</val>
+        </param>
+        <param>
+          <name>n</name>
+          <val>1</val>
+        </param>
+        <param>
+          <name>droppable</name>
+          <val>true</val>
+        </param>
+        <param>
+          <name>hidden</name>
+          <val>true</val>
+        </param>
+        <param>
+          <name>active</name>
+          <val>false</val>
+        </param>
+        <param>
+          <name>attach-sample</name>
+          <val>true</val>
+        </param>
+      </node>
+      <node type="button" name="color14">
+        <pos>0.04,0.893</pos>
+        <size>1.0,1.0</size>
+        <scale>1.0</scale>
+        <event name="color-selected">
+        </event>
+        <param>
+          <name>image</name>
+          <val>Exports/ColorSwatch_14.png</val>
+        </param>
+        <param>
+          <name>drag</name>
+          <val>true</val>
+        </param>
+        <param>
+          <name>n</name>
+          <val>1</val>
+        </param>
+        <param>
+          <name>droppable</name>
+          <val>true</val>
+        </param>
+        <param>
+          <name>hidden</name>
+          <val>true</val>
+        </param>
+        <param>
+          <name>active</name>
+          <val>false</val>
+        </param>
+        <param>
+          <name>attach-sample</name>
+          <val>true</val>
+        </param>
+      </node>
+      <node type="button" name="color15">
+        <pos>0.07,0.893</pos>
+        <size>1.0,1.0</size>
+        <scale>1.0</scale>
+        <event name="color-selected">
+        </event>
+        <param>
+          <name>image</name>
+          <val>Exports/ColorSwatch_15.png</val>
+        </param>
+        <param>
+          <name>drag</name>
+          <val>true</val>
+        </param>
+        <param>
+          <name>n</name>
+          <val>1</val>
+        </param>
+        <param>
+          <name>droppable</name>
+          <val>true</val>
+        </param>
+        <param>
+          <name>hidden</name>
+          <val>true</val>
+        </param>
+        <param>
+          <name>active</name>
+          <val>false</val>
+        </param>
+        <param>
+          <name>attach-sample</name>
+          <val>true</val>
+        </param>
+      </node>
+      <node type="button" name="color16">
+        <pos>0.1,0.893</pos>
+        <size>1.0,1.0</size>
+        <scale>1.0</scale>
+        <event name="color-selected">
+        </event>
+        <param>
+          <name>image</name>
+          <val>Exports/ColorSwatch_16.png</val>
+        </param>
+        <param>
+          <name>drag</name>
+          <val>true</val>
+        </param>
+        <param>
+          <name>n</name>
+          <val>1</val>
+        </param>
+        <param>
+          <name>droppable</name>
+          <val>true</val>
+        </param>
+        <param>
+          <name>hidden</name>
+          <val>true</val>
+        </param>
+        <param>
+          <name>active</name>
+          <val>false</val>
+        </param>
+        <param>
+          <name>attach-sample</name>
+          <val>true</val>
+        </param>
       </node>
     </node>
     <node type="drop" name="object-drop">
-      <pos>0.3, 0.68</pos>
-      <size>0.2,0.25</size>
+      <pos>0.2, 0.68</pos>
+      <size>0.3,0.25</size>
       <scale>1.0</scale>
       <param>
         <name>draw-area</name>
@@ -603,7 +1108,8 @@
         <val>-1000.0</val>
       </param>
     </node>
-    <node type="button" name="object-help-ll">
+    <!--
+    <node type="button" name="object-help-bl">
       <pos>0.154, 0.67</pos>
       <size>1.0,1.0</size>
       <scale>1.0</scale>
@@ -630,6 +1136,52 @@
       <param>
         <name>text-color</name>
         <val>255,255,255</val>
+      </param>
+    </node>
+    -->
+    <node type="button" name="puzzle-help-bl">
+      <pos>0.01, 0.685</pos>
+      <size>1.0,1.0</size>
+      <scale>1.0</scale>
+      <param>
+        <name>image</name>
+        <val>Exports/Play_Textbox_22x44_Blue.png</val>
+      </param>
+      <param>
+        <name>text</name>
+        <val>play-help-1</val>
+      </param>
+      <param>
+        <name>text2</name>
+        <val>play-help-2</val>
+      </param>
+      <param>
+        <name>font</name>
+        <val>Fonts/GothamRnd-Medium.otf</val>
+      </param>
+      <param>
+        <name>font-size</name>
+        <val>10</val>
+      </param>
+      <param>
+        <name>text-position</name>
+        <val>18,116</val>
+      </param>
+      <param>
+        <name>text-position2</name>
+        <val>90,250</val>
+      </param>
+      <param>
+        <name>text-color</name>
+        <val>255,255,255</val>
+      </param>
+      <param>
+        <name>hidden</name>
+        <val>true</val>
+      </param>
+      <param>
+        <name>active</name>
+        <val>false</val>
       </param>
     </node>
     <node type="button" name="reset">

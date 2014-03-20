@@ -40,33 +40,33 @@ void testApp::setup(){
 
 	//////////////////////////////generate puzzles for middle area
 	////////////////////////////////create puzzle///////////////////////////////////////
-	puzzleCounter =1000;
-	////////////////////////////////create cutter
-	ofVec3f offsetSlicer = ofVec3f(0,0,0);
-	myCutter = new cutter(0.01,1000,100,1,offsetSlicer);		
-	myCutter->setup();
-	//////////////////////////////////create slicer
-	mySlicer = new slicer(myCutter);
-	mySlicer->setup();
-	SG_POINT slicingPos = {0,0,0};
-	SG_VECTOR middlePuzzlePos = {200,100,0};
-	ofVec3f rotateSlicer = ofVec3f (0,0,0);
+	//puzzleCounter =1000;
+	//////////////////////////////////create cutter
+	//ofVec3f offsetSlicer = ofVec3f(0,0,0);
+	//myCutter = new cutter(0.01,1000,100,1,offsetSlicer);		
+	//myCutter->setup();
+	////////////////////////////////////create slicer
+	//mySlicer = new slicer(myCutter);
+	//mySlicer->setup();
+	//SG_POINT slicingPos = {0,0,0};
+	//SG_VECTOR middlePuzzlePos = {200,100,0};
+	//ofVec3f rotateSlicer = ofVec3f (0,0,0);
 
-	objectDisplayed = new myobject3D(gamePos,displayPos);
+	//objectDisplayed = new myobject3D(gamePos,displayPos);
 
-	for(int i=0; i < puzzleItems; i++){
-		objectDisplayed->loadObject(sgCreateBox(300,300,300),2);
-		mySlicer->intersectCubes((sgCObject*)objectDisplayed->getObject());
+	//for(int i=0; i < puzzleItems; i++){
+	//	objectDisplayed->loadObject(sgCreateBox(300,300,300),2);
+	//	mySlicer->intersectCubes((sgCObject*)objectDisplayed->getObject());
 
-		middlePuzzlePos.x = 200 + (i*300) + (i*100);
-		myPuzzle = new puzzle(middlePuzzlePos, offsetSlicer); // it receives the position to be displayed AND the offset of the armature/cutter to adapt slicing
-		myPuzzle->setup();
+	//	middlePuzzlePos.x = 200 + (i*300) + (i*100);
+	//	myPuzzle = new puzzle(middlePuzzlePos, offsetSlicer); // it receives the position to be displayed AND the offset of the armature/cutter to adapt slicing
+	//	myPuzzle->setup();
 
-		myPuzzle->loadPieces(mySlicer->getPieces(),101,rotateSlicer);//selected object id is used for coloring
-		myPuzzle->colorFaces(101);
-		middlePuzzles.push_back(new menuPuzzle(myPuzzle,puzzleCounter));
-		//puzzleCounter ++;
-	}
+	//	myPuzzle->loadPieces(mySlicer->getPieces(),101,rotateSlicer);//selected object id is used for coloring
+	//	myPuzzle->colorFaces(101);
+	//	middlePuzzles.push_back(new menuPuzzle(myPuzzle,puzzleCounter));
+	//	//puzzleCounter ++;
+	//}
 }
 //--------------------------------------------------------------
 void testApp::update(){
@@ -169,9 +169,9 @@ void testApp::draw(){
 	}
 
 	//middle puzzles
-	for(int i=0; i < middlePuzzles.size();i++){
-		middlePuzzles[i]->draw();
-	}
+	//for(int i=0; i < middlePuzzles.size();i++){
+	//	middlePuzzles[i]->draw();
+	//}
 
 	///////////////////END OF RENDERING////////////////////
 	stopOFLights();

@@ -197,6 +197,7 @@ void game::draw(){
 
 		ofTranslate(-posP.x,-posP.y,-posP.z);
 		myPuzzle->draw();
+
 		ofPopMatrix();
 	}
 	if(step == 6){

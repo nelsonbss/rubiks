@@ -79,7 +79,8 @@ void drawingCanvas::makeLine(ofVec2f mouse){
 					myPolyline->addVertex(mouse);
 					//fix offset of point since they are in in the "middle" of the screen
 					//they have to be where the slicing takes place
-					myPolyline2->addVertex(ofVec2f(mouse.x-posCanvas.x,mouse.y-posCanvas.y));
+					//////////////////////myPolyline2->addVertex(ofVec2f(mouse.x-posCanvas.x,mouse.y-posCanvas.y));
+					myPolyline2->addVertex(ofVec2f(mouse.x-728,mouse.y-910));
 					drawDummy = false;
 				}else if(intersect == 2){
 					//YES intersection
@@ -127,7 +128,8 @@ void drawingCanvas::makeLine(ofVec2f mouse){
 			myPolyline->addVertex(mouse);
 			//fix offset of point since they are in in the "middle" of the screen
 			//they have to be where the slicing takes place
-			myPolyline2->addVertex(ofVec2f(mouse.x-posCanvas.x,mouse.y-posCanvas.y));
+			////////////////////////myPolyline2->addVertex(ofVec2f(mouse.x-posCanvas.x,mouse.y-posCanvas.y));
+			myPolyline2->addVertex(ofVec2f(mouse.x-728,mouse.y-910));
 			drawDummy = false;
 		}
 	}
@@ -250,7 +252,8 @@ void drawingCanvas::mousePressed(int x, int y, int button){
 				lastMouse = ofVec2f(x,y);
 				firstMouse = lastMouse; //to be able to close shape
 				myPolyline->addVertex(lastMouse);//first vertex
-				myPolyline2->addVertex(ofVec2f(lastMouse.x-posCanvas.x,lastMouse.y-posCanvas.y));
+				////////////////myPolyline2->addVertex(ofVec2f(lastMouse.x-posCanvas.x,lastMouse.y-posCanvas.y));
+				myPolyline2->addVertex(ofVec2f(lastMouse.x-728,lastMouse.y-910));
 				poly2exists = true;
 			}
 			else{
@@ -264,7 +267,8 @@ void drawingCanvas::mouseReleased(int x, int y, int button){
 	if(poly2exists == true){
 		//add last point
 		myPolyline->addVertex(firstMouse);//close last vertex, with first vertex
-		myPolyline2->addVertex(ofVec2f(firstMouse.x-posCanvas.x,firstMouse.y-posCanvas.y));//polyline2 is the one that is on slicing position
+		//////////////myPolyline2->addVertex(ofVec2f(firstMouse.x-posCanvas.x,firstMouse.y-posCanvas.y));//polyline2 is the one that is on slicing position
+		myPolyline2->addVertex(ofVec2f(firstMouse.x-728,firstMouse.y-910));
 		closed = true;
 	}
 

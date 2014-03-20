@@ -66,6 +66,7 @@ void myobject3D::update(){
 		temp->GetTempMatrix()->Rotate(rotP2,rotV2,ofDegToRad(180));
 	}else if(objectId == 200){
 		//extruded object
+		//SG_VECTOR offset = {0,150,0}; 
 		SG_VECTOR offset = {0,150,0}; 
 		temp->GetTempMatrix()->Translate(offset);
 	}
@@ -73,6 +74,9 @@ void myobject3D::update(){
 }
 //--------------------------------------------------------------
 void myobject3D::draw(){
+
+	ofSetColor(ofColor(255,0,0,255));
+	ofCircle(0,0,-0, 10.0);
 	
 	ofPushMatrix();
 	//ofScale(1,1,1);

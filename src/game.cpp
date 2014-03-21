@@ -1168,10 +1168,10 @@ void game::restart(){
 		step = 0;
 		objectID = -1;
 	}else if(step==4 || step==5){
-		myPuzzle->exit();
-		myCutter->exit();
-		mySlicer->exit();
-		objectDisplayed->exit();
+		//myPuzzle->exit();
+		//myCutter->exit();
+		//mySlicer->exit();
+		//objectDisplayed->exit();
 		objectID = -1;
 		step = 0;
 		armID = -1;

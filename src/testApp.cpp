@@ -449,6 +449,14 @@ void testApp::update(string _eventName, SubObEvent* _event){
 			SG_VECTOR objectPos = {0,0,0};  //where it gets sliced
 			myGames[0]->guiLoad(obj);
 		}
+		if(myGames[0]->getCurrentStep() == 6){
+			ev->setName("hide-node");
+			ev->addArg("target","next-active");
+			SubObMediator::Instance()->sendEvent("hide-node", ev);
+			ev->setName("unhide-node");
+			ev->addArg("target","make-one");
+			SubObMediator::Instance()->sendEvent("unhide-node", ev);
+		}
 	}
 	if(_eventName == "next-step"){
 		myGames[0]->guiNext();

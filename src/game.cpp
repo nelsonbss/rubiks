@@ -58,6 +58,7 @@ game::game(SG_VECTOR gamePos, float w, float h, SG_VECTOR displayPos, float iddl
 
 	SubObMediator::Instance()->addObserver("ibox-bl:2", this);
 	SubObMediator::Instance()->addObserver("ibox-bl-tap", this);
+	SubObMediator::Instance()->addObserver("new-color", this);
 
 	extrudedB = false;
 
@@ -195,6 +196,13 @@ void game::update(string _eventName, SubObEvent* _event){
 			ofVec2f pos = _event->getArg("absPos")->getVec2();
 			mouseDragged(pos.x, pos.y, 2);
 		}
+	}
+	if(_eventName == "new-color"){
+		ofFloatColor sc = ofFloatColor (1, 1, 0); //yellow
+		//ofFloatColor menuColor = ofFloatColor (1, 0, 1); //this color comes from the GUI
+		ofVec3f newColor = _event->getArg("color")->getVec3();
+		ofFloatColor menuColor = ofFloatColor(newColor.x / 255.0, newColor.y / 255.0, newColor.z / 255.0);
+		changeColorToColor(sc,menuColor);
 	}
 }
 //----------------------------------------------------------------------

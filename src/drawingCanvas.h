@@ -3,8 +3,11 @@
 
 #include "sgCore.h"
 #include "ofMain.h"
+#include "Observer.h"
+#include "SubObEvent.h"
+#include "SubObMediator.h"
 
-class drawingCanvas {
+class drawingCanvas: public Observer{
 
 public:
 	drawingCanvas(ofVec3f posCanvas, int width, int heigh);
@@ -41,6 +44,9 @@ public:
 	bool drawDummy;
 	ofVec2f dummyA;
 	ofVec2f dummyB;
+
+	void update(string _eventName, SubObEvent* _event);
+	bool bDrawing;
 };
 
 #endif /* defined(__TdrawingCanvas__drawingCanvas__) */

@@ -1122,7 +1122,7 @@
       </param>
       <param>
         <name>z</name>
-        <val>-1000.0</val>
+        <val>0</val>
       </param>
       <param>
         <name>drag</name>
@@ -1139,6 +1139,39 @@
       <param>
         <name>active</name>
         <val>false</val>
+      </param>
+    </node>
+    <node type="ibox" name="ibox-drawing">
+      <pos>0.2, 0.68</pos>
+      <size>0.3,0.25</size>
+      <scale>1.0</scale>
+      <param>
+        <name>draw-area</name>
+        <val>true</val>
+      </param>
+      <param>
+        <name>draw-color</name>
+        <val>0,0,255</val>
+      </param>
+      <param>
+        <name>z</name>
+        <val>0</val>
+      </param>
+      <param>
+        <name>drag</name>
+        <val>true</val>
+      </param>
+      <param>
+        <name>n</name>
+        <val>-1</val>
+      </param>
+      <param>
+        <name>hidden</name>
+        <val>false</val>
+      </param>
+      <param>
+        <name>active</name>
+        <val>true</val>
       </param>
     </node>
     <!--
@@ -1311,6 +1344,47 @@
       <param>
         <name>text</name>
         <val>next</val>
+      </param>
+      <param>
+        <name>font</name>
+        <val>Fonts/Gotham-Bold.otf</val>
+      </param>
+      <param>
+        <name>font-size</name>
+        <val>10</val>
+      </param>
+      <param>
+        <name>text-align</name>
+        <val>center</val>
+      </param>
+      <param>
+        <name>text-position</name>
+        <val>10,20</val>
+      </param>
+      <param>
+        <name>text-color</name>
+        <val>255,255,255</val>
+      </param>
+    </node>
+    <node type="button" name="make-one">
+      <pos>0.4,0.95</pos>
+      <size>1.0,1.0</size>
+      <scale>1.0</scale>
+      <param>
+        <name>image</name>
+        <val>Exports/Button_Next_789x328_Blue1.png</val>
+      </param>
+      <param>
+        <name>active</name>
+        <val>false</val>
+      </param>
+      <param>
+        <name>hidden</name>
+        <val>true</val>
+      </param>
+      <param>
+        <name>text</name>
+        <val>make</val>
       </param>
       <param>
         <name>font</name>

@@ -14,6 +14,10 @@ drawingCanvas::drawingCanvas(ofVec3f posCanvasi, int widthi, int heighti){
 	drawDummy = false;
 
 	//myCanvasImage.loadImage("drawingGrid.png");
+	SubObMediator::Instance()->addObserver("ibox-drawing:1", this);
+	SubObMediator::Instance()->addObserver("ibox-drawing:0", this);
+
+	bDrawing = false;
 }
 //--------------------------------------------------------------
 void drawingCanvas::setup(){
@@ -48,6 +52,28 @@ void drawingCanvas::draw(){
 	//glPopMatrix();
 
 }
+
+void drawingCanvas::update(string _eventName, SubObEvent* _event){
+	if(_eventName == "ibox-drawing:1"){
+		int phase = _event->getArg("phase")->getInt();
+		cout << "puzzle phase = " << phase << endl;
+		if(phase == 0){
+			ofVec2f pos = _event->getArg("absPos")->getVec2();
+			mousePressed(pos.x, pos.y, 0);
+		}
+		if(phase == 1){
+			ofVec2f pos = _event->getArg("absPos")->getVec2();
+			mouseDragged(pos.x, pos.y, 0);
+		}
+	}
+	if(_eventName == "ibox-drawing:0"){
+		if(bDrawing){
+			ofVec2f pos = _event->getArg("absPos")->getVec2();
+			mouseReleased(pos.x,pos.y,0);
+		}
+	}
+}
+
 //--------------------------------------------------------------
 void drawingCanvas::makeLine(ofVec2f mouse){
 	int intersect=0;
@@ -240,27 +266,32 @@ void drawingCanvas::mouseDragged(int x, int y, int button){
 }
 //--------------------------------------------------------------
 void drawingCanvas::mousePressed(int x, int y, int button){
-	if(closed == false){
-		//check if its inside the area to be able to draw
-		//if((posCanvas.x-(width/2) < x) && (x < posCanvas.x+(width/2))){
-		//	if((posCanvas.y-(height/2) < y) && (y < posCanvas.y+(height/2))){
-		if((590 < x) && (x < 870)){
-			if((770 < y) && (y < 1050)){
-				lastMouse = ofVec2f(x,y);
-				firstMouse = lastMouse; //to be able to close shape
-				myPolyline->addVertex(lastMouse);//first vertex
-				////////////////myPolyline2->addVertex(ofVec2f(lastMouse.x-posCanvas.x,lastMouse.y-posCanvas.y));
-				myPolyline2->addVertex(ofVec2f(lastMouse.x-728,lastMouse.y-910));
-				poly2exists = true;
-			}
-			else{
-				poly2exists = false;
+	//if(!bDrawing){
+		cout << "starting drawing" << endl;
+		if(closed == false){
+			//check if its inside the area to be able to draw
+			//if((posCanvas.x-(width/2) < x) && (x < posCanvas.x+(width/2))){
+			//	if((posCanvas.y-(height/2) < y) && (y < posCanvas.y+(height/2))){
+			if((590 < x) && (x < 870)){
+				if((770 < y) && (y < 1050)){
+					lastMouse = ofVec2f(x,y);
+					firstMouse = lastMouse; //to be able to close shape
+					myPolyline->addVertex(lastMouse);//first vertex
+					////////////////myPolyline2->addVertex(ofVec2f(lastMouse.x-posCanvas.x,lastMouse.y-posCanvas.y));
+					myPolyline2->addVertex(ofVec2f(lastMouse.x-728,lastMouse.y-910));
+					poly2exists = true;
+				}
+				else{
+					poly2exists = false;
+				}
 			}
 		}
-	}
+		bDrawing = true;
+	//}
 }
 //--------------------------------------------------------------
 void drawingCanvas::mouseReleased(int x, int y, int button){
+	bDrawing = false;
 	if(poly2exists == true){
 		//add last point
 		myPolyline->addVertex(firstMouse);//close last vertex, with first vertex
@@ -268,7 +299,7 @@ void drawingCanvas::mouseReleased(int x, int y, int button){
 		myPolyline2->addVertex(ofVec2f(firstMouse.x-728,firstMouse.y-910));
 		closed = true;
 	}
-
+	cout << "finishing drawing" << endl;
 	if(drawDummy == true){
 		drawDummy = false;
 		myDummyLine->clear();

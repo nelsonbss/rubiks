@@ -79,11 +79,25 @@ void GuiButton::nodeInit(){
 	timeOfLastInteraction = 0;
 	bWatchTime = false;
 	timer = new ofxTimer();
+	bSendSample = false;
+	if(params.count("attach-sample")){
+		if(params["attach-sample"] == "true"){
+			sampleImage();
+			bSendSample = true;
+		}
+	}
 }
 
 void GuiButton::nodeExecute(){
 	bReadyForInput = false;
 	timer->addTimer(1000, (int*)&bReadyForInput, 1);
+	if(bSendSample){
+		cout << "sending sample" << endl;
+		SubObEvent ev;
+		ev.setName("new-color");
+		ev.addArg("color", sampleColor);
+		SubObMediator::Instance()->sendEvent("new-color", &ev);
+	}
 }
 
 bool GuiButton::processMouse(int _x, int _y, int _state){
@@ -157,6 +171,19 @@ void GuiButton::update(string _eventName, SubObEvent* _event){
 			execute();
 		}
 	}
+}
+
+void GuiButton::sampleImage(){
+	int w = inactive.width;
+	int h = inactive.height;
+	int bpp = inactive.bpp / 8;
+	unsigned char * pixels = inactive.getPixels();
+	int p = (h / 2) * w + (w / 2);
+	cout << "p = " << p << endl;
+	float r = pixels[p*bpp+0];
+	float g = pixels[p*bpp+1];
+	float b = pixels[p*bpp+2];
+	sampleColor.set(r,g,b);
 }
 
 void GuiButton::nodeDraw(){

@@ -27,6 +27,10 @@ class GuiButton : public GuiNode
         string getAttr(const char* _key){return attrs[_key];}
 		void setChannel(string _channel){channel = _channel;}
 		string getChannel(){return channel;}
+
+		void sampleImage();
+		ofVec3f sampleColor;
+
 	protected:
     private:
         ofImage inactive;
@@ -47,6 +51,7 @@ class GuiButton : public GuiNode
 		ofVec2f dragStartLocation;
 		int timeOfLastInteraction;
 		bool bWatchTime;
+		bool bSendSample;
 };
 
 #endif // GUIBUTTON_H

@@ -201,7 +201,7 @@ void cubie::draw(){
 			//ofScale(1.2,1.2,1.2);
 			if (objectList[j]->GetTempMatrix()!=0)
 			glMultMatrixd(objectList[j]->GetTempMatrix()->GetTransparentData());
-			//objectList[j]->DestroyTempMatrix();
+			objectList[j]->DestroyTempMatrix();
 			if(bDraw){
 				if(bDrawWire){
 					myMeshs[j].drawWireframe();

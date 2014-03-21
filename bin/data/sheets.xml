@@ -1254,6 +1254,15 @@
       <pos>0.33,0.95</pos>
       <size>1.0,1.0</size>
       <scale>1.0</scale>
+      <event name="reset"></event>
+      <param>
+        <name>tap</name>
+        <val>true</val>
+      </param>
+      <param>
+        <name>n</name>
+        <val>0</val>
+      </param>
       <param>
         <name>image</name>
         <val>Exports/Button_Reset_651x328.png</val>
@@ -1370,9 +1379,18 @@
       <pos>0.4,0.95</pos>
       <size>1.0,1.0</size>
       <scale>1.0</scale>
+      <event name="extrude"></event>
+      <param>
+        <name>tap</name>
+        <val>true</val>
+      </param>
+      <param>
+        <name>n</name>
+        <val>0</val>
+      </param>
       <param>
         <name>image</name>
-        <val>Exports/Button_Next_789x328_Blue1.png</val>
+        <val>Exports/Button_Next_789x328_Blue2.png</val>
       </param>
       <param>
         <name>active</name>

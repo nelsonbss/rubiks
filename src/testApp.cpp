@@ -75,15 +75,13 @@ void testApp::setup(){
 	GuiConfigurator::Instance()->addFile(guiFile);
 	GuiConfigurator::Instance()->loadGui();
 
-	SubObMediator::Instance()->addObserver("button", this);
 	SubObMediator::Instance()->addObserver("object-selected", this);
 	SubObMediator::Instance()->addObserver("armature-selected", this);
 	SubObMediator::Instance()->addObserver("next-step", this);
-	SubObMediator::Instance()->addObserver("cut-object", this);
-	SubObMediator::Instance()->addObserver("goto-step5", this);
 	SubObMediator::Instance()->addObserver("reset", this);
 	SubObMediator::Instance()->addObserver("touch-point", this);
 	SubObMediator::Instance()->addObserver("gesture", this);
+	SubObMediator::Instance()->addObserver("extrude", this);
 
 	ev = new SubObEvent();
 
@@ -357,7 +355,7 @@ void testApp::mouseDragged(int x, int y, int button){
 		ev->setName("update-touch-point");
 		ev->addArg("position",ofVec3f((float)x / (float)ofGetWidth(),(float)y / (float)ofGetHeight(),0));
 		ev->addArg("touch-id", touchId + touchIdOffset);
-		//SubObMediator::Instance()->sendEvent("update-touch-point", ev);
+		SubObMediator::Instance()->sendEvent("update-touch-point", ev);
 	}
 	if(button == 2){
 		myGames[0]->mouseDragged(x,y,button);
@@ -373,7 +371,7 @@ void testApp::mousePressed(int x, int y, int button){
 		ev->setName("add-touch-point");
 		ev->addArg("position",ofVec3f((float)x / (float)ofGetWidth(),(float)y / (float)ofGetHeight(),0));
 		ev->addArg("touch-id", touchId + touchIdOffset);
-		//SubObMediator::Instance()->sendEvent("add-touch-point", ev);
+		SubObMediator::Instance()->sendEvent("add-touch-point", ev);
 	}
 	if(button == 2){
 		myGames[0]->mousePressed(x,y,button);
@@ -388,7 +386,7 @@ void testApp::mouseReleased(int x, int y, int button){
 		ev->setName("remove-touch-point");
 		ev->addArg("position",ofVec3f((float)x / (float)ofGetWidth(),(float)y / (float)ofGetHeight(),0));
 		ev->addArg("touch-id", touchId + touchIdOffset);
-		//SubObMediator::Instance()->sendEvent("remove-touch-point", ev);
+		SubObMediator::Instance()->sendEvent("remove-touch-point", ev);
 	}
 	myGames[0]->mouseReleased(x,y,button);
 }
@@ -449,12 +447,19 @@ void testApp::update(string _eventName, SubObEvent* _event){
 			SG_VECTOR objectPos = {0,0,0};  //where it gets sliced
 			myGames[0]->guiLoad(obj);
 		}
-		if(myGames[0]->getCurrentStep() == 6){
+		if(_event->getArg("object")->getInt() == 9){
 			ev->setName("hide-node");
 			ev->addArg("target","next-active");
 			SubObMediator::Instance()->sendEvent("hide-node", ev);
 			ev->setName("unhide-node");
 			ev->addArg("target","make-one");
+			SubObMediator::Instance()->sendEvent("unhide-node", ev);
+		} else {
+			ev->setName("hide-node");
+			ev->addArg("target","make-one");
+			SubObMediator::Instance()->sendEvent("hide-node", ev);
+			ev->setName("unhide-node");
+			ev->addArg("target","next-active");
 			SubObMediator::Instance()->sendEvent("unhide-node", ev);
 		}
 	}
@@ -510,15 +515,67 @@ void testApp::update(string _eventName, SubObEvent* _event){
 	}
 	if(_eventName == "reset"){
 		myGames[0]->guiReset();
-		SceneManager::Instance()->reset();
+		ev->setName("hide-node");
+		ev->addArg("target","color-window");
+		SubObMediator::Instance()->sendEvent("hide-node", ev);
+		ev->setName("hide-node");
+		ev->addArg("target","3d-window-box");
+		SubObMediator::Instance()->sendEvent("hide-node", ev);
+		ev->setName("hide-node");
+		ev->addArg("target","3d-window");
+		SubObMediator::Instance()->sendEvent("hide-node", ev);
+		ev->setName("hide-node");
+		ev->addArg("target","object-drop");
+		SubObMediator::Instance()->sendEvent("hide-node", ev);
+		ev->setName("hide-node");
+		ev->addArg("target","arm-window");
+		SubObMediator::Instance()->sendEvent("hide-node", ev);
+		ev->setName("hide-node");
+		ev->addArg("target","next-active");
+		SubObMediator::Instance()->sendEvent("hide-node", ev);
+		ev->setName("hide-node");
+		ev->addArg("target","start-help-bl");
+		SubObMediator::Instance()->sendEvent("hide-node", ev);
+
+		ev->setName("unhide-node");
+		ev->addArg("target","3d-window-box");
+		SubObMediator::Instance()->sendEvent("unhide-node", ev);
+		ev->setName("unhide-node");
+		ev->addArg("target","start-help-bl");
+		SubObMediator::Instance()->sendEvent("unhide-node", ev);
+		ev->setName("unhide-node");
+		ev->addArg("target","object-drop");
+		SubObMediator::Instance()->sendEvent("unhide-node", ev);
+		ev->setName("unhide-node");
+		ev->addArg("target","3d-window");
+		SubObMediator::Instance()->sendEvent("unhide-node", ev);
+		ev->setName("unhide-node");
+		ev->addArg("target","next-inactive");
+		SubObMediator::Instance()->sendEvent("unhide-node", ev);
+		//SceneManager::Instance()->reset();
+		//cout << "RESET" << endl;
+		
 	}
+	/*
 	if(_eventName == "touch-point"){
 		cout << "received touch point" << endl;
 		_event->setActive(false);
 	}
+	*/
 	if(_eventName == "object-area-drag"){
 		ofVec2f delta = _event->getArg("deltaPos")->getVec2();
 
+	}
+	if(_eventName == "extrude"){
+		cout << "got an extrude." << endl;
+		//myGames[0]->guiInput('e');
+		myGames[0]->guiExtrude();
+		ev->setName("hide-node");
+		ev->addArg("target","make-one");
+		SubObMediator::Instance()->sendEvent("hide-node", ev);
+		ev->setName("unhide-node");
+		ev->addArg("target","next-active");
+		SubObMediator::Instance()->sendEvent("unhide-node", ev);
 	}
 }
 

@@ -98,6 +98,7 @@ void GuiButton::nodeExecute(){
 		ev.addArg("color", sampleColor);
 		SubObMediator::Instance()->sendEvent("new-color", &ev);
 	}
+	cout << name << " executing." << endl;
 }
 
 bool GuiButton::processMouse(int _x, int _y, int _state){

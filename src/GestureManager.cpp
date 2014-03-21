@@ -152,7 +152,7 @@ void GestureManager::getGestures(){
 				//cout << "hit = " << e->getArg("hit")->getInt() << endl;
 				if(e.getArg("hit")->getInt()){
 					if(e.hasArg("target")){
-						//cout << "assigning " << e->getArg("target")->getString() << " to gesture" << endl;
+						cout << "assigning " << e.getArg("target")->getString() << " to gesture" << endl;
 						assignTouchPoint(e.getArg("target")->getString(), eIter->point_id);
 					}
 				}

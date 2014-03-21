@@ -65,6 +65,9 @@ public:
 
 	void update(string _eventName, SubObEvent* _event);
 
+	bool bExtrude;
+	void guiExtrude(){bExtrude = true;}
+
 	/*
 	*/
 

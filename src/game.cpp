@@ -61,6 +61,7 @@ game::game(SG_VECTOR gamePos, float w, float h, SG_VECTOR displayPos, float iddl
 	SubObMediator::Instance()->addObserver("new-color", this);
 
 	extrudedB = false;
+	bExtrude = false;
 
 	myCanvasImage.loadImage("drawingGrid.png");
 }
@@ -109,6 +110,18 @@ void game::update(){
 	if(step == 1 || step == 2 || step == 3){
 		//if there is an object selected
 		objectDisplayed->update();
+	}
+
+	if(bExtrude){
+		if(myCanvas->drawingExists()){
+				//make extruded object
+			if(extrudeObject(myCanvas->getPolyline())){
+
+			}else{
+				prepareDrawing();
+			}
+		}
+		bExtrude = false;
 	}
 
 	//if(step == 3){

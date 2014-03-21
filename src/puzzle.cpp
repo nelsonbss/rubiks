@@ -701,7 +701,7 @@ void puzzle::rearange3dArray(SG_VECTOR axis, int plane, bool dir){
 void puzzle::colorFaces(int objectID){
 	////goes through each cubie and makes sets of normals.. to determine all different normals in the object
 	//and apply colors to those normals
-	if((objectID != 4)){
+	if((objectID != 4) && (objectID != 1)){
 		//not the bunny or the cube -> they were already colored on puzzle::loadPieces->cubie::setObjects
 		ofRender *ofr = new ofRender();
 		ofr->colorFaces(myCubies,numPieces,0.01, objectID);

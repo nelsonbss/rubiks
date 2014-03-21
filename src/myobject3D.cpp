@@ -73,7 +73,6 @@ void myobject3D::update(){
 }
 //--------------------------------------------------------------
 void myobject3D::draw(){
-	
 	ofPushMatrix();
 	//ofScale(1,1,1);
 	glMultMatrixd(temp->GetTempMatrix()->GetTransparentData());

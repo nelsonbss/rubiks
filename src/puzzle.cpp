@@ -62,8 +62,11 @@ puzzle::puzzle(SG_VECTOR p, ofVec3f offset){
 	/* or */
 	//std::cout << "It should be 21: " << one_dim.at(2) << "\n";
 	SubObMediator::Instance()->addObserver("ibox-bl:1", this);
+	SubObMediator::Instance()->addObserver("ibox-bl:0", this);
 	bDrawLine = true;
 	bHaveActiveCubie = false;
+	bHaveRotationCubie = false;
+	faceRotateB = false;
 }
 //----------------------------------------------------------------
 void puzzle::setup(){
@@ -471,12 +474,25 @@ void puzzle::rotateByIDandAxis(int id, SG_VECTOR axis, bool dir){
 
 void puzzle::update(string _eventName, SubObEvent* _event){
 	if(_eventName == "ibox-bl:1"){
-		if(_event->getArg("phase")->getInt() == 0){
+		int phase = _event->getArg("phase")->getInt();
+		cout << "puzzle phase = " << phase << endl;
+		if(phase == 0){
 			ofVec2f pos = _event->getArg("absPos")->getVec2();
 			if(isInside(pos.x, pos.y)){
 				cout << "puzzle got cubie." << endl;
 			}
 		}
+		if(phase == 1){
+			ofVec2f pos = _event->getArg("absPos")->getVec2();
+			bool result = isInside(pos.x, pos.y);
+		}
+		if(phase == 2){
+			doRotation();
+		}
+	}
+	if(_eventName == "ibox-bl:0"){
+		cout << "doing rotation." << endl;
+		doRotation();
 	}
 }
 
@@ -508,21 +524,50 @@ bool puzzle::isInside(int _x, int _y){
 	}
 	if(nearestId != -1){
 		if(nearest < MAX_DIST){
+			/*
 			bHaveLine = true;
 			if(bHaveActiveCubie){
 				myCubies[activeCubie]->setDrawWire(false);
 			} else {
 				bHaveActiveCubie = true;
 			}
-			activeCubie = nearestId;
-			myCubies[activeCubie]->setDrawWire(true);
+			if(!bHaveActiveCubie){
+				activeCubie = nearestId;
+				myCubies[activeCubie]->setDrawWire(true);
+			} else {
+				rotationCubie = nearestId;
+				myCubies[rotationCubie]->setDrawWire(true);
+				bHaveRotationCubie = true;
+			}
 			return true;
+			*/
+			if(!bHaveActiveCubie){
+				activeCubie = nearestId;
+				bHaveActiveCubie = true;
+			} else if(nearestId != activeCubie){
+				rotationCubie = nearestId;
+				bHaveRotationCubie = true;
+			}
 		} else {
 			bHaveLine = false;
 			bHaveActiveCubie = false;
 		}
 	}
 	return false;
+}
+
+void puzzle::doRotation(){
+	if(bHaveActiveCubie && bHaveRotationCubie){
+		//rotateTwoIds(activeCubie, rotationCubie, true);
+		faceRotateB = true;
+		//bHaveActiveCubie = bHaveRotationCubie = false;
+		cout << "double rotation." << endl;
+	} else if(bHaveActiveCubie == true){
+		//rotateTwoIds(activeCubie, activeCubie, true);
+		faceRotateB = true;
+		//bHaveActiveCubie = false;
+		cout << "single rotation." << endl;
+	}
 }
 
 void puzzle::input(string _type, int _ID, int _n, int _phase, ofVec2f _absPos, ofVec2f _deltaPos){

@@ -174,7 +174,7 @@ void cubie::update(){
 		}
 		/////////////////////////////////////////////////////////
 		//////undo rotations of armature in z-y-x order
-		SG_VECTOR vrotZ = {0,0,1};      
+		/*SG_VECTOR vrotZ = {0,0,1};      
 		SG_VECTOR puzzleRotate = {0,0,0};
 		for (int j=0; j < numObjs; j++){
 			if (objectList[j]->GetTempMatrix()==0){
@@ -187,7 +187,7 @@ void cubie::update(){
 			SG_VECTOR vrotX = {1,0,0}; 							 
 			objectList[j]->GetTempMatrix()->Rotate(puzzleRotate,vrotX,ofDegToRad(armRotations.x));
 			objectList[j]->ApplyTempMatrix();
-		}
+		}*/
 	}
 }
 //------------------------------------------------------------------------------------------------------------------------------------------

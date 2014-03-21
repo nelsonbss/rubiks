@@ -50,6 +50,7 @@ public:
 	void rearange3dArray(SG_VECTOR axis, int plane, bool dir);
 	//face rotation bytwo ids
 	int rotateTwoIds(int cubieA, int cubieB,bool inside);
+	bool faceRotateB;
 
 	void unDo(int id, SG_VECTOR axis, bool dir);
 
@@ -81,8 +82,11 @@ public:
 	float maxDist;
 
 	bool bHaveActiveCubie;
+	bool bHaveRotationCubie;
 	int activeCubie;
 	int rotationCubie;
+
+	void doRotation();
 
 	//   //current state of the rotation
 	//ofQuaternion curRot;

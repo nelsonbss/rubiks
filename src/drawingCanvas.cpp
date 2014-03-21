@@ -267,7 +267,7 @@ void drawingCanvas::mouseDragged(int x, int y, int button){
 //--------------------------------------------------------------
 void drawingCanvas::mousePressed(int x, int y, int button){
 	//if(!bDrawing){
-		cout << "starting drawing" << endl;
+		//cout << "starting drawing" << endl;
 		if(closed == false){
 			//check if its inside the area to be able to draw
 			//if((posCanvas.x-(width/2) < x) && (x < posCanvas.x+(width/2))){

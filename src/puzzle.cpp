@@ -63,7 +63,7 @@ puzzle::puzzle(SG_VECTOR p, ofVec3f offset){
 	//std::cout << "It should be 21: " << one_dim.at(2) << "\n";
 	SubObMediator::Instance()->addObserver("ibox-bl:1", this);
 	SubObMediator::Instance()->addObserver("ibox-bl:0", this);
-	bDrawLine = true;
+	bDrawLine = false;
 	bHaveActiveCubie = false;
 	bHaveRotationCubie = false;
 	faceRotateB = false;
@@ -701,7 +701,7 @@ void puzzle::rearange3dArray(SG_VECTOR axis, int plane, bool dir){
 void puzzle::colorFaces(int objectID){
 	////goes through each cubie and makes sets of normals.. to determine all different normals in the object
 	//and apply colors to those normals
-	if((objectID != 4)){
+	if((objectID != 4) && (objectID != 1)){
 		//not the bunny or the cube -> they were already colored on puzzle::loadPieces->cubie::setObjects
 		ofRender *ofr = new ofRender();
 		ofr->colorFaces(myCubies,numPieces,0.01, objectID);
@@ -713,6 +713,15 @@ void puzzle::colorFaces(int objectID){
 		colorCubiesBlackSides();
 		//need to color black sides of bunny in a better way.. will they be colored? or leave it plain?
 	}
+}
+//----------------------------------------------------------------
+void puzzle::colorTorus(){
+	for(int i=0;i<numPieces;i++){
+		//set random color for each cubie
+		myCubies[i]->colorTorus();
+	}
+
+	colorCubiesBlackSides();
 }
 //----------------------------------------------------------------
 void puzzle::colorCubiesBlackSides(){

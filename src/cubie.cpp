@@ -35,6 +35,9 @@ cubie::cubie(float x, float y,float z, int idi, int selObjId, ofVec3f offset){
 	bDraw = true;
 	bDrawWire = false;
 	bRotate = false;
+	
+	centroid2d.set(0,0,0);
+	centroid3d.set(0,0,0);
 }
 //--------------------------------------------------------------
 void cubie::setup(){
@@ -470,6 +473,20 @@ void cubie::colorBlackSides(int idCubie, float playRoom){
 	ofRender *ofr = new ofRender(); 
 	for(int j=0; j< numObjs; j++){
 		ofr->colorBlackSides(myMeshs[j],idCubie,playRoom);
+		//have to replace the vbo
+		ofVbo tempVbo;
+		tempVbo.setMesh(myMeshs[j], GL_STATIC_DRAW);
+		myVbos[j]=tempVbo;
+	}
+
+	free(ofr);
+}
+//--------------------------------------------------------------------
+void cubie::colorTorus(){
+	//set random color for this cubie surface
+	ofRender *ofr = new ofRender(); 
+	for(int j=0; j< numObjs; j++){
+		ofr->colorTorus(myMeshs[j]);
 		//have to replace the vbo
 		ofVbo tempVbo;
 		tempVbo.setMesh(myMeshs[j], GL_STATIC_DRAW);

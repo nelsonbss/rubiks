@@ -148,7 +148,7 @@ void game::update(){
 			//updatePuzzle = false;
 			if(myPuzzle->faceRotateB == true) {
 				//int ans = myPuzzle->rotateTwoIds(idcubieA,idcubieB,dir);
-				
+
 				int ans;
 				if(myPuzzle->bHaveActiveCubie && myPuzzle->bHaveRotationCubie){
 					ans = myPuzzle->rotateTwoIds(myPuzzle->activeCubie,myPuzzle->rotationCubie,dir);
@@ -199,7 +199,7 @@ void game::update(string _eventName, SubObEvent* _event){
 		ofVec3f pos = _event->getArg("absPos")->getVec2();
 		mousePressed(pos.x, pos.y, 2);
 	}
-	
+
 	if(_eventName == "ibox-bl:2"){
 		//cout << "game drag - " << _event->getArg("phase")->getInt() << endl;
 		if(_event->getArg("phase")->getInt() == 0){
@@ -319,7 +319,7 @@ void game::rotateTwoIds(int cubieA, int cubieB,bool inside){
 }
 //----------------------------------------------------------------------
 void game::loadPuzzle(puzzle *inputPuzzle){
-	
+
 	/////////////////////////////////////////////////////////
 	///////////do game reset..because loading a puzzle can happen at anytime
 	if(step == 6){
@@ -526,7 +526,11 @@ void game::createPuzzle(SG_VECTOR p){
 
 		///////////////////////////////  color puzzle   ////////////////////////////////// 
 		//color all the faces for platonic solids!! colors outside for most objects(not bunny), black on the insides
-		myPuzzle->colorFaces(objectID);
+		if(objectID != 1){
+			myPuzzle->colorFaces(objectID);
+		}else{
+			myPuzzle->colorTorus();
+		}
 
 		updatePuzzle = true;
 
@@ -555,11 +559,19 @@ void game::changeColorToColor(ofFloatColor sc, ofFloatColor tc){
 }
 //----------------------------------------------------------------------
 void game::moveA (ofVec3f input){
-	myArmature->moveA(input);
-	//move the offset vector of the cutter at the same time as the armature
-	offsetSlicer.x += input.x;
-	offsetSlicer.y += input.y;
-	offsetSlicer.z += input.z;
+	int xp = offsetSlicer.x + input.x;
+	int xm = offsetSlicer.x + input.x;
+	int yp = offsetSlicer.y + input.y;
+	int ym = offsetSlicer.y + input.y;
+	if(xp <= 140 &&  xm >= -140){
+		if( yp <= 140 && ym >= -140){
+			myArmature->moveA(input);
+			//move the offset vector of the cutter at the same time as the armature
+			offsetSlicer.x += input.x;
+			offsetSlicer.y += input.y;
+			offsetSlicer.z += input.z;
+		}
+	}
 }
 //----------------------------------------------------------------------
 void game::rotateA (ofVec3f input){
@@ -1201,7 +1213,7 @@ void game::exit(){
 	sgDeleteObject(sgDodecahedron);
 	sgDeleteObject(sgIcosahedron);
 	sgDeleteObject(sgOctahedron);
- 	//sgDeleteObject(sgTeapot);
+	//sgDeleteObject(sgTeapot);
 }
 //--------------------------------------------------------------
 void game::mouseDragged(int x, int y, int button){

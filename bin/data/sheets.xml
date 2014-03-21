@@ -2,6 +2,7 @@
   <main-sheet>attract</main-sheet>
   <assets>assets.xml</assets>
 	<sheet name="attract" pos="0,0">
+    <!--
     <node type="button" name="bg-top">
       <pos>0.0,0.0</pos>
       <size>1.0,1.0</size>
@@ -26,6 +27,24 @@
       <param>
         <name>image</name>
         <val>Exports/Background_Middle.png</val>
+      </param>
+      <param>
+        <name>z</name>
+        <val>-10000</val>
+      </param>
+      <param>
+        <name>active</name>
+        <val>false</val>
+      </param>
+    </node>
+     -->
+    <node type="button" name="bg-full">
+      <pos>0.0,0.0</pos>
+      <size>1.0,1.0</size>
+      <scale>1.0</scale>
+      <param>
+        <name>image</name>
+        <val>Exports/Background_Full_BottomLeftPlayingA.png</val>
       </param>
       <param>
         <name>z</name>

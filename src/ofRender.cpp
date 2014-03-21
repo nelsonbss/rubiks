@@ -84,7 +84,7 @@ void ofRender::sgCoretoOFmesh(sgC3DObject *obj, ofMesh &mesh,int idCubie,int sel
 		//ask if we color an original object with rubiks colors or plain color:: current selection is -2 for plain color
 		if(idCubie == -1){
 			//original shape with color...use this for pyramid 
-			c = decideColor(decideAxisRange(dir,0));
+			c = cyan;//decideColor(decideAxisRange(dir,0));
 		}else if (idCubie == -2){
 			//its an original shape  with plain color
 			c = mate;//colorsVector2[0];//mate
@@ -96,13 +96,13 @@ void ofRender::sgCoretoOFmesh(sgC3DObject *obj, ofMesh &mesh,int idCubie,int sel
 			//we only want to color PLAIN the sample object
 			//the face coloring will be done separately
 
-			//if(selectedObjectID == 2){
-			//	c = decideColorCubieBox(dir,idCubie); //we color the cube here so it gets the official colors on its faces
-			//	//c = decideColorCubieDEBUG(dir,idCubie); //this is to test the offset slicing and rotations
-			//}else if(selectedObjectID == 3){
-			//	//cone(ish)
-			//	c = decideColor(decideAxisRange(dir,10.0));
-			//}
+			if(selectedObjectID == 1){
+				//c = decideColorCubieBox(dir,idCubie); //we color the cube here so it gets the official colors on its faces
+				c = decideColorCubieDEBUG(dir,idCubie); //this is to test the offset slicing and rotations
+				//}else if(selectedObjectID == 3){
+				//	//cone(ish)
+				//	c = decideColor(decideAxisRange(dir,10.0));
+			}
 		}
 
 		colorsVector2.push_back(c);
@@ -718,6 +718,21 @@ void ofRender::colorBlackSides(ofMesh &mesh, int idCubie, float playRoom){
 			}
 			tcolors[i] =  c;
 		}
+	}
+	//replace the colors vector on the mesh
+	mesh.clearColors();
+	mesh.addColors(tcolors);
+}
+//---------------------------------------------------------------------------------------------------------------
+void ofRender::colorTorus(ofMesh &mesh){
+	vector< ofFloatColor > tcolors;
+	tcolors = mesh.getColors();
+
+	int r = ofRandom(100);
+	ofFloatColor x =  colorsVector[r%9];
+
+	for(int i=0; i<tcolors.size(); i++){
+		tcolors[i] =  x;
 	}
 	//replace the colors vector on the mesh
 	mesh.clearColors();

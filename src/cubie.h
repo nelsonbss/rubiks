@@ -67,7 +67,7 @@ public:
 	///color change
 	void changeColorToColor(ofFloatColor Sc, ofFloatColor Tc);
 	void colorBlackSides(int cubieId, float playRoom);
-	
+	void colorTorus();
 	/*
 	Paul's
 	*/

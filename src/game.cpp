@@ -1132,8 +1132,8 @@ void game::prepareDrawing(){
 		canvasB = true;
 	}
 	else{
-		myCanvas->exit();
-		delete myCanvas;
+		/*myCanvas->exit();
+		delete myCanvas;*/
 		//create canvas object
 		myCanvas = new drawingCanvas(posCanvas,canvasSide,canvasSide);
 	}
@@ -1148,8 +1148,8 @@ void game::clearDisplayedObject(){
 		objectID = -1;
 	}
 	if(canvasB){
-		myCanvas->exit();
-		delete myCanvas;
+		//myCanvas->exit();
+		//delete myCanvas;
 		canvasB = false;
 	}
 }

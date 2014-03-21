@@ -60,6 +60,7 @@ public:
 	//color faces
 	void colorFaces(int objectID);
 	void colorCubiesBlackSides();
+	void colorTorus();
 	///color change
 	void changeColorToColor(ofFloatColor Sc, ofFloatColor Tc);
 

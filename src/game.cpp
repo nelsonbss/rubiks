@@ -505,7 +505,11 @@ void game::createPuzzle(SG_VECTOR p){
 
 		///////////////////////////////  color puzzle   ////////////////////////////////// 
 		//color all the faces for platonic solids!! colors outside for most objects(not bunny), black on the insides
-		myPuzzle->colorFaces(objectID);
+		if(objectID != 1){
+			myPuzzle->colorFaces(objectID);
+		}else{
+			myPuzzle->colorTorus();
+		}
 
 		updatePuzzle = true;
 

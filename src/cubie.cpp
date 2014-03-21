@@ -478,6 +478,20 @@ void cubie::colorBlackSides(int idCubie, float playRoom){
 
 	free(ofr);
 }
+//--------------------------------------------------------------------
+void cubie::colorTorus(){
+	//set random color for this cubie surface
+	ofRender *ofr = new ofRender(); 
+	for(int j=0; j< numObjs; j++){
+		ofr->colorTorus(myMeshs[j]);
+		//have to replace the vbo
+		ofVbo tempVbo;
+		tempVbo.setMesh(myMeshs[j], GL_STATIC_DRAW);
+		myVbos[j]=tempVbo;
+	}
+
+	free(ofr);
+}
 //----------------------------------------------------------------
 bool cubie::isMoving(){
 	//returns the state of the moving boolean

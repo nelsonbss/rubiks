@@ -715,6 +715,15 @@ void puzzle::colorFaces(int objectID){
 	}
 }
 //----------------------------------------------------------------
+void puzzle::colorTorus(){
+	for(int i=0;i<numPieces;i++){
+		//set random color for each cubie
+		myCubies[i]->colorTorus();
+	}
+
+	colorCubiesBlackSides();
+}
+//----------------------------------------------------------------
 void puzzle::colorCubiesBlackSides(){
 	//it takes care of the "inside" coloring for each cubie
 	//for the platonian solids other than cube

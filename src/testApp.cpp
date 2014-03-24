@@ -6,7 +6,7 @@
 #define displayYBlue 1150
 #define displayZ -800
 #define iddleTime 120
-#define puzzleItems 2
+#define puzzleItems 10
 
 std::map<int,gwc::Point> active_points;
 
@@ -15,22 +15,22 @@ void testApp::setup(){
 
 	/*
 	if(loadGestureWorks("GestureworksCore32.dll")) { 
-		std::cout << "Error loading gestureworks dll" << std::endl; 
-		exit(); 
+	std::cout << "Error loading gestureworks dll" << std::endl; 
+	exit(); 
 	}
 
 	//string gmlFile = "basic_manipulation.gml";
 
 	if(!loadGML("C:\\Users\\pp\\dev\\of_v0.8.0_vs_release\\apps\\myApps\\rubiks\\bin\\basic_manipulation.gml")) { 
-		std::cout << "Could not find gml file" << std::endl; 
-		exit(); 
+	std::cout << "Could not find gml file" << std::endl; 
+	exit(); 
 	}
 
 	initializeGestureWorks(1920,1080);
 
 	if(!registerWindowForTouchByName("rubiksWindow")) { 
-		std::cout << "Could not register target window for touch." << std::endl; 
-		exit(); 
+	std::cout << "Could not register target window for touch." << std::endl; 
+	exit(); 
 	}
 	registerTouchObject("touchReceiver");
 
@@ -47,6 +47,26 @@ void testApp::setup(){
 
 	/////////////////////////////load obj files into sgCore objects
 	loadOBJfiles();
+
+
+	////////////////////////////create middle objects (puzzles with no twisting == normal objects with faces colores
+	//this objects are rendering of the sgCore obects just created.
+	//there are 7 objects to be created
+	SG_VECTOR middlePuzzlePos = {0,(ofGetWindowHeight()/2)+30,0};
+
+	for(int i=0; i < puzzleItems; i++){
+		puzzleDisplayed = new menuPuzzle();
+		puzzleDisplayed->loadObject(sgCreateBox(300,300,300),2);
+		puzzleDisplayed->setup();
+		middlePuzzlePos.x = 100 + (i*200) + (i*5);
+		puzzleDisplayed->setPos(middlePuzzlePos);
+		puzzleDisplayed->colorFaces(101);
+		middlePuzzles.push_back(puzzleDisplayed);
+		puzzleCounter ++;
+	}
+
+
+
 	//////////////////////////////create games
 	//////////////////////////////one game for now
 	SG_VECTOR gamePos = {0,0,0}; //one game created at the origin // this will have to change for a game creating function when more stations are anabled
@@ -134,10 +154,14 @@ void testApp::update(){
 		myGames[i]->update();
 	}
 
+	for(int i=0; i < middlePuzzles.size();i++){
+		middlePuzzles[i]->update();
+	}
+
 	/*
 
 	if(GetTickCount() - last_tick_count < 16) {
-		return;
+	return;
 	} else { last_tick_count = GetTickCount(); }
 
 	processFrame();
@@ -145,26 +169,26 @@ void testApp::update(){
 	std::vector<gwc::PointEvent> point_events = consumePointEvents();
 
 	for(std::vector<gwc::PointEvent>::iterator event_it = point_events.begin(); event_it != point_events.end(); event_it++) {
-		//cout << "Touch Point = " << event_it->point_id << endl;
-		switch(event_it->status) {
-			case gwc::TOUCHADDED:
-				assignTouchPoint("touchReceiver", event_it->point_id);
-			case gwc::TOUCHUPDATE:
-				//If the point is being added, this will place it in our point map; the same line of code will update the point's
-				//position if it's already present, so we can use this command to handle new points as well as point updates
-				active_points[event_it->point_id] = gwc::Point(event_it->position.getX(),event_it->position.getY());
-				break;
-			case gwc::TOUCHREMOVED:
-				//Remove the point from the map
-				active_points.erase(event_it->point_id);
-				break;
-		}
+	//cout << "Touch Point = " << event_it->point_id << endl;
+	switch(event_it->status) {
+	case gwc::TOUCHADDED:
+	assignTouchPoint("touchReceiver", event_it->point_id);
+	case gwc::TOUCHUPDATE:
+	//If the point is being added, this will place it in our point map; the same line of code will update the point's
+	//position if it's already present, so we can use this command to handle new points as well as point updates
+	active_points[event_it->point_id] = gwc::Point(event_it->position.getX(),event_it->position.getY());
+	break;
+	case gwc::TOUCHREMOVED:
+	//Remove the point from the map
+	active_points.erase(event_it->point_id);
+	break;
+	}
 	}
 
 	std::vector<gwc::GestureEvent> gesture_events = consumeGestureEvents();
 
 	for(std::vector<gwc::GestureEvent>::iterator gesture_it = gesture_events.begin(); gesture_it != gesture_events.end(); gesture_it++) {
-		cout << gesture_it->gesture_type << " - " << gesture_it->x << ", " << gesture_it->y << " - " << gesture_it->phase << endl;
+	cout << gesture_it->gesture_type << " - " << gesture_it->x << ", " << gesture_it->y << " - " << gesture_it->phase << endl;
 	}
 	*/
 }
@@ -264,9 +288,9 @@ void testApp::draw(){
 	}
 
 	//middle puzzles
-	//for(int i=0; i < middlePuzzles.size();i++){
-	//	middlePuzzles[i]->draw();
-	//}
+	for(int i=0; i < middlePuzzles.size();i++){
+		middlePuzzles[i]->draw();
+	}
 
 	///////////////////END OF RENDERING////////////////////
 	stopOFLights();
@@ -321,33 +345,33 @@ void testApp::mouseMoved(int x, int y ){
 void testApp::mouseDragged(int x, int y, int button){
 	/*
 	if(button == 2){
-		float rotationMultiplier = 5.0;
-		ofVec2f dragNow(x,y);
-		ofVec2f dragDelta = dragNow - lastRightDragPos;
-		//cout << "drag change = " << dragDelta.x << ", " << dragDelta.y << endl;
-		SG_VECTOR axis = {((dragDelta.y / ofGetHeight()) * rotationMultiplier) * -1.0,(dragDelta.x / ofGetWidth()) * rotationMultiplier,0};
-		myGames[0]->rotateP(axis);
-		rotate = false;
-		lastRightDragPos = dragNow;
+	float rotationMultiplier = 5.0;
+	ofVec2f dragNow(x,y);
+	ofVec2f dragDelta = dragNow - lastRightDragPos;
+	//cout << "drag change = " << dragDelta.x << ", " << dragDelta.y << endl;
+	SG_VECTOR axis = {((dragDelta.y / ofGetHeight()) * rotationMultiplier) * -1.0,(dragDelta.x / ofGetWidth()) * rotationMultiplier,0};
+	myGames[0]->rotateP(axis);
+	rotate = false;
+	lastRightDragPos = dragNow;
 	}
 	if(button == 0){
-		if(ofGetElapsedTimef() - timeOfLastInput > inputDelayTime){
-		    updateMouseState("drag", x, y, button);
-			timeOfLastInteraction = ofGetElapsedTimef();
-			timeOfLastInput = ofGetElapsedTimef();
-		}
-		int gStep = myGames[0]->getCurrentStep();
-		//cout << gStep << endl;
-		if(gStep == 4){
-			float rotationMultiplier = 5.0;
-			ofVec2f dragNow(x,y);
-			ofVec2f dragDelta = dragNow - lastRightDragPos;
-			//cout << "drag change = " << dragDelta.x << ", " << dragDelta.y << endl;
-			SG_VECTOR axis = {((dragDelta.y / ofGetHeight()) * rotationMultiplier) * -1.0,(dragDelta.x / ofGetWidth()) * rotationMultiplier,0};
-			myGames[0]->rotateP(axis);
-			rotate = false;
-			lastRightDragPos = dragNow;
-		}
+	if(ofGetElapsedTimef() - timeOfLastInput > inputDelayTime){
+	updateMouseState("drag", x, y, button);
+	timeOfLastInteraction = ofGetElapsedTimef();
+	timeOfLastInput = ofGetElapsedTimef();
+	}
+	int gStep = myGames[0]->getCurrentStep();
+	//cout << gStep << endl;
+	if(gStep == 4){
+	float rotationMultiplier = 5.0;
+	ofVec2f dragNow(x,y);
+	ofVec2f dragDelta = dragNow - lastRightDragPos;
+	//cout << "drag change = " << dragDelta.x << ", " << dragDelta.y << endl;
+	SG_VECTOR axis = {((dragDelta.y / ofGetHeight()) * rotationMultiplier) * -1.0,(dragDelta.x / ofGetWidth()) * rotationMultiplier,0};
+	myGames[0]->rotateP(axis);
+	rotate = false;
+	lastRightDragPos = dragNow;
+	}
 	}
 	*/
 	if(button == 0){
@@ -380,7 +404,7 @@ void testApp::mousePressed(int x, int y, int button){
 //--------------------------------------------------------------
 void testApp::mouseReleased(int x, int y, int button){
 	updateMouseState("up", x, y, button);
-    timeOfLastInteraction = ofGetElapsedTimef();
+	timeOfLastInteraction = ofGetElapsedTimef();
 	if(button == 0){
 		SubObEvent *ev = new SubObEvent();
 		ev->setName("remove-touch-point");
@@ -392,11 +416,11 @@ void testApp::mouseReleased(int x, int y, int button){
 }
 
 void testApp::updateMouseState(const char * _state, int _x, int _y, int _button){
-    attrs["mouseX"] = ofToString(_x);
-    attrs["mouseY"] = ofToString(_y);
-    attrs["mouseButton"] = ofToString(_button);
-    attrs["mouseState"] = _state;
-    //SubObMediator::Instance()->update("mouse-changed",this);
+	attrs["mouseX"] = ofToString(_x);
+	attrs["mouseY"] = ofToString(_y);
+	attrs["mouseButton"] = ofToString(_button);
+	attrs["mouseState"] = _state;
+	//SubObMediator::Instance()->update("mouse-changed",this);
 }
 
 //--------------------------------------------------------------
@@ -406,23 +430,23 @@ void testApp::windowResized(int w, int h){
 void testApp::update(string _subName, Subject *_sub){
 	/*
 	if(_subName == "button"){
-		string msg = _sub->getAttr("message");
-		cout << "got message - " << msg << endl;
-		if(msg == "cut"){
-			makeCut = true;
-		}
-		if(msg == "rotate-right") {//rotate right
-			rotatePHright = true;
-		}
-		if(msg == "rotate-left") {//rotate left
-			rotatePHleft = true;
-		}
-		if(msg == "rotate-up") {//rotate up
-			rotatePVup = true;
-		}
-		if(msg == "rotate-down") {//rotate down
-			rotatePVdown = true;
-		}
+	string msg = _sub->getAttr("message");
+	cout << "got message - " << msg << endl;
+	if(msg == "cut"){
+	makeCut = true;
+	}
+	if(msg == "rotate-right") {//rotate right
+	rotatePHright = true;
+	}
+	if(msg == "rotate-left") {//rotate left
+	rotatePHleft = true;
+	}
+	if(msg == "rotate-up") {//rotate up
+	rotatePVup = true;
+	}
+	if(msg == "rotate-down") {//rotate down
+	rotatePVdown = true;
+	}
 	}
 	*/
 }
@@ -557,12 +581,12 @@ void testApp::update(string _eventName, SubObEvent* _event){
 		SubObMediator::Instance()->sendEvent("unhide-node", ev);
 		//SceneManager::Instance()->reset();
 		//cout << "RESET" << endl;
-		
+
 	}
 	/*
 	if(_eventName == "touch-point"){
-		cout << "received touch point" << endl;
-		_event->setActive(false);
+	cout << "received touch point" << endl;
+	_event->setActive(false);
 	}
 	*/
 	if(_eventName == "object-area-drag"){

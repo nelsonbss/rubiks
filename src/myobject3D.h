@@ -27,8 +27,6 @@ public:
 	SG_VECTOR tempPos;
 	ofVec3f armRot;
 	void applyArmRotations(ofVec3f v);
-
-	string name; // may be usefull to call by first name
 };
 
 #endif /* defined(__Tmyobject3D__myobject3D__) */

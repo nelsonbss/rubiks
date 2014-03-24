@@ -49,14 +49,14 @@ public:
 	ofxAssimpModelLoader pot;
 	sgCObject *sgTeapot;
 
-	////////////////
+	/////////////////////////////////////////games
 	vector<game*> myGames;
 	int currentGame;
 
-	myobject3D *objectDisplayed;
-	cutter *myCutter;
-	slicer *mySlicer;
-	puzzle *myPuzzle;
+	
+	//cutter *myCutter;
+	//slicer *mySlicer;
+	//puzzle *myPuzzle;
 
 	//bool rotate;
 
@@ -98,15 +98,14 @@ public:
 	bool bPointLight, bSpotLight, bDirLight;
 	bool bUseTexture;
 
-	///for color changing //first version
-	ofFloatColor pickColorMouse();
-
 	GestureManager gm;
 	int touchId;
 	int nextTouchId;
 	int touchIdOffset;
-	//middle puzzles
+
+	////////////////////////////////////////middle puzzles
 	vector<menuPuzzle*> middlePuzzles;
+	menuPuzzle *puzzleDisplayed;
 	int puzzleCounter; 
 
 	SubObEvent* ev;

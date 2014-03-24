@@ -292,7 +292,7 @@ void drawingCanvas::mousePressed(int x, int y, int button){
 //--------------------------------------------------------------
 void drawingCanvas::mouseReleased(int x, int y, int button){
 	bDrawing = false;
-	if(poly2exists == true){
+	if(poly2exists == true && closed == false){
 		//add last point
 		myPolyline->addVertex(firstMouse);//close last vertex, with first vertex
 		//////////////myPolyline2->addVertex(ofVec2f(firstMouse.x-posCanvas.x,firstMouse.y-posCanvas.y));//polyline2 is the one that is on slicing position

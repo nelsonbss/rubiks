@@ -116,7 +116,7 @@ void game::update(){
 		if(myCanvas->drawingExists()){
 				//make extruded object
 			if(extrudeObject(myCanvas->getPolyline())){
-
+				objectDisplayed->update();
 			}else{
 				prepareDrawing();
 			}

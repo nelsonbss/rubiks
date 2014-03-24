@@ -37,7 +37,7 @@ public:
 	SG_VECTOR pos;
 	void setPos(SG_VECTOR p);
 
-	void colorFaces(int idobj);
+	void colorFacesMenu();
 
 	ofVec3f armRot;
 	void applyArmRotations(ofVec3f v);

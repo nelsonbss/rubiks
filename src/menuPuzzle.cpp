@@ -28,18 +28,18 @@ void menuPuzzle::setup(){
 void menuPuzzle::update(){
 	SG_VECTOR transP = {pos.x,pos.y,pos.z};
 	temp->InitTempMatrix()->Translate(transP);
-	if(objectId == 2){
+	if(objectId == 202){
 		//cube
-		SG_VECTOR offset = {-150,-150,-150}; //for the cube to be in place
+		SG_VECTOR offset = {-0,-0,-0}; //{-150,-150,-150}; //for the cube to be in place
 		temp->GetTempMatrix()->Translate(offset);//this translates the object to be cut!!
-	}else if(objectId == 3){
+	}else if(objectId == 203){
 		////cone..pyramid
 		//SG_POINT rotP = transP;
 		//SG_VECTOR rotV = {1,0,0};
 		//temp->GetTempMatrix()->Rotate(rotP,rotV,ofDegToRad(90));
 		//SG_VECTOR offset = {0,100,0}; 
 		//temp->GetTempMatrix()->Translate(offset);
-	}else if(objectId == 4){
+	}else if(objectId == 204){
 		//rabbit
 		SG_POINT rotP2 = transP;//{tempPos.x,tempPos.y,tempPos.z};
 		SG_VECTOR rotV2 = {1,0,0};
@@ -55,9 +55,9 @@ void menuPuzzle::update(){
 void menuPuzzle::draw(){  
 	//myMenuPuzzle->draw();
 	////////////////////////////////////////
-	
+
 	ofPushMatrix();
-	
+
 	glMultMatrixd(temp->GetTempMatrix()->GetTransparentData());
 	temp->DestroyTempMatrix();
 	ofScale(0.37,0.37,0.37);
@@ -75,7 +75,7 @@ void menuPuzzle::loadObject(sgC3DObject *obj, int ID){
 		temp = obj;
 	}
 	objectId = ID;
-	if(objectId == 1){
+	if(objectId == 201){
 		//torus
 		SG_VECTOR offset = {0,0,0}; //for torus to be in place, the 
 		temp->InitTempMatrix()->Translate(offset);//this translates the object to be cut!!
@@ -84,13 +84,13 @@ void menuPuzzle::loadObject(sgC3DObject *obj, int ID){
 		//object->GetTempMatrix()->Rotate(rotP,rotV,ofDegToRad(45));
 		temp->ApplyTempMatrix();  
 		temp->DestroyTempMatrix();
-	}else if(objectId == 2){
+	}else if(objectId == 202){
 		//cube
-		SG_VECTOR offset = {-150,-150,-150}; //for the cube to be in center  place, it has sides of 300
+		SG_VECTOR offset = {-0,-0,-0}; //{-150,-150,-150}; //for the cube to be in center  place, it has sides of 300
 		temp->InitTempMatrix()->Translate(offset);//this translates the object to be cut!!
 		temp->ApplyTempMatrix();  
 		temp->DestroyTempMatrix();
-	}else if(objectId == 3){
+	}else if(objectId == 203){
 		//cone..pyramid
 		/*SG_POINT rotP = {0,0,0};
 		SG_VECTOR rotV = {1,0,0};
@@ -99,7 +99,7 @@ void menuPuzzle::loadObject(sgC3DObject *obj, int ID){
 		temp->GetTempMatrix()->Translate(offset);
 		temp->ApplyTempMatrix();  
 		temp->DestroyTempMatrix();*/
-	}else if(objectId == 4){
+	}else if(objectId == 204){
 		//rabbit
 		SG_POINT rotP = {0,0,0};
 		SG_VECTOR rotV = {1,0,0};
@@ -119,7 +119,14 @@ sgC3DObject* menuPuzzle::getObject(){
 	return temp;
 }
 //-----------------------------------------------------------------
-void menuPuzzle::colorFaces(int objID){
+void menuPuzzle::colorFacesMenu(){
+	ofRender *ofr = new ofRender();
+	ofr->colorFacesMenu(myMesh,armRot, 0.01, objectId);
+	free(ofr);
+	//have to replace the vbo
+	ofVbo tempVbo;
+	tempVbo.setMesh(myMesh, GL_STATIC_DRAW);
+	myVbo=tempVbo;
 }
 //----------------------------------------------------------------
 void menuPuzzle::applyArmRotations(ofVec3f v){

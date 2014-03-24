@@ -36,10 +36,10 @@ public:
 	ofColor decideColorCubieDEBUG(ofPoint normal,int numCubie);
 	///////////////////////////////////////////////////////////////////////////////////////////
 	ofColor decideColor(ofPoint normal); 
-	//this function is ONLY being used by tetrahedron, 
-	//it was first used to color sample objects, 
-	//now sample are plain, and other objects have their own coloring funcitons
+	//this function is ONLY being used by tetrahedron
 	////////////////////////////////////////////////////////////////////////////////////////////
+
+	void colorFacesMenu(ofMesh &mesh,ofVec3f armRot,float playRoom, int objectID);
 };
 
 #endif /* defined(__TofRender__ofRender__) */

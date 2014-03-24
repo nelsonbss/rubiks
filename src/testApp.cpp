@@ -56,18 +56,33 @@ void testApp::setup(){
 
 	for(int i=0; i < puzzleItems; i++){
 		puzzleDisplayed = new menuPuzzle();
-		puzzleDisplayed->loadObject(sgCreateBox(300,300,300),2);
+		if(i==0){
+			puzzleDisplayed->loadObject(sgCreateTorus(100,70,50,50),201);
+		}else if(i == 1){
+			puzzleDisplayed->loadObject(sgCreateBox(300,300,300),202);
+		}else if(i == 2){
+			puzzleDisplayed->loadObject((sgC3DObject *)sgTetrahedron->Clone(),203);
+		}else if(i == 3){
+			puzzleDisplayed->loadObject((sgC3DObject *)sgBunny->Clone(),204);
+		}else if(i == 4){
+			puzzleDisplayed->loadObject((sgC3DObject *)sgDodecahedron->Clone(),205);
+		}else if(i == 5){
+			puzzleDisplayed->loadObject((sgC3DObject *)sgIcosahedron->Clone(),206);
+		}else if(i == 6){
+			puzzleDisplayed->loadObject((sgC3DObject *)sgOctahedron->Clone(),207);
+		}else{
+			puzzleDisplayed->loadObject(sgCreateBox(300,300,300),202);
+		}
 		puzzleDisplayed->setup();
 		middlePuzzlePos.x = 100 + (i*200) + (i*5);
 		puzzleDisplayed->setPos(middlePuzzlePos);
-		puzzleDisplayed->colorFaces(101);
+		puzzleDisplayed->colorFacesMenu();
 		middlePuzzles.push_back(puzzleDisplayed);
-		puzzleCounter ++;
 	}
 
 
 
-	//////////////////////////////create games
+	///////////////////////////////////////////////////create games
 	//////////////////////////////one game for now
 	SG_VECTOR gamePos = {0,0,0}; //one game created at the origin // this will have to change for a game creating function when more stations are anabled
 	//SG_VECTOR displayPos = {ofGetWidth() / 2, ofGetHeight() / 2,displayZ};

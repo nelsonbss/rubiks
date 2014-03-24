@@ -121,6 +121,8 @@ void testApp::setup(){
 		//puzzleCounter ++;
 	}
 	ofEnableAntiAliasing();
+	ofEnableSmoothing();
+	bExtrude = false;
 }
 //--------------------------------------------------------------
 void testApp::update(){
@@ -167,6 +169,10 @@ void testApp::update(){
 		cout << gesture_it->gesture_type << " - " << gesture_it->x << ", " << gesture_it->y << " - " << gesture_it->phase << endl;
 	}
 	*/
+	if(bExtrude){
+		keyPressed('e');
+		bExtrude = false;
+	}
 }
 //--------------------------------------------------------------
 void testApp::draw(){
@@ -572,7 +578,8 @@ void testApp::update(string _eventName, SubObEvent* _event){
 	if(_eventName == "extrude"){
 		cout << "got an extrude." << endl;
 		//myGames[0]->guiInput('e');
-		myGames[0]->guiExtrude();
+		//myGames[0]->guiExtrude();
+		bExtrude = true;
 		ev->setName("hide-node");
 		ev->addArg("target","make-one");
 		SubObMediator::Instance()->sendEvent("hide-node", ev);

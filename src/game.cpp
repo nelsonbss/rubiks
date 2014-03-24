@@ -112,18 +112,6 @@ void game::update(){
 		objectDisplayed->update();
 	}
 
-	if(bExtrude){
-		if(myCanvas->drawingExists()){
-				//make extruded object
-			if(extrudeObject(myCanvas->getPolyline())){
-
-			}else{
-				prepareDrawing();
-			}
-		}
-		bExtrude = false;
-	}
-
 	//if(step == 3){
 	//	//myArmature->update();//now its rotating onits own
 	//}
@@ -191,6 +179,19 @@ void game::update(){
 	if(bHaveReset){
 		guiInput('r');
 		bHaveReset = false;
+	}
+	if(bExtrude){
+		if(myCanvas->drawingExists()){
+				//make extruded object
+			ofPolyline pline = *(myCanvas->getPolyline());
+			if(extrudeObject(&pline)){
+
+			}else{
+				prepareDrawing();
+			}
+		}
+			//guiInput('e');
+		bExtrude = false;
 	}
 }
 //----------------------------------------------------------------------
@@ -1132,8 +1133,8 @@ void game::prepareDrawing(){
 		canvasB = true;
 	}
 	else{
-		myCanvas->exit();
-		delete myCanvas;
+		//myCanvas->exit();
+		//delete myCanvas;
 		//create canvas object
 		myCanvas = new drawingCanvas(posCanvas,canvasSide,canvasSide);
 	}
@@ -1148,8 +1149,8 @@ void game::clearDisplayedObject(){
 		objectID = -1;
 	}
 	if(canvasB){
-		myCanvas->exit();
-		delete myCanvas;
+		//myCanvas->exit();
+		//delete myCanvas;
 		canvasB = false;
 	}
 }
@@ -1168,10 +1169,10 @@ void game::restart(){
 		step = 0;
 		objectID = -1;
 	}else if(step==4 || step==5){
-		myPuzzle->exit();
-		myCutter->exit();
-		mySlicer->exit();
-		objectDisplayed->exit();
+		//myPuzzle->exit();
+		//myCutter->exit();
+		//mySlicer->exit();
+		//objectDisplayed->exit();
 		objectID = -1;
 		step = 0;
 		armID = -1;

@@ -110,4 +110,5 @@ public:
 	int puzzleCounter; 
 
 	SubObEvent* ev;
+	bool bExtrude;
 };

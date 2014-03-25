@@ -152,7 +152,7 @@ void testApp::setup(){
 	touchIdOffset = 1000;
 
 
-	ofEnableAntiAliasing();
+	//ofEnableAntiAliasing();
 }
 //--------------------------------------------------------------
 void testApp::update(){

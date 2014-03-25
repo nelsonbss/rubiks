@@ -80,8 +80,8 @@ void menuPuzzle::draw(){
 	glMultMatrixd(temp->GetTempMatrix()->GetTransparentData());
 	temp->DestroyTempMatrix();
 	glScalef(0.37,0.37,0.37);
-	myMenuPuzzle->draw();
-	//myVbo.draw(GL_TRIANGLES, 0,myMesh.getNumIndices());
+	//myMenuPuzzle->draw();
+	myVbo.draw(GL_TRIANGLES, 0,myMesh.getNumIndices());
 	glPopMatrix();
 }
 //----------------------------------------------------------------

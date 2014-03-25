@@ -66,7 +66,8 @@ void testApp::setup(){
 	ofVec3f rotateSlicer = ofVec3f (0,0,0);
 
 	for(int i=0; i < puzzleItems; i++){
-		puzzleDisplayed = new menuPuzzle();
+		middlePuzzlePos.x = 100 + (i*200) + (i*5);
+		puzzleDisplayed = new menuPuzzle(slicingPos, middlePuzzlePos);
 		if(i==0){
 			puzzleDisplayed->loadObject(sgCreateTorus(100,70,50,50),201);
 		}else if(i == 1){
@@ -86,15 +87,19 @@ void testApp::setup(){
 		}
 		cout << "created puzzle menu object: " << i <<endl;
 		puzzleDisplayed->setup();
-		middlePuzzlePos.x = 100 + (i*200) + (i*5);
-		puzzleDisplayed->setPos(middlePuzzlePos);
 		puzzleDisplayed->colorFacesMenu();
 
 		mySlicer->intersectCubes((sgCObject*)puzzleDisplayed->getObject());
 		myPuzzle = new puzzle(middlePuzzlePos, offsetSlicer); // it receives the position to be displayed AND the offset of the armature/cutter to adapt slicing
 		myPuzzle->setup();
 		myPuzzle->loadPieces(mySlicer->getPieces(),101,rotateSlicer);//selected object id is used for coloring
-		myPuzzle->colorFaces(101);
+
+		if(puzzleDisplayed->objectId != 201 && puzzleDisplayed->objectId != 204){
+			myPuzzle->colorFaces(puzzleDisplayed->objectId);
+		}else{
+			myPuzzle->colorTorus();
+		}
+
 		cout << "created puzzle menu puzzle: " << i <<endl;
 		puzzleDisplayed->loadPuzzle(myPuzzle);
 		cout << "created puzzle menu item: " << i << endl;

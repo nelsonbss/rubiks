@@ -7,7 +7,7 @@
 class menuPuzzle {
 
 public:
-	menuPuzzle ();
+	menuPuzzle (SG_VECTOR pos, SG_VECTOR t);
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////
 	void loadPuzzle(puzzle *inpuzzle);
 	puzzle *myMenuPuzzle;
@@ -26,15 +26,15 @@ public:
 	sgC3DObject* getObject();//it will return the object, i.e to be used in boolean
 
 	int objectId; //the id of the 3d selected object, the id comes from the main app
-	sgC3DObject *temp;
+	sgC3DObject *object;
+	sgC3DObject *temp;//the original will be in 0,0,0 to be cut. the temp will be moved around and be drawn.
 	ofMesh myMesh;// this will be used to draw the object, 
 	ofVbo myVbo;
 
 	SG_VECTOR pos;
-	void setPos(SG_VECTOR p);
+	SG_VECTOR tempPos;
 
 	void colorFacesMenu();
-
 	ofVec3f armRot;
 	void applyArmRotations(ofVec3f v);
 };

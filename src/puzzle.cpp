@@ -46,8 +46,8 @@ puzzle::puzzle(SG_VECTOR p, ofVec3f offset){
 	three_dim1[0][2][0] = 22;	three_dim1[1][2][0] = 21;	three_dim1[2][2][0] = 20;
 
 	/* now read the value: */
-	std::cout << "It should be 13: " << three_dim1[0][0][0] << "\n";
-	std::cout << "It should be 4: " << three_dim1[0][1][0] << "\n";
+	//std::cout << "It should be 13: " << three_dim1[0][0][0] << "\n";
+	//std::cout << "It should be 4: " << three_dim1[0][1][0] << "\n";
 
 	/* get X slize 1*/
 	//TwoDimensions& two_dim(three_dim[1]);
@@ -701,13 +701,13 @@ void puzzle::rearange3dArray(SG_VECTOR axis, int plane, bool dir){
 void puzzle::colorFaces(int objectID){
 	////goes through each cubie and makes sets of normals.. to determine all different normals in the object
 	//and apply colors to those normals
-	if((objectID != 4) && (objectID != 1)){
+	if((objectID != 4) && (objectID != 1) && (objectID != 204) && (objectID != 201)){
 		//not the bunny or the cube -> they were already colored on puzzle::loadPieces->cubie::setObjects
 		ofRender *ofr = new ofRender();
 		ofr->colorFaces(myCubies,numPieces,0.01, objectID);
 		free(ofr);
 	}
-	if((objectID != 4)){
+	if((objectID != 4) && (objectID != 204)){
 		//color black all the inside faces of each cubie (after all other face colors have been applied)
 		//all the puzzles have to do this
 		colorCubiesBlackSides();

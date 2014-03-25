@@ -101,46 +101,6 @@ void testApp::setup(){
 		middlePuzzles.push_back(puzzleDisplayed);
 	}
 	cout << "puzzle menu created" << endl;
-	//////////////////////////////generate puzzles for middle area
-	////////////////////////////////create puzzle///////////////////////////////////////
-	//puzzleCounter =1000;
-
-
-	//objectDisplayed = new myobject3D(gamePos,displayPos);
-
-	//for(int i=0; i < puzzleItems; i++){
-	//	objectDisplayed->loadObject(sgCreateBox(300,300,300),2);
-	//	mySlicer->intersectCubes((sgCObject*)objectDisplayed->getObject());
-
-	//	middlePuzzlePos.x = 200 + (i*300) + (i*100);
-	//	myPuzzle = new puzzle(middlePuzzlePos, offsetSlicer); // it receives the position to be displayed AND the offset of the armature/cutter to adapt slicing
-	//	myPuzzle->setup();
-
-	//	myPuzzle->loadPieces(mySlicer->getPieces(),101,rotateSlicer);//selected object id is used for coloring
-	//	myPuzzle->colorFaces(101);
-	//	middlePuzzles.push_back(new menuPuzzle(myPuzzle,puzzleCounter));
-	//	//puzzleCounter ++;
-	//}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 	///////////////////////////////////////////////////create games
 	//////////////////////////////one game for now

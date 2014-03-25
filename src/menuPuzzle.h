@@ -7,25 +7,21 @@
 class menuPuzzle {
 
 public:
-	//menuPuzzle(puzzle *inpuzzle, int idi);
-	//puzzle *myMenuPuzzle;
-	//int id;
-	//puzzle *getPuzzle();
+	menuPuzzle ();
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////
+	void loadPuzzle(puzzle *inpuzzle);
+	puzzle *myMenuPuzzle;
+	int id;
+	puzzle *getPuzzle();
 	////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 	void draw();
 	void setup();
 	void update();
 	void exit();
-
 	void mouseDragged(int x, int y, int button);
 	void mousePressed(int x, int y, int button);
 	void mouseReleased(int x, int y, int button);
-
-
 	////////////////////////////////////////////////////////////////////////////////////////////////////////
-	menuPuzzle ();
-
 	void loadObject(sgC3DObject *obj, int ID); //it will load a sgCore lib object: torus, box...
 	sgC3DObject* getObject();//it will return the object, i.e to be used in boolean
 
@@ -41,8 +37,6 @@ public:
 
 	ofVec3f armRot;
 	void applyArmRotations(ofVec3f v);
-
-
 };
 
 #endif /* defined(__TmenuPuzzle__menuPuzzle__) */

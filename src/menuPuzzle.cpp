@@ -3,14 +3,14 @@
 #include "sgCore.h"
 #include "ofRender.h"
 
-//menuPuzzle::menuPuzzle(puzzle *inpuzzle, int idi){
-//	//myMenuPuzzle = inpuzzle;
-//	//id= idi;
-//}
 ///////////////////////////////////////////////////////
 menuPuzzle::menuPuzzle(){
 	objectId=0;
 	temp = NULL;
+}
+//--------------------------------------------------------------
+void menuPuzzle::loadPuzzle(puzzle *inpuzzle){
+	myMenuPuzzle = inpuzzle;
 }
 //--------------------------------------------------------------
 void menuPuzzle::setup(){
@@ -53,16 +53,12 @@ void menuPuzzle::update(){
 }
 //------------------------------------------------------------------------
 void menuPuzzle::draw(){  
-	//myMenuPuzzle->draw();
-	////////////////////////////////////////
-
-	ofPushMatrix();
-
+	glPushMatrix();
 	glMultMatrixd(temp->GetTempMatrix()->GetTransparentData());
 	temp->DestroyTempMatrix();
-	ofScale(0.37,0.37,0.37);
+	glScalef(0.37,0.37,0.37);
 	myVbo.draw(GL_TRIANGLES, 0,myMesh.getNumIndices());
-	ofPopMatrix();
+	glPopMatrix();
 }
 //----------------------------------------------------------------
 void menuPuzzle::loadObject(sgC3DObject *obj, int ID){
@@ -152,9 +148,9 @@ void menuPuzzle::exit(){
 	sgCObject::DeleteObject(temp);
 }
 //-------------------------------------------------------
-//puzzle * menuPuzzle::getPuzzle(){
-//	return myMenuPuzzle;
-//}
+puzzle * menuPuzzle::getPuzzle(){
+	return myMenuPuzzle;
+}
 void menuPuzzle::mouseDragged(int x, int y, int button){
 }
 //--------------------------------------------------------------

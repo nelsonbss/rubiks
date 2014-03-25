@@ -54,9 +54,9 @@ public:
 	int currentGame;
 
 	
-	//cutter *myCutter;
-	//slicer *mySlicer;
-	//puzzle *myPuzzle;
+	cutter *myCutter;
+	slicer *mySlicer;
+	puzzle *myPuzzle;
 
 	//bool rotate;
 

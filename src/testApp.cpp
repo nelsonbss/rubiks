@@ -46,13 +46,24 @@ void testApp::setup(){
 	initOFRender();
 
 	/////////////////////////////load obj files into sgCore objects
+	cout << "loading obj files " << endl;
 	loadOBJfiles();
 
 
 	////////////////////////////create middle objects (puzzles with no twisting == normal objects with faces colores
 	//this objects are rendering of the sgCore obects just created.
 	//there are 7 objects to be created
+	cout << "creating puzzle menu items" << endl;
 	SG_VECTOR middlePuzzlePos = {0,(ofGetWindowHeight()/2)+30,0};
+	////////////////////////////////create cutter
+	ofVec3f offsetSlicer = ofVec3f(0,0,0);
+	myCutter = new cutter(0.01,1000,100,1,offsetSlicer);		
+	myCutter->setup();
+	//////////////////////////////////create slicer
+	mySlicer = new slicer(myCutter);
+	mySlicer->setup();
+	SG_POINT slicingPos = {0,0,0};
+	ofVec3f rotateSlicer = ofVec3f (0,0,0);
 
 	for(int i=0; i < puzzleItems; i++){
 		puzzleDisplayed = new menuPuzzle();
@@ -73,12 +84,61 @@ void testApp::setup(){
 		}else{
 			puzzleDisplayed->loadObject(sgCreateBox(300,300,300),202);
 		}
+		cout << "created puzzle menu object: " << i <<endl;
 		puzzleDisplayed->setup();
 		middlePuzzlePos.x = 100 + (i*200) + (i*5);
 		puzzleDisplayed->setPos(middlePuzzlePos);
 		puzzleDisplayed->colorFacesMenu();
+
+		mySlicer->intersectCubes((sgCObject*)puzzleDisplayed->getObject());
+		myPuzzle = new puzzle(middlePuzzlePos, offsetSlicer); // it receives the position to be displayed AND the offset of the armature/cutter to adapt slicing
+		myPuzzle->setup();
+		myPuzzle->loadPieces(mySlicer->getPieces(),101,rotateSlicer);//selected object id is used for coloring
+		myPuzzle->colorFaces(101);
+		cout << "created puzzle menu puzzle: " << i <<endl;
+		puzzleDisplayed->loadPuzzle(myPuzzle);
+		cout << "created puzzle menu item: " << i << endl;
 		middlePuzzles.push_back(puzzleDisplayed);
 	}
+	cout << "puzzle menu created" << endl;
+	//////////////////////////////generate puzzles for middle area
+	////////////////////////////////create puzzle///////////////////////////////////////
+	//puzzleCounter =1000;
+
+
+	//objectDisplayed = new myobject3D(gamePos,displayPos);
+
+	//for(int i=0; i < puzzleItems; i++){
+	//	objectDisplayed->loadObject(sgCreateBox(300,300,300),2);
+	//	mySlicer->intersectCubes((sgCObject*)objectDisplayed->getObject());
+
+	//	middlePuzzlePos.x = 200 + (i*300) + (i*100);
+	//	myPuzzle = new puzzle(middlePuzzlePos, offsetSlicer); // it receives the position to be displayed AND the offset of the armature/cutter to adapt slicing
+	//	myPuzzle->setup();
+
+	//	myPuzzle->loadPieces(mySlicer->getPieces(),101,rotateSlicer);//selected object id is used for coloring
+	//	myPuzzle->colorFaces(101);
+	//	middlePuzzles.push_back(new menuPuzzle(myPuzzle,puzzleCounter));
+	//	//puzzleCounter ++;
+	//}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -126,35 +186,7 @@ void testApp::setup(){
 	touchId = 0;
 	touchIdOffset = 1000;
 
-	//////////////////////////////generate puzzles for middle area
-	////////////////////////////////create puzzle///////////////////////////////////////
-	//puzzleCounter =1000;
-	//////////////////////////////////create cutter
-	//ofVec3f offsetSlicer = ofVec3f(0,0,0);
-	//myCutter = new cutter(0.01,1000,100,1,offsetSlicer);		
-	//myCutter->setup();
-	////////////////////////////////////create slicer
-	//mySlicer = new slicer(myCutter);
-	//mySlicer->setup();
-	//SG_POINT slicingPos = {0,0,0};
-	//SG_VECTOR middlePuzzlePos = {200,100,0};
-	//ofVec3f rotateSlicer = ofVec3f (0,0,0);
 
-	//objectDisplayed = new myobject3D(gamePos,displayPos);
-
-	//for(int i=0; i < puzzleItems; i++){
-	//	objectDisplayed->loadObject(sgCreateBox(300,300,300),2);
-	//	mySlicer->intersectCubes((sgCObject*)objectDisplayed->getObject());
-
-	//	middlePuzzlePos.x = 200 + (i*300) + (i*100);
-	//	myPuzzle = new puzzle(middlePuzzlePos, offsetSlicer); // it receives the position to be displayed AND the offset of the armature/cutter to adapt slicing
-	//	myPuzzle->setup();
-
-	//	myPuzzle->loadPieces(mySlicer->getPieces(),101,rotateSlicer);//selected object id is used for coloring
-	//	myPuzzle->colorFaces(101);
-	//	middlePuzzles.push_back(new menuPuzzle(myPuzzle,puzzleCounter));
-	//	//puzzleCounter ++;
-	//}
 	ofEnableAntiAliasing();
 }
 //--------------------------------------------------------------

@@ -6,7 +6,7 @@
 #define displayYBlue 1150
 #define displayZ -800
 #define iddleTime 120
-#define puzzleItems 10
+#define puzzleItems 7
 
 std::map<int,gwc::Point> active_points;
 

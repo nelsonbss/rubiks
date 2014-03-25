@@ -720,7 +720,6 @@ void puzzle::colorTorus(){
 		//set random color for each cubie
 		myCubies[i]->colorTorus();
 	}
-
 	colorCubiesBlackSides();
 }
 //----------------------------------------------------------------

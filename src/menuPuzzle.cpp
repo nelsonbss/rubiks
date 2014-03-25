@@ -30,7 +30,7 @@ void menuPuzzle::update(){
 	temp->InitTempMatrix()->Translate(transP);
 	if(objectId == 202){
 		//cube
-		SG_VECTOR offset = {-0,-0,-0}; //{-150,-150,-150}; //for the cube to be in place
+		SG_VECTOR offset = {-0,-50,-0}; //{-150,-150,-150}; //for the cube to be in place
 		temp->GetTempMatrix()->Translate(offset);//this translates the object to be cut!!
 	}else if(objectId == 203){
 		////cone..pyramid
@@ -121,7 +121,12 @@ sgC3DObject* menuPuzzle::getObject(){
 //-----------------------------------------------------------------
 void menuPuzzle::colorFacesMenu(){
 	ofRender *ofr = new ofRender();
-	ofr->colorFacesMenu(myMesh,armRot, 0.01, objectId);
+	if(objectId == 201 || objectId == 204){
+		//torus or bunny
+		ofr->colorTorus(myMesh);
+	}else{
+		ofr->colorFacesMenu(myMesh,armRot, 0.01, objectId);
+	}
 	free(ofr);
 	//have to replace the vbo
 	ofVbo tempVbo;

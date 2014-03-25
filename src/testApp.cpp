@@ -339,16 +339,26 @@ void testApp::keyPressed(int key){
 	if(currentGame == 1){
 		myGames[0]->guiInput(key);
 	}
+
+	////////////////////////////////////////////////////////////////////////
+	/////////////////////////////loading puzzles from the middle
+	////////////////////////////////////////////////////////////////////////
 	if(myGames[0]->getCurrentStep() != -1){
 		////////////////////////////////////////////////////////
 		///////////from puzzles in the center
-		//if(key == 'p'){
-		//	myGames[0]->loadPuzzle(middlePuzzles[0]->getPuzzle());
-		//}
-		//if(key == 'o'){
-		//	myGames[0]->loadPuzzle(middlePuzzles[1]->getPuzzle());
-		//}
+		if(key == 'p'){
+			//load first puzzle: torus
+			myGames[0]->loadPuzzle(middlePuzzles[0]->getPuzzle());
+			myGames[0]->setCurrentStep(7);
+		}
+		if(key == 'o'){
+			//load seccond puzzle: cube
+			myGames[0]->loadPuzzle(middlePuzzles[1]->getPuzzle());
+			myGames[0]->setCurrentStep(7);
+		}
 	}
+	//////////////////////////////////////////////////////////////////////////////
+	//////////////////////////////////////////////////////////////////////////////
 }
 //--------------------------------------------------------------
 void testApp::keyReleased(int key){

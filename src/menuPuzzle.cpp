@@ -39,11 +39,19 @@ void menuPuzzle::setup(){
 //--------------------------------------------------------------
 void menuPuzzle::update(){
 	SG_VECTOR transP = {tempPos.x,tempPos.y,tempPos.z};
+
+	SG_POINT rot = {0,0,0};
+	SG_VECTOR rotM = {1,0,0};
+	/*temp->InitTempMatrix()->Rotate(rot,rotM,ofDegToRad(45));
+	SG_VECTOR rotM2 = {1,0,0};
+	temp->GetTempMatrix()->Rotate(rot,rotM2,ofDegToRad(45));*/
+
 	temp->InitTempMatrix()->Translate(transP);
 	if(objectId == 202){
 		//cube
 		SG_VECTOR offset = {-0,-50,-0}; //for the cube to be in place
 		temp->GetTempMatrix()->Translate(offset);//this translates the object to be cut!!
+
 		//apply armature axis rotations (x-y-z) to the real object
 		SG_POINT rotP = {0,0,0};
 		SG_VECTOR rotV = {1,0,0};
@@ -71,6 +79,9 @@ void menuPuzzle::update(){
 		SG_VECTOR offset = {0,150,0}; 
 		temp->GetTempMatrix()->Translate(offset);
 	}
+
+
+
 	temp->ApplyTempMatrix();  
 }
 //------------------------------------------------------------------------
@@ -79,7 +90,7 @@ void menuPuzzle::draw(){
 	glPushMatrix();
 	glMultMatrixd(temp->GetTempMatrix()->GetTransparentData());
 	temp->DestroyTempMatrix();
-	glScalef(0.37,0.37,0.37);
+	glScalef(0.39,0.39,0.39);
 	//myMenuPuzzle->draw();
 	myVbo.draw(GL_TRIANGLES, 0,myMesh.getNumIndices());
 	glPopMatrix();

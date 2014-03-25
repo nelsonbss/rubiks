@@ -6,7 +6,7 @@
 #define displayYBlue 1150
 #define displayZ -800
 #define iddleTime 120
-#define puzzleItems 7
+#define puzzleItems 10
 
 std::map<int,gwc::Point> active_points;
 
@@ -54,7 +54,7 @@ void testApp::setup(){
 	//this objects are rendering of the sgCore obects just created.
 	//there are 7 objects to be created
 	cout << "creating puzzle menu items" << endl;
-	SG_VECTOR middlePuzzlePos = {0,(ofGetWindowHeight()/2)+30,0};
+	SG_VECTOR middlePuzzlePos = {0,(ofGetWindowHeight()/2)-60,0};
 	////////////////////////////////create cutter
 	ofVec3f offsetSlicer = ofVec3f(0,0,0);
 	myCutter = new cutter(0.01,1000,100,1,offsetSlicer);		
@@ -66,7 +66,10 @@ void testApp::setup(){
 	ofVec3f rotateSlicer = ofVec3f (0,0,0);
 
 	for(int i=0; i < puzzleItems; i++){
-		middlePuzzlePos.x = 100 + (i*200) + (i*5);
+		middlePuzzlePos.x = 100 + (i*180);
+		if(i > 6){
+			middlePuzzlePos.x = middlePuzzlePos.x - 60  + ((i-5)*10);
+		}
 		puzzleDisplayed = new menuPuzzle(slicingPos, middlePuzzlePos);
 		if(i==0){
 			puzzleDisplayed->loadObject(sgCreateTorus(100,70,50,50),201);

@@ -79,7 +79,7 @@ void menuPuzzle::update(){
 		temp->GetTempMatrix()->Rotate(rotP2,rotV2,ofDegToRad(180));
 	}else if(objectId == 200){
 		//extruded object
-		SG_VECTOR offset = {0,150,0}; 
+		SG_VECTOR offset = {0,135,0}; 
 		temp->GetTempMatrix()->Translate(offset);
 	}
 
@@ -143,7 +143,7 @@ void menuPuzzle::loadObject(sgC3DObject *obj, int ID){
 		object->DestroyTempMatrix();
 	}else if(objectId == 200){
 		//extruded object
-		SG_VECTOR offset = {0,150,0}; 
+		SG_VECTOR offset = {0,0,0}; 
 		object->InitTempMatrix()->Translate(offset);
 		object->ApplyTempMatrix();  
 		object->DestroyTempMatrix();
@@ -170,6 +170,7 @@ void menuPuzzle::colorFacesMenu(){
 		ofr->colorFacesMenu(myMesh,armRot, 0.01, objectId);
 	}
 	free(ofr);
+
 	//have to replace the vbo
 	ofVbo tempVbo;
 	tempVbo.setMesh(myMesh, GL_STATIC_DRAW);

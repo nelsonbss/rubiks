@@ -180,8 +180,11 @@ void testApp::update(){
 	for(int i=0; i < middlePuzzles.size();i++){
 		middlePuzzles[i]->update();
 	}
-	////////watch for new puzzles being saved
+
+
+	/////////////////////////////////////////watch for new puzzles being saved
 	if(myGames[0]->savePuzzleB == true){
+		middlePuzzlePos.x = 100 + ((puzzleCounter+7)*180);
 		menuPuzzle * tempMidPuzzle = myGames[0]->savePuzzle(slicingPos,middlePuzzlePos);
 		middlePuzzles[puzzleCounter+7] = tempMidPuzzle;
 		puzzleCounter ++;

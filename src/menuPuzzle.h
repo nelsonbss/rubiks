@@ -8,7 +8,6 @@ class menuPuzzle {
 
 public:
 	menuPuzzle (SG_VECTOR pos, SG_VECTOR t);
-	menuPuzzle (sgC3DObject *object, puzzle *puzzle);
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////
 	void loadPuzzle(puzzle *inpuzzle);
 	puzzle *myMenuPuzzle;

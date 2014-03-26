@@ -16,10 +16,6 @@ menuPuzzle::menuPuzzle(SG_VECTOR p, SG_VECTOR t){
 	objectId=0;
 	object = NULL;
 }
-////////////////////////////////////////////////////////
-menuPuzzle::menuPuzzle (sgC3DObject *object, puzzle *puzzle){
-
-}
 //--------------------------------------------------------------
 void menuPuzzle::setup(){
 	//the real object is never rendered or moved::::it is used to make the boolean intersection
@@ -82,9 +78,6 @@ void menuPuzzle::update(){
 		SG_VECTOR offset = {0,70,0}; 
 		temp->GetTempMatrix()->Translate(offset);
 	}
-
-
-
 	temp->ApplyTempMatrix();  
 }
 //------------------------------------------------------------------------

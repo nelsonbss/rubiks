@@ -163,7 +163,10 @@ void menuPuzzle::colorFacesMenu(){
 	if(objectId == 1 || objectId == 4){
 		//torus or bunny
 		ofr->colorTorus(myMesh);
-	}else{
+	}else if( objectId == 200){
+		ofr->colorFacesExtrudedMenu(myMesh,armRot);
+	}
+	else{
 		ofr->colorFacesMenu(myMesh,armRot, 0.01, objectId);
 	}
 	free(ofr);

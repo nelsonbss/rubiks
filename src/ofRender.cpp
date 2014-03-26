@@ -950,6 +950,56 @@ void ofRender::colorFacesExtruded(cubie **myCubies, int numPieces, float playRoo
 	}
 }
 //---------------------------------------------------------------------------------------------------------------
+void ofRender::colorFacesExtrudedMenu(ofMesh &mesh,ofVec3f armRot){
+	vector< ofFloatColor > tcolors;
+	vector< ofVec3f > tnormals;
+	tcolors = mesh.getColors();
+	tnormals = mesh.getNormals();
+
+	float armX;
+	float armY;
+	float armZ;
+	ofPoint x = ofPoint(1,0,0);
+	ofPoint y = ofPoint(0,1,0);
+	ofPoint z = ofPoint(0,0,1);
+	ofPoint xn = ofPoint(-1,0,0);
+	ofPoint yn = ofPoint(0,-1,0);
+	ofPoint zn = ofPoint(0,0,-1);
+
+	armX = armRot.x;
+	armY = armRot.y;
+	armZ = armRot.z;
+
+	for(int n=0; n< tnormals.size() ; n++){
+		if(armX==0 && armY==0 && armZ == 0){
+			if(tnormals[n].align(y, 2.0)){
+				tcolors[n] = orange; 
+			}
+			else if(tnormals[n].align(yn, 2.0)){
+				tcolors[n] = red; 
+			}
+		}else{
+			//arm rotations
+			///rotate normal vectors to compensate for armature rotations z-y-x
+			//ask direction to color faces of cube 
+			ofVec3f t = tnormals[n].getRotated(armZ,ofVec3f(0,0,1));
+			ofVec3f t2 = t.getRotated(armY,ofVec3f(0,1,0));
+			ofVec3f t3 = t2.getRotated(armX,ofVec3f(1,0,0));
+
+			if(t3.align(y, 2.0)){
+				tcolors[n] = orange; 
+			}else if(t3.align(yn, 2.0)){
+				tcolors[n] = red; 
+			}
+		}
+	}
+
+
+	//replace the colors vector on the mesh
+	mesh.clearColors();
+	mesh.addColors(tcolors);
+}
+//---------------------------------------------------------------------------------------------------------------
 ofPoint ofRender::decideAxisRange(ofPoint dir,float playRoom){
 	//looks at a point (normal vector) and decides which axis is closer according to the most prominent component of the vector
 	/////////

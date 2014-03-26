@@ -313,19 +313,12 @@ void ofRender::colorBlackSides(ofMesh &mesh, int idCubie, float playRoom){
 	//decide according to cubie[num]
 	for(int i=0; i<tnormals.size(); i++){
 		if(idCubie==0){
-			//this is the center piece!! only color black the y and z axis
-			//if(tnormals[i]==x){
-			//	c = cyan;
-			//}else 
+			//this is the center piece!! only color black the y and z axis 
 			if(tnormals[i]==y){
 				c = black;
 			}else if(tnormals[i]==z){
 				c = black;
-			}
-			//else if(tnormals[i]==xn){
-			//	c = cyan;
-			//}
-			else if(tnormals[i]==yn){
+			}else if(tnormals[i]==yn){
 				c = black;
 			}else if(tnormals[i]==zn){
 				c = black;

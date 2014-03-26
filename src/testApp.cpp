@@ -370,13 +370,10 @@ void testApp::keyPressed(int key){
 		///////////from puzzles in the center
 		//////instead of asking for a "key", with the GUI it should ask for the object ID
 		if(key == 'p'){
-			//
-			//load first puzzle: torus
-			myGames[0]->loadPuzzle(middlePuzzles[9]->getPuzzle());
+			myGames[0]->loadPuzzle(middlePuzzles[7]->getPuzzle());
 			myGames[0]->setCurrentStep(7);
 		}
 		if(key == 'o'){
-			//load seccond puzzle: cube
 			myGames[0]->loadPuzzle(middlePuzzles[0]->getPuzzle());
 			myGames[0]->setCurrentStep(7);
 		}

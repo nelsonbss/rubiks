@@ -1157,10 +1157,8 @@ menuPuzzle*  game::savePuzzle(SG_POINT slicingPos, SG_VECTOR middlePuzzlePos){
 	puzzleToSave->colorFacesMenu();
 
 	puzzleToSave->loadPuzzle(myPuzzle);
-	
-	
 	puzzleToSave->objectId = objectID; 
-	//puzzleToSave->myMenuPuzzle->colorFaces(objectID);
+
 	return puzzleToSave;
 }
 //----------------------------------------------------------------------

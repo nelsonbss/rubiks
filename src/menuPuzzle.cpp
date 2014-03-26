@@ -16,6 +16,10 @@ menuPuzzle::menuPuzzle(SG_VECTOR p, SG_VECTOR t){
 	objectId=0;
 	object = NULL;
 }
+////////////////////////////////////////////////////////
+menuPuzzle::menuPuzzle (sgC3DObject *object, puzzle *puzzle){
+
+}
 //--------------------------------------------------------------
 void menuPuzzle::setup(){
 	//the real object is never rendered or moved::::it is used to make the boolean intersection
@@ -188,7 +192,7 @@ void menuPuzzle::exit(){
 	sgCObject::DeleteObject(temp);
 }
 //-------------------------------------------------------
-puzzle * menuPuzzle::getPuzzle(){
+puzzle* menuPuzzle::getPuzzle(){
 	return myMenuPuzzle;
 }
 void menuPuzzle::mouseDragged(int x, int y, int button){

@@ -14,6 +14,7 @@
 #include "SubObEvent.h"
 #include "SubObMediator.h"
 #include "drawingCanvas.h"
+#include "menuPuzzle.h"
 
 class game : public Observer{
 public:
@@ -159,5 +160,7 @@ public:
 
 	///////interaction with puzzles on the center
 	void loadPuzzle(puzzle *inputPuzzle); //load a puzzle from the puzzle menu on the center
+	bool savePuzzleB;
+	menuPuzzle* savePuzzle(SG_POINT slicingPos, SG_VECTOR middlePuzzlePos);
 };
 #endif /* defined(__Tgame__game__) */

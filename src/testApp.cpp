@@ -54,7 +54,9 @@ void testApp::setup(){
 	//this objects are rendering of the sgCore obects just created.
 	//there are 7 objects to be created
 	cout << "creating puzzle menu items" << endl;
-	SG_VECTOR middlePuzzlePos = {0,(ofGetWindowHeight()/2)-60,0};
+	middlePuzzlePos.x = 0;
+	middlePuzzlePos.y = (ofGetWindowHeight()/2)-60;
+	middlePuzzlePos.z = 0;
 	////////////////////////////////create cutter
 	ofVec3f offsetSlicer = ofVec3f(0,0,0);
 	myCutter = new cutter(0.01,1000,100,1,offsetSlicer);		
@@ -62,7 +64,9 @@ void testApp::setup(){
 	//////////////////////////////////create slicer
 	mySlicer = new slicer(myCutter);
 	mySlicer->setup();
-	SG_POINT slicingPos = {0,0,0};
+	slicingPos.x = 0;
+	slicingPos.y = 0;
+	slicingPos.z = 0;
 	ofVec3f rotateSlicer = ofVec3f (0,0,0);
 
 	for(int i=0; i < puzzleItems; i++){
@@ -86,7 +90,7 @@ void testApp::setup(){
 		}else if(i == 6){
 			puzzleDisplayed->loadObject((sgC3DObject *)sgOctahedron->Clone(),207);
 		}else{
-			puzzleDisplayed->loadObject(sgCreateBox(300,300,300),202);
+			puzzleDisplayed->loadObject(sgCreateBox(300,300,300),208);
 		}
 		cout << "created puzzle menu object: " << i <<endl;
 		puzzleDisplayed->setup();
@@ -105,6 +109,7 @@ void testApp::setup(){
 
 		cout << "created puzzle menu puzzle: " << i <<endl;
 		puzzleDisplayed->loadPuzzle(myPuzzle);
+
 		cout << "created puzzle menu item: " << i << endl;
 		middlePuzzles.push_back(puzzleDisplayed);
 	}
@@ -171,6 +176,16 @@ void testApp::update(){
 
 	for(int i=0; i < middlePuzzles.size();i++){
 		middlePuzzles[i]->update();
+	}
+
+	/////////////////////////////////////////update middle puzzles
+	if(myGames[0]->savePuzzleB == true){
+		menuPuzzle * tempMidPuzzle = myGames[0]->savePuzzle(slicingPos,middlePuzzlePos);
+		middlePuzzles.pop_back();
+		middlePuzzles.push_back(tempMidPuzzle);
+		myGames[0]->savePuzzleB = false;
+		//reset game
+		myGames[0]->restart();
 	}
 
 	/*
@@ -281,6 +296,8 @@ void testApp::draw(){
 			ofDrawBitmapString("UNDO: press 'u' " + ofToString("") +"\n" ,20, 120);
 			//show restart button.
 			ofDrawBitmapString("RESTART: press 'r' " + ofToString("") +"\n" ,20, 140);
+			//show save button.
+			ofDrawBitmapString("SAVE: press 's' " + ofToString("") +"\n" ,20, 160);
 		}else if(gStep == 6){
 			//create object by extrusion
 			ofDrawBitmapString("sSHOW DRAWING AREA!" +ofToString("")+"\n",20, 20);

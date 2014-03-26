@@ -104,6 +104,9 @@ public:
 	int touchIdOffset;
 
 	////////////////////////////////////////middle puzzles
+	SG_VECTOR middlePuzzlePos;
+	SG_POINT slicingPos;
+
 	vector<menuPuzzle*> middlePuzzles;
 	menuPuzzle *puzzleDisplayed;
 	int puzzleCounter; 

@@ -5,6 +5,7 @@
 #include "cutter.h"
 #include "puzzle.h"
 #include "drawingCanvas.h"
+#include "menuPuzzle.h"
 
 #include <vector>
 
@@ -64,6 +65,8 @@ game::game(SG_VECTOR gamePos, float w, float h, SG_VECTOR displayPos, float iddl
 	bExtrude = false;
 
 	myCanvasImage.loadImage("drawingGrid.png");
+
+	savePuzzleB = false;
 }
 //--------------------------------------------------------------
 void game::setup(sgCObject *sgBunnyi,sgCObject *sgTetrahedroni,sgCObject *sgDodecahedroni,sgCObject *sgIcosahedroni,sgCObject *sgOctahedroni){//,sgCObject *sgTeapoti){
@@ -619,7 +622,6 @@ void game::guiInput(int in){
 	if(step != -1){
 		goToAttractStepI =  ofGetElapsedTimef();
 	}
-
 	if(in == 'b'){
 		ofToggleFullscreen();
 	}
@@ -878,14 +880,19 @@ void game::guiInput(int in){
 				//undo last move 
 				unDo();
 			}
-			////////////////////////////////////////////// FACE ROTATIONS //////////////////////////////
+			/////////////////////////////////////////////// SAVE PUZZLE /////////////////////////////////////////
+			if(in == 's') {
+				//save current puzzle and put it on the middle puzzle section
+				savePuzzleB = true;
+			}
+			////////////////////////////////////////////// FACE ROTATIONS 2 ids /////////////////////////////////
 			if(in == 'z') {
 				//do rotationbased ontwo cubies id
 				int cubieA = 11;
 				int cubieB = 10;
 				rotateTwoIds(cubieA,cubieB,true);
 			}
-			////////////////////////////////////////////// FACE ROTATIONS //////////////////////////////
+			////////////////////////////////////////////// FACE ROTATIONS axis dir //////////////////////////////
 			////////  x axis  ////  x axis
 			if(in == 'q') {
 				//clockwise
@@ -1139,6 +1146,17 @@ void game::prepareDrawing(){
 	}
 	//extrusion
 	step = 6;
+}
+//---------------------------------------------------------------------
+menuPuzzle*  game::savePuzzle(SG_POINT slicingPos, SG_VECTOR middlePuzzlePos){
+	//build a menuPuzzle object and give it to the mainApp
+	menuPuzzle *puzzleToSave = new menuPuzzle(slicingPos, middlePuzzlePos);
+	puzzleToSave->loadObject(objectDisplayed->getObject(),208);
+	puzzleToSave->loadPuzzle(myPuzzle);
+	puzzleToSave->setup();
+	puzzleToSave->colorFacesMenu();
+	puzzleToSave->update();
+	return puzzleToSave;
 }
 //----------------------------------------------------------------------
 void game::clearDisplayedObject(){

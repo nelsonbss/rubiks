@@ -76,21 +76,22 @@ void testApp::setup(){
 		}
 		puzzleDisplayed = new menuPuzzle(slicingPos, middlePuzzlePos);
 		if(i==0){
-			puzzleDisplayed->loadObject(sgCreateTorus(100,70,50,50),201);
+			puzzleDisplayed->loadObject(sgCreateTorus(100,70,50,50),1);
 		}else if(i == 1){
-			puzzleDisplayed->loadObject(sgCreateBox(300,300,300),202);
+			puzzleDisplayed->loadObject(sgCreateBox(300,300,300),2);
 		}else if(i == 2){
-			puzzleDisplayed->loadObject((sgC3DObject *)sgTetrahedron->Clone(),203);
+			puzzleDisplayed->loadObject((sgC3DObject *)sgTetrahedron->Clone(),3);
 		}else if(i == 3){
-			puzzleDisplayed->loadObject((sgC3DObject *)sgBunny->Clone(),204);
+			puzzleDisplayed->loadObject((sgC3DObject *)sgBunny->Clone(),4);
 		}else if(i == 4){
-			puzzleDisplayed->loadObject((sgC3DObject *)sgDodecahedron->Clone(),205);
+			puzzleDisplayed->loadObject((sgC3DObject *)sgDodecahedron->Clone(),5);
 		}else if(i == 5){
-			puzzleDisplayed->loadObject((sgC3DObject *)sgIcosahedron->Clone(),206);
+			puzzleDisplayed->loadObject((sgC3DObject *)sgIcosahedron->Clone(),6);
 		}else if(i == 6){
-			puzzleDisplayed->loadObject((sgC3DObject *)sgOctahedron->Clone(),207);
+			puzzleDisplayed->loadObject((sgC3DObject *)sgOctahedron->Clone(),7);
 		}else{
-			puzzleDisplayed->loadObject(sgCreateBox(300,300,300),208);
+			//slots for other user created puzzles
+			puzzleDisplayed->loadObject(sgCreateBox(300,300,300),2);
 		}
 		cout << "created puzzle menu object: " << i <<endl;
 		puzzleDisplayed->setup();
@@ -99,9 +100,9 @@ void testApp::setup(){
 		mySlicer->intersectCubes((sgCObject*)puzzleDisplayed->getObject());
 		myPuzzle = new puzzle(middlePuzzlePos, offsetSlicer); // it receives the position to be displayed AND the offset of the armature/cutter to adapt slicing
 		myPuzzle->setup();
-		myPuzzle->loadPieces(mySlicer->getPieces(),101,rotateSlicer);//selected object id is used for coloring
+		myPuzzle->loadPieces(mySlicer->getPieces(),puzzleDisplayed->objectId,rotateSlicer);//selected object id is used for coloring
 
-		if(puzzleDisplayed->objectId != 201 && puzzleDisplayed->objectId != 204){
+		if(puzzleDisplayed->objectId != 1 && puzzleDisplayed->objectId != 4){
 			myPuzzle->colorFaces(puzzleDisplayed->objectId);
 		}else{
 			myPuzzle->colorTorus();
@@ -114,6 +115,7 @@ void testApp::setup(){
 		middlePuzzles.push_back(puzzleDisplayed);
 	}
 	cout << "puzzle menu created" << endl;
+	puzzleCounter = 0;
 
 	///////////////////////////////////////////////////create games
 	//////////////////////////////one game for now
@@ -181,8 +183,11 @@ void testApp::update(){
 	/////////////////////////////////////////update middle puzzles
 	if(myGames[0]->savePuzzleB == true){
 		menuPuzzle * tempMidPuzzle = myGames[0]->savePuzzle(slicingPos,middlePuzzlePos);
-		middlePuzzles.pop_back();
-		middlePuzzles.push_back(tempMidPuzzle);
+		middlePuzzles[puzzleCounter+7] = tempMidPuzzle;
+		puzzleCounter ++;
+		if(puzzleCounter == 3){
+			puzzleCounter=0;
+		}
 		myGames[0]->savePuzzleB = false;
 		//reset game
 		myGames[0]->restart();
@@ -367,12 +372,12 @@ void testApp::keyPressed(int key){
 		if(key == 'p'){
 			//
 			//load first puzzle: torus
-			myGames[0]->loadPuzzle(middlePuzzles[0]->getPuzzle());
+			myGames[0]->loadPuzzle(middlePuzzles[9]->getPuzzle());
 			myGames[0]->setCurrentStep(7);
 		}
 		if(key == 'o'){
 			//load seccond puzzle: cube
-			myGames[0]->loadPuzzle(middlePuzzles[1]->getPuzzle());
+			myGames[0]->loadPuzzle(middlePuzzles[0]->getPuzzle());
 			myGames[0]->setCurrentStep(7);
 		}
 	}

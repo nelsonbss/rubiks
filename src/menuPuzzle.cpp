@@ -51,7 +51,7 @@ void menuPuzzle::update(){
 	temp->GetTempMatrix()->Rotate(rot,rotM2,ofDegToRad(45));*/
 
 	temp->InitTempMatrix()->Translate(transP);
-	if(objectId == 202){
+	if(objectId == 2){
 		//cube
 		SG_VECTOR offset = {-0,-50,-0}; //for the cube to be in place
 		temp->GetTempMatrix()->Translate(offset);//this translates the object to be cut!!
@@ -66,14 +66,14 @@ void menuPuzzle::update(){
 		object->GetTempMatrix()->Rotate(rotP,rotV3,ofDegToRad(armRot.z));
 		object->ApplyTempMatrix(); 
 		object->DestroyTempMatrix(); 
-	}else if(objectId == 203){
+	}else if(objectId == 3){
 		////cone..pyramid
 		//SG_POINT rotP = transP;
 		//SG_VECTOR rotV = {1,0,0};
 		//temp->GetTempMatrix()->Rotate(rotP,rotV,ofDegToRad(90));
 		//SG_VECTOR offset = {0,100,0}; 
 		//temp->GetTempMatrix()->Translate(offset);
-	}else if(objectId == 204){
+	}else if(objectId == 4){
 		//rabbit
 		SG_POINT rotP2 = transP;//{tempPos.x,tempPos.y,tempPos.z};
 		SG_VECTOR rotV2 = {1,0,0};
@@ -109,7 +109,7 @@ void menuPuzzle::loadObject(sgC3DObject *obj, int ID){
 		object = obj;
 	}
 	objectId = ID;
-	if(objectId == 201){
+	if(objectId == 1){
 		//torus
 		SG_VECTOR offset = {0,0,0}; //for torus to be in place, the 
 		object->InitTempMatrix()->Translate(offset);//this translates the object to be cut!!
@@ -118,13 +118,13 @@ void menuPuzzle::loadObject(sgC3DObject *obj, int ID){
 		//object->GetTempMatrix()->Rotate(rotP,rotV,ofDegToRad(45));
 		object->ApplyTempMatrix();  
 		object->DestroyTempMatrix();
-	}else if(objectId == 202){
+	}else if(objectId == 2){
 		//cube
 		SG_VECTOR offset = {-150,-150,-150}; //for the cube to be in center  place, it has sides of 300
 		object->InitTempMatrix()->Translate(offset);//this translates the object to be cut!!
 		object->ApplyTempMatrix();  
 		object->DestroyTempMatrix();
-	}else if(objectId == 203){
+	}else if(objectId == 3){
 		//cone..pyramid
 		/*SG_POINT rotP = {0,0,0};
 		SG_VECTOR rotV = {1,0,0};
@@ -133,7 +133,7 @@ void menuPuzzle::loadObject(sgC3DObject *obj, int ID){
 		object->GetTempMatrix()->Translate(offset);
 		object->ApplyTempMatrix();  
 		object->DestroyTempMatrix();*/
-	}else if(objectId == 204){
+	}else if(objectId == 4){
 		//rabbit
 		SG_POINT rotP = {0,0,0};
 		SG_VECTOR rotV = {1,0,0};
@@ -161,7 +161,7 @@ sgC3DObject* menuPuzzle::getObject(){
 //-----------------------------------------------------------------
 void menuPuzzle::colorFacesMenu(){
 	ofRender *ofr = new ofRender();
-	if(objectId == 201 || objectId == 204){
+	if(objectId == 1 || objectId == 4){
 		//torus or bunny
 		ofr->colorTorus(myMesh);
 	}else{

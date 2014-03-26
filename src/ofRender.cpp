@@ -834,7 +834,7 @@ void ofRender::colorFacesMenu(ofMesh &mesh,ofVec3f armRot,float playRoom, int ob
 				}
 			}else{
 				//arm rotations
-				if(objectID == 202){
+				if(objectID == 2){
 					//have to use the official colors
 					///rotate normal vectors to compensate for armature rotations z-y-x
 					//ask direction to color faces of cube 

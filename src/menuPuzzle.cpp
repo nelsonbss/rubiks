@@ -79,7 +79,7 @@ void menuPuzzle::update(){
 		temp->GetTempMatrix()->Rotate(rotP2,rotV2,ofDegToRad(180));
 	}else if(objectId == 200){
 		//extruded object
-		SG_VECTOR offset = {0,135,0}; 
+		SG_VECTOR offset = {0,70,0}; 
 		temp->GetTempMatrix()->Translate(offset);
 	}
 
@@ -108,46 +108,46 @@ void menuPuzzle::loadObject(sgC3DObject *obj, int ID){
 		object = obj;
 	}
 	objectId = ID;
-	if(objectId == 1){
-		//torus
-		SG_VECTOR offset = {0,0,0}; //for torus to be in place, the 
-		object->InitTempMatrix()->Translate(offset);//this translates the object to be cut!!
-		//SG_POINT rotP = {0,0,0};
-		//SG_VECTOR rotV = {1,0,0};
-		//object->GetTempMatrix()->Rotate(rotP,rotV,ofDegToRad(45));
-		object->ApplyTempMatrix();  
-		object->DestroyTempMatrix();
-	}else if(objectId == 2){
-		//cube
-		SG_VECTOR offset = {-150,-150,-150}; //for the cube to be in center  place, it has sides of 300
-		object->InitTempMatrix()->Translate(offset);//this translates the object to be cut!!
-		object->ApplyTempMatrix();  
-		object->DestroyTempMatrix();
-	}else if(objectId == 3){
-		//cone..pyramid
-		/*SG_POINT rotP = {0,0,0};
-		SG_VECTOR rotV = {1,0,0};
-		object->InitTempMatrix()->Rotate(rotP,rotV,ofDegToRad(90));
-		SG_VECTOR offset = {0,100,0}; 
-		object->GetTempMatrix()->Translate(offset);
-		object->ApplyTempMatrix();  
-		object->DestroyTempMatrix();*/
-	}else if(objectId == 4){
-		//rabbit
-		SG_POINT rotP = {0,0,0};
-		SG_VECTOR rotV = {1,0,0};
-		object->InitTempMatrix()->Rotate(rotP,rotV,ofDegToRad(180));
-		/*SG_VECTOR offset = {0,800,200}; 
-		object->GetTempMatrix()->Translate(offset);*/
-		object->ApplyTempMatrix();  
-		object->DestroyTempMatrix();
-	}else if(objectId == 200){
-		//extruded object
-		SG_VECTOR offset = {0,0,0}; 
-		object->InitTempMatrix()->Translate(offset);
-		object->ApplyTempMatrix();  
-		object->DestroyTempMatrix();
-	}
+	//if(objectId == 1){
+	//	//torus
+	//	SG_VECTOR offset = {0,0,0}; //for torus to be in place, the 
+	//	object->InitTempMatrix()->Translate(offset);//this translates the object to be cut!!
+	//	//SG_POINT rotP = {0,0,0};
+	//	//SG_VECTOR rotV = {1,0,0};
+	//	//object->GetTempMatrix()->Rotate(rotP,rotV,ofDegToRad(45));
+	//	object->ApplyTempMatrix();  
+	//	object->DestroyTempMatrix();
+	//}else if(objectId == 2){
+	//	//cube
+	//	SG_VECTOR offset = {-150,-150,-150}; //for the cube to be in center  place, it has sides of 300
+	//	object->InitTempMatrix()->Translate(offset);//this translates the object to be cut!!
+	//	object->ApplyTempMatrix();  
+	//	object->DestroyTempMatrix();
+	//}else if(objectId == 3){
+	//	//cone..pyramid
+	//	/*SG_POINT rotP = {0,0,0};
+	//	SG_VECTOR rotV = {1,0,0};
+	//	object->InitTempMatrix()->Rotate(rotP,rotV,ofDegToRad(90));
+	//	SG_VECTOR offset = {0,100,0}; 
+	//	object->GetTempMatrix()->Translate(offset);
+	//	object->ApplyTempMatrix();  
+	//	object->DestroyTempMatrix();*/
+	//}else if(objectId == 4){
+	//	//rabbit
+	//	SG_POINT rotP = {0,0,0};
+	//	SG_VECTOR rotV = {1,0,0};
+	//	object->InitTempMatrix()->Rotate(rotP,rotV,ofDegToRad(180));
+	//	/*SG_VECTOR offset = {0,800,200}; 
+	//	object->GetTempMatrix()->Translate(offset);*/
+	//	object->ApplyTempMatrix();  
+	//	object->DestroyTempMatrix();
+	//}else if(objectId == 200){
+	//	//extruded object
+	//	SG_VECTOR offset = {0,0,0}; 
+	//	object->InitTempMatrix()->Translate(offset);
+	//	object->ApplyTempMatrix();  
+	//	object->DestroyTempMatrix();
+	//}
 }
 //--------------------------------------------------------------
 void menuPuzzle::loadPuzzle(puzzle *inpuzzle){

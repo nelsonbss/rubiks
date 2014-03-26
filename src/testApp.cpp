@@ -373,10 +373,22 @@ void testApp::keyPressed(int key){
 		///////////from puzzles in the center
 		//////instead of asking for a "key", with the GUI it should ask for the object ID
 		if(key == 'p'){
-			myGames[0]->loadPuzzle(middlePuzzles[7]->getPuzzle());
+			myGames[0]->loadPuzzle(middlePuzzles[9]->getPuzzle());
 			myGames[0]->setCurrentStep(7);
 		}
 		if(key == 'o'){
+			myGames[0]->loadPuzzle(middlePuzzles[8]->getPuzzle());
+			myGames[0]->setCurrentStep(7);
+		}
+		if(key == 'i'){
+			myGames[0]->loadPuzzle(middlePuzzles[7]->getPuzzle());
+			myGames[0]->setCurrentStep(7);
+		}
+		if(key == 'u'){
+			myGames[0]->loadPuzzle(middlePuzzles[1]->getPuzzle());
+			myGames[0]->setCurrentStep(7);
+		}
+		if(key == 'y'){
 			myGames[0]->loadPuzzle(middlePuzzles[0]->getPuzzle());
 			myGames[0]->setCurrentStep(7);
 		}

@@ -63,7 +63,7 @@ void myobject3D::update(){
 		SG_POINT rotP2 = transP;//{tempPos.x,tempPos.y,tempPos.z};
 		SG_VECTOR rotV2 = {1,0,0};
 		temp->GetTempMatrix()->Rotate(rotP2,rotV2,ofDegToRad(180));
-	}else if(objectId == 208){
+	}else if(objectId == 200){
 		//extruded object
 		SG_VECTOR offset = {0,150,0}; 
 		temp->GetTempMatrix()->Translate(offset);
@@ -123,7 +123,7 @@ void myobject3D::loadObject(sgC3DObject *obj, int ID){
 		object->GetTempMatrix()->Translate(offset);*/
 		object->ApplyTempMatrix();  
 		object->DestroyTempMatrix();
-	}else if(objectId == 208){
+	}else if(objectId == 200){
 		//extruded object
 		SG_VECTOR offset = {0,150,0}; 
 		object->InitTempMatrix()->Translate(offset);

@@ -133,7 +133,7 @@ void game::update(){
 
 	///////////////////////////////////////update cubies
 	if(updatePuzzle){
-		if(step == 4 || step == 5){
+		if(step == 4 || step == 5 || step == 7){
 			myPuzzle->update();
 			////////////////////////////////////////////////////move all puzzle
 			//myPuzzle->move(posP);

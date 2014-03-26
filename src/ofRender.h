@@ -15,6 +15,7 @@ public:
 
 	vector <ofFloatColor> colorsVector;
 	ofFloatColor mate;
+	ofFloatColor mateSolid;
 	ofFloatColor green;
 	ofFloatColor orange;
 	ofFloatColor white;

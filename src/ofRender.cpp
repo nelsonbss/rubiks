@@ -6,7 +6,8 @@
 
 
 ofRender::ofRender(){
-	mate = ofFloatColor(1.0,1.0,1.0,0.5);
+	mate = ofFloatColor(1.0,1.0,1.0,0.9);
+	mateSolid = ofFloatColor(1.0,1.0,1.0);
 	green = ofFloatColor(0,1,0);
 	orange = ofFloatColor(1.000, 0.549, 0.000);
 	white = ofFloatColor(1,1,1);
@@ -831,7 +832,7 @@ void ofRender::colorFacesMenu(ofMesh &mesh,ofVec3f armRot,float playRoom, int ob
 				}
 			}else{
 				//arm rotations
-				if(objectID == 202){
+				if(objectID == 2){
 					//have to use the official colors
 					///rotate normal vectors to compensate for armature rotations z-y-x
 					//ask direction to color faces of cube 
@@ -987,6 +988,8 @@ void ofRender::colorFacesExtrudedMenu(ofMesh &mesh,ofVec3f armRot){
 				tcolors[n] = orange; 
 			}else if(t3.align(yn, 2.0)){
 				tcolors[n] = red; 
+			}else{
+				tcolors[n] = mateSolid; 
 			}
 		}
 	}

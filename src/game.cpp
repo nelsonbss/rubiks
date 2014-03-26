@@ -529,11 +529,11 @@ void game::createPuzzle(SG_VECTOR p){
 
 		///////////////////////////////  color puzzle   ////////////////////////////////// 
 		//color all the faces for platonic solids!! colors outside for most objects(not bunny), black on the insides
-		if(objectID != 1){
+		//if(objectID != 1){
 			myPuzzle->colorFaces(objectID);
-		}else{
-			myPuzzle->colorTorus();
-		}
+		//}else{
+		//	myPuzzle->colorTorus();
+		//}
 
 		updatePuzzle = true;
 
@@ -1151,12 +1151,16 @@ void game::prepareDrawing(){
 menuPuzzle*  game::savePuzzle(SG_POINT slicingPos, SG_VECTOR middlePuzzlePos){
 	//build a menuPuzzle object and give it to the mainApp
 	menuPuzzle *puzzleToSave = new menuPuzzle(slicingPos, middlePuzzlePos);
-	puzzleToSave->loadObject(objectDisplayed->getObject(),208);
-	puzzleToSave->loadPuzzle(myPuzzle);
+	puzzleToSave->loadObject(objectDisplayed->getObject(),objectID);
 	puzzleToSave->setup();
-	puzzleToSave->colorFacesMenu();
 	puzzleToSave->update();
+	puzzleToSave->colorFacesMenu();
+
+	puzzleToSave->loadPuzzle(myPuzzle);
+	
+	
 	puzzleToSave->objectId = objectID; 
+	//puzzleToSave->myMenuPuzzle->colorFaces(objectID);
 	return puzzleToSave;
 }
 //----------------------------------------------------------------------

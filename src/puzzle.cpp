@@ -707,7 +707,7 @@ void puzzle::colorFaces(int objectID){
 		ofr->colorFaces(myCubies,numPieces,0.01, objectID);
 		free(ofr);
 	}
-	if((objectID != 4) && (objectID != 4)){
+	if(objectID != 4){
 		//color black all the inside faces of each cubie (after all other face colors have been applied)
 		//all the puzzles have to do this
 		colorCubiesBlackSides();
@@ -717,7 +717,7 @@ void puzzle::colorFaces(int objectID){
 //----------------------------------------------------------------
 void puzzle::colorTorus(){
 	for(int i=0;i<numPieces;i++){
-		//set random color for each cubie
+		//set random color for each cubie on the torus
 		myCubies[i]->colorTorus();
 	}
 	colorCubiesBlackSides();

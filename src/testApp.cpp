@@ -102,11 +102,11 @@ void testApp::setup(){
 		myPuzzle->setup();
 		myPuzzle->loadPieces(mySlicer->getPieces(),puzzleDisplayed->objectId,rotateSlicer);//selected object id is used for coloring
 
-		if(puzzleDisplayed->objectId != 1 && puzzleDisplayed->objectId != 4){
+		//if(puzzleDisplayed->objectId != 1 && puzzleDisplayed->objectId != 4){
 			myPuzzle->colorFaces(puzzleDisplayed->objectId);
-		}else{
-			myPuzzle->colorTorus();
-		}
+		//}else{
+		//	myPuzzle->colorTorus();
+		//}
 
 		cout << "created puzzle menu puzzle: " << i <<endl;
 		puzzleDisplayed->loadPuzzle(myPuzzle);
@@ -114,7 +114,7 @@ void testApp::setup(){
 		cout << "created puzzle menu item: " << i << endl;
 		middlePuzzles.push_back(puzzleDisplayed);
 	}
-	cout << "puzzle menu created" << endl;
+	cout << "puzzles menu created" << endl;
 	puzzleCounter = 0;
 
 	///////////////////////////////////////////////////create games
@@ -176,11 +176,11 @@ void testApp::update(){
 		myGames[i]->update();
 	}
 
+	/////////////////////////////////////////update middle puzzles
 	for(int i=0; i < middlePuzzles.size();i++){
 		middlePuzzles[i]->update();
 	}
-
-	/////////////////////////////////////////update middle puzzles
+	////////watch for new puzzles being saved
 	if(myGames[0]->savePuzzleB == true){
 		menuPuzzle * tempMidPuzzle = myGames[0]->savePuzzle(slicingPos,middlePuzzlePos);
 		middlePuzzles[puzzleCounter+7] = tempMidPuzzle;

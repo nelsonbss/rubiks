@@ -27,7 +27,6 @@ void myobject3D::setup(){
 	object->DestroyTempMatrix();
 
 	temp->Triangulate(SG_VERTEX_TRIANGULATION);
-	temp->SetAttribute(SG_OA_COLOR,2);
 	ofRender *ofr = new ofRender(); //class that has the metods to transform sgCore to OF mesh and set the normals (in one function)
 	//ofr->sgCoretoOFmesh(temp,myMesh,-1); //-1 because its not a cubie but want color on the sample object
 	ofr->sgCoretoOFmesh(temp,myMesh,-2,objectId); //-2 for plain color

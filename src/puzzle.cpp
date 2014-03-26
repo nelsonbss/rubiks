@@ -721,6 +721,7 @@ void puzzle::colorFaces(int objectID){
 }
 //----------------------------------------------------------------
 void puzzle::colorTorus(){
+	//currently not used since torus will be only one solid color
 	for(int i=0;i<numPieces;i++){
 		//set random color for each cubie on the torus
 		myCubies[i]->colorTorus();

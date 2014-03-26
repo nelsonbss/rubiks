@@ -701,11 +701,15 @@ void puzzle::rearange3dArray(SG_VECTOR axis, int plane, bool dir){
 void puzzle::colorFaces(int objectID){
 	////goes through each cubie and makes sets of normals.. to determine all different normals in the object
 	//and apply colors to those normals
-	if((objectID != 4) && (objectID != 1)){
+	ofRender *ofr = new ofRender();
+
+	if((objectID != 4) && (objectID != 1) && (objectID != 200)){
 		//not the bunny or the cube -> they were already colored on puzzle::loadPieces->cubie::setObjects
-		ofRender *ofr = new ofRender();
 		ofr->colorFaces(myCubies,numPieces,0.01, objectID);
-		free(ofr);
+	}
+	if(objectID == 200){
+		//extrudd object
+		ofr->colorFacesExtruded(myCubies,numPieces,0.01, objectID);
 	}
 	if(objectID != 4){
 		//color black all the inside faces of each cubie (after all other face colors have been applied)
@@ -713,6 +717,7 @@ void puzzle::colorFaces(int objectID){
 		colorCubiesBlackSides();
 		//need to color black sides of bunny in a better way.. will they be colored? or leave it plain?
 	}
+	free(ofr);
 }
 //----------------------------------------------------------------
 void puzzle::colorTorus(){

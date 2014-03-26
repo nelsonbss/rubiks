@@ -1070,7 +1070,6 @@ bool game::extrudeObject(ofPolyline *drawing){
 	if(win_cont->IsSelfIntersecting()){
 		//its self intersecting
 		//abort!!!
-		//for now
 		extrudedB = false;
 		//clear ofpolylines!!!
 		//myCanvas->myPolyline->clear();

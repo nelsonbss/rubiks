@@ -29,6 +29,7 @@ public:
 	void colorFaces(cubie **myCubies, int numPieces,float playRoom, int objectID); //to color faces of any polyhedra (not cube - not tetrahedron)
 	void colorBlackSides(ofMesh &mesh, int idCubie, float playRoom); //to color black side faces of polyhedra  (not cube - not tetrahedron)
 	void colorTorus(ofMesh &mesh);
+	void colorFacesExtruded(cubie **myCubies, int numPieces,float playRoom, int objectID);
 
 	ofPoint decideAxisRange(ofPoint dir,float playRoom); // tho look at normals and decide sets of normals, to color faces
 

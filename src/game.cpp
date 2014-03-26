@@ -1238,7 +1238,7 @@ void game::exit(){
 }
 //--------------------------------------------------------------
 void game::mouseDragged(int x, int y, int button){
-	if(step == 4 || step == 5){
+	if(step == 4 || step == 5 || step == 7){
 		ofVec2f mouse(x,y);
 		ofQuaternion yRot(x-lastMouse.x, ofVec3f(0,1,0));
 		ofQuaternion xRot(y-lastMouse.y, ofVec3f(-1,0,0));
@@ -1251,7 +1251,7 @@ void game::mouseDragged(int x, int y, int button){
 }
 //--------------------------------------------------------------
 void game::mousePressed(int x, int y, int button){
-	if(step == 4 || step == 5){
+	if(step == 4 || step == 5 || step == 7){
 		lastMouse = ofVec2f(x,y);
 	}else if(step == 6){
 		myCanvas->mousePressed(x,y,button);

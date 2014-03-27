@@ -278,27 +278,27 @@ void game::draw(){
 
 		curRot.getRotate(angle, axistb);
 
-		ofPushMatrix();
-		ofTranslate(posP.x,posP.y,posP.z);
+		glPushMatrix();
+		glTranslatef(posP.x,posP.y,posP.z);
 		//new trackball
-		ofRotate(angle, axistb.x, axistb.y, axistb.z);
-		ofTranslate(-posP.x,-posP.y,-posP.z);
+		glRotatef(angle, axistb.x, axistb.y, axistb.z);
+		glTranslatef(-posP.x,-posP.y,-posP.z);
 		myPuzzle->draw();
-		ofPopMatrix();
+		glPopMatrix();
 	}
 	if(step == 5){
 		//show puzzle
 		curRot.getRotate(angle, axistb);
 
-		ofPushMatrix();
-		ofTranslate(posP.x,posP.y,posP.z);
+		glPushMatrix();
+		glTranslatef(posP.x,posP.y,posP.z);
 		//new trackball
-		ofRotate(angle, axistb.x, axistb.y, axistb.z);
+		glRotatef(angle, axistb.x, axistb.y, axistb.z);
 
 
-		ofTranslate(-posP.x,-posP.y,-posP.z);
+		glTranslatef(-posP.x,-posP.y,-posP.z);
 		myPuzzle->draw();
-		ofPopMatrix();
+		glPopMatrix();
 	}
 	if(step == 6){
 		//show drawing area
@@ -310,15 +310,15 @@ void game::draw(){
 		//show puzzle
 		curRot.getRotate(angle, axistb);
 
-		ofPushMatrix();
-		ofTranslate(posP.x,posP.y,posP.z);
+		glPushMatrix();
+		glTranslatef(posP.x,posP.y,posP.z);
 		//new trackball
-		ofRotate(angle, axistb.x, axistb.y, axistb.z);
+		glRotatef(angle, axistb.x, axistb.y, axistb.z);
 
 
-		ofTranslate(-posP.x,-posP.y,-posP.z);
+		glTranslatef(-posP.x,-posP.y,-posP.z);
 		myPuzzle->draw();
-		ofPopMatrix();
+		glPopMatrix();
 	}
 }
 //----------------------------------------------------------------------

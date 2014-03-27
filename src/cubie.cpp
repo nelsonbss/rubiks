@@ -472,7 +472,7 @@ void cubie::colorBlackSides(int idCubie, float playRoom){
 	//have key sides of cubie colored black
 	ofRender *ofr = new ofRender(); 
 	for(int j=0; j< numObjs; j++){
-		ofr->colorBlackSides(myMeshs[j],idCubie,playRoom);
+		ofr->colorBlackSides(myMeshs[j],idCubie,playRoom,selectedObjectID);
 		//have to replace the vbo
 		ofVbo tempVbo;
 		tempVbo.setMesh(myMeshs[j], GL_STATIC_DRAW);

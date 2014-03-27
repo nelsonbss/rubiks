@@ -6,8 +6,8 @@
 
 
 ofRender::ofRender(){
-	mate = ofFloatColor(1.0,1.0,1.0,0.9);
-	mateSolid = ofFloatColor(1.0,1.0,1.0);
+	mate = ofFloatColor(1.0,1.0,1.0,0.8);
+	mateSolid = ofFloatColor(1,1,1,255);
 	green = ofFloatColor(0,1,0);
 	orange = ofFloatColor(1.000, 0.549, 0.000);
 	white = ofFloatColor(1,1,1);
@@ -295,7 +295,7 @@ void ofRender::colorFaces(cubie **myCubies, int numPieces, float playRoom, int o
 	}
 }
 //---------------------------------------------------------------------------------------------------------------
-void ofRender::colorBlackSides(ofMesh &mesh, int idCubie, float playRoom){
+void ofRender::colorBlackSides(ofMesh &mesh, int idCubie, float playRoom, int objectID){
 	//color black the correct sides of each cubie
 	vector< ofVec3f > tnormals;
 	vector< ofFloatColor > tcolors;
@@ -314,21 +314,25 @@ void ofRender::colorBlackSides(ofMesh &mesh, int idCubie, float playRoom){
 	//decide according to cubie[num]
 	for(int i=0; i<tnormals.size(); i++){
 		if(idCubie==0){
-			//this is the center piece!! only color black the y and z axis 
-			if(tnormals[i]==y){
-				c = black;
-			}else if(tnormals[i]==z){
-				c = black;
-			}else if(tnormals[i]==yn){
-				c = black;
-			}else if(tnormals[i]==zn){
-				c = black;
+			if(objectID == 200){
+				tcolors[i] = mateSolid;
 			}else{
-				//leave same color
-				c = tcolors[i];
+				//this is the center piece!! only color black the y and z axis
+				if(tnormals[i]==y){
+					c = black;
+				}else if(tnormals[i]==z){
+					c = black;
+				}else if(tnormals[i]==yn){
+					c = black;
+				}else if(tnormals[i]==zn){
+					c = black;
+				}else{
+					//leave same color
+					c = tcolors[i];
+				}
+				//tcolors[i] =  black;
+				tcolors[i] =  c;
 			}
-			//tcolors[i] =  black;
-			tcolors[i] =  c;
 		}else if (idCubie==1){
 			//middle center blue
 			if(decideAxisRange(tnormals[i],playRoom)==y){
@@ -920,6 +924,9 @@ void ofRender::colorFacesExtruded(cubie **myCubies, int numPieces, float playRoo
 					else if(tnormals[n].align(yn, 2.0)){
 						tcolors[n] = red; 
 					}
+					else{
+						tcolors[n] = mateSolid; 
+					}
 				}else{
 					//arm rotations
 					///rotate normal vectors to compensate for armature rotations z-y-x
@@ -932,6 +939,9 @@ void ofRender::colorFacesExtruded(cubie **myCubies, int numPieces, float playRoo
 						tcolors[n] = orange; 
 					}else if(t3.align(yn, 2.0)){
 						tcolors[n] = red; 
+					}
+					else{
+						tcolors[n] = mateSolid; 
 					}
 				}
 			}
@@ -975,6 +985,8 @@ void ofRender::colorFacesExtrudedMenu(ofMesh &mesh,ofVec3f armRot){
 			}
 			else if(tnormals[n].align(yn, 2.0)){
 				tcolors[n] = red; 
+			}else{
+				tcolors[n] = mateSolid; 
 			}
 		}else{
 			//arm rotations

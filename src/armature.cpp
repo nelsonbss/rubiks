@@ -91,6 +91,10 @@ void armature::setup(){
 //--------------------------------------------------------------
 void armature::update(){
 }
+
+void armature::update(string _eventName, SubObEvent* _event){
+}
+
 //--------------------------------------------------------------
 void armature::togglePlanes(){
 	if(btogglePlanes == true){
@@ -103,10 +107,12 @@ void armature::togglePlanes(){
 //--------------------------------------------------------------
 void armature::draw(){
 	glPushMatrix();
-	glTranslatef(center.x,center.y,0);//center.z);
+
 	glRotatef(rot.x,1,0,0);
 	glRotatef(rot.y,0,1,0);
 	glRotatef(rot.z,0,0,1);
+
+	glTranslatef(center.x,center.y,0);//center.z);
 
 	////////////////////boxes//////////////////////////////////////////////////////////////////////
 	ofFill();
@@ -186,7 +192,6 @@ void armature::draw(){
 	cylinder3.draw();
 	///////////////////////////////////////////////////////////////////////////////////////
 
-	
 	glPopMatrix();
 }
 //--------------------------------------------------------------

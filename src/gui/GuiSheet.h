@@ -17,6 +17,7 @@ public:
     void activate();
 	void deactivate();
     void draw();
+	void draw(string _position);
     void touch();
     void setName(string _name){name = _name;}
     void setType(string _type){attrs["type"] = _type;}

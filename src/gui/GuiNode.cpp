@@ -10,6 +10,7 @@ GuiNode::GuiNode(){
 	bHaveText2 = false;
 	bHidden = false;
 	bActive = true;
+	pos.set(0,0);
 }
 
 void GuiNode::draw(){

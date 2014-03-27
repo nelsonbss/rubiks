@@ -91,6 +91,7 @@ void testApp::setup(){
 		cout << "created puzzle menu object: " << i <<endl;
 		puzzleDisplayed->setup();
 		puzzleDisplayed->colorFacesMenu();
+		puzzleDisplayed->init();
 
 		mySlicer->intersectCubes((sgCObject*)puzzleDisplayed->getObject());
 		myPuzzle = new puzzle(middlePuzzlePos, offsetSlicer); // it receives the position to be displayed AND the offset of the armature/cutter to adapt slicing
@@ -145,6 +146,7 @@ void testApp::setup(){
 	SubObMediator::Instance()->addObserver("touch-point", this);
 	SubObMediator::Instance()->addObserver("gesture", this);
 	SubObMediator::Instance()->addObserver("extrude", this);
+	SubObMediator::Instance()->addObserver("extrusion-success", this);
 
 	ev = new SubObEvent();
 
@@ -212,7 +214,7 @@ void testApp::draw(){
 	//ofEnableDepthTest();
 	ofEnableAlphaBlending();
 	ofDisableDepthTest();
-	SceneManager::Instance()->draw();
+	SceneManager::Instance()->draw("back");
 	ofEnableDepthTest();
 	ofDisableAlphaBlending();
 	///////////////////START OF RENDERING////////////////////
@@ -309,29 +311,13 @@ void testApp::draw(){
 
 	///////////////////END OF RENDERING////////////////////
 	stopOFLights();
-
-	for(std::map<int,gwc::Point>::iterator points_it = active_points.begin(); points_it != active_points.end(); points_it++)
-	{
-		float x = points_it->second.getX();
-		float y = points_it->second.getY();
-
-		//Generate a circle with a 50-pixel radius at this point's location
-		ofFill();
-		ofCircle(ofPoint(x, y, 0), 20);
-		ofNoFill();
-		ofSetLineWidth(2);
-		ofCircle(ofPoint(x, y, 0), 30);
-
-
-		//Generate a stringstream for each value with which we're concerned
-		std::stringstream xvals; xvals << (int)x;
-		std::stringstream yvals; yvals << (int)y;
-		std::stringstream ids; ids << points_it->first;
-
-		//Annotate the circle we just drew with the id, x and y values for the corresponding point
-		ofDrawBitmapString("ID: " + ids.str() + "\nX: " + xvals.str() + " Y: " + yvals.str(), x + 40, y - 40, 0);
-	}
 	//ofDisableDepthTest();
+
+	ofEnableAlphaBlending();
+	ofDisableDepthTest();
+	SceneManager::Instance()->draw("front");
+	ofEnableDepthTest();
+	ofDisableAlphaBlending();
 }
 
 //-------------------------------------------------------------- 
@@ -406,7 +392,7 @@ void testApp::mouseDragged(int x, int y, int button){
 		ev->setName("update-touch-point");
 		ev->addArg("position",ofVec3f((float)x / (float)ofGetWidth(),(float)y / (float)ofGetHeight(),0));
 		ev->addArg("touch-id", touchId + touchIdOffset);
-		SubObMediator::Instance()->sendEvent("update-touch-point", ev);
+		//SubObMediator::Instance()->sendEvent("update-touch-point", ev);
 	}
 	if(button == 2){
 		myGames[0]->mouseDragged(x,y,button);
@@ -422,7 +408,7 @@ void testApp::mousePressed(int x, int y, int button){
 		ev->setName("add-touch-point");
 		ev->addArg("position",ofVec3f((float)x / (float)ofGetWidth(),(float)y / (float)ofGetHeight(),0));
 		ev->addArg("touch-id", touchId + touchIdOffset);
-		SubObMediator::Instance()->sendEvent("add-touch-point", ev);
+		//SubObMediator::Instance()->sendEvent("add-touch-point", ev);
 	}
 	if(button == 2){
 		myGames[0]->mousePressed(x,y,button);
@@ -437,7 +423,7 @@ void testApp::mouseReleased(int x, int y, int button){
 		ev->setName("remove-touch-point");
 		ev->addArg("position",ofVec3f((float)x / (float)ofGetWidth(),(float)y / (float)ofGetHeight(),0));
 		ev->addArg("touch-id", touchId + touchIdOffset);
-		SubObMediator::Instance()->sendEvent("remove-touch-point", ev);
+		//SubObMediator::Instance()->sendEvent("remove-touch-point", ev);
 	}
 	myGames[0]->mouseReleased(x,y,button);
 }
@@ -547,9 +533,11 @@ void testApp::update(string _eventName, SubObEvent* _event){
 			ev->setName("unhide-node");
 			ev->addArg("target","puzzle-help-bl");
 			SubObMediator::Instance()->sendEvent("unhide-node", ev);
+			/*
 			ev->setName("unhide-node");
 			ev->addArg("target","ibox-bl");
 			SubObMediator::Instance()->sendEvent("unhide-node", ev);
+			*/
 		}
 	}
 	if(_eventName == "armature-selected"){
@@ -624,6 +612,8 @@ void testApp::update(string _eventName, SubObEvent* _event){
 		cout << "got an extrude." << endl;
 		//myGames[0]->guiInput('e');
 		myGames[0]->guiExtrude();
+	}
+	if(_eventName == "extrusion-success"){
 		ev->setName("hide-node");
 		ev->addArg("target","make-one");
 		SubObMediator::Instance()->sendEvent("hide-node", ev);

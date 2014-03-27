@@ -173,6 +173,16 @@ void SceneManager::draw(){
     }
 }
 
+void SceneManager::draw(string _position){
+	//cout << "SceneManager drawing: drawStack size = " << drawStack.size() << endl;
+    if(drawStack.size() > 0){
+        vector<GuiSheet*>::iterator gIter;
+        for(gIter = drawStack.begin(); gIter != drawStack.end(); ++gIter){
+            (*gIter)->draw(_position);
+        }
+    }
+}
+
 /*
 void SceneManager::drawCompositor(int _x, int _y, int _sx, int _sy){
     compositor->draw(_x,_y,_sx,_sy);

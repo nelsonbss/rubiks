@@ -491,7 +491,7 @@ void puzzle::update(string _eventName, SubObEvent* _event){
 		}
 	}
 	if(_eventName == "ibox-bl:0"){
-		cout << "doing rotation." << endl;
+		//cout << "doing rotation." << endl;
 		doRotation();
 	}
 }

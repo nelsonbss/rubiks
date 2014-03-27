@@ -5,6 +5,8 @@
 #include "cutter.h"
 #include "puzzle.h"
 #include "drawingCanvas.h"
+#include "SubObEvent.h"
+#include "SubObMediator.h"
 
 #include <vector>
 
@@ -59,11 +61,13 @@ game::game(SG_VECTOR gamePos, float w, float h, SG_VECTOR displayPos, float iddl
 	SubObMediator::Instance()->addObserver("ibox-bl:2", this);
 	SubObMediator::Instance()->addObserver("ibox-bl-tap", this);
 	SubObMediator::Instance()->addObserver("new-color", this);
+	SubObMediator::Instance()->addObserver("ibox-bl:1", this);
 
 	extrudedB = false;
 	bExtrude = false;
 
 	myCanvasImage.loadImage("drawingGrid.png");
+	sc = ofFloatColor (1, 1, 0); //yellow
 }
 //--------------------------------------------------------------
 void game::setup(sgCObject *sgBunnyi,sgCObject *sgTetrahedroni,sgCObject *sgDodecahedroni,sgCObject *sgIcosahedroni,sgCObject *sgOctahedroni){//,sgCObject *sgTeapoti){
@@ -117,6 +121,10 @@ void game::update(){
 				//make extruded object
 			if(extrudeObject(myCanvas->getPolyline())){
 				objectDisplayed->update();
+				SubObEvent* e = new SubObEvent();
+				//e->setName("extrusion-success");
+				//SubObMediator::Instance()->sendEvent("extrusion-success", e);
+				//delete e;
 			}else{
 				prepareDrawing();
 			}
@@ -199,23 +207,37 @@ void game::update(string _eventName, SubObEvent* _event){
 		ofVec3f pos = _event->getArg("absPos")->getVec2();
 		mousePressed(pos.x, pos.y, 2);
 	}
-
+	if(_eventName == "ibox-bl:1"){
+		ofVec3f m = _event->getArg("deltaPos")->getVec2();
+		moveA(m);
+	}
+	/*
+	if(_eventName == "ibox-bl:2"){
+		ofVec3f r = _event->getArg("deltaPos")->getVec2();
+		rotateA(r);
+	}
+	*/
 	if(_eventName == "ibox-bl:2"){
 		//cout << "game drag - " << _event->getArg("phase")->getInt() << endl;
-		if(_event->getArg("phase")->getInt() == 0){
-			ofVec2f pos = _event->getArg("absPos")->getVec2();
-			mousePressed(pos.x, pos.y, 2);
+		if(step == 3){
+			ofVec3f r = _event->getArg("deltaPos")->getVec2();
+			rotateA(r);
 		} else {
-			ofVec2f pos = _event->getArg("absPos")->getVec2();
-			mouseDragged(pos.x, pos.y, 2);
+			if(_event->getArg("phase")->getInt() == 0){
+				ofVec2f pos = _event->getArg("absPos")->getVec2();
+				mousePressed(pos.x, pos.y, 2);
+			} else {
+				ofVec2f pos = _event->getArg("absPos")->getVec2();
+				mouseDragged(pos.x, pos.y, 2);
+			}
 		}
 	}
 	if(_eventName == "new-color"){
-		ofFloatColor sc = ofFloatColor (1, 1, 0); //yellow
 		//ofFloatColor menuColor = ofFloatColor (1, 0, 1); //this color comes from the GUI
 		ofVec3f newColor = _event->getArg("color")->getVec3();
 		ofFloatColor menuColor = ofFloatColor(newColor.x / 255.0, newColor.y / 255.0, newColor.z / 255.0);
 		changeColorToColor(sc,menuColor);
+		sc = menuColor;
 	}
 }
 //----------------------------------------------------------------------

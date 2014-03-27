@@ -173,3 +173,27 @@ void GuiSheet::draw(){
 	*/
 }
 
+void GuiSheet::draw(string _position){
+	vector<GuiNode*>::iterator nIter;
+	//cout << "drawing " << nodes.size() << " nodes." << endl;
+	for(nIter = nodes.begin(); nIter != nodes.end(); ++nIter){
+		if((*nIter)->getParam("draw-position") == _position){
+			(*nIter)->draw();
+		}
+	}
+    if(haveLoosie){
+        GuiConfigurator::Instance()->getLoosie()->drawLoosie();
+    }
+	/*
+    if(name == "audio-recorder"){
+        ofImage ball;
+        ball.loadImage("cuts/ball_clipped.png");
+        float pct = SceneManager::Instance()->getRecordingPosition();
+        int maxX = 837;
+        int xDiff = maxX * pct;
+        ofRect(711 + xDiff, 566,maxX - xDiff ,31);
+        ball.draw(720 + xDiff - (ball.getWidth() / 2),561);
+    }
+	*/
+}
+

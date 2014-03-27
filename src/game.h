@@ -11,8 +11,6 @@
 #include "ofxAssimpModelLoader.h"
 #include "history.h"
 #include "Observer.h"
-#include "SubObEvent.h"
-#include "SubObMediator.h"
 #include "drawingCanvas.h"
 
 class game : public Observer{
@@ -67,6 +65,8 @@ public:
 
 	bool bExtrude;
 	void guiExtrude(){bExtrude = true;}
+
+	ofFloatColor sc;
 
 	/*
 	*/

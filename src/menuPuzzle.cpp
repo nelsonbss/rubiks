@@ -4,18 +4,57 @@
 #include "ofRender.h"
 
 ///////////////////////////////////////////////////////
-menuPuzzle::menuPuzzle(SG_VECTOR p, SG_VECTOR t){
-	pos.x = p.x;
-	pos.y = p.y;
-	pos.z = p.z;
+menuPuzzle::menuPuzzle(SG_VECTOR p, SG_VECTOR t) : GuiNode(){
+	position.x = p.x;
+	position.y = p.y;
+	position.z = p.z;
 
 	tempPos.x = t.x;
 	tempPos.y = t.y;
 	tempPos.z = t.z;
 
+	tempSize.x = 200;
+	tempSize.y = 200;
+
+	addParam("drag", "true");
+	addParam("n", "1");
+	addParam("droppable", "true");
+
+	//pos.set((float)tempPos.x, (float)tempPos.y);
+	//size.set(200,200);
+	//scale = 1.0;
+
+	//setPosition(ofVec2f((float)tempPos.x, (float)tempPos.y));
+	//setSize(ofVec2f(200,200));
+	//setScale(1.0);
+
 	objectId=0;
 	object = NULL;
+
+	bHidden = false;
+	bActive = true;
 }
+
+void menuPuzzle::nodeInit(){
+	//drawPos.set((float)tempPos.x, (float)tempPos.y);
+	//drawPos.set(200,200);
+	//drawSize.set(200,200);
+
+	//ofVec2f pctPos((float)tempPos.x / (float)ofGetWidth(), (float)tempPos.y / (float)ofGetHeight());
+
+	//setPosition(pctPos);
+	//setSize(ofVec2f(200.0 / (float)ofGetWidth(),200) / (float)ofGetHeight());
+	//setScale(1.0);
+
+	//setPosition();
+
+	//drawPos.set((float)tempPos.x, (float)tempPos.y);
+	drawPos.set(0,0);
+	drawSize.set(200,200);
+
+	activate();
+}
+
 //--------------------------------------------------------------
 void menuPuzzle::setup(){
 	//the real object is never rendered or moved::::it is used to make the boolean intersection
@@ -23,7 +62,7 @@ void menuPuzzle::setup(){
 
 	temp = (sgC3DObject *) object->Clone();
 
-	SG_VECTOR transP = {pos.x,pos.y,pos.z};
+	SG_VECTOR transP = {position.x,position.y,position.z};
 	object->InitTempMatrix()->Translate(transP);//this translates the object to be cut!!
 	object->ApplyTempMatrix();  
 	object->DestroyTempMatrix();
@@ -39,6 +78,8 @@ void menuPuzzle::setup(){
 //--------------------------------------------------------------
 void menuPuzzle::update(){
 	SG_VECTOR transP = {tempPos.x,tempPos.y,tempPos.z};
+	//drawPos.set((float)tempPos.x, (float)tempPos.y);
+	//SG_VECTOR transP = {drawPos.x, drawPos.y, 0};
 
 	SG_POINT rot = {0,0,0};
 	SG_VECTOR rotM = {1,0,0};
@@ -84,9 +125,29 @@ void menuPuzzle::update(){
 
 	temp->ApplyTempMatrix();  
 }
-//------------------------------------------------------------------------
-void menuPuzzle::draw(){  
 
+bool menuPuzzle::isInside(int _x, int _y){
+    cout << getName() << " checking insides " << tempPos.x << ", " << tempPos.x + tempSize.x << " - " << tempPos.y << ", " << tempPos.y + tempSize.y;
+	cout << " against " << _x << ", " << _y << endl;
+    //cout << getName() << " checking insides." << endl;
+	if((_x > tempPos.x && _x < (tempPos.x + tempSize.x) &&
+       (_y > tempPos.y && _y < (tempPos.y + tempSize.y)))){
+		   if(getParam("send-select") == "true"){
+			   input("select", 0, 0, 0, ofVec2f(_x, _y), ofVec2f(0,0));
+		   }
+		   return true;
+       }
+    return false;
+}
+
+//------------------------------------------------------------------------
+void menuPuzzle::nodeDraw(){  
+
+	ofNoFill();
+	ofSetColor(0,0,255);
+	ofRect(tempPos.x, tempPos.y, tempSize.x, tempSize.y);
+	ofSetColor(255,255,255);
+	
 	glPushMatrix();
 	glMultMatrixd(temp->GetTempMatrix()->GetTransparentData());
 	temp->DestroyTempMatrix();
@@ -145,6 +206,7 @@ void menuPuzzle::loadObject(sgC3DObject *obj, int ID){
 		object->ApplyTempMatrix();  
 		object->DestroyTempMatrix();
 	}
+	setName("menu-puzzle-" + ofToString(objectId));
 }
 //--------------------------------------------------------------
 void menuPuzzle::loadPuzzle(puzzle *inpuzzle){
@@ -169,6 +231,27 @@ void menuPuzzle::colorFacesMenu(){
 	tempVbo.setMesh(myMesh, GL_STATIC_DRAW);
 	myVbo=tempVbo;
 }
+
+void menuPuzzle::input(string _type, int _ID, int _n, int _phase, ofVec2f _absPos, ofVec2f _deltaPos){
+	//cout << "Type = " << _type << " dX, dY = " << _deltaPos.x << ", " << _deltaPos.y << endl;
+	if(_type == "drag"){
+		cout << getName() << " dragging" << endl;
+		tempPos.x += _deltaPos.x;
+		tempPos.y += _deltaPos.y;
+		drawPos.set(tempPos.x, tempPos.y);
+	}
+	if(_type == "tap"){
+		cout << name << " - executing" << endl;
+		execute();
+	}
+	/*
+	if(!bWatchTime){
+		bWatchTime = true;
+	}
+	timeOfLastInteraction = ofGetElapsedTimeMillis();
+	*/
+}
+
 //----------------------------------------------------------------
 void menuPuzzle::applyArmRotations(ofVec3f v){
 	armRot = (v)*-1;

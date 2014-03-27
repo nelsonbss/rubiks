@@ -54,6 +54,10 @@
         <name>active</name>
         <val>false</val>
       </param>
+      <param>
+        <name>draw-position</name>
+        <val>back</val>
+      </param>
     </node>
     <node type="button" name="bg-bottom">
       <pos>0.0,0.6475</pos>
@@ -70,6 +74,10 @@
       <param>
         <name>active</name>
         <val>false</val>
+      </param>
+      <param>
+        <name>draw-position</name>
+        <val>back</val>
       </param>
     </node>
     <node type="button" name="bg-shape-bl">
@@ -88,6 +96,10 @@
         <name>active</name>
         <val>false</val>
       </param>
+      <param>
+        <name>draw-position</name>
+        <val>back</val>
+      </param>
     </node>
     <node type="button" name="3d-window-box">
       <pos>0.0,0.73</pos>
@@ -104,6 +116,10 @@
       <param>
         <name>active</name>
         <val>false</val>
+      </param>
+      <param>
+        <name>draw-position</name>
+        <val>back</val>
       </param>
     </node>
     <node type="button" name="bg-language-bl">
@@ -122,6 +138,10 @@
         <name>active</name>
         <val>false</val>
       </param>
+      <param>
+        <name>draw-position</name>
+        <val>front</val>
+      </param>
     </node>
     <node type="button" name="bg-info-bl">
       <pos>0.055,0.6475</pos>
@@ -138,6 +158,10 @@
       <param>
         <name>active</name>
         <val>false</val>
+      </param>
+      <param>
+        <name>draw-position</name>
+        <val>front</val>
       </param>
     </node>
     <node type="button" name="start-help-bl">
@@ -168,6 +192,10 @@
         <name>text-color</name>
         <val>255,255,255</val>
       </param>
+      <param>
+        <name>draw-position</name>
+        <val>front</val>
+      </param>
     </node>
     <node type="window" name="3d-window">
       <pos>0.0,0.73</pos>
@@ -184,6 +212,10 @@
       <param>
         <name>scrollable</name>
         <val>true</val>
+      </param>
+      <param>
+        <name>draw-position</name>
+        <val>front</val>
       </param>
       <node type="button" name="blue1">
 			<pos>0.01,0.74</pos>
@@ -440,6 +472,10 @@
         <name>active</name>
         <val>false</val>
       </param>
+      <param>
+        <name>draw-position</name>
+        <val>front</val>
+      </param>
       <node type="button" name="arm1">
         <pos>0.01,0.74</pos>
         <size>1.0,1.0</size>
@@ -548,6 +584,10 @@
       <param>
         <name>active</name>
         <val>false</val>
+      </param>
+      <param>
+        <name>draw-position</name>
+        <val>front</val>
       </param>
       <node type="button" name="color1">
         <pos>0.01,0.758</pos>
@@ -1126,6 +1166,10 @@
         <name>z</name>
         <val>-1000.0</val>
       </param>
+      <param>
+        <name>draw-position</name>
+        <val>back</val>
+      </param>
     </node>
     <node type="ibox" name="ibox-bl">
       <pos>0.2, 0.68</pos>
@@ -1153,11 +1197,15 @@
       </param>
       <param>
         <name>hidden</name>
-        <val>true</val>
+        <val>false</val>
       </param>
       <param>
         <name>active</name>
-        <val>false</val>
+        <val>true</val>
+      </param>
+      <param>
+        <name>draw-position</name>
+        <val>back</val>
       </param>
     </node>
     <node type="ibox" name="ibox-drawing">
@@ -1191,6 +1239,10 @@
       <param>
         <name>active</name>
         <val>true</val>
+      </param>
+      <param>
+        <name>draw-position</name>
+        <val>back</val>
       </param>
     </node>
     <!--
@@ -1268,6 +1320,10 @@
         <name>active</name>
         <val>false</val>
       </param>
+      <param>
+        <name>draw-position</name>
+        <val>front</val>
+      </param>
     </node>
     <node type="button" name="reset">
       <pos>0.33,0.95</pos>
@@ -1310,6 +1366,10 @@
         <name>text-color</name>
         <val>0,0,0</val>
       </param>
+      <param>
+        <name>draw-position</name>
+        <val>back</val>
+      </param>
     </node>
     <node type="button" name="next-inactive">
       <pos>0.4,0.95</pos>
@@ -1342,6 +1402,10 @@
       <param>
         <name>text-color</name>
         <val>255,255,255</val>
+      </param>
+      <param>
+        <name>draw-position</name>
+        <val>back</val>
       </param>
     </node>
     <node type="button" name="next-active">
@@ -1393,6 +1457,10 @@
         <name>text-color</name>
         <val>255,255,255</val>
       </param>
+      <param>
+        <name>draw-position</name>
+        <val>back</val>
+      </param>
     </node>
     <node type="button" name="make-one">
       <pos>0.4,0.95</pos>
@@ -1442,6 +1510,10 @@
       <param>
         <name>text-color</name>
         <val>255,255,255</val>
+      </param>
+      <param>
+        <name>draw-position</name>
+        <val>back</val>
       </param>
     </node>
   </sheet>

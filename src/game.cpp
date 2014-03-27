@@ -7,6 +7,7 @@
 #include "drawingCanvas.h"
 #include "SubObEvent.h"
 #include "SubObMediator.h"
+#include "menuPuzzle.h"
 
 #include <vector>
 
@@ -68,6 +69,8 @@ game::game(SG_VECTOR gamePos, float w, float h, SG_VECTOR displayPos, float iddl
 
 	myCanvasImage.loadImage("drawingGrid.png");
 	sc = ofFloatColor (1, 1, 0); //yellow
+
+	savePuzzleB = false;
 }
 //--------------------------------------------------------------
 void game::setup(sgCObject *sgBunnyi,sgCObject *sgTetrahedroni,sgCObject *sgDodecahedroni,sgCObject *sgIcosahedroni,sgCObject *sgOctahedroni){//,sgCObject *sgTeapoti){
@@ -121,7 +124,7 @@ void game::update(){
 				//make extruded object
 			if(extrudeObject(myCanvas->getPolyline())){
 				objectDisplayed->update();
-				SubObEvent* e = new SubObEvent();
+				//SubObEvent* e = new SubObEvent();
 				//e->setName("extrusion-success");
 				//SubObMediator::Instance()->sendEvent("extrusion-success", e);
 				//delete e;
@@ -138,7 +141,7 @@ void game::update(){
 
 	///////////////////////////////////////update cubies
 	if(updatePuzzle){
-		if(step == 4 || step == 5){
+		if(step == 4 || step == 5 || step == 7){
 			myPuzzle->update();
 			////////////////////////////////////////////////////move all puzzle
 			//myPuzzle->move(posP);
@@ -548,11 +551,11 @@ void game::createPuzzle(SG_VECTOR p){
 
 		///////////////////////////////  color puzzle   ////////////////////////////////// 
 		//color all the faces for platonic solids!! colors outside for most objects(not bunny), black on the insides
-		if(objectID != 1){
+		//if(objectID != 1){
 			myPuzzle->colorFaces(objectID);
-		}else{
-			myPuzzle->colorTorus();
-		}
+		//}else{
+		//	myPuzzle->colorTorus();
+		//}
 
 		updatePuzzle = true;
 
@@ -641,7 +644,6 @@ void game::guiInput(int in){
 	if(step != -1){
 		goToAttractStepI =  ofGetElapsedTimef();
 	}
-
 	if(in == 'b'){
 		ofToggleFullscreen();
 	}
@@ -900,14 +902,19 @@ void game::guiInput(int in){
 				//undo last move 
 				unDo();
 			}
-			////////////////////////////////////////////// FACE ROTATIONS //////////////////////////////
+			/////////////////////////////////////////////// SAVE PUZZLE /////////////////////////////////////////
+			if(in == 's') {
+				//save current puzzle and put it on the middle puzzle section
+				savePuzzleB = true;
+			}
+			////////////////////////////////////////////// FACE ROTATIONS 2 ids /////////////////////////////////
 			if(in == 'z') {
 				//do rotationbased ontwo cubies id
 				int cubieA = 11;
 				int cubieB = 10;
 				rotateTwoIds(cubieA,cubieB,true);
 			}
-			////////////////////////////////////////////// FACE ROTATIONS //////////////////////////////
+			////////////////////////////////////////////// FACE ROTATIONS axis dir //////////////////////////////
 			////////  x axis  ////  x axis
 			if(in == 'q') {
 				//clockwise
@@ -1085,7 +1092,6 @@ bool game::extrudeObject(ofPolyline *drawing){
 	if(win_cont->IsSelfIntersecting()){
 		//its self intersecting
 		//abort!!!
-		//for now
 		extrudedB = false;
 		//clear ofpolylines!!!
 		//myCanvas->myPolyline->clear();
@@ -1161,6 +1167,20 @@ void game::prepareDrawing(){
 	}
 	//extrusion
 	step = 6;
+}
+//---------------------------------------------------------------------
+menuPuzzle*  game::savePuzzle(SG_POINT slicingPos, SG_VECTOR middlePuzzlePos){
+	//build a menuPuzzle object and give it to the mainApp
+	menuPuzzle *puzzleToSave = new menuPuzzle(slicingPos, middlePuzzlePos);
+	puzzleToSave->loadObject(objectDisplayed->getObject(),objectID);
+	puzzleToSave->setup();
+	puzzleToSave->update();
+	puzzleToSave->colorFacesMenu();
+
+	puzzleToSave->loadPuzzle(myPuzzle);
+	puzzleToSave->objectId = objectID; 
+
+	return puzzleToSave;
 }
 //----------------------------------------------------------------------
 void game::clearDisplayedObject(){
@@ -1239,7 +1259,7 @@ void game::exit(){
 }
 //--------------------------------------------------------------
 void game::mouseDragged(int x, int y, int button){
-	if(step == 4 || step == 5){
+	if(step == 4 || step == 5 || step == 7){
 		ofVec2f mouse(x,y);
 		ofQuaternion yRot(x-lastMouse.x, ofVec3f(0,1,0));
 		ofQuaternion xRot(y-lastMouse.y, ofVec3f(-1,0,0));
@@ -1252,7 +1272,7 @@ void game::mouseDragged(int x, int y, int button){
 }
 //--------------------------------------------------------------
 void game::mousePressed(int x, int y, int button){
-	if(step == 4 || step == 5){
+	if(step == 4 || step == 5 || step == 7){
 		lastMouse = ofVec2f(x,y);
 	}else if(step == 6){
 		myCanvas->mousePressed(x,y,button);

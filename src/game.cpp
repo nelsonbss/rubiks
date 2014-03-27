@@ -121,7 +121,7 @@ void game::update(){
 
 	if(bExtrude){
 		if(myCanvas->drawingExists()){
-				//make extruded object
+			//make extruded object
 			if(extrudeObject(myCanvas->getPolyline())){
 				objectDisplayed->update();
 				//SubObEvent* e = new SubObEvent();
@@ -216,8 +216,8 @@ void game::update(string _eventName, SubObEvent* _event){
 	}
 	/*
 	if(_eventName == "ibox-bl:2"){
-		ofVec3f r = _event->getArg("deltaPos")->getVec2();
-		rotateA(r);
+	ofVec3f r = _event->getArg("deltaPos")->getVec2();
+	rotateA(r);
 	}
 	*/
 	if(_eventName == "ibox-bl:2"){
@@ -552,7 +552,7 @@ void game::createPuzzle(SG_VECTOR p){
 		///////////////////////////////  color puzzle   ////////////////////////////////// 
 		//color all the faces for platonic solids!! colors outside for most objects(not bunny), black on the insides
 		//if(objectID != 1){
-			myPuzzle->colorFaces(objectID);
+		myPuzzle->colorFaces(objectID);
 		//}else{
 		//	myPuzzle->colorTorus();
 		//}

@@ -99,6 +99,15 @@ public:
 	//ofVec2f lastMouse;
 	//void mouseDragged(int x, int y, int button);
 	//void mousePressed(int x, int y, int button);
+
+	bool bUnproject;
+	ofVec3f mousePoint;
+	ofVec3f unprojectedPoint;
+	bool bHavePoint;
+	void unprojectPoint();
+	void setMousePoint(ofVec3f _pnt);
+	void checkCubiesForHit(ofVec3f _pnt);
+	void dragInput(ofVec3f _pnt);
 };
 
 #endif /* defined(__Tpuzzle__puzzle__) */

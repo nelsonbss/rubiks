@@ -121,6 +121,7 @@
     <ClCompile Include="src\ofRender.cpp" />
     <ClCompile Include="src\ofxTimer.cpp" />
     <ClCompile Include="src\Painter.cpp" />
+    <ClCompile Include="src\Picker.cpp" />
     <ClCompile Include="src\puzzle.cpp" />
     <ClCompile Include="src\SceneManager.cpp" />
     <ClCompile Include="src\slicer.cpp" />
@@ -163,6 +164,7 @@
     <ClInclude Include="src\ofRender.h" />
     <ClInclude Include="src\ofxTimer.h" />
     <ClInclude Include="src\Painter.h" />
+    <ClInclude Include="src\Picker.h" />
     <ClInclude Include="src\puzzle.h" />
     <ClInclude Include="src\SceneManager.h" />
     <ClInclude Include="src\slicer.h" />

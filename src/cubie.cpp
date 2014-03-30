@@ -40,6 +40,9 @@ cubie::cubie(float x, float y,float z, int idi, int selObjId, ofVec3f offset){
 
 	centroid2d.set(0,0,0);
 	centroid3d.set(0,0,0);
+
+	bHavePoint = false;
+	bUnproject = false;
 }
 //--------------------------------------------------------------
 void cubie::setup(){
@@ -238,24 +241,11 @@ void cubie::draw(){
 			//ofTranslate(centroid3d.x, centroid3d.y, centroid3d.z);
 			//ofSetColor(centroidColor.x, centroidColor.y, centroidColor.z);
 			//ofDrawSphere(0,0,0,10);
-			centroid2d = projectPoint(centroid3d);
+			//centroid2d = projectPoint(centroid3d);
 			//ofPopMatrix();
 			glPopMatrix();
 		}
 	}
-	/*
-	if(!bDraw){
-	bDraw = true;
-	}
-	*/
-	/*
-	ofFill();
-	ofSetColor(centroidColor.x, centroidColor.y, centroidColor.z);
-	ofPushMatrix();
-	ofTranslate(0,0,centroid2d.z);
-	ofRect(drawPos.x - (drawSize.x / 2), drawPos.y - (drawSize.y / 2),drawSize.x, drawSize.y); 
-	ofPopMatrix();
-	*/
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 void cubie::faceRotate(SG_VECTOR axis,bool di){
@@ -436,6 +426,62 @@ ofVec3f cubie::projectPoint(ofVec3f _pnt){
 	//cout << "Cubie " << id << " z = " << centroid2d.z << endl;
 }
 
+void cubie::unprojectPoint(ofVec3f _pnt){
+	cout << "cubie unprojecting point. - " << _pnt.x << ", " << _pnt.y << ", " << _pnt.z << endl;
+	GLint viewport[4];
+    GLdouble modelview[16];
+    GLdouble projection[16];
+    GLfloat winX, winY, winZ;
+    GLdouble posX, posY, posZ;
+ 
+    glGetDoublev( GL_MODELVIEW_MATRIX, modelview );
+    glGetDoublev( GL_PROJECTION_MATRIX, projection );
+    glGetIntegerv( GL_VIEWPORT, viewport );
+ 
+    winX = (float) _pnt.x;
+    winY = (float)viewport[3] - _pnt.y;
+    glReadPixels( 0, int(winY), 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &winZ );
+ 
+    gluUnProject( winX, winY, winZ, modelview, projection, viewport, &posX, &posY, &posZ);
+ 
+	cout << "mouse position = " << posX << ", " << posY << ", " << posZ << endl;
+	//cout << "cube postion = " << pos.x << ", " << pos.y << ", " << pos.z << endl;
+
+	unprojectedPoint.set(posX, posY, posZ);
+	bHavePoint = true;
+}
+
+void cubie::printCurrentCentroid(){
+	GLint viewport[4];
+    GLdouble modelview[16];
+    GLdouble projection[16];
+
+	ofMatrix4x4 proj, model;
+
+	glGetDoublev( GL_MODELVIEW_MATRIX, modelview );
+    glGetDoublev( GL_PROJECTION_MATRIX, projection );
+    glGetIntegerv( GL_VIEWPORT, viewport );
+
+	proj.set(projection);
+	model.set(modelview);
+
+	ofVec3f currentCentroid = centroid3d;
+
+}
+
+ofVec3f cubie::getUnprojectedPoint(){
+	bHavePoint = false;
+	return unprojectedPoint;
+}
+
+void cubie::setMousePoint(ofVec3f _pnt){
+	if(!bUnproject){
+		cout << "cubie setting mouse point." << endl;
+		point = _pnt;
+		bUnproject = true;
+	}
+}
+
 float cubie::getDistanceByVertex(ofVec3f _pos){
 	float nearestDist = 10000;
 	ofVec3f nearestVertex;
@@ -467,8 +513,12 @@ float cubie::getDistanceByVertex(ofVec3f _pos){
 	return nearestDist;
 }
 
+void cubie::dragInput(ofVec3f _pnt){
+	cout << "Cubie " << id << " got drag - " << _pnt.x << ", " << _pnt.y << ", " << _pnt.z << endl; 
+}
+
 float cubie::getDistanceByCentroid(ofVec3f _pos){
-	return centroid2d.distance(_pos);
+	return centroid3d.distance(_pos);
 }
 
 bool cubie::getRotate(){

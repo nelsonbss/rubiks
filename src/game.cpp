@@ -73,6 +73,10 @@ game::game(SG_VECTOR gamePos, float w, float h, SG_VECTOR displayPos, float iddl
 	savePuzzleB = false;
 
 	angleR = 0;
+
+	bUnproject = false;
+
+	bDragInput = false;
 }
 //--------------------------------------------------------------
 void game::setup(sgCObject *sgBunnyi,sgCObject *sgTetrahedroni,sgCObject *sgDodecahedroni,sgCObject *sgIcosahedroni,sgCObject *sgOctahedroni){//,sgCObject *sgTeapoti){
@@ -210,12 +214,40 @@ void game::update(){
 //----------------------------------------------------------------------
 void game::update(string _eventName, SubObEvent* _event){
 	if(_eventName == "ibox-bl-tap"){
-		ofVec3f pos = _event->getArg("absPos")->getVec2();
-		mousePressed(pos.x, pos.y, 2);
+		//ofVec3f pos = _event->getArg("absPos")->getVec2();
+		//mousePressed(pos.x, pos.y, 2);
+		ofVec2f p = _event->getArg("absPos")->getVec2();
+		//cout << "phase = " << phase << " p = " << p.x << ", " << p.y << endl;
+		if(!bUnproject){
+			bUnproject = true;
+			bDragInput = false;
+			mousePoint.set(p.x, p.y, 0);
+		}
 	}
 	if(_eventName == "ibox-bl:1"){
+		//cout << "game bl:1" << endl;
 		ofVec3f m = _event->getArg("deltaPos")->getVec2();
 		moveA(m);
+		if(step == 5){
+			int phase = _event->getArg("phase")->getInt();
+			if(phase == 0){
+				ofVec2f p = _event->getArg("absPos")->getVec2();
+				//cout << "phase = " << phase << " p = " << p.x << ", " << p.y << endl;
+				if(!bUnproject){
+					bUnproject = true;
+					bDragInput = false;
+					mousePoint.set(p.x, p.y, 0);
+				}
+			} else if(phase == 1){
+				ofVec2f p = _event->getArg("absPos")->getVec2();
+				//cout << "phase = " << phase << " p = " << p.x << ", " << p.y << endl;
+				if(!bUnproject){
+					bUnproject = true;
+					bDragInput = true;
+					mousePoint.set(p.x, p.y, 0);
+				}
+			}
+		}
 	}
 	/*
 	if(_eventName == "ibox-bl:2"){
@@ -291,16 +323,28 @@ void game::draw(){
 	}
 	if(step == 5){
 		//show puzzle
+		
 		curRot.getRotate(angle, axistb);
 
 		glPushMatrix();
 		glTranslatef(posP.x,posP.y,posP.z);
 		//new trackball
 		glRotatef(angle, axistb.x, axistb.y, axistb.z);
-
-
-		glTranslatef(-posP.x,-posP.y,-posP.z);
+		//ofFill();
+		//ofBox(100);
+		//glTranslatef(-posP.x,-posP.y,-posP.z);
 		myPuzzle->draw();
+		if(bUnproject){
+			unprojectedPoint = picker.unproject(mousePoint);
+			if(!bDragInput){
+				myPuzzle->checkCubiesForHit(unprojectedPoint);
+				lastUnprojectedPoint = unprojectedPoint;
+			} else {
+				myPuzzle->dragInput(lastUnprojectedPoint - unprojectedPoint);
+				lastUnprojectedPoint = unprojectedPoint;
+			}
+			bUnproject = false;
+		}
 		glPopMatrix();
 	}
 	if(step == 6){

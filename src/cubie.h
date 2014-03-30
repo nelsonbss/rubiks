@@ -76,6 +76,8 @@ public:
 	void setDrawWire(bool _drawWire){bDrawWire = _drawWire;}
 
 	bool bDraw;
+	void setDraw(bool _draw){bDraw = _draw;}
+
 	int rotationDirection;
 
 	bool bRotate;
@@ -85,6 +87,7 @@ public:
 
 	void getCentroid();
 	ofVec3f projectPoint(ofVec3f _pnt);
+	void unprojectPoint(ofVec3f _pnt);
 	float getDistanceByVertex(ofVec3f _pos);
 	float getDistanceByCentroid(ofVec3f _pos);
 	ofVec3f getCentroidScreen(){return centroid2d;}
@@ -95,6 +98,16 @@ public:
 	ofVec3f selectedVertex;
 	ofVec3f getNearestVertex(){return selectedVertex;}
 	int selectedMesh;
+
+	bool bUnproject;
+	ofVec3f point;
+	ofVec3f unprojectedPoint;
+	bool bHavePoint;
+	ofVec3f getUnprojectedPoint();
+	void setMousePoint(ofVec3f _pnt);
+	void dragInput(ofVec3f _pnt);
+
+	void printCurrentCentroid();
 };
 
 #endif /* defined(__Tcubie__cubie__) */

@@ -13,6 +13,7 @@
 #include "Observer.h"
 #include "drawingCanvas.h"
 #include "menuPuzzle.h"
+#include "Picker.h"
 
 class game : public Observer{
 public:
@@ -162,5 +163,12 @@ public:
 	void loadPuzzle(puzzle *inputPuzzle); //load a puzzle from the puzzle menu on the center
 	bool savePuzzleB;
 	menuPuzzle* savePuzzle(SG_POINT slicingPos, SG_VECTOR middlePuzzlePos);
+
+	Picker picker;
+	ofVec3f unprojectedPoint;
+	ofVec3f lastUnprojectedPoint;
+	ofVec3f mousePoint;
+	bool bUnproject;
+	bool bDragInput;
 };
 #endif /* defined(__Tgame__game__) */

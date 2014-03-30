@@ -202,7 +202,7 @@ void menuPuzzle::loadObject(sgC3DObject *obj, int ID){
 	//	object->InitTempMatrix()->Translate(offset);
 	//	object->ApplyTempMatrix();  
 	//	object->DestroyTempMatrix();
-	//}
+	//}  
 }
 //--------------------------------------------------------------
 void menuPuzzle::loadPuzzle(puzzle *inpuzzle){

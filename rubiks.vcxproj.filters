@@ -120,6 +120,9 @@
     <ClCompile Include="src\menuPuzzle.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\Picker.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -376,6 +379,9 @@
       <Filter>src\gui</Filter>
     </ClInclude>
     <ClInclude Include="src\menuPuzzle.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Picker.h">
       <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>

@@ -67,6 +67,8 @@ puzzle::puzzle(SG_VECTOR p, ofVec3f offset){
 	bHaveActiveCubie = false;
 	bHaveRotationCubie = false;
 	faceRotateB = false;
+	activeCubie = -1;
+	bUnproject = false;
 }
 //----------------------------------------------------------------
 void puzzle::setup(){
@@ -120,8 +122,15 @@ void puzzle::update(){
 //----------------------------------------------------------------
 void puzzle::draw(){  
 
+	/*
+	if(bUnproject){
+		unprojectPoint();
+		bUnproject = false;
+	}
+	*/
+
 	ofPushMatrix();
-	ofTranslate(pos.x,pos.y,pos.z);
+	//ofTranslate(pos.x,pos.y,pos.z);
 	//puzzle tells every cubie to attach objects to scene
 	for(int i=0;i<numPieces;i++){
 		if(myCubies[i] != NULL){
@@ -475,9 +484,10 @@ void puzzle::rotateByIDandAxis(int id, SG_VECTOR axis, bool dir){
 void puzzle::update(string _eventName, SubObEvent* _event){
 	if(_eventName == "ibox-bl:1"){
 		int phase = _event->getArg("phase")->getInt();
-		cout << "puzzle phase = " << phase << endl;
+		//cout << "puzzle phase = " << phase << endl;
 		if(phase == 0){
 			ofVec2f pos = _event->getArg("absPos")->getVec2();
+			//myCubies[1]->setMousePoint(ofVec3f(pos.x, pos.y, 0));
 			if(isInside(pos.x, pos.y)){
 				cout << "puzzle got cubie." << endl;
 			}
@@ -496,9 +506,70 @@ void puzzle::update(string _eventName, SubObEvent* _event){
 	}
 }
 
+void puzzle::unprojectPoint(){
+	//cout << "cubie unprojecting point. - " << _pnt.x << ", " << _pnt.y << ", " << _pnt.z << endl;
+	GLint viewport[4];
+    GLdouble modelview[16];
+    GLdouble projection[16];
+    GLfloat winX, winY, winZ;
+    GLdouble posX, posY, posZ;
+ 
+    glGetDoublev( GL_MODELVIEW_MATRIX, modelview );
+    glGetDoublev( GL_PROJECTION_MATRIX, projection );
+    glGetIntegerv( GL_VIEWPORT, viewport );
+ 
+    winX = (float) mousePoint.x;
+    winY = (float)viewport[3] - mousePoint.y;
+    glReadPixels( mousePoint.z, int(winY), 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &winZ );
+ 
+    gluUnProject( winX, winY, winZ, modelview, projection, viewport, &posX, &posY, &posZ);
+ 
+	cout << "mouse position = " << posX << ", " << posY << ", " << posZ << endl;
+	//cout << "cube postion = " << pos.x << ", " << pos.y << ", " << pos.z << endl;
+
+	unprojectedPoint.set(posX, posY, posZ);
+	bHavePoint = true;
+}
+
+void puzzle::checkCubiesForHit(ofVec3f _pnt){
+	float nearest = 10000.0;
+	int nearestId = -1;
+	for(int i=0;i<numPieces;i++){
+		if(myCubies[i] != NULL){
+			//ofVec3f centroid = myCubies[i]->getCentroidScreen();
+			//float dist = centroid.distance(mouse);
+			//float dist = myCubies[i]->getDistanceByVertex(mouse);
+			float dist = myCubies[i]->getDistanceByCentroid(_pnt);
+			cout << "dist = " << dist << endl;
+			if(dist < nearest){
+				nearestId = myCubies[i]->getId();
+				//cout << "nearest = " << i << endl;
+				nearest = dist;
+			}
+		}
+	}
+	if(nearestId != -1){
+		if(nearest < MAX_DIST){
+			if(activeCubie != nearestId){
+				if(activeCubie > -1){
+					//myCubies[activeCubie]->setDraw(true);
+				}
+				activeCubie = nearestId;
+				//myCubies[activeCubie]->setDraw(false);
+			}
+		}
+	}
+}
+
 bool puzzle::isInside(int _x, int _y){
-	cout << "puzzle checking insides" << endl;
+	//cout << "puzzle checking insides" << endl;
 	ofVec3f mouse(_x,_y, 0);
+	/*
+	if(!bUnproject){
+				mousePoint = mouse;
+				bUnproject = true;
+			}
+	*/
 	float nearest = 10000.0;
 	int nearestId = -1;
 	for(int i=0;i<numPieces;i++){
@@ -510,7 +581,7 @@ bool puzzle::isInside(int _x, int _y){
 			float dist = myCubies[i]->getDistanceByCentroid(mouse);
 			if(dist < nearest){
 				nearestId = myCubies[i]->getId();
-				cout << "nearest = " << i << endl;
+				//cout << "nearest = " << i << endl;
 				nearest = dist;
 				//ofVec3f tVertex = myCubies[i]->getNearestVertex();
 				ofVec3f tVertex = myCubies[i]->getCentroidScreen();
@@ -518,7 +589,7 @@ bool puzzle::isInside(int _x, int _y){
 					lineStart.set(mouse.x, mouse.y, mouse.z);
 					lineStop.set(tVertex.x, tVertex.y, tVertex.z);
 				}
-				cout << "dist = " << dist << endl;
+				//cout << "dist = " << dist << endl;
 			}
 		}
 	}
@@ -554,6 +625,12 @@ bool puzzle::isInside(int _x, int _y){
 		}
 	}
 	return false;
+}
+
+void puzzle::dragInput(ofVec3f _pnt){
+	if(activeCubie > -1){
+		myCubies[activeCubie]->dragInput(_pnt);
+	}
 }
 
 void puzzle::doRotation(){

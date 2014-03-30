@@ -72,11 +72,8 @@ game::game(SG_VECTOR gamePos, float w, float h, SG_VECTOR displayPos, float iddl
 
 	savePuzzleB = false;
 
-<<<<<<< HEAD
-	angleR = 0;
 
-=======
->>>>>>> 86a62c2e68885517091f07c7e3113b8b214e7cba
+	angleR = 0;
 	bUnproject = false;
 
 	bDragInput = false;

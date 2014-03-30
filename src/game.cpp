@@ -71,6 +71,8 @@ game::game(SG_VECTOR gamePos, float w, float h, SG_VECTOR displayPos, float iddl
 	sc = ofFloatColor (1, 1, 0); //yellow
 
 	savePuzzleB = false;
+
+	angleR = 0;
 }
 //--------------------------------------------------------------
 void game::setup(sgCObject *sgBunnyi,sgCObject *sgTetrahedroni,sgCObject *sgDodecahedroni,sgCObject *sgIcosahedroni,sgCObject *sgOctahedroni){//,sgCObject *sgTeapoti){
@@ -149,12 +151,13 @@ void game::update(){
 			//myPuzzle->rotate(rotP);
 			//////////////////////////////////////////make face rotation
 			if(faceRotate == true) {
-				myPuzzle->rotateByIDandAxis(idcubie,axis,dir);
-
+				myPuzzle->rotateByIDandAxis(idcubie,axis,dir,angleR);
+				//myPuzzle->rotateByIDandAxis(idcubie,axis,dir);
 				//put this move on the game history vector
 				//undo will look for the other 9 cubies involved and do a pop x2 on their history
 				historyV.push_back(history(idcubie,axis,!dir)); //save inverse move (!), to do it at undo, and do 2 pop 
 				faceRotate = false;
+				angleR = 0;
 			}
 			//updatePuzzle = false;
 			if(myPuzzle->faceRotateB == true) {
@@ -319,6 +322,21 @@ void game::draw(){
 		glTranslatef(-posP.x,-posP.y,-posP.z);
 		myPuzzle->draw();
 		glPopMatrix();
+	}
+}
+//----------------------------------------------------------------------
+void game::rotateByIDandAxis(int id, SG_VECTOR axs, bool d, float anglei){
+	if(axs.x==0 && axs.y==0 && axs.z==0){
+		//stop any rotation
+		faceRotate = false;
+	}else{
+		//allow rotation
+		idcubie = id;
+		dir = d;
+		axis = axs;
+		angleR += anglei;
+		//updatePuzzle = true;
+		faceRotate = true;
 	}
 }
 //----------------------------------------------------------------------
@@ -919,32 +937,32 @@ void game::guiInput(int in){
 			if(in == 'q') {
 				//clockwise
 				SG_VECTOR axis = {1,0,0};
-				rotateByIDandAxis(randcubie,axis,true);
+				rotateByIDandAxis(randcubie,axis,true,9);
 			}
 			if(in == 'a') {
 				//counter clockwise
 				SG_VECTOR axis = {1,0,0};
-				rotateByIDandAxis(randcubie,axis,false);
+				rotateByIDandAxis(randcubie,axis,false,9);
 			}
 			////////  y axis  ////  y axis
 			if(in == 'w') {
 				//clockwise
 				SG_VECTOR axis = {0,1,0};
-				rotateByIDandAxis(randcubie,axis,true);
+				rotateByIDandAxis(randcubie,axis,true,9);
 			}if(in == 's') {
 				//counter clockwise
 				SG_VECTOR axis = {0,1,0};
-				rotateByIDandAxis(randcubie,axis,false);
+				rotateByIDandAxis(randcubie,axis,false,9);
 			}
 			////////  z axis  ////  z axis
 			if(in == 'e') {
 				//clockwise
 				SG_VECTOR axis = {0,0,1};
-				rotateByIDandAxis(randcubie,axis,true);
+				rotateByIDandAxis(randcubie,axis,true,9);
 			}if(in == 'd') {
 				//counter clockwise
 				SG_VECTOR axis = {0,0,1};
-				rotateByIDandAxis(randcubie,axis,false);
+				rotateByIDandAxis(randcubie,axis,false,9);
 			}
 		}
 		////////////////////////////////////move all puzzle

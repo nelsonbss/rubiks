@@ -47,6 +47,10 @@ public:
 	typedef std::vector<TwoDimensions>ThreeDimensions;
 	ThreeDimensions three_dim1;
 	void rotateByIDandAxis(int id, SG_VECTOR axis,bool dir);
+
+	void rotateByIDandAxis(int id, SG_VECTOR axis,bool dir,float angle);
+
+
 	void rearange3dArray(SG_VECTOR axis, int plane, bool dir);
 	//face rotation bytwo ids
 	int rotateTwoIds(int cubieA, int cubieB,bool inside);

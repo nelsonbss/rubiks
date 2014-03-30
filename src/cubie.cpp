@@ -17,6 +17,8 @@ cubie::cubie(float x, float y,float z, int idi, int selObjId, ofVec3f offset){
 	pointRotate.y = offset.y;
 	pointRotate.z = offset.z;
 
+	masterAngle = 0.0;
+
 	moving = false;
 
 	/*ct1 = 0.0;
@@ -31,16 +33,32 @@ cubie::cubie(float x, float y,float z, int idi, int selObjId, ofVec3f offset){
 	myMatrix.push_back(matrix(axis,0.0,true));
 	//to control undo
 	undoing = false;
-	
+
 	bDraw = true;
 	bDrawWire = false;
 	bRotate = false;
-	
+
 	centroid2d.set(0,0,0);
 	centroid3d.set(0,0,0);
 }
 //--------------------------------------------------------------
 void cubie::setup(){
+	/////////////////////////////////////////////////////////
+	//////undo rotations of armature in z-y-x order
+	SG_VECTOR vrotZ = {0,0,1};      
+	SG_VECTOR puzzleRotate = {0,0,0};
+	for (int j=0; j < numObjs; j++){
+		if (objectList[j]->GetTempMatrix()==0){
+			objectList[j]->InitTempMatrix()->Rotate(puzzleRotate,vrotZ,ofDegToRad(armRotations.z));
+		}else{
+			objectList[j]->GetTempMatrix()->Rotate(puzzleRotate,vrotZ,ofDegToRad(armRotations.z));
+		}
+		SG_VECTOR vrotY = {0,1,0}; 							 
+		objectList[j]->GetTempMatrix()->Rotate(puzzleRotate,vrotY,ofDegToRad(armRotations.y));
+		SG_VECTOR vrotX = {1,0,0}; 							 
+		objectList[j]->GetTempMatrix()->Rotate(puzzleRotate,vrotX,ofDegToRad(armRotations.x));
+		objectList[j]->ApplyTempMatrix();
+	}
 }
 
 //--------------------------------------------------------------
@@ -64,7 +82,6 @@ void cubie::update(){
 								objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,d);
 							}
 						}
-
 					}else{
 						//cc
 						for (int j=0; j < numObjs; j++){
@@ -149,48 +166,48 @@ void cubie::update(){
 			//puzzle is not moving
 			///////////////////////////////////applying rotations matrix HISTORY
 			//use vector with matrix(s)
-			for(int i=0; i<myMatrix.size();i++){
-				SG_POINT protFace = {pointRotate.x,pointRotate.y,pointRotate.z};										 
-				SG_VECTOR vrotFace = myMatrix.at(i).vector;//  axis of rotation
-				double d = myMatrix.at(i).deg;
-				d = ofDegToRad(d);
-				if(myMatrix.at(i).dir == true){
-					//c
-					for (int j=0; j < numObjs; j++){
-						if (objectList[j]->GetTempMatrix()==0){
-							objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,d);
-						}else{
-							objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,d);
-						}
-					}
-				}else{
-					//cc
-					for (int j=0; j < numObjs; j++){
-						if (objectList[j]->GetTempMatrix()==0){
-							objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,d);
-						}else{
-							objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,d);
-						}
-					}
-				}
-			}
+			//////for(int i=0; i<myMatrix.size();i++){
+			//////	SG_POINT protFace = {pointRotate.x,pointRotate.y,pointRotate.z};										 
+			//////	SG_VECTOR vrotFace = myMatrix.at(i).vector;//  axis of rotation
+			//////	double d = myMatrix.at(i).deg;
+			//////	d = ofDegToRad(d);
+			//////	//if(myMatrix.at(i).dir == true){
+			//////	//c
+			//////	for (int j=0; j < numObjs; j++){
+			//////		if (objectList[j]->GetTempMatrix()==0){
+			//////			objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,d);
+			//////		}else{
+			//////			objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,d);
+			//////		}
+			//////	}
+			//////	//}else{
+			//////	//	//cc
+			//////	//	for (int j=0; j < numObjs; j++){
+			//////	//		if (objectList[j]->GetTempMatrix()==0){
+			//////	//			objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,d);
+			//////	//		}else{
+			//////	//			objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,d);
+			//////	//		}
+			//////	//	}
+			//////	//}
+			//////}
 		}
-		/////////////////////////////////////////////////////////
-		//////undo rotations of armature in z-y-x order
-		SG_VECTOR vrotZ = {0,0,1};      
-		SG_VECTOR puzzleRotate = {0,0,0};
-		for (int j=0; j < numObjs; j++){
-			if (objectList[j]->GetTempMatrix()==0){
-				objectList[j]->InitTempMatrix()->Rotate(puzzleRotate,vrotZ,ofDegToRad(armRotations.z));
-			}else{
-				objectList[j]->GetTempMatrix()->Rotate(puzzleRotate,vrotZ,ofDegToRad(armRotations.z));
-			}
-			SG_VECTOR vrotY = {0,1,0}; 							 
-			objectList[j]->GetTempMatrix()->Rotate(puzzleRotate,vrotY,ofDegToRad(armRotations.y));
-			SG_VECTOR vrotX = {1,0,0}; 							 
-			objectList[j]->GetTempMatrix()->Rotate(puzzleRotate,vrotX,ofDegToRad(armRotations.x));
-			objectList[j]->ApplyTempMatrix();
-		}
+		///////////////////////////////////////////////////////////
+		////////undo rotations of armature in z-y-x order
+		//SG_VECTOR vrotZ = {0,0,1};      
+		//SG_VECTOR puzzleRotate = {0,0,0};
+		//for (int j=0; j < numObjs; j++){
+		//	if (objectList[j]->GetTempMatrix()==0){
+		//		objectList[j]->InitTempMatrix()->Rotate(puzzleRotate,vrotZ,ofDegToRad(armRotations.z));
+		//	}else{
+		//		objectList[j]->GetTempMatrix()->Rotate(puzzleRotate,vrotZ,ofDegToRad(armRotations.z));
+		//	}
+		//	SG_VECTOR vrotY = {0,1,0}; 							 
+		//	objectList[j]->GetTempMatrix()->Rotate(puzzleRotate,vrotY,ofDegToRad(armRotations.y));
+		//	SG_VECTOR vrotX = {1,0,0}; 							 
+		//	objectList[j]->GetTempMatrix()->Rotate(puzzleRotate,vrotX,ofDegToRad(armRotations.x));
+		//	objectList[j]->ApplyTempMatrix();
+		//}
 	}
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
@@ -203,8 +220,8 @@ void cubie::draw(){
 			glPushMatrix();
 			//ofScale(1.2,1.2,1.2);
 			if (objectList[j]->GetTempMatrix()!=0)
-			glMultMatrixd(objectList[j]->GetTempMatrix()->GetTransparentData());
-			objectList[j]->DestroyTempMatrix();
+				glMultMatrixd(objectList[j]->GetTempMatrix()->GetTransparentData());
+			//objectList[j]->DestroyTempMatrix();
 			if(bDraw){
 				if(bDrawWire){
 					myMeshs[j].drawWireframe();
@@ -214,7 +231,7 @@ void cubie::draw(){
 			}
 			/*
 			if(bDraw){
-				myMeshs[j].drawWireframe();
+			myMeshs[j].drawWireframe();
 			}
 			*/
 			//ofPushMatrix();
@@ -228,7 +245,7 @@ void cubie::draw(){
 	}
 	/*
 	if(!bDraw){
-		bDraw = true;
+	bDraw = true;
 	}
 	*/
 	/*
@@ -262,6 +279,57 @@ void cubie::faceRotate(SG_VECTOR axis,bool di){
 				}
 			}
 		}
+	}else{
+		//cout << "null at face rotation" << endl;
+	}
+}
+//------------------------------------------------------------------------------------------------------------------------------------------
+void cubie::faceRotate(SG_VECTOR axis,bool di,float angle){
+	//this function is to handle a face rotation for a cubbie
+	//its invoked on a group of cubies determined by the puzzle..??(stil lneeds to be determined)
+	//use this cubies objectList to draw elements without ever loosing them on groupBreaking
+	if(objects != NULL){
+		if(moving == false){
+			if(undoing == false){
+				SG_POINT protFace = {0,0,0};
+				SG_VECTOR vrotFace = axis;
+				//moving = true;
+				sample = false;
+				//ct1 = ofGetElapsedTimeMillis();
+				if(di == true){
+					//c
+					//myMatrix.push_back(matrix(axis,angle,di));
+					masterAngle += angle;
+					for (int j=0; j < numObjs; j++){
+						if (objectList[j]->GetTempMatrix()==0){
+							objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,ofDegToRad(angle));
+						}else{
+							objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,ofDegToRad(angle));
+						}
+					}
+
+					if(masterAngle >= 30){
+				
+					}
+				}else{
+					//cc
+					//myMatrix.push_back(matrix(axis,-angle,di));
+					masterAngle -= angle;
+					for (int j=0; j < numObjs; j++){
+						if (objectList[j]->GetTempMatrix()==0){
+							objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,ofDegToRad(-angle));
+						}else{
+							objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,ofDegToRad(-angle));
+						}
+					}
+
+					if(masterAngle <= -30){
+					
+					}
+				}
+			}
+		}
+		
 	}else{
 		//cout << "null at face rotation" << endl;
 	}

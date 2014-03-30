@@ -179,6 +179,7 @@ void puzzle::loadPieces(sgCGroup **pcs,int selObjId, ofVec3f v){
 			//make them a group
 			cubieGroup = sgCGroup::CreateGroup(obj,realNumPieces);
 			myCubies[i]->setObjects(cubieGroup,i,v);//here goes the group of clones from the iriginal slicing pieces[]
+			myCubies[i]->setup();
 			//i is the cubie ID
 			//put that cubie on the cubies[]
 
@@ -195,6 +196,7 @@ void puzzle::loadPieces(sgCGroup **pcs,int selObjId, ofVec3f v){
 			sgDeleteObject(part);
 		}else{
 			myCubies[i]->setObjects(NULL,i,v);
+			myCubies[i]->setup();
 		}
 	}
 
@@ -471,7 +473,67 @@ void puzzle::rotateByIDandAxis(int id, SG_VECTOR axis, bool dir){
 	/////the animation will lock selection of new cubie, so on ly one movement is done at a time
 	/////so the re-aranging of numbers can happen "during" the animation
 }
-
+//---------------------------------------------------------------------------
+void puzzle::rotateByIDandAxis(int id, SG_VECTOR axis, bool dir,float angle){
+	//it receives the id of a cubie,the axis and the direction of rotation
+	//it looks for the other 9 ids, according to the axis
+	//and makes those 9 myCubies[]->faceRotate
+	int selected[9];
+	int counter=0;
+	int selX =0;
+	int selY =0;
+	int selZ =0;
+	//look for positon of cubie on the 3d data structure
+	for(int x=0;x<3;x++){
+		for(int y=0;y<3;y++){
+			for(int z=0;z<3;z++){
+				if(three_dim1[x][y][z] == id){
+					//when selected cubie is found
+					selX = x;
+					selY = y;
+					selZ = z;
+				}
+			}
+		}
+	}
+	//now we ask for the cubies on that axis
+	if(axis.x != 0){
+		//if the move is on an x axis
+		for(int y=0;y<3;y++){
+			for(int z=0; z<3;z++){
+				selected[counter] = three_dim1[selX][y][z];
+				counter ++;
+			}
+		}
+		//now we re-arrange ids on the 3d array
+		//according to axis of rotation
+		// and actual selected plane: selX = x; selY = y; selZ = z;
+		rearange3dArray(axis,selX,dir);
+	}else if(axis.y != 0){
+		//if the move is on a y axis
+		for(int x=0;x<3;x++){
+			for(int z=0; z<3;z++){
+				selected[counter] = three_dim1[x][selY][z];
+				counter ++;
+			}
+		}
+		rearange3dArray(axis,selY,dir);
+	}else{
+		//if the move is on a z axis
+		for(int x=0;x<3;x++){
+			for(int y=0; y<3;y++){
+				selected[counter] = three_dim1[x][y][selZ];
+				counter ++;
+			}
+		}
+		rearange3dArray(axis,selZ,dir);
+	}
+	//now we tell the 9 selected cubies to rotate
+	for(int i=0;i<9;i++){
+		myCubies[selected[i]]->faceRotate(axis,dir,angle);
+	}
+}
+//--------------------------------------------------------------------------------------------
 void puzzle::update(string _eventName, SubObEvent* _event){
 	if(_eventName == "ibox-bl:1"){
 		int phase = _event->getArg("phase")->getInt();

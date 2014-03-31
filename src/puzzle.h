@@ -108,6 +108,9 @@ public:
 	void setMousePoint(ofVec3f _pnt);
 	void checkCubiesForHit(ofVec3f _pnt);
 	void dragInput(ofVec3f _pnt);
+	bool bHaveAxis;
+	SG_VECTOR v;
+	void endRotation(){bHaveAxis = false;}
 };
 
 #endif /* defined(__Tpuzzle__puzzle__) */

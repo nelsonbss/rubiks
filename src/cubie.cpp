@@ -286,7 +286,7 @@ void cubie::faceRotate(SG_VECTOR axis,bool di,float angle){
 				//moving = true;
 				sample = false;
 				//ct1 = ofGetElapsedTimeMillis();
-				if(di == true){
+				//if(di == true){
 					//c
 					//myMatrix.push_back(matrix(axis,angle,di));
 					masterAngle += angle;
@@ -301,22 +301,22 @@ void cubie::faceRotate(SG_VECTOR axis,bool di,float angle){
 					if(masterAngle >= 30){
 				
 					}
-				}else{
-					//cc
-					//myMatrix.push_back(matrix(axis,-angle,di));
-					masterAngle -= angle;
-					for (int j=0; j < numObjs; j++){
-						if (objectList[j]->GetTempMatrix()==0){
-							objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,ofDegToRad(-angle));
-						}else{
-							objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,ofDegToRad(-angle));
-						}
-					}
+				//}else{
+				//	//cc
+				//	//myMatrix.push_back(matrix(axis,-angle,di));
+				//	masterAngle -= angle;
+				//	for (int j=0; j < numObjs; j++){
+				//		if (objectList[j]->GetTempMatrix()==0){
+				//			objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,ofDegToRad(-angle));
+				//		}else{
+				//			objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,ofDegToRad(-angle));
+				//		}
+				//	}
 
-					if(masterAngle <= -30){
-					
-					}
-				}
+				//	if(masterAngle <= -30){
+				//	
+				//	}
+				//}
 			}
 		}
 		
@@ -514,7 +514,32 @@ float cubie::getDistanceByVertex(ofVec3f _pos){
 }
 
 void cubie::dragInput(ofVec3f _pnt){
-	cout << "Cubie " << id << " got drag - " << _pnt.x << ", " << _pnt.y << ", " << _pnt.z << endl; 
+	ofVec3f pnt = _pnt.normalize();
+	float angle = 0;
+	if(abs(pnt.x) > abs(pnt.y) && abs(pnt.x) > abs(pnt.z)){
+		angle = pnt.x;
+		pnt.x = 0;
+		pnt.z = 0;
+		pnt.y = 1;
+	}
+	if(abs(pnt.y) > abs(pnt.x) && abs(pnt.y) > abs(pnt.z)){
+		angle = pnt.y;
+		pnt.y = 0;
+		pnt.z = 0;
+		pnt.x = 1;
+	}
+	if(abs(pnt.z) > abs(pnt.x) && abs(pnt.z) > abs(pnt.y)){
+		angle = pnt.z;
+		pnt.x = 0;
+		pnt.z = 0;
+		pnt.y = 1;
+	}
+	//angle = 2.0;
+	cout << "Cubie " << id << " got drag - " << pnt.x << ", " << pnt.y << ", " << pnt.z << " angle = " << angle << endl; 
+	cout << "Cubie " << id << " from - " << _pnt.x << ", " << _pnt.y << ", " << _pnt.z << endl; 
+	//cout << "Cubie " << id << " got drag - " << pnt.x << ", " << pnt.y << ", " << pnt.z << " angle = " << angle << endl; 
+	SG_VECTOR v = {pnt.x, pnt.y, pnt.z};
+	faceRotate(v, true, angle);
 }
 
 float cubie::getDistanceByCentroid(ofVec3f _pos){

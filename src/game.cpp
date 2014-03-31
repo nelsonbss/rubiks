@@ -240,7 +240,12 @@ void game::update(string _eventName, SubObEvent* _event){
 				}
 			} else if(phase == 1){
 				ofVec2f p = _event->getArg("absPos")->getVec2();
-				//cout << "phase = " << phase << " p = " << p.x << ", " << p.y << endl;
+				int n = _event->getArg("n")->getInt();
+				cout << "n = " << n << " p = " << p.x << ", " << p.y << endl;
+				if(n == 0){
+					myPuzzle->endRotation();
+					return;
+				}
 				if(!bUnproject){
 					bUnproject = true;
 					bDragInput = true;
@@ -986,7 +991,7 @@ void game::guiInput(int in){
 			if(in == 'a') {
 				//counter clockwise
 				SG_VECTOR axis = {1,0,0};
-				rotateByIDandAxis(randcubie,axis,false,9);
+				rotateByIDandAxis(randcubie,axis,false,-9);
 			}
 			////////  y axis  ////  y axis
 			if(in == 'w') {
@@ -996,7 +1001,7 @@ void game::guiInput(int in){
 			}if(in == 's') {
 				//counter clockwise
 				SG_VECTOR axis = {0,1,0};
-				rotateByIDandAxis(randcubie,axis,false,9);
+				rotateByIDandAxis(randcubie,axis,false,-9);
 			}
 			////////  z axis  ////  z axis
 			if(in == 'e') {
@@ -1006,7 +1011,7 @@ void game::guiInput(int in){
 			}if(in == 'd') {
 				//counter clockwise
 				SG_VECTOR axis = {0,0,1};
-				rotateByIDandAxis(randcubie,axis,false,9);
+				rotateByIDandAxis(randcubie,axis,false,-9);
 			}
 		}
 		////////////////////////////////////move all puzzle

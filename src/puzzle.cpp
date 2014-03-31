@@ -69,6 +69,7 @@ puzzle::puzzle(SG_VECTOR p, ofVec3f offset){
 	faceRotateB = false;
 	activeCubie = -1;
 	bUnproject = false;
+	bHaveAxis = false;
 }
 //----------------------------------------------------------------
 void puzzle::setup(){
@@ -124,8 +125,8 @@ void puzzle::draw(){
 
 	/*
 	if(bUnproject){
-		unprojectPoint();
-		bUnproject = false;
+	unprojectPoint();
+	bUnproject = false;
 	}
 	*/
 
@@ -571,21 +572,21 @@ void puzzle::update(string _eventName, SubObEvent* _event){
 void puzzle::unprojectPoint(){
 	//cout << "cubie unprojecting point. - " << _pnt.x << ", " << _pnt.y << ", " << _pnt.z << endl;
 	GLint viewport[4];
-    GLdouble modelview[16];
-    GLdouble projection[16];
-    GLfloat winX, winY, winZ;
-    GLdouble posX, posY, posZ;
- 
-    glGetDoublev( GL_MODELVIEW_MATRIX, modelview );
-    glGetDoublev( GL_PROJECTION_MATRIX, projection );
-    glGetIntegerv( GL_VIEWPORT, viewport );
- 
-    winX = (float) mousePoint.x;
-    winY = (float)viewport[3] - mousePoint.y;
-    glReadPixels( mousePoint.z, int(winY), 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &winZ );
- 
-    gluUnProject( winX, winY, winZ, modelview, projection, viewport, &posX, &posY, &posZ);
- 
+	GLdouble modelview[16];
+	GLdouble projection[16];
+	GLfloat winX, winY, winZ;
+	GLdouble posX, posY, posZ;
+
+	glGetDoublev( GL_MODELVIEW_MATRIX, modelview );
+	glGetDoublev( GL_PROJECTION_MATRIX, projection );
+	glGetIntegerv( GL_VIEWPORT, viewport );
+
+	winX = (float) mousePoint.x;
+	winY = (float)viewport[3] - mousePoint.y;
+	glReadPixels( mousePoint.z, int(winY), 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &winZ );
+
+	gluUnProject( winX, winY, winZ, modelview, projection, viewport, &posX, &posY, &posZ);
+
 	cout << "mouse position = " << posX << ", " << posY << ", " << posZ << endl;
 	//cout << "cube postion = " << pos.x << ", " << pos.y << ", " << pos.z << endl;
 
@@ -628,9 +629,9 @@ bool puzzle::isInside(int _x, int _y){
 	ofVec3f mouse(_x,_y, 0);
 	/*
 	if(!bUnproject){
-				mousePoint = mouse;
-				bUnproject = true;
-			}
+	mousePoint = mouse;
+	bUnproject = true;
+	}
 	*/
 	float nearest = 10000.0;
 	int nearestId = -1;
@@ -660,17 +661,17 @@ bool puzzle::isInside(int _x, int _y){
 			/*
 			bHaveLine = true;
 			if(bHaveActiveCubie){
-				myCubies[activeCubie]->setDrawWire(false);
+			myCubies[activeCubie]->setDrawWire(false);
 			} else {
-				bHaveActiveCubie = true;
+			bHaveActiveCubie = true;
 			}
 			if(!bHaveActiveCubie){
-				activeCubie = nearestId;
-				myCubies[activeCubie]->setDrawWire(true);
+			activeCubie = nearestId;
+			myCubies[activeCubie]->setDrawWire(true);
 			} else {
-				rotationCubie = nearestId;
-				myCubies[rotationCubie]->setDrawWire(true);
-				bHaveRotationCubie = true;
+			rotationCubie = nearestId;
+			myCubies[rotationCubie]->setDrawWire(true);
+			bHaveRotationCubie = true;
 			}
 			return true;
 			*/
@@ -691,7 +692,44 @@ bool puzzle::isInside(int _x, int _y){
 
 void puzzle::dragInput(ofVec3f _pnt){
 	if(activeCubie > -1){
-		myCubies[activeCubie]->dragInput(_pnt);
+		ofVec3f pnt = _pnt.normalize();
+		float angle = 0;
+		if(abs(pnt.x) > abs(pnt.y) && abs(pnt.x) > abs(pnt.z)){
+			angle = pnt.x;
+			pnt.x = 0;
+			pnt.z = 0;
+			pnt.y = 1;
+		}
+		if(abs(pnt.y) > abs(pnt.x) && abs(pnt.y) > abs(pnt.z)){
+			angle = pnt.y;
+			pnt.y = 0;
+			pnt.z = 0;
+			pnt.x = 1;
+		}
+		if(abs(pnt.z) > abs(pnt.x) && abs(pnt.z) > abs(pnt.y)){
+			angle = pnt.z;
+			pnt.x = 0;
+			pnt.z = 0;
+			pnt.y = 1;
+		}
+		//angle = 2.0;
+		cout << "Cubie " << id << " got drag - " << pnt.x << ", " << pnt.y << ", " << pnt.z << " angle = " << angle << endl; 
+		cout << "Cubie " << id << " from - " << _pnt.x << ", " << _pnt.y << ", " << _pnt.z << endl; 
+		//cout << "Cubie " << id << " got drag - " << pnt.x << ", " << pnt.y << ", " << pnt.z << " angle = " << angle << endl; 
+		//SG_VECTOR v = {pnt.x, pnt.y, pnt.z};
+		if(!bHaveAxis){
+			v.x = pnt.x;
+			v.y = pnt.y;
+			v.z = pnt.z;
+			bHaveAxis = true;
+		} else {
+			SG_VECTOR t = {pnt.x, pnt.y, pnt.z};
+			if(t.x == v.x && t.y == v.y && t.z == v.z){
+				rotateByIDandAxis(activeCubie, v, true, angle);
+			}
+		}
+		//faceRotate(v, true, angle);
+		//myCubies[activeCubie]->dragInput(_pnt);
 	}
 }
 

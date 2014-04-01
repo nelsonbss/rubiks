@@ -897,6 +897,11 @@ void puzzle::colorFaces(int objectID){
 	free(ofr);
 }
 //----------------------------------------------------------------
+//void puzzle::colorFaces(vector< ofFloatColor > tcolors){
+//	//get the vector comming in and use it for its own 
+//	myCubies[0]->myMeshs[0].addColors(tcolors);
+//}
+//----------------------------------------------------------------
 void puzzle::colorTorus(){
 	//currently not used since torus will be only one solid color
 	for(int i=0;i<numPieces;i++){

@@ -63,6 +63,7 @@ public:
 
 	//color faces
 	void colorFaces(int objectID);
+	//void colorFaces(vector< ofFloatColor > tcolors);
 	void colorCubiesBlackSides();
 	void colorTorus();
 	///color change

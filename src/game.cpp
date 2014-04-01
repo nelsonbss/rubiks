@@ -322,7 +322,7 @@ void game::draw(){
 		glTranslatef(posP.x,posP.y,posP.z);
 		//new trackball
 		glRotatef(angle, axistb.x, axistb.y, axistb.z);
-		glTranslatef(-posP.x,-posP.y,-posP.z);
+		//glTranslatef(-posP.x,-posP.y,-posP.z);
 		myPuzzle->draw();
 		glPopMatrix();
 	}
@@ -368,7 +368,7 @@ void game::draw(){
 		glRotatef(angle, axistb.x, axistb.y, axistb.z);
 
 
-		glTranslatef(-posP.x,-posP.y,-posP.z);
+		//glTranslatef(-posP.x,-posP.y,-posP.z);
 		myPuzzle->draw();
 		glPopMatrix();
 	}

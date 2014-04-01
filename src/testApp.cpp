@@ -104,8 +104,7 @@ void testApp::setup(){
 		myPuzzle->loadPieces(mySlicer->getPieces(),puzzleDisplayed->objectId,rotateSlicer);//selected object id is used for coloring
 
 		//if(puzzleDisplayed->objectId != 1 && puzzleDisplayed->objectId != 4){
-		myPuzzle->colorFaces(puzzleDisplayed->objectId);
-		//myPuzzle->colorFaces(puzzleDisplayed->myMesh.getColors);
+			myPuzzle->colorFaces(puzzleDisplayed->objectId);
 		//}else{
 		//	myPuzzle->colorTorus();
 		//}

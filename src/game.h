@@ -176,5 +176,12 @@ public:
 	ofVec3f mousePoint;
 	bool bUnproject;
 	bool bDragInput;
+
+	ofRectangle viewport;
+	void drawViewportOutline(const ofRectangle & _vp);
+
+	bool bUseViewport;
+	void setUseViewport(bool _b){bUseViewport = _b;}
+	void toggleUseViewport(){bUseViewport != bUseViewport;}
 };
 #endif /* defined(__Tgame__game__) */

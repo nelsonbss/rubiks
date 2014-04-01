@@ -77,6 +77,16 @@ game::game(SG_VECTOR gamePos, float w, float h, SG_VECTOR displayPos, float iddl
 	bUnproject = false;
 
 	bDragInput = false;
+
+	viewport.x = 300;
+	viewport.y = 700;
+	viewport.width = 640;
+	viewport.height = 320;
+
+	//posP.x = viewport.getWidth() / 2;
+	//posP.y = viewport.getHeight() / 2;
+
+	bUseViewport = false;
 }
 //--------------------------------------------------------------
 void game::setup(sgCObject *sgBunnyi,sgCObject *sgTetrahedroni,sgCObject *sgDodecahedroni,sgCObject *sgIcosahedroni,sgCObject *sgOctahedroni){//,sgCObject *sgTeapoti){
@@ -286,6 +296,14 @@ void game::update(string _eventName, SubObEvent* _event){
 //----------------------------------------------------------------------
 void game::draw(){  
 	////////////////////////////////Draw game steps////////////////////////////////////
+	//drawViewportOutline(viewport);
+	if(bUseViewport){
+		ofPushView();
+		ofViewport(viewport);
+		ofSetupScreen();
+		ofEnableAlphaBlending();
+		ofSetColor(1.0,1.0,1.0,0.5);
+	}
 	if(step == -1){
 		//waiting for initializing touch
 	}
@@ -330,17 +348,23 @@ void game::draw(){
 		//show puzzle
 		
 		curRot.getRotate(angle, axistb);
-
+		
 		glPushMatrix();
-		glTranslatef(posP.x,posP.y,posP.z);
-		//new trackball
+		//glTranslatef(posP.x,posP.y,posP.z);
+		ofTranslate(posP.x, posP.y, posP.z);
+		//new trackballb
 		glRotatef(angle, axistb.x, axistb.y, axistb.z);
 		//ofFill();
 		//ofBox(100);
 		//glTranslatef(-posP.x,-posP.y,-posP.z);
 		myPuzzle->draw();
 		if(bUnproject){
-			unprojectedPoint = picker.unproject(mousePoint);
+			ofVec3f realPoint = mousePoint;
+			if(bUseViewport){
+				realPoint.x = (float)viewport.getWidth() * (mousePoint.x / (float)ofGetWidth()) + viewport.x;
+				realPoint.y = (float)viewport.getHeight() * (mousePoint.y / (float)ofGetHeight()) + viewport.y;
+			}
+			unprojectedPoint = picker.unproject(realPoint);
 			if(!bDragInput){
 				myPuzzle->checkCubiesForHit(unprojectedPoint);
 				lastUnprojectedPoint = unprojectedPoint;
@@ -372,7 +396,24 @@ void game::draw(){
 		myPuzzle->draw();
 		glPopMatrix();
 	}
+	if(bUseViewport){
+		ofPopView();
+	}
 }
+
+void game::drawViewportOutline(const ofRectangle & _vp){
+	ofPushStyle();
+	ofNoFill();
+	ofSetColor(50);
+	ofSetLineWidth(0);
+	ofRect(_vp);
+	ofNoFill();
+	ofSetColor(25);
+	ofSetLineWidth(1.0f);
+	ofRect(_vp);
+	ofPopStyle();
+}
+
 //----------------------------------------------------------------------
 void game::rotateByIDandAxis(int id, SG_VECTOR axs, bool d, float anglei){
 	if(axs.x==0 && axs.y==0 && axs.z==0){

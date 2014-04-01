@@ -6,6 +6,7 @@
 #define displayYBlue 1150
 #define displayZ -800
 #define iddleTime 120
+//#define puzzleItems 10
 #define puzzleItems 10
 
 std::map<int,gwc::Point> active_points;
@@ -55,7 +56,7 @@ void testApp::setup(){
 	//there are 7 objects to be created
 	cout << "creating puzzle menu items" << endl;
 	middlePuzzlePos.x = 0;
-	middlePuzzlePos.y = (ofGetWindowHeight()/2)-60;
+	middlePuzzlePos.y = (ofGetWindowHeight()/2)-90;
 	middlePuzzlePos.z = 0;
 	////////////////////////////////create cutter
 	ofVec3f offsetSlicer = ofVec3f(0,0,0);
@@ -68,12 +69,13 @@ void testApp::setup(){
 	slicingPos.y = 0;
 	slicingPos.z = 0;
 	ofVec3f rotateSlicer = ofVec3f (0,0,0);
-	/*
 	for(int i=0; i < puzzleItems; i++){
-		middlePuzzlePos.x = 100 + (i*180);
+		middlePuzzlePos.x = 10 + (i * 10) + (i*180);
+		/*
 		if(i > 6){
 			middlePuzzlePos.x = middlePuzzlePos.x - 60  + ((i-5)*10);
 		}
+		*/
 		puzzleDisplayed = new menuPuzzle(slicingPos, middlePuzzlePos);
 		if(i==0){
 			puzzleDisplayed->loadObject(sgCreateTorus(100,70,50,50),1);
@@ -116,7 +118,6 @@ void testApp::setup(){
 		middlePuzzles.push_back(puzzleDisplayed);
 	}
 	cout << "puzzles menu created" << endl;
-	*/
 	puzzleCounter = 0;
 
 	///////////////////////////////////////////////////create games

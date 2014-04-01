@@ -1382,11 +1382,16 @@ void game::mouseDragged(int x, int y, int button){
 		lastMouse = mouse;
 	}else if(step == 6){
 		myCanvas->mouseDragged(x,y,button);
+	} else if(step == 3){
+		ofVec3f mouse(x,y);
+		ofVec3f r = lastMouse - mouse;
+		rotateA(r);
+		lastMouse = mouse;
 	}
 }
 //--------------------------------------------------------------
 void game::mousePressed(int x, int y, int button){
-	if(step == 4 || step == 5 || step == 7){
+	if(step == 3 || step == 4 || step == 5 || step == 7){
 		lastMouse = ofVec2f(x,y);
 	}else if(step == 6){
 		myCanvas->mousePressed(x,y,button);

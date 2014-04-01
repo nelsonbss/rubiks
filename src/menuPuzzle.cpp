@@ -5,16 +5,12 @@
 
 ///////////////////////////////////////////////////////
 menuPuzzle::menuPuzzle(SG_VECTOR p, SG_VECTOR t) : GuiNode(){
-	position.x = p.x;
-	position.y = p.y;
-	position.z = p.z;
-
 	tempPos.x = t.x;
 	tempPos.y = t.y;
 	tempPos.z = t.z;
 
-	tempSize.x = 200;
-	tempSize.y = 200;
+	tempSize.x = 180;
+	tempSize.y = 180;
 
 	addParam("drag", "true");
 	addParam("n", "1");
@@ -28,11 +24,22 @@ menuPuzzle::menuPuzzle(SG_VECTOR p, SG_VECTOR t) : GuiNode(){
 	//setSize(ofVec2f(200,200));
 	//setScale(1.0);
 
+	viewport.x = tempPos.x;
+	viewport.y = tempPos.y;
+	viewport.width = tempSize.x;
+	viewport.height = tempSize.y;
+
+	position.x = tempSize.x / 2;
+	position.y = tempSize.y / 2;
+	position.z = 0;
+
 	objectId=0;
 	object = NULL;
 
 	bHidden = false;
 	bActive = true;
+
+	
 }
 
 void menuPuzzle::nodeInit(){
@@ -139,18 +146,25 @@ bool menuPuzzle::isInside(int _x, int _y){
 //------------------------------------------------------------------------
 void menuPuzzle::nodeDraw(){  
 
+	
 	ofNoFill();
 	ofSetColor(0,0,255);
-	ofRect(tempPos.x, tempPos.y, tempSize.x, tempSize.y);
+	ofRect(viewport.x, viewport.y, viewport.width, viewport.height);
 	ofSetColor(255,255,255);
 	
-	glPushMatrix();
-	glMultMatrixd(temp->GetTempMatrix()->GetTransparentData());
-	temp->DestroyTempMatrix();
+	ofPushView();
+	ofViewport(viewport);
+	ofSetupScreen();
+	//glPushMatrix();
+	ofPushMatrix();
+	//glMultMatrixd(temp->GetTempMatrix()->GetTransparentData());
+	//temp->DestroyTempMatrix();
+	ofTranslate(viewport.width / 2, viewport.height / 2, position.z);
 	glScalef(0.39,0.39,0.39);
 	//myMenuPuzzle->draw();
 	myVbo.draw(GL_TRIANGLES, 0,myMesh.getNumIndices());
-	glPopMatrix();
+	ofPopMatrix();
+	ofPopView();
 }
 //----------------------------------------------------------------
 void menuPuzzle::loadObject(sgC3DObject *obj, int ID){

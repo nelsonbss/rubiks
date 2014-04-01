@@ -49,6 +49,9 @@ public:
 	ofxAssimpModelLoader pot;
 	sgCObject *sgTeapot;
 
+	ofxAssimpModelLoader sphere;
+	sgCObject *sgSphere;
+
 	/////////////////////////////////////////games
 	vector<game*> myGames;
 	int currentGame;

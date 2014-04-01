@@ -365,7 +365,7 @@ void testApp::keyPressed(int key){
 		///////////from puzzles in the center
 		//////instead of asking for a "key", with the GUI it should ask for the object ID
 		if(key == 'p'){
-			myGames[0]->loadPuzzle(middlePuzzles[9]->getPuzzle());
+			myGames[0]->loadPuzzle(middlePuzzles[5]->getPuzzle());
 			myGames[0]->setCurrentStep(7);
 		}
 		if(key == 'o'){
@@ -719,7 +719,7 @@ void testApp::loadOBJfiles(){
 	delete [] vert;
 	delete [] indexes;
 	////////////////////////////////////////load heavy models
-	tetrahedron.loadModel("tetrahedron.obj");
+	tetrahedron.loadModel("tetrahedronNew.obj");
 	//need to make it an sgCore3DObject to be able to slice it
 	ofMesh tempMesh1 = tetrahedron.getMesh(0);
 	//get vertices from mesh
@@ -814,6 +814,30 @@ void testApp::loadOBJfiles(){
 	sgOctahedron = sgFileManager::ObjectFromTriangles(vert4,octahedronVert.size(),indexes4,octahedronIndices.size()/3); 
 	delete [] vert4;
 	delete [] indexes4;
+	//////////////////////////////////////////load heavy models
+	//sphere.loadModel("sphere300_20.obj");
+	////need to make it an sgCore3DObject to be able to slice it
+	//ofMesh tempMesh5 = sphere.getMesh(0);
+	////get vertices from mesh
+	//vector<ofVec3f> sphereVert = tempMesh5.getVertices();
+	////make an array[] from this vector
+	//SG_POINT *vert5 = new SG_POINT[sphereVert.size()];
+	//for(int i=0;i<sphereVert.size(); i++){
+	//	vert5[i].x = sphereVert[i].x;
+	//	vert5[i].y = sphereVert[i].y;
+	//	vert5[i].z = sphereVert[i].z;
+	//}
+	////get indices from mesh
+	//vector<ofIndexType>  sphereIndices = tempMesh5.getIndices();
+	////make an array[] from this vector
+	//SG_INDEX_TRIANGLE *indexes5 = new SG_INDEX_TRIANGLE[sphereIndices.size()];
+	//for(int i=0;i<sphereIndices.size(); i++){
+	//	indexes5->ver_indexes[i] = sphereIndices[i];
+	//}
+	////generate sgC3DObject from geometry information
+	//sgSphere = sgFileManager::ObjectFromTriangles(vert5,sphereVert.size(),indexes5,sphereIndices.size()/3); 
+	//delete [] vert5;
+	//delete [] indexes5;
 	//////////////////////////////////////////load heavy models
 	//pot.loadModel("teapot.obj");
 	////need to make it an sgCore3DObject to be able to slice it

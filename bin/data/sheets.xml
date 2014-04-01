@@ -1156,7 +1156,7 @@
       <scale>1.0</scale>
       <param>
         <name>draw-area</name>
-        <val>true</val>
+        <val>false</val>
       </param>
       <param>
         <name>draw-color</name>
@@ -1177,7 +1177,7 @@
       <scale>1.0</scale>
       <param>
         <name>draw-area</name>
-        <val>true</val>
+        <val>false</val>
       </param>
       <param>
         <name>draw-color</name>
@@ -1214,7 +1214,7 @@
       <scale>1.0</scale>
       <param>
         <name>draw-area</name>
-        <val>true</val>
+        <val>false</val>
       </param>
       <param>
         <name>draw-color</name>

@@ -83,10 +83,13 @@ game::game(SG_VECTOR gamePos, float w, float h, SG_VECTOR displayPos, float iddl
 	viewport.width = 640;
 	viewport.height = 320;
 
-	//posP.x = viewport.getWidth() / 2;
-	//posP.y = viewport.getHeight() / 2;
+	posP.x = viewport.getWidth() / 2;
+	posP.y = viewport.getHeight() / 2;
+	posP.z = -300;
 
-	bUseViewport = false;
+	posA = posP;
+
+	bUseViewport = true;
 }
 //--------------------------------------------------------------
 void game::setup(sgCObject *sgBunnyi,sgCObject *sgTetrahedroni,sgCObject *sgDodecahedroni,sgCObject *sgIcosahedroni,sgCObject *sgOctahedroni){//,sgCObject *sgTeapoti){
@@ -297,6 +300,7 @@ void game::update(string _eventName, SubObEvent* _event){
 void game::draw(){  
 	////////////////////////////////Draw game steps////////////////////////////////////
 	//drawViewportOutline(viewport);
+	ofDisableAlphaBlending();
 	if(bUseViewport){
 		ofPushView();
 		ofViewport(viewport);
@@ -325,8 +329,8 @@ void game::draw(){
 	}
 	if(step == 3){
 		//armature has been selected
-		myArmature->draw();
 		//show selected object
+		myArmature->draw();
 		objectDisplayed->draw();
 	}
 	if(step == 4 ){
@@ -361,10 +365,12 @@ void game::draw(){
 		if(bUnproject){
 			ofVec3f realPoint = mousePoint;
 			if(bUseViewport){
-				realPoint.x = (float)viewport.getWidth() * (mousePoint.x / (float)ofGetWidth()) + viewport.x;
-				realPoint.y = (float)viewport.getHeight() * (mousePoint.y / (float)ofGetHeight()) + viewport.y;
+				//realPoint.x = (float)viewport.getWidth() * (mousePoint.x / (float)ofGetWidth()) + viewport.x;
+				//realPoint.y = (float)viewport.getHeight() * (mousePoint.y / (float)ofGetHeight()) + viewport.y;
+				//realPoint.x -= viewport.x;
+				//realPoint.y -= viewport.y;
 			}
-			unprojectedPoint = picker.unproject(realPoint);
+			unprojectedPoint = picker.unproject(realPoint, &viewport);
 			if(!bDragInput){
 				myPuzzle->checkCubiesForHit(unprojectedPoint);
 				lastUnprojectedPoint = unprojectedPoint;

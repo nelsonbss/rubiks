@@ -68,7 +68,7 @@ void testApp::setup(){
 	slicingPos.y = 0;
 	slicingPos.z = 0;
 	ofVec3f rotateSlicer = ofVec3f (0,0,0);
-
+	/*
 	for(int i=0; i < puzzleItems; i++){
 		middlePuzzlePos.x = 100 + (i*180);
 		if(i > 6){
@@ -116,6 +116,7 @@ void testApp::setup(){
 		middlePuzzles.push_back(puzzleDisplayed);
 	}
 	cout << "puzzles menu created" << endl;
+	*/
 	puzzleCounter = 0;
 
 	///////////////////////////////////////////////////create games
@@ -178,7 +179,7 @@ void testApp::update(){
 	for(int i = 0; i < myGames.size(); i++){
 		myGames[i]->update();
 	}
-
+	
 	/////////////////////////////////////////update middle puzzles
 	for(int i=0; i < middlePuzzles.size();i++){
 		middlePuzzles[i]->update();

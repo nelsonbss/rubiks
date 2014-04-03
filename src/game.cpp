@@ -371,11 +371,12 @@ void game::draw(){
 				//realPoint.y -= viewport.y;
 			}
 			unprojectedPoint = picker.unproject(realPoint, &viewport);
+			cout << "UP = " << unprojectedPoint.x << ", " << unprojectedPoint.y << ", " << unprojectedPoint.z << endl;
 			if(!bDragInput){
 				myPuzzle->checkCubiesForHit(unprojectedPoint);
 				lastUnprojectedPoint = unprojectedPoint;
 			} else {
-				myPuzzle->dragInput(lastUnprojectedPoint - unprojectedPoint);
+				myPuzzle->dragInput(unprojectedPoint - lastUnprojectedPoint);
 				lastUnprojectedPoint = unprojectedPoint;
 			}
 			bUnproject = false;

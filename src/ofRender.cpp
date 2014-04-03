@@ -28,7 +28,7 @@ ofRender::ofRender(){
 	colorsVector.push_back(cyan);//8
 }
 
-void ofRender::sgCoretoOFmesh(sgC3DObject *obj, ofMesh &mesh,int idCubie,int selectedObjectID){
+void ofRender::sgCoretoOFmesh(sgC3DObject *obj, CubieMesh&mesh,int idCubie,int selectedObjectID){
 	vector <ofFloatColor> colorsVector2;
 	//convert to of mesh and draw as of
 	mesh.setMode(OF_PRIMITIVE_TRIANGLES);
@@ -79,9 +79,11 @@ void ofRender::sgCoretoOFmesh(sgC3DObject *obj, ofMesh &mesh,int idCubie,int sel
 
 		//look at normal
 		////Compute the triangle's normal
-		ofPoint dir = ( (auxV2 - auxV1).crossed( auxV3 - auxV1 ) ).normalized();
+		ofVec3f dir = ( (auxV2 - auxV1).crossed( auxV3 - auxV1 ) ).normalized();
 		//set colors
 		ofFloatColor c;
+
+
 		//ask if we color an original object with rubiks colors or plain color:: current selection is -2 for plain color
 		if(idCubie == -1){
 			//original shape with color...use this for pyramid 
@@ -109,6 +111,8 @@ void ofRender::sgCoretoOFmesh(sgC3DObject *obj, ofMesh &mesh,int idCubie,int sel
 		colorsVector2.push_back(c);
 		colorsVector2.push_back(c);
 		colorsVector2.push_back(c);
+	
+		mesh.addTriangle(i, i+1, i+2, auxV1, auxV2, auxV3, dir, c);
 	}
 	mesh.addColors(colorsVector2);
 	//ofFloatColor * col = mesh.getColorsPointer();

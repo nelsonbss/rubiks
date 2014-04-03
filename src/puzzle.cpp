@@ -615,10 +615,15 @@ void puzzle::checkCubiesForHit(ofVec3f _pnt){
 		if(nearest < MAX_DIST){
 			if(activeCubie != nearestId){
 				if(activeCubie > -1){
-					myCubies[activeCubie]->setDraw(true);
+					//myCubies[activeCubie]->setDraw(true);
 				}
 				activeCubie = nearestId;
-				myCubies[activeCubie]->setDraw(false);
+				//myCubies[activeCubie]->setDraw(false);
+				Triangle tri = myCubies[activeCubie]->getNearestTri(_pnt);
+				ofVec3f n = tri.getNormal();
+				vector<Triangle> tris = myCubies[activeCubie]->getTrianglesByNormal(n);
+				myCubies[activeCubie]->setColorToSet(tris, ofFloatColor(1.0,1.0,1.0));
+				cout << "Nearest tri normal = " << n.x << ", " << n.y << ", " << n.z << endl;
 			}
 		}
 	}

@@ -4,7 +4,10 @@
 #include "ofRender.h"
 
 ///////////////////////////////////////////////////////
-menuPuzzle::menuPuzzle(SG_VECTOR p, SG_VECTOR t) : GuiNode(){
+menuPuzzle::menuPuzzle(SG_VECTOR p, SG_VECTOR t, int ID ) : GuiNode(){
+	
+	id = ID;
+	
 	tempPos.x = t.x;
 	tempPos.y = t.y;
 	tempPos.z = t.z;
@@ -15,6 +18,7 @@ menuPuzzle::menuPuzzle(SG_VECTOR p, SG_VECTOR t) : GuiNode(){
 	addParam("drag", "true");
 	addParam("n", "1");
 	addParam("droppable", "true");
+	addParam("tap","true");
 
 	//pos.set((float)tempPos.x, (float)tempPos.y);
 	//size.set(200,200);
@@ -24,8 +28,11 @@ menuPuzzle::menuPuzzle(SG_VECTOR p, SG_VECTOR t) : GuiNode(){
 	//setSize(ofVec2f(200,200));
 	//setScale(1.0);
 
-	viewport.x = tempPos.x;
-	viewport.y = tempPos.y;
+	drawPos.x = tempPos.x;
+	drawPos.y = tempPos.y;
+
+	viewport.x = drawPos.x;
+	viewport.y = drawPos.y;
 	viewport.width = tempSize.x;
 	viewport.height = tempSize.y;
 
@@ -39,7 +46,7 @@ menuPuzzle::menuPuzzle(SG_VECTOR p, SG_VECTOR t) : GuiNode(){
 	bHidden = false;
 	bActive = true;
 
-	
+	setName("menu-puzzle-" + ofToString(id));
 }
 
 void menuPuzzle::nodeInit(){
@@ -56,8 +63,8 @@ void menuPuzzle::nodeInit(){
 	//setPosition();
 
 	//drawPos.set((float)tempPos.x, (float)tempPos.y);
-	drawPos.set(0,0);
-	drawSize.set(200,200);
+	//drawPos.set(0,0);
+	//drawSize.set(200,200);
 
 	activate();
 }
@@ -130,11 +137,11 @@ void menuPuzzle::update(){
 }
 
 bool menuPuzzle::isInside(int _x, int _y){
-    cout << getName() << " checking insides " << tempPos.x << ", " << tempPos.x + tempSize.x << " - " << tempPos.y << ", " << tempPos.y + tempSize.y;
+    cout << getName() << " checking insides " << drawPos.x << ", " << drawPos.x + tempSize.x << " - " << drawPos.y << ", " << drawPos.y + tempSize.y;
 	cout << " against " << _x << ", " << _y << endl;
     //cout << getName() << " checking insides." << endl;
-	if((_x > tempPos.x && _x < (tempPos.x + tempSize.x) &&
-       (_y > tempPos.y && _y < (tempPos.y + tempSize.y)))){
+	if((_x > drawPos.x && _x < (drawPos.x + tempSize.x) &&
+       (_y > drawPos.y && _y < (drawPos.y + tempSize.y)))){
 		   if(getParam("send-select") == "true"){
 			   input("select", 0, 0, 0, ofVec2f(_x, _y), ofVec2f(0,0));
 		   }
@@ -151,7 +158,7 @@ void menuPuzzle::nodeDraw(){
 	ofSetColor(0,0,255);
 	ofRect(viewport.x, viewport.y, viewport.width, viewport.height);
 	ofSetColor(255,255,255);
-	
+
 	ofPushView();
 	ofViewport(viewport);
 	ofSetupScreen();
@@ -247,12 +254,14 @@ void menuPuzzle::colorFacesMenu(){
 }
 
 void menuPuzzle::input(string _type, int _ID, int _n, int _phase, ofVec2f _absPos, ofVec2f _deltaPos){
-	//cout << "Type = " << _type << " dX, dY = " << _deltaPos.x << ", " << _deltaPos.y << endl;
+	cout << "Type = " << _type << " dX, dY = " << _deltaPos.x << ", " << _deltaPos.y << endl;
 	if(_type == "drag"){
 		cout << getName() << " dragging" << endl;
 		tempPos.x += _deltaPos.x;
 		tempPos.y += _deltaPos.y;
 		drawPos.set(tempPos.x, tempPos.y);
+		viewport.x = drawPos.x;
+		viewport.y = drawPos.y;
 	}
 	if(_type == "tap"){
 		cout << name << " - executing" << endl;

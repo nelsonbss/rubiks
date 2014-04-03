@@ -1285,7 +1285,7 @@ void game::prepareDrawing(){
 //---------------------------------------------------------------------
 menuPuzzle*  game::savePuzzle(SG_POINT slicingPos, SG_VECTOR middlePuzzlePos){
 	//build a menuPuzzle object and give it to the mainApp
-	menuPuzzle *puzzleToSave = new menuPuzzle(slicingPos, middlePuzzlePos);
+	menuPuzzle *puzzleToSave = new menuPuzzle(slicingPos, middlePuzzlePos, 0);
 	puzzleToSave->loadObject(objectDisplayed->getObject(),objectID);
 	puzzleToSave->setup();
 	puzzleToSave->update();

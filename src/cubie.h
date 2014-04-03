@@ -4,6 +4,7 @@
 #include "ofMain.h"
 #include "sgCore.h"
 #include "matrix.h"
+#include "CubieMesh.h"
 
 #include <vector>
 
@@ -28,7 +29,7 @@ public:
 	float numObjs;
 	float getNumObjs();
 	sgC3DObject **objectList;
-	vector<ofMesh> myMeshs; // this will be used to store the objet to be drawn 
+	vector<CubieMesh> myMeshs; // this will be used to store the objet to be drawn 
 	void crateOfMeshs();
 	vector<ofVbo>  myVbos;
 
@@ -108,6 +109,12 @@ public:
 	ofVec3f getUnprojectedPoint();
 	void setMousePoint(ofVec3f _pnt);
 	void dragInput(ofVec3f _pnt);
+
+
+	Triangle nearestTri;
+	Triangle getNearestTri(ofVec3f _pnt);
+	vector<Triangle> getTrianglesByNormal(ofVec3f _n){return myMeshs[0].getTrianglesByNormal(_n);}
+	void setColorToSet(vector<Triangle> _tris, ofFloatColor _c){return myMeshs[0].setColorToSet(_tris, _c);}
 
 	void printCurrentCentroid();
 };

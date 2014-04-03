@@ -7,7 +7,7 @@
 #define displayZ -800
 #define iddleTime 120
 //#define puzzleItems 10
-#define puzzleItems 10
+#define puzzleItems 1
 
 std::map<int,gwc::Point> active_points;
 
@@ -39,6 +39,24 @@ void testApp::setup(){
 	addGesture("touchReceiver","n-scale");
 	addGesture("touchReceiver","n-rotate");
 	*/
+
+	//gm = new GestureManager();
+	gm.loadGMLFile("basic_manipulation.gml");
+	gm.init("rubiksWindow", ofGetWidth(), ofGetHeight());
+	//gm->start();
+
+	string guiFile = "sheets.xml";
+	GuiConfigurator::Instance()->addFile(guiFile);
+	GuiConfigurator::Instance()->loadGui();
+
+	SubObMediator::Instance()->addObserver("object-selected", this);
+	SubObMediator::Instance()->addObserver("armature-selected", this);
+	SubObMediator::Instance()->addObserver("next-step", this);
+	SubObMediator::Instance()->addObserver("reset", this);
+	SubObMediator::Instance()->addObserver("touch-point", this);
+	SubObMediator::Instance()->addObserver("gesture", this);
+	SubObMediator::Instance()->addObserver("extrude", this);
+	SubObMediator::Instance()->addObserver("extrusion-success", this);
 
 	/////////////////////////////initialize sgCore library
 	sgInitKernel();
@@ -76,7 +94,7 @@ void testApp::setup(){
 			middlePuzzlePos.x = middlePuzzlePos.x - 60  + ((i-5)*10);
 		}
 		*/
-		puzzleDisplayed = new menuPuzzle(slicingPos, middlePuzzlePos);
+		puzzleDisplayed = new menuPuzzle(slicingPos, middlePuzzlePos, i);
 		if(i==0){
 			puzzleDisplayed->loadObject(sgCreateTorus(100,70,50,50),1);
 		}else if(i == 1){
@@ -138,24 +156,6 @@ void testApp::setup(){
 
 	//////setup GUI/////////////
 	//ofSetFullscreen(true);
-
-	//gm = new GestureManager();
-	gm.loadGMLFile("basic_manipulation.gml");
-	gm.init("rubiksWindow", ofGetWidth(), ofGetHeight());
-	//gm->start();
-
-	string guiFile = "sheets.xml";
-	GuiConfigurator::Instance()->addFile(guiFile);
-	GuiConfigurator::Instance()->loadGui();
-
-	SubObMediator::Instance()->addObserver("object-selected", this);
-	SubObMediator::Instance()->addObserver("armature-selected", this);
-	SubObMediator::Instance()->addObserver("next-step", this);
-	SubObMediator::Instance()->addObserver("reset", this);
-	SubObMediator::Instance()->addObserver("touch-point", this);
-	SubObMediator::Instance()->addObserver("gesture", this);
-	SubObMediator::Instance()->addObserver("extrude", this);
-	SubObMediator::Instance()->addObserver("extrusion-success", this);
 
 	ev = new SubObEvent();
 

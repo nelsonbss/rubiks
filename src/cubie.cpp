@@ -3,7 +3,6 @@
 #include "ofRender.h"
 #include <math.h>
 
-
 cubie::cubie(float x, float y,float z, int idi, int selObjId, ofVec3f offset){
 	objects = NULL;
 	id = idi;
@@ -363,7 +362,7 @@ void cubie::setObjects(sgCGroup *objs,int cubieId,ofVec3f v){
 }
 //-------------------------------------------------------------------------------------------------------------------------------------------
 void cubie::crateOfMeshs(){
-	ofMesh tempMesh;
+	CubieMesh tempMesh;
 	ofRender *ofr = new ofRender(); //class that has the metods to transform sgCore to OF mesh and set the normals (in one function)
 
 	if(objects != NULL){
@@ -396,7 +395,7 @@ void cubie::crateOfMeshs(){
 void cubie::getCentroid(){
 	centroid3d.set(0,0,0);
 	int count = 0;
-	for(vector<ofMesh>::iterator mIter = myMeshs.begin(); mIter != myMeshs.end(); mIter++){
+	for(auto mIter = myMeshs.begin(); mIter != myMeshs.end(); mIter++){
 		ofVec3f tVec = mIter->getCentroid();
 		centroid3d += tVec;
 		count++;
@@ -544,6 +543,11 @@ void cubie::dragInput(ofVec3f _pnt){
 
 float cubie::getDistanceByCentroid(ofVec3f _pos){
 	return centroid3d.distance(_pos);
+}
+
+Triangle cubie::getNearestTri(ofVec3f _pnt){
+	nearestTri = myMeshs[0].getNearest(_pnt);
+	return nearestTri;
 }
 
 bool cubie::getRotate(){

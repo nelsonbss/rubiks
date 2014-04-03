@@ -10,6 +10,7 @@
 #include "Subject.h"
 #include "SubObMediator.h"
 #include "SubObEvent.h"
+#include "CubieMesh.h"
 
 #define MAX_DIST 800.0
 

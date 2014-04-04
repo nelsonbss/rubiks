@@ -63,10 +63,10 @@ void testApp::draw(){
 		if(gStep == 0){
 			//waiting for object to be selected from menu //drag behavior
 			//show object menu
-			ofDrawBitmapString("SELECT AN OBJECT:" + ofToString("") +"\n" + "torus "+ofToString(1)+"\n"+ "box "+ofToString(2)+"\n"+ "cone "+ofToString(3)+"\n",20, 20);
+			ofDrawBitmapString("SELECT AN OBJECT: 1 - 7" + ofToString("") +"\n",20, 20);
 		}else if(gStep == 1){
 			//an object has been selected
-			ofDrawBitmapString("SELECT AN OBJECT:" + ofToString("") +"\n" + "torus "+ofToString(1)+"\n"+ "box "+ofToString(2)+"\n"+ "cone "+ofToString(3)+"\n",20, 20);
+			ofDrawBitmapString("SELECT AN OBJECT: 1 - 7" + ofToString("") +"\n",20, 20);
 			//show next button.
 			ofDrawBitmapString("NEXT: press 'n' " + ofToString("") +"\n" ,20, 80);
 		}else if(gStep ==2){
@@ -78,10 +78,20 @@ void testApp::draw(){
 		}else if(gStep == 3){
 			//armature was selected // show armature...manupulate armature
 			ofDrawBitmapString("ARMATURE SELECTED:" + ofToString("") +"\n",20, 20);
+
+			ofDrawBitmapString("rotate x: 'w' and  's'"+ofToString(" ")+"\n",20, 30);
+			ofDrawBitmapString("rotate y: 'x' and 'c'"+ofToString(" ")+"\n",20, 50);
+			ofDrawBitmapString("rotate z: 'e' and  'd'"+ofToString(" ")+"\n",20, 70);
+
+			ofDrawBitmapString("ROTATE ARMATURE:  mouse DRAG" +ofToString("")+"\n",20, 100);
+
+			ofDrawBitmapString("offset x: 'j' and  'l'"+ofToString(" ")+"\n",20, 130);
+			ofDrawBitmapString("offset y: 'i' and 'k'"+ofToString(" ")+"\n",20, 150);
+
 			//show next button.
-			ofDrawBitmapString("NEXT: press 'n' " + ofToString("") +"\n" ,20, 60); //this makes the puzzle
+			ofDrawBitmapString("NEXT: press 'n' " + ofToString("") +"\n" ,20, 180); //this makes the puzzle
 			//show restart button.
-			ofDrawBitmapString("RESTART: press 'r' " + ofToString("") +"\n" ,20, 80);
+			ofDrawBitmapString("RESTART: press 'r' " + ofToString("") +"\n" ,20, 200);
 		}else if(gStep == 4){
 			//puzzle has been created
 			ofDrawBitmapString("ROTATE PUZZLE:  mouse DRAG" +ofToString("")+"\n",20, 20);

@@ -4,11 +4,12 @@
 #include "puzzle.h"
 #include "sgCore.h"
 #include "GuiNode.h"
+#include "CubieMesh.h"
 
 class menuPuzzle : public GuiNode{
 
 public:
-	menuPuzzle (SG_VECTOR pos, SG_VECTOR t);
+	menuPuzzle (SG_VECTOR pos, SG_VECTOR t, int ID);
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////
 	void loadPuzzle(puzzle *inpuzzle);
 	puzzle *myMenuPuzzle;
@@ -29,7 +30,7 @@ public:
 	int objectId; //the id of the 3d selected object, the id comes from the main app
 	sgC3DObject *object;
 	sgC3DObject *temp;//the original will be in 0,0,0 to be cut. the temp will be moved around and be drawn.
-	ofMesh myMesh;// this will be used to draw the object, 
+	CubieMesh myMesh;// this will be used to draw the object, 
 	ofVbo myVbo;
 
 	SG_VECTOR position;
@@ -49,6 +50,8 @@ public:
 	bool processMouse(int _x, int _y, int _state){return false;}
 	virtual void update(string _subName, Subject* _sub){}
 	virtual void update(string _eventName, SubObEvent* _event){}
+
+	ofRectangle viewport;
 };
 
 #endif /* defined(__TmenuPuzzle__menuPuzzle__) */

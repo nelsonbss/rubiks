@@ -6,7 +6,8 @@
 #define displayYBlue 1150
 #define displayZ -800
 #define iddleTime 120
-#define puzzleItems 10
+//#define puzzleItems 10
+#define puzzleItems 1
 
 std::map<int,gwc::Point> active_points;
 
@@ -39,6 +40,24 @@ void testApp::setup(){
 	addGesture("touchReceiver","n-rotate");
 	*/
 
+	//gm = new GestureManager();
+	gm.loadGMLFile("basic_manipulation.gml");
+	gm.init("rubiksWindow", ofGetWidth(), ofGetHeight());
+	//gm->start();
+
+	string guiFile = "sheets.xml";
+	GuiConfigurator::Instance()->addFile(guiFile);
+	GuiConfigurator::Instance()->loadGui();
+
+	SubObMediator::Instance()->addObserver("object-selected", this);
+	SubObMediator::Instance()->addObserver("armature-selected", this);
+	SubObMediator::Instance()->addObserver("next-step", this);
+	SubObMediator::Instance()->addObserver("reset", this);
+	SubObMediator::Instance()->addObserver("touch-point", this);
+	SubObMediator::Instance()->addObserver("gesture", this);
+	SubObMediator::Instance()->addObserver("extrude", this);
+	SubObMediator::Instance()->addObserver("extrusion-success", this);
+
 	/////////////////////////////initialize sgCore library
 	sgInitKernel();
 
@@ -55,7 +74,7 @@ void testApp::setup(){
 	//there are 7 objects to be created
 	cout << "creating puzzle menu items" << endl;
 	middlePuzzlePos.x = 0;
-	middlePuzzlePos.y = (ofGetWindowHeight()/2)-60;
+	middlePuzzlePos.y = (ofGetWindowHeight()/2)-90;
 	middlePuzzlePos.z = 0;
 	////////////////////////////////create cutter
 	ofVec3f offsetSlicer = ofVec3f(0,0,0);
@@ -68,13 +87,14 @@ void testApp::setup(){
 	slicingPos.y = 0;
 	slicingPos.z = 0;
 	ofVec3f rotateSlicer = ofVec3f (0,0,0);
-	/*
 	for(int i=0; i < puzzleItems; i++){
-		middlePuzzlePos.x = 100 + (i*180);
+		middlePuzzlePos.x = 10 + (i * 10) + (i*180);
+		/*
 		if(i > 6){
 			middlePuzzlePos.x = middlePuzzlePos.x - 60  + ((i-5)*10);
 		}
-		puzzleDisplayed = new menuPuzzle(slicingPos, middlePuzzlePos);
+		*/
+		puzzleDisplayed = new menuPuzzle(slicingPos, middlePuzzlePos, i);
 		if(i==0){
 			puzzleDisplayed->loadObject(sgCreateTorus(100,70,50,50),1);
 		}else if(i == 1){
@@ -116,7 +136,6 @@ void testApp::setup(){
 		middlePuzzles.push_back(puzzleDisplayed);
 	}
 	cout << "puzzles menu created" << endl;
-	*/
 	puzzleCounter = 0;
 
 	///////////////////////////////////////////////////create games
@@ -137,24 +156,6 @@ void testApp::setup(){
 
 	//////setup GUI/////////////
 	//ofSetFullscreen(true);
-
-	//gm = new GestureManager();
-	gm.loadGMLFile("basic_manipulation.gml");
-	gm.init("rubiksWindow", ofGetWidth(), ofGetHeight());
-	//gm->start();
-
-	string guiFile = "sheets.xml";
-	GuiConfigurator::Instance()->addFile(guiFile);
-	GuiConfigurator::Instance()->loadGui();
-
-	SubObMediator::Instance()->addObserver("object-selected", this);
-	SubObMediator::Instance()->addObserver("armature-selected", this);
-	SubObMediator::Instance()->addObserver("next-step", this);
-	SubObMediator::Instance()->addObserver("reset", this);
-	SubObMediator::Instance()->addObserver("touch-point", this);
-	SubObMediator::Instance()->addObserver("gesture", this);
-	SubObMediator::Instance()->addObserver("extrude", this);
-	SubObMediator::Instance()->addObserver("extrusion-success", this);
 
 	ev = new SubObEvent();
 

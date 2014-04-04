@@ -371,11 +371,12 @@ void game::draw(){
 				//realPoint.y -= viewport.y;
 			}
 			unprojectedPoint = picker.unproject(realPoint, &viewport);
+			cout << "UP = " << unprojectedPoint.x << ", " << unprojectedPoint.y << ", " << unprojectedPoint.z << endl;
 			if(!bDragInput){
 				myPuzzle->checkCubiesForHit(unprojectedPoint);
 				lastUnprojectedPoint = unprojectedPoint;
 			} else {
-				myPuzzle->dragInput(lastUnprojectedPoint - unprojectedPoint);
+				myPuzzle->dragInput(unprojectedPoint - lastUnprojectedPoint);
 				lastUnprojectedPoint = unprojectedPoint;
 			}
 			bUnproject = false;
@@ -1285,7 +1286,7 @@ void game::prepareDrawing(){
 //---------------------------------------------------------------------
 menuPuzzle*  game::savePuzzle(SG_POINT slicingPos, SG_VECTOR middlePuzzlePos){
 	//build a menuPuzzle object and give it to the mainApp
-	menuPuzzle *puzzleToSave = new menuPuzzle(slicingPos, middlePuzzlePos);
+	menuPuzzle *puzzleToSave = new menuPuzzle(slicingPos, middlePuzzlePos, 0);
 	puzzleToSave->loadObject(objectDisplayed->getObject(),objectID);
 	puzzleToSave->setup();
 	puzzleToSave->update();
@@ -1382,11 +1383,16 @@ void game::mouseDragged(int x, int y, int button){
 		lastMouse = mouse;
 	}else if(step == 6){
 		myCanvas->mouseDragged(x,y,button);
+	} else if(step == 3){
+		ofVec3f mouse(x,y);
+		ofVec3f r = lastMouse - mouse;
+		rotateA(r);
+		lastMouse = mouse;
 	}
 }
 //--------------------------------------------------------------
 void game::mousePressed(int x, int y, int button){
-	if(step == 4 || step == 5 || step == 7){
+	if(step == 3 || step == 4 || step == 5 || step == 7){
 		lastMouse = ofVec2f(x,y);
 	}else if(step == 6){
 		myCanvas->mousePressed(x,y,button);

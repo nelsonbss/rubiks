@@ -123,6 +123,12 @@
     <ClCompile Include="src\Picker.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\CubieManager.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CubieMesh.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -382,6 +388,12 @@
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\Picker.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CubieManager.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CubieMesh.h">
       <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>

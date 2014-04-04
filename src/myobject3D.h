@@ -3,6 +3,7 @@
 
 #include "ofMain.h"
 #include "sgCore.h"
+#include "CubieMesh.h"
 
 class myobject3D {
 	
@@ -20,7 +21,7 @@ public:
 	int objectId; //the id of the 3d selected object, the id comes from the main app
 	sgC3DObject *object;
 	sgC3DObject *temp;//the original will be in 0,0,0 to be cut. the temp will be moved around and be drawn.
-	ofMesh myMesh;// this will be used to draw the object, 
+	CubieMesh myMesh;// this will be used to draw the object, 
 	ofVbo myVbo;
 
 	SG_VECTOR pos;

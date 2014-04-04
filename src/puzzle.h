@@ -10,6 +10,7 @@
 #include "Subject.h"
 #include "SubObMediator.h"
 #include "SubObEvent.h"
+#include "CubieMesh.h"
 
 #define MAX_DIST 800.0
 
@@ -89,6 +90,7 @@ public:
 	bool bHaveActiveCubie;
 	bool bHaveRotationCubie;
 	int activeCubie;
+	Triangle activeTriangle;
 	int rotationCubie;
 
 	void doRotation();
@@ -108,6 +110,8 @@ public:
 	void setMousePoint(ofVec3f _pnt);
 	void checkCubiesForHit(ofVec3f _pnt);
 	void dragInput(ofVec3f _pnt);
+	ofVec3f getDir(ofVec3f _pnt);
+	float getMainComponent(ofVec3f _pnt);
 	bool bHaveAxis;
 	SG_VECTOR v;
 	void endRotation(){bHaveAxis = false;}

@@ -615,10 +615,15 @@ void puzzle::checkCubiesForHit(ofVec3f _pnt){
 		if(nearest < MAX_DIST){
 			if(activeCubie != nearestId){
 				if(activeCubie > -1){
-					myCubies[activeCubie]->setDraw(true);
+					//myCubies[activeCubie]->setDraw(true);
 				}
 				activeCubie = nearestId;
-				myCubies[activeCubie]->setDraw(false);
+				//myCubies[activeCubie]->setDraw(false);
+				activeTriangle = myCubies[activeCubie]->getNearestTri(_pnt);
+				//ofVec3f n = tri.getNormal();
+				//vector<Triangle> tris = myCubies[activeCubie]->getTrianglesByNormal(n);
+				//myCubies[activeCubie]->setColorToSet(tris, ofFloatColor(1.0,1.0,1.0));
+				//cout << "Nearest tri normal = " << n.x << ", " << n.y << ", " << n.z << endl;
 			}
 		}
 	}
@@ -692,8 +697,18 @@ bool puzzle::isInside(int _x, int _y){
 
 void puzzle::dragInput(ofVec3f _pnt){
 	if(activeCubie > -1){
-		ofVec3f pnt = _pnt.normalize();
-		float angle = 0;
+		//ofVec3f pnt = _pnt.normalize();
+		ofVec3f normal = activeTriangle.getNormal();
+		ofVec3f dir = getDir(_pnt);
+		float angle = getMainComponent(_pnt);
+		dir.normalize();
+		ofVec3f axis = getDir(dir.getCrossed(normal));
+		//float angle = 0;
+		cout << "Dragged - " << _pnt.x << ", " << _pnt.y << ", " << _pnt.z << endl;
+		cout << "Dir - " << dir.x << ", " << dir.y << ", " << dir.z << endl;
+		cout << "Normal = " << normal.x << ", " << normal.y << ", " << normal.z << endl;
+		cout << "Axis - " << axis.x << ", " << axis.y << ", " << axis.z << endl;
+		/*
 		if(abs(pnt.x) > abs(pnt.y) && abs(pnt.x) > abs(pnt.z)){
 			angle = pnt.x;
 			pnt.x = 0;
@@ -730,6 +745,54 @@ void puzzle::dragInput(ofVec3f _pnt){
 		}
 		//faceRotate(v, true, angle);
 		//myCubies[activeCubie]->dragInput(_pnt);
+		*/
+		if(!bHaveAxis){
+			v.x = axis.x;
+			v.y = axis.y;
+			v.z = axis.z;
+			bHaveAxis = true;
+		} else {
+			SG_VECTOR t = {axis.x, axis.y, axis.z};
+			if(t.x == v.x && t.y == v.y && t.z == v.z){
+				rotateByIDandAxis(activeCubie, v, true, angle);		
+			}
+		}
+	}
+}
+
+ofVec3f puzzle::getDir(ofVec3f _pnt){
+	ofVec3f x(abs(_pnt.x), 0, 0);
+	ofVec3f y(0, abs(_pnt.y), 0);
+	ofVec3f z(0, 0, abs(_pnt.z));
+	float magX = x.lengthSquared();
+	float magY = y.lengthSquared();
+	float magZ = z.lengthSquared();
+	if(magX > magY && magX > magZ){
+		return x;
+	}
+	if(magY > magX && magY > magZ){
+		return y;
+	}
+	if(magZ > magX && magZ > magY){
+		return z;
+	}
+}
+
+float puzzle::getMainComponent(ofVec3f _pnt){
+	ofVec3f x(_pnt.x, 0, 0);
+	ofVec3f y(0, _pnt.y, 0);
+	ofVec3f z(0, 0, _pnt.z);
+	float magX = x.lengthSquared();
+	float magY = y.lengthSquared();
+	float magZ = z.lengthSquared();
+	if(magX > magY && magX > magZ){
+		return _pnt.x;
+	}
+	if(magY > magX && magY > magZ){
+		return _pnt.y;
+	}
+	if(magZ > magX && magZ > magY){
+		return _pnt.z;
 	}
 }
 

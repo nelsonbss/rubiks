@@ -47,35 +47,35 @@ cubie::cubie(float x, float y,float z, int idi, int selObjId, ofVec3f offset){
 void cubie::setup(){
 	/////////////////////////////////////////////////////////
 	//////undo rotations of armature in z-y-x order
-	//SG_VECTOR vrotZ = {0,0,1};      
-	//SG_VECTOR puzzleRotate = {0,0,0};
-	//for (int j=0; j < numObjs; j++){
-	//	if (objectList[j]->GetTempMatrix()==0){
-	//		objectList[j]->InitTempMatrix()->Rotate(puzzleRotate,vrotZ,ofDegToRad(armRotations.z));
-	//	}else{
-	//		objectList[j]->GetTempMatrix()->Rotate(puzzleRotate,vrotZ,ofDegToRad(armRotations.z));
-	//	}
-	//	SG_VECTOR vrotY = {0,1,0}; 							 
-	//	objectList[j]->GetTempMatrix()->Rotate(puzzleRotate,vrotY,ofDegToRad(armRotations.x));
-	//	SG_VECTOR vrotX = {1,0,0}; 							 
-	//	objectList[j]->GetTempMatrix()->Rotate(puzzleRotate,vrotX,ofDegToRad(armRotations.y));
-	//	objectList[j]->ApplyTempMatrix();
-	//}
-
-	SG_VECTOR vrotX = {1,0,0};      
+	SG_VECTOR vrotZ = {0,0,1};      
 	SG_VECTOR puzzleRotate = {0,0,0};
 	for (int j=0; j < numObjs; j++){
 		if (objectList[j]->GetTempMatrix()==0){
-			objectList[j]->InitTempMatrix()->Rotate(puzzleRotate,vrotX,ofDegToRad(armRotations.x));
+			objectList[j]->InitTempMatrix()->Rotate(puzzleRotate,vrotZ,ofDegToRad(armRotations.z));
 		}else{
-			objectList[j]->GetTempMatrix()->Rotate(puzzleRotate,vrotX,ofDegToRad(armRotations.x));
+			objectList[j]->GetTempMatrix()->Rotate(puzzleRotate,vrotZ,ofDegToRad(armRotations.z));
 		}
-		//SG_VECTOR vrotY = {0,1,0}; 							 
-		//objectList[j]->GetTempMatrix()->Rotate(puzzleRotate,vrotY,ofDegToRad(armRotations.x));
-		//SG_VECTOR vrotX = {1,0,0}; 							 
-		//objectList[j]->GetTempMatrix()->Rotate(puzzleRotate,vrotX,ofDegToRad(armRotations.y));
+		SG_VECTOR vrotY = {0,1,0}; 							 
+		objectList[j]->GetTempMatrix()->Rotate(puzzleRotate,vrotY,ofDegToRad(armRotations.x));
+		SG_VECTOR vrotX = {1,0,0}; 							 
+		objectList[j]->GetTempMatrix()->Rotate(puzzleRotate,vrotX,ofDegToRad(armRotations.y));
 		objectList[j]->ApplyTempMatrix();
 	}
+
+	//SG_VECTOR vrotX = {1,0,0};      
+	//SG_VECTOR puzzleRotate = {0,0,0};
+	//for (int j=0; j < numObjs; j++){
+	//	if (objectList[j]->GetTempMatrix()==0){
+	//		objectList[j]->InitTempMatrix()->Rotate(puzzleRotate,vrotX,ofDegToRad(armRotations.x));
+	//	}else{
+	//		objectList[j]->GetTempMatrix()->Rotate(puzzleRotate,vrotX,ofDegToRad(armRotations.x));
+	//	}
+	//	//SG_VECTOR vrotY = {0,1,0}; 							 
+	//	//objectList[j]->GetTempMatrix()->Rotate(puzzleRotate,vrotY,ofDegToRad(armRotations.x));
+	//	//SG_VECTOR vrotX = {1,0,0}; 							 
+	//	//objectList[j]->GetTempMatrix()->Rotate(puzzleRotate,vrotX,ofDegToRad(armRotations.y));
+	//	objectList[j]->ApplyTempMatrix();
+	//}
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 bool cubie::faceRotate(SG_VECTOR axis,bool di,float angle){
@@ -152,7 +152,7 @@ void cubie::update(){
 	if(numObjs > 0){
 		if(moving==true){
 			/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-			//we are at the last positon
+			//do 90 deg animation to new position
 			for (int j=0; j < numObjs; j++){
 				SG_POINT protFace = {pointRotate.x,pointRotate.y,pointRotate.z};										 
 				if(sample==false){

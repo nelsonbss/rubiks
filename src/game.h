@@ -126,6 +126,7 @@ public:
 
 	////color change
 	void changeColorToColor(ofFloatColor Sc, ofFloatColor Tc);
+	void changeFaceColor(ofVec2f pos, ofFloatColor c);
 
 	//armature rotation
 	void applyArmRotations();

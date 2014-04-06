@@ -83,7 +83,7 @@ void GuiNode::init(){
 		bActive = false;
 	}
 	if(getParam("hidden") == "true"){
-		bHidden = true;
+		bHidden= true;
 	}
 	nodeInit();
 	//timer = new ofxTimer();

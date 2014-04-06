@@ -123,6 +123,7 @@ void GestureManager::update(string _eventName, SubObEvent* _event){
 		nPoint.init(tId, pos.x, pos.y, 0, 1, 1);
 		nPoint.status = gwc::TOUCHREMOVED;
 		addEvent(nPoint);
+		cout << "removing touch point - " << tId << endl;
 	}
 }
 

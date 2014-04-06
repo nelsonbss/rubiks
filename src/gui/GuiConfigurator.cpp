@@ -80,6 +80,7 @@ void GuiConfigurator::update(string _eventName, SubObEvent* _event){
 	if(_eventName == "touch-point"){
 		vector<GuiNode*> nodesHit;
 		for(map<string, GuiNode*>::iterator nIter =  activeNodes.begin(); nIter != activeNodes.end(); ++nIter){
+			cout << "Testing - " << nIter->second->getName() << endl;
 			if(nIter->second->isActive()){
 				if(nIter->second->isInside(_event->getArg("x")->getFloat(), _event->getArg("y")->getFloat())){
 					//_event->getArg("hit")->setInt(1);
@@ -87,6 +88,8 @@ void GuiConfigurator::update(string _eventName, SubObEvent* _event){
 					//break;
 					nodesHit.push_back(nIter->second);
 				}
+			} else {
+				cout << "...Inactive" << endl;
 			}
 		}
 		if(nodesHit.size()){
@@ -522,6 +525,7 @@ void GuiConfigurator::reset(){
 void GuiConfigurator::addActive(GuiNode* _node){
 	string nodeName = _node->getName();
 	activeNodes[nodeName] = _node;
+	//cout << "adding node - " << nodeName << ". Have " << activeNodes.size() << " node." << endl;
 	SubObEvent* nEvent = new SubObEvent();
 	nEvent->setName("add-object");
 	nEvent->addArg("objName", nodeName);

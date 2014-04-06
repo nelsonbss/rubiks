@@ -620,9 +620,9 @@ void puzzle::checkCubiesForHit(ofVec3f _pnt){
 				activeCubie = nearestId;
 				//myCubies[activeCubie]->setDraw(false);
 				activeTriangle = myCubies[activeCubie]->getNearestTri(_pnt);
-				//ofVec3f n = tri.getNormal();
-				//vector<Triangle> tris = myCubies[activeCubie]->getTrianglesByNormal(n);
-				//myCubies[activeCubie]->setColorToSet(tris, ofFloatColor(1.0,1.0,1.0));
+				ofVec3f n = activeTriangle.getNormal();
+				vector<Triangle> tris = myCubies[activeCubie]->getTrianglesByNormal(n);
+				myCubies[activeCubie]->setColorToSet(tris, ofFloatColor(1.0,1.0,1.0));
 				//cout << "Nearest tri normal = " << n.x << ", " << n.y << ", " << n.z << endl;
 			}
 		}

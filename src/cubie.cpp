@@ -561,6 +561,13 @@ void cubie::setRotate(bool _rotate){
 	bRotate = _rotate;
 }
 
+void cubie::setColorToSet(vector<Triangle> _tris, ofFloatColor _c){
+	myMeshs[0].setColorToSet(_tris, _c);
+	ofVbo tempVbo;
+	tempVbo.setMesh(myMeshs[0], GL_STATIC_DRAW);
+	myVbos[0]=tempVbo;
+}
+
 //-------------------------------------------------------------------------------------------------------------------------------------------
 void cubie::move(SG_VECTOR p){
 	pos = p;

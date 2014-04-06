@@ -19,6 +19,7 @@ menuPuzzle::menuPuzzle(SG_VECTOR p, SG_VECTOR t, int ID ) : GuiNode(){
 	addParam("n", "1");
 	addParam("droppable", "true");
 	addParam("tap","true");
+	addParam("active","true");
 
 	//pos.set((float)tempPos.x, (float)tempPos.y);
 	//size.set(200,200);
@@ -31,7 +32,7 @@ menuPuzzle::menuPuzzle(SG_VECTOR p, SG_VECTOR t, int ID ) : GuiNode(){
 	drawPos.x = tempPos.x;
 	drawPos.y = tempPos.y;
 
-	viewport.x = drawPos.x;
+	viewport.x = drawPos.x;   
 	viewport.y = drawPos.y;
 	viewport.width = tempSize.x;
 	viewport.height = tempSize.y;
@@ -65,7 +66,6 @@ void menuPuzzle::nodeInit(){
 	//drawPos.set((float)tempPos.x, (float)tempPos.y);
 	//drawPos.set(0,0);
 	//drawSize.set(200,200);
-
 	activate();
 }
 

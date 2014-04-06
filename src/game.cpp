@@ -1024,7 +1024,7 @@ void game::guiInput(int in){
 				unDo();
 			}
 			/////////////////////////////////////////////// SAVE PUZZLE /////////////////////////////////////////
-			if(in == 's') {
+			if(in == '.') {
 				//save current puzzle and put it on the middle puzzle section
 				savePuzzleB = true;
 			}

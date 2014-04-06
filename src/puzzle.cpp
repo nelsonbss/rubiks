@@ -555,6 +555,14 @@ void puzzle::rotateByIDandAxis(int id, SG_VECTOR axis, bool dir,float angle){
 	}
 }
 //--------------------------------------------------------------------------------------------
+void puzzle::goBack(){
+	for(int i=0;i<numPieces;i++){
+		if(myCubies[i] != NULL){
+			myCubies[i]->goBack();
+		}
+	}
+}
+//--------------------------------------------------------------------------------------------
 void puzzle::update(string _eventName, SubObEvent* _event){
 	if(_eventName == "ibox-bl:1"){
 		int phase = _event->getArg("phase")->getInt();
@@ -831,7 +839,6 @@ void puzzle::input(string _type, int _ID, int _n, int _phase, ofVec2f _absPos, o
 void puzzle::rearange3dArray(SG_VECTOR axis, int plane, bool dir){
 	//rearanges ids of cubies inside the 3d array
 	//it deppends on the axis, plane on that axis, and the direction of rotation!!
-	ofDrawBitmapString("HHHHHHHHHHHHHHHHHHHEEEEEEEEEEEEEEEEEEEEEEEEYYYYYYYYYYYYYYYYYY' " + ofToString("") +"\n" ,20, 160);
 
 	int store[9] = {0,0,0,0,0,0,0,0,0};
 	int ctr =0;

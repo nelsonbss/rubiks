@@ -57,6 +57,8 @@ public:
 	bool dir;
 	bool moving;
 	bool isMoving();
+	bool goBackb;
+	void goBack();
 
 	//float ct1;
 	//float ct2;

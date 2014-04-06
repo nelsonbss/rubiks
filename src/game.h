@@ -109,6 +109,8 @@ public:
 	vector<history> historyV; 
 	void unDo();
 
+	void goBack();
+
 
 	//face rotation bytwo ids
 	void rotateTwoIds(int cubieA, int cubieB,bool inside);

@@ -83,7 +83,7 @@ bool cubie::faceRotate(SG_VECTOR axis,bool di,float angle){
 	//its invoked on a group of cubies determined by the puzzle..??(stil lneeds to be determined)
 	//use this cubies objectList to draw elements without ever loosing them on groupBreaking
 	if(objects != NULL){
-		if(moving == false){
+		if(moving == false && goBackb == false){
 			if(undoing == false){
 				SG_POINT protFace = {0,0,0};
 				//SG_VECTOR vrotFace = axis;
@@ -147,9 +147,59 @@ bool cubie::faceRotate(SG_VECTOR axis,bool di,float angle){
 		return false;
 	}
 }
+//---------------------------------------------------------------
+void cubie::goBack(){
+	goBackb = true;
+}
 //--------------------------------------------------------------
 void cubie::update(){
 	if(numObjs > 0){
+
+
+		if(goBackb==true){
+			//////////////////////////////////////////////////////////////////////////////////////////////////////
+			//do animation to 0 position from masterAngle position
+			for (int j=0; j < numObjs; j++){
+				SG_POINT protFace = {pointRotate.x,pointRotate.y,pointRotate.z};		///////////////////////////////////////////								 
+				if(dir == true){
+					//animate rotation xc
+					//if(movingXC == true){
+					if(masterAngle > 0 ){
+						double aux =  ofDegToRad(1);
+						objectList[0]->GetTempMatrix()->Rotate(protFace,vrotFace,aux);
+						masterAngle --;
+					}else{
+						//////rotXa = tempDeg2;
+						//////double aux =  ofDegToRad(rotXa);
+						////////for (int j=0; j < numObjs; j++){
+						//////objectList[0]->GetTempMatrix()->Rotate(protFace,vrotFace,aux);
+						////////}
+						goBackb = false;
+						masterAngle = 0;
+					}
+					//}
+				}else{
+					//xcc
+					if(masterAngle < 0 ){
+						double aux =  ofDegToRad(-1);
+							objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,aux);
+						masterAngle ++;
+					}else{
+						//////rotXa = tempDeg2;
+						//////double aux =  ofDegToRad(rotXa);
+						//////for (int j=0; j < numObjs; j++){
+						//////	objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,aux);
+						//////}
+						goBackb = false;
+						masterAngle = 0;
+					}
+					//}
+				}
+			}
+		}
+
+
+
 		if(moving==true){
 			/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			//do 90 deg animation to new position

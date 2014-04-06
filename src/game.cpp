@@ -1035,6 +1035,11 @@ void game::guiInput(int in){
 				int cubieB = 10;
 				rotateTwoIds(cubieA,cubieB,true);
 			}
+			///////////////////////do go back animation
+			if(in == 'z') {
+				//go back
+				goBack();
+			}
 			////////////////////////////////////////////// FACE ROTATIONS axis dir //////////////////////////////
 			////////  x axis  ////  x axis
 			if(in == 'q') {
@@ -1190,6 +1195,10 @@ void game::guiInput(int in){
 		//tell a game to restart 
 		restart();
 	}
+}
+//----------------------------------------------------------------------
+void game::goBack(){
+	myPuzzle->goBack();
 }
 //----------------------------------------------------------------------
 bool game::extrudeObject(ofPolyline *drawing){

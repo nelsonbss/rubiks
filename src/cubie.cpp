@@ -33,6 +33,7 @@ cubie::cubie(float x, float y,float z, int idi, int selObjId, ofVec3f offset){
 	myMatrix.push_back(matrix(axis,0.0,true));
 	//to control undo
 	undoing = false;
+	goBackb = false;
 
 	bDraw = true;
 	bDrawWire = false;
@@ -162,39 +163,22 @@ void cubie::update(){
 			//do animation to 0 position from masterAngle position
 			for (int j=0; j < numObjs; j++){
 				SG_POINT protFace = {pointRotate.x,pointRotate.y,pointRotate.z};		///////////////////////////////////////////								 
-				if(dir == true){
-					//animate rotation xc
-					//if(movingXC == true){
-					if(masterAngle > 0 ){
-						double aux =  ofDegToRad(1);
-						objectList[0]->GetTempMatrix()->Rotate(protFace,vrotFace,aux);
-						masterAngle --;
-					}else{
-						//////rotXa = tempDeg2;
-						//////double aux =  ofDegToRad(rotXa);
-						////////for (int j=0; j < numObjs; j++){
-						//////objectList[0]->GetTempMatrix()->Rotate(protFace,vrotFace,aux);
-						////////}
-						goBackb = false;
-						masterAngle = 0;
-					}
-					//}
+				if(masterAngle < 0 ){
+					double aux =  ofDegToRad(1);
+					objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,aux);
+					masterAngle ++;
+				}else if(masterAngle > 0 ){
+					double aux =  ofDegToRad(-1);
+					objectList[0]->GetTempMatrix()->Rotate(protFace,vrotFace,aux);
+					masterAngle --;
 				}else{
-					//xcc
-					if(masterAngle < 0 ){
-						double aux =  ofDegToRad(-1);
-							objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,aux);
-						masterAngle ++;
-					}else{
-						//////rotXa = tempDeg2;
-						//////double aux =  ofDegToRad(rotXa);
-						//////for (int j=0; j < numObjs; j++){
-						//////	objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,aux);
-						//////}
-						goBackb = false;
-						masterAngle = 0;
-					}
-					//}
+					//////rotXa = tempDeg2;
+					//////double aux =  ofDegToRad(rotXa);
+					//////for (int j=0; j < numObjs; j++){
+					//////	objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,aux);
+					//////}
+					goBackb = false;
+					masterAngle = 0;
 				}
 			}
 		}
@@ -250,7 +234,7 @@ void cubie::update(){
 						rotXa -= 1;//animTime;//0.1;  //(ct2 - ct1)*((1.57)/animTime);
 						double aux =  ofDegToRad(-1);
 						//////for (int j=0; j < numObjs; j++){
-							objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,aux);
+						objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,aux);
 						//////}
 						//ct1 = ct2;
 					}else{

@@ -84,7 +84,7 @@ void armature::setup(){
 	box5.rotate(0, 0, 1.0, 0.0);
 
 	box6.set( side,side,depth);
-	box6.setPosition(0, 0,width/2);
+	box6.setPosition(0, 0,-width/2);
 	box6.rotate(0, 0, 1.0, 0.0);
 	//END/////BOXES//////////////////////////////////////////////////////////////////////
 }
@@ -165,7 +165,7 @@ void armature::moveA(ofVec3f input){
 }
 //--------------------------------------------------------------
 void armature::rotateA(ofVec3f input){
-	rot.x +=  input.x;
-	rot.y += input.y;
+	rot.x +=  input.y;
+	rot.y -= input.x;
 	rot.z += input.z;
 }

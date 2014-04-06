@@ -62,6 +62,8 @@ public:
 	bool moving;
 	bool isMoving();
 
+	void goBack();
+
 	//color faces
 	void colorFaces(int objectID);
 	void colorCubiesBlackSides();

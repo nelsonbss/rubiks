@@ -143,10 +143,10 @@ void myobject3D::applyArmRotations(ofVec3f v){
 	SG_POINT rotP = {0,0,0};
 	SG_VECTOR rotV = {1,0,0};
 	object->InitTempMatrix()->Rotate(rotP,rotV,ofDegToRad(armRot.x));
-	SG_VECTOR rotV2 = {0,1,0};
-	object->GetTempMatrix()->Rotate(rotP,rotV2,ofDegToRad(armRot.y));
-	SG_VECTOR rotV3 = {0,0,1};
-	object->GetTempMatrix()->Rotate(rotP,rotV3,ofDegToRad(armRot.z));
+	//SG_VECTOR rotV2 = {0,1,0};
+	//object->GetTempMatrix()->Rotate(rotP,rotV2,ofDegToRad(armRot.y));
+	//SG_VECTOR rotV3 = {0,0,1};
+	//object->GetTempMatrix()->Rotate(rotP,rotV3,ofDegToRad(armRot.z));
 	object->ApplyTempMatrix();
 	object->DestroyTempMatrix(); 
 }

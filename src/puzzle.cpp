@@ -639,7 +639,7 @@ void puzzle::checkCubiesForHit(ofVec3f _pnt){
 				activeCubie = nearestId;
 				//myCubies[activeCubie]->setDraw(false);
 				activeTriangle = myCubies[activeCubie]->getNearestTri(_pnt);
-				//ofVec3f n = tri.getNormal();
+				//ofVec3f n = activeTriangle.getNormal();
 				//vector<Triangle> tris = myCubies[activeCubie]->getTrianglesByNormal(n);
 				//myCubies[activeCubie]->setColorToSet(tris, ofFloatColor(1.0,1.0,1.0));
 				//cout << "Nearest tri normal = " << n.x << ", " << n.y << ", " << n.z << endl;
@@ -727,6 +727,7 @@ void puzzle::dragInput(ofVec3f _pnt){
 		cout << "Dir - " << dir.x << ", " << dir.y << ", " << dir.z << endl;
 		cout << "Normal = " << normal.x << ", " << normal.y << ", " << normal.z << endl;
 		cout << "Axis - " << axis.x << ", " << axis.y << ", " << axis.z << endl;
+		cout << "Angle = " << angle << endl;
 		/*
 		if(abs(pnt.x) > abs(pnt.y) && abs(pnt.x) > abs(pnt.z)){
 		angle = pnt.x;
@@ -773,7 +774,11 @@ void puzzle::dragInput(ofVec3f _pnt){
 		} else {
 			SG_VECTOR t = {axis.x, axis.y, axis.z};
 			if(t.x == v.x && t.y == v.y && t.z == v.z){
-				rotateByIDandAxis(activeCubie, v, true, angle);		
+				bool bDir = true;
+				if(angle < 0.0){
+					bDir = false;
+				}
+				rotateByIDandAxis(activeCubie, v, bDir, angle);		
 			}
 		}
 	}

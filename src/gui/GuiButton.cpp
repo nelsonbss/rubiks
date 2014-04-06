@@ -96,6 +96,7 @@ void GuiButton::nodeExecute(){
 		SubObEvent ev;
 		ev.setName("new-color");
 		ev.addArg("color", sampleColor);
+		ev.addArg("pos", drawPos);
 		SubObMediator::Instance()->sendEvent("new-color", &ev);
 	}
 	cout << name << " executing." << endl;

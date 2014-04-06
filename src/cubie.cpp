@@ -19,6 +19,7 @@ cubie::cubie(float x, float y,float z, int idi, int selObjId, ofVec3f offset){
 	masterAngle = 0.0;
 
 	moving = false;
+	goBackb = false;
 
 	/*ct1 = 0.0;
 	ct2 = 0.0;*/
@@ -108,14 +109,14 @@ bool cubie::faceRotate(SG_VECTOR axis,bool di,float angle){
 				}
 
 				if(ofSign(angle) > 0){
-					if(masterAngle >= 30){
+					if(masterAngle >= 45){
 						moving = true;
 						sample = false;
 						myMatrix.push_back(matrix(axis,90,di));
 						return true;
 					}
 				}else if(ofSign(angle) < 0){
-					if(masterAngle <= -30){
+					if(masterAngle <= -45){
 						moving = true;
 						sample = false;
 						myMatrix.push_back(matrix(axis,-90,di));
@@ -736,6 +737,13 @@ bool cubie::getRotate(){
 
 void cubie::setRotate(bool _rotate){
 	bRotate = _rotate;
+}
+
+void cubie::setColorToSet(vector<Triangle> _tris, ofFloatColor _c){
+	myMeshs[0].setColorToSet(_tris, _c);
+	ofVbo tempVbo;
+	tempVbo.setMesh(myMeshs[0], GL_STATIC_DRAW);
+	myVbos[0]=tempVbo;
 }
 
 //-------------------------------------------------------------------------------------------------------------------------------------------

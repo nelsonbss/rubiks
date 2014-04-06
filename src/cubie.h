@@ -119,7 +119,7 @@ public:
 	Triangle nearestTri;
 	Triangle getNearestTri(ofVec3f _pnt);
 	vector<Triangle> getTrianglesByNormal(ofVec3f _n){return myMeshs[0].getTrianglesByNormal(_n);}
-	void setColorToSet(vector<Triangle> _tris, ofFloatColor _c){return myMeshs[0].setColorToSet(_tris, _c);}
+	void setColorToSet(vector<Triangle> _tris, ofFloatColor _c);
 
 	void printCurrentCentroid();
 };

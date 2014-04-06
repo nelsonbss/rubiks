@@ -291,9 +291,11 @@ void game::update(string _eventName, SubObEvent* _event){
 	if(_eventName == "new-color"){
 		//ofFloatColor menuColor = ofFloatColor (1, 0, 1); //this color comes from the GUI
 		ofVec3f newColor = _event->getArg("color")->getVec3();
+		ofVec2f pos = _event->getArg("pos")->getVec2();
 		ofFloatColor menuColor = ofFloatColor(newColor.x / 255.0, newColor.y / 255.0, newColor.z / 255.0);
-		changeColorToColor(sc,menuColor);
-		sc = menuColor;
+		//changeColorToColor(sc,menuColor);
+		//sc = menuColor;
+		changeFaceColor(pos, menuColor);
 	}
 }
 //----------------------------------------------------------------------
@@ -697,6 +699,11 @@ void game::setCurrentStep(int s){
 void game::changeColorToColor(ofFloatColor sc, ofFloatColor tc){
 	myPuzzle->changeColorToColor(sc,tc);
 }
+
+void game::changeFaceColor(ofVec2f pos, ofFloatColor c){
+	
+}
+
 //----------------------------------------------------------------------
 void game::moveA (ofVec3f input){
 	int xp = offsetSlicer.x + input.x;

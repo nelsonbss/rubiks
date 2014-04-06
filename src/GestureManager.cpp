@@ -107,6 +107,7 @@ void GestureManager::update(string _eventName, SubObEvent* _event){
 		nPoint.init(tId, pos.x, pos.y, 0, 1, 1);
 		nPoint.status = gwc::TOUCHADDED;
 		addEvent(nPoint);
+		cout << "adding touch point - " << tId << endl;
 	}
 	if(_eventName == "update-touch-point"){
 		ofVec3f pos = _event->getArg("position")->getVec3();
@@ -123,6 +124,7 @@ void GestureManager::update(string _eventName, SubObEvent* _event){
 		nPoint.init(tId, pos.x, pos.y, 0, 1, 1);
 		nPoint.status = gwc::TOUCHREMOVED;
 		addEvent(nPoint);
+		cout << "removing touch point - " << tId << endl;
 	}
 }
 

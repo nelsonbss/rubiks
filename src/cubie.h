@@ -51,7 +51,7 @@ public:
 	//its a vector since we don't know how many transformations a cubie is going to have
 	vector<matrix> myMatrix; 
 	void faceRotate(SG_VECTOR axis, bool dir);
-	void faceRotate(SG_VECTOR axis, bool dir,float angle);
+	bool faceRotate(SG_VECTOR axis, bool dir,float angle);
 	float masterAngle;
 	SG_VECTOR vrotFace;
 	bool dir;

@@ -78,7 +78,7 @@ void cubie::setup(){
 	}
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
-void cubie::faceRotate(SG_VECTOR axis,bool di,float angle){
+bool cubie::faceRotate(SG_VECTOR axis,bool di,float angle){
 	//this function is to handle a face rotation for a cubbie
 	//its invoked on a group of cubies determined by the puzzle..??(stil lneeds to be determined)
 	//use this cubies objectList to draw elements without ever loosing them on groupBreaking
@@ -111,15 +111,18 @@ void cubie::faceRotate(SG_VECTOR axis,bool di,float angle){
 						moving = true;
 						sample = false;
 						myMatrix.push_back(matrix(axis,90,di));
+						return true;
 					}
 				}else if(ofSign(angle) < 0){
 					if(masterAngle <= -30){
 						moving = true;
 						sample = false;
 						myMatrix.push_back(matrix(axis,-90,di));
+						return true;
 					}
 				}
 
+				return false;
 				//}else{
 				//	//cc
 				//	//myMatrix.push_back(matrix(axis,-angle,di));
@@ -141,6 +144,7 @@ void cubie::faceRotate(SG_VECTOR axis,bool di,float angle){
 
 	}else{
 		//cout << "null at face rotation" << endl;
+		return false;
 	}
 }
 //--------------------------------------------------------------
@@ -189,31 +193,33 @@ void cubie::update(){
 					//}
 				}else{
 					//xcc
+					tempDeg2 = -90-masterAngle;
 					//if(movingXCC == true){
-					//////////if(rotXa > tempDeg2){
-					//////////	//ct2 = ofGetElapsedTimeMillis();
-					//////////	rotXa -= animTime;//0.1;  //(ct2 - ct1)*((1.57)/animTime);
-					//////////	double aux =  ofDegToRad(rotXa);
-					//////////	for (int j=0; j < numObjs; j++){
-					//////////		objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,aux);
-					//////////	}
-					//////////	//ct1 = ct2;
-					//////////}else{
-					//////////	rotXa = tempDeg2;
-					//////////	double aux =  ofDegToRad(rotXa);
-					//////////	for (int j=0; j < numObjs; j++){
-					//////////		objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,aux);
-					//////////	}
-					//////////	moving = false;
-					//////////	//movingXCC = false;
-					//////////	//if(undoing == true){
-					//////////	//	//pop 2 histories on this cubie
-					//////////	//	//this wwill leave us in the same position
-					//////////	//	myMatrix.pop_back();
-					//////////	//	myMatrix.pop_back();
-					//////////	//	undoing=false;
-					//////////	//}
-					//////////}
+					if(rotXa > tempDeg2){
+						//ct2 = ofGetElapsedTimeMillis();
+						rotXa -= 1;//animTime;//0.1;  //(ct2 - ct1)*((1.57)/animTime);
+						double aux =  ofDegToRad(-1);
+						//////for (int j=0; j < numObjs; j++){
+							objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,aux);
+						//////}
+						//ct1 = ct2;
+					}else{
+						//////rotXa = tempDeg2;
+						//////double aux =  ofDegToRad(rotXa);
+						//////for (int j=0; j < numObjs; j++){
+						//////	objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,aux);
+						//////}
+						moving = false;
+						masterAngle = 0;
+						//movingXCC = false;
+						//if(undoing == true){
+						//	//pop 2 histories on this cubie
+						//	//this wwill leave us in the same position
+						//	myMatrix.pop_back();
+						//	myMatrix.pop_back();
+						//	undoing=false;
+						//}
+					}
 					//}
 				}
 			}

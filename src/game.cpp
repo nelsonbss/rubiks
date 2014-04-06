@@ -350,9 +350,9 @@ void game::draw(){
 	}
 	if(step == 5){
 		//show puzzle
-		
+
 		curRot.getRotate(angle, axistb);
-		
+
 		glPushMatrix();
 		//glTranslatef(posP.x,posP.y,posP.z);
 		ofTranslate(posP.x, posP.y, posP.z);
@@ -715,11 +715,17 @@ void game::moveA (ofVec3f input){
 }
 //----------------------------------------------------------------------
 void game::rotateA (ofVec3f input){
-	myArmature->rotateA(input);
-	//move the offset vector of the cutter at the same time as the armature
-	rotateSlicer.x += input.x;
-	rotateSlicer.y += input.y;
-	rotateSlicer.z += input.z;
+	int rx = input.x;
+	int ry = input.y;
+	int rz = input.z;
+
+	//if(){
+		myArmature->rotateA(input);
+		//move the offset vector of the cutter at the same time as the armature
+		rotateSlicer.x += input.x;
+		rotateSlicer.y += input.y;
+		rotateSlicer.z += input.z;
+	//}
 }
 //----------------------------------------------------------------------
 ofVec3f game::giveOffset(){

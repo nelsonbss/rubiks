@@ -53,6 +53,8 @@ public:
 	void faceRotate(SG_VECTOR axis, bool dir);
 	void faceRotate(SG_VECTOR axis, bool dir,float angle);
 	float masterAngle;
+	SG_VECTOR vrotFace;
+	bool dir;
 	bool moving;
 	bool isMoving();
 
@@ -62,6 +64,7 @@ public:
 
 	bool sample;
 	double rotXa;
+	double tempDeg2;
 
 	//undo
 	bool undoing;

@@ -123,6 +123,8 @@ public:
 	void setColorToSet(vector<Triangle> _tris, ofFloatColor _c);
 
 	void printCurrentCentroid();
+
+	void updatePosition();
 };
 
 #endif /* defined(__Tcubie__cubie__) */

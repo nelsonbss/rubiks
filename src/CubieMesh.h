@@ -9,9 +9,11 @@ public:
 	Triangle(){}
 	Triangle(int _in1, int _in2, int _in3, ofVec3f _v1, ofVec3f _v2, ofVec3f _v3, ofVec3f _dir, ofFloatColor _c);
 	ofVec3f getNormal(){return normal;}
+	void setNormal(ofVec3f _n){normal = _n;}
 	ofVec3f getCenter(){return center;}
 	ofFloatColor getColor(){return color;}
 	vector<int> getIndeces(){return indeces;}
+	vector<ofVec3f>getVertices(){return vertices;}
 
 private:
 	vector<int> indeces;
@@ -30,6 +32,8 @@ public:
 	vector<Triangle> getTrianglesByNormal(ofVec3f _n);
 	vector<Triangle> getTrianglesByColor(ofVec3f _c);
 	void setColorToSet(vector<Triangle>, ofFloatColor _c);
+	void rotateNormals(float _angle, ofVec3f _axis);
+	void rotateVertices(float _angle, ofVec3f _axis);
 
 private:
 	vector<Triangle> triangles;

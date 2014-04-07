@@ -249,36 +249,7 @@ void cubie::update(){
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-			/////////////////////////////////////USNING HISTORY VECTOR
+			/////////////////////////////////////USING HISTORY VECTOR
 			////if(myMatrix.size()>=2){
 			////	for(int i=0; i<myMatrix.size()-1;i++){
 			////		//build rotation matrix for all steps up to the one where it was at the moment of a new movement

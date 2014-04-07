@@ -564,6 +564,7 @@ void puzzle::goBack(){
 }
 //--------------------------------------------------------------------------------------------
 void puzzle::update(string _eventName, SubObEvent* _event){
+	/*
 	if(_eventName == "ibox-bl:1"){
 		int phase = _event->getArg("phase")->getInt();
 		//cout << "puzzle phase = " << phase << endl;
@@ -586,6 +587,7 @@ void puzzle::update(string _eventName, SubObEvent* _event){
 		//cout << "doing rotation." << endl;
 		doRotation();
 	}
+	*/
 }
 
 void puzzle::unprojectPoint(){
@@ -641,7 +643,9 @@ void puzzle::checkCubiesForHit(ofVec3f _pnt){
 				activeTriangle = myCubies[activeCubie]->getNearestTri(_pnt);
 				//ofVec3f n = activeTriangle.getNormal();
 				//vector<Triangle> tris = myCubies[activeCubie]->getTrianglesByNormal(n);
-				//myCubies[activeCubie]->setColorToSet(tris, ofFloatColor(1.0,1.0,1.0));
+				//ofSeedRandom();
+				//ofFloatColor rColor = ((float)ofRandom(0,255) / 255.0, (float)ofRandom(0,255) / 255.0, (float)ofRandom(0,255) / 255.0);
+				//myCubies[activeCubie]->setColorToSet(tris, rColor);
 				//cout << "Nearest tri normal = " << n.x << ", " << n.y << ", " << n.z << endl;
 			}
 		}
@@ -781,6 +785,16 @@ void puzzle::dragInput(ofVec3f _pnt){
 				rotateByIDandAxis(activeCubie, v, bDir, angle);		
 			}
 		}
+	}
+}
+
+void puzzle::changeFaceColor(ofVec3f _pnt, ofFloatColor _c){
+	activeCubie = -1;
+	checkCubiesForHit(_pnt);
+	if(activeCubie > -1){
+		ofVec3f n = activeTriangle.getNormal();
+		vector<Triangle> tris = myCubies[activeCubie]->getTrianglesByNormal(n);
+		myCubies[activeCubie]->setColorToSet(tris, _c);
 	}
 }
 

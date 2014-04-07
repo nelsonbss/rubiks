@@ -71,8 +71,8 @@ vector<Triangle> CubieMesh::getTrianglesByColor(ofVec3f _c){
 		//setColor(tIter->getIndeces()[1], _c);
 		//setColor(tIter->getIndeces()[2], _c);
 		colorsVectorT[tIter->getIndeces()[0]] = _c;
-		colorsVectorT[tIter->getIndeces()[0]] = _c;
-		colorsVectorT[tIter->getIndeces()[0]] = _c;
+		colorsVectorT[tIter->getIndeces()[1]] = _c;
+		colorsVectorT[tIter->getIndeces()[2]] = _c;
 	}
 	clearColors();
 	addColors(colorsVectorT);

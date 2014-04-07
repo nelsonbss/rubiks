@@ -169,7 +169,7 @@ void GestureManager::getGestures(){
 	}
 	std::vector<gwc::GestureEvent> gestureEvents = consumeGestureEvents();
 	for(std::vector<gwc::GestureEvent>::iterator gIter = gestureEvents.begin(); gIter != gestureEvents.end(); gIter++) {
-		//cout << gIter->gesture_type << " - " << gIter->x << ", " << gIter->y << " - " << gIter->phase << endl;
+		cout << gIter->gesture_type << " - " << gIter->x << ", " << gIter->y << " - " << gIter->phase << endl;
 		if(gIter->gesture_type == "tap"){
 			cout << "tap to " << gIter->target << endl;
 		}

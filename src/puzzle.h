@@ -97,6 +97,8 @@ public:
 
 	void doRotation();
 
+	void changeFaceColor(ofVec3f _pnt, ofFloatColor _c);
+
 	//   //current state of the rotation
 	//ofQuaternion curRot;
 	////a place to store the mouse position so we can measure incremental change
@@ -116,7 +118,7 @@ public:
 	float getMainComponent(ofVec3f _pnt);
 	bool bHaveAxis;
 	SG_VECTOR v;
-	void endRotation(){bHaveAxis = false;}
+	void endRotation(){bHaveAxis = false; activeCubie = -1;}
 };
 
 #endif /* defined(__Tpuzzle__puzzle__) */

@@ -63,6 +63,7 @@ game::game(SG_VECTOR gamePos, float w, float h, SG_VECTOR displayPos, float iddl
 	SubObMediator::Instance()->addObserver("ibox-bl-tap", this);
 	SubObMediator::Instance()->addObserver("new-color", this);
 	SubObMediator::Instance()->addObserver("ibox-bl:1", this);
+	SubObMediator::Instance()->addObserver("ibox-bl:0", this);
 
 	extrudedB = false;
 	bExtrude = false;
@@ -237,12 +238,16 @@ void game::update(string _eventName, SubObEvent* _event){
 			mousePoint.set(p.x, p.y, 0);
 		}
 	}
+	if(_eventName == "ibox-bl:0"){
+		myPuzzle->endRotation();
+	}
 	if(_eventName == "ibox-bl:1"){
 		//cout << "game bl:1" << endl;
 		ofVec3f m = _event->getArg("deltaPos")->getVec2();
 		moveA(m);
 		if(step == 5){
 			int phase = _event->getArg("phase")->getInt();
+			cout << "Game - phase = " << phase << endl;
 			if(phase == 0){
 				ofVec2f p = _event->getArg("absPos")->getVec2();
 				//cout << "phase = " << phase << " p = " << p.x << ", " << p.y << endl;
@@ -263,7 +268,11 @@ void game::update(string _eventName, SubObEvent* _event){
 					bUnproject = true;
 					bDragInput = true;
 					mousePoint.set(p.x, p.y, 0);
+					unprojectMode = UP_MODE_MOUSE;
 				}
+			} else if(phase > 1){
+				cout << "Ending rotation." << endl;
+				myPuzzle->endRotation();
 			}
 		}
 	}
@@ -292,10 +301,15 @@ void game::update(string _eventName, SubObEvent* _event){
 		//ofFloatColor menuColor = ofFloatColor (1, 0, 1); //this color comes from the GUI
 		ofVec3f newColor = _event->getArg("color")->getVec3();
 		ofVec2f pos = _event->getArg("pos")->getVec2();
-		ofFloatColor menuColor = ofFloatColor(newColor.x / 255.0, newColor.y / 255.0, newColor.z / 255.0);
+		newFaceColor = ofFloatColor(newColor.x / 255.0, newColor.y / 255.0, newColor.z / 255.0);
+		if(!bUnproject){
+			mousePoint.set(pos.x, pos.y, 0);
+			bUnproject = true;
+			unprojectMode = UP_MODE_COLOR;
+		}
 		//changeColorToColor(sc,menuColor);
 		//sc = menuColor;
-		changeFaceColor(pos, menuColor);
+		//changeFaceColor(pos, menuColor);
 	}
 }
 //----------------------------------------------------------------------
@@ -348,6 +362,29 @@ void game::draw(){
 		glRotatef(angle, axistb.x, axistb.y, axistb.z);
 		//glTranslatef(-posP.x,-posP.y,-posP.z);
 		myPuzzle->draw();
+		if(bUnproject){
+			ofVec3f realPoint = mousePoint;
+			if(bUseViewport){
+				//realPoint.x = (float)viewport.getWidth() * (mousePoint.x / (float)ofGetWidth()) + viewport.x;
+				//realPoint.y = (float)viewport.getHeight() * (mousePoint.y / (float)ofGetHeight()) + viewport.y;
+				//realPoint.x -= viewport.x;
+				//realPoint.y -= viewport.y;
+			}
+			unprojectedPoint = picker.unproject(realPoint, &viewport);
+			cout << "UP = " << unprojectedPoint.x << ", " << unprojectedPoint.y << ", " << unprojectedPoint.z << endl;
+			if(unprojectMode == UP_MODE_MOUSE){
+				if(!bDragInput){
+					myPuzzle->checkCubiesForHit(unprojectedPoint);
+					lastUnprojectedPoint = unprojectedPoint;
+				} else {
+					myPuzzle->dragInput(unprojectedPoint - lastUnprojectedPoint);
+					lastUnprojectedPoint = unprojectedPoint;
+				}
+			} else if(unprojectMode == UP_MODE_COLOR){
+				myPuzzle->changeFaceColor(unprojectedPoint, newFaceColor);
+			}
+			bUnproject = false;
+		}
 		glPopMatrix();
 	}
 	if(step == 5){
@@ -374,12 +411,16 @@ void game::draw(){
 			}
 			unprojectedPoint = picker.unproject(realPoint, &viewport);
 			cout << "UP = " << unprojectedPoint.x << ", " << unprojectedPoint.y << ", " << unprojectedPoint.z << endl;
-			if(!bDragInput){
-				myPuzzle->checkCubiesForHit(unprojectedPoint);
-				lastUnprojectedPoint = unprojectedPoint;
-			} else {
-				myPuzzle->dragInput(unprojectedPoint - lastUnprojectedPoint);
-				lastUnprojectedPoint = unprojectedPoint;
+			if(unprojectMode == UP_MODE_MOUSE){
+				if(!bDragInput){
+					myPuzzle->checkCubiesForHit(unprojectedPoint);
+					lastUnprojectedPoint = unprojectedPoint;
+				} else {
+					myPuzzle->dragInput(unprojectedPoint - lastUnprojectedPoint);
+					lastUnprojectedPoint = unprojectedPoint;
+				}
+			} else if(unprojectMode == UP_MODE_COLOR){
+				myPuzzle->changeFaceColor(unprojectedPoint, newFaceColor);
 			}
 			bUnproject = false;
 		}

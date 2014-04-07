@@ -15,6 +15,8 @@
 #include "menuPuzzle.h"
 #include "Picker.h"
 
+enum{UP_MODE_MOUSE, UP_MODE_COLOR};
+
 class game : public Observer{
 public:
 	game(SG_VECTOR p, float w, float h, SG_VECTOR puzzlePos, float iddleTime);
@@ -186,5 +188,8 @@ public:
 	bool bUseViewport;
 	void setUseViewport(bool _b){bUseViewport = _b;}
 	void toggleUseViewport(){bUseViewport != bUseViewport;}
+
+	int unprojectMode;
+	ofFloatColor newFaceColor;
 };
 #endif /* defined(__Tgame__game__) */

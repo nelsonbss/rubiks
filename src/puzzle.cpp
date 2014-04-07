@@ -488,11 +488,13 @@ void puzzle::rotateByIDandAxis(int id, SG_VECTOR axis, bool dir,float angle){
 	//it receives the id of a cubie,the axis and the direction of rotation
 	//it looks for the other 9 ids, according to the axis
 	//and makes those 9 myCubies[]->faceRotate
-	int selected[9];
+
+	//////////int selected[9];//now its global to do mouse release animations
+
 	int counter=0;
-	int selX =0;
-	int selY =0;
-	int selZ =0;
+	selX =0;//now its global to do mouse release animations
+	selY =0;
+	selZ =0;
 	//look for positon of cubie on the 3d data structure
 	for(int x=0;x<3;x++){
 		for(int y=0;y<3;y++){
@@ -538,29 +540,109 @@ void puzzle::rotateByIDandAxis(int id, SG_VECTOR axis, bool dir,float angle){
 		}
 		//rearange3dArray(axis,selZ,dir);
 	}
-	//now we tell the 9 selected cubies to rotate
-	bool rearrange=false;
-	for(int i=0;i<9;i++){
-		rearrange = myCubies[selected[i]]->faceRotate(axis,dir,angle);
-	}
 
-	if(rearrange==true){
-		if(axis.x != 0){
-			rearange3dArray(axis,selX,dir);
-		}else if(axis.y != 0){
-			rearange3dArray(axis,selY,dir);
+	//look for rotation constraints
+	//user could be dragging the rotating face beyond he 90 deg move
+
+	if(myCubies[selected[0]]->masterAngle <= 90 && myCubies[selected[0]]->masterAngle >= -90){
+		if(ofSign(myCubies[selected[0]]->masterAngle) > 0){
+			//positive rotation in relation to original position
+			if((myCubies[selected[0]]->masterAngle + angle) > 90){
+				//move until 90
+				angle = 90 - myCubies[selected[0]]->masterAngle;
+
+				for(int i=0;i<9;i++){
+					//rearrange = myCubies[selected[i]]->faceRotate(axis,dir,angle);
+					myCubies[selected[i]]->faceRotate(axis,dir,angle);
+				}
+			}else{
+				//now we tell the 9 selected cubies to rotate
+				//bool rearrange=false;
+				for(int i=0;i<9;i++){
+					//rearrange = myCubies[selected[i]]->faceRotate(axis,dir,angle);
+					myCubies[selected[i]]->faceRotate(axis,dir,angle);
+				}
+			}
 		}else{
-			rearange3dArray(axis,selZ,dir);
+			//negative rotation in relation to original position
+			if((myCubies[selected[0]]->masterAngle + angle) < -90){
+				//move until -90
+				angle = -90 - myCubies[selected[0]]->masterAngle;
+
+				for(int i=0;i<9;i++){
+					//rearrange = myCubies[selected[i]]->faceRotate(axis,dir,angle);
+					myCubies[selected[i]]->faceRotate(axis,dir,angle);
+				}
+			}else{
+				//now we tell the 9 selected cubies to rotate
+				//bool rearrange=false;
+				for(int i=0;i<9;i++){
+					//rearrange = myCubies[selected[i]]->faceRotate(axis,dir,angle);
+					myCubies[selected[i]]->faceRotate(axis,dir,angle);
+				}
+			}
 		}
-	}
+	} 
+
+
 }
 //--------------------------------------------------------------------------------------------
-void puzzle::goBack(){
-	for(int i=0;i<numPieces;i++){
-		if(myCubies[i] != NULL){
-			myCubies[i]->goBack();
+void puzzle::decideMove(){
+	//ask for the current masterangle of the selected cubies
+	//selected[] will have the latest 9 cubies active on the rotation
+
+	int angleM;
+	bool dirM;
+
+	//only need to ask one of the selected cubies, thay all have the same rotation angle
+	angleM = myCubies[selected[0]]->masterAngle;
+	dirM =  myCubies[selected[0]]->dir;
+
+	if(dirM == true){
+		//positive angle
+		if(angleM >= 45){
+			for(int i=0;i<9;i++){
+				//only need to ask one of the selected cubies, thay all have the same rotation angle
+				myCubies[selected[i]]->goForward();
+			}
+			//rearrange cubies involved on the move
+			if(myCubies[selected[0]]->vrotFace.x != 0){
+				rearange3dArray(myCubies[selected[0]]->vrotFace,selX,dirM);
+			}else if(myCubies[selected[0]]->vrotFace.y != 0){
+				rearange3dArray(myCubies[selected[0]]->vrotFace,selY,dirM);
+			}else{
+				rearange3dArray(myCubies[selected[0]]->vrotFace,selZ,dirM);
+			}
+		}else{
+			for(int i=0;i<9;i++){
+				//only need to ask one of the selected cubies, thay all have the same rotation angle
+				myCubies[selected[i]]->goBack();
+			}
+		}
+	}else{
+		//negative angle
+		if(angleM <= -45){
+			for(int i=0;i<9;i++){
+				//only need to ask one of the selected cubies, thay all have the same rotation angle
+				myCubies[selected[i]]->goForward();
+			}
+			//rearrange cubies involved on the move
+			if(myCubies[selected[0]]->vrotFace.x != 0){
+				rearange3dArray(myCubies[selected[0]]->vrotFace,selX,dirM);
+			}else if(myCubies[selected[0]]->vrotFace.y != 0){
+				rearange3dArray(myCubies[selected[0]]->vrotFace,selY,dirM);
+			}else{
+				rearange3dArray(myCubies[selected[0]]->vrotFace,selZ,dirM);
+			}
+		}else{
+			for(int i=0;i<9;i++){
+				//only need to ask one of the selected cubies, thay all have the same rotation angle
+				myCubies[selected[i]]->goBack();
+			}
 		}
 	}
+
+
 }
 //--------------------------------------------------------------------------------------------
 void puzzle::update(string _eventName, SubObEvent* _event){

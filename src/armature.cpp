@@ -151,7 +151,6 @@ void armature::draw(){
 	ofSetColor(0);
 	ofFill();
 	cylinder1.draw();
-
 	cylinder2.draw();
 	cylinder3.draw();
 	///////////////////////////////////////////////////////////////////////////////////////
@@ -169,8 +168,4 @@ void armature::rotateA(ofVec3f input){
 	rot.x +=  input.y;
 	rot.y -= input.x;
 	rot.z += input.z;
-
-	//rot.x +=  input.y;
-	//rot.y -= input.x;
-	//rot.z += input.z;
 }

@@ -239,7 +239,11 @@ void game::update(string _eventName, SubObEvent* _event){
 		}
 	}
 	if(_eventName == "ibox-bl:0"){
-		myPuzzle->endRotation();
+		if(bDragInput){
+			myPuzzle->endRotation();
+			myPuzzle->decideMove();
+			bDragInput = false;
+		}
 	}
 	if(_eventName == "ibox-bl:1"){
 		//cout << "game bl:1" << endl;
@@ -266,7 +270,7 @@ void game::update(string _eventName, SubObEvent* _event){
 				}
 				if(!bUnproject){
 					bUnproject = true;
-					bDragInput = true;
+					//bDragInput = true;
 					mousePoint.set(p.x, p.y, 0);
 					unprojectMode = UP_MODE_MOUSE;
 				}
@@ -415,6 +419,7 @@ void game::draw(){
 				if(!bDragInput){
 					myPuzzle->checkCubiesForHit(unprojectedPoint);
 					lastUnprojectedPoint = unprojectedPoint;
+					bDragInput = true;
 				} else {
 					myPuzzle->dragInput(unprojectedPoint - lastUnprojectedPoint);
 					lastUnprojectedPoint = unprojectedPoint;
@@ -1067,26 +1072,27 @@ void game::guiInput(int in){
 		//now the puzzle can be played with
 		int randcubie=13;//rand()%26;//to follow this cubie for now //this will be decided upon touch, or click on top of puzzle
 		if(myPuzzle->isMoving() == false){ //this is to prevent from reading events while puzzle is moving
-			if(in == 'u'){
-				//undo last move 
-				unDo();
-			}
+			//if(in == 'u'){
+			//	//undo last move 
+			//	unDo();
+			//}
 			/////////////////////////////////////////////// SAVE PUZZLE /////////////////////////////////////////
 			if(in == '.') {
 				//save current puzzle and put it on the middle puzzle section
 				savePuzzleB = true;
 			}
 			////////////////////////////////////////////// FACE ROTATIONS 2 ids /////////////////////////////////
-			if(in == 'z') {
-				//do rotationbased ontwo cubies id
-				int cubieA = 11;
-				int cubieB = 10;
-				rotateTwoIds(cubieA,cubieB,true);
-			}
+			//if(in == 'z') {
+			//	//do rotationbased ontwo cubies id
+			//	int cubieA = 11;
+			//	int cubieB = 10;
+			//	rotateTwoIds(cubieA,cubieB,true);
+			//}
 			///////////////////////do go back animation
 			if(in == 'z') {
-				//go back
-				goBack();
+				// simulates mouse released
+				//it activates forward, or go back animations
+				decideMove();
 			}
 			////////////////////////////////////////////// FACE ROTATIONS axis dir //////////////////////////////
 			////////  x axis  ////  x axis
@@ -1245,8 +1251,8 @@ void game::guiInput(int in){
 	}
 }
 //----------------------------------------------------------------------
-void game::goBack(){
-	myPuzzle->goBack();
+void game::decideMove(){
+	myPuzzle->decideMove();
 }
 //----------------------------------------------------------------------
 bool game::extrudeObject(ofPolyline *drawing){
@@ -1463,7 +1469,7 @@ void game::mousePressed(int x, int y, int button){
 }
 //--------------------------------------------------------------
 void game::mouseReleased(int x, int y, int button){
-	if(step == 6){
+	 if(step == 6){
 		myCanvas->mouseReleased(x,y,button);
 	}
 }

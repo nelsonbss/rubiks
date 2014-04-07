@@ -62,7 +62,11 @@ public:
 	bool moving;
 	bool isMoving();
 
-	void goBack();
+	int selected[9];
+	int selX;
+	int selY;
+	int selZ;
+	void decideMove();
 
 	//color faces
 	void colorFaces(int objectID);

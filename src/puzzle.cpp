@@ -598,8 +598,6 @@ void puzzle::rotateByIDandAxis(int id, SG_VECTOR axis, bool dir,float angle){
 			}
 		}
 	}
-
-
 }
 //--------------------------------------------------------------------------------------------
 void puzzle::decideMove(){

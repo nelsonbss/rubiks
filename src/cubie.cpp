@@ -80,7 +80,7 @@ void cubie::setup(){
 	//}
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
-bool cubie::faceRotate(SG_VECTOR axis,bool di,float angle){
+void cubie::faceRotate(SG_VECTOR axis,bool di,float angle){
 	//this function is to handle a face rotation for a cubbie
 	//its invoked on a group of cubies determined by the puzzle..??(stil lneeds to be determined)
 	//use this cubies objectList to draw elements without ever loosing them on groupBreaking
@@ -107,24 +107,6 @@ bool cubie::faceRotate(SG_VECTOR axis,bool di,float angle){
 						objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,ofDegToRad(angle));
 					}
 				}
-
-				if(ofSign(angle) > 0){
-					if(masterAngle >= 45){
-						moving = true;
-						sample = false;
-						myMatrix.push_back(matrix(axis,90,di));
-						return true;
-					}
-				}else if(ofSign(angle) < 0){
-					if(masterAngle <= -45){
-						moving = true;
-						sample = false;
-						myMatrix.push_back(matrix(axis,-90,di));
-						return true;
-					}
-				}
-
-				return false;
 				//}else{
 				//	//cc
 				//	//myMatrix.push_back(matrix(axis,-angle,di));
@@ -146,17 +128,23 @@ bool cubie::faceRotate(SG_VECTOR axis,bool di,float angle){
 
 	}else{
 		//cout << "null at face rotation" << endl;
-		return false;
 	}
 }
 //---------------------------------------------------------------
 void cubie::goBack(){
 	goBackb = true;
+	sample = false;
+	myMatrix.push_back(matrix(vrotFace,-90,dir));
+}
+//---------------------------------------------------------------
+void cubie::goForward(){
+	moving = true;
+	sample = false;
+	myMatrix.push_back(matrix(vrotFace,90,dir));
 }
 //--------------------------------------------------------------
 void cubie::update(){
 	if(numObjs > 0){
-
 
 		if(goBackb==true){
 			//////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -172,11 +160,6 @@ void cubie::update(){
 					objectList[0]->GetTempMatrix()->Rotate(protFace,vrotFace,aux);
 					masterAngle --;
 				}else{
-					//////rotXa = tempDeg2;
-					//////double aux =  ofDegToRad(rotXa);
-					//////for (int j=0; j < numObjs; j++){
-					//////	objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,aux);
-					//////}
 					goBackb = false;
 					masterAngle = 0;
 				}
@@ -211,7 +194,7 @@ void cubie::update(){
 						//////rotXa = tempDeg2;
 						//////double aux =  ofDegToRad(rotXa);
 						////////for (int j=0; j < numObjs; j++){
-						//////objectList[0]->GetTempMatrix()->Rotate(protFace,vrotFace,aux);
+						//objectList[0]->GetTempMatrix()->Rotate(protFace,vrotFace,90);
 						////////}
 						moving = false;
 						masterAngle = 0;

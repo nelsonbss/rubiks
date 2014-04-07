@@ -108,9 +108,7 @@ public:
 	//history to undo
 	vector<history> historyV; 
 	void unDo();
-
-	void goBack();
-
+	void decideMove();
 
 	//face rotation bytwo ids
 	void rotateTwoIds(int cubieA, int cubieB,bool inside);

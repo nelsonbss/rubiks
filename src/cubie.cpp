@@ -700,6 +700,20 @@ void cubie::setColorToSet(vector<Triangle> _tris, ofFloatColor _c){
 	myVbos[0]=tempVbo;
 }
 
+void cubie::updatePosition(){
+	ofVec3f axis(vrotFace.x, vrotFace.y, vrotFace.z);
+	float angle = 0.0;
+	if(dir){
+		angle = 90.0;
+	} else {
+		angle = -90.0;
+	}
+	for(auto cIter = myMeshs.begin(); cIter != myMeshs.end(); cIter++){
+		cIter->rotateNormals(angle, axis);
+		cIter->rotateVertices(angle, axis);
+	}
+}
+
 //-------------------------------------------------------------------------------------------------------------------------------------------
 void cubie::move(SG_VECTOR p){
 	pos = p;

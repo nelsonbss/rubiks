@@ -77,3 +77,18 @@ vector<Triangle> CubieMesh::getTrianglesByColor(ofVec3f _c){
 	clearColors();
 	addColors(colorsVectorT);
 }
+
+ void CubieMesh::rotateNormals(float _angle, ofVec3f _axis){
+	for(auto tIter = triangles.begin(); tIter != triangles.end(); tIter++){
+		tIter->setNormal(tIter->getNormal().rotate(_angle, _axis).normalize());
+	}
+ }
+
+ void CubieMesh::rotateVertices(float _angle, ofVec3f _axis){
+	for(auto tIter = triangles.begin(); tIter != triangles.end(); tIter++){
+		//tIter->getNormal().rotate(_angle, _axis);
+		tIter->getVertices()[0].rotate(_angle, _axis);
+		tIter->getVertices()[1].rotate(_angle, _axis);
+		tIter->getVertices()[2].rotate(_angle, _axis);
+	}
+ }

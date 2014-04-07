@@ -617,6 +617,7 @@ void puzzle::decideMove(){
 			for(int i=0;i<9;i++){
 				//only need to ask one of the selected cubies, thay all have the same rotation angle
 				myCubies[selected[i]]->goForward();
+				//myCubies[selected[i]]->updatePosition();
 			}
 			//rearrange cubies involved on the move
 			if(myCubies[selected[0]]->vrotFace.x != 0){
@@ -638,6 +639,7 @@ void puzzle::decideMove(){
 			for(int i=0;i<9;i++){
 				//only need to ask one of the selected cubies, thay all have the same rotation angle
 				myCubies[selected[i]]->goForward();
+				//myCubies[selected[i]]->updatePosition();
 			}
 			//rearrange cubies involved on the move
 			if(myCubies[selected[0]]->vrotFace.x != 0){
@@ -661,26 +663,26 @@ void puzzle::decideMove(){
 void puzzle::update(string _eventName, SubObEvent* _event){
 	/*
 	if(_eventName == "ibox-bl:1"){
-		int phase = _event->getArg("phase")->getInt();
-		//cout << "puzzle phase = " << phase << endl;
-		if(phase == 0){
-			ofVec2f pos = _event->getArg("absPos")->getVec2();
-			//myCubies[1]->setMousePoint(ofVec3f(pos.x, pos.y, 0));
-			if(isInside(pos.x, pos.y)){
-				cout << "puzzle got cubie." << endl;
-			}
-		}
-		if(phase == 1){
-			ofVec2f pos = _event->getArg("absPos")->getVec2();
-			bool result = isInside(pos.x, pos.y);
-		}
-		if(phase == 2){
-			doRotation();
-		}
+	int phase = _event->getArg("phase")->getInt();
+	//cout << "puzzle phase = " << phase << endl;
+	if(phase == 0){
+	ofVec2f pos = _event->getArg("absPos")->getVec2();
+	//myCubies[1]->setMousePoint(ofVec3f(pos.x, pos.y, 0));
+	if(isInside(pos.x, pos.y)){
+	cout << "puzzle got cubie." << endl;
+	}
+	}
+	if(phase == 1){
+	ofVec2f pos = _event->getArg("absPos")->getVec2();
+	bool result = isInside(pos.x, pos.y);
+	}
+	if(phase == 2){
+	doRotation();
+	}
 	}
 	if(_eventName == "ibox-bl:0"){
-		//cout << "doing rotation." << endl;
-		doRotation();
+	//cout << "doing rotation." << endl;
+	doRotation();
 	}
 	*/
 }
@@ -816,68 +818,32 @@ bool puzzle::isInside(int _x, int _y){
 void puzzle::dragInput(ofVec3f _pnt){
 	if(activeCubie > -1){
 		//ofVec3f pnt = _pnt.normalize();
-		ofVec3f normal = activeTriangle.getNormal();
-		ofVec3f dir = getDir(_pnt);
-		float angle = getMainComponent(_pnt);
-		dir.normalize();
-		ofVec3f axis = getDir(dir.getCrossed(normal));
-		//float angle = 0;
-		cout << "Dragged - " << _pnt.x << ", " << _pnt.y << ", " << _pnt.z << endl;
-		cout << "Dir - " << dir.x << ", " << dir.y << ", " << dir.z << endl;
-		cout << "Normal = " << normal.x << ", " << normal.y << ", " << normal.z << endl;
-		cout << "Axis - " << axis.x << ", " << axis.y << ", " << axis.z << endl;
-		cout << "Angle = " << angle << endl;
-		/*
-		if(abs(pnt.x) > abs(pnt.y) && abs(pnt.x) > abs(pnt.z)){
-		angle = pnt.x;
-		pnt.x = 0;
-		pnt.z = 0;
-		pnt.y = 1;
-		}
-		if(abs(pnt.y) > abs(pnt.x) && abs(pnt.y) > abs(pnt.z)){
-		angle = pnt.y;
-		pnt.y = 0;
-		pnt.z = 0;
-		pnt.x = 1;
-		}
-		if(abs(pnt.z) > abs(pnt.x) && abs(pnt.z) > abs(pnt.y)){
-		angle = pnt.z;
-		pnt.x = 0;
-		pnt.z = 0;
-		pnt.y = 1;
-		}
-		//angle = 2.0;
-		cout << "Cubie " << id << " got drag - " << pnt.x << ", " << pnt.y << ", " << pnt.z << " angle = " << angle << endl; 
-		cout << "Cubie " << id << " from - " << _pnt.x << ", " << _pnt.y << ", " << _pnt.z << endl; 
-		//cout << "Cubie " << id << " got drag - " << pnt.x << ", " << pnt.y << ", " << pnt.z << " angle = " << angle << endl; 
-		//SG_VECTOR v = {pnt.x, pnt.y, pnt.z};
-		if(!bHaveAxis){
-		v.x = pnt.x;
-		v.y = pnt.y;
-		v.z = pnt.z;
-		bHaveAxis = true;
-		} else {
-		SG_VECTOR t = {pnt.x, pnt.y, pnt.z};
-		if(t.x == v.x && t.y == v.y && t.z == v.z){
-		rotateByIDandAxis(activeCubie, v, true, angle);
-		}
-		}
-		//faceRotate(v, true, angle);
-		//myCubies[activeCubie]->dragInput(_pnt);
-		*/
-		if(!bHaveAxis){
-			v.x = axis.x;
-			v.y = axis.y;
-			v.z = axis.z;
-			bHaveAxis = true;
-		} else {
-			SG_VECTOR t = {axis.x, axis.y, axis.z};
-			if(t.x == v.x && t.y == v.y && t.z == v.z){
-				bool bDir = true;
-				if(angle < 0.0){
-					bDir = false;
+		if(_pnt.distance(ofVec3f(0,0,0)) > 0.05){
+			ofVec3f normal = activeTriangle.getNormal();
+			ofVec3f dir = getDir(_pnt);
+			float angle = floor(getMainComponent(_pnt));
+			dir.normalize();
+			ofVec3f axis = getDir(dir.getCrossed(normal));
+			//float angle = 0;
+			cout << "Dragged - " << _pnt.x << ", " << _pnt.y << ", " << _pnt.z << endl;
+			cout << "Dir - " << dir.x << ", " << dir.y << ", " << dir.z << endl;
+			cout << "Normal = " << normal.x << ", " << normal.y << ", " << normal.z << endl;
+			cout << "Axis - " << axis.x << ", " << axis.y << ", " << axis.z << endl;
+			cout << "Angle = " << angle << endl;
+			if(!bHaveAxis){
+				v.x = axis.x;
+				v.y = axis.y;
+				v.z = axis.z;
+				bHaveAxis = true;
+			} else {
+				SG_VECTOR t = {axis.x, axis.y, axis.z};
+				if(t.x == v.x && t.y == v.y && t.z == v.z){
+					bool bDir = true;
+					if(angle < 0.0){
+						bDir = false;
+					}
+					rotateByIDandAxis(activeCubie, v, bDir, angle);		
 				}
-				rotateByIDandAxis(activeCubie, v, bDir, angle);		
 			}
 		}
 	}
@@ -1173,6 +1139,7 @@ void puzzle::unDo(int id, SG_VECTOR axis, bool dir){
 	//now we tell the 9 selected cubies to rotate
 	for(int i=0;i<9;i++){
 		myCubies[selected[i]]->unDo(axis,dir);
+
 	}
 }
 //----------------------------------------------------------------

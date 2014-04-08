@@ -6,26 +6,87 @@
 
 
 ofRender::ofRender(){
-	mate = ofFloatColor(1.0,1.0,1.0,0.8);
-	mateSolid = ofFloatColor(1,1,1,255);
-	green = ofFloatColor(0,1,0);
-	orange = ofFloatColor(1.000, 0.549, 0.000);
-	white = ofFloatColor(1,1,1);
-	blue = ofFloatColor(0,0,1);
-	red = ofFloatColor(1,0,0);
-	yellow = ofFloatColor(1,1,0);
-	black = ofFloatColor(0,0,0);
-	cyan = ofFloatColor(0,1,1);
+	float r;
+	float g;
+	float b;
 
-	colorsVector.push_back(blue);//0
-	colorsVector.push_back(green);//1
-	colorsVector.push_back(red);//2
+	mate = ofFloatColor( 1.0,1.0,1.0,0.8);
+	mateSolid = ofFloatColor(1,1,1,255);
+
+	r = (float)236 / (float)255;
+	g = (float)33 / (float)255;
+	b = (float)36 / (float)255;
+	red = ofFloatColor(r,g,b);
+	r = (float)7 / (float)255;
+	g = (float)122 / (float)255;
+	b = (float)189 / (float)255;
+	blue = ofFloatColor(r,g,b);
+	r = (float)247/ (float)255;
+	g = (float)151 / (float)255;
+	b = (float)31 / (float)255;
+	orange = ofFloatColor(r,g,b);
+	white = ofFloatColor(1,1,1);
+	g = (float)171 / (float)255;
+	b = (float)104 / (float)255;
+	green = ofFloatColor(1,g,b);
+	r = (float)250/ (float)255;
+	g = (float)207 / (float)255;
+	b = (float)6 / (float)255;
+	yellow = ofFloatColor(r,g,b);
+	r = (float)230/ (float)255;
+	g = (float)109 / (float)255;
+	b = (float)248 / (float)255;
+	pink = ofFloatColor(r,g,b);
+	r = (float)132/ (float)255;
+	g = (float)45 / (float)255;
+	b = (float)235 / (float)255;
+	purple = ofFloatColor(r,g,b);
+	r = (float)147/ (float)255;
+	g = (float)209 / (float)255;
+	b = (float)12 / (float)255;
+	lightGreen = ofFloatColor(r,g,b);
+	r = (float)74/ (float)255;
+	g = (float)43 / (float)255;
+	b = (float)38 / (float)255;
+	brown = ofFloatColor(r,g,b);
+	r = (float)152/ (float)255;
+	gray = ofFloatColor(r,r,r);
+	r = (float)213/ (float)255;
+	g = (float)226 / (float)255;
+	b = (float)24 / (float)255;
+	yellowGreen = ofFloatColor(r,g,b);
+	r = (float)39/ (float)255;
+	g = (float)170 / (float)255;
+	b = (float)190 / (float)255;
+	aqua = ofFloatColor(r,g,b);
+	r = (float)72/ (float)255;
+	g = (float)71 / (float)255;
+	b = (float)201 / (float)255;
+	indigo = ofFloatColor(r,g,b);
+	r = (float)244/ (float)255;
+	g = (float)94 / (float)255;
+	b = (float)33 / (float)255;
+	redOrange = ofFloatColor(244,94,33);
+
+	black = ofFloatColor(0,0,0);
+
+
+	colorsVector.push_back(red);//0
+	colorsVector.push_back(blue);//1
+	colorsVector.push_back(orange);//2
 	colorsVector.push_back(white);//3
-	colorsVector.push_back(yellow);//4  
-	colorsVector.push_back(orange);//5
-	colorsVector.push_back(ofFloatColor(0.933, 0.510, 0.933));//6 violet
-	colorsVector.push_back(ofFloatColor(0.576, 0.439, 0.859));//7 medium purple
-	colorsVector.push_back(cyan);//8
+	colorsVector.push_back(green);//4  
+	colorsVector.push_back(yellow);//5
+	colorsVector.push_back(pink);//6 violet
+	colorsVector.push_back(purple);//7 medium purple
+	colorsVector.push_back(lightGreen);//8
+	colorsVector.push_back(brown);//9
+	colorsVector.push_back(gray);//10
+	colorsVector.push_back(yellowGreen);//11
+	colorsVector.push_back(aqua);//12
+	colorsVector.push_back(yellow);//13  
+	colorsVector.push_back(indigo);//14
+	colorsVector.push_back(redOrange);//15
 }
 
 void ofRender::sgCoretoOFmesh(sgC3DObject *obj, CubieMesh&mesh,int idCubie,int selectedObjectID){
@@ -87,13 +148,13 @@ void ofRender::sgCoretoOFmesh(sgC3DObject *obj, CubieMesh&mesh,int idCubie,int s
 		//ask if we color an original object with rubiks colors or plain color:: current selection is -2 for plain color
 		if(idCubie == -1){
 			//original shape with color...use this for pyramid 
-			c = cyan;//decideColor(decideAxisRange(dir,0));
+			c = redOrange;//decideColor(decideAxisRange(dir,0));
 		}else if (idCubie == -2){
 			//its an original shape  with plain color
 			c = mate;//colorsVector2[0];//mate
 		}else if (idCubie == -3){
 			//plain color, used for bunny
-			c = cyan;
+			c = redOrange;
 		}else{
 			//its another object
 			//we only want to color PLAIN the sample object
@@ -111,7 +172,7 @@ void ofRender::sgCoretoOFmesh(sgC3DObject *obj, CubieMesh&mesh,int idCubie,int s
 		colorsVector2.push_back(c);
 		colorsVector2.push_back(c);
 		colorsVector2.push_back(c);
-	
+
 		mesh.addTriangle(i, i+1, i+2, auxV1, auxV2, auxV3, dir, c);
 	}
 	mesh.addColors(colorsVector2);
@@ -146,7 +207,6 @@ void ofRender::colorFaces(cubie **myCubies, int numPieces, float playRoom, int o
 	//i.e. this will give 8 + 6 faces for octahedor
 	vector< ofVec3f > tnormals;
 	vector< ofFloatColor > tcolors;
-
 	//create sets of distitnct normals from all the meshes of all the cubies of the puzzle
 	vector< ofVec3f > uniqueNormals;
 
@@ -212,7 +272,7 @@ void ofRender::colorFaces(cubie **myCubies, int numPieces, float playRoom, int o
 	for(int i =0; i< uniqueNormals.size(); i++){
 		//for each unique normal
 		//for now we select from 9 possible colors that we have right now
-		ofFloatColor x =  colorsVector[i%9];
+		ofFloatColor x =  colorsVector[i%16];
 		uniqueColors.push_back(x);
 	}
 	//now -> uniqueColors.size = uniqueNormals.size
@@ -231,18 +291,34 @@ void ofRender::colorFaces(cubie **myCubies, int numPieces, float playRoom, int o
 				for(int n=0; n< tnormals.size() ; n++){
 					if(armX==0 && armY==0 && armZ == 0){
 						//if there are no arm rotations.. this works for cube official colors
-						if(((uniqueNormals[un].x - playRoom) <= tnormals[n].x) && 
-							(tnormals[n].x <= (uniqueNormals[un].x + playRoom)) &&
-							((uniqueNormals[un].y - playRoom) <= tnormals[n].y) && 
-							(tnormals[n].y <= (uniqueNormals[un].y + playRoom)) &&
-							((uniqueNormals[un].z - playRoom) <= tnormals[n].z) && 
-							(tnormals[n].z <= (uniqueNormals[un].z + playRoom))
-							){
-								//if the cubies meshs normal is one of the unique normals
-								//we assign a color to that normal on the cubie
-								//the index of the tnormal that we are looking at, is the same on the tcolors vector
-								//the color that we want is the one that corresponds to the uniqueNormals(index) that matched-> that same index is used to get color from uniqueColors(index) vector
-								tcolors[n] = uniqueColors[un];
+						if(objectID == 2){
+							//have to use the official colors
+							///rotate normal vectors to compensate for armature rotations z-y-x
+							//ask direction to color faces of cube 
+							if(tnormals[n].align(x, 2.0)){
+								tcolors[n] = blue; 
+							}else if(tnormals[n].align(y, 2.0)){
+								tcolors[n] = orange; 
+							}else if(tnormals[n].align(z, 2.0)){
+								tcolors[n] = yellow;
+							}else if(tnormals[n].align(xn, 2.0)){
+								tcolors[n] = green; 
+							}else if(tnormals[n].align(yn, 2.0)){
+								tcolors[n] = red; 
+							}else if(tnormals[n].align(zn, 2.0)){
+								tcolors[n] = white;
+							}
+						}else {
+							if (((uniqueNormals[un].x - playRoom) <= tnormals[n].x) && (tnormals[n].x <= (uniqueNormals[un].x + playRoom)) &&
+								((uniqueNormals[un].y - playRoom) <= tnormals[n].y) && (tnormals[n].y <= (uniqueNormals[un].y + playRoom)) &&
+								((uniqueNormals[un].z - playRoom) <= tnormals[n].z) && (tnormals[n].z <= (uniqueNormals[un].z + playRoom))
+								){
+									//if the cubies meshs normal is one of the unique normals
+									//we assign a color to that normal on the cubie
+									//the index of the tnormal that we are looking at, is the same on the tcolors vector
+									//the color that we want is the one that corresponds to the uniqueNormals(index) that matched-> that same index is used to get color from uniqueColors(index) vector
+									tcolors[n] = uniqueColors[un];
+							}
 						}
 					}else{
 						//arm rotations
@@ -1191,17 +1267,17 @@ ofColor ofRender::decideColorCubieBox(ofPoint normal, int idCubie){
 	if(idCubie==0){
 		//this is the center piece!! what to do with this??
 		if(normal==x){
-			c = cyan;
+			c = redOrange;
 		}else if(normal==y){
-			c = cyan;
+			c = redOrange;
 		}else if(normal==z){
-			c = cyan;
+			c = redOrange;
 		}else if(normal==xn){
-			c = cyan;
+			c = redOrange;
 		}else if(normal==yn){
-			c = cyan;
+			c = redOrange;
 		}else if(normal==zn){
-			c = cyan;
+			c = redOrange;
 		}
 	}else if (idCubie==1){
 		//middle center blue
@@ -1615,21 +1691,21 @@ ofColor ofRender::decideColorCubieDEBUG(ofPoint normal, int idCubie){
 	ofPoint zn = ofPoint(0,0,-1);
 
 	if(idCubie==0){
-		c = cyan;
+		c = redOrange;
 	}else if (idCubie==1){
 		c = blue;
 	}else if (idCubie==2){
 		c = yellow;
 	}else if (idCubie==3){
-		c = cyan;
+		c = redOrange;
 	}else if(idCubie==4){
 		c = green;
 	}else if(idCubie==5){
-		c = cyan;
+		c = redOrange;
 	}else if(idCubie==6){
 		c = white;
 	}else if(idCubie==7){
-		c = cyan;
+		c = redOrange;
 	}else if(idCubie==8){
 		c = blue;
 	}else if(idCubie==9){
@@ -1647,17 +1723,17 @@ ofColor ofRender::decideColorCubieDEBUG(ofPoint normal, int idCubie){
 	}else if(idCubie==15){
 		c = green;
 	}else if(idCubie==16){
-		c = cyan;
+		c = redOrange;
 	}else if(idCubie==17){
 		c = white;
 	}else if(idCubie==18){
-		c = cyan;
+		c = redOrange;
 	}else if(idCubie==19){
 		c = orange;
 	}else if(idCubie==20){
 		c = yellow;
 	}else if(idCubie==21){
-		c = cyan;
+		c = redOrange;
 	}else if(idCubie==22){
 		c = yellow;
 	}else if(idCubie==23){

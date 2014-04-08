@@ -18,6 +18,8 @@ drawingCanvas::drawingCanvas(ofVec3f posCanvasi, int widthi, int heighti){
 	SubObMediator::Instance()->addObserver("ibox-drawing:0", this);
 
 	bDrawing = false;
+
+	myCanvasImage.loadImage("drawingGrid.png");
 }
 //--------------------------------------------------------------
 void drawingCanvas::setup(){
@@ -33,6 +35,7 @@ void drawingCanvas::draw(){
 	ofSetColor(ofColor(1,0,0));
 	ofSetLineWidth(2);
 	//the coordinates for this box are from the center!!!! not the left/up corner!!!
+	myCanvasImage.draw(0,0,0,width,height);
 	ofBox(posCanvas.x,posCanvas.y,posCanvas.z,width,height,0);
 
 

@@ -11,7 +11,7 @@ class ofRender{
 public:
 	ofRender();
 	void sgCoretoOFmesh(sgC3DObject *obj, CubieMesh &mesh,int numCubie,int selectedObjectID);
-	void setNormals( ofMesh &mesh );
+	void setNormals(ofMesh &mesh);
 
 	vector <ofFloatColor> colorsVector;
 	ofFloatColor mate;
@@ -23,10 +23,18 @@ public:
 	ofFloatColor red;
 	ofFloatColor yellow;
 	ofFloatColor black;
-	ofFloatColor cyan;
+	ofFloatColor redOrange;
+	ofFloatColor pink;
+	ofFloatColor purple;
+	ofFloatColor lightGreen;
+	ofFloatColor brown;
+	ofFloatColor gray;
+	ofFloatColor yellowGreen;
+	ofFloatColor aqua;
+	ofFloatColor indigo;
 
 	void changeColorToColor(ofFloatColor Sc, ofFloatColor Tc, ofMesh &mesh); //from a source color to a target color of the mesh
-	
+
 	void colorFaces(cubie **myCubies, int numPieces,float playRoom, int objectID); //to color faces of any polyhedra (not cube - not tetrahedron)
 	void colorBlackSides(ofMesh &mesh, int idCubie, float playRoom, int objectID); //to color black side faces of polyhedra  (not cube - not tetrahedron)
 	void colorTorus(ofMesh &mesh);

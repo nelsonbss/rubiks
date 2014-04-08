@@ -34,9 +34,9 @@ game::game(SG_VECTOR gamePos, float w, float h, SG_VECTOR displayPos, float iddl
 	posA.z = displayPos.z;
 
 	//drawing canvas
-	posCanvas.x = displayPos.x;
-	posCanvas.y = displayPos.y;
-	posCanvas.z = displayPos.z;
+	posCanvas.x = 0;//displayPos.x;
+	posCanvas.y = 0;//displayPos.y;
+	posCanvas.z = 0;//displayPos.z;
 	canvasB = false;
 
 	//rotP.x = 0; //rotation of puzzle
@@ -68,7 +68,7 @@ game::game(SG_VECTOR gamePos, float w, float h, SG_VECTOR displayPos, float iddl
 	extrudedB = false;
 	bExtrude = false;
 
-	myCanvasImage.loadImage("drawingGrid.png");
+	/*myCanvasImage.loadImage("drawingGrid.png");*/
 	sc = ofFloatColor (1, 1, 0); //yellow
 
 	savePuzzleB = false;
@@ -435,7 +435,7 @@ void game::draw(){
 		//show drawing area
 		myCanvas->draw();
 		ofSetColor(255,255,255);
-		myCanvasImage.draw(posCanvas.x-canvasSide/2,posCanvas.y-canvasSide/2,posCanvas.z,canvasSide,canvasSide);
+		/*myCanvasImage.draw(0,0,0,canvasSide,canvasSide);*///posCanvas.x-canvasSide/2,posCanvas.y-canvasSide/2,posCanvas.z,canvasSide,canvasSide);
 	}
 	if(step == 7){
 		//show puzzle
@@ -747,7 +747,7 @@ void game::changeColorToColor(ofFloatColor sc, ofFloatColor tc){
 }
 
 void game::changeFaceColor(ofVec2f pos, ofFloatColor c){
-	
+
 }
 
 //----------------------------------------------------------------------
@@ -773,11 +773,11 @@ void game::rotateA (ofVec3f input){
 	int rz = input.z;
 
 	//if(){
-		myArmature->rotateA(input);
-		//move the offset vector of the cutter at the same time as the armature
-		rotateSlicer.x += input.x;
-		rotateSlicer.y += input.y;
-		rotateSlicer.z += input.z;
+	myArmature->rotateA(input);
+	//move the offset vector of the cutter at the same time as the armature
+	rotateSlicer.x += input.x;
+	rotateSlicer.y += input.y;
+	rotateSlicer.z += input.z;
 	//}
 }
 //----------------------------------------------------------------------
@@ -1344,8 +1344,8 @@ void game::prepareDrawing(){
 		canvasB = true;
 	}
 	else{
-		/*myCanvas->exit();
-		delete myCanvas;*/
+		//myCanvas->exit();
+		//delete myCanvas;
 		//create canvas object
 		myCanvas = new drawingCanvas(posCanvas,canvasSide,canvasSide);
 	}
@@ -1469,7 +1469,7 @@ void game::mousePressed(int x, int y, int button){
 }
 //--------------------------------------------------------------
 void game::mouseReleased(int x, int y, int button){
-	 if(step == 6){
+	if(step == 6){
 		myCanvas->mouseReleased(x,y,button);
 	}
 }

@@ -2,8 +2,11 @@
 #define __Tarmature__armature__
 
 #include "ofMain.h"
+#include "SubObMediator.h"
+#include "SubObEvent.h"
+#include "Observer.h"
 
-class armature {
+class armature : public Observer{
 	
 public:
     armature (ofVec3f cntr, float w, float h, float d, float bs);
@@ -18,6 +21,9 @@ public:
     ofVec3f center;
 	void moveA(ofVec3f input);
 	void rotateA(ofVec3f input);
+
+	void update(string _eventName, SubObEvent* _event);
+	ofVec2f lastInput;
 
     float width;
     float height;

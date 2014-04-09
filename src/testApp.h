@@ -49,11 +49,14 @@ public:
 	ofxAssimpModelLoader pot;
 	sgCObject *sgTeapot;
 
-	////////////////
+	ofxAssimpModelLoader sphere;
+	sgCObject *sgSphere;
+
+	/////////////////////////////////////////games
 	vector<game*> myGames;
 	int currentGame;
 
-	myobject3D *objectDisplayed;
+	
 	cutter *myCutter;
 	slicer *mySlicer;
 	puzzle *myPuzzle;
@@ -82,7 +85,7 @@ public:
 	//subob stuff
 	map<string,string> attrs;
 	void update(string _subName, Subject* _sub);
-	void update(string _eventName, SubObEvent* _event);
+	void update(string _eventName, SubObEvent _event);
     string getAttr(const char* _key){return attrs[_key];}
 
 	ofVec2f lastRightDragPos;
@@ -98,17 +101,21 @@ public:
 	bool bPointLight, bSpotLight, bDirLight;
 	bool bUseTexture;
 
-	///for color changing //first version
-	ofFloatColor pickColorMouse();
-
 	GestureManager gm;
 	int touchId;
 	int nextTouchId;
 	int touchIdOffset;
-	//middle puzzles
+
+	////////////////////////////////////////middle puzzles
+	SG_VECTOR middlePuzzlePos;
+	SG_POINT slicingPos;
+
 	vector<menuPuzzle*> middlePuzzles;
+	menuPuzzle *puzzleDisplayed;
 	int puzzleCounter; 
 
-	SubObEvent* ev;
-	bool bExtrude;
+	map<string,int> gameIds;
+	map<int, string> gameTags;
+
+	//SubObEvent ev;
 };

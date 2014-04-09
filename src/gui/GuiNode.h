@@ -51,6 +51,7 @@ public:
     virtual bool isDragging(int _x, int _y){return false;}
     virtual bool processMouse(int _x, int _y, int _state) = 0;
 	virtual void setPosition(ofVec2f _pos){pos = _pos;}
+	void setPosition(float _x, float _y){pos.x = _x; pos.y = _y;}
 	void draw();
 	void init();
 	virtual void adjustPosition(ofVec2f _dPos, ofVec2f _aPos){}
@@ -64,7 +65,7 @@ public:
 	virtual void activate();
 	virtual void deactivate();
     virtual string getName(){return name;}
-    void setName(string &_name){name = _name;}
+    void setName(string _name){name = _name;}
     void setName(const char * _name){name = _name;}
     string getType(){return type;}
     ofVec2f getPos(){return drawPos;}
@@ -86,7 +87,9 @@ public:
 	virtual void unhide();
 
 	bool isHidden(){return bHidden;}
-	bool isActive(){return bActive;}
+	bool isActive(){
+ 		return bActive;
+	}
 
 	virtual void setupText();
 
@@ -120,6 +123,9 @@ public:
 	bool bReadyForInput;
 	bool getReadyForInput(){return bReadyForInput;}
 
+	void setMirrored(bool _m){bMirrored = _m;}
+	void setFlipped(bool _f){bFlipped = _f;}
+
     //Virtual methods that each subclass is responsible for defining.
     virtual void execute();
     virtual void executeDrag(int _x, int _y){}
@@ -139,6 +145,7 @@ protected:
 	vector<SubObEvent*> events;
     ofVec2f pos;
 	ofVec2f drawPos;
+	ofVec2f dragPos;
 	ofVec2f drawSize;
     float scale;
 	ofVec2f size;
@@ -151,6 +158,9 @@ protected:
 	ofxTimer* timer;
 	bool bHidden;
 	bool bActive;
+
+	bool bMirrored;
+	bool bFlipped;
 };
 
 

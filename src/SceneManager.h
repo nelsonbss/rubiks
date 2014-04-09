@@ -67,6 +67,7 @@ public:
     */
 
     void draw();
+	void draw(string _position);
 
     /*
     Reset the SceneManager to first sheet.

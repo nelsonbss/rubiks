@@ -14,5 +14,5 @@ Observer::~Observer()
 void Observer::update(string _subName, Subject* _sub){
 }
 
-void Observer::update(string _eventName, SubObEvent* _event){
+void Observer::update(string _eventName, SubObEvent _event){
 }

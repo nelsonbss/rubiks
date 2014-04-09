@@ -27,7 +27,6 @@ void myobject3D::setup(){
 	object->DestroyTempMatrix();
 
 	temp->Triangulate(SG_VERTEX_TRIANGULATION);
-	temp->SetAttribute(SG_OA_COLOR,2);
 	ofRender *ofr = new ofRender(); //class that has the metods to transform sgCore to OF mesh and set the normals (in one function)
 	//ofr->sgCoretoOFmesh(temp,myMesh,-1); //-1 because its not a cubie but want color on the sample object
 	ofr->sgCoretoOFmesh(temp,myMesh,-2,objectId); //-2 for plain color
@@ -144,10 +143,10 @@ void myobject3D::applyArmRotations(ofVec3f v){
 	SG_POINT rotP = {0,0,0};
 	SG_VECTOR rotV = {1,0,0};
 	object->InitTempMatrix()->Rotate(rotP,rotV,ofDegToRad(armRot.x));
-	SG_VECTOR rotV2 = {0,1,0};
-	object->GetTempMatrix()->Rotate(rotP,rotV2,ofDegToRad(armRot.y));
-	SG_VECTOR rotV3 = {0,0,1};
-	object->GetTempMatrix()->Rotate(rotP,rotV3,ofDegToRad(armRot.z));
+	//SG_VECTOR rotV2 = {0,1,0};
+	//object->GetTempMatrix()->Rotate(rotP,rotV2,ofDegToRad(armRot.y));
+	//SG_VECTOR rotV3 = {0,0,1};
+	//object->GetTempMatrix()->Rotate(rotP,rotV3,ofDegToRad(armRot.z));
 	object->ApplyTempMatrix();
 	object->DestroyTempMatrix(); 
 }

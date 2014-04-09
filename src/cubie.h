@@ -4,6 +4,7 @@
 #include "ofMain.h"
 #include "sgCore.h"
 #include "matrix.h"
+#include "CubieMesh.h"
 
 #include <vector>
 
@@ -28,7 +29,7 @@ public:
 	float numObjs;
 	float getNumObjs();
 	sgC3DObject **objectList;
-	vector<ofMesh> myMeshs; // this will be used to store the objet to be drawn 
+	vector<CubieMesh> myMeshs; // this will be used to store the objet to be drawn 
 	void crateOfMeshs();
 	vector<ofVbo>  myVbos;
 
@@ -50,8 +51,15 @@ public:
 	//its a vector since we don't know how many transformations a cubie is going to have
 	vector<matrix> myMatrix; 
 	void faceRotate(SG_VECTOR axis, bool dir);
+	void faceRotate(SG_VECTOR axis, bool dir,float angle);
+	float masterAngle;
+	SG_VECTOR vrotFace;
+	bool dir;
 	bool moving;
 	bool isMoving();
+	bool goBackb;
+	void goBack();
+	void goForward();
 
 	//float ct1;
 	//float ct2;
@@ -59,6 +67,7 @@ public:
 
 	bool sample;
 	double rotXa;
+	double tempDeg2;
 
 	//undo
 	bool undoing;
@@ -76,6 +85,8 @@ public:
 	void setDrawWire(bool _drawWire){bDrawWire = _drawWire;}
 
 	bool bDraw;
+	void setDraw(bool _draw){bDraw = _draw;}
+
 	int rotationDirection;
 
 	bool bRotate;
@@ -85,6 +96,7 @@ public:
 
 	void getCentroid();
 	ofVec3f projectPoint(ofVec3f _pnt);
+	void unprojectPoint(ofVec3f _pnt);
 	float getDistanceByVertex(ofVec3f _pos);
 	float getDistanceByCentroid(ofVec3f _pos);
 	ofVec3f getCentroidScreen(){return centroid2d;}
@@ -95,6 +107,24 @@ public:
 	ofVec3f selectedVertex;
 	ofVec3f getNearestVertex(){return selectedVertex;}
 	int selectedMesh;
+
+	bool bUnproject;
+	ofVec3f point;
+	ofVec3f unprojectedPoint;
+	bool bHavePoint;
+	ofVec3f getUnprojectedPoint();
+	void setMousePoint(ofVec3f _pnt);
+	void dragInput(ofVec3f _pnt);
+
+
+	Triangle nearestTri;
+	Triangle getNearestTri(ofVec3f _pnt);
+	vector<Triangle> getTrianglesByNormal(ofVec3f _n){return myMeshs[0].getTrianglesByNormal(_n);}
+	void setColorToSet(vector<Triangle> _tris, ofFloatColor _c);
+
+	void printCurrentCentroid();
+
+	void updatePosition();
 };
 
 #endif /* defined(__Tcubie__cubie__) */

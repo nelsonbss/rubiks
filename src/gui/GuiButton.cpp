@@ -65,6 +65,13 @@ void GuiButton::nodeInit(){
 	} else {
 		haveImage = false;
 	}
+	if(bMirrored){
+		drawPos.x -= drawSize.x;
+	}
+	if(bFlipped){
+		drawPos.y -= drawSize.y;
+	}
+	inactive.mirror(bFlipped, bMirrored);
 	drawActive = false;
 	haveActive = false;
 	haveArabic = false;
@@ -86,6 +93,7 @@ void GuiButton::nodeInit(){
 			bSendSample = true;
 		}
 	}
+	bSend = false;
 }
 
 void GuiButton::nodeExecute(){
@@ -96,7 +104,8 @@ void GuiButton::nodeExecute(){
 		SubObEvent ev;
 		ev.setName("new-color");
 		ev.addArg("color", sampleColor);
-		SubObMediator::Instance()->sendEvent("new-color", &ev);
+		ev.addArg("pos", drawPos);
+		SubObMediator::Instance()->sendEvent("new-color", ev);
 	}
 	cout << name << " executing." << endl;
 }
@@ -149,6 +158,7 @@ void GuiButton::input(string _type, int _ID, int _n, int _phase, ofVec2f _absPos
 	//cout << "Type = " << _type << " dX, dY = " << _deltaPos.x << ", " << _deltaPos.y << endl;
 	if(_type == "drag"){
 		drawPos += _deltaPos;
+		dragPos = drawPos;
 	}
 	if(_type == "tap"){
 		cout << name << " - executing" << endl;
@@ -157,15 +167,18 @@ void GuiButton::input(string _type, int _ID, int _n, int _phase, ofVec2f _absPos
 	if(!bWatchTime){
 		bWatchTime = true;
 	}
+	if(!bSend){
+		bSend = true;
+	}
 	timeOfLastInteraction = ofGetElapsedTimeMillis();
 }
 
 void GuiButton::update(string _subName, Subject* _sub){
 }
  
-void GuiButton::update(string _eventName, SubObEvent* _event){
+void GuiButton::update(string _eventName, SubObEvent _event){
 	if(_eventName == "object-intercepted"){
-		if(_event->getArg("object-name")->getString() == name){
+		if(_event.getArg("object-name")->getString() == name){
 			setPosition();
 			drawSize.x = inactive.getWidth();
 			drawSize.y = inactive.getHeight();
@@ -210,12 +223,13 @@ void GuiButton::nodeDraw(){
 			bWatchTime = 0;
 		}
 		if(ofGetElapsedTimeMillis() - timeOfLastInteraction > 500){
-			if(bSendActions){
+			if(bSendActions && bSend){
 				SubObEvent ev;
 				ev.setName("object-moved");
 				ev.addArg("object-name", name);
 				ev.addArg("position", ofVec2f(drawPos.x, drawPos.y));
-				SubObMediator::Instance()->sendEvent("object-moved", &ev);
+				SubObMediator::Instance()->sendEvent("object-moved", ev);
+				bSend = false;
 			}
 		}
 	}

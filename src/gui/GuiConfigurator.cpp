@@ -12,8 +12,9 @@ GuiConfigurator::GuiConfigurator(){
 	SubObMediator::Instance()->addObserver("gesture",this);
 	SubObMediator::Instance()->addObserver("hide-node", this);
 	SubObMediator::Instance()->addObserver("unhide-node", this);
-	SubObMediator::Instance()->sendEvent("add-gesture-receiver",new SubObEvent());
+	//SubObMediator::Instance()->sendEvent("add-gesture-receiver", dummy);
 	setCurrentLanguage("english");
+	prefix = "";
 }
 
 GuiConfigurator* GuiConfigurator::Instance(){
@@ -70,54 +71,61 @@ void GuiConfigurator::update(string _subName, Subject* _sub){
 	*/
 }
 
-void GuiConfigurator::update(string _eventName, SubObEvent* _event){
+void GuiConfigurator::update(string _eventName, SubObEvent _event){
 	//cout << "received event named - " << _eventName << endl;
 	if(_eventName == "replace-sheet"){
-   		string target = _event->getArg("target")->getString();
-		cout << "replacing with " << target << endl;
+   		string target = _event.getArg("target")->getString();
+		//cout << "replacing with " << target << endl;
 		replaceSheet(target);
 	}
 	if(_eventName == "touch-point"){
 		vector<GuiNode*> nodesHit;
 		for(map<string, GuiNode*>::iterator nIter =  activeNodes.begin(); nIter != activeNodes.end(); ++nIter){
+			//cout << "Testing - " << nIter->second->getName() << endl;
 			if(nIter->second->isActive()){
-				if(nIter->second->isInside(_event->getArg("x")->getFloat(), _event->getArg("y")->getFloat())){
+				if(nIter->second->isInside(_event.getArg("x")->getFloat(), _event.getArg("y")->getFloat())){
 					//_event->getArg("hit")->setInt(1);
 					//_event->addArg("target",nIter->first);
 					//break;
 					nodesHit.push_back(nIter->second);
 				}
+			} else {
+				//cout << "...Inactive" << endl;
 			}
 		}
 		if(nodesHit.size()){
-			cout << "hit " << nodesHit.size() << " nodes." << endl;
+			//cout << "hit " << nodesHit.size() << " nodes." << endl;
 			float highestZ = -100000.0;
 			GuiNode* highestNode = NULL;
 			for(vector<GuiNode*>::iterator nIter = nodesHit.begin(); nIter != nodesHit.end(); ++nIter){
 				float nodeZ = (*nIter)->getZ();
-				cout << "checking node with z = " << nodeZ << endl;
+				//cout << "checking node with z = " << nodeZ << endl;
 				if(nodeZ > highestZ){
-					cout << "setting " << (*nIter)->getName() << " to highest z. Z = " << nodeZ << endl;
+					//cout << "setting " << (*nIter)->getName() << " to highest z. Z = " << nodeZ << endl;
 					highestNode = *nIter;
 					highestZ = nodeZ;
 				}
 			}
 			if(highestNode != NULL){
-				_event->getArg("hit")->setInt(1);
-				_event->addArg("target", highestNode->getName());
+				//_event.getArg("hit")->setInt(1);
+				//_event.addArg("target", highestNode->getName());
+				SubObEvent ev;
+				ev.addArg("target", highestNode->getName());
+				ev.addArg("id", _event.getArg("id")->getInt());
+				SubObMediator::Instance()->sendEvent("assign-touch-point", ev);
 			}
 		}
-		_event->getArg("receivers")->setInt(_event->getArg("receivers")->getInt() + 1);
+		_event.getArg("receivers")->setInt(_event.getArg("receivers")->getInt() + 1);
 	}
 	if(_eventName == "gesture"){
-		string target = _event->getArg("target")->getString();
-		string type = _event->getArg("type")->getString();
+		string target = _event.getArg("target")->getString();
+		string type = _event.getArg("type")->getString();
 		//cout << "have " << type << " going to " << target << endl;
 		if(activeNodes.count(target)){
 			//cout << draggable << endl;
 			int n = 1;
 			string targetN = activeNodes[target]->getParam("n");
-			int eventN = _event->getArg("n")->getInt();
+			int eventN = _event.getArg("n")->getInt();
 			if(targetN != "__NONE__"){
 				n = ofToInt(targetN);
 			}
@@ -127,14 +135,15 @@ void GuiConfigurator::update(string _eventName, SubObEvent* _event){
 					//cout << activeNodes[target]->getName() << " is getting " << type << endl;
 					//activeNodes[target]->adjustPosition(_event->getArg("drag_d")->getVec2(), _event->getArg("position")->getVec2());
 					//cout << "sending drag." << endl;
-					int cID = _event->getArg("ID")->getInt();
-					int cN = _event->getArg("n")->getInt();
-					int cPhase = _event->getArg("phase")->getInt();
-					ofVec2f cAPos = _event->getArg("absPos")->getVec2();
-					ofVec2f cDPos = _event->getArg("deltaPos")->getVec2();
+					int cID = _event.getArg("ID")->getInt();
+					int cN = _event.getArg("n")->getInt();
+					int cPhase = _event.getArg("phase")->getInt();
+					ofVec2f cAPos = _event.getArg("absPos")->getVec2();
+					ofVec2f cDPos = _event.getArg("deltaPos")->getVec2();
 					if(activeNodes[target]->getReadyForInput()){
 						activeNodes[target]->input(type, cID, cN, cPhase, cAPos, cDPos);
 					}
+					//cout << "sent " << cAPos.x << ", " << cAPos.y << ". P = " << cPhase << endl;
 				} else {
 					//cout << "n mismatch" << endl;
 				}
@@ -144,13 +153,17 @@ void GuiConfigurator::update(string _eventName, SubObEvent* _event){
 		}
 	}
 	if(_eventName == "hide-node"){
-		string target = _event->getArg("target")->getString();
-		if(!activeNodes[target]->isHidden()){
-			activeNodes[target]->hide();
+		string target = _event.getArg("target")->getString();
+		if(activeNodes.count(target)){
+			if(!activeNodes[target]->isHidden()){
+				activeNodes[target]->hide();
+			}
+		} else {
+			cout << "don't have node - " << target << endl;
 		}
 	}
 	if(_eventName == "unhide-node"){
-		string target = _event->getArg("target")->getString();
+		string target = _event.getArg("target")->getString();
 		if(activeNodes[target]->isHidden()){
 			activeNodes[target]->unhide();
 		}
@@ -184,10 +197,10 @@ void GuiConfigurator::getTags(){
 			int numEvents = mXML.getNumTags("event");
 			vector<SubObEvent*> tmpEvents;
 			for(int k = 0; k < numEvents; k++){
-				SubObEvent* tmpEventPtr = new SubObEvent();
+				SubObEvent *tmpEvent = new SubObEvent();
 				string eventName = mXML.getAttribute("event", "name", "none", k);
 				//cout << "adding event - " << eventName << endl;
-				tmpEventPtr->setName(eventName);
+				tmpEvent->setName(eventName);
 				mXML.pushTag("event", k);
 				int numArgs = mXML.getNumTags("arg");
 				for(int args = 0; args < numArgs; args++){
@@ -195,11 +208,11 @@ void GuiConfigurator::getTags(){
 					mXML.pushTag("arg", args);
 					string type = mXML.getValue("type", "string");
 					string val = mXML.getValue("val","none");
-					tmpEventPtr->addArg(argName, type, val);
+					tmpEvent->addArg(argName, type, val);
 					mXML.popTag();
 				}
 				mXML.popTag();
-				tmpEvents.push_back(tmpEventPtr);
+				tmpEvents.push_back(tmpEvent);
 			}
 			nodeEvents[nodeName] = tmpEvents;
 			attrs.push_back("pos");
@@ -216,12 +229,29 @@ void GuiConfigurator::getTags(){
     mXML.popTag();
 }
 
-void GuiConfigurator::loadGui(){
+void GuiConfigurator::loadGui(bool _mirrored, bool _flipped){
+	bMirrored = _mirrored;
+	bFlipped = _flipped;
 	mXML.pushTag("gui");
 	string main = mXML.getValue("main-sheet","attract");
 	loadSheets();
 	SceneManager::Instance()->pushSheet(sheets[main]);
 	loadText("assets.xml");
+}
+
+void GuiConfigurator::extendGui(string _sheet, string _file, bool _mirrored, bool _flipped, string _prefix, map<string, string> _patterns){
+	bMirrored = _mirrored;
+	bFlipped = _flipped;
+	prefix = _prefix;
+	patterns = _patterns;
+	mXML.loadFile(_file);
+	mXML.pushTag("gui");
+	loadNodes(_sheet, NULL);
+	mXML.popTag();
+	if(SceneManager::Instance()->getTopSheet()->getName() == _sheet){
+		SceneManager::Instance()->popSheet();
+		SceneManager::Instance()->pushSheet(sheets[_sheet]);
+	}
 }
 
 void GuiConfigurator::loadText(string _file){
@@ -279,6 +309,7 @@ void GuiConfigurator::loadNodes(string _sheetName, GuiWindow* _win){
 		if(nodeName == "none"){
 			continue;
 		}
+		nodeName = prefix + nodeName;
 		string nodeType = mXML.getAttribute("node","type","none",i);
 		cout << "have node of type - " << nodeType << endl;
 		if(nodeType == "none"){
@@ -310,6 +341,8 @@ void GuiConfigurator::loadNodes(string _sheetName, GuiWindow* _win){
 		nodePtr->setPosition(stringToVec2f(pos));
 		nodePtr->setSize(stringToVec2f(size)); 
 		nodePtr->setScale(ofToFloat(scale));
+		nodePtr->setMirrored(bMirrored);
+		nodePtr->setFlipped(bFlipped);
 		loadParams(nodePtr);
 		loadEvents(nodePtr);
 		nodePtr->init();
@@ -327,6 +360,11 @@ void GuiConfigurator::loadParams(GuiNode* _node){
 	for(int i = 0; i < numParams; i++){
 		string name = mXML.getValue("param:name", "none", i);
 		string val = mXML.getValue("param:val", "none", i);
+		if(name == "image"){
+			for(auto pIter = patterns.begin(); pIter != patterns.end(); pIter++){
+				ofStringReplace(val, pIter->first, pIter->second);
+			}
+		}
 		if((name == "none") || (val == "none")){
 			continue;
 		}
@@ -341,11 +379,11 @@ void GuiConfigurator::loadEvents(GuiNode* _node){
 		if(eventName == "none"){
 			continue;
 		}
-		SubObEvent* eventPtr = new SubObEvent();
-		eventPtr->setName(eventName);
+		SubObEvent *event = new SubObEvent(); 
+		event->setName(prefix + eventName);
 		mXML.pushTag("event", i);
-		loadArgs(eventPtr);
-		_node->addEvent(eventPtr);
+		loadArgs(event);
+		_node->addEvent(event);
 		mXML.popTag();
 	}
 }
@@ -522,10 +560,11 @@ void GuiConfigurator::reset(){
 void GuiConfigurator::addActive(GuiNode* _node){
 	string nodeName = _node->getName();
 	activeNodes[nodeName] = _node;
-	SubObEvent* nEvent = new SubObEvent();
-	nEvent->setName("add-object");
-	nEvent->addArg("objName", nodeName);
-	SubObMediator::Instance()->sendEvent(nEvent->getName(), nEvent);
+	//cout << "adding node - " << nodeName << ". Have " << activeNodes.size() << " node." << endl;
+	SubObEvent nEvent; 
+	nEvent.setName("add-object");
+	nEvent.addArg("objName", nodeName);
+	SubObMediator::Instance()->sendEvent(nEvent.getName(), nEvent);
 	/*
 	for(vector<string>::iterator aIter = availableGestures.begin(); aIter != availableGestures.end(); ++aIter){
 		SubObEvent* gEvent = new SubObEvent();
@@ -540,21 +579,21 @@ void GuiConfigurator::addActive(GuiNode* _node){
 		gEvent.setName("add-gesture");
 		gEvent.addArg("objName",nodeName);
 		gEvent.addArg("gesture","n-drag");
-		SubObMediator::Instance()->sendEvent(gEvent.getName(), &gEvent);
+		SubObMediator::Instance()->sendEvent(gEvent.getName(), gEvent);
 	}
 	if(_node->getParam("tap") == "true"){
 		SubObEvent gEvent;
 		gEvent.setName("add-gesture");
 		gEvent.addArg("objName",nodeName);
 		gEvent.addArg("gesture","n-tap");
-		SubObMediator::Instance()->sendEvent(gEvent.getName(), &gEvent);
+		SubObMediator::Instance()->sendEvent(gEvent.getName(), gEvent);
 	}
 }
 
 void GuiConfigurator::removeActive(GuiNode* _node){
-	SubObEvent* gEvent = new SubObEvent();
-	gEvent->setName("remove-object");
-	gEvent->addArg("objName",_node->getName());
-	SubObMediator::Instance()->sendEvent(gEvent->getName(), gEvent);
+	SubObEvent gEvent; 
+	gEvent.setName("remove-object");
+	gEvent.addArg("objName",_node->getName());
+	SubObMediator::Instance()->sendEvent(gEvent.getName(), gEvent);
 	activeNodes.erase(_node->getName());
 }

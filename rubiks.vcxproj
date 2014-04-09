@@ -49,6 +49,7 @@
     <OutDir>bin\</OutDir>
     <IntDir>obj\$(Configuration)\</IntDir>
     <LinkIncremental>false</LinkIncremental>
+    <LibraryPath>..\rubiks\sgCore;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -76,7 +77,7 @@
       <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);..\..\..\addons\ofxAssimpModelLoader\libs;..\..\..\addons\ofxAssimpModelLoader\src;..\..\..\addons\ofxAssimpModelLoader\libs\assimp;..\..\..\addons\ofxAssimpModelLoader\libs\assimp\include;..\..\..\addons\ofxAssimpModelLoader\libs\assimp\include\Compiler;..\..\..\addons\ofxAssimpModelLoader\libs\assimp\lib;..\..\..\addons\ofxAssimpModelLoader\libs\assimp\lib\vs;..\..\..\addons\ofxGui\libs;..\..\..\addons\ofxGui\src</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);..\..\..\addons\ofxAssimpModelLoader\libs;..\..\..\addons\ofxAssimpModelLoader\src;..\..\..\addons\ofxAssimpModelLoader\libs\assimp;..\..\..\addons\ofxAssimpModelLoader\libs\assimp\include;..\rubiks\src;..\..\..\addons\ofxAssimpModelLoader\libs\assimp\include\Compiler;..\..\..\addons\ofxAssimpModelLoader\libs\assimp\lib;..\..\..\addons\ofxAssimpModelLoader\libs\assimp\lib\vs;..\..\..\addons\ofxGui\libs;..\..\..\addons\ofxGui\src;..\rubiks\sgCore;..\rubiks\src\gui;..\rubiks\src\gwc;..\rubiks\src\subob;..\..\..\addons\ofxXmlSettings\src;..\..\..\addons\ofxXmlSettings\libs</AdditionalIncludeDirectories>
       <CompileAs>CompileAsCpp</CompileAs>
     </ClCompile>
     <Link>
@@ -98,6 +99,8 @@
     <ClCompile Include="src\3DCamera.cpp" />
     <ClCompile Include="src\armature.cpp" />
     <ClCompile Include="src\cubie.cpp" />
+    <ClCompile Include="src\CubieManager.cpp" />
+    <ClCompile Include="src\CubieMesh.cpp" />
     <ClCompile Include="src\cutter.cpp" />
     <ClCompile Include="src\drawingCanvas.cpp" />
     <ClCompile Include="src\game.cpp" />
@@ -121,6 +124,7 @@
     <ClCompile Include="src\ofRender.cpp" />
     <ClCompile Include="src\ofxTimer.cpp" />
     <ClCompile Include="src\Painter.cpp" />
+    <ClCompile Include="src\Picker.cpp" />
     <ClCompile Include="src\puzzle.cpp" />
     <ClCompile Include="src\SceneManager.cpp" />
     <ClCompile Include="src\slicer.cpp" />
@@ -141,6 +145,8 @@
     <ClInclude Include="src\3DCamera.h" />
     <ClInclude Include="src\armature.h" />
     <ClInclude Include="src\cubie.h" />
+    <ClInclude Include="src\CubieManager.h" />
+    <ClInclude Include="src\CubieMesh.h" />
     <ClInclude Include="src\cutter.h" />
     <ClInclude Include="src\drawingCanvas.h" />
     <ClInclude Include="src\game.h" />
@@ -163,6 +169,7 @@
     <ClInclude Include="src\ofRender.h" />
     <ClInclude Include="src\ofxTimer.h" />
     <ClInclude Include="src\Painter.h" />
+    <ClInclude Include="src\Picker.h" />
     <ClInclude Include="src\puzzle.h" />
     <ClInclude Include="src\SceneManager.h" />
     <ClInclude Include="src\slicer.h" />

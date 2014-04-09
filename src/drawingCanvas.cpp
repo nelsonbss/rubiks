@@ -53,22 +53,22 @@ void drawingCanvas::draw(){
 
 }
 
-void drawingCanvas::update(string _eventName, SubObEvent* _event){
+void drawingCanvas::update(string _eventName, SubObEvent _event){
 	if(_eventName == "ibox-drawing:1"){
-		int phase = _event->getArg("phase")->getInt();
+		int phase = _event.getArg("phase")->getInt();
 		cout << "puzzle phase = " << phase << endl;
 		if(phase == 0){
-			ofVec2f pos = _event->getArg("absPos")->getVec2();
+			ofVec2f pos = _event.getArg("absPos")->getVec2();
 			mousePressed(pos.x, pos.y, 0);
 		}
 		if(phase == 1){
-			ofVec2f pos = _event->getArg("absPos")->getVec2();
+			ofVec2f pos = _event.getArg("absPos")->getVec2();
 			mouseDragged(pos.x, pos.y, 0);
 		}
 	}
 	if(_eventName == "ibox-drawing:0"){
 		if(bDrawing){
-			ofVec2f pos = _event->getArg("absPos")->getVec2();
+			ofVec2f pos = _event.getArg("absPos")->getVec2();
 			mouseReleased(pos.x,pos.y,0);
 		}
 	}
@@ -267,7 +267,7 @@ void drawingCanvas::mouseDragged(int x, int y, int button){
 //--------------------------------------------------------------
 void drawingCanvas::mousePressed(int x, int y, int button){
 	//if(!bDrawing){
-		cout << "starting drawing" << endl;
+		//cout << "starting drawing" << endl;
 		if(closed == false){
 			//check if its inside the area to be able to draw
 			//if((posCanvas.x-(width/2) < x) && (x < posCanvas.x+(width/2))){
@@ -292,7 +292,7 @@ void drawingCanvas::mousePressed(int x, int y, int button){
 //--------------------------------------------------------------
 void drawingCanvas::mouseReleased(int x, int y, int button){
 	bDrawing = false;
-	if(poly2exists == true){
+	if(poly2exists == true && closed == false){
 		//add last point
 		myPolyline->addVertex(firstMouse);//close last vertex, with first vertex
 		//////////////myPolyline2->addVertex(ofVec2f(firstMouse.x-posCanvas.x,firstMouse.y-posCanvas.y));//polyline2 is the one that is on slicing position

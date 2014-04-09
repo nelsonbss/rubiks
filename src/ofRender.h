@@ -10,11 +10,12 @@ class ofRender{
 
 public:
 	ofRender();
-	void sgCoretoOFmesh(sgC3DObject *obj, ofMesh &mesh,int numCubie,int selectedObjectID);
+	void sgCoretoOFmesh(sgC3DObject *obj, CubieMesh &mesh,int numCubie,int selectedObjectID);
 	void setNormals( ofMesh &mesh );
 
 	vector <ofFloatColor> colorsVector;
 	ofFloatColor mate;
+	ofFloatColor mateSolid;
 	ofFloatColor green;
 	ofFloatColor orange;
 	ofFloatColor white;
@@ -27,8 +28,10 @@ public:
 	void changeColorToColor(ofFloatColor Sc, ofFloatColor Tc, ofMesh &mesh); //from a source color to a target color of the mesh
 	
 	void colorFaces(cubie **myCubies, int numPieces,float playRoom, int objectID); //to color faces of any polyhedra (not cube - not tetrahedron)
-	void colorBlackSides(ofMesh &mesh, int idCubie, float playRoom); //to color black side faces of polyhedra  (not cube - not tetrahedron)
+	void colorBlackSides(ofMesh &mesh, int idCubie, float playRoom, int objectID); //to color black side faces of polyhedra  (not cube - not tetrahedron)
 	void colorTorus(ofMesh &mesh);
+	void colorFacesExtruded(cubie **myCubies, int numPieces,float playRoom, int objectID);
+	void colorFacesExtrudedMenu(ofMesh &mesh,ofVec3f armRot);
 
 	ofPoint decideAxisRange(ofPoint dir,float playRoom); // tho look at normals and decide sets of normals, to color faces
 
@@ -36,10 +39,10 @@ public:
 	ofColor decideColorCubieDEBUG(ofPoint normal,int numCubie);
 	///////////////////////////////////////////////////////////////////////////////////////////
 	ofColor decideColor(ofPoint normal); 
-	//this function is ONLY being used by tetrahedron, 
-	//it was first used to color sample objects, 
-	//now sample are plain, and other objects have their own coloring funcitons
+	//this function is ONLY being used by tetrahedron
 	////////////////////////////////////////////////////////////////////////////////////////////
+
+	void colorFacesMenu(ofMesh &mesh,ofVec3f armRot,float playRoom, int objectID);
 };
 
 #endif /* defined(__TofRender__ofRender__) */

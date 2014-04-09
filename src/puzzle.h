@@ -10,6 +10,7 @@
 #include "Subject.h"
 #include "SubObMediator.h"
 #include "SubObEvent.h"
+#include "CubieMesh.h"
 
 #define MAX_DIST 800.0
 
@@ -47,6 +48,10 @@ public:
 	typedef std::vector<TwoDimensions>ThreeDimensions;
 	ThreeDimensions three_dim1;
 	void rotateByIDandAxis(int id, SG_VECTOR axis,bool dir);
+
+	void rotateByIDandAxis(int id, SG_VECTOR axis,bool dir,float angle);
+
+
 	void rearange3dArray(SG_VECTOR axis, int plane, bool dir);
 	//face rotation bytwo ids
 	int rotateTwoIds(int cubieA, int cubieB,bool inside);
@@ -56,6 +61,12 @@ public:
 
 	bool moving;
 	bool isMoving();
+
+	int selected[9];
+	int selX;
+	int selY;
+	int selZ;
+	void decideMove();
 
 	//color faces
 	void colorFaces(int objectID);
@@ -70,7 +81,7 @@ public:
 
 	bool processMouse(int _x, int _y, int _state){return false;}
 	virtual void update(string _subName, Subject* _sub){}
-	virtual void update(string _eventName, SubObEvent* _event);
+	virtual void update(string _eventName, SubObEvent _event);
 
 	bool isInside(int _x, int _y);
 	void input(string _type, int _ID, int _n, int _phase, ofVec2f _absPos, ofVec2f _deltaPos);
@@ -85,9 +96,12 @@ public:
 	bool bHaveActiveCubie;
 	bool bHaveRotationCubie;
 	int activeCubie;
+	Triangle activeTriangle;
 	int rotationCubie;
 
 	void doRotation();
+
+	void changeFaceColor(ofVec3f _pnt, ofFloatColor _c);
 
 	//   //current state of the rotation
 	//ofQuaternion curRot;
@@ -95,6 +109,20 @@ public:
 	//ofVec2f lastMouse;
 	//void mouseDragged(int x, int y, int button);
 	//void mousePressed(int x, int y, int button);
+
+	bool bUnproject;
+	ofVec3f mousePoint;
+	ofVec3f unprojectedPoint;
+	bool bHavePoint;
+	void unprojectPoint();
+	void setMousePoint(ofVec3f _pnt);
+	void checkCubiesForHit(ofVec3f _pnt);
+	void dragInput(ofVec3f _pnt);
+	ofVec3f getDir(ofVec3f _pnt);
+	float getMainComponent(ofVec3f _pnt);
+	bool bHaveAxis;
+	SG_VECTOR v;
+	void endRotation(){bHaveAxis = false; activeCubie = -1;}
 };
 
 #endif /* defined(__Tpuzzle__puzzle__) */

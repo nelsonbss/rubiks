@@ -11,15 +11,17 @@
 #include "ofxAssimpModelLoader.h"
 #include "history.h"
 #include "Observer.h"
-#include "SubObEvent.h"
-#include "SubObMediator.h"
 #include "drawingCanvas.h"
+#include "menuPuzzle.h"
+#include "Picker.h"
+
+enum{UP_MODE_MOUSE, UP_MODE_COLOR};
 
 class game : public Observer{
 public:
-	game(SG_VECTOR p, float w, float h, SG_VECTOR puzzlePos, float iddleTime);
+	game(SG_VECTOR p, float w, float h, SG_VECTOR puzzlePos, ofRectangle _vp, float iddleTime);
 
-	void setup(sgCObject *sgBunnyi,sgCObject *sgTetrahedroni,sgCObject *sgDodecahedroni,sgCObject *sgIcosahedroni,sgCObject *sgOctahedroni);//,sgCObject *sgTeapoti);
+	void setup(sgCObject *sgBunnyi,sgCObject *sgTetrahedroni,sgCObject *sgDodecahedroni,sgCObject *sgIcosahedroni,sgCObject *sgOctahedroni, string _prefix);//,sgCObject *sgTeapoti);
 	void update();
 	void draw();
 	void exit();
@@ -63,10 +65,12 @@ public:
 	bool bHaveReset;
 	void guiReset(){bHaveReset = true;}
 
-	void update(string _eventName, SubObEvent* _event);
+	void update(string _eventName, SubObEvent _event);
 
 	bool bExtrude;
 	void guiExtrude(){bExtrude = true;}
+
+	ofFloatColor sc;
 
 	/*
 	*/
@@ -98,10 +102,16 @@ public:
 	bool dir;
 	SG_VECTOR axis;
 	void rotateByIDandAxis(int id, SG_VECTOR axis, bool dir);
+
+	void rotateByIDandAxis(int id, SG_VECTOR axis, bool dir, float angle);
+	float angleR;
+
 	bool faceRotate;
 	//history to undo
 	vector<history> historyV; 
 	void unDo();
+	void decideMove();
+
 	//face rotation bytwo ids
 	void rotateTwoIds(int cubieA, int cubieB,bool inside);
 	bool faceRotateB;
@@ -118,6 +128,7 @@ public:
 
 	////color change
 	void changeColorToColor(ofFloatColor Sc, ofFloatColor Tc);
+	void changeFaceColor(ofVec2f pos, ofFloatColor c);
 
 	//armature rotation
 	void applyArmRotations();
@@ -159,5 +170,32 @@ public:
 
 	///////interaction with puzzles on the center
 	void loadPuzzle(puzzle *inputPuzzle); //load a puzzle from the puzzle menu on the center
+	bool savePuzzleB;
+	menuPuzzle* savePuzzle(SG_POINT slicingPos, SG_VECTOR middlePuzzlePos);
+
+	Picker picker;
+	ofVec3f unprojectedPoint;
+	ofVec3f lastUnprojectedPoint;
+	ofVec3f mousePoint;
+	bool bUnproject;
+	bool bDragInput;
+
+	ofRectangle viewport;
+	void drawViewportOutline(const ofRectangle & _vp);
+
+	bool bUseViewport;
+	void setUseViewport(bool _b){bUseViewport = _b;}
+	void toggleUseViewport(){bUseViewport != bUseViewport;}
+
+	int unprojectMode;
+	ofFloatColor newFaceColor;
+
+	ofEasyCam cam;
+	ofVec3f camPosition;
+
+	string prefix;
+	void setPrefix(string _p){prefix = _p;}
+
+	void updateGui();
 };
 #endif /* defined(__Tgame__game__) */

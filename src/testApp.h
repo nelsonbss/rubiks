@@ -115,4 +115,7 @@ public:
 	int puzzleCounter; 
 
 	SubObEvent* ev;
+
+	ofPoint unprojectPoint(ofVec3f pnt);
+	double gestureAngles[6];
 };

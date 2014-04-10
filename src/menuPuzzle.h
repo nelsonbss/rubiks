@@ -33,6 +33,11 @@ public:
 	CubieMesh myMesh;// this will be used to draw the object, 
 	ofVbo myVbo;
 
+	//to controll colors on displayed object and displayed puzzle for that object
+	//so that both objects have the same color
+	vector< ofFloatColor > colorsVMenu;
+	vector< ofVec3f > uniqueNormals;
+
 	SG_VECTOR position;
 	SG_VECTOR tempPos;
 	SG_VECTOR tempSize;

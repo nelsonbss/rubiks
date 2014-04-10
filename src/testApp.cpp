@@ -7,7 +7,7 @@
 #define displayZ -800
 #define iddleTime 120
 //#define puzzleItems 10
-#define puzzleItems 0
+#define puzzleItems 10
 
 std::map<int,gwc::Point> active_points;
 
@@ -63,7 +63,7 @@ void testApp::setup(){
 
 	/////////////////////////////initialize openFrameworks rendering
 	initOFRender();
-
+	ofToggleFullscreen();
 	/////////////////////////////load obj files into sgCore objects
 	cout << "loading obj files " << endl;
 	loadOBJfiles();
@@ -91,14 +91,14 @@ void testApp::setup(){
 		middlePuzzlePos.x = 10 + (i * 10) + (i*180);
 		/*
 		if(i > 6){
-			middlePuzzlePos.x = middlePuzzlePos.x - 60  + ((i-5)*10);
+		middlePuzzlePos.x = middlePuzzlePos.x - 60  + ((i-5)*10);
 		}
 		*/
 		puzzleDisplayed = new menuPuzzle(slicingPos, middlePuzzlePos, i);
 		if(i==0){
 			puzzleDisplayed->loadObject(sgCreateTorus(100,70,50,50),1);
 		}else if(i == 1){
-			puzzleDisplayed->loadObject(sgCreateBox(300,300,300),2);
+			puzzleDisplayed->loadObject(sgCreateBox(100,100,100),2);
 		}else if(i == 2){
 			puzzleDisplayed->loadObject((sgC3DObject *)sgTetrahedron->Clone(),3);
 		}else if(i == 3){
@@ -109,12 +109,16 @@ void testApp::setup(){
 			puzzleDisplayed->loadObject((sgC3DObject *)sgIcosahedron->Clone(),6);
 		}else if(i == 6){
 			puzzleDisplayed->loadObject((sgC3DObject *)sgOctahedron->Clone(),7);
+		}else if(i == 7){
+			//puzzleDisplayed->loadObject((sgC3DObject *)sgOctahedron->Clone(),8);
+			puzzleDisplayed->loadObject((sgC3DObject *)sgBunny->Clone(),4);
 		}else{
 			//slots for other user created puzzles
 			puzzleDisplayed->loadObject(sgCreateBox(300,300,300),2);
 		}
 		cout << "created puzzle menu object: " << i <<endl;
 		puzzleDisplayed->setup();
+		puzzleDisplayed->update();
 		puzzleDisplayed->colorFacesMenu();
 		puzzleDisplayed->init();
 
@@ -123,11 +127,9 @@ void testApp::setup(){
 		myPuzzle->setup();
 		myPuzzle->loadPieces(mySlicer->getPieces(),puzzleDisplayed->objectId,rotateSlicer);//selected object id is used for coloring
 
-		//if(puzzleDisplayed->objectId != 1 && puzzleDisplayed->objectId != 4){
-			myPuzzle->colorFaces(puzzleDisplayed->objectId);
-		//}else{
-		//	myPuzzle->colorTorus();
-		//}
+		//this is a special function that takes, the unique normals, and unique colors of the menuPuzzle, to repeat those colors on the real puzzle of the menuPuzzle
+		myPuzzle->colorFacesMenuPuzzle(puzzleDisplayed->objectId,puzzleDisplayed->uniqueNormals,puzzleDisplayed->colorsVMenu);
+
 
 		cout << "created puzzle menu puzzle: " << i <<endl;
 		puzzleDisplayed->loadPuzzle(myPuzzle);
@@ -180,7 +182,7 @@ void testApp::update(){
 	for(int i = 0; i < myGames.size(); i++){
 		myGames[i]->update();
 	}
-	
+
 	/////////////////////////////////////////update middle puzzles
 	for(int i=0; i < middlePuzzles.size();i++){
 		middlePuzzles[i]->update();
@@ -366,7 +368,7 @@ void testApp::keyPressed(int key){
 		///////////from puzzles in the center
 		//////instead of asking for a "key", with the GUI it should ask for the object ID
 		if(key == 'p'){
-			myGames[0]->loadPuzzle(middlePuzzles[5]->getPuzzle());
+			myGames[0]->loadPuzzle(middlePuzzles[3]->getPuzzle());
 			myGames[0]->setCurrentStep(7);
 		}
 		if(key == 'o'){
@@ -434,6 +436,132 @@ void testApp::mouseDragged(int x, int y, int button){
 		ev->addArg("position",ofVec3f((float)x / (float)ofGetWidth(),(float)y / (float)ofGetHeight(),0));
 		ev->addArg("touch-id", touchId + touchIdOffset);
 		SubObMediator::Instance()->sendEvent("update-touch-point", ev);
+
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////
+		////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		/////////////////////////////////////////////////////////////////////////////////////////////////////////
+		//////void view1_MouseMove(object sender, MouseEventArgs e)
+		//////      {
+		//if(myGames[0]->myPuzzle->isMoving())
+		//	//if (isTwisting)
+		//{
+		//	// if distance of gesture is long enough, interpret it:
+
+		//	////Point newPt = e.GetPosition(view1);
+		//	////if (pointDistance(newPt, twistStartPoint) > 50)
+		//	if (button == 0) //takethis out
+		//	{
+		//		// get angle of gesture
+
+		//		double dragAngle = atan2(2,2);//newPt.Y - twistStartPoint.Y, newPt.X - twistStartPoint.X);
+		//		cout << "drag Angle:" << dragAngle << endl;
+
+		//		//cycle through angles of axes and find the closest match
+		//		//still needs to accommodate 180-degree crossing of radians from postive to negative
+
+		//		double offset = 100000;
+		//		int closest=-1;
+		//		for (int i = 0; i < 6; i++)
+		//		{
+		//			cout << gestureAngles[i] << endl;
+		//			double dist= abs(dragAngle-gestureAngles[i]);
+		//			if (dist < offset)
+		//			{
+		//				offset = dist;
+		//				closest = i;
+		//			}
+		//		}
+
+		//		////////////////isTwisting = false;/////////////////////////////////make a function to relate this to cubbie
+
+
+		//		const char *descriptors[6] = { "right", "left", "up", "down", "forward", "back" };
+		//		////String  **descriptors = new String[6] { "right", "left", "up", "down", "forward", "back" };
+
+		//		// closest is the closest axis direction to the gesture
+
+		//		if (closest == 0)
+		//		{
+		//			//if it's to the right, we're twisting on the Z axis
+		//			//(this could change to accommodate normal interpretation
+		//			//we turn clockwise or counterclockwise depending on which side of the cube we're on (Y axis)
+
+		//			//twist function takes axis number (0-2), level number (0-2 for a 3x3x3), and direction (1 or -1)
+
+		//			////////if (cubieLoc[cubeToTwist].Y >= 0)
+		//			////////{
+		//			////////	twist(2, Convert.ToInt16(cubieLoc[cubeToTwist].Z), -1);
+		//			////////}
+		//			////////else
+		//			////////{
+		//			////////	twist(2, Convert.ToInt16(cubieLoc[cubeToTwist].Z), 1);
+		//			////////}
+		//			//}
+
+		//			////                  if (closest == 1)
+		//			////                  {
+		//			////                      if (cubieLoc[cubeToTwist].Y >= 0)
+		//			////                      {
+		//			////                          twist(2, Convert.ToInt16(cubieLoc[cubeToTwist].Z), 1);
+		//			////                      }
+		//			////                      else
+		//			////                      {
+		//			////                          twist(2, Convert.ToInt16(cubieLoc[cubeToTwist].Z), -1);
+		//			////                      }
+		//			////                  }
+
+		//			////                  if (closest == 2)
+		//			////                  {
+		//			////                      if (cubieLoc[cubeToTwist].Z >= 0)
+		//			////                      {
+		//			////                          twist(0, Convert.ToInt16(cubieLoc[cubeToTwist].X), -1);
+		//			////                      }
+		//			////                      else
+		//			////                      {
+		//			////                          twist(0, Convert.ToInt16(cubieLoc[cubeToTwist].X), 1);
+		//			////                      }
+		//			////                  }
+
+		//			////                  if (closest == 3)
+		//			////                  {
+		//			////                      if (cubieLoc[cubeToTwist].Z >= 0)
+		//			////                      {
+		//			////                          twist(0, Convert.ToInt16(cubieLoc[cubeToTwist].X), 1);
+		//			////                      }
+		//			////                      else
+		//			////                      {
+		//			////                          twist(0, Convert.ToInt16(cubieLoc[cubeToTwist].X), -1);
+		//			////                      }
+		//			////                  }
+
+		//			////                  if (closest == 4)
+		//			////                  {
+		//			////                      if (cubieLoc[cubeToTwist].X >= 0)
+		//			////                      {
+		//			////                          twist(1, Convert.ToInt16(cubieLoc[cubeToTwist].Y), -1);
+		//			////                      }
+		//			////                      else
+		//			////                      {
+		//			////                          twist(1, Convert.ToInt16(cubieLoc[cubeToTwist].Y), 1);
+		//			////                      }
+		//			////                  }
+
+		//			////                  if (closest == 5)
+		//			////                  {
+		//			////                      if (cubieLoc[cubeToTwist].X >= 0)
+		//			////                      {
+		//			////                          twist(1, Convert.ToInt16(cubieLoc[cubeToTwist].Y), 1);
+		//			////                      }
+		//			////                      else
+		//			////                      {
+		//			////                          twist(1, Convert.ToInt16(cubieLoc[cubeToTwist].Y), -1);
+		//			////                      }
+		//		}
+		//	}
+		//}
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	}
 	if(button == 2){
 		myGames[0]->mouseDragged(x,y,button);
@@ -450,10 +578,100 @@ void testApp::mousePressed(int x, int y, int button){
 		ev->addArg("position",ofVec3f((float)x / (float)ofGetWidth(),(float)y / (float)ofGetHeight(),0));
 		ev->addArg("touch-id", touchId + touchIdOffset);
 		SubObMediator::Instance()->sendEvent("add-touch-point", ev);
+		////////////////////////////////////////////////////////////////////////////////////////////////////////
+		////////////////////////////////////////////////////////////////////////////////////////////////////////
+		////////////////////////////////////////////////////////////////////////////////////////////////////////
+		////--------------------------------------------------------------------
+		////void view1_MouseDown(object sender, MouseButtonEventArgs e) // checks if mouse click is on a center piece, and if so, twists it clockwise
+		////{
+	//	if (myGames[0]->myPuzzle->isMoving()){
+	//		return;
+	//	}
+	//	//if (isSolving || isTwisting){
+	//	//	return;
+	//	//}
+
+	//	// if we're not hitting an object, we quit.
+	//	if(!myGames[0]->myPuzzle->bHaveActiveCubie){
+	//		return;
+	//	}
+	//	//Point location = e.GetPosition(view1);
+	//	//ModelVisual3D result = GetHitTestResult(location);
+	//	//if (result == null)
+	//	//{
+	//	//	return;
+	//	//}
+	//	else{ //if (result is ModelVisual3D)
+	//		//{
+	//		// get the id number of the cubie and keep track of it
+
+	//		int id = myGames[0]->myPuzzle->activeCubie;
+	//		//String tempS = result.GetName().Substring(5);
+	//		//int ind = Convert.ToInt16(tempS);
+	//		//cubeToTwist = ind;
+	//		//isTwisting = true;
+
+	//		// keep track of the mouse/touch position as well
+
+	//		ofPoint twistStartPoint = ofPoint((float)x / (float)ofGetWidth(),(float)y / (float)ofGetHeight());
+	//		//twistStartPoint = new Point(e.GetPosition(view1).X, e.GetPosition(view1).Y);
+	//		double dist = 300;
+
+	//		// translate the six axes into 2D screen/camera space:
+
+	//		ofPoint cp0 = unprojectPoint(ofVec3f (0,0,0));
+	//		ofPoint cp1 = unprojectPoint(ofVec3f (dist,0,0));
+	//		ofPoint cp2 = unprojectPoint(ofVec3f (-dist,0,0));
+	//		ofPoint cp3 = unprojectPoint(ofVec3f (0,dist,0));
+	//		ofPoint cp4 = unprojectPoint(ofVec3f (0,-dist,0));
+	//		ofPoint cp5 = unprojectPoint(ofVec3f (0,0,dist));
+	//		ofPoint cp6 = unprojectPoint(ofVec3f (0,0,-dist));
+	//		//Point cp0 = Viewport3DHelper.Point3DtoPoint2D(view1.Viewport, new Point3D(0, 0, 0));
+
+	//		//// and calculate their angles (in radians) from the center of the axes:
+
+	//		gestureAngles[0] = atan2(cp1.y - cp0.y, cp1.x - cp0.x);
+	//		gestureAngles[1] = atan2(cp2.y - cp0.y, cp2.x - cp0.x);
+	//		gestureAngles[2] = atan2(cp3.y - cp0.y, cp3.x - cp0.x);
+	//		gestureAngles[3] = atan2(cp4.y - cp0.y, cp4.x - cp0.x);
+	//		gestureAngles[4] = atan2(cp5.y - cp0.y, cp5.x - cp0.x);
+	//		gestureAngles[5] = atan2(cp6.y - cp0.y, cp6.x - cp0.x);
+	//	}
+
+	//}
+
+	//////////////////////////////////////////////////////////////////////////////////////////////////
+	//////////////////////////////////////////////////////////////////////////////////////////////////
+	//////////////////////////////////////////////////////////////////////////////////////////////////
 	}
 	if(button == 2){
 		myGames[0]->mousePressed(x,y,button);
 	}
+}
+//-------------------------------------------------------------------------------------------------------------
+ofPoint testApp::unprojectPoint(ofVec3f pnt){
+	//cout << "cubie unprojecting point. - " << pnt.x << ", " << pnt.y << ", " << pnt.z << endl;
+	GLint viewport[4];
+	GLdouble modelview[16];
+	GLdouble projection[16];
+	GLfloat winX, winY, winZ;
+	GLdouble posX, posY, posZ;
+
+	glGetDoublev( GL_MODELVIEW_MATRIX, modelview );
+	glGetDoublev( GL_PROJECTION_MATRIX, projection );
+	glGetIntegerv( GL_VIEWPORT, viewport );
+
+	winX = (float) pnt.x;
+	winY = (float)viewport[3] - pnt.y;
+	glReadPixels( 0, int(winY), 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &winZ );
+
+	gluUnProject( winX, winY, winZ, modelview, projection, viewport, &posX, &posY, &posZ);
+
+	//cout << "mouse position = " << posX << ", " << posY << ", " << posZ << endl;
+	//cout << "cube postion = " << pos.x << ", " << pos.y << ", " << pos.z << endl;
+
+	//unprojectedPoint.set(posX, posY, posZ);
+	return ofPoint(posX, posY, posZ);
 }
 //--------------------------------------------------------------
 void testApp::mouseReleased(int x, int y, int button){
@@ -465,6 +683,16 @@ void testApp::mouseReleased(int x, int y, int button){
 		ev->addArg("position",ofVec3f((float)x / (float)ofGetWidth(),(float)y / (float)ofGetHeight(),0));
 		ev->addArg("touch-id", touchId + touchIdOffset);
 		SubObMediator::Instance()->sendEvent("remove-touch-point", ev);
+		//////////////////////////////////////////////////////////////////////////////////////////////////////
+		///////////////////////////////////////////////////////////////////////////////////////////////////////
+		///////////////////////////////////////////////////////////////////////////////////////////////////////
+		//////void view1_MouseUp(object sender, MouseButtonEventArgs e)
+		//////      {
+		//////isTwisting = false;
+		//////}
+		//////////////////////////////////////////////////////////////////////////////////////////////////////
+		///////////////////////////////////////////////////////////////////////////////////////////////////////
+		///////////////////////////////////////////////////////////////////////////////////////////////////////
 	}
 	myGames[0]->mouseReleased(x,y,button);
 }
@@ -875,18 +1103,18 @@ void testApp::initOFRender(){
 	/////background
 	//ofBackground(100, 100, 100, 0);//gray
 	//ofBackground(30, 144, 255, 0);//blue
-	ofBackground(65, 105, 225, 0);//blue
+	//ofBackground(65, 105, 225, 0);//blue
 	// turn on smooth lighting //
 	bSmoothLighting = true;
 	ofSetSmoothLighting(true);
 
 	// lets make a high-res sphere //
 	// default is 20 //
-	ofSetSphereResolution(128);
+	//ofSetSphereResolution(128);
 
 	// radius of the sphere //
-	radius = 180.f;
-	center.set(ofGetWidth()*.5, ofGetHeight()*.5, 0);
+	//radius = 180.f;
+	//center.set(ofGetWidth()*.5, ofGetHeight()*.5, 0);
 
 	// Point lights emit light in all directions //
 	// set the diffuse color, color reflected from the light source //
@@ -896,7 +1124,7 @@ void testApp::initOFRender(){
 	pointLight.setSpecularColor( ofColor(255.f, 255.f, 0.f));
 	pointLight.setPointLight();
 
-	spotLight.setDiffuseColor( ofColor(255.f, 0.f, 0.f));
+	spotLight.setDiffuseColor( ofColor(255.f, 255.f, 255.f));
 	spotLight.setSpecularColor( ofColor(255.f, 255.f, 255.f));
 
 	// turn the light into spotLight, emit a cone of light //
@@ -924,7 +1152,7 @@ void testApp::initOFRender(){
 	// shininess is a value between 0 - 128, 128 being the most shiny //
 	material.setShininess( 120 );
 	// the light highlight of the material //
-	material.setSpecularColor(ofColor(255, 255, 255, 255));
+	material.setSpecularColor(ofColor(255, 255, 255, 1));
 
 	bPointLight = bSpotLight = bDirLight = true;
 
@@ -948,7 +1176,7 @@ void testApp::startOFLights(){
 
 	// grab the texture reference and bind it //
 	// this will apply the texture to all drawing (vertex) calls before unbind() //
-	if(bUseTexture) ofLogoImage.getTextureReference().bind();
+	//if(bUseTexture) ofLogoImage.getTextureReference().bind();
 
 	//ofSetColor(255, 255, 255, 255);
 	/*ofPushMatrix();
@@ -978,7 +1206,7 @@ void testApp::startOFLights(){
 	////ofRotate(ofGetElapsedTimef() * .2 * RAD_TO_DEG, 0, 1, 0);
 	//ofPopMatrix();
 
-	if(bUseTexture) ofLogoImage.getTextureReference().unbind();
+	//if(bUseTexture) ofLogoImage.getTextureReference().unbind();
 
 	if (!bPointLight) pointLight.disable();
 	//if (!bSpotLight) spotLight.disable();

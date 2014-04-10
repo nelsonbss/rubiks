@@ -5,7 +5,8 @@
 
 ///////////////////////////////////////////////////////
 menuPuzzle::menuPuzzle(SG_VECTOR p, SG_VECTOR t, int ID ) : GuiNode(){
-	
+	//p is the slicing position
+
 	id = ID;
 	
 	tempPos.x = t.x;
@@ -238,12 +239,12 @@ void menuPuzzle::colorFacesMenu(){
 	ofRender *ofr = new ofRender();
 	if(objectId == 1 || objectId == 4){
 		//torus or bunny
-		ofr->colorTorus(myMesh);
+		ofr->colorTorusMenu(myMesh, colorsVMenu);
 	}else if( objectId == 200){
 		ofr->colorFacesExtrudedMenu(myMesh,armRot);
 	}
 	else{
-		ofr->colorFacesMenu(myMesh,armRot, 0.01, objectId);
+		ofr->colorFacesMenu(myMesh,armRot, 0.01, objectId,colorsVMenu,uniqueNormals);
 	}
 	free(ofr);
 
@@ -252,7 +253,7 @@ void menuPuzzle::colorFacesMenu(){
 	tempVbo.setMesh(myMesh, GL_STATIC_DRAW);
 	myVbo=tempVbo;
 }
-
+//---------------------------------------------------------------------------------------
 void menuPuzzle::input(string _type, int _ID, int _n, int _phase, ofVec2f _absPos, ofVec2f _deltaPos){
 	cout << "Type = " << _type << " dX, dY = " << _deltaPos.x << ", " << _deltaPos.y << endl;
 	if(_type == "drag"){

@@ -37,7 +37,10 @@ public:
 
 	void colorFaces(cubie **myCubies, int numPieces,float playRoom, int objectID); //to color faces of any polyhedra (not cube - not tetrahedron)
 	void colorBlackSides(ofMesh &mesh, int idCubie, float playRoom, int objectID); //to color black side faces of polyhedra  (not cube - not tetrahedron)
+
 	void colorTorus(ofMesh &mesh);
+	void colorTorusMenu(ofMesh &mesh,vector< ofFloatColor > &vcolors);
+
 	void colorFacesExtruded(cubie **myCubies, int numPieces,float playRoom, int objectID);
 	void colorFacesExtrudedMenu(ofMesh &mesh,ofVec3f armRot);
 
@@ -50,7 +53,8 @@ public:
 	//this function is ONLY being used by tetrahedron
 	////////////////////////////////////////////////////////////////////////////////////////////
 
-	void colorFacesMenu(ofMesh &mesh,ofVec3f armRot,float playRoom, int objectID);
+	void colorFacesMenu(ofMesh &mesh,ofVec3f armRot,float playRoom, int objectID, vector< ofFloatColor > &vcolors,vector< ofVec3f > &menuUniqueNormals);
+	void colorFacesMenuPuzzle(cubie **myCubies, int numPieces,float playRoom, int objectID, vector< ofFloatColor > &vcolors,vector< ofVec3f > &menuUniqueNormals);
 };
 
 #endif /* defined(__TofRender__ofRender__) */

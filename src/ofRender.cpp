@@ -70,7 +70,6 @@ ofRender::ofRender(){
 
 	black = ofFloatColor(0,0,0);
 
-
 	colorsVector.push_back(red);//0
 	colorsVector.push_back(blue);//1
 	colorsVector.push_back(orange);//2
@@ -806,12 +805,18 @@ void ofRender::colorBlackSides(ofMesh &mesh, int idCubie, float playRoom, int ob
 	mesh.addColors(tcolors);
 }
 //---------------------------------------------------------------------------------------------------------------
-void ofRender::colorTorus(ofMesh &mesh){
+void ofRender::colorTorusMenu(ofMesh &mesh,vector< ofFloatColor > &vcolors){
 	vector< ofFloatColor > tcolors;
 	tcolors = mesh.getColors();
+	ofFloatColor x;
 
 	int r = ofRandom(100);
-	ofFloatColor x =  colorsVector[r%9];
+	int r2 = r%16;
+	if((r2) != 3){
+		//to avoid white
+		x =  colorsVector[r2];
+		vcolors.push_back(x);//we only need one color sample, not all the vertices colors
+	}
 
 	for(int i=0; i<tcolors.size(); i++){
 		tcolors[i] =  x;
@@ -821,7 +826,26 @@ void ofRender::colorTorus(ofMesh &mesh){
 	mesh.addColors(tcolors);
 }
 //---------------------------------------------------------------------------------------------------------------
-void ofRender::colorFacesMenu(ofMesh &mesh,ofVec3f armRot,float playRoom, int objectID){
+void ofRender::colorTorus(ofMesh &mesh){
+	vector< ofFloatColor > tcolors;
+	tcolors = mesh.getColors();
+	ofFloatColor x;
+
+	int r = ofRandom(100);
+	if((r%16) != 3){
+		//to avoid white
+		x =  colorsVector[r%16];
+	}
+
+	for(int i=0; i<tcolors.size(); i++){
+		tcolors[i] =  x;
+	}
+	//replace the colors vector on the mesh
+	mesh.clearColors();
+	mesh.addColors(tcolors);
+}
+//---------------------------------------------------------------------------------------------------------------
+void ofRender::colorFacesMenu(ofMesh &mesh,ofVec3f armRot,float playRoom, int objectID, vector< ofFloatColor > &vcolorsMenu, vector< ofVec3f > &menuUniqueNormals){
 	vector< ofVec3f > tnormals;
 	vector< ofFloatColor > tcolors;
 
@@ -880,14 +904,18 @@ void ofRender::colorFacesMenu(ofMesh &mesh,ofVec3f armRot,float playRoom, int ob
 	}
 
 	//at this point we have the unique normals of the object
+	menuUniqueNormals = uniqueNormals; //this is so that the menu object, can color the faces of its puzzle version, the same color as the displayed object.
+
 	//each of these normals should have a unique color
 	vector< ofFloatColor > uniqueColors;
+
 	//build roster of colors for the current object
 	for(int i =0; i< uniqueNormals.size(); i++){
 		//for each unique normal
 		//for now we select from 9 possible colors that we have right now
-		ofFloatColor x =  colorsVector[i%9];
+		ofFloatColor x =  colorsVector[i%16];
 		uniqueColors.push_back(x);
+		vcolorsMenu.push_back(x); //to remember the colors used on the main object,  to be used on the puzzle, so both have the same colorss
 	}
 	//now -> uniqueColors.size = uniqueNormals.size
 
@@ -901,18 +929,34 @@ void ofRender::colorFacesMenu(ofMesh &mesh,ofVec3f armRot,float playRoom, int ob
 		for(int n=0; n< tnormals.size() ; n++){
 			if(armX==0 && armY==0 && armZ == 0){
 				//if there are no arm rotations.. this works for cube official colors
-				if(((uniqueNormals[un].x - playRoom) <= tnormals[n].x) && 
-					(tnormals[n].x <= (uniqueNormals[un].x + playRoom)) &&
-					((uniqueNormals[un].y - playRoom) <= tnormals[n].y) && 
-					(tnormals[n].y <= (uniqueNormals[un].y + playRoom)) &&
-					((uniqueNormals[un].z - playRoom) <= tnormals[n].z) && 
-					(tnormals[n].z <= (uniqueNormals[un].z + playRoom))
-					){
-						//if the cubies meshs normal is one of the unique normals
-						//we assign a color to that normal on the cubie
-						//the index of the tnormal that we are looking at, is the same on the tcolors vector
-						//the color that we want is the one that corresponds to the uniqueNormals(index) that matched-> that same index is used to get color from uniqueColors(index) vector
-						tcolors[n] = uniqueColors[un];
+				if(objectID == 2){
+					//have to use the official colors
+					///rotate normal vectors to compensate for armature rotations z-y-x
+					//ask direction to color faces of cube 
+					if(tnormals[n].align(x, 2.0)){
+						tcolors[n] = blue; 
+					}else if(tnormals[n].align(y, 2.0)){
+						tcolors[n] = orange; 
+					}else if(tnormals[n].align(z, 2.0)){
+						tcolors[n] = yellow;
+					}else if(tnormals[n].align(xn, 2.0)){
+						tcolors[n] = green; 
+					}else if(tnormals[n].align(yn, 2.0)){
+						tcolors[n] = red; 
+					}else if(tnormals[n].align(zn, 2.0)){
+						tcolors[n] = white;
+					}
+				}else {
+					if (((uniqueNormals[un].x - playRoom) <= tnormals[n].x) && (tnormals[n].x <= (uniqueNormals[un].x + playRoom)) &&
+						((uniqueNormals[un].y - playRoom) <= tnormals[n].y) && (tnormals[n].y <= (uniqueNormals[un].y + playRoom)) &&
+						((uniqueNormals[un].z - playRoom) <= tnormals[n].z) && (tnormals[n].z <= (uniqueNormals[un].z + playRoom))
+						){
+							//if the cubies meshs normal is one of the unique normals
+							//we assign a color to that normal on the cubie
+							//the index of the tnormal that we are looking at, is the same on the tcolors vector
+							//the color that we want is the one that corresponds to the uniqueNormals(index) that matched-> that same index is used to get color from uniqueColors(index) vector
+							tcolors[n] = uniqueColors[un];
+					}
 				}
 			}else{
 				//arm rotations
@@ -961,6 +1005,191 @@ void ofRender::colorFacesMenu(ofMesh &mesh,ofVec3f armRot,float playRoom, int ob
 	//put that colorVector on the current mesh of the current cubie
 	mesh.clearColors();
 	mesh.addColors(tcolors);
+}
+//---------------------------------------------------------------------------------------------------------------
+void ofRender::colorFacesMenuPuzzle(cubie **myCubies, int numPieces,float playRoom, int objectID, vector< ofFloatColor > &vcolors,vector< ofVec3f > &menuUniqueNormals){
+	//goes through each cubie and makes sets of normals.. to determine all different normals in the object
+	//i.e. this will give 8 + 6 faces for octahedron
+
+	//this one compares those normals to the normals vector and gets the color for that normal from the menuPuzzle colorsVector
+
+	vector< ofVec3f > tnormals;
+	vector< ofFloatColor > tcolors;
+	//create sets of distitnct normals from all the meshes of all the cubies of the puzzle
+	vector< ofVec3f > uniqueNormals;
+
+	float armX;
+	float armY;
+	float armZ;
+	ofPoint x = ofPoint(1,0,0);
+	ofPoint y = ofPoint(0,1,0);
+	ofPoint z = ofPoint(0,0,1);
+	ofPoint xn = ofPoint(-1,0,0);
+	ofPoint yn = ofPoint(0,-1,0);
+	ofPoint zn = ofPoint(0,0,-1);
+
+	for(int i=0;i<numPieces;i++){
+		float meshesCubie =  myCubies[i]->getNumObjs();
+		for (int j = 0 ; j< meshesCubie; j++){
+			//get the normals of the mesh!
+			tnormals = myCubies[i]->myMeshs[j].getNormals();
+			armX = myCubies[i]->armRotations.x;
+			armY = myCubies[i]->armRotations.y;
+			armZ = myCubies[i]->armRotations.z;
+			//verify each normal value on unique normals vector
+			for(int n=0; n< tnormals.size() ; n++){
+				if(uniqueNormals.size() == 0){
+					//the first normal of all the normals
+					//push the first one
+					uniqueNormals.push_back (tnormals[n]);
+				}else{
+					//it has at least one normal
+					//compare current normal with all other normals
+					for(int un = 0; un < uniqueNormals.size(); un ++){
+
+						if(((uniqueNormals[un].x - playRoom) <= tnormals[n].x) && 
+							(tnormals[n].x <= (uniqueNormals[un].x + playRoom)) &&
+							((uniqueNormals[un].y - playRoom) <= tnormals[n].y) && 
+							(tnormals[n].y <= (uniqueNormals[un].y + playRoom)) &&
+							((uniqueNormals[un].z - playRoom) <= tnormals[n].z) && 
+							(tnormals[n].z <= (uniqueNormals[un].z + playRoom))
+							){
+								//we already have that type of normal
+								//stop looking through the vector
+								un = uniqueNormals.size();
+						}else{
+							//its different
+							//keep going until the last element
+							if(un == uniqueNormals.size()-1){
+								//its the las element on the vector of unique normals
+								//if we got here its because the current normal (cn) is new to the set
+								uniqueNormals.push_back(tnormals[n]);
+								//stop this for.. we just changed the size
+								un = uniqueNormals.size();
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	//at this point we have the unique normals of the object
+	//each of these normals should have a unique color
+	vector< ofFloatColor > uniqueColors;
+	//build roster of colors for the current object
+	for(int i =0; i< uniqueNormals.size(); i++){
+		//for each unique normal
+		//we search for that normal on the normal vector
+		for(int y=0; y<menuUniqueNormals.size();y++){
+			if(uniqueNormals[i].align(menuUniqueNormals[y], 2.0)){
+				//when found
+				//we get the color from the colorVector on that same uniqueNormals index
+				uniqueColors.push_back(vcolors[y]);
+			}
+			else{
+				uniqueColors.push_back(white);
+			}
+		}
+
+	}
+	//now -> uniqueColors.size = uniqueNormals.size
+
+	//got through each cubie again
+	for(int i=0;i<numPieces;i++){
+		float meshesCubie =  myCubies[i]->getNumObjs();
+		for (int j = 0 ; j< meshesCubie; j++){
+			//go through each cubies meshes again
+			tnormals = myCubies[i]->myMeshs[j].getNormals();
+			tcolors = myCubies[i]->myMeshs[j].getColors();
+			//compare this normals to the uniqueNormals(index) to get the color from that uniqueColors(index)
+			//go through uniqueNormals
+			for(int un = 0; un<uniqueNormals.size();un++){
+				//compare each t normal with each unique normal
+				for(int n=0; n< tnormals.size() ; n++){
+					if(armX==0 && armY==0 && armZ == 0){
+						//if there are no arm rotations.. this works for cube official colors
+						if(objectID == 2){
+							//have to use the official colors
+							///rotate normal vectors to compensate for armature rotations z-y-x
+							//ask direction to color faces of cube 
+							if(tnormals[n].align(x, 2.0)){
+								tcolors[n] = blue; 
+							}else if(tnormals[n].align(y, 2.0)){
+								tcolors[n] = orange; 
+							}else if(tnormals[n].align(z, 2.0)){
+								tcolors[n] = yellow;
+							}else if(tnormals[n].align(xn, 2.0)){
+								tcolors[n] = green; 
+							}else if(tnormals[n].align(yn, 2.0)){
+								tcolors[n] = red; 
+							}else if(tnormals[n].align(zn, 2.0)){
+								tcolors[n] = white;
+							}
+						}else {
+							if (((uniqueNormals[un].x - playRoom) <= tnormals[n].x) && (tnormals[n].x <= (uniqueNormals[un].x + playRoom)) &&
+								((uniqueNormals[un].y - playRoom) <= tnormals[n].y) && (tnormals[n].y <= (uniqueNormals[un].y + playRoom)) &&
+								((uniqueNormals[un].z - playRoom) <= tnormals[n].z) && (tnormals[n].z <= (uniqueNormals[un].z + playRoom))
+								){
+									//if the cubies meshs normal is one of the unique normals
+									//we assign a color to that normal on the cubie
+									//the index of the tnormal that we are looking at, is the same on the tcolors vector
+									//the color that we want is the one that corresponds to the uniqueNormals(index) that matched-> that same index is used to get color from uniqueColors(index) vector
+									tcolors[n] = uniqueColors[un];
+							}
+						}
+					}else{
+						//arm rotations
+						if(objectID == 2){
+							//have to use the official colors
+							///rotate normal vectors to compensate for armature rotations z-y-x
+							//ask direction to color faces of cube 
+							ofVec3f t = tnormals[n].getRotated(armZ,ofVec3f(0,0,1));
+							ofVec3f t2 = t.getRotated(armY,ofVec3f(0,1,0));
+							ofVec3f t3 = t2.getRotated(armX,ofVec3f(1,0,0));
+
+							if(t3.align(x, 2.0)){
+								tcolors[n] = blue; 
+							}else if(t3.align(y, 2.0)){
+								tcolors[n] = orange; 
+							}else if(t3.align(z, 2.0)){
+								tcolors[n] = yellow;
+							}else if(t3.align(xn, 2.0)){
+								tcolors[n] = green; 
+							}else if(t3.align(yn, 2.0)){
+								tcolors[n] = red; 
+							}else if(t3.align(zn, 2.0)){
+								tcolors[n] = white;
+							}
+						}
+						else{
+							//another object, do as if there where no arm rotations
+							if(((uniqueNormals[un].x - playRoom) <= tnormals[n].x) && 
+								(tnormals[n].x <= (uniqueNormals[un].x + playRoom)) &&
+								((uniqueNormals[un].y - playRoom) <= tnormals[n].y) && 
+								(tnormals[n].y <= (uniqueNormals[un].y + playRoom)) &&
+								((uniqueNormals[un].z - playRoom) <= tnormals[n].z) && 
+								(tnormals[n].z <= (uniqueNormals[un].z + playRoom))
+								){
+									//if the cubies meshs normal is one of the unique normals
+									//we assign a color to that normal on the cubie
+									//the index of the tnormal that we are looking at, is the same on the tcolors vector
+									//the color that we want is the one that corresponds to the uniqueNormals(index) that matched-> that same index is used to get color from uniqueColors(index) vector
+									tcolors[n] = uniqueColors[un];
+							}
+						}
+					}
+				}
+			}
+			//we now have a colors Vector with new colors assigned
+			//put that colorVector on the current mesh of the current cubie
+			myCubies[i]->myMeshs[j].clearColors();
+			myCubies[i]->myMeshs[j].addColors(tcolors);
+			//have to replace the vbo
+			ofVbo tempVbo;
+			tempVbo.setMesh(myCubies[i]->myMeshs[j], GL_STATIC_DRAW);
+			myCubies[i]->myVbos[j]=tempVbo;
+		}
+	}
 }
 //---------------------------------------------------------------------------------------------------------------
 void ofRender::colorFacesExtruded(cubie **myCubies, int numPieces, float playRoom, int objectID){

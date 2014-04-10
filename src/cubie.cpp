@@ -799,7 +799,10 @@ void cubie::colorTorus(){
 bool cubie::isMoving(){
 	//returns the state of the moving boolean
 	//to prevent key press events from messing up the movements
-	return moving;
+	if(moving || undoing || goBackb){
+		return true;
+	}
+	return false;
 }
 //----------------------------------------------------------------
 void cubie::exit(){

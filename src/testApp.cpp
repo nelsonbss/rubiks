@@ -98,7 +98,7 @@ void testApp::setup(){
 		if(i==0){
 			puzzleDisplayed->loadObject(sgCreateTorus(100,70,50,50),1);
 		}else if(i == 1){
-			puzzleDisplayed->loadObject(sgCreateBox(100,100,100),2);
+			puzzleDisplayed->loadObject(sgCreateBox(300,300,300),2);
 		}else if(i == 2){
 			puzzleDisplayed->loadObject((sgC3DObject *)sgTetrahedron->Clone(),3);
 		}else if(i == 3){

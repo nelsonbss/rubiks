@@ -454,7 +454,6 @@ void cubie::faceRotate(SG_VECTOR axis,bool di){
 	//	//cout << "null at face rotation" << endl;
 	//}
 }
-
 //-------------------------------------------------------------------------------------------------------------------------------------------
 void cubie::setObjects(sgCGroup *objs,int cubieId,ofVec3f v){
 	////it receives a group, when Puzzle loadsPieces(ySlicer->getPieces())  on main
@@ -597,7 +596,6 @@ void cubie::printCurrentCentroid(){
 	model.set(modelview);
 
 	ofVec3f currentCentroid = centroid3d;
-
 }
 
 ofVec3f cubie::getUnprojectedPoint(){

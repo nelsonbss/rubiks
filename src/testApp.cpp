@@ -78,10 +78,10 @@ void testApp::setup(){
 	middlePuzzlePos.z = 0;
 	////////////////////////////////create cutter
 	ofVec3f offsetSlicer = ofVec3f(0,0,0);
-	myCutter = new cutter(0.01,1000,100,1,offsetSlicer);		
+	myCutter = new cutter(0.01,1000,100,1,offsetSlicer,3);// number of slices == same number in slicer
 	myCutter->setup();
 	//////////////////////////////////create slicer
-	mySlicer = new slicer(myCutter);
+	mySlicer = new slicer(myCutter,3);
 	mySlicer->setup();
 	slicingPos.x = 0;
 	slicingPos.y = 0;
@@ -123,7 +123,7 @@ void testApp::setup(){
 		puzzleDisplayed->init();
 
 		mySlicer->intersectCubes((sgCObject*)puzzleDisplayed->getObject());
-		myPuzzle = new puzzle(middlePuzzlePos, offsetSlicer); // it receives the position to be displayed AND the offset of the armature/cutter to adapt slicing
+		myPuzzle = new puzzle(middlePuzzlePos, offsetSlicer,3); // it receives the position to be displayed AND the offset of the armature/cutter to adapt slicing
 		myPuzzle->setup();
 		myPuzzle->loadPieces(mySlicer->getPieces(),puzzleDisplayed->objectId,rotateSlicer);//selected object id is used for coloring
 

@@ -6,7 +6,7 @@
 
 class cutter {
 public:
-	cutter(float thick, float tamCutter, float tamCuby,float numCutrc, ofVec3f pos);
+	cutter(float thick, float tamCutter, float tamCuby,float numCutrc, ofVec3f pos, int gsize);
     
 	void setup();
 	void update();
@@ -105,9 +105,14 @@ public:
 	SG_VECTOR posCube26;
 	sgCBox *c27;
 	SG_VECTOR posCube27;
+
 	sgCObject  **cubes;
+	sgCBox **cc;
     sgCGroup *allCubes;
 	////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	int gridSize;
+	int numPieces;
 
 };
 #endif /* defined(__Tcutter__cutter__) */

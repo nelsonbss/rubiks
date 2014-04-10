@@ -8,7 +8,7 @@
 
 class slicer {
 public:
-	slicer(cutter *c);
+	slicer(cutter *c, int gSize);
     
 	void setup();
 	void update();
@@ -35,5 +35,6 @@ public:
 
 	//armature rotations
 	void undoArmRotations(ofVec3f v);
+	int numPieces;
 };
 #endif /* defined(__Tslicer__slicer__) */

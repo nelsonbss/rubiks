@@ -3,7 +3,7 @@
 #include "ofRender.h"
 #include <math.h>
 
-cubie::cubie(float x, float y,float z, int idi, int selObjId, ofVec3f offset){
+cubie::cubie(float x, float y,float z, int idi, int selObjId, ofVec3f offset, int gs){
 	objects = NULL;
 	id = idi;
 	selectedObjectID = selObjId;
@@ -12,15 +12,20 @@ cubie::cubie(float x, float y,float z, int idi, int selObjId, ofVec3f offset){
 	pos.y = y;
 	pos.z = z;
 
+	xpos=1;
+	ypos=2;
+	zpos=3;
+	gridSize=gs;
+
+	zpos=idi%gridSize;
+	ypos=(idi/gridSize)%gridSize;
+	xpos=(idi/(gridSize*gridSize))%gridSize;
+		
 	pointRotate.x = offset.x;
 	pointRotate.y = offset.y;
 	pointRotate.z = offset.z;
 
 	masterAngle = 0.0;
-
-	moving = false;
-	goBackb = false;
-
 	/*ct1 = 0.0;
 	ct2 = 0.0;*/
 	animTime = 2; //this changes the speed of the animations
@@ -34,6 +39,7 @@ cubie::cubie(float x, float y,float z, int idi, int selObjId, ofVec3f offset){
 	//to control undo
 	undoing = false;
 	goBackb = false;
+	moving = false;
 
 	bDraw = true;
 	bDrawWire = false;
@@ -78,6 +84,12 @@ void cubie::setup(){
 	//	//objectList[j]->GetTempMatrix()->Rotate(puzzleRotate,vrotX,ofDegToRad(armRotations.y));
 	//	objectList[j]->ApplyTempMatrix();
 	//}
+}
+//------------------------------------------------------------------------------------------------------------------------------------------
+void cubie::setPos(int xp, int yp, int zp) {
+	xpos=xp;
+	ypos=yp;
+	zpos=zp;
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 void cubie::faceRotate(SG_VECTOR axis,bool di,float angle){
@@ -159,7 +171,7 @@ void cubie::update(){
 					double aux =  ofDegToRad(-1);
 					objectList[0]->GetTempMatrix()->Rotate(protFace,vrotFace,aux);
 					masterAngle --;
-				}else{
+				}else if(masterAngle == 0 ){
 					goBackb = false;
 					masterAngle = 0;
 				}
@@ -721,6 +733,22 @@ int cubie::getId(){
 	return id;
 }
 //-------------------------------------------------------------
+int cubie::getXpos(){
+	return xpos;
+}
+//-------------------------------------------------------------
+int cubie::getYpos(){
+	return ypos;
+}
+//-------------------------------------------------------------
+int cubie::getZpos(){
+	return zpos;
+}
+//-------------------------------------------------------------
+int cubie::getWpos(){
+	return wpos;
+}
+//-------------------------------------------------------------
 float cubie::getNumObjs(){
 	return numObjs;
 }
@@ -770,7 +798,8 @@ void cubie::colorBlackSides(int idCubie, float playRoom){
 	//have key sides of cubie colored black
 	ofRender *ofr = new ofRender(); 
 	for(int j=0; j< numObjs; j++){
-		ofr->colorBlackSides(myMeshs[j],idCubie,playRoom,selectedObjectID);
+		//ofr->colorBlackSides(myMeshs[j],idCubie,playRoom,selectedObjectID);
+		ofr->colorBlackSidesFromAxes(myMeshs[j],xpos,ypos,zpos,gridSize,playRoom);
 		//have to replace the vbo
 		ofVbo tempVbo;
 		tempVbo.setMesh(myMeshs[j], GL_STATIC_DRAW);

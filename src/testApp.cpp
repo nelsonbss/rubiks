@@ -12,7 +12,7 @@
 //--------------------------------------------------------------
 void testApp::setup(){
 	/////////////////////////////initialize sgCore library
-	//sgInitKernel();
+	sgInitKernel();
 
 	/////////////////////////////initialize openFrameworks rendering
 	initOFRender();

@@ -417,6 +417,7 @@ void GuiConfigurator::loadNodes(string _sheetName, GuiWindow* _win){
 		nodePtr->setScale(ofToFloat(scale));
 		nodePtr->setMirrored(bMirrored);
 		nodePtr->setFlipped(bFlipped);
+		nodePtr->setPrefix(prefix);
 		loadParams(nodePtr);
 		loadEvents(nodePtr);
 		nodePtr->init();

@@ -809,12 +809,15 @@ void puzzle::decideMove(){
 			}
 		}
 	}
+}
 
-
+void puzzle::endRotation(){
+	//myCubies[activeCubie]->setDraw(true);
+	bHaveAxis = false; 
+	activeCubie = -1;
 }
 //--------------------------------------------------------------------------------------------
 void puzzle::update(string _eventName, SubObEvent _event){
-
 }
 //----------------------------------------------------------------------------------------------
 //--------------------------------------------------------------

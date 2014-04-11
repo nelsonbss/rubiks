@@ -447,7 +447,7 @@ void game::update(string _eventName, SubObEvent _event){
 			} else if(phase == 1){
 				ofVec2f p = _event.getArg("absPos")->getVec2();
 				int n = _event.getArg("n")->getInt();
-				cout << "n = " << n << " p = " << p.x << ", " << p.y << endl;
+				//cout << "n = " << n << " p = " << p.x << ", " << p.y << endl;
 				if(n == 0){
 					myPuzzle->endRotation();
 					return;
@@ -491,7 +491,7 @@ void game::update(string _eventName, SubObEvent _event){
 		ofVec2f pos = _event.getArg("pos")->getVec2();
 		newFaceColor = ofFloatColor(newColor.x / 255.0, newColor.y / 255.0, newColor.z / 255.0);
 		if(!bUnproject){
-			mousePoint.set(pos.x - viewport.x, pos.y - viewport.y, 0);
+			mousePoint.set(ofGetMouseX(), ofGetMouseY(), 0);
 			bUnproject = true;
 			unprojectMode = UP_MODE_COLOR;
 		}
@@ -658,15 +658,15 @@ void game::draw(){
 }
 
 void game::unprojectPoint(ofVec3f _pnt){
-	ofVec3f realPoint = mousePoint;
+	//ofVec3f realPoint = mousePoint;
 	if(bUseViewport){
 		//realPoint.x = (float)viewport.getWidth() * (mousePoint.x / (float)ofGetWidth()) + viewport.x;
 		//realPoint.y = (float)viewport.getHeight() * (mousePoint.y / (float)ofGetHeight()) + viewport.y;
 		//realPoint.x -= viewport.x;
 		//realPoint.y -= viewport.y;
 	}
-	//unprojectedPoint = picker.unproject(realPoint, &viewport);
-	unprojectedPoint = cam.screenToWorld(realPoint, viewport);
+	unprojectedPoint = picker.unproject(mousePoint, &viewport);
+	//unprojectedPoint = cam.screenToWorld(_pnt, viewport);
 	cout << "UP = " << unprojectedPoint.x << ", " << unprojectedPoint.y << ", " << unprojectedPoint.z << endl;
 	if(unprojectMode == UP_MODE_MOUSE){
 		if(!bDragInput){
@@ -678,6 +678,7 @@ void game::unprojectPoint(ofVec3f _pnt){
 			lastUnprojectedPoint = unprojectedPoint;
 		}
 	} else if(unprojectMode == UP_MODE_COLOR){
+		cout << "setting color." << endl;
 		myPuzzle->changeFaceColor(unprojectedPoint, newFaceColor);
 	}
 }
@@ -1498,6 +1499,7 @@ void game::guiInput(int in){
 void game::decideMove(){
 	//it looks at current face rotation angle and decides to do a cmplete move, or go back to previous possition
 	myPuzzle->decideMove();
+	//}
 }
 //----------------------------------------------------------------------
 bool game::extrudeObject(ofPolyline *drawing){

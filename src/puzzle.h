@@ -12,7 +12,7 @@
 #include "SubObEvent.h"
 #include "CubieMesh.h"
 
-#define MAX_DIST 800.0
+#define MAX_DIST 1500.0
 
 class puzzle : public Observer{
 
@@ -132,13 +132,7 @@ public:
 	float getMainComponent(ofVec3f _pnt);
 	bool bHaveAxis;
 	SG_VECTOR v;
-	void endRotation(){bHaveAxis = false; activeCubie = -1;}
-
-
-	//void mousePressed(int x, int y, int button);
-	//ofPoint unprojectPoint(ofVec3f _pnt);
-	//void unprojectPoint();
-	//double gestureAngles[6];
+	void endRotation();
 };
 
 #endif /* defined(__Tpuzzle__puzzle__) */

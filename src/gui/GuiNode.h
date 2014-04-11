@@ -139,6 +139,9 @@ public:
 	virtual void nodeSetPosition(){}
 	virtual void input(string _type, int _ID, int _n, int _phase, ofVec2f _absPos, ofVec2f _deltaPos){cout << "node input" << endl;}
 
+	void setPrefix(string _p){prefix = _p;}
+	string getPrefix(){return prefix;}
+
 protected:
 
     map<string,string> attrs;
@@ -162,6 +165,8 @@ protected:
 
 	bool bMirrored;
 	bool bFlipped;
+
+	string prefix;
 };
 
 

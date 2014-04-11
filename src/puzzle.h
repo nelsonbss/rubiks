@@ -12,7 +12,7 @@
 #include "SubObEvent.h"
 #include "CubieMesh.h"
 
-#define MAX_DIST 800.0
+#define MAX_DIST 1500.0
 
 class puzzle : public Observer{
 

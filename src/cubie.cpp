@@ -156,6 +156,7 @@ void cubie::goForward(){
 }
 //--------------------------------------------------------------
 void cubie::update(){
+	//cout << "numObjs: " << numObjs << endl;
 	if(numObjs > 0){
 		if(goBackb==true){
 			//////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -198,7 +199,7 @@ void cubie::update(){
 						objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,aux);
 						//}
 						//ct1 = ct2;
-					}else{
+					}else if(rotXa <= tempDeg2){
 						//////rotXa = tempDeg2;
 						//////double aux =  ofDegToRad(rotXa);
 						////////for (int j=0; j < numObjs; j++){
@@ -228,7 +229,7 @@ void cubie::update(){
 						objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,aux);
 						//////}
 						//ct1 = ct2;
-					}else{
+					}else  if(rotXa >= tempDeg2){
 						//////rotXa = tempDeg2;
 						//////double aux =  ofDegToRad(rotXa);
 						//////for (int j=0; j < numObjs; j++){
@@ -400,6 +401,9 @@ void cubie::update(){
 		//	objectList[j]->GetTempMatrix()->Rotate(puzzleRotate,vrotX,ofDegToRad(armRotations.x));
 		//	objectList[j]->ApplyTempMatrix();
 		//}
+	}
+	else{
+		
 	}
 }
 //------------------------------------------------------------------------------------------------------------------------------------------

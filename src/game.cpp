@@ -447,7 +447,7 @@ void game::update(string _eventName, SubObEvent _event){
 			} else if(phase == 1){
 				ofVec2f p = _event.getArg("absPos")->getVec2();
 				int n = _event.getArg("n")->getInt();
-				cout << "n = " << n << " p = " << p.x << ", " << p.y << endl;
+				//cout << "n = " << n << " p = " << p.x << ", " << p.y << endl;
 				if(n == 0){
 					myPuzzle->endRotation();
 					return;
@@ -491,7 +491,7 @@ void game::update(string _eventName, SubObEvent _event){
 		ofVec2f pos = _event.getArg("pos")->getVec2();
 		newFaceColor = ofFloatColor(newColor.x / 255.0, newColor.y / 255.0, newColor.z / 255.0);
 		if(!bUnproject){
-			mousePoint.set(pos.x - viewport.x, pos.y - viewport.y, 0);
+			mousePoint.set(ofGetMouseX(), ofGetMouseY(), 0);
 			bUnproject = true;
 			unprojectMode = UP_MODE_COLOR;
 		}

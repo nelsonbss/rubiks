@@ -96,10 +96,10 @@ void GuiButton::nodeExecute(){
 	if(bSendSample){
 		cout << "sending sample" << endl;
 		SubObEvent ev;
-		ev.setName("new-color");
+		ev.setName(getPrefix() + "new-color");
 		ev.addArg("color", sampleColor);
 		ev.addArg("pos", drawPos);
-		SubObMediator::Instance()->sendEvent("new-color", ev);
+		SubObMediator::Instance()->sendEvent(ev.getName(), ev);
 	}
 	cout << name << " executing." << endl;
 }

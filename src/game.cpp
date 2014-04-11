@@ -658,15 +658,15 @@ void game::draw(){
 }
 
 void game::unprojectPoint(ofVec3f _pnt){
-	ofVec3f realPoint = mousePoint;
+	//ofVec3f realPoint = mousePoint;
 	if(bUseViewport){
 		//realPoint.x = (float)viewport.getWidth() * (mousePoint.x / (float)ofGetWidth()) + viewport.x;
 		//realPoint.y = (float)viewport.getHeight() * (mousePoint.y / (float)ofGetHeight()) + viewport.y;
 		//realPoint.x -= viewport.x;
 		//realPoint.y -= viewport.y;
 	}
-	//unprojectedPoint = picker.unproject(realPoint, &viewport);
-	unprojectedPoint = cam.screenToWorld(realPoint, viewport);
+	unprojectedPoint = picker.unproject(mousePoint, &viewport);
+	//unprojectedPoint = cam.screenToWorld(_pnt, viewport);
 	cout << "UP = " << unprojectedPoint.x << ", " << unprojectedPoint.y << ", " << unprojectedPoint.z << endl;
 	if(unprojectMode == UP_MODE_MOUSE){
 		if(!bDragInput){
@@ -678,6 +678,7 @@ void game::unprojectPoint(ofVec3f _pnt){
 			lastUnprojectedPoint = unprojectedPoint;
 		}
 	} else if(unprojectMode == UP_MODE_COLOR){
+		cout << "setting color." << endl;
 		myPuzzle->changeFaceColor(unprojectedPoint, newFaceColor);
 	}
 }
@@ -1478,7 +1479,9 @@ void game::guiInput(int in){
 }
 //----------------------------------------------------------------------
 void game::decideMove(){
+	//if(myPuzzle->activeCubie > -1){
 	myPuzzle->decideMove();
+	//}
 }
 //----------------------------------------------------------------------
 bool game::extrudeObject(ofPolyline *drawing){

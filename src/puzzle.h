@@ -125,7 +125,7 @@ public:
 	float getMainComponent(ofVec3f _pnt);
 	bool bHaveAxis;
 	SG_VECTOR v;
-	void endRotation(){bHaveAxis = false; activeCubie = -1;}
+	void endRotation();
 };
 
 #endif /* defined(__Tpuzzle__puzzle__) */

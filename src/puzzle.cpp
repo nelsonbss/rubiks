@@ -657,55 +657,14 @@ void puzzle::decideMove(){
 		}
 	}
 }
-void puzzle::update(string _eventName, SubObEvent _event){
-	/*
-	if(_eventName == "ibox-bl:1"){
-	int phase = _event->getArg("phase")->getInt();
-	//cout << "puzzle phase = " << phase << endl;
-	if(phase == 0){
-	ofVec2f pos = _event->getArg("absPos")->getVec2();
-	//myCubies[1]->setMousePoint(ofVec3f(pos.x, pos.y, 0));
-	if(isInside(pos.x, pos.y)){
-	cout << "puzzle got cubie." << endl;
-	}
-	}
-	if(phase == 1){
-	ofVec2f pos = _event->getArg("absPos")->getVec2();
-	bool result = isInside(pos.x, pos.y);
-	}
-	if(phase == 2){
-	doRotation();
-	}
-	}
 
-
+void puzzle::endRotation(){
+	//myCubies[activeCubie]->setDraw(true);
+	bHaveAxis = false; 
+	activeCubie = -1;
 }
-//--------------------------------------------------------------------------------------------
-void puzzle::update(string _eventName, SubObEvent* _event){
-	/*
-	if(_eventName == "ibox-bl:1"){
-	int phase = _event->getArg("phase")->getInt();
-	//cout << "puzzle phase = " << phase << endl;
-	if(phase == 0){
-	ofVec2f pos = _event->getArg("absPos")->getVec2();
-	//myCubies[1]->setMousePoint(ofVec3f(pos.x, pos.y, 0));
-	if(isInside(pos.x, pos.y)){
-	cout << "puzzle got cubie." << endl;
-	}
-	}
-	if(phase == 1){
-	ofVec2f pos = _event->getArg("absPos")->getVec2();
-	bool result = isInside(pos.x, pos.y);
-	}
-	if(phase == 2){
-	doRotation();
-	}
-	}
-	if(_eventName == "ibox-bl:0"){
-	//cout << "doing rotation." << endl;
-	doRotation();
-	}
-	*/
+
+void puzzle::update(string _eventName, SubObEvent _event){
 }
 
 void puzzle::unprojectPoint(){
@@ -754,10 +713,10 @@ void puzzle::checkCubiesForHit(ofVec3f _pnt){
 		if(nearest < MAX_DIST){
 			if(activeCubie != nearestId){
 				if(activeCubie > -1){
-					myCubies[activeCubie]->setDraw(true);
+					//myCubies[activeCubie]->setDraw(true);
 				}
 				activeCubie = nearestId;
-				myCubies[activeCubie]->setDraw(false);
+				//myCubies[activeCubie]->setDraw(false);
 				activeTriangle = myCubies[activeCubie]->getNearestTri(_pnt);
 				//ofVec3f n = activeTriangle.getNormal();
 				//vector<Triangle> tris = myCubies[activeCubie]->getTrianglesByNormal(n);

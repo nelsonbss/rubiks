@@ -423,7 +423,7 @@ void game::update(string _eventName, SubObEvent _event){
 	if(_eventName == prefix + ":ibox:0"){
 		if(bDragInput){
 			myPuzzle->endRotation();
-			//myPuzzle->decideMove();
+			myPuzzle->decideMove();
 			bDragInput = false;
 		}
 	}
@@ -561,12 +561,12 @@ void game::draw(){
 		ofViewport(viewport);
 		ofSetupScreen();*/
 		cam.begin(viewport);
-		cam.disableMouseInput();
+		//cam.disableMouseInput();
 		ofEnableAlphaBlending();
 		ofSetColor(1.0,1.0,1.0,0.5);
 		cam.setPosition(camPosition);
 		//cam.setDistance(1000);
-		cam.lookAt(ofVec3f(viewport.width / 2, viewport.height / 2, -500));
+		cam.lookAt(ofVec3f(posP.x, posP.y, posP.z));
 	}
 	if(step == -1){
 		//waiting for initializing touch
@@ -607,26 +607,7 @@ void game::draw(){
 		//glTranslatef(-posP.x,-posP.y,-posP.z);
 		myPuzzle->draw();
 		if(bUnproject){
-			ofVec3f realPoint = mousePoint;
-			if(bUseViewport){
-				//realPoint.x = (float)viewport.getWidth() * (mousePoint.x / (float)ofGetWidth()) + viewport.x;
-				//realPoint.y = (float)viewport.getHeight() * (mousePoint.y / (float)ofGetHeight()) + viewport.y;
-				//realPoint.x -= viewport.x;
-				//realPoint.y -= viewport.y;
-			}
-			unprojectedPoint = picker.unproject(realPoint, &viewport);
-			cout << "UP = " << unprojectedPoint.x << ", " << unprojectedPoint.y << ", " << unprojectedPoint.z << endl;
-			if(unprojectMode == UP_MODE_MOUSE){
-				if(!bDragInput){
-					myPuzzle->checkCubiesForHit(unprojectedPoint);
-					lastUnprojectedPoint = unprojectedPoint;
-				} else {
-					myPuzzle->dragInput(unprojectedPoint - lastUnprojectedPoint);
-					lastUnprojectedPoint = unprojectedPoint;
-				}
-			} else if(unprojectMode == UP_MODE_COLOR){
-				myPuzzle->changeFaceColor(unprojectedPoint, newFaceColor);
-			}
+			unprojectPoint(mousePoint);
 			bUnproject = false;
 		}
 		glPopMatrix();
@@ -645,27 +626,7 @@ void game::draw(){
 		//glTranslatef(-posP.x,-posP.y,-posP.z);
 		myPuzzle->draw();
 		if(bUnproject){
-			ofVec3f realPoint = mousePoint;
-			if(bUseViewport){
-				//realPoint.x = (float)viewport.getWidth() * (mousePoint.x / (float)ofGetWidth()) + viewport.x;
-				//realPoint.y = (float)viewport.getHeight() * (mousePoint.y / (float)ofGetHeight()) + viewport.y;
-				//realPoint.x -= viewport.x;
-				//realPoint.y -= viewport.y;
-			}
-			unprojectedPoint = picker.unproject(realPoint, &viewport);
-			cout << "UP = " << unprojectedPoint.x << ", " << unprojectedPoint.y << ", " << unprojectedPoint.z << endl;
-			if(unprojectMode == UP_MODE_MOUSE){
-				if(!bDragInput){
-					myPuzzle->checkCubiesForHit(unprojectedPoint);
-					lastUnprojectedPoint = unprojectedPoint;
-					bDragInput = true;
-				} else {
-					myPuzzle->dragInput(unprojectedPoint - lastUnprojectedPoint);
-					lastUnprojectedPoint = unprojectedPoint;
-				}
-			} else if(unprojectMode == UP_MODE_COLOR){
-				myPuzzle->changeFaceColor(unprojectedPoint, newFaceColor);
-			}
+			unprojectPoint(mousePoint);
 			bUnproject = false;
 		}
 		glPopMatrix();
@@ -693,6 +654,31 @@ void game::draw(){
 	if(bUseViewport){
 		//ofPopView();
 		cam.end();
+	}
+}
+
+void game::unprojectPoint(ofVec3f _pnt){
+	ofVec3f realPoint = mousePoint;
+	if(bUseViewport){
+		//realPoint.x = (float)viewport.getWidth() * (mousePoint.x / (float)ofGetWidth()) + viewport.x;
+		//realPoint.y = (float)viewport.getHeight() * (mousePoint.y / (float)ofGetHeight()) + viewport.y;
+		//realPoint.x -= viewport.x;
+		//realPoint.y -= viewport.y;
+	}
+	//unprojectedPoint = picker.unproject(realPoint, &viewport);
+	unprojectedPoint = cam.screenToWorld(realPoint, viewport);
+	cout << "UP = " << unprojectedPoint.x << ", " << unprojectedPoint.y << ", " << unprojectedPoint.z << endl;
+	if(unprojectMode == UP_MODE_MOUSE){
+		if(!bDragInput){
+			myPuzzle->checkCubiesForHit(unprojectedPoint);
+			lastUnprojectedPoint = unprojectedPoint;
+			bDragInput = true;
+		} else {
+			myPuzzle->dragInput((unprojectedPoint - lastUnprojectedPoint) * 25.0);
+			lastUnprojectedPoint = unprojectedPoint;
+		}
+	} else if(unprojectMode == UP_MODE_COLOR){
+		myPuzzle->changeFaceColor(unprojectedPoint, newFaceColor);
 	}
 }
 
@@ -1685,12 +1671,12 @@ void game::exit(){
 void game::mouseDragged(int x, int y, int button){
 	if(step == 4 || step == 5 || step == 7){
 		ofVec2f mouse(x,y);
-		ofQuaternion yRot(x-lastMouse.x, ofVec3f(0,1,0));
-		ofQuaternion xRot(y-lastMouse.y, ofVec3f(-1,0,0));
+		ofQuaternion yRot(x-lastMouse.x, ofVec3f(0,-1,0));
+		ofQuaternion xRot(y-lastMouse.y, ofVec3f(1,0,0));
 		//curRot *= yRot*xRot;
 		curRot.set(curRot*yRot*xRot);
 		curRot.getRotate(angle, axistb);
-		camPosition.rotate(angle, ofVec3f(posP.x, posP.y, posP.z), axistb);
+		camPosition.rotate(angle * 0.01, ofVec3f(posP.x, posP.y, posP.z), axistb);
 		lastMouse = mouse;
 	}else if(step == 6){
 		myCanvas->mouseDragged(x,y,button);
@@ -1700,6 +1686,7 @@ void game::mouseDragged(int x, int y, int button){
 		rotateA(r);
 		lastMouse = mouse;
 	}
+	timeOfLastInteraction = ofGetElapsedTimeMillis();
 }
 //--------------------------------------------------------------
 void game::mousePressed(int x, int y, int button){
@@ -1708,10 +1695,12 @@ void game::mousePressed(int x, int y, int button){
 	}else if(step == 6){
 		myCanvas->mousePressed(x,y,button);
 	}
+	timeOfLastInteraction = ofGetElapsedTimeMillis();
 }
 //--------------------------------------------------------------
 void game::mouseReleased(int x, int y, int button){
 	if(step == 6){
 		myCanvas->mouseReleased(x,y,button);
 	}
+	timeOfLastInteraction = ofGetElapsedTimeMillis();
 }

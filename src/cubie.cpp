@@ -92,7 +92,8 @@ void cubie::faceRotate(SG_VECTOR axis,bool di,float angle){
 				vrotFace.x = axis.x;
 				vrotFace.y = axis.y;
 				vrotFace.z = axis.z;
-
+				ofVec3f protFaceV(pointRotate.x, pointRotate.y, pointRotate.z);
+				ofVec3f vrotFaceV(vrotFace.x, vrotFace.y, vrotFace.z);
 				dir = di;
 
 				//ct1 = ofGetElapsedTimeMillis();
@@ -101,11 +102,12 @@ void cubie::faceRotate(SG_VECTOR axis,bool di,float angle){
 				//myMatrix.push_back(matrix(axis,angle,di));
 				masterAngle += angle;
 				for (int j=0; j < numObjs; j++){
-					if (objectList[j]->GetTempMatrix()==0){
+					/*if (objectList[j]->GetTempMatrix()==0){
 						objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,ofDegToRad(angle));
 					}else{
 						objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,ofDegToRad(angle));
-					}
+					}*/
+					myMeshs[j].updatePosition(protFaceV, vrotFaceV, -angle);
 				}
 				//}else{
 				//	//cc
@@ -151,15 +153,19 @@ void cubie::update(){
 			//do animation to 0 position from masterAngle position
 			for (int j=0; j < numObjs; j++){
 				SG_POINT protFace = {pointRotate.x,pointRotate.y,pointRotate.z};		///////////////////////////////////////////								 
+				ofVec3f protFaceV(pointRotate.x, pointRotate.y, pointRotate.z);
+				ofVec3f vrotFaceV(vrotFace.x, vrotFace.y, vrotFace.z);
 				if(masterAngle < 0 ){
-					double aux =  ofDegToRad(1);
-					objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,aux);
+					//double aux =  ofDegToRad(1);
+					//objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,aux);
+					myMeshs[j].updatePosition(protFaceV, vrotFaceV, -1);
 					masterAngle ++;
 				}else if(masterAngle > 0 ){
-					double aux =  ofDegToRad(-1);
-					objectList[0]->GetTempMatrix()->Rotate(protFace,vrotFace,aux);
+					//double aux =  ofDegToRad(-1);
+					//objectList[0]->GetTempMatrix()->Rotate(protFace,vrotFace,aux);
+					myMeshs[j].updatePosition(protFaceV, vrotFaceV, 1);
 					masterAngle --;
-				}else{
+				}else if(masterAngle == 0){
 					goBackb = false;
 					masterAngle = 0;
 				}
@@ -172,7 +178,9 @@ void cubie::update(){
 			/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			//do 90 deg animation to new position
 			for (int j=0; j < numObjs; j++){
-				SG_POINT protFace = {pointRotate.x,pointRotate.y,pointRotate.z};										 
+				SG_POINT protFace = {pointRotate.x,pointRotate.y,pointRotate.z};
+				ofVec3f protFaceV(pointRotate.x, pointRotate.y, pointRotate.z);
+				ofVec3f vrotFaceV(vrotFace.x, vrotFace.y, vrotFace.z);
 				if(sample==false){
 					//this should only be sampled once during the animation
 					rotXa = 0;//myMatrix.at(myMatrix.size()-2).deg;
@@ -185,9 +193,10 @@ void cubie::update(){
 					if(rotXa < tempDeg2){
 						//ct2 = ofGetElapsedTimeMillis();
 						rotXa += 1;//animTime;//0.1;//(ct2 - ct1)*((1.57)/animTime);
-						double aux =  ofDegToRad(1);
+						//double aux =  ofDegToRad(1);
 						/*for (int j=0; j < numObjs; j++){*/
-						objectList[0]->GetTempMatrix()->Rotate(protFace,vrotFace,aux);
+						//objectList[0]->GetTempMatrix()->Rotate(protFace,vrotFace,aux);
+						myMeshs[j].updatePosition(protFaceV, vrotFaceV, -1);
 						//}
 						//ct1 = ct2;
 					}else{
@@ -215,9 +224,10 @@ void cubie::update(){
 					if(rotXa > tempDeg2){
 						//ct2 = ofGetElapsedTimeMillis();
 						rotXa -= 1;//animTime;//0.1;  //(ct2 - ct1)*((1.57)/animTime);
-						double aux =  ofDegToRad(-1);
+						//double aux =  ofDegToRad(-1);
 						//////for (int j=0; j < numObjs; j++){
-						objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,aux);
+						//objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,aux);
+						myMeshs[j].updatePosition(protFaceV, vrotFaceV, 1);
 						//////}
 						//ct1 = ct2;
 					}else{
@@ -403,14 +413,15 @@ void cubie::draw(){
 		for (int j=0; j < numObjs; j++){
 			glPushMatrix();
 			//ofScale(1.2,1.2,1.2);
-			if (objectList[j]->GetTempMatrix()!=0)
-				glMultMatrixd(objectList[j]->GetTempMatrix()->GetTransparentData());
+			//if (objectList[j]->GetTempMatrix()!=0)
+				//glMultMatrixd(objectList[j]->GetTempMatrix()->GetTransparentData());
 			//objectList[j]->DestroyTempMatrix();
 			if(bDraw){
 				if(bDrawWire){
 					myMeshs[j].drawWireframe();
 				} else {
-					myVbos[j].draw(GL_TRIANGLES, 0,myMeshs[j].getNumIndices());
+					//myVbos[j].draw(GL_TRIANGLES, 0,myMeshs[j].getNumIndices());
+					myMeshs[j].draw();
 				}
 			}
 			/*

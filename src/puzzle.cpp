@@ -754,10 +754,10 @@ void puzzle::checkCubiesForHit(ofVec3f _pnt){
 		if(nearest < MAX_DIST){
 			if(activeCubie != nearestId){
 				if(activeCubie > -1){
-					//myCubies[activeCubie]->setDraw(true);
+					myCubies[activeCubie]->setDraw(true);
 				}
 				activeCubie = nearestId;
-				//myCubies[activeCubie]->setDraw(false);
+				myCubies[activeCubie]->setDraw(false);
 				activeTriangle = myCubies[activeCubie]->getNearestTri(_pnt);
 				//ofVec3f n = activeTriangle.getNormal();
 				//vector<Triangle> tris = myCubies[activeCubie]->getTrianglesByNormal(n);

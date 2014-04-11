@@ -189,10 +189,11 @@ public:
 	void setUseViewport(bool _b){bUseViewport = _b;}
 	void toggleUseViewport(){bUseViewport != bUseViewport;}
 
+	void unprojectPoint(ofVec3f _pnt);
 	int unprojectMode;
 	ofFloatColor newFaceColor;
 
-	ofEasyCam cam;
+	ofCamera cam;
 	ofVec3f camPosition;
 
 	string prefix;

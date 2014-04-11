@@ -168,7 +168,7 @@ void cubie::update(){
 					masterAngle ++;
 				}else if(masterAngle > 0 ){
 					double aux =  ofDegToRad(-1);
-					objectList[0]->GetTempMatrix()->Rotate(protFace,vrotFace,aux);
+					objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,aux);
 					masterAngle --;
 				}else if(masterAngle == 0 ){
 					goBackb = false;
@@ -195,7 +195,7 @@ void cubie::update(){
 						rotXa += 1;//animTime;//0.1;//(ct2 - ct1)*((1.57)/animTime);
 						double aux =  ofDegToRad(1);
 						/*for (int j=0; j < numObjs; j++){*/
-						objectList[0]->GetTempMatrix()->Rotate(protFace,vrotFace,aux);
+						objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,aux);
 						//}
 						//ct1 = ct2;
 					}else{
@@ -564,31 +564,6 @@ ofVec3f cubie::projectPoint(ofVec3f _pnt){
 	//cout << "Cubie " << id << " z = " << centroid2d.z << endl;
 }
 
-void cubie::unprojectPoint(ofVec3f _pnt){
-	cout << "cubie unprojecting point. - " << _pnt.x << ", " << _pnt.y << ", " << _pnt.z << endl;
-	GLint viewport[4];
-	GLdouble modelview[16];
-	GLdouble projection[16];
-	GLfloat winX, winY, winZ;
-	GLdouble posX, posY, posZ;
-
-	glGetDoublev( GL_MODELVIEW_MATRIX, modelview );
-	glGetDoublev( GL_PROJECTION_MATRIX, projection );
-	glGetIntegerv( GL_VIEWPORT, viewport );
-
-	winX = (float) _pnt.x;
-	winY = (float)viewport[3] - _pnt.y;
-	glReadPixels( 0, int(winY), 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &winZ );
-
-	gluUnProject( winX, winY, winZ, modelview, projection, viewport, &posX, &posY, &posZ);
-
-	cout << "mouse position = " << posX << ", " << posY << ", " << posZ << endl;
-	//cout << "cube postion = " << pos.x << ", " << pos.y << ", " << pos.z << endl;
-
-	unprojectedPoint.set(posX, posY, posZ);
-	bHavePoint = true;
-}
-
 void cubie::printCurrentCentroid(){
 	GLint viewport[4];
 	GLdouble modelview[16];
@@ -837,3 +812,4 @@ void cubie::exit(){
 		sgCObject::DeleteObject(objects);
 	}
 }
+//----------------------------------------------------------------

@@ -124,7 +124,7 @@ public:
 	ofVec3f mousePoint;
 	ofVec3f unprojectedPoint;
 	bool bHavePoint;
-	void unprojectPoint();
+	
 	void setMousePoint(ofVec3f _pnt);
 	void checkCubiesForHit(ofVec3f _pnt);
 	void dragInput(ofVec3f _pnt);
@@ -133,6 +133,12 @@ public:
 	bool bHaveAxis;
 	SG_VECTOR v;
 	void endRotation(){bHaveAxis = false; activeCubie = -1;}
+
+
+	//void mousePressed(int x, int y, int button);
+	//ofPoint unprojectPoint(ofVec3f _pnt);
+	//void unprojectPoint();
+	//double gestureAngles[6];
 };
 
 #endif /* defined(__Tpuzzle__puzzle__) */

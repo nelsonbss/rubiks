@@ -92,9 +92,6 @@ public:
 	int getWpos();
 	void setPos(int xp, int yp, int zp);
 
-
-
-
 	/*
 	Paul's
 	*/
@@ -114,7 +111,7 @@ public:
 
 	void getCentroid();
 	ofVec3f projectPoint(ofVec3f _pnt);
-	void unprojectPoint(ofVec3f _pnt);
+	//void unprojectPoint(ofVec3f _pnt);
 	float getDistanceByVertex(ofVec3f _pos);
 	float getDistanceByCentroid(ofVec3f _pos);
 	ofVec3f getCentroidScreen(){return centroid2d;}

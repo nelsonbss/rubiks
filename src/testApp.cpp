@@ -578,100 +578,10 @@ void testApp::mousePressed(int x, int y, int button){
 		ev->addArg("position",ofVec3f((float)x / (float)ofGetWidth(),(float)y / (float)ofGetHeight(),0));
 		ev->addArg("touch-id", touchId + touchIdOffset);
 		SubObMediator::Instance()->sendEvent("add-touch-point", ev);
-		////////////////////////////////////////////////////////////////////////////////////////////////////////
-		////////////////////////////////////////////////////////////////////////////////////////////////////////
-		////////////////////////////////////////////////////////////////////////////////////////////////////////
-		////--------------------------------------------------------------------
-		////void view1_MouseDown(object sender, MouseButtonEventArgs e) // checks if mouse click is on a center piece, and if so, twists it clockwise
-		////{
-	//	if (myGames[0]->myPuzzle->isMoving()){
-	//		return;
-	//	}
-	//	//if (isSolving || isTwisting){
-	//	//	return;
-	//	//}
-
-	//	// if we're not hitting an object, we quit.
-	//	if(!myGames[0]->myPuzzle->bHaveActiveCubie){
-	//		return;
-	//	}
-	//	//Point location = e.GetPosition(view1);
-	//	//ModelVisual3D result = GetHitTestResult(location);
-	//	//if (result == null)
-	//	//{
-	//	//	return;
-	//	//}
-	//	else{ //if (result is ModelVisual3D)
-	//		//{
-	//		// get the id number of the cubie and keep track of it
-
-	//		int id = myGames[0]->myPuzzle->activeCubie;
-	//		//String tempS = result.GetName().Substring(5);
-	//		//int ind = Convert.ToInt16(tempS);
-	//		//cubeToTwist = ind;
-	//		//isTwisting = true;
-
-	//		// keep track of the mouse/touch position as well
-
-	//		ofPoint twistStartPoint = ofPoint((float)x / (float)ofGetWidth(),(float)y / (float)ofGetHeight());
-	//		//twistStartPoint = new Point(e.GetPosition(view1).X, e.GetPosition(view1).Y);
-	//		double dist = 300;
-
-	//		// translate the six axes into 2D screen/camera space:
-
-	//		ofPoint cp0 = unprojectPoint(ofVec3f (0,0,0));
-	//		ofPoint cp1 = unprojectPoint(ofVec3f (dist,0,0));
-	//		ofPoint cp2 = unprojectPoint(ofVec3f (-dist,0,0));
-	//		ofPoint cp3 = unprojectPoint(ofVec3f (0,dist,0));
-	//		ofPoint cp4 = unprojectPoint(ofVec3f (0,-dist,0));
-	//		ofPoint cp5 = unprojectPoint(ofVec3f (0,0,dist));
-	//		ofPoint cp6 = unprojectPoint(ofVec3f (0,0,-dist));
-	//		//Point cp0 = Viewport3DHelper.Point3DtoPoint2D(view1.Viewport, new Point3D(0, 0, 0));
-
-	//		//// and calculate their angles (in radians) from the center of the axes:
-
-	//		gestureAngles[0] = atan2(cp1.y - cp0.y, cp1.x - cp0.x);
-	//		gestureAngles[1] = atan2(cp2.y - cp0.y, cp2.x - cp0.x);
-	//		gestureAngles[2] = atan2(cp3.y - cp0.y, cp3.x - cp0.x);
-	//		gestureAngles[3] = atan2(cp4.y - cp0.y, cp4.x - cp0.x);
-	//		gestureAngles[4] = atan2(cp5.y - cp0.y, cp5.x - cp0.x);
-	//		gestureAngles[5] = atan2(cp6.y - cp0.y, cp6.x - cp0.x);
-	//	}
-
-	//}
-
-	//////////////////////////////////////////////////////////////////////////////////////////////////
-	//////////////////////////////////////////////////////////////////////////////////////////////////
-	//////////////////////////////////////////////////////////////////////////////////////////////////
 	}
 	if(button == 2){
 		myGames[0]->mousePressed(x,y,button);
 	}
-}
-//-------------------------------------------------------------------------------------------------------------
-ofPoint testApp::unprojectPoint(ofVec3f pnt){
-	//cout << "cubie unprojecting point. - " << pnt.x << ", " << pnt.y << ", " << pnt.z << endl;
-	GLint viewport[4];
-	GLdouble modelview[16];
-	GLdouble projection[16];
-	GLfloat winX, winY, winZ;
-	GLdouble posX, posY, posZ;
-
-	glGetDoublev( GL_MODELVIEW_MATRIX, modelview );
-	glGetDoublev( GL_PROJECTION_MATRIX, projection );
-	glGetIntegerv( GL_VIEWPORT, viewport );
-
-	winX = (float) pnt.x;
-	winY = (float)viewport[3] - pnt.y;
-	glReadPixels( 0, int(winY), 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &winZ );
-
-	gluUnProject( winX, winY, winZ, modelview, projection, viewport, &posX, &posY, &posZ);
-
-	//cout << "mouse position = " << posX << ", " << posY << ", " << posZ << endl;
-	//cout << "cube postion = " << pos.x << ", " << pos.y << ", " << pos.z << endl;
-
-	//unprojectedPoint.set(posX, posY, posZ);
-	return ofPoint(posX, posY, posZ);
 }
 //--------------------------------------------------------------
 void testApp::mouseReleased(int x, int y, int button){

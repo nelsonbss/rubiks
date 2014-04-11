@@ -422,11 +422,14 @@ void game::update(string _eventName, SubObEvent _event){
 	}
 	if(_eventName == prefix + ":ibox:0"){
 		if(bDragInput){
-			myPuzzle->endRotation();
-			myPuzzle->decideMove();
+			//myPuzzle->endRotation();
+			//myPuzzle->decideMove();
 			bDragInput = false;
 		}
 	}
+	////////////////////////////
+	/////Receive input from touch.
+	////////////////////////////
 	if(_eventName == prefix + ":ibox:1"){
 		//cout << "game bl:1" << endl;
 		if(step == 3){
@@ -443,6 +446,7 @@ void game::update(string _eventName, SubObEvent _event){
 					bUnproject = true;
 					bDragInput = false;
 					mousePoint.set(p.x, p.y, 0);
+					unprojectMode = UP_MODE_MOUSE;
 				}
 			} else if(phase == 1){
 				ofVec2f p = _event.getArg("absPos")->getVec2();
@@ -626,10 +630,15 @@ void game::draw(){
 		//glTranslatef(-posP.x,-posP.y,-posP.z);
 		myPuzzle->draw();
 		if(bUnproject){
-			unprojectPoint(mousePoint);
+			if(unprojectMode != UP_MODE_P){
+				unprojectPoint(mousePoint);
+			} else {
+				projectPoint(mousePoint);
+			}
 			bUnproject = false;
 		}
 		glPopMatrix();
+		drawPoints();
 	}
 	if(step == 6){
 		//show drawing area
@@ -658,13 +667,6 @@ void game::draw(){
 }
 
 void game::unprojectPoint(ofVec3f _pnt){
-	//ofVec3f realPoint = mousePoint;
-	if(bUseViewport){
-		//realPoint.x = (float)viewport.getWidth() * (mousePoint.x / (float)ofGetWidth()) + viewport.x;
-		//realPoint.y = (float)viewport.getHeight() * (mousePoint.y / (float)ofGetHeight()) + viewport.y;
-		//realPoint.x -= viewport.x;
-		//realPoint.y -= viewport.y;
-	}
 	unprojectedPoint = picker.unproject(mousePoint, &viewport);
 	//unprojectedPoint = cam.screenToWorld(_pnt, viewport);
 	cout << "UP = " << unprojectedPoint.x << ", " << unprojectedPoint.y << ", " << unprojectedPoint.z << endl;
@@ -674,13 +676,19 @@ void game::unprojectPoint(ofVec3f _pnt){
 			lastUnprojectedPoint = unprojectedPoint;
 			bDragInput = true;
 		} else {
-			myPuzzle->dragInput((unprojectedPoint - lastUnprojectedPoint) * 25.0);
+			//myPuzzle->dragInput((unprojectedPoint - lastUnprojectedPoint) * 25.0);
+			makeMove(mousePoint);
 			lastUnprojectedPoint = unprojectedPoint;
 		}
 	} else if(unprojectMode == UP_MODE_COLOR){
 		cout << "setting color." << endl;
 		myPuzzle->changeFaceColor(unprojectedPoint, newFaceColor);
 	}
+}
+
+void game::projectPoint(ofVec3f _pnt){
+	projectedPoint = picker.project(_pnt, &viewport);
+
 }
 
 void game::drawViewportOutline(const ofRectangle & _vp){
@@ -1724,4 +1732,73 @@ void game::mouseReleased(int x, int y, int button){
 		myCanvas->mouseReleased(x,y,button);
 	}
 	timeOfLastInteraction = ofGetElapsedTimeMillis();
+}
+
+void game::makeMove(ofVec3f _pnt){
+	//--------------------------------------------------------------------
+	//void view1_MouseDown(object sender, MouseButtonEventArgs e) // checks if mouse click is on a center piece, and if so, twists it clockwise
+	//{
+	if (myPuzzle->isMoving()){
+		return;
+	}
+	//if (isSolving || isTwisting){
+	//	return;
+	//}
+
+	// if we're not hitting an object, we quit.
+	if(myPuzzle->activeCubie < 0){
+		return;
+	}
+	//Point location = e.GetPosition(view1);
+	//ModelVisual3D result = GetHitTestResult(location);
+	//if (result == null)
+	//{
+	//	return;
+	//}
+	else{ //if (result is ModelVisual3D)
+		//{
+		// get the id number of the cubie and keep track of it
+
+		int id = myPuzzle->activeCubie;
+		//String tempS = result.GetName().Substring(5);
+		//int ind = Convert.ToInt16(tempS);
+		//cubeToTwist = ind;
+		//isTwisting = true;
+
+		// keep track of the mouse/touch position as well
+
+		ofVec3f twistStartPoint = ofVec3f((float)_pnt.x / (float)ofGetWidth(),(float)_pnt.y / (float)ofGetHeight());
+		//twistStartPoint = new Point(e.GetPosition(view1).X, e.GetPosition(view1).Y);
+		double dist = 300;
+
+		// translate the six axes into 2D screen/camera space:
+
+		cp0 = picker.project(ofVec3f (0,0,0), &viewport);
+		cp1 = picker.project(ofVec3f (dist,0,0), &viewport);
+		cp2 = picker.project(ofVec3f (-dist,0,0), &viewport);
+		cp3 = picker.project(ofVec3f (0,dist,0), &viewport);
+		cp4 = picker.project(ofVec3f (0,-dist,0), &viewport);
+		cp5 = picker.project(ofVec3f (0,0,dist), &viewport);
+		cp6 = picker.project(ofVec3f (0,0,-dist), &viewport);
+		//Point cp0 = Viewport3DHelper.Point3DtoPoint2D(view1.Viewport, new Point3D(0, 0, 0));
+
+		//// and calculate their angles (in radians) from the center of the axes:
+
+		gestureAngles[0] = atan2(cp1.y - cp0.y, cp1.x - cp0.x);
+		gestureAngles[1] = atan2(cp2.y - cp0.y, cp2.x - cp0.x);
+		gestureAngles[2] = atan2(cp3.y - cp0.y, cp3.x - cp0.x);
+		gestureAngles[3] = atan2(cp4.y - cp0.y, cp4.x - cp0.x);
+		gestureAngles[4] = atan2(cp5.y - cp0.y, cp5.x - cp0.x);
+		gestureAngles[5] = atan2(cp6.y - cp0.y, cp6.x - cp0.x);
+	}
+}
+
+void game::drawPoints(){
+	ofCircle(cp0,20);
+	ofCircle(cp1,20);
+	ofCircle(cp2,20);
+	ofCircle(cp3,20);
+	ofCircle(cp4,20);
+	ofCircle(cp5,20);
+	ofCircle(cp6,20);
 }

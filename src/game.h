@@ -17,7 +17,7 @@
 
 #define DELAY 30000
 
-enum{UP_MODE_MOUSE, UP_MODE_COLOR};
+enum{UP_MODE_MOUSE, UP_MODE_COLOR, UP_MODE_P};
 
 class game : public Observer{
 public:
@@ -176,6 +176,7 @@ public:
 
 	Picker picker;
 	ofVec3f unprojectedPoint;
+	ofVec3f projectedPoint;
 	ofVec3f lastUnprojectedPoint;
 	ofVec3f mousePoint;
 	bool bUnproject;
@@ -189,6 +190,7 @@ public:
 	void toggleUseViewport(){bUseViewport != bUseViewport;}
 
 	void unprojectPoint(ofVec3f _pnt);
+	void projectPoint(ofVec3f _pnt);
 	int unprojectMode;
 	ofFloatColor newFaceColor;
 
@@ -204,5 +206,18 @@ public:
 
 	int timeOfLastInteraction;
 	bool bInAttract;
+	void makeMove(ofVec3f _pnt);
+	double gestureAngles[6];
+	bool bClicked;
+
+	ofVec3f cp0;
+	ofVec3f cp1;
+	ofVec3f cp2;
+	ofVec3f cp3;
+	ofVec3f cp4;
+	ofVec3f cp5;
+	ofVec3f cp6;
+
+	void drawPoints();
 };
 #endif /* defined(__Tgame__game__) */

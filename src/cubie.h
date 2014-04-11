@@ -13,7 +13,7 @@ enum{ROTATE_UP, ROTATE_DOWN, ROTATE_LEFT, ROTATE_RIGHT};
 class cubie{
 	
 public:
-	cubie(float x,float y,float z,int id, int selObjId, ofVec3f offset);
+	cubie(float x,float y,float z,int id, int selObjId, ofVec3f offset, int gs);
     
 	void setup();
 	void update();
@@ -77,6 +77,21 @@ public:
 	void changeColorToColor(ofFloatColor Sc, ofFloatColor Tc);
 	void colorBlackSides(int cubieId, float playRoom);
 	void colorTorus();
+
+	
+	// axis location
+	int xpos;
+	int ypos;
+	int zpos;
+	int wpos;
+	int gridSize;
+
+	int getXpos();
+	int getYpos();
+	int getZpos();
+	int getWpos();
+	void setPos(int xp, int yp, int zp);
+
 	/*
 	Paul's
 	*/
@@ -96,7 +111,7 @@ public:
 
 	void getCentroid();
 	ofVec3f projectPoint(ofVec3f _pnt);
-	void unprojectPoint(ofVec3f _pnt);
+	//void unprojectPoint(ofVec3f _pnt);
 	float getDistanceByVertex(ofVec3f _pos);
 	float getDistanceByCentroid(ofVec3f _pos);
 	ofVec3f getCentroidScreen(){return centroid2d;}

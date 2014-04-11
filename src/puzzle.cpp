@@ -10,8 +10,9 @@
 #define WIDTH 3
 #define DEPTH 3
 
-puzzle::puzzle(SG_VECTOR p, ofVec3f offset){
-	numPieces = 27;
+puzzle::puzzle(SG_VECTOR p, ofVec3f offset, int gSize){
+	gridSize=gSize;
+	numPieces=gSize*gSize*gSize;
 	myCubies = (cubie**)malloc(numPieces*sizeof(cubie*));
 
 	cubiesOffset = offset;
@@ -163,7 +164,7 @@ void puzzle::loadPieces(sgCGroup **pcs,int selObjId, ofVec3f v){
 	//create cubies
 	//so each time there is a new boolean operation, whole new cubies get created with variables in zero or blank
 	for(int i=0;i<numPieces;i++){
-		cubie *auxCubie = new cubie(pos.x,pos.y,pos.z,i,selObjId,cubiesOffset);
+		cubie *auxCubie = new cubie(pos.x,pos.y,pos.z,i,selObjId,cubiesOffset,gridSize);
 		//auxCubie->setup();
 		//add this cubie to mycubies[]
 		myCubies[i] = auxCubie;
@@ -249,16 +250,17 @@ void puzzle::move(SG_VECTOR p){
 bool puzzle::isMoving(){
 	//returns the state of the moving boolean
 	//to prevent key press events from messing up the movements
-	bool moving = false;
+	//moving = false;
+	int count=0;
 	for(int i=0;i<numPieces;i++){
 		if(myCubies[i] != NULL){
-			moving = myCubies[i]->isMoving();
-			if(moving==true){
-				return moving;
+			if(myCubies[i]->isMoving()){
+				return pmoving;
+			}else{
+				return false;
 			}
 		}
 	}
-	return moving;
 }
 //---------------------------------------------------------------
 int puzzle::rotateTwoIds(int cubieA, int cubieB,bool inside){
@@ -488,7 +490,6 @@ void puzzle::rotateByIDandAxis(int id, SG_VECTOR axis, bool dir,float angle){
 	//it receives the id of a cubie,the axis and the direction of rotation
 	//it looks for the other 9 ids, according to the axis
 	//and makes those 9 myCubies[]->faceRotate
-
 	//////////int selected[9];//now its global to do mouse release animations
 
 	int counter=0;
@@ -599,6 +600,154 @@ void puzzle::rotateByIDandAxis(int id, SG_VECTOR axis, bool dir,float angle){
 		}
 	}
 }
+//---------------------------------------------------------------------------------------------
+void puzzle::rotateByIDandAxisNew(int id, SG_VECTOR axis, bool dir, float angle){
+	//it receives the id of a cubie,the axis and the direction of rotation
+	//it looks for the other 9 ids, according to the axis
+	//and makes those 9 myCubies[]->faceRotate
+	int gridSquared=gridSize*gridSize;
+	counter = 0;
+
+	//look for positon of cubie on the 3d data structure
+	 selX =myCubies[id]->getXpos();
+	 selY =myCubies[id]->getYpos();
+	 selZ =myCubies[id]->getZpos();
+	//now we ask for the cubies on that axis
+	if(axis.x != 0){
+		for (int i=0;i<numPieces;i++) {
+			if (myCubies[i]->getXpos()==selX) {
+				selected[counter]=i;
+				counter++;
+			}
+		}
+		//rearrange3dArrayNew(0,selX,dir);
+	}else if(axis.y != 0){
+		for (int i=0;i<numPieces;i++) {
+			if (myCubies[i]->getYpos()==selY) {
+				selected[counter]=i;
+				counter++;
+			}
+		}
+		//rearrange3dArrayNew(1,selY,dir);
+	}else{
+		//if the move is on a z axis
+		for (int i=0;i<numPieces;i++) {
+			if (myCubies[i]->getZpos()==selZ) {
+				selected[counter]=i;
+				counter++;
+			}
+		}
+		//rearrange3dArrayNew(2,selZ,dir);
+	}
+
+	//look for rotation constraints
+	//user could be dragging the rotating face beyond he 90 deg move
+
+	if(myCubies[selected[0]]->masterAngle < 90 && myCubies[selected[0]]->masterAngle > -90){
+		if(ofSign(myCubies[selected[0]]->masterAngle) > 0){
+			//positive rotation in relation to original position
+			if((myCubies[selected[0]]->masterAngle + angle) > 90){
+				//move until 90
+				angle = 90 - myCubies[selected[0]]->masterAngle;
+
+				for(int i=0;i<counter;i++){
+					//rearrange = myCubies[selected[i]]->faceRotate(axis,dir,angle);
+					myCubies[selected[i]]->faceRotate(axis,dir,angle);
+				}
+			}else{
+				//now we tell the 9 selected cubies to rotate
+				//bool rearrange=false;
+				for(int i=0;i<counter;i++){
+					//rearrange = myCubies[selected[i]]->faceRotate(axis,dir,angle);
+					myCubies[selected[i]]->faceRotate(axis,dir,angle);
+				}
+			}
+		}else{
+			//negative rotation in relation to original position
+			if((myCubies[selected[0]]->masterAngle + angle) < -90){
+				//move until -90
+				angle = -90 - myCubies[selected[0]]->masterAngle;
+
+				for(int i=0;i<counter;i++){
+					//rearrange = myCubies[selected[i]]->faceRotate(axis,dir,angle);
+					myCubies[selected[i]]->faceRotate(axis,dir,angle);
+				}
+			}else{
+				//now we tell the 9 selected cubies to rotate
+				//bool rearrange=false;
+				for(int i=0;i<counter;i++){
+					//rearrange = myCubies[selected[i]]->faceRotate(axis,dir,angle);
+					myCubies[selected[i]]->faceRotate(axis,dir,angle);
+				}
+			}
+		}
+	}else if(myCubies[selected[0]]->masterAngle == 90){
+		if((myCubies[selected[0]]->masterAngle + angle) < 90){
+			for(int i=0;i<counter;i++){
+				//rearrange = myCubies[selected[i]]->faceRotate(axis,dir,angle);
+				myCubies[selected[i]]->faceRotate(axis,dir,angle);
+			}
+		}
+	}else if(myCubies[selected[0]]->masterAngle == -90){
+		//negative rotation in relation to original position
+		if((myCubies[selected[0]]->masterAngle + angle) > -90){
+			for(int i=0;i<counter;i++){
+				//rearrange = myCubies[selected[i]]->faceRotate(axis,dir,angle);
+				myCubies[selected[i]]->faceRotate(axis,dir,angle);
+			}
+		}
+	}
+
+	//rearrange cubies position
+	//do we do this after we complete 90 deg rotation???
+	/////it doesnt matter, it can be that instant, since the 3d array is only looked upon before moving
+	/////the animation will lock selection of new cubie, so on ly one movement is done at a time
+	/////so the re-aranging of numbers can happen "during" the animation
+}
+//--------------------------------------------------------------------------------------
+void puzzle::rearrange3dArrayNew(int axisNum,int plane, bool dir) {
+	int tempA=0;
+	int tempB=0;
+	for (int i=0;i<numPieces;i++) {
+		if (axisNum==0) {
+			// x axis
+			if (myCubies[i]->getXpos()==plane) {
+				tempA=myCubies[i]->getYpos();
+				tempB=myCubies[i]->getZpos();
+				if (dir) {
+					myCubies[i]->setPos(plane,gridSize-tempB-1,tempA);
+				} else {
+					myCubies[i]->setPos(plane,tempB,gridSize-tempA-1);
+				}
+			}
+
+		} else if (axisNum==1) {
+			// y axis
+			if (myCubies[i]->getYpos()==plane) {
+				tempA=myCubies[i]->getXpos();
+				tempB=myCubies[i]->getZpos();
+				if (!dir) {
+					myCubies[i]->setPos(gridSize-tempB-1,plane,tempA);
+				} else {
+					myCubies[i]->setPos(tempB,plane,gridSize-tempA-1);
+				}
+			}
+
+		} else if (axisNum==2) {
+			// z axis
+			if (myCubies[i]->getZpos()==plane) {
+				tempA=myCubies[i]->getXpos();
+				tempB=myCubies[i]->getYpos();
+				if (dir) {
+					myCubies[i]->setPos(gridSize-tempB-1,tempA,plane);
+				} else {
+					myCubies[i]->setPos(tempB,gridSize-tempA-1,plane);
+				}
+			}
+
+		}
+	}
+}
 //--------------------------------------------------------------------------------------------
 void puzzle::decideMove(){
 	//ask for the current masterangle of the selected cubies
@@ -615,17 +764,18 @@ void puzzle::decideMove(){
 		//positive angle
 		if(angleM >= 45){
 			for(int i=0;i<9;i++){
-				//only need to ask one of the selected cubies, thay all have the same rotation angle
 				myCubies[selected[i]]->goForward();
-				//myCubies[selected[i]]->updatePosition();
 			}
 			//rearrange cubies involved on the move
 			if(myCubies[selected[0]]->vrotFace.x != 0){
-				rearange3dArray(myCubies[selected[0]]->vrotFace,selX,dirM);
+				rearrange3dArrayNew(0,selX,dirM);
+				//rearange3dArray(myCubies[selected[0]]->vrotFace,selX,dirM);
 			}else if(myCubies[selected[0]]->vrotFace.y != 0){
-				rearange3dArray(myCubies[selected[0]]->vrotFace,selY,dirM);
+				rearrange3dArrayNew(1,selY,dirM);
+				//rearange3dArray(myCubies[selected[0]]->vrotFace,selY,dirM);
 			}else{
-				rearange3dArray(myCubies[selected[0]]->vrotFace,selZ,dirM);
+				rearrange3dArrayNew(2,selZ,dirM);
+				//rearange3dArray(myCubies[selected[0]]->vrotFace,selZ,dirM);
 			}
 		}else{
 			for(int i=0;i<9;i++){
@@ -643,11 +793,14 @@ void puzzle::decideMove(){
 			}
 			//rearrange cubies involved on the move
 			if(myCubies[selected[0]]->vrotFace.x != 0){
-				rearange3dArray(myCubies[selected[0]]->vrotFace,selX,dirM);
+				rearrange3dArrayNew(0,selX,dirM);
+				//rearange3dArray(myCubies[selected[0]]->vrotFace,selX,dirM);
 			}else if(myCubies[selected[0]]->vrotFace.y != 0){
-				rearange3dArray(myCubies[selected[0]]->vrotFace,selY,dirM);
+				rearrange3dArrayNew(1,selY,dirM);
+				//rearange3dArray(myCubies[selected[0]]->vrotFace,selY,dirM);
 			}else{
-				rearange3dArray(myCubies[selected[0]]->vrotFace,selZ,dirM);
+				rearrange3dArrayNew(2,selZ,dirM);
+				//rearange3dArray(myCubies[selected[0]]->vrotFace,selZ,dirM);
 			}
 		}else{
 			for(int i=0;i<9;i++){
@@ -663,35 +816,123 @@ void puzzle::endRotation(){
 	bHaveAxis = false; 
 	activeCubie = -1;
 }
-
+//--------------------------------------------------------------------------------------------
 void puzzle::update(string _eventName, SubObEvent _event){
 }
+//----------------------------------------------------------------------------------------------
+//--------------------------------------------------------------
+//void puzzle::mousePressed(int x, int y, int button){
+	//	//--------------------------------------------------------------------
+	//	//void view1_MouseDown(object sender, MouseButtonEventArgs e) // checks if mouse click is on a center piece, and if so, twists it clockwise
+	//	//{
+	//	if (moving){
+	//		return;
+	//	}
+	//	//if (isSolving || isTwisting){
+	//	//	return;
+	//	//}
 
-void puzzle::unprojectPoint(){
-	//cout << "cubie unprojecting point. - " << _pnt.x << ", " << _pnt.y << ", " << _pnt.z << endl;
-	GLint viewport[4];
-	GLdouble modelview[16];
-	GLdouble projection[16];
-	GLfloat winX, winY, winZ;
-	GLdouble posX, posY, posZ;
+	//	// if we're not hitting an object, we quit.
+	//	if(!myGames[0]->myPuzzle->bHaveActiveCubie){
+	//		return;
+	//	}
+	//	//Point location = e.GetPosition(view1);
+	//	//ModelVisual3D result = GetHitTestResult(location);
+	//	//if (result == null)
+	//	//{
+	//	//	return;
+	//	//}
+	//	else{ //if (result is ModelVisual3D)
+	//		//{
+	//		// get the id number of the cubie and keep track of it
 
-	glGetDoublev( GL_MODELVIEW_MATRIX, modelview );
-	glGetDoublev( GL_PROJECTION_MATRIX, projection );
-	glGetIntegerv( GL_VIEWPORT, viewport );
+	//		int id = myGames[0]->myPuzzle->activeCubie;
+	//		//String tempS = result.GetName().Substring(5);
+	//		//int ind = Convert.ToInt16(tempS);
+	//		//cubeToTwist = ind;
+	//		//isTwisting = true;
 
-	winX = (float) mousePoint.x;
-	winY = (float)viewport[3] - mousePoint.y;
-	glReadPixels( mousePoint.z, int(winY), 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &winZ );
+	//		// keep track of the mouse/touch position as well
 
-	gluUnProject( winX, winY, winZ, modelview, projection, viewport, &posX, &posY, &posZ);
+	//		ofPoint twistStartPoint = ofPoint((float)x / (float)ofGetWidth(),(float)y / (float)ofGetHeight());
+	//		//twistStartPoint = new Point(e.GetPosition(view1).X, e.GetPosition(view1).Y);
+	//		double dist = 300;
 
-	cout << "mouse position = " << posX << ", " << posY << ", " << posZ << endl;
-	//cout << "cube postion = " << pos.x << ", " << pos.y << ", " << pos.z << endl;
+	//		// translate the six axes into 2D screen/camera space:
 
-	unprojectedPoint.set(posX, posY, posZ);
-	bHavePoint = true;
-}
+	//		ofPoint cp0 = unprojectPoint(ofVec3f (0,0,0));
+	//		ofPoint cp1 = unprojectPoint(ofVec3f (dist,0,0));
+	//		ofPoint cp2 = unprojectPoint(ofVec3f (-dist,0,0));
+	//		ofPoint cp3 = unprojectPoint(ofVec3f (0,dist,0));
+	//		ofPoint cp4 = unprojectPoint(ofVec3f (0,-dist,0));
+	//		ofPoint cp5 = unprojectPoint(ofVec3f (0,0,dist));
+	//		ofPoint cp6 = unprojectPoint(ofVec3f (0,0,-dist));
+	//		//Point cp0 = Viewport3DHelper.Point3DtoPoint2D(view1.Viewport, new Point3D(0, 0, 0));
 
+	//		//// and calculate their angles (in radians) from the center of the axes:
+
+	//		gestureAngles[0] = atan2(cp1.y - cp0.y, cp1.x - cp0.x);
+	//		gestureAngles[1] = atan2(cp2.y - cp0.y, cp2.x - cp0.x);
+	//		gestureAngles[2] = atan2(cp3.y - cp0.y, cp3.x - cp0.x);
+	//		gestureAngles[3] = atan2(cp4.y - cp0.y, cp4.x - cp0.x);
+	//		gestureAngles[4] = atan2(cp5.y - cp0.y, cp5.x - cp0.x);
+	//		gestureAngles[5] = atan2(cp6.y - cp0.y, cp6.x - cp0.x);
+	//	}
+
+	//}
+
+//}
+//----------------------------------------------------------------------------------------------
+//void puzzle::unprojectPoint(ofVec3f _pnt){
+//	cout << "cubie unprojecting point. - " << _pnt.x << ", " << _pnt.y << ", " << _pnt.z << endl;
+//	GLint viewport[4];
+//	GLdouble modelview[16];
+//	GLdouble projection[16];
+//	GLfloat winX, winY, winZ;
+//	GLdouble posX, posY, posZ;
+//
+//	glGetDoublev( GL_MODELVIEW_MATRIX, modelview );
+//	glGetDoublev( GL_PROJECTION_MATRIX, projection );
+//	glGetIntegerv( GL_VIEWPORT, viewport );
+//
+//	winX = (float) _pnt.x;
+//	winY = (float)viewport[3] - _pnt.y;
+//	glReadPixels( 0, int(winY), 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &winZ );
+//
+//	gluUnProject( winX, winY, winZ, modelview, projection, viewport, &posX, &posY, &posZ);
+//
+//	cout << "mouse position = " << posX << ", " << posY << ", " << posZ << endl;
+//	//cout << "cube postion = " << pos.x << ", " << pos.y << ", " << pos.z << endl;
+//
+//	unprojectedPoint.set(posX, posY, posZ);
+//	bHavePoint = true;
+//}
+//----------------------------------------------------------------------------------------------
+//void puzzle::unprojectPoint(){
+//	//cout << "cubie unprojecting point. - " << _pnt.x << ", " << _pnt.y << ", " << _pnt.z << endl;
+//	GLint viewport[4];
+//	GLdouble modelview[16];
+//	GLdouble projection[16];
+//	GLfloat winX, winY, winZ;
+//	GLdouble posX, posY, posZ;
+//
+//	glGetDoublev( GL_MODELVIEW_MATRIX, modelview );
+//	glGetDoublev( GL_PROJECTION_MATRIX, projection );
+//	glGetIntegerv( GL_VIEWPORT, viewport );
+//
+//	winX = (float) mousePoint.x;
+//	winY = (float)viewport[3] - mousePoint.y;
+//	glReadPixels( mousePoint.z, int(winY), 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &winZ );
+//
+//	gluUnProject( winX, winY, winZ, modelview, projection, viewport, &posX, &posY, &posZ);
+//
+//	cout << "mouse position = " << posX << ", " << posY << ", " << posZ << endl;
+//	//cout << "cube postion = " << pos.x << ", " << pos.y << ", " << pos.z << endl;
+//
+//	unprojectedPoint.set(posX, posY, posZ);
+//	bHavePoint = true;
+//}
+//----------------------------------------------------------------------------------------------------------
 void puzzle::checkCubiesForHit(ofVec3f _pnt){
 	float nearest = 10000.0;
 	int nearestId = -1;
@@ -718,6 +959,7 @@ void puzzle::checkCubiesForHit(ofVec3f _pnt){
 				activeCubie = nearestId;
 				//myCubies[activeCubie]->setDraw(false);
 				activeTriangle = myCubies[activeCubie]->getNearestTri(_pnt);
+
 				//ofVec3f n = activeTriangle.getNormal();
 				//vector<Triangle> tris = myCubies[activeCubie]->getTrianglesByNormal(n);
 				//ofSeedRandom();

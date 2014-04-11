@@ -182,8 +182,8 @@ void game::update(){
 			//myPuzzle->rotate(rotP);
 			//////////////////////////////////////////make face rotation
 			if(faceRotate == true) {
-				myPuzzle->rotateByIDandAxis(idcubie,axis,dir,angleR);
-				//myPuzzle->rotateByIDandAxis(idcubie,axis,dir);
+				myPuzzle->rotateByIDandAxisNew(idcubie,axis,dir,angleR);
+				//myPuzzle->rotateByIDandAxis(idcubie,axis,dir,angleR);
 				//put this move on the game history vector
 				//undo will look for the other 9 cubies involved and do a pop x2 on their history
 				historyV.push_back(history(idcubie,axis,!dir)); //save inverse move (!), to do it at undo, and do 2 pop 
@@ -712,19 +712,19 @@ void game::rotateByIDandAxis(int id, SG_VECTOR axs, bool d, float anglei){
 	}
 }
 //----------------------------------------------------------------------
-void game::rotateByIDandAxis(int id, SG_VECTOR axs, bool d){
-	if(axs.x==0 && axs.y==0 && axs.z==0){
-		//stop any rotation
-		faceRotate = false;
-	}else{
-		//allow rotation
-		idcubie = id;
-		dir = d;
-		axis = axs;
-		//updatePuzzle = true;
-		faceRotate = true;
-	}
-}
+//void game::rotateByIDandAxis(int id, SG_VECTOR axs, bool d){
+//	if(axs.x==0 && axs.y==0 && axs.z==0){
+//		//stop any rotation
+//		faceRotate = false;
+//	}else{
+//		//allow rotation
+//		idcubie = id;
+//		dir = d;
+//		axis = axs;
+//		//updatePuzzle = true;
+//		faceRotate = true;
+//	}
+//}
 //----------------------------------------------------------------------
 void game::rotateTwoIds(int cubieA, int cubieB,bool inside){
 	faceRotateB = true; //this is usedn on update, to do rotationanimations
@@ -882,6 +882,7 @@ void game::loadArmature(int type){
 	rotateSlicer.x=0;
 	rotateSlicer.y=0;
 	rotateSlicer.z=0;
+
 	if (armID == -1){
 		//first time
 		if(type == 1){
@@ -889,6 +890,9 @@ void game::loadArmature(int type){
 			myArmature = new armature (ofVec3f(posA.x,posA.y,posA.z),tamSideArmature,tamSideArmature,10,tamCubie);
 		}else if(type == 2){
 			tamCubie = 50;
+			myArmature = new armature (ofVec3f(posA.x,posA.y,posA.z),tamSideArmature,tamSideArmature,10,tamCubie);
+		}else if(type > 1){
+			tamCubie = 100;
 			myArmature = new armature (ofVec3f(posA.x,posA.y,posA.z),tamSideArmature,tamSideArmature,10,tamCubie);
 		}
 		armID = type;
@@ -900,6 +904,9 @@ void game::loadArmature(int type){
 			myArmature = new armature (ofVec3f(posA.x,posA.y,posA.z),tamSideArmature,tamSideArmature,10,tamCubie);
 		}else if(type == 2){
 			tamCubie = 50;
+			myArmature = new armature (ofVec3f(posA.x,posA.y,posA.z),tamSideArmature,tamSideArmature,10,tamCubie);
+		}else if(type > 1){
+			tamCubie = 100;
 			myArmature = new armature (ofVec3f(posA.x,posA.y,posA.z),tamSideArmature,tamSideArmature,10,tamCubie);
 		}
 		armID = type;
@@ -916,17 +923,17 @@ void game::applyArmRotations(){
 //-----------------------------------------------------------------------------------------
 void game::createCutterSlicer(){
 	////////////////////////////////create cutter
-	myCutter = new cutter(planeThicknes,tamCutter,tamCubie,1,offsetSlicer);		
+	myCutter = new cutter(planeThicknes,tamCutter,tamCubie,1,offsetSlicer,armID);		
 	myCutter->setup();
 	//////////////////////////////////create slicer
-	mySlicer = new slicer(myCutter);
+	mySlicer = new slicer(myCutter,armID);
 	mySlicer->setup();
 }
 //-----------------------------------------------------------------------------------------
 void game::createPuzzle(SG_VECTOR p){
 	if(step == 3){
 		////////////////////////////////create puzzle///////////////////////////////////////
-		myPuzzle = new puzzle(p, offsetSlicer); // it receives the position to be displayed AND the offset of the armature/cutter to adapt slicing
+		myPuzzle = new puzzle(p, offsetSlicer,armID); // it receives the position to be displayed AND the offset of the armature/cutter to adapt slicing
 		myPuzzle->setup();
 
 		////boolean substraction//////////////////////////////////////////////////////////
@@ -1154,12 +1161,23 @@ void game::guiInput(int in){
 	else if(step == 2){
 		//waiting for armature to be selected
 		if(in == '1') {
-			//select armature 1
-			loadArmature(1); 
+			//3 is number of slices
+			loadArmature(3); 
 		}
 		if(in == '2') {
-			//select armature 2
 			loadArmature(2);
+		}
+		if(in == '3') {
+			loadArmature(3);
+		}
+		if(in == '4') {
+			loadArmature(4);
+		}
+		if(in == '5') {
+			loadArmature(5);
+		}
+		if(in == '6') {
+			loadArmature(6);
 		}
 	}
 	////////////////////////////////////////////step 3 inputs
@@ -1297,7 +1315,7 @@ void game::guiInput(int in){
 		//pressed next on color palette step
 		//showing puzzle
 		//now the puzzle can be played with
-		int randcubie=13;//rand()%26;//to follow this cubie for now //this will be decided upon touch, or click on top of puzzle
+		int randcubie=7;//rand()%26;//to follow this cubie for now //this will be decided upon touch, or click on top of puzzle
 		if(myPuzzle->isMoving() == false){ //this is to prevent from reading events while puzzle is moving
 			//if(in == 'u'){
 			//	//undo last move 
@@ -1479,7 +1497,7 @@ void game::guiInput(int in){
 }
 //----------------------------------------------------------------------
 void game::decideMove(){
-	//if(myPuzzle->activeCubie > -1){
+	//it looks at current face rotation angle and decides to do a cmplete move, or go back to previous possition
 	myPuzzle->decideMove();
 	//}
 }

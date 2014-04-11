@@ -103,8 +103,7 @@ public:
 	int idcubie;
 	bool dir;
 	SG_VECTOR axis;
-	void rotateByIDandAxis(int id, SG_VECTOR axis, bool dir);
-
+	//void rotateByIDandAxis(int id, SG_VECTOR axis, bool dir);
 	void rotateByIDandAxis(int id, SG_VECTOR axis, bool dir, float angle);
 	float angleR;
 

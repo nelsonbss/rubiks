@@ -3,7 +3,7 @@
 #include "ofRender.h"
 #include <math.h>
 
-cubie::cubie(float x, float y,float z, int idi, int selObjId, ofVec3f offset){
+cubie::cubie(float x, float y,float z, int idi, int selObjId, ofVec3f offset, int gs){
 	objects = NULL;
 	id = idi;
 	selectedObjectID = selObjId;
@@ -12,15 +12,20 @@ cubie::cubie(float x, float y,float z, int idi, int selObjId, ofVec3f offset){
 	pos.y = y;
 	pos.z = z;
 
+	xpos=1;
+	ypos=2;
+	zpos=3;
+	gridSize=gs;
+
+	zpos=idi%gridSize;
+	ypos=(idi/gridSize)%gridSize;
+	xpos=(idi/(gridSize*gridSize))%gridSize;
+		
 	pointRotate.x = offset.x;
 	pointRotate.y = offset.y;
 	pointRotate.z = offset.z;
 
 	masterAngle = 0.0;
-
-	moving = false;
-	goBackb = false;
-
 	/*ct1 = 0.0;
 	ct2 = 0.0;*/
 	animTime = 2; //this changes the speed of the animations
@@ -34,6 +39,7 @@ cubie::cubie(float x, float y,float z, int idi, int selObjId, ofVec3f offset){
 	//to control undo
 	undoing = false;
 	goBackb = false;
+	moving = false;
 
 	bDraw = true;
 	bDrawWire = false;
@@ -78,6 +84,12 @@ void cubie::setup(){
 	//	//objectList[j]->GetTempMatrix()->Rotate(puzzleRotate,vrotX,ofDegToRad(armRotations.y));
 	//	objectList[j]->ApplyTempMatrix();
 	//}
+}
+//------------------------------------------------------------------------------------------------------------------------------------------
+void cubie::setPos(int xp, int yp, int zp) {
+	xpos=xp;
+	ypos=yp;
+	zpos=zp;
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 void cubie::faceRotate(SG_VECTOR axis,bool di,float angle){
@@ -146,8 +158,8 @@ void cubie::goForward(){
 }
 //--------------------------------------------------------------
 void cubie::update(){
+	//cout << "numObjs: " << numObjs << endl;
 	if(numObjs > 0){
-
 		if(goBackb==true){
 			//////////////////////////////////////////////////////////////////////////////////////////////////////
 			//do animation to 0 position from masterAngle position
@@ -158,12 +170,12 @@ void cubie::update(){
 				if(masterAngle < 0 ){
 					//double aux =  ofDegToRad(1);
 					//objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,aux);
-					myMeshs[j].updatePosition(protFaceV, vrotFaceV, -1);
+					myMeshs[j].updatePosition(protFaceV, vrotFaceV, 1);
 					masterAngle ++;
 				}else if(masterAngle > 0 ){
 					//double aux =  ofDegToRad(-1);
-					//objectList[0]->GetTempMatrix()->Rotate(protFace,vrotFace,aux);
-					myMeshs[j].updatePosition(protFaceV, vrotFaceV, 1);
+					//objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,aux);
+					myMeshs[j].updatePosition(protFaceV, vrotFaceV, -1);
 					masterAngle --;
 				}else if(masterAngle == 0){
 					goBackb = false;
@@ -171,9 +183,6 @@ void cubie::update(){
 				}
 			}
 		}
-
-
-
 		if(moving==true){
 			/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			//do 90 deg animation to new position
@@ -196,10 +205,10 @@ void cubie::update(){
 						//double aux =  ofDegToRad(1);
 						/*for (int j=0; j < numObjs; j++){*/
 						//objectList[0]->GetTempMatrix()->Rotate(protFace,vrotFace,aux);
-						myMeshs[j].updatePosition(protFaceV, vrotFaceV, -1);
+						myMeshs[j].updatePosition(protFaceV, vrotFaceV, 1);
 						//}
 						//ct1 = ct2;
-					}else{
+					}else if(rotXa <= tempDeg2){
 						//////rotXa = tempDeg2;
 						//////double aux =  ofDegToRad(rotXa);
 						////////for (int j=0; j < numObjs; j++){
@@ -227,10 +236,10 @@ void cubie::update(){
 						//double aux =  ofDegToRad(-1);
 						//////for (int j=0; j < numObjs; j++){
 						//objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,aux);
-						myMeshs[j].updatePosition(protFaceV, vrotFaceV, 1);
+						myMeshs[j].updatePosition(protFaceV, vrotFaceV, -1);
 						//////}
 						//ct1 = ct2;
-					}else{
+					}else  if(rotXa >= tempDeg2){
 						//////rotXa = tempDeg2;
 						//////double aux =  ofDegToRad(rotXa);
 						//////for (int j=0; j < numObjs; j++){
@@ -403,6 +412,9 @@ void cubie::update(){
 		//	objectList[j]->ApplyTempMatrix();
 		//}
 	}
+	else{
+		
+	}
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 void cubie::draw(){  
@@ -568,31 +580,6 @@ ofVec3f cubie::projectPoint(ofVec3f _pnt){
 	//cout << "Cubie " << id << " z = " << centroid2d.z << endl;
 }
 
-void cubie::unprojectPoint(ofVec3f _pnt){
-	cout << "cubie unprojecting point. - " << _pnt.x << ", " << _pnt.y << ", " << _pnt.z << endl;
-	GLint viewport[4];
-	GLdouble modelview[16];
-	GLdouble projection[16];
-	GLfloat winX, winY, winZ;
-	GLdouble posX, posY, posZ;
-
-	glGetDoublev( GL_MODELVIEW_MATRIX, modelview );
-	glGetDoublev( GL_PROJECTION_MATRIX, projection );
-	glGetIntegerv( GL_VIEWPORT, viewport );
-
-	winX = (float) _pnt.x;
-	winY = (float)viewport[3] - _pnt.y;
-	glReadPixels( 0, int(winY), 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &winZ );
-
-	gluUnProject( winX, winY, winZ, modelview, projection, viewport, &posX, &posY, &posZ);
-
-	cout << "mouse position = " << posX << ", " << posY << ", " << posZ << endl;
-	//cout << "cube postion = " << pos.x << ", " << pos.y << ", " << pos.z << endl;
-
-	unprojectedPoint.set(posX, posY, posZ);
-	bHavePoint = true;
-}
-
 void cubie::printCurrentCentroid(){
 	GLint viewport[4];
 	GLdouble modelview[16];
@@ -733,6 +720,22 @@ int cubie::getId(){
 	return id;
 }
 //-------------------------------------------------------------
+int cubie::getXpos(){
+	return xpos;
+}
+//-------------------------------------------------------------
+int cubie::getYpos(){
+	return ypos;
+}
+//-------------------------------------------------------------
+int cubie::getZpos(){
+	return zpos;
+}
+//-------------------------------------------------------------
+int cubie::getWpos(){
+	return wpos;
+}
+//-------------------------------------------------------------
 float cubie::getNumObjs(){
 	return numObjs;
 }
@@ -782,7 +785,8 @@ void cubie::colorBlackSides(int idCubie, float playRoom){
 	//have key sides of cubie colored black
 	ofRender *ofr = new ofRender(); 
 	for(int j=0; j< numObjs; j++){
-		ofr->colorBlackSides(myMeshs[j],idCubie,playRoom,selectedObjectID);
+		//ofr->colorBlackSides(myMeshs[j],idCubie,playRoom,selectedObjectID);
+		ofr->colorBlackSidesFromAxes(myMeshs[j],xpos,ypos,zpos,gridSize,playRoom);
 		//have to replace the vbo
 		ofVbo tempVbo;
 		tempVbo.setMesh(myMeshs[j], GL_STATIC_DRAW);
@@ -824,3 +828,4 @@ void cubie::exit(){
 		sgCObject::DeleteObject(objects);
 	}
 }
+//----------------------------------------------------------------

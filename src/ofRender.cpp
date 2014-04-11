@@ -804,6 +804,62 @@ void ofRender::colorBlackSides(ofMesh &mesh, int idCubie, float playRoom, int ob
 	mesh.addColors(tcolors);
 }
 //---------------------------------------------------------------------------------------------------------------
+void ofRender::colorBlackSidesFromAxes(ofMesh &mesh, int xp, int yp, int zp, int gridSize, float playRoom){
+	//color black the correct sides of each cubie
+	vector< ofVec3f > tnormals;
+	vector< ofFloatColor > tcolors;
+	ofPoint x = ofPoint(1,0,0);
+	ofPoint y = ofPoint(0,1,0);
+	ofPoint z = ofPoint(0,0,1);
+	ofPoint xn = ofPoint(-1,0,0);
+	ofPoint yn = ofPoint(0,-1,0);
+	ofPoint zn = ofPoint(0,0,-1);
+	ofFloatColor c;
+
+	tnormals = mesh.getNormals();
+	tcolors = mesh.getColors();
+
+	//check each normal
+	//decide according to cubie[num]
+	for(int i=0; i<tnormals.size(); i++){
+		c = tcolors[i];
+		if (xp>0) {
+			if(decideAxisRange(tnormals[i],playRoom)==xn){
+				c = black;
+			}
+		} 
+		if (xp<gridSize-1) {
+			if(decideAxisRange(tnormals[i],playRoom)==x){
+				c = black;
+			}
+		}
+		if (yp>0) {
+			if(decideAxisRange(tnormals[i],playRoom)==yn){
+				c = black;
+			}
+		} 
+		if (yp<gridSize-1) {
+			if(decideAxisRange(tnormals[i],playRoom)==y){
+				c = black;
+			}
+		}
+		if (zp>0) {
+			if(decideAxisRange(tnormals[i],playRoom)==zn){
+				c = black;
+			}
+		} 
+		if (zp<gridSize-1) {
+			if(decideAxisRange(tnormals[i],playRoom)==z){
+				c = black;
+			}
+		}
+		tcolors[i] =  c;
+	}
+	//replace the colors vector on the mesh
+	mesh.clearColors();
+	mesh.addColors(tcolors);
+}
+//---------------------------------------------------------------------------------------------------------------
 void ofRender::colorTorusMenu(ofMesh &mesh,vector< ofFloatColor > &vcolors){
 	vector< ofFloatColor > tcolors;
 	tcolors = mesh.getColors();

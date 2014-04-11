@@ -17,7 +17,7 @@
 class puzzle : public Observer{
 
 public:
-	puzzle(SG_VECTOR p, ofVec3f offset);
+	puzzle(SG_VECTOR p, ofVec3f offset, int gSize);
 
 	int id;
 
@@ -28,6 +28,8 @@ public:
 	void exit();
 
 	void loadPieces(sgCGroup **pcs, int selObjId, ofVec3f v);
+	//void loadPieces(sgCGroup **pcs, int selObjId, ofVec3f v, float angleA, ofVec3f axistbA, int mode);
+
 	int giveNumCubies();
 	sgCGroup* cubieGroup;
 	float numPieces;
@@ -48,21 +50,24 @@ public:
 	typedef std::vector<TwoDimensions>ThreeDimensions;
 	ThreeDimensions three_dim1;
 	void rotateByIDandAxis(int id, SG_VECTOR axis,bool dir);
-
 	void rotateByIDandAxis(int id, SG_VECTOR axis,bool dir,float angle);
+	void rotateByIDandAxisNew(int id, SG_VECTOR axis, bool dir, float angle);
 
 
 	void rearange3dArray(SG_VECTOR axis, int plane, bool dir);
+	void rearrange3dArrayNew(int axisNum,int plane, bool dir);
+
 	//face rotation bytwo ids
 	int rotateTwoIds(int cubieA, int cubieB,bool inside);
 	bool faceRotateB;
 
 	void unDo(int id, SG_VECTOR axis, bool dir);
 
-	bool moving;
+	bool pmoving;
 	bool isMoving();
 
-	int selected[9];
+	int selected[36];
+	int counter;
 	int selX;
 	int selY;
 	int selZ;
@@ -77,6 +82,8 @@ public:
 	void colorTorusMenuPuzzle();
 	///color change
 	void changeColorToColor(ofFloatColor Sc, ofFloatColor Tc);
+
+	int gridSize;
 
 	/*
 	Cubie picking - GuiNode stuff
@@ -117,7 +124,7 @@ public:
 	ofVec3f mousePoint;
 	ofVec3f unprojectedPoint;
 	bool bHavePoint;
-	void unprojectPoint();
+	
 	void setMousePoint(ofVec3f _pnt);
 	void checkCubiesForHit(ofVec3f _pnt);
 	void dragInput(ofVec3f _pnt);

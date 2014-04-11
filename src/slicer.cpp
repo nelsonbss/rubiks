@@ -2,12 +2,13 @@
 #include "sgCore.h"
 #include "cutter.h"
 
-slicer::slicer(cutter *c){
+slicer::slicer(cutter *c, int gSize){
 	myCutter = c;
 	////
+	numPieces=gSize*gSize*gSize;
 	//create & initialize the pieces of the slicer as NULL
-	pieces = (sgCGroup**)malloc(27*sizeof(sgCObject*));
-	for(int i =0; i<27; i ++){
+	pieces = (sgCGroup**)malloc(numPieces*sizeof(sgCObject*));
+	for(int i =0; i<numPieces; i ++){
 		pieces[i] = NULL; //initiallize every piece with NULL
 	}
 }
@@ -23,8 +24,8 @@ void slicer::draw(){
 //--------------------------------------------------------------
 sgCGroup** slicer::getPieces(){
 	//make a copy of the group** to send outside pieces[]
-	aux = (sgCGroup**)malloc(27*sizeof(sgCGroup*));
-	for(int i =0; i<27; i ++){
+	aux = (sgCGroup**)malloc(numPieces*sizeof(sgCGroup*));
+	for(int i =0; i<numPieces; i ++){
 		sgCObject **objcts = (sgCObject**)malloc(50*sizeof(sgCObject*));
 		sgCObject **objcts1 = (sgCObject**)malloc(50*sizeof(sgCObject*));
 		int objctr = 0;
@@ -62,7 +63,7 @@ sgCGroup** slicer::getPieces(){
 int slicer::countPieces(){
 	//it tells me how many pieces have info
 	int count =0;
-	for(int i =0; i<27; i ++){
+	for(int i =0; i<numPieces; i ++){
 		//break each pieces[i]
 		sgCGroup *parts = pieces[i];
 		if(parts != NULL){
@@ -74,9 +75,9 @@ int slicer::countPieces(){
 //--------------------------------------------------------------
 //////////////////////////// Intersection///////////////////////
 void slicer::intersectCubes(sgCObject *obj){
-	//it uses intersection of 27 cubes, on the object, to get all the pieces for each cubie in one oeration
+	//it uses intersection of numPieces cubes, on the object, to get all the pieces for each cubie in one oeration
 	//all pieces are left in pieces[]
-	for(int i =0; i<27; i ++){
+	for(int i =0; i<numPieces; i ++){
 		sgCObject *tempObj = obj->Clone();
 		sgCObject *tempCutter = myCutter->cubes[i]->Clone();
 		//do intersecton at origin
@@ -89,7 +90,7 @@ void slicer::intersectCubes(sgCObject *obj){
 }
 //---------------------------------------------------------------
 void slicer::undoArmRotations(ofVec3f v){
-	//for(int i =0; i<27; i ++){
+	//for(int i =0; i<numPieces; i ++){
 	//	sgCObject **objcts = (sgCObject**)malloc(50*sizeof(sgCObject*));
 	//	int objctr = 0;
 	//	//break each pieces[i]
@@ -120,7 +121,7 @@ void slicer::undoArmRotations(ofVec3f v){
 void slicer::exit(){
 	//sgCObject::DeleteObject(*pieces); //break and delete all objects!!
 	free(myCutter);
-	for (int j=0; j < 27; j++){
+	for (int j=0; j < numPieces; j++){
 		if(pieces[j]!= NULL){
 			sgCObject::DeleteObject(pieces[j]);
 		}
@@ -175,7 +176,7 @@ void slicer::exit(){
 //////////////////////////////////X SLICING!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 //////////////////////////////////X SLICING!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 void slicer::xSlicing(cutter &icutter, sgCObject *obj, int turn, int cubePart){
-	//this is the implementation of the algorithm to produce the 27 pieces of the "cube"
+	//this is the implementation of the algorithm to produce the numPieces pieces of the "cube"
 	//output: fills sgCGroup  **pieces  ,   with the pieces obtained 
 	sgCGroup* sub1;
 

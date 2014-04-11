@@ -15,6 +15,8 @@
 #include "menuPuzzle.h"
 #include "Picker.h"
 
+#define DELAY 30000
+
 enum{UP_MODE_MOUSE, UP_MODE_COLOR};
 
 class game : public Observer{
@@ -197,5 +199,10 @@ public:
 	void setPrefix(string _p){prefix = _p;}
 
 	void updateGui();
+
+	void goToAttract();
+
+	int timeOfLastInteraction;
+	bool bInAttract;
 };
 #endif /* defined(__Tgame__game__) */

@@ -40,6 +40,7 @@ void testApp::setup(){
 	addGesture("touchReceiver","n-rotate");
 	*/
 
+
 	//gm = new GestureManager();
 	gm.loadGMLFile("basic_manipulation.gml");
 	gm.init("rubiksWindow", ofGetWidth(), ofGetHeight());
@@ -65,10 +66,12 @@ void testApp::setup(){
 	GuiConfigurator::Instance()->extendGui("main", "sheets.xml", false, false, "bl:", patterns);
 	patterns["%COLOR%"] = "Red";
 	GuiConfigurator::Instance()->extendGui("main", "sheets.xml", true, false, "br:", patterns);
-	/*patterns["%COLOR%"] = "Orange";
-	GuiConfigurator::Instance()->extendGui("main", "sheets.xml", false, true, "tl", patterns);
+	patterns["%COLOR%"] = "Orange";
+	GuiConfigurator::Instance()->extendGui("main", "sheets.xml", false, true, "tl:", patterns);
 	patterns["%COLOR%"] = "Green";
-	GuiConfigurator::Instance()->extendGui("main", "sheets.xml", true, true, "tr", patterns);*/
+	GuiConfigurator::Instance()->extendGui("main", "sheets.xml", true, true, "tr:", patterns);
+
+	GuiConfigurator::Instance()->loadText("assets.xml");
 
 	/*SubObMediator::Instance()->addObserver("object-selected", this);
 	SubObMediator::Instance()->addObserver("armature-selected", this);
@@ -174,6 +177,13 @@ void testApp::setup(){
 	tr.x = 960;
 	game *tempGame2 = new game(gamePos, ofGetWidth(), ofGetHeight(),displayPos, tr, iddleTime);
 	myGames.push_back(tempGame2);
+	tr.x = 300;
+	tr.y = 60;
+	game *tempGame3 = new game(gamePos, ofGetWidth(), ofGetHeight(),displayPos, tr, iddleTime);
+	myGames.push_back(tempGame3);
+	tr.x = 960;
+	game *tempGame4 = new game(gamePos, ofGetWidth(), ofGetHeight(),displayPos, tr, iddleTime);
+	myGames.push_back(tempGame4);
 	currentGame = 1;
 	//create a second game
 	//game *tempGame2 = new game(gamePos, ofGetWidth(), ofGetHeight(),displayPos,iddleTime);
@@ -429,7 +439,7 @@ void testApp::mouseDragged(int x, int y, int button){
 		ev.setName("update-touch-point");
 		ev.addArg("position",ofVec3f((float)x / (float)ofGetWidth(),(float)y / (float)ofGetHeight(),0));
 		ev.addArg("touch-id", touchId + touchIdOffset);
-		SubObMediator::Instance()->sendEvent("update-touch-point", ev);
+		//SubObMediator::Instance()->sendEvent("update-touch-point", ev);
 	}
 	if(button == 2){
 		myGames[0]->mouseDragged(x,y,button);
@@ -445,7 +455,7 @@ void testApp::mousePressed(int x, int y, int button){
 		//ev.setName("add-touch-point");
 		ev.addArg("position",ofVec3f((float)x / (float)ofGetWidth(),(float)y / (float)ofGetHeight(),0));
 		ev.addArg("touch-id", touchId + touchIdOffset);
-		SubObMediator::Instance()->sendEvent("add-touch-point", ev);
+		//SubObMediator::Instance()->sendEvent("add-touch-point", ev);
 	}
 	if(button == 2){
 		myGames[0]->mousePressed(x,y,button);
@@ -460,9 +470,9 @@ void testApp::mouseReleased(int x, int y, int button){
 		ev.setName("remove-touch-point");
 		ev.addArg("position",ofVec3f((float)x / (float)ofGetWidth(),(float)y / (float)ofGetHeight(),0));
 		ev.addArg("touch-id", touchId + touchIdOffset);
-		SubObMediator::Instance()->sendEvent("remove-touch-point", ev);
+		//SubObMediator::Instance()->sendEvent("remove-touch-point", ev);
 	}
-	myGames[0]->mouseReleased(x,y,button);
+	//myGames[0]->mouseReleased(x,y,button);
 }
 
 void testApp::updateMouseState(const char * _state, int _x, int _y, int _button){

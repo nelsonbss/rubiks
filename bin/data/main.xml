@@ -80,7 +80,7 @@
       </param>
     </node>
     <node type="button" name="bg-bottom">
-      <pos>0.0,0.648</pos>
+      <pos>0.0,0.647</pos>
       <size>1.0,1.0</size>
       <scale>1.0</scale>
       <param>

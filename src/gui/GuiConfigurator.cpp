@@ -13,7 +13,7 @@ GuiConfigurator::GuiConfigurator(){
 	SubObMediator::Instance()->addObserver("hide-node", this);
 	SubObMediator::Instance()->addObserver("unhide-node", this);
 	//SubObMediator::Instance()->sendEvent("add-gesture-receiver", dummy);
-	setCurrentLanguage("english");
+	setCurrentLanguage("french");
 	prefix = "";
 }
 
@@ -159,13 +159,17 @@ void GuiConfigurator::update(string _eventName, SubObEvent _event){
 				activeNodes[target]->hide();
 			}
 		} else {
-			cout << "don't have node - " << target << endl;
+			cout << "NODE_HIDE - don't have node - " << target << endl;
 		}
 	}
 	if(_eventName == "unhide-node"){
 		string target = _event.getArg("target")->getString();
-		if(activeNodes[target]->isHidden()){
-			activeNodes[target]->unhide();
+		if(activeNodes.count(target)){
+			if(activeNodes[target]->isHidden()){
+				activeNodes[target]->unhide();
+			}
+		} else {
+			cout << "NODE_UNHIDE - don't have node - " << target << endl;
 		}
 	}
 }
@@ -236,7 +240,7 @@ void GuiConfigurator::loadGui(bool _mirrored, bool _flipped){
 	string main = mXML.getValue("main-sheet","attract");
 	loadSheets();
 	SceneManager::Instance()->pushSheet(sheets[main]);
-	loadText("assets.xml");
+	//loadText("assets.xml");
 }
 
 void GuiConfigurator::extendGui(string _sheet, string _file, bool _mirrored, bool _flipped, string _prefix, map<string, string> _patterns){
@@ -255,6 +259,7 @@ void GuiConfigurator::extendGui(string _sheet, string _file, bool _mirrored, boo
 }
 
 void GuiConfigurator::loadText(string _file){
+	/*
 	mXML.loadFile(_file);
 	mXML.pushTag("texts");
 	int numTexts = mXML.getNumTags("text");
@@ -272,6 +277,7 @@ void GuiConfigurator::loadText(string _file){
 				string lang = mXML.getAttribute("value", "language", "none", j);
 				string text = mXML.getValue("value", "none", j);
 				ofStringReplace(text, "\\n", "\n");
+				//ofStringReplace(text, "\\u", "\u");
 				//string text = mXML.getAttribute("value", "val", "none", j);
 				texts[name].setText(lang, text);
 				cout << "loading text - " << text << endl;
@@ -279,6 +285,66 @@ void GuiConfigurator::loadText(string _file){
 		}
 		mXML.popTag();
 	}
+	*/
+	/*
+	lXML.load(_file);
+	lXML.setTo("texts");
+	int numTexts = lXML.getNumChildren("text");
+	cout << "have " << numTexts << " texts" << endl;
+	for(int i = 0; i < numTexts; i++){
+		lXML.setToChild(i);
+		string name = lXML.getValue<string>("name", "none");
+		cout << "loading text - " << name << endl;
+		if(name != "none"){
+			int numVals = lXML.getNumChildren("value");
+			if(!texts.count(name)){
+				texts[name] = GuiText();
+			}
+			for(int j = 0; j < numVals; j++){
+				//lXML.setTo("text[" + ofToString(i) + "]");
+				string lang = lXML.getAttribute("value[" + ofToString(j) + "][@language]");
+				string text = lXML.getValue<string>("value[" + ofToString(j) + "]", "none");
+				texts[name].setText(lang, text);
+				cout << "loading text - " << text << " for lang - " << lang << endl;
+			}
+		}
+		lXML.setToParent();
+	}
+	*/
+	specialTextLoadingCopOut();
+}
+
+void GuiConfigurator::specialTextLoadingCopOut(){
+	texts["next"] = GuiText();
+	texts["next"].setText("english", "NEXT");
+	texts["next"].setText("french", "SUIVANT");
+	
+	texts["reset"] = GuiText();
+	texts["reset"].setText("english", "RESET");
+	texts["reset"].setText("french", "RÉINITIALISER");
+
+    texts["make"] = GuiText();
+	texts["make"].setText("english", "MAKE ONE");
+	texts["make"].setText("french", "CRÉER");
+ 
+	texts["drag"] = GuiText();
+	texts["drag"].setText("english", "Drag A Puzzle From\nAbove Or A Shape Here\nto Play");
+	texts["drag"].setText("french", "Faites glisser un puzzle ci-dessus ou une forme ici pour jouer");
+
+	texts["start"] = GuiText();
+    texts["start"].setText("english", "Drag a shape to begin\nto make a puzzle like\nthe one you selected.");
+  
+    texts["play-help-1"] = GuiText();
+    texts["play-help-1"].setText("english", "Single finger swipe\ntwists puzzle.");
+	texts["play-help-1"].setText("french", "Un doigt = glisse/déplace\nles pièces");
+
+    texts["play-help-2"] = GuiText();
+    texts["play-help-2"].setText("english", "Two finger swipe\nrotates puzzle.");
+	texts["play-help-2"].setText("french", "Deux doigts = glisse/tourne\nle cube");
+  
+    texts["start-help"] = GuiText();
+    texts["start-help"].setText("english", "Drag A Puzzle From\nAbove Or A Shape Here\nto Play");
+	texts["start-help"].setText("french", "Faites glisser un puzzle\nci-dessus ou une forme\nici pour jouer");
 }
 
 void GuiConfigurator::loadSheets(){
@@ -338,7 +404,14 @@ void GuiConfigurator::loadNodes(string _sheetName, GuiWindow* _win){
 		string pos = mXML.getValue("pos", "0.0,0.0");
 		string size = mXML.getValue("size", "150.0,150.0");
 		string scale = mXML.getValue("scale","1.0");
-		nodePtr->setPosition(stringToVec2f(pos));
+		ofVec2f posVec = stringToVec2f(pos);
+		if(bMirrored){
+			posVec.x = 1.0 - posVec.x;
+		}
+		if(bFlipped){
+			posVec.y = 1.0 - posVec.y;
+		}
+		nodePtr->setPosition(posVec);
 		nodePtr->setSize(stringToVec2f(size)); 
 		nodePtr->setScale(ofToFloat(scale));
 		nodePtr->setMirrored(bMirrored);

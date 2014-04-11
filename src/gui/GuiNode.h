@@ -136,6 +136,7 @@ public:
 	virtual void nodeExecute(){}
 	virtual void nodeActivate(){}
 	virtual void nodeDeactivate(){}
+	virtual void nodeSetPosition(){}
 	virtual void input(string _type, int _ID, int _n, int _phase, ofVec2f _absPos, ofVec2f _deltaPos){cout << "node input" << endl;}
 
 protected:

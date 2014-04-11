@@ -32,9 +32,11 @@ void GuiNode::draw(){
 			//cout << "drawing text - " << currentText << endl;
 			if(textAlign == "position"){
 				if(bFlipped){
+					ofRectangle bounds = font.getStringBoundingBox(currentText, 0, 0);
 					ofPushMatrix();
-					//ofRotateZ(180.0);
-					font.drawString(currentText, drawPos.x + textPosition.x, drawPos.y + textPosition.y);
+					ofTranslate(drawPos.x + textPosition.x  + bounds.width / 2, drawPos.y + textPosition.y + bounds.height / 2, 0);
+					ofRotateZ(180.0);
+					font.drawString(currentText, -bounds.width / 2, bounds.height / 2);
 					ofPopMatrix();
 				} else {
 					font.drawString(currentText, drawPos.x + textPosition.x, drawPos.y + textPosition.y);
@@ -98,6 +100,7 @@ void GuiNode::init(){
 		bHidden= true;
 	}
 	nodeInit();
+	nodeSetPosition();
 	//timer = new ofxTimer();
 }
 
@@ -154,16 +157,11 @@ void GuiNode::unhide(){
 }
 
 void GuiNode::setPosition(){
-	if(bMirrored){
-		pos.x = 1.0 - pos.x;
-	}
-	if(bFlipped){
-		pos.y = 1.0 - pos.y;
-	}
 	drawPos.x = ofGetWidth() * pos.x;
 	drawPos.y = ofGetHeight() * pos.y;
 	drawSize.x = ofGetWidth() * size.x;
 	drawSize.y = ofGetHeight() * size.y;
+	nodeSetPosition();
 }
 
 void GuiNode::_windowResized(){

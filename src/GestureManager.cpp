@@ -89,13 +89,13 @@ void GestureManager::update(string _eventName, SubObEvent _event){
 	if(_eventName == "add-object"){
 		string objName = ev.getArg("objName")->getString();
 		registerTouchObject(objName);
-		cout << "registered " << objName << endl;
+		//cout << "registered " << objName << endl;
 	}
 	if(_eventName == "add-gesture"){
 		string objName = ev.getArg("objName")->getString();
 		string gesture = ev.getArg("gesture")->getString();
 		addGesture(objName, gesture);
-		cout << "added gesture " << gesture << " to " << objName << endl;
+		//cout << "added gesture " << gesture << " to " << objName << endl;
 	}
 	if(_eventName == "remove-object"){
 		string objName = ev.getArg("objName")->getString();
@@ -181,7 +181,7 @@ void GestureManager::getGestures(){
 	}
 	std::vector<gwc::GestureEvent> gestureEvents = consumeGestureEvents();
 	for(auto gIter = gestureEvents.begin(); gIter != gestureEvents.end(); gIter++) {
-		//cout << gIter->gesture_type << " - " << gIter->x << ", " << gIter->y << " - " << gIter->phase << endl;
+		cout << gIter->gesture_type << " - " << gIter->x << ", " << gIter->y << " - " << gIter->phase << endl;
 		if(gIter->gesture_type == "tap"){
 			cout << "tap to " << gIter->target << endl;
 		}

@@ -65,12 +65,6 @@ void GuiButton::nodeInit(){
 	} else {
 		haveImage = false;
 	}
-	if(bMirrored){
-		drawPos.x -= drawSize.x;
-	}
-	if(bFlipped){
-		drawPos.y -= drawSize.y;
-	}
 	inactive.mirror(bFlipped, bMirrored);
 	drawActive = false;
 	haveActive = false;
@@ -108,6 +102,16 @@ void GuiButton::nodeExecute(){
 		SubObMediator::Instance()->sendEvent("new-color", ev);
 	}
 	cout << name << " executing." << endl;
+}
+
+void GuiButton::nodeSetPosition(){
+	if(bMirrored){
+		cout << name << " adjusting." << endl;
+		drawPos.x -= (inactive.getWidth() * scale);
+	}
+	if(bFlipped){
+		drawPos.y -= (inactive.getHeight() * scale);
+	}
 }
 
 bool GuiButton::processMouse(int _x, int _y, int _state){

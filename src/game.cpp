@@ -84,13 +84,16 @@ game::game(SG_VECTOR gamePos, float w, float h, SG_VECTOR displayPos, ofRectangl
 	bUseViewport = true;
 
 	camPosition.set(viewport.width / 2, viewport.height / 2, 400);
+
+	timeOfLastInteraction = ofGetElapsedTimeMillis();
+	bInAttract = false;
 }
 //--------------------------------------------------------------
 void game::setup(sgCObject *sgBunnyi,sgCObject *sgTetrahedroni,sgCObject *sgDodecahedroni,sgCObject *sgIcosahedroni,sgCObject *sgOctahedroni, string _prefix){//,sgCObject *sgTeapoti){
 	//gets the .obj files loaded and converted into sgC3DObject
-	
+
 	prefix = _prefix;
-	
+
 	sgBunny = sgBunnyi;
 	sgTetrahedron = sgTetrahedroni;
 	sgDodecahedron = sgDodecahedroni;
@@ -119,6 +122,7 @@ void game::setup(sgCObject *sgBunnyi,sgCObject *sgTetrahedroni,sgCObject *sgDode
 	SubObMediator::Instance()->addObserver(prefix + ":extrude", this);
 	SubObMediator::Instance()->addObserver(prefix + ":extrusion-success", this);
 
+	goToAttract();
 }
 //----------------------------------------------------------------------
 void game::update(){
@@ -234,6 +238,12 @@ void game::update(){
 		bHaveReset = false;
 	}
 	//camPosition.rotate(1, ofVec3f(viewport.width / 2,viewport.height / 2, posP.z));
+	if(!bInAttract){
+		int currentTime = ofGetElapsedTimeMillis();
+		if(currentTime - timeOfLastInteraction > DELAY){
+			goToAttract();
+		}
+	}
 }
 //----------------------------------------------------------------------
 void game::update(string _eventName, SubObEvent _event){
@@ -277,6 +287,32 @@ void game::update(string _eventName, SubObEvent _event){
 	if(_eventName == prefix + ":next-step"){
 		guiNext();
 		cout << "set game to - " << step << endl;
+		if(step == 0){
+			cout << "No more attract" << endl;
+			SubObEvent ev;
+			ev.setName("hide-node");
+			ev.addArg("target",prefix + ":attract");
+			SubObMediator::Instance()->sendEvent("hide-node", ev);
+			ev.setName("unhide-node");
+			ev.addArg("target", prefix + ":bg-language");
+			SubObMediator::Instance()->sendEvent("unhide-node", ev);
+			ev.addArg("target", prefix + ":bg-info");
+			SubObMediator::Instance()->sendEvent("unhide-node", ev);
+			ev.addArg("target", prefix + ":next-inactive");
+			SubObMediator::Instance()->sendEvent("unhide-node", ev);
+			ev.addArg("target", prefix + ":reset");
+			SubObMediator::Instance()->sendEvent("unhide-node", ev);
+			ev.addArg("target", prefix + ":3d-window-box");
+			SubObMediator::Instance()->sendEvent("unhide-node", ev);
+			ev.addArg("target", prefix + ":start-help");
+			SubObMediator::Instance()->sendEvent("unhide-node", ev);
+			ev.addArg("target", prefix + ":object-drop");
+			SubObMediator::Instance()->sendEvent("unhide-node", ev);
+			ev.addArg("target", prefix + ":3d-window");
+			SubObMediator::Instance()->sendEvent("unhide-node", ev);
+
+			bInAttract = false;
+		}
 		if(step == 1){
 			SubObEvent ev;
 			ev.setName("hide-node");
@@ -300,20 +336,15 @@ void game::update(string _eventName, SubObEvent _event){
 			ev.setName("hide-node");
 			ev.addArg("target",prefix + ":color-window");
 			SubObMediator::Instance()->sendEvent("hide-node", ev);
-			ev.setName("hide-node");
 			ev.addArg("target",prefix + ":3d-window-box");
 			SubObMediator::Instance()->sendEvent("hide-node", ev);
-			ev.setName("hide-node");
 			ev.addArg("target",prefix + ":object-drop");
 			SubObMediator::Instance()->sendEvent("hide-node", ev);
 			ev.setName("unhide-node");
 			ev.addArg("target",prefix + ":puzzle-help");
 			SubObMediator::Instance()->sendEvent("unhide-node", ev);
-			/*
-			ev->setName("unhide-node");
-			ev->addArg("target","ibox-bl");
+			ev.addArg("target",prefix + ":ibox");
 			SubObMediator::Instance()->sendEvent("unhide-node", ev);
-			*/
 		}
 	}
 	if(_eventName == prefix + ":armature-selected"){
@@ -331,43 +362,36 @@ void game::update(string _eventName, SubObEvent _event){
 		ev.setName("hide-node");
 		ev.addArg("target", prefix + ":color-window");
 		SubObMediator::Instance()->sendEvent("hide-node", ev);
-		ev.setName("hide-node");
 		ev.addArg("target", prefix + ":3d-window-box");
 		SubObMediator::Instance()->sendEvent("hide-node", ev);
-		ev.setName("hide-node");
 		ev.addArg("target", prefix + ":3d-window");
 		SubObMediator::Instance()->sendEvent("hide-node", ev);
-		ev.setName("hide-node");
 		ev.addArg("target", prefix + ":object-drop");
 		SubObMediator::Instance()->sendEvent("hide-node", ev);
-		ev.setName("hide-node");
 		ev.addArg("target", prefix + ":arm-window");
 		SubObMediator::Instance()->sendEvent("hide-node", ev);
-		ev.setName("hide-node");
 		ev.addArg("target", prefix + ":next-active");
 		SubObMediator::Instance()->sendEvent("hide-node", ev);
-		ev.setName("hide-node");
 		ev.addArg("target", prefix + ":start-help");
 		SubObMediator::Instance()->sendEvent("hide-node", ev);
-		ev.setName("hide-node");
 		ev.addArg("target", prefix + ":puzzle-help");
+		SubObMediator::Instance()->sendEvent("hide-node", ev);
+		ev.addArg("target", prefix + ":ibox");
 		SubObMediator::Instance()->sendEvent("hide-node", ev);
 
 		ev.setName("unhide-node");
 		ev.addArg("target", prefix + ":3d-window-box");
 		SubObMediator::Instance()->sendEvent("unhide-node", ev);
-		ev.setName("unhide-node");
 		ev.addArg("target", prefix + ":start-help");
 		SubObMediator::Instance()->sendEvent("unhide-node", ev);
-		ev.setName("unhide-node");
 		ev.addArg("target", prefix + ":object-drop");
 		SubObMediator::Instance()->sendEvent("unhide-node", ev);
-		ev.setName("unhide-node");
 		ev.addArg("target", prefix + ":3d-window");
 		SubObMediator::Instance()->sendEvent("unhide-node", ev);
-		ev.setName("unhide-node");
 		ev.addArg("target", prefix + ":next-inactive");
 		SubObMediator::Instance()->sendEvent("unhide-node", ev);
+
+		camPosition.set(viewport.width / 2, viewport.height / 2, 400);
 		//SceneManager::Instance()->reset();
 		//cout << "RESET" << endl;
 	}
@@ -399,7 +423,7 @@ void game::update(string _eventName, SubObEvent _event){
 	if(_eventName == prefix + ":ibox:0"){
 		if(bDragInput){
 			myPuzzle->endRotation();
-			myPuzzle->decideMove();
+			//myPuzzle->decideMove();
 			bDragInput = false;
 		}
 	}
@@ -475,10 +499,56 @@ void game::update(string _eventName, SubObEvent _event){
 		//sc = menuColor;
 		//changeFaceColor(pos, menuColor);
 	}
+	timeOfLastInteraction = ofGetElapsedTimeMillis();
+}
+
+void game::goToAttract(){
+	SubObEvent ev;
+	guiReset();
+	ev.setName("hide-node");
+	ev.addArg("target", prefix + ":color-window");
+	SubObMediator::Instance()->sendEvent("hide-node", ev);
+	ev.setName("hide-node");
+	ev.addArg("target", prefix + ":3d-window-box");
+	SubObMediator::Instance()->sendEvent("hide-node", ev);
+	ev.setName("hide-node");
+	ev.addArg("target", prefix + ":3d-window");
+	SubObMediator::Instance()->sendEvent("hide-node", ev);
+	ev.setName("hide-node");
+	ev.addArg("target", prefix + ":object-drop");
+	SubObMediator::Instance()->sendEvent("hide-node", ev);
+	ev.setName("hide-node");
+	ev.addArg("target", prefix + ":arm-window");
+	SubObMediator::Instance()->sendEvent("hide-node", ev);
+	ev.setName("hide-node");
+	ev.addArg("target", prefix + ":next-active");
+	SubObMediator::Instance()->sendEvent("hide-node", ev);
+	ev.setName("hide-node");
+	ev.addArg("target", prefix + ":start-help");
+	SubObMediator::Instance()->sendEvent("hide-node", ev);
+	ev.setName("hide-node");
+	ev.addArg("target", prefix + ":puzzle-help");
+	SubObMediator::Instance()->sendEvent("hide-node", ev);
+	ev.setName("hide-node");
+	ev.addArg("target", prefix + ":bg-language");
+	SubObMediator::Instance()->sendEvent("hide-node", ev);
+	ev.addArg("target", prefix + ":bg-info");
+	SubObMediator::Instance()->sendEvent("hide-node", ev);
+	ev.addArg("target", prefix + ":next-inactive");
+	SubObMediator::Instance()->sendEvent("hide-node", ev);
+	ev.addArg("target", prefix + ":reset");
+	SubObMediator::Instance()->sendEvent("hide-node", ev);
+
+	ev.setName("unhide-node");
+	ev.addArg("target", prefix + ":attract");
+	SubObMediator::Instance()->sendEvent("unhide-node", ev);
+
+	bInAttract = true;
+	camPosition.set(viewport.width / 2, viewport.height / 2, 400);
 }
 
 void game::updateGui(){
-	
+
 }
 
 //----------------------------------------------------------------------
@@ -918,7 +988,7 @@ void game::changeColorToColor(ofFloatColor sc, ofFloatColor tc){
 }
 
 void game::changeFaceColor(ofVec2f pos, ofFloatColor c){
-	
+
 }
 
 //----------------------------------------------------------------------
@@ -944,11 +1014,11 @@ void game::rotateA (ofVec3f input){
 	int rz = input.z;
 
 	//if(){
-		myArmature->rotateA(input);
-		//move the offset vector of the cutter at the same time as the armature
-		rotateSlicer.x += input.x;
-		rotateSlicer.y += input.y;
-		rotateSlicer.z += input.z;
+	myArmature->rotateA(input);
+	//move the offset vector of the cutter at the same time as the armature
+	rotateSlicer.x += input.x;
+	rotateSlicer.y += input.y;
+	rotateSlicer.z += input.z;
 	//}
 }
 //----------------------------------------------------------------------
@@ -1642,7 +1712,7 @@ void game::mousePressed(int x, int y, int button){
 }
 //--------------------------------------------------------------
 void game::mouseReleased(int x, int y, int button){
-	 if(step == 6){
+	if(step == 6){
 		myCanvas->mouseReleased(x,y,button);
 	}
 }

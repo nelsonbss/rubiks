@@ -122,7 +122,7 @@ void game::setup(sgCObject *sgBunnyi,sgCObject *sgTetrahedroni,sgCObject *sgDode
 	SubObMediator::Instance()->addObserver(prefix + ":extrude", this);
 	SubObMediator::Instance()->addObserver(prefix + ":extrusion-success", this);
 
-	goToAttract();
+	//goToAttract();
 }
 //----------------------------------------------------------------------
 void game::update(){
@@ -241,7 +241,7 @@ void game::update(){
 	if(!bInAttract){
 		int currentTime = ofGetElapsedTimeMillis();
 		if(currentTime - timeOfLastInteraction > DELAY){
-			goToAttract();
+			//goToAttract();
 		}
 	}
 }

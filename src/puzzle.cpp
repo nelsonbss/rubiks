@@ -763,7 +763,7 @@ void puzzle::decideMove(){
 	if(dirM == true){
 		//positive angle
 		if(angleM >= 45){
-			for(int i=0;i<9;i++){
+			for(int i=0;i<counter;i++){
 				myCubies[selected[i]]->goForward();
 			}
 			//rearrange cubies involved on the move
@@ -778,7 +778,7 @@ void puzzle::decideMove(){
 				//rearange3dArray(myCubies[selected[0]]->vrotFace,selZ,dirM);
 			}
 		}else{
-			for(int i=0;i<9;i++){
+			for(int i=0;i<counter;i++){
 				//only need to ask one of the selected cubies, thay all have the same rotation angle
 				myCubies[selected[i]]->goBack();
 			}
@@ -786,7 +786,7 @@ void puzzle::decideMove(){
 	}else{
 		//negative angle
 		if(angleM <= -45){
-			for(int i=0;i<9;i++){
+			for(int i=0;i<counter;i++){
 				//only need to ask one of the selected cubies, thay all have the same rotation angle
 				myCubies[selected[i]]->goForward();
 				//myCubies[selected[i]]->updatePosition();
@@ -803,7 +803,7 @@ void puzzle::decideMove(){
 				//rearange3dArray(myCubies[selected[0]]->vrotFace,selZ,dirM);
 			}
 		}else{
-			for(int i=0;i<9;i++){
+			for(int i=0;i<counter;i++){
 				//only need to ask one of the selected cubies, thay all have the same rotation angle
 				myCubies[selected[i]]->goBack();
 			}

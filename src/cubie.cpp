@@ -119,7 +119,7 @@ void cubie::faceRotate(SG_VECTOR axis,bool di,float angle){
 					}else{
 						objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,ofDegToRad(angle));
 					}*/
-					myMeshs[j].updatePosition(protFaceV, vrotFaceV, -angle);
+					myMeshs[j].updatePosition(protFaceV, vrotFaceV, angle);
 				}
 				//}else{
 				//	//cc
@@ -158,9 +158,9 @@ void cubie::goForward(){
 }
 //--------------------------------------------------------------
 void cubie::update(){
-	//cout << "numObjs: " << numObjs << endl;
 	if(numObjs > 0){
 		if(goBackb==true){
+			cout << "masterAngle: " << masterAngle << endl;
 			//////////////////////////////////////////////////////////////////////////////////////////////////////
 			//do animation to 0 position from masterAngle position
 			for (int j=0; j < numObjs; j++){
@@ -184,6 +184,7 @@ void cubie::update(){
 			}
 		}
 		if(moving==true){
+			cout << "masterAngle: " << masterAngle << endl;
 			/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			//do 90 deg animation to new position
 			for (int j=0; j < numObjs; j++){

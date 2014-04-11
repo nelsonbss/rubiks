@@ -1802,3 +1802,140 @@ void game::drawPoints(){
 	ofCircle(cp5,20);
 	ofCircle(cp6,20);
 }
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
+		////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		/////////////////////////////////////////////////////////////////////////////////////////////////////////
+		//////void view1_MouseMove(object sender, MouseEventArgs e)
+		//////      {
+		//if(myGames[0]->myPuzzle->isMoving())
+		//	//if (isTwisting)
+		//{
+		//	// if distance of gesture is long enough, interpret it:
+
+		//	////Point newPt = e.GetPosition(view1);
+		//	////if (pointDistance(newPt, twistStartPoint) > 50)
+		//	if (button == 0) //takethis out
+		//	{
+		//		// get angle of gesture
+
+		//		double dragAngle = atan2(2,2);//newPt.Y - twistStartPoint.Y, newPt.X - twistStartPoint.X);
+		//		cout << "drag Angle:" << dragAngle << endl;
+
+		//		//cycle through angles of axes and find the closest match
+		//		//still needs to accommodate 180-degree crossing of radians from postive to negative
+
+		//		double offset = 100000;
+		//		int closest=-1;
+		//		for (int i = 0; i < 6; i++)
+		//		{
+		//			cout << gestureAngles[i] << endl;
+		//			double dist= abs(dragAngle-gestureAngles[i]);
+		//			if (dist < offset)
+		//			{
+		//				offset = dist;
+		//				closest = i;
+		//			}
+		//		}
+
+		//		////////////////isTwisting = false;/////////////////////////////////make a function to relate this to cubbie
+
+
+		//		const char *descriptors[6] = { "right", "left", "up", "down", "forward", "back" };
+		//		////String  **descriptors = new String[6] { "right", "left", "up", "down", "forward", "back" };
+
+		//		// closest is the closest axis direction to the gesture
+
+		//		if (closest == 0)
+		//		{
+		//			//if it's to the right, we're twisting on the Z axis
+		//			//(this could change to accommodate normal interpretation
+		//			//we turn clockwise or counterclockwise depending on which side of the cube we're on (Y axis)
+
+		//			//twist function takes axis number (0-2), level number (0-2 for a 3x3x3), and direction (1 or -1)
+
+		//			////////if (cubieLoc[cubeToTwist].Y >= 0)
+		//			////////{
+		//			////////	twist(2, Convert.ToInt16(cubieLoc[cubeToTwist].Z), -1);
+		//			////////}
+		//			////////else
+		//			////////{
+		//			////////	twist(2, Convert.ToInt16(cubieLoc[cubeToTwist].Z), 1);
+		//			////////}
+		//			//}
+
+		//			////                  if (closest == 1)
+		//			////                  {
+		//			////                      if (cubieLoc[cubeToTwist].Y >= 0)
+		//			////                      {
+		//			////                          twist(2, Convert.ToInt16(cubieLoc[cubeToTwist].Z), 1);
+		//			////                      }
+		//			////                      else
+		//			////                      {
+		//			////                          twist(2, Convert.ToInt16(cubieLoc[cubeToTwist].Z), -1);
+		//			////                      }
+		//			////                  }
+
+		//			////                  if (closest == 2)
+		//			////                  {
+		//			////                      if (cubieLoc[cubeToTwist].Z >= 0)
+		//			////                      {
+		//			////                          twist(0, Convert.ToInt16(cubieLoc[cubeToTwist].X), -1);
+		//			////                      }
+		//			////                      else
+		//			////                      {
+		//			////                          twist(0, Convert.ToInt16(cubieLoc[cubeToTwist].X), 1);
+		//			////                      }
+		//			////                  }
+
+		//			////                  if (closest == 3)
+		//			////                  {
+		//			////                      if (cubieLoc[cubeToTwist].Z >= 0)
+		//			////                      {
+		//			////                          twist(0, Convert.ToInt16(cubieLoc[cubeToTwist].X), 1);
+		//			////                      }
+		//			////                      else
+		//			////                      {
+		//			////                          twist(0, Convert.ToInt16(cubieLoc[cubeToTwist].X), -1);
+		//			////                      }
+		//			////                  }
+
+		//			////                  if (closest == 4)
+		//			////                  {
+		//			////                      if (cubieLoc[cubeToTwist].X >= 0)
+		//			////                      {
+		//			////                          twist(1, Convert.ToInt16(cubieLoc[cubeToTwist].Y), -1);
+		//			////                      }
+		//			////                      else
+		//			////                      {
+		//			////                          twist(1, Convert.ToInt16(cubieLoc[cubeToTwist].Y), 1);
+		//			////                      }
+		//			////                  }
+
+		//			////                  if (closest == 5)
+		//			////                  {
+		//			////                      if (cubieLoc[cubeToTwist].X >= 0)
+		//			////                      {
+		//			////                          twist(1, Convert.ToInt16(cubieLoc[cubeToTwist].Y), 1);
+		//			////                      }
+		//			////                      else
+		//			////                      {
+		//			////                          twist(1, Convert.ToInt16(cubieLoc[cubeToTwist].Y), -1);
+		//			////                      }
+		//		}
+		//	}
+		//}
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+		///////////////////////////////////////////////////////////////////////////////////////////////////////
+		///////////////////////////////////////////////////////////////////////////////////////////////////////
+		//////void view1_MouseUp(object sender, MouseButtonEventArgs e)
+		//////      {
+		//////isTwisting = false;
+		//////}
+		//////////////////////////////////////////////////////////////////////////////////////////////////////
+		///////////////////////////////////////////////////////////////////////////////////////////////////////
+		///////////////////////////////////////////////////////////////////////////////////////////////////////

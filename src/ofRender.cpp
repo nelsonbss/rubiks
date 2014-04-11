@@ -10,8 +10,11 @@ ofRender::ofRender(){
 	float g;
 	float b;
 
-	mate = ofFloatColor( 1.0,1.0,1.0,0.8);
-	mateSolid = ofFloatColor(1,1,1,255);
+	r = (float)113 / (float)255;
+	g = (float)126 / (float)255;
+	b = (float)145 / (float)255;
+	mate = ofFloatColor( r,g,b,0.8); //select obj color 113,126,145
+	mateSolid = ofFloatColor(150,150,150,255);
 
 	r = (float)236 / (float)255;
 	g = (float)33 / (float)255;

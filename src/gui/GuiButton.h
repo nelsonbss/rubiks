@@ -18,10 +18,11 @@ class GuiButton : public GuiNode
         virtual ~GuiButton(){}
 		void nodeInit();
 		void nodeExecute();
+		void nodeSetPosition();
         bool processMouse(int _x, int _y, int _state);
 		void input(string _type, int _ID, int _n, int _phase, ofVec2f _absPos, ofVec2f _deltaPos);
         virtual void update(string _subName, Subject* _sub);
-        void update(string _eventName, SubObEvent* _event);
+        void update(string _eventName, SubObEvent _event);
 		void setMessage(map<string,string> _msg){}
         virtual void nodeDraw();
         string getAttr(const char* _key){return attrs[_key];}
@@ -52,6 +53,7 @@ class GuiButton : public GuiNode
 		int timeOfLastInteraction;
 		bool bWatchTime;
 		bool bSendSample;
+		bool bSend;
 };
 
 #endif // GUIBUTTON_H

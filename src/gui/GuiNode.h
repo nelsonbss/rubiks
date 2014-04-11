@@ -123,6 +123,9 @@ public:
 	bool bReadyForInput;
 	bool getReadyForInput(){return bReadyForInput;}
 
+	void setMirrored(bool _m){bMirrored = _m;}
+	void setFlipped(bool _f){bFlipped = _f;}
+
     //Virtual methods that each subclass is responsible for defining.
     virtual void execute();
     virtual void executeDrag(int _x, int _y){}
@@ -133,6 +136,7 @@ public:
 	virtual void nodeExecute(){}
 	virtual void nodeActivate(){}
 	virtual void nodeDeactivate(){}
+	virtual void nodeSetPosition(){}
 	virtual void input(string _type, int _ID, int _n, int _phase, ofVec2f _absPos, ofVec2f _deltaPos){cout << "node input" << endl;}
 
 protected:
@@ -142,6 +146,7 @@ protected:
 	vector<SubObEvent*> events;
     ofVec2f pos;
 	ofVec2f drawPos;
+	ofVec2f dragPos;
 	ofVec2f drawSize;
     float scale;
 	ofVec2f size;
@@ -154,6 +159,9 @@ protected:
 	ofxTimer* timer;
 	bool bHidden;
 	bool bActive;
+
+	bool bMirrored;
+	bool bFlipped;
 };
 
 

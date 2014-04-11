@@ -1,65 +1,63 @@
 <gui>
   <main-sheet>attract</main-sheet>
   <assets>assets.xml</assets>
-	<sheet name="attract" pos="0,0">
-    <!--
-    <node type="button" name="bg-top">
-      <pos>0.0,0.0</pos>
-      <size>1.0,1.0</size>
-      <scale>1.0</scale>
-      <param>
-        <name>image</name>
-        <val>Exports/Background_Top.png</val>
-      </param>
-      <param>
-        <name>z</name>
-        <val>-10000</val>
-      </param>
-      <param>
-        <name>active</name>
-        <val>false</val>
-      </param>
-    </node>
-    <node type="button" name="bg-middle">
-      <pos>0.0,0.351</pos>
-      <size>1.0,1.0</size>
-      <scale>1.0</scale>
-      <param>
-        <name>image</name>
-        <val>Exports/Background_Middle.png</val>
-      </param>
-      <param>
-        <name>z</name>
-        <val>-10000</val>
-      </param>
-      <param>
-        <name>active</name>
-        <val>false</val>
-      </param>
-    </node>
-     -->
-    <node type="button" name="bg-full">
-      <pos>0.0,0.0</pos>
-      <size>1.0,1.0</size>
-      <scale>1.0</scale>
-      <param>
-        <name>image</name>
-        <val>Exports/Background_Full_BottomLeftPlayingA.png</val>
-      </param>
-      <param>
-        <name>z</name>
-        <val>-10000</val>
-      </param>
-      <param>
-        <name>active</name>
-        <val>false</val>
-      </param>
-      <param>
-        <name>draw-position</name>
-        <val>back</val>
-      </param>
-    </node>
-    <node type="button" name="bg-bottom">
+	<!--<sheet name="attract" pos="0,0">-->
+  <node type="button" name="attract">
+    <pos>0.0,0.6475</pos>
+    <size>1.0,1.0</size>
+    <scale>1.0</scale>
+    <event name="next-step"></event>
+    <param>
+      <name>tap</name>
+      <val>true</val>
+    </param>
+    <param>
+      <name>n</name>
+      <val>0</val>
+    </param>
+    <param>
+      <name>image</name>
+      <val>Exports/twisty_attract_%COLOR%.png</val>
+    </param>
+    <param>
+      <name>active</name>
+      <val>false</val>
+    </param>
+    <param>
+      <name>hidden</name>
+      <val>true</val>
+    </param>
+    <param>
+      <name>text</name>
+      <val>next</val>
+    </param>
+    <param>
+      <name>font</name>
+      <val>Fonts/Gotham-Bold.otf</val>
+    </param>
+    <param>
+      <name>font-size</name>
+      <val>10</val>
+    </param>
+    <param>
+      <name>text-align</name>
+      <val>center</val>
+    </param>
+    <param>
+      <name>text-position</name>
+      <val>10,20</val>
+    </param>
+    <param>
+      <name>text-color</name>
+      <val>255,255,255</val>
+    </param>
+    <param>
+      <name>draw-position</name>
+      <val>front</val>
+    </param>
+  </node>
+  <!--
+  <node type="button" name="bg-bottom">
       <pos>0.0,0.6475</pos>
       <size>1.0,1.0</size>
       <scale>1.0</scale>
@@ -79,14 +77,14 @@
         <name>draw-position</name>
         <val>back</val>
       </param>
-    </node>
-    <node type="button" name="bg-shape-bl">
+    </node>  
+  <node type="button" name="bg-shape">
       <pos>0.0,0.6475</pos>
       <size>1.0,1.0</size>
       <scale>1.0</scale>
       <param>
         <name>image</name>
-        <val>Exports/Background_Shapes_BottomLeft.png</val>
+        <val>Exports/Background_Shapes_%COLOR%.png</val>
       </param>
       <param>
         <name>z</name>
@@ -100,7 +98,12 @@
         <name>draw-position</name>
         <val>back</val>
       </param>
+      <param>
+        <name>draw-position</name>
+        <val>back</val>
+      </param>
     </node>
+    -->
     <node type="button" name="3d-window-box">
       <pos>0.0,0.73</pos>
       <size>1.0,1.0</size>
@@ -119,10 +122,10 @@
       </param>
       <param>
         <name>draw-position</name>
-        <val>back</val>
+        <val>front</val>
       </param>
     </node>
-    <node type="button" name="bg-language-bl">
+    <node type="button" name="bg-language">
       <pos>0.0,0.6475</pos>
       <size>1.0,1.0</size>
       <scale>1.0</scale>
@@ -143,7 +146,7 @@
         <val>front</val>
       </param>
     </node>
-    <node type="button" name="bg-info-bl">
+    <node type="button" name="bg-info">
       <pos>0.055,0.6475</pos>
       <size>1.0,1.0</size>
       <scale>1.0</scale>
@@ -164,17 +167,17 @@
         <val>front</val>
       </param>
     </node>
-    <node type="button" name="start-help-bl">
+    <node type="button" name="start-help">
       <pos>0.25, 0.7</pos>
       <size>1.0,1.0</size>
       <scale>1.0</scale>
       <param>
         <name>image</name>
-        <val>Exports/Start_Textbox_456x53_Blue.png</val>
+        <val>Exports/Start_Textbox_456x53_%COLOR%.png</val>
       </param>
       <param>
         <name>text</name>
-        <val>start-help-bl</val>
+        <val>start-help</val>
       </param>
       <param>
         <name>font</name>
@@ -211,13 +214,13 @@
       </param>
       <param>
         <name>scrollable</name>
-        <val>true</val>
+        <val>false</val>
       </param>
       <param>
         <name>draw-position</name>
         <val>front</val>
       </param>
-      <node type="button" name="blue1">
+      <node type="button" name="shape1">
 			<pos>0.01,0.74</pos>
 			<size>1.0,1.0</size>
       <scale>1.0</scale>
@@ -227,23 +230,9 @@
           <val>6</val>
         </arg>
       </event>
-      <!--
-      <event name="hide-node">
-        <arg name="target">
-          <type>string</type>
-          <val>next-inactive</val>  
-        </arg>
-      </event>
-      <event name="unhide-node">
-        <arg name="target">
-          <type>string</type>
-          <val>next-active</val>
-        </arg>
-      </event>
-      -->
       <param>
         <name>image</name>
-        <val>Exports/3dAssets/blue1.png</val>
+        <val>Exports/3dAssets/%COLOR%1.png</val>
       </param>
       <param>
         <name>drag</name>
@@ -258,7 +247,7 @@
         <val>true</val>
       </param>
 		</node>
-    <node type="button" name="blue2">
+    <node type="button" name="shape2">
 			<pos>0.01,0.805</pos>
 			<size>1.0,1.0</size>
       <scale>1.0</scale>
@@ -270,7 +259,7 @@
       </event>
       <param>
         <name>image</name>
-        <val>Exports/3dAssets/blue2.png</val>
+        <val>Exports/3dAssets/%COLOR%2.png</val>
       </param>
       <param>
         <name>drag</name>
@@ -285,7 +274,7 @@
         <val>true</val>
       </param>
 		</node>
-    <node type="button" name="blue6">
+    <node type="button" name="shape6">
 			<pos>0.01,0.87</pos>
 			<size>1.0,1.0</size>
       <scale>1.0</scale>
@@ -297,7 +286,7 @@
       </event>
       <param>
         <name>image</name>
-        <val>Exports/3dAssets/blue6.png</val>
+        <val>Exports/3dAssets/%COLOR%6.png</val>
       </param>
       <param>
         <name>drag</name>
@@ -312,7 +301,7 @@
         <val>true</val>
       </param>
 		</node>
-    <node type="button" name="blue7">
+    <node type="button" name="shape7">
 			<pos>0.055,0.74</pos>
 			<size>1.0,1.0</size>
       <scale>1.0</scale>
@@ -324,7 +313,7 @@
       </event>
       <param>
         <name>image</name>
-        <val>Exports/3dAssets/blue7.png</val>
+        <val>Exports/3dAssets/%COLOR%7.png</val>
       </param>
       <param>
         <name>drag</name>
@@ -339,7 +328,7 @@
         <val>true</val>
       </param>
 		</node>
-    <node type="button" name="blue4">
+    <node type="button" name="shape4">
 			<pos>0.055,0.805</pos>
 			<size>1.0,1.0</size>
       <scale>1.0</scale>
@@ -351,7 +340,7 @@
       </event>
       <param>
         <name>image</name>
-        <val>Exports/3dAssets/blue4.png</val>
+        <val>Exports/3dAssets/%COLOR%4.png</val>
       </param>
       <param>
         <name>drag</name>
@@ -366,7 +355,7 @@
         <val>true</val>
       </param>
 		</node>
-    <node type="button" name="blue0">
+    <node type="button" name="shape0">
 			<pos>0.055,0.87</pos>
 			<size>1.0,1.0</size>
       <scale>1.0</scale>
@@ -378,7 +367,7 @@
       </event>
       <param>
         <name>image</name>
-        <val>Exports/3dAssets/blue0.png</val>
+        <val>Exports/3dAssets/%COLOR%0.png</val>
       </param>
       <param>
         <name>drag</name>
@@ -393,7 +382,7 @@
         <val>true</val>
       </param>
 		</node>
-    <node type="button" name="blue3">
+    <node type="button" name="shape3">
 			<pos>0.1,0.74</pos>
 			<size>1.0,1.0</size>
       <scale>1.0</scale>
@@ -405,7 +394,7 @@
       </event>
       <param>
         <name>image</name>
-        <val>Exports/3dAssets/blue3.png</val>
+        <val>Exports/3dAssets/%COLOR%3.png</val>
       </param>
       <param>
         <name>drag</name>
@@ -420,7 +409,7 @@
         <val>true</val>
       </param>
 		</node>
-    <node type="button" name="blue5">
+    <node type="button" name="shape5">
 			<pos>0.1,0.805</pos>
 			<size>1.0,1.0</size>
       <scale>1.0</scale>
@@ -432,7 +421,7 @@
       </event>
       <param>
         <name>image</name>
-        <val>Exports/3dAssets/blue5.png</val>
+        <val>Exports/3dAssets/%COLOR%5.png</val>
       </param>
       <param>
         <name>drag</name>
@@ -462,7 +451,7 @@
       </param>
       <param>
         <name>scrollable</name>
-        <val>true</val>
+        <val>false</val>
       </param>
       <param>
         <name>hidden</name>
@@ -1171,7 +1160,7 @@
         <val>back</val>
       </param>
     </node>
-    <node type="ibox" name="ibox-bl">
+    <node type="ibox" name="ibox">
       <pos>0.2, 0.68</pos>
       <size>0.3,0.25</size>
       <scale>1.0</scale>
@@ -1207,6 +1196,10 @@
         <name>draw-position</name>
         <val>back</val>
       </param>
+      <param>
+        <name>draw-position</name>
+        <val>back</val>
+      </param>
     </node>
     <node type="ibox" name="ibox-drawing">
       <pos>0.2, 0.68</pos>
@@ -1234,55 +1227,24 @@
       </param>
       <param>
         <name>hidden</name>
-        <val>false</val>
+        <val>true</val>
       </param>
       <param>
         <name>active</name>
-        <val>true</val>
+        <val>false</val>
       </param>
       <param>
         <name>draw-position</name>
         <val>back</val>
       </param>
     </node>
-    <!--
-    <node type="button" name="object-help-bl">
-      <pos>0.154, 0.67</pos>
-      <size>1.0,1.0</size>
-      <scale>1.0</scale>
-      <param>
-        <name>image</name>
-        <val>Exports/SelectShape_Textbox_295x33_Blue.png</val>
-      </param>
-      <param>
-        <name>text</name>
-        <val>bl-start</val>
-      </param>
-      <param>
-        <name>font</name>
-        <val>Fonts/GothamRnd-Medium.otf</val>
-      </param>
-      <param>
-        <name>font-size</name>
-        <val>10</val>
-      </param>
-      <param>
-        <name>text-position</name>
-        <val>25,78</val>
-      </param>
-      <param>
-        <name>text-color</name>
-        <val>255,255,255</val>
-      </param>
-    </node>
-    -->
-    <node type="button" name="puzzle-help-bl">
+    <node type="button" name="puzzle-help">
       <pos>0.01, 0.685</pos>
       <size>1.0,1.0</size>
       <scale>1.0</scale>
       <param>
         <name>image</name>
-        <val>Exports/Play_Textbox_22x44_Blue.png</val>
+        <val>Exports/Play_Textbox_22x44_%COLOR%.png</val>
       </param>
       <param>
         <name>text</name>
@@ -1368,7 +1330,7 @@
       </param>
       <param>
         <name>draw-position</name>
-        <val>back</val>
+        <val>front</val>
       </param>
     </node>
     <node type="button" name="next-inactive">
@@ -1377,7 +1339,7 @@
       <scale>1.0</scale>
       <param>
         <name>image</name>
-        <val>Exports/Button_Next_789x328_Blue1.png</val>
+        <val>Exports/Button_Next_789x328_%COLOR%1.png</val>
       </param>
       <param>
         <name>text</name>
@@ -1405,7 +1367,7 @@
       </param>
       <param>
         <name>draw-position</name>
-        <val>back</val>
+        <val>front</val>
       </param>
     </node>
     <node type="button" name="next-active">
@@ -1423,7 +1385,7 @@
       </param>
       <param>
         <name>image</name>
-        <val>Exports/Button_Next_789x328_Blue2.png</val>
+        <val>Exports/Button_Next_789x328_%COLOR%2.png</val>
       </param>
       <param>
         <name>active</name>
@@ -1459,7 +1421,7 @@
       </param>
       <param>
         <name>draw-position</name>
-        <val>back</val>
+        <val>front</val>
       </param>
     </node>
     <node type="button" name="make-one">
@@ -1477,7 +1439,7 @@
       </param>
       <param>
         <name>image</name>
-        <val>Exports/Button_Next_789x328_Blue2.png</val>
+        <val>Exports/Button_Next_789x328_%COLOR%2.png</val>
       </param>
       <param>
         <name>active</name>
@@ -1513,8 +1475,8 @@
       </param>
       <param>
         <name>draw-position</name>
-        <val>back</val>
+        <val>front</val>
       </param>
     </node>
-  </sheet>
+  <!--</sheet>-->
 </gui>

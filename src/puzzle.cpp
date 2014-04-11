@@ -650,14 +650,14 @@ void puzzle::rotateByIDandAxisNew(int id, SG_VECTOR axis, bool dir, float angle)
 				//move until 90
 				angle = 90 - myCubies[selected[0]]->masterAngle;
 
-				for(int i=0;i<9;i++){
+				for(int i=0;i<counter;i++){
 					//rearrange = myCubies[selected[i]]->faceRotate(axis,dir,angle);
 					myCubies[selected[i]]->faceRotate(axis,dir,angle);
 				}
 			}else{
 				//now we tell the 9 selected cubies to rotate
 				//bool rearrange=false;
-				for(int i=0;i<9;i++){
+				for(int i=0;i<counter;i++){
 					//rearrange = myCubies[selected[i]]->faceRotate(axis,dir,angle);
 					myCubies[selected[i]]->faceRotate(axis,dir,angle);
 				}
@@ -668,14 +668,14 @@ void puzzle::rotateByIDandAxisNew(int id, SG_VECTOR axis, bool dir, float angle)
 				//move until -90
 				angle = -90 - myCubies[selected[0]]->masterAngle;
 
-				for(int i=0;i<9;i++){
+				for(int i=0;i<counter;i++){
 					//rearrange = myCubies[selected[i]]->faceRotate(axis,dir,angle);
 					myCubies[selected[i]]->faceRotate(axis,dir,angle);
 				}
 			}else{
 				//now we tell the 9 selected cubies to rotate
 				//bool rearrange=false;
-				for(int i=0;i<9;i++){
+				for(int i=0;i<counter;i++){
 					//rearrange = myCubies[selected[i]]->faceRotate(axis,dir,angle);
 					myCubies[selected[i]]->faceRotate(axis,dir,angle);
 				}
@@ -683,7 +683,7 @@ void puzzle::rotateByIDandAxisNew(int id, SG_VECTOR axis, bool dir, float angle)
 		}
 	}else if(myCubies[selected[0]]->masterAngle == 90){
 		if((myCubies[selected[0]]->masterAngle + angle) < 90){
-			for(int i=0;i<9;i++){
+			for(int i=0;i<counter;i++){
 				//rearrange = myCubies[selected[i]]->faceRotate(axis,dir,angle);
 				myCubies[selected[i]]->faceRotate(axis,dir,angle);
 			}
@@ -691,7 +691,7 @@ void puzzle::rotateByIDandAxisNew(int id, SG_VECTOR axis, bool dir, float angle)
 	}else if(myCubies[selected[0]]->masterAngle == -90){
 		//negative rotation in relation to original position
 		if((myCubies[selected[0]]->masterAngle + angle) > -90){
-			for(int i=0;i<9;i++){
+			for(int i=0;i<counter;i++){
 				//rearrange = myCubies[selected[i]]->faceRotate(axis,dir,angle);
 				myCubies[selected[i]]->faceRotate(axis,dir,angle);
 			}
@@ -764,9 +764,7 @@ void puzzle::decideMove(){
 		//positive angle
 		if(angleM >= 45){
 			for(int i=0;i<9;i++){
-				//only need to ask one of the selected cubies, thay all have the same rotation angle
 				myCubies[selected[i]]->goForward();
-				//myCubies[selected[i]]->updatePosition();
 			}
 			//rearrange cubies involved on the move
 			if(myCubies[selected[0]]->vrotFace.x != 0){
@@ -815,31 +813,8 @@ void puzzle::decideMove(){
 
 }
 //--------------------------------------------------------------------------------------------
-void puzzle::update(string _eventName, SubObEvent* _event){
-	/*
-	if(_eventName == "ibox-bl:1"){
-	int phase = _event->getArg("phase")->getInt();
-	//cout << "puzzle phase = " << phase << endl;
-	if(phase == 0){
-	ofVec2f pos = _event->getArg("absPos")->getVec2();
-	//myCubies[1]->setMousePoint(ofVec3f(pos.x, pos.y, 0));
-	if(isInside(pos.x, pos.y)){
-	cout << "puzzle got cubie." << endl;
-	}
-	}
-	if(phase == 1){
-	ofVec2f pos = _event->getArg("absPos")->getVec2();
-	bool result = isInside(pos.x, pos.y);
-	}
-	if(phase == 2){
-	doRotation();
-	}
-	}
-	if(_eventName == "ibox-bl:0"){
-	//cout << "doing rotation." << endl;
-	doRotation();
-	}
-	*/
+void puzzle::update(string _eventName, SubObEvent _event){
+
 }
 //----------------------------------------------------------------------------------------------
 //--------------------------------------------------------------

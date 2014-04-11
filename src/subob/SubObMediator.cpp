@@ -62,10 +62,10 @@ void SubObMediator::update(string _subName, Subject* _sub){
     }
 }
 
-void SubObMediator::sendEvent(string _eventName, SubObEvent* _event){
-	vector<Observer*>::iterator oIter;
+void SubObMediator::sendEvent(string _eventName, SubObEvent _event){
 	//cout << "sending " << _eventName << " to " << observers[_eventName].size() << " observers." << endl;
-    for(oIter = observers[_eventName].begin(); oIter != observers[_eventName].end(); ++oIter){
+	//SubObEvent ev = _event;
+	for(auto oIter = observers[_eventName].begin(); oIter != observers[_eventName].end(); ++oIter){
         (*oIter)->update(_eventName, _event);
-    }
+	}
 }

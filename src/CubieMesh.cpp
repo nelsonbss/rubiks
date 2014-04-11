@@ -12,6 +12,14 @@ Triangle::Triangle(int _in1, int _in2, int _in3, ofVec3f _v1, ofVec3f _v2, ofVec
 	vertices.push_back(_v3);
 }
 
+void Triangle::setVertex(int _i, ofVec3f _v){
+	vertices[_i] = _v;
+}
+
+void Triangle::resetCenter(){
+	center = (vertices[0] + vertices[1] + vertices[2]) / 3;
+}
+
 CubieMesh::CubieMesh() : ofMesh(){
 }
 
@@ -84,6 +92,12 @@ vector<Triangle> CubieMesh::getTrianglesByColor(ofVec3f _c){
 	}
  }
 
+ void CubieMesh::rotateNormalsAround(float _angle, ofVec3f _axis, ofVec3f _pivot){
+	for(auto tIter = triangles.begin(); tIter != triangles.end(); tIter++){
+		tIter->setNormal(tIter->getNormal().rotate(_angle, _pivot, _axis).normalize());
+	}
+ }
+
  void CubieMesh::rotateVertices(float _angle, ofVec3f _axis){
 	for(auto tIter = triangles.begin(); tIter != triangles.end(); tIter++){
 		//tIter->getNormal().rotate(_angle, _axis);
@@ -92,3 +106,38 @@ vector<Triangle> CubieMesh::getTrianglesByColor(ofVec3f _c){
 		tIter->getVertices()[2].rotate(_angle, _axis);
 	}
  }
+
+ void CubieMesh::rotateVerticesAround(float _angle, ofVec3f _axis, ofVec3f _pivot){
+	for(auto tIter = triangles.begin(); tIter != triangles.end(); tIter++){
+		ofVec3f r = tIter->getVertices()[0].rotate(_angle, _pivot, _axis);
+		tIter->setVertex(0,r);
+		r = tIter->getVertices()[1].rotate(_angle, _pivot, _axis);
+		tIter->setVertex(1,r);
+		r = tIter->getVertices()[2].rotate(_angle, _pivot, _axis);
+		tIter->setVertex(2, r);
+		ofVec3f v1 = tIter->getVertices()[0];
+		ofVec3f v2 = tIter->getVertices()[1];
+		ofVec3f v3 = tIter->getVertices()[2];
+		tIter->resetCenter();
+	}
+ }
+
+void CubieMesh::updatePosition(ofVec3f _pivot, ofVec3f _axis, float _angle){
+	rotateVerticesAround(_angle, _axis, _pivot);
+	rotateNormalsAround(_angle, _axis, _pivot);
+	resetVertices();
+}
+
+void CubieMesh::resetVertices(){
+	for(auto tIter = triangles.begin(); tIter != triangles.end(); tIter++){
+		//tIter->getNormal().rotate(_angle, _axis);
+		vector<int>indeces = tIter->getIndeces();
+		vector<ofVec3f> vertices = tIter->getVertices(); 
+		for(int i = 0; i < indeces.size(); i++){
+			ofVec3f currV = getVertex(indeces[i]);
+			setVertex(indeces[i], vertices[i]);
+			ofVec3f newV = getVertex(indeces[i]);
+			//cout << "Set " << currV.x << ", " << currV.y << ", " << currV.z << " to " << newV.x << ", " << newV.y << ", " << newV.z << endl;
+		}
+	}
+}

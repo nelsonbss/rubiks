@@ -56,22 +56,22 @@ void drawingCanvas::draw(){
 
 }
 
-void drawingCanvas::update(string _eventName, SubObEvent* _event){
+void drawingCanvas::update(string _eventName, SubObEvent _event){
 	if(_eventName == "ibox-drawing:1"){
-		int phase = _event->getArg("phase")->getInt();
+		int phase = _event.getArg("phase")->getInt();
 		cout << "puzzle phase = " << phase << endl;
 		if(phase == 0){
-			ofVec2f pos = _event->getArg("absPos")->getVec2();
+			ofVec2f pos = _event.getArg("absPos")->getVec2();
 			mousePressed(pos.x, pos.y, 0);
 		}
 		if(phase == 1){
-			ofVec2f pos = _event->getArg("absPos")->getVec2();
+			ofVec2f pos = _event.getArg("absPos")->getVec2();
 			mouseDragged(pos.x, pos.y, 0);
 		}
 	}
 	if(_eventName == "ibox-drawing:0"){
 		if(bDrawing){
-			ofVec2f pos = _event->getArg("absPos")->getVec2();
+			ofVec2f pos = _event.getArg("absPos")->getVec2();
 			mouseReleased(pos.x,pos.y,0);
 		}
 	}

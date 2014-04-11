@@ -19,7 +19,7 @@ ofVec3f Picker::unproject(ofVec3f _pnt, ofRectangle* _vp){
     glGetDoublev( GL_MODELVIEW_MATRIX, modelview );
     glGetDoublev( GL_PROJECTION_MATRIX, projection );
     //if(_vp == NULL){
-		glGetIntegerv( GL_VIEWPORT, vp );
+	glGetIntegerv( GL_VIEWPORT, vp );
 	//} else {
 	//	vp[0] = (GLint)_vp->x;
 	//	vp[1] = (GLint)_vp->y;

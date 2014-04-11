@@ -15,13 +15,15 @@
 #include "menuPuzzle.h"
 #include "Picker.h"
 
+#define DELAY 30000
+
 enum{UP_MODE_MOUSE, UP_MODE_COLOR};
 
 class game : public Observer{
 public:
-	game(SG_VECTOR p, float w, float h, SG_VECTOR puzzlePos, float iddleTime);
+	game(SG_VECTOR p, float w, float h, SG_VECTOR puzzlePos, ofRectangle _vp, float iddleTime);
 
-	void setup(sgCObject *sgBunnyi,sgCObject *sgTetrahedroni,sgCObject *sgDodecahedroni,sgCObject *sgIcosahedroni,sgCObject *sgOctahedroni);//,sgCObject *sgTeapoti);
+	void setup(sgCObject *sgBunnyi,sgCObject *sgTetrahedroni,sgCObject *sgDodecahedroni,sgCObject *sgIcosahedroni,sgCObject *sgOctahedroni, string _prefix);//,sgCObject *sgTeapoti);
 	void update();
 	void draw();
 	void exit();
@@ -65,7 +67,7 @@ public:
 	bool bHaveReset;
 	void guiReset(){bHaveReset = true;}
 
-	void update(string _eventName, SubObEvent* _event);
+	void update(string _eventName, SubObEvent _event);
 
 	bool bExtrude;
 	void guiExtrude(){bExtrude = true;}
@@ -186,7 +188,21 @@ public:
 	void setUseViewport(bool _b){bUseViewport = _b;}
 	void toggleUseViewport(){bUseViewport != bUseViewport;}
 
+	void unprojectPoint(ofVec3f _pnt);
 	int unprojectMode;
 	ofFloatColor newFaceColor;
+
+	ofCamera cam;
+	ofVec3f camPosition;
+
+	string prefix;
+	void setPrefix(string _p){prefix = _p;}
+
+	void updateGui();
+
+	void goToAttract();
+
+	int timeOfLastInteraction;
+	bool bInAttract;
 };
 #endif /* defined(__Tgame__game__) */

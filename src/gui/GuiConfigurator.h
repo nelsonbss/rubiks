@@ -63,13 +63,15 @@ public:
 	/*
 	New
 	*/
-	void loadGui();
+	void loadGui(bool _mirrored, bool _flipped);
+	void extendGui(string _sheet, string _file, bool _mirrored, bool _flipped, string _prefix, map<string,string> _patterns); 
 	void loadSheets();
 	void loadNodes(string _sheetName, GuiWindow* _win);
 	void loadParams(GuiNode* _node);
 	void loadEvents(GuiNode* _node);
 	void loadArgs(SubObEvent* _event);
 	void loadText(string _file);
+	void specialTextLoadingCopOut();
 
 	map<string, GuiText> texts;
 	void addText(string _name, GuiText _t){texts[_name] = _t;}
@@ -84,7 +86,7 @@ public:
     */
 
     void update(string _subName, Subject* _sub);
-	void update(string _eventName, SubObEvent* _event);
+	void update(string _eventName, SubObEvent _event);
 
     /*
     Do this next.
@@ -93,12 +95,15 @@ public:
     void click(int _x, int _y);
     void reset();
 
+	map<string, string> patterns;
+
 private:
 
     GuiConfigurator();
     static GuiConfigurator* mInstance;
 
     ofxXmlSettings mXML;
+	ofXml lXML;
     void addAttributeMap(string _sheet, vector<string> &_names, vector<string> &_values);
 
 	map<string,GuiNode*> activeNodes;
@@ -112,6 +117,12 @@ private:
     map<string,vector<SubObEvent*>> nodeEvents;
 	GuiNode* loosie;
     bool bFirstStart;
+	SubObEvent dummy;
+
+	bool bMirrored;
+	bool bFlipped;
+
+	string prefix;
 };
 
 

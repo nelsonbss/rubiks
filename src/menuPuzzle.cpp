@@ -5,8 +5,7 @@
 
 ///////////////////////////////////////////////////////
 menuPuzzle::menuPuzzle(SG_VECTOR p, SG_VECTOR t, int ID ) : GuiNode(){
-	//p is the slicing position
-
+	
 	id = ID;
 	
 	tempPos.x = t.x;

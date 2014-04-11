@@ -171,7 +171,6 @@ void ofRender::sgCoretoOFmesh(sgC3DObject *obj, CubieMesh&mesh,int idCubie,int s
 		colorsVector2.push_back(c);
 		colorsVector2.push_back(c);
 		colorsVector2.push_back(c);
-
 		mesh.addTriangle(i, i+1, i+2, auxV1, auxV2, auxV3, dir, c);
 	}
 	mesh.addColors(colorsVector2);
@@ -964,7 +963,6 @@ void ofRender::colorFacesMenu(ofMesh &mesh,ofVec3f armRot,float playRoom, int ob
 
 	//each of these normals should have a unique color
 	vector< ofFloatColor > uniqueColors;
-
 	//build roster of colors for the current object
 	for(int i =0; i< uniqueNormals.size(); i++){
 		//for each unique normal

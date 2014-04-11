@@ -45,7 +45,7 @@ public:
 	ofVec2f dummyA;
 	ofVec2f dummyB;
 
-	void update(string _eventName, SubObEvent* _event);
+	void update(string _eventName, SubObEvent _event);
 	bool bDrawing;
 
 	ofImage myCanvasImage; //DrawingGrid_555x35.png

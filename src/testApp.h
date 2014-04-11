@@ -85,7 +85,7 @@ public:
 	//subob stuff
 	map<string,string> attrs;
 	void update(string _subName, Subject* _sub);
-	void update(string _eventName, SubObEvent* _event);
+	void update(string _eventName, SubObEvent _event);
     string getAttr(const char* _key){return attrs[_key];}
 
 	ofVec2f lastRightDragPos;
@@ -114,5 +114,11 @@ public:
 	menuPuzzle *puzzleDisplayed;
 	int puzzleCounter; 
 
-	SubObEvent* ev;
+	map<string,int> gameIds;
+	map<int, string> gameTags;
+
+	//SubObEvent ev;
+
+	ofPoint unprojectPoint(ofVec3f pnt);
+	double gestureAngles[6];
 };

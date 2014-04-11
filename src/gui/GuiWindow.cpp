@@ -6,6 +6,8 @@ void GuiWindow::nodeInit(){
 		scrollBar.loadImage("Exports/Scrollbar_Slider_279x110.png");
 		scrollArrowT.loadImage("Exports/Scrollbar_TopArrow_273x94.png");
 		scrollArrowB.loadImage("Exports/Scrollbar_BottomArrow_273x310.png");
+	} else {
+		bScrollable = false;
 	}
 }
 

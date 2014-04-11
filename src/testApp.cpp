@@ -40,7 +40,6 @@ void testApp::setup(){
 	addGesture("touchReceiver","n-rotate");
 	*/
 
-
 	//gm = new GestureManager();
 	gm.loadGMLFile("basic_manipulation.gml");
 	gm.init("rubiksWindow", ofGetWidth(), ofGetHeight());
@@ -91,8 +90,6 @@ void testApp::setup(){
 	/////////////////////////////load obj files into sgCore objects
 	cout << "loading obj files " << endl;
 	loadOBJfiles();
-
-
 	////////////////////////////create middle objects (puzzles with no twisting == normal objects with faces colores
 	//this objects are rendering of the sgCore obects just created.
 	//there are 7 objects to be created
@@ -133,12 +130,16 @@ void testApp::setup(){
 			puzzleDisplayed->loadObject((sgC3DObject *)sgIcosahedron->Clone(),6);
 		}else if(i == 6){
 			puzzleDisplayed->loadObject((sgC3DObject *)sgOctahedron->Clone(),7);
+		}else if(i == 7){
+			//puzzleDisplayed->loadObject((sgC3DObject *)sgOctahedron->Clone(),8);
+			puzzleDisplayed->loadObject((sgC3DObject *)sgBunny->Clone(),4);
 		}else{
 			//slots for other user created puzzles
 			puzzleDisplayed->loadObject(sgCreateBox(300,300,300),2);
 		}
 		cout << "created puzzle menu object: " << i <<endl;
 		puzzleDisplayed->setup();
+		puzzleDisplayed->update();
 		puzzleDisplayed->colorFacesMenu();
 		puzzleDisplayed->init();
 
@@ -147,11 +148,9 @@ void testApp::setup(){
 		myPuzzle->setup();
 		myPuzzle->loadPieces(mySlicer->getPieces(),puzzleDisplayed->objectId,rotateSlicer);//selected object id is used for coloring
 
-		//if(puzzleDisplayed->objectId != 1 && puzzleDisplayed->objectId != 4){
-			myPuzzle->colorFaces(puzzleDisplayed->objectId);
-		//}else{
-		//	myPuzzle->colorTorus();
-		//}
+		//this is a special function that takes, the unique normals, and unique colors of the menuPuzzle, to repeat those colors on the real puzzle of the menuPuzzle
+		myPuzzle->colorFacesMenuPuzzle(puzzleDisplayed->objectId,puzzleDisplayed->uniqueNormals,puzzleDisplayed->colorsVMenu);
+
 
 		cout << "created puzzle menu puzzle: " << i <<endl;
 		puzzleDisplayed->loadPuzzle(myPuzzle);
@@ -196,7 +195,7 @@ void testApp::setup(){
 	//////setup GUI/////////////
 	//ofSetFullscreen(true);
 
-	active_points = std::map<int,gwc::Point>();
+	//active_points = std::map<int,gwc::Point>();
 	//rotate = true;
 
 	touchId = nextTouchId = 0;
@@ -218,6 +217,26 @@ void testApp::update(){
 		myGames[i]->update();
 	}
 	
+	/////////////////////////////////////////update middle puzzles
+	for(int i=0; i < middlePuzzles.size();i++){
+		middlePuzzles[i]->update();
+	}
+
+
+	/////////////////////////////////////////watch for new puzzles being saved
+	if(myGames[0]->savePuzzleB == true){
+		middlePuzzlePos.x = 100 + ((puzzleCounter+7)*180);
+		menuPuzzle * tempMidPuzzle = myGames[0]->savePuzzle(slicingPos,middlePuzzlePos);
+		middlePuzzles[puzzleCounter+7] = tempMidPuzzle;
+		puzzleCounter ++;
+		if(puzzleCounter == 3){
+			puzzleCounter=0;
+		}
+		myGames[0]->savePuzzleB = false;
+		//reset game
+		myGames[0]->restart();
+	}
+
 	/////////////////////////////////////////update middle puzzles
 	for(int i=0; i < middlePuzzles.size();i++){
 		middlePuzzles[i]->update();
@@ -403,7 +422,7 @@ void testApp::keyPressed(int key){
 		///////////from puzzles in the center
 		//////instead of asking for a "key", with the GUI it should ask for the object ID
 		if(key == 'p'){
-			myGames[0]->loadPuzzle(middlePuzzles[5]->getPuzzle());
+			myGames[0]->loadPuzzle(middlePuzzles[3]->getPuzzle());
 			myGames[0]->setCurrentStep(7);
 		}
 		if(key == 'o'){
@@ -460,6 +479,31 @@ void testApp::mousePressed(int x, int y, int button){
 	if(button == 2){
 		myGames[0]->mousePressed(x,y,button);
 	}
+}
+//-------------------------------------------------------------------------------------------------------------
+ofPoint testApp::unprojectPoint(ofVec3f pnt){
+	//cout << "cubie unprojecting point. - " << pnt.x << ", " << pnt.y << ", " << pnt.z << endl;
+	GLint viewport[4];
+	GLdouble modelview[16];
+	GLdouble projection[16];
+	GLfloat winX, winY, winZ;
+	GLdouble posX, posY, posZ;
+
+	glGetDoublev( GL_MODELVIEW_MATRIX, modelview );
+	glGetDoublev( GL_PROJECTION_MATRIX, projection );
+	glGetIntegerv( GL_VIEWPORT, viewport );
+
+	winX = (float) pnt.x;
+	winY = (float)viewport[3] - pnt.y;
+	glReadPixels( 0, int(winY), 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &winZ );
+
+	gluUnProject( winX, winY, winZ, modelview, projection, viewport, &posX, &posY, &posZ);
+
+	//cout << "mouse position = " << posX << ", " << posY << ", " << posZ << endl;
+	//cout << "cube postion = " << pos.x << ", " << pos.y << ", " << pos.z << endl;
+
+	//unprojectedPoint.set(posX, posY, posZ);
+	return ofPoint(posX, posY, posZ);
 }
 //--------------------------------------------------------------
 void testApp::mouseReleased(int x, int y, int button){
@@ -704,18 +748,18 @@ void testApp::initOFRender(){
 	/////background
 	//ofBackground(100, 100, 100, 0);//gray
 	//ofBackground(30, 144, 255, 0);//blue
-	ofBackground(65, 105, 225, 0);//blue
+	//ofBackground(65, 105, 225, 0);//blue
 	// turn on smooth lighting //
 	bSmoothLighting = true;
 	ofSetSmoothLighting(true);
 
 	// lets make a high-res sphere //
 	// default is 20 //
-	ofSetSphereResolution(128);
+	//ofSetSphereResolution(128);
 
 	// radius of the sphere //
-	radius = 180.f;
-	center.set(ofGetWidth()*.5, ofGetHeight()*.5, 0);
+	//radius = 180.f;
+	//center.set(ofGetWidth()*.5, ofGetHeight()*.5, 0);
 
 	// Point lights emit light in all directions //
 	// set the diffuse color, color reflected from the light source //
@@ -725,7 +769,7 @@ void testApp::initOFRender(){
 	pointLight.setSpecularColor( ofColor(255.f, 255.f, 0.f));
 	pointLight.setPointLight();
 
-	spotLight.setDiffuseColor( ofColor(255.f, 0.f, 0.f));
+	spotLight.setDiffuseColor( ofColor(255.f, 255.f, 255.f));
 	spotLight.setSpecularColor( ofColor(255.f, 255.f, 255.f));
 
 	// turn the light into spotLight, emit a cone of light //
@@ -753,7 +797,7 @@ void testApp::initOFRender(){
 	// shininess is a value between 0 - 128, 128 being the most shiny //
 	material.setShininess( 120 );
 	// the light highlight of the material //
-	material.setSpecularColor(ofColor(255, 255, 255, 255));
+	material.setSpecularColor(ofColor(255, 255, 255, 1));
 
 	bPointLight = bSpotLight = bDirLight = true;
 
@@ -777,7 +821,7 @@ void testApp::startOFLights(){
 
 	// grab the texture reference and bind it //
 	// this will apply the texture to all drawing (vertex) calls before unbind() //
-	if(bUseTexture) ofLogoImage.getTextureReference().bind();
+	//if(bUseTexture) ofLogoImage.getTextureReference().bind();
 
 	//ofSetColor(255, 255, 255, 255);
 	/*ofPushMatrix();
@@ -807,7 +851,7 @@ void testApp::startOFLights(){
 	////ofRotate(ofGetElapsedTimef() * .2 * RAD_TO_DEG, 0, 1, 0);
 	//ofPopMatrix();
 
-	if(bUseTexture) ofLogoImage.getTextureReference().unbind();
+	//if(bUseTexture) ofLogoImage.getTextureReference().unbind();
 
 	if (!bPointLight) pointLight.disable();
 	//if (!bSpotLight) spotLight.disable();

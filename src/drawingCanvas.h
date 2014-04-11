@@ -47,6 +47,8 @@ public:
 
 	void update(string _eventName, SubObEvent _event);
 	bool bDrawing;
+
+	ofImage myCanvasImage; //DrawingGrid_555x35.png
 };
 
 #endif /* defined(__TdrawingCanvas__drawingCanvas__) */

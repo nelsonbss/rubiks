@@ -144,6 +144,7 @@ void GuiConfigurator::update(string _eventName, SubObEvent _event){
 						activeNodes[target]->input(type, cID, cN, cPhase, cAPos, cDPos);
 					}
 					//cout << "sent " << cAPos.x << ", " << cAPos.y << ". P = " << cPhase << endl;
+					cout << "sent " << cAPos.x << ", " << cAPos.y << ". P = " << cPhase << endl;
 				} else {
 					//cout << "n mismatch" << endl;
 				}

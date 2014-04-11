@@ -98,6 +98,10 @@
         <name>draw-position</name>
         <val>back</val>
       </param>
+      <param>
+        <name>draw-position</name>
+        <val>back</val>
+      </param>
     </node>
     -->
     <node type="button" name="3d-window-box">
@@ -1182,11 +1186,15 @@
       </param>
       <param>
         <name>hidden</name>
-        <val>true</val>
+        <val>false</val>
       </param>
       <param>
         <name>active</name>
-        <val>false</val>
+        <val>true</val>
+      </param>
+      <param>
+        <name>draw-position</name>
+        <val>back</val>
       </param>
       <param>
         <name>draw-position</name>

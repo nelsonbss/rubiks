@@ -249,7 +249,7 @@ void puzzle::move(SG_VECTOR p){
 bool puzzle::isMoving(){
 	//returns the state of the moving boolean
 	//to prevent key press events from messing up the movements
-	moving = false;
+	bool moving = false;
 	for(int i=0;i<numPieces;i++){
 		if(myCubies[i] != NULL){
 			moving = myCubies[i]->isMoving();
@@ -656,11 +656,32 @@ void puzzle::decideMove(){
 			}
 		}
 	}
+}
+void puzzle::update(string _eventName, SubObEvent _event){
+	/*
+	if(_eventName == "ibox-bl:1"){
+	int phase = _event->getArg("phase")->getInt();
+	//cout << "puzzle phase = " << phase << endl;
+	if(phase == 0){
+	ofVec2f pos = _event->getArg("absPos")->getVec2();
+	//myCubies[1]->setMousePoint(ofVec3f(pos.x, pos.y, 0));
+	if(isInside(pos.x, pos.y)){
+	cout << "puzzle got cubie." << endl;
+	}
+	}
+	if(phase == 1){
+	ofVec2f pos = _event->getArg("absPos")->getVec2();
+	bool result = isInside(pos.x, pos.y);
+	}
+	if(phase == 2){
+	doRotation();
+	}
+	}
 
 
 }
 //--------------------------------------------------------------------------------------------
-void puzzle::update(string _eventName, SubObEvent _event){
+void puzzle::update(string _eventName, SubObEvent* _event){
 	/*
 	if(_eventName == "ibox-bl:1"){
 	int phase = _event->getArg("phase")->getInt();
@@ -1060,6 +1081,40 @@ void puzzle::colorFaces(int objectID){
 }
 //----------------------------------------------------------------
 void puzzle::colorTorus(){
+	//currently not used since torus will be only one solid color
+	for(int i=0;i<numPieces;i++){
+		//set random color for each cubie on the torus
+		myCubies[i]->colorTorus();
+	}
+	colorCubiesBlackSides();
+}
+//----------------------------------------------------------------
+void puzzle::colorFacesMenuPuzzle(int objectID,vector< ofVec3f > &menuUniqueNormals, vector< ofFloatColor > &vcolors){
+	////goes through each cubie and makes sets of normals.. to determine all different normals in the object
+	//and apply colors to those normals
+
+	//this one compares those normals to the normals vector and gets the color for that normal from the menuPuzzle colorsVector
+	ofRender *ofr = new ofRender();
+
+	if((objectID != 4) && (objectID != 1) && (objectID != 200)){
+		//not the bunny or the cube -> they were already colored on puzzle::loadPieces->cubie::setObjects
+		//now we color faces following the colors that we have stored and the normals we have stored on the menuPuzzle
+		ofr->colorFacesMenuPuzzle(myCubies,numPieces,0.01, objectID,vcolors,menuUniqueNormals);
+	}
+	if(objectID == 200){
+		//extrudd object
+		ofr->colorFacesExtruded(myCubies,numPieces,0.01, objectID);
+	}
+	if(objectID != 4){
+		//color black all the inside faces of each cubie (after all other face colors have been applied)
+		//all the puzzles have to do this
+		colorCubiesBlackSides();
+		//need to color black sides of bunny in a better way.. will they be colored? or leave it plain?
+	}
+	free(ofr);
+}
+//----------------------------------------------------------------
+void puzzle::colorTorusMenuPuzzle(){
 	//currently not used since torus will be only one solid color
 	for(int i=0;i<numPieces;i++){
 		//set random color for each cubie on the torus

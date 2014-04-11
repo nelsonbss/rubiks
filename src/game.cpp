@@ -34,9 +34,9 @@ game::game(SG_VECTOR gamePos, float w, float h, SG_VECTOR displayPos, ofRectangl
 	posA.z = displayPos.z;
 
 	//drawing canvas
-	posCanvas.x = displayPos.x;
-	posCanvas.y = displayPos.y;
-	posCanvas.z = displayPos.z;
+	posCanvas.x = 0;//displayPos.x;
+	posCanvas.y = 0;//displayPos.y;
+	posCanvas.z = 0;//displayPos.z;
 	canvasB = false;
 
 	//rotP.x = 0; //rotation of puzzle
@@ -633,13 +633,12 @@ void game::draw(){
 	}
 	if(step == 5){
 		//show puzzle
-
 		//curRot.getRotate(angle, axistb);
 
 		glPushMatrix();
 		//glTranslatef(posP.x,posP.y,posP.z);
 		ofTranslate(posP.x, posP.y, posP.z);
-		//new trackballb
+		//new trackball
 		//glRotatef(angle, axistb.x, axistb.y, axistb.z);
 		//ofFill();
 		//ofBox(100);
@@ -675,7 +674,7 @@ void game::draw(){
 		//show drawing area
 		myCanvas->draw();
 		ofSetColor(255,255,255);
-		myCanvasImage.draw(posCanvas.x-canvasSide/2,posCanvas.y-canvasSide/2,posCanvas.z,canvasSide,canvasSide);
+		/*myCanvasImage.draw(0,0,0,canvasSide,canvasSide);*///posCanvas.x-canvasSide/2,posCanvas.y-canvasSide/2,posCanvas.z,canvasSide,canvasSide);
 	}
 	if(step == 7){
 		//show puzzle

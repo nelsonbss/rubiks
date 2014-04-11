@@ -70,8 +70,11 @@ public:
 
 	//color faces
 	void colorFaces(int objectID);
+	void colorFacesMenuPuzzle(int objectID,vector< ofVec3f > &menuUniqueNormals, vector< ofFloatColor > &vcolors);
+
 	void colorCubiesBlackSides();
 	void colorTorus();
+	void colorTorusMenuPuzzle();
 	///color change
 	void changeColorToColor(ofFloatColor Sc, ofFloatColor Tc);
 

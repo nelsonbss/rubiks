@@ -1,0 +1,31 @@
+﻿<texts>
+  <text>
+    <name>next</name>
+    <value language="english">NEXT</value>
+    <value language="spanish">próximo</value>
+  </text>
+  <text>
+    <name>reset</name>
+    <value language="english">RESET</value>
+  </text>
+  <text>
+    <name>make</name>
+    <value language="english">MAKE ONE</value>
+  </text>
+  <text>
+    <name>bl-start</name>
+    <value language="english">Drag a shape to begin\nto make a puzzle like\nthe one you selected.</value>
+  </text>
+  <text>
+    <name>play-help-1</name>
+    <value language="english">Single finger swipe\ntwists puzzle.</value>
+  </text>
+  <text>
+    <name>play-help-2</name>
+    <value language="english">Two finger swipe\nrotates puzzle.</value>
+  </text>
+  <text>
+    <name>start-help-bl</name>
+    <value language="english">Drag a puzzle from\nabove or a shape here\nto play</value>
+  </text>
+</texts>

@@ -20,7 +20,7 @@ cubie::cubie(float x, float y,float z, int idi, int selObjId, ofVec3f offset, in
 	zpos=idi%gridSize;
 	ypos=(idi/gridSize)%gridSize;
 	xpos=(idi/(gridSize*gridSize))%gridSize;
-		
+
 	pointRotate.x = offset.x;
 	pointRotate.y = offset.y;
 	pointRotate.z = offset.z;
@@ -115,9 +115,9 @@ void cubie::faceRotate(SG_VECTOR axis,bool di,float angle){
 				masterAngle += angle;
 				for (int j=0; j < numObjs; j++){
 					/*if (objectList[j]->GetTempMatrix()==0){
-						objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,ofDegToRad(angle));
+					objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,ofDegToRad(angle));
 					}else{
-						objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,ofDegToRad(angle));
+					objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,ofDegToRad(angle));
 					}*/
 					myMeshs[j].updatePosition(protFaceV, vrotFaceV, angle);
 				}
@@ -158,6 +158,12 @@ void cubie::goForward(){
 }
 //--------------------------------------------------------------
 void cubie::update(){
+	int stepSize = 20;
+	int stepSize1 = 10;
+	int stepSize2 = 5;
+	int stepSize3 = 2;
+	int stepSize4 = 1;
+
 	if(numObjs > 0){
 		if(goBackb==true){
 			cout << "masterAngle: " << masterAngle << endl;
@@ -170,13 +176,75 @@ void cubie::update(){
 				if(masterAngle < 0 ){
 					//double aux =  ofDegToRad(1);
 					//objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,aux);
-					myMeshs[j].updatePosition(protFaceV, vrotFaceV, 1);
-					masterAngle ++;
+					if((masterAngle + stepSize) < 0){
+						//making a move of that size is possible
+						myMeshs[j].updatePosition(protFaceV, vrotFaceV, stepSize);
+						masterAngle +=stepSize;
+					}else if((masterAngle + stepSize) > 0){
+						//we cant move that amount,,, reduce it
+						if((masterAngle + stepSize1) < 0){
+							//making a move of that size is possible
+							myMeshs[j].updatePosition(protFaceV, vrotFaceV, stepSize1);
+							masterAngle +=stepSize1;
+						}else if((masterAngle + stepSize1) > 0){
+							//we cant move that amount,,, reduce it
+							if((masterAngle + stepSize2) < 0){
+								//making a move of that size is possible
+								myMeshs[j].updatePosition(protFaceV, vrotFaceV, stepSize2);
+								masterAngle +=stepSize2;
+							}else if((masterAngle + stepSize2) > 0){
+								//we cant move that amount,,, reduce it
+								if((masterAngle + stepSize3) < 0){
+									//making a move of that size is possible
+									myMeshs[j].updatePosition(protFaceV, vrotFaceV, stepSize3);
+									masterAngle +=stepSize3;
+								}else if((masterAngle + stepSize3) > 0){
+									//we cant move that amount,,, reduce it
+									if((masterAngle + stepSize4) < 0){
+										//making a move of that size is possible
+										myMeshs[j].updatePosition(protFaceV, vrotFaceV, stepSize4);
+										masterAngle +=stepSize4;
+									}
+								}
+							}
+						}
+					}
 				}else if(masterAngle > 0 ){
 					//double aux =  ofDegToRad(-1);
 					//objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,aux);
-					myMeshs[j].updatePosition(protFaceV, vrotFaceV, -1);
-					masterAngle --;
+					if((masterAngle - stepSize) > 0){
+						//making a move of that size is possible
+						myMeshs[j].updatePosition(protFaceV, vrotFaceV, -stepSize);
+						masterAngle -=stepSize;
+					}else if((masterAngle - stepSize) < 0){
+						//we cant move that amount,,, reduce it
+						if((masterAngle - stepSize1) > 0){
+							//making a move of that size is possible
+							myMeshs[j].updatePosition(protFaceV, vrotFaceV, -stepSize1);
+							masterAngle -=stepSize1;
+						}else if((masterAngle - stepSize1) < 0){
+							//we cant move that amount,,, reduce it
+							if((masterAngle - stepSize2) > 0){
+								//making a move of that size is possible
+								myMeshs[j].updatePosition(protFaceV, vrotFaceV, -stepSize2);
+								masterAngle -=stepSize2;
+							}else if((masterAngle - stepSize2) < 0){
+								//we cant move that amount,,, reduce it
+								if((masterAngle - stepSize3) > 0){
+									//making a move of that size is possible
+									myMeshs[j].updatePosition(protFaceV, vrotFaceV, -stepSize3);
+									masterAngle -=stepSize3;
+								}else if((masterAngle - stepSize3) < 0){
+									//we cant move that amount,,, reduce it
+									if((masterAngle - stepSize4) > 0){
+										//making a move of that size is possible
+										myMeshs[j].updatePosition(protFaceV, vrotFaceV, -stepSize4);
+										masterAngle -=stepSize4;
+									}
+								}
+							}
+						}
+					}
 				}else if(masterAngle == 0){
 					goBackb = false;
 					masterAngle = 0;
@@ -202,11 +270,11 @@ void cubie::update(){
 					//if(movingXC == true){
 					if(rotXa < tempDeg2){
 						//ct2 = ofGetElapsedTimeMillis();
-						rotXa += 1;//animTime;//0.1;//(ct2 - ct1)*((1.57)/animTime);
+						rotXa += stepSize;//animTime;//0.1;//(ct2 - ct1)*((1.57)/animTime);
 						//double aux =  ofDegToRad(1);
 						/*for (int j=0; j < numObjs; j++){*/
 						//objectList[0]->GetTempMatrix()->Rotate(protFace,vrotFace,aux);
-						myMeshs[j].updatePosition(protFaceV, vrotFaceV, 1);
+						myMeshs[j].updatePosition(protFaceV, vrotFaceV, stepSize);
 						//}
 						//ct1 = ct2;
 					}else if(rotXa <= tempDeg2){
@@ -233,11 +301,11 @@ void cubie::update(){
 					//if(movingXCC == true){
 					if(rotXa > tempDeg2){
 						//ct2 = ofGetElapsedTimeMillis();
-						rotXa -= 1;//animTime;//0.1;  //(ct2 - ct1)*((1.57)/animTime);
+						rotXa -= stepSize;//animTime;//0.1;  //(ct2 - ct1)*((1.57)/animTime);
 						//double aux =  ofDegToRad(-1);
 						//////for (int j=0; j < numObjs; j++){
 						//objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,aux);
-						myMeshs[j].updatePosition(protFaceV, vrotFaceV, -1);
+						myMeshs[j].updatePosition(protFaceV, vrotFaceV, -stepSize);
 						//////}
 						//ct1 = ct2;
 					}else  if(rotXa >= tempDeg2){
@@ -414,7 +482,7 @@ void cubie::update(){
 		//}
 	}
 	else{
-		
+
 	}
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
@@ -427,7 +495,7 @@ void cubie::draw(){
 			glPushMatrix();
 			//ofScale(1.2,1.2,1.2);
 			//if (objectList[j]->GetTempMatrix()!=0)
-				//glMultMatrixd(objectList[j]->GetTempMatrix()->GetTransparentData());
+			//glMultMatrixd(objectList[j]->GetTempMatrix()->GetTransparentData());
 			//objectList[j]->DestroyTempMatrix();
 			if(bDraw){
 				if(bDrawWire){

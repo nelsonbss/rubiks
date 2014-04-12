@@ -609,9 +609,9 @@ void puzzle::rotateByIDandAxisNew(int id, SG_VECTOR axis, bool dir, float angle)
 	counter = 0;
 
 	//look for positon of cubie on the 3d data structure
-	 selX =myCubies[id]->getXpos();
-	 selY =myCubies[id]->getYpos();
-	 selZ =myCubies[id]->getZpos();
+	selX =myCubies[id]->getXpos();
+	selY =myCubies[id]->getYpos();
+	selZ =myCubies[id]->getZpos();
 	//now we ask for the cubies on that axis
 	if(axis.x != 0){
 		for (int i=0;i<numPieces;i++) {
@@ -1356,4 +1356,14 @@ void puzzle::exit(){
 	//delete [] three_dim1;
 	free(myCubies);
 	//deactivate();
+}
+//-------------------------------------------------
+ofVec3f puzzle::getCubieInfo(int idCubie){
+	for(int i=0;i<numPieces;i++){
+		if(myCubies[i] != NULL){
+			if(myCubies[i]->id == idCubie){
+				return ofVec3f(myCubies[i]->getXpos(),myCubies[i]->getYpos(),myCubies[i]->getZpos());
+			}
+		}
+	}
 }

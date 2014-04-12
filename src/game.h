@@ -206,6 +206,7 @@ public:
 
 	int timeOfLastInteraction;
 	bool bInAttract;
+	void startMove(ofVec3f _pnt);
 	void makeMove(ofVec3f _pnt);
 	double gestureAngles[6];
 	bool bClicked;

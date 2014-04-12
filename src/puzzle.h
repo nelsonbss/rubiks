@@ -133,6 +133,9 @@ public:
 	bool bHaveAxis;
 	SG_VECTOR v;
 	void endRotation();
+
+
+	ofVec3f getCubieInfo(int idCubie);
 };
 
 #endif /* defined(__Tpuzzle__puzzle__) */

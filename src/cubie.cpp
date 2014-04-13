@@ -186,7 +186,7 @@ void cubie::update(){
 						if((masterAngle + stepSize) > 0){
 							//overshoots
 							//reduce stepZise
-							stepSize =  stepSize/2;
+							stepSize = ceil(stepSize/2);
 						}else{
 							//move can be made
 							masterAngle +=stepSize;
@@ -200,7 +200,7 @@ void cubie::update(){
 					while (reducing){
 						if((masterAngle - stepSize) < 0){
 							//we cant move that amount,,, reduce it
-							stepSize =  stepSize/2;
+							stepSize =  ceil(stepSize/2);
 						}else{
 							masterAngle -=stepSize;
 							myMeshs[j].updatePosition(protFaceV, vrotFaceV, -stepSize);
@@ -235,7 +235,7 @@ void cubie::update(){
 						if(masterAngle + stepSize > 90){
 							//overshoots
 							//reduce stepZise
-							stepSize =  stepSize/2;
+							stepSize =  ceil(stepSize/2);
 						}else{
 							//move can be made
 							masterAngle +=stepSize;
@@ -245,6 +245,7 @@ void cubie::update(){
 						if(masterAngle==90){
 							moving = false;
 							masterAngle = 0;
+							reducing = false;
 						}
 					}
 					/*if(rotXa < tempDeg2){*/
@@ -280,7 +281,7 @@ void cubie::update(){
 						if(masterAngle - stepSize < -90){
 							//overshoots
 							//reduce stepZise
-							stepSize =  stepSize/2;
+							stepSize =  ceil(stepSize/2);
 						}else{
 							//move can be made
 							masterAngle -=stepSize;
@@ -290,6 +291,7 @@ void cubie::update(){
 						if(masterAngle==-90){
 							moving = false;
 							masterAngle = 0;
+							reducing = false;
 						}
 					}
 					//tempDeg2 = -90-masterAngle;

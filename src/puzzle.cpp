@@ -647,9 +647,6 @@ void puzzle::rotateByIDandAxisNew(int id, SG_VECTOR axis, bool dir, float angle)
 	//user could be dragging the rotating face beyond he 90 deg move
 
 	if(myCubies[selected[0]]->masterAngle < 90 && myCubies[selected[0]]->masterAngle > -90){
-
-
-
 		//if(ofSign(myCubies[selected[0]]->masterAngle) > 0){
 		if(dir){
 			//positive rotation in relation to original position
@@ -814,7 +811,7 @@ void puzzle::decideMove(){
 					rearrange3dArrayNew(2,selZ,dirM);
 					//rearange3dArray(myCubies[selected[0]]->vrotFace,selZ,dirM);
 				}
-			}else{
+			}else {
 				for(int i=0;i<counter;i++){
 					//only need to ask one of the selected cubies, thay all have the same rotation angle
 					myCubies[selected[i]]->goBack();

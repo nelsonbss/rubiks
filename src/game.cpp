@@ -1713,10 +1713,6 @@ void game::mouseDragged(int x, int y, int button){
 
 		ofVec3f mouse(x,y);
 		ofVec3f r = lastMouse - mouse;
-		//glRotatef(r.z,0,0,1);
-		//glRotatef(r.y,0,1,0);
-		//glRotatef(r.x,1,0,0);
-		
 		camPosition.rotate (r.y * 0.01, ofVec3f(posP.x, posP.y, posP.z), ofVec3f(1,0,0));
 		camPosition.rotate (r.x * 0.01, ofVec3f(posP.x, posP.y, posP.z), ofVec3f(0,1,0));
 	}else if(step == 6){

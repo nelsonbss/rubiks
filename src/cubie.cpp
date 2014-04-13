@@ -737,6 +737,7 @@ void cubie::dragInput(ofVec3f _pnt){
 }
 
 float cubie::getDistanceByCentroid(ofVec3f _pos){
+	getCentroid();
 	return centroid3d.distance(_pos);
 }
 

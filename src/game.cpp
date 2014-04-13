@@ -1702,10 +1702,12 @@ void game::exit(){
 void game::mouseDragged(int x, int y, int button){
 	if(step == 4 || step == 5 || step == 7){
 		ofVec2f mouse(x,y);
-		ofQuaternion yRot(x-lastMouse.x, ofVec3f(0,-1,0));
-		ofQuaternion xRot(y-lastMouse.y, ofVec3f(1,0,0));
+		//ofQuaternion yRot(x-lastMouse.x, ofVec3f(0,-1,0));
+		//ofQuaternion xRot(y-lastMouse.y, ofVec3f(1,0,0));
+		ofQuaternion yRot(y-lastMouse.y, ofVec3f(0,1,0));
+		ofQuaternion xRot(x-lastMouse.x, ofVec3f(1,0,0));
 		//curRot *= yRot*xRot;
-		curRot.set(curRot*yRot*xRot);
+		curRot.set(curRot*xRot*yRot);
 		curRot.getRotate(angle, axistb);
 		camPosition.rotate(angle * 0.01, ofVec3f(posP.x, posP.y, posP.z), axistb);
 		lastMouse = mouse;

@@ -647,7 +647,11 @@ void puzzle::rotateByIDandAxisNew(int id, SG_VECTOR axis, bool dir, float angle)
 	//user could be dragging the rotating face beyond he 90 deg move
 
 	if(myCubies[selected[0]]->masterAngle < 90 && myCubies[selected[0]]->masterAngle > -90){
-		if(ofSign(myCubies[selected[0]]->masterAngle) > 0){
+
+
+
+		//if(ofSign(myCubies[selected[0]]->masterAngle) > 0){
+		if(dir){
 			//positive rotation in relation to original position
 			if((myCubies[selected[0]]->masterAngle + angle) > 90){
 				//move until 90
@@ -667,10 +671,10 @@ void puzzle::rotateByIDandAxisNew(int id, SG_VECTOR axis, bool dir, float angle)
 			}
 		}else{
 			//negative rotation in relation to original position
-			if((myCubies[selected[0]]->masterAngle + angle) < -90){
+			if((myCubies[selected[0]]->masterAngle - angle) < -90){
 				//move until -90
 				angle = -90 - myCubies[selected[0]]->masterAngle;
-
+				angle=abs(angle);
 				for(int i=0;i<counter;i++){
 					//rearrange = myCubies[selected[i]]->faceRotate(axis,dir,angle);
 					myCubies[selected[i]]->faceRotate(axis,dir,angle);
@@ -685,18 +689,22 @@ void puzzle::rotateByIDandAxisNew(int id, SG_VECTOR axis, bool dir, float angle)
 			}
 		}
 	}else if(myCubies[selected[0]]->masterAngle == 90){
-		if((myCubies[selected[0]]->masterAngle + angle) < 90){
-			for(int i=0;i<counter;i++){
-				//rearrange = myCubies[selected[i]]->faceRotate(axis,dir,angle);
-				myCubies[selected[i]]->faceRotate(axis,dir,angle);
+		if(!dir){
+			if((myCubies[selected[0]]->masterAngle - angle) < 90){
+				for(int i=0;i<counter;i++){
+					//rearrange = myCubies[selected[i]]->faceRotate(axis,dir,angle);
+					myCubies[selected[i]]->faceRotate(axis,dir,angle);
+				}
 			}
 		}
 	}else if(myCubies[selected[0]]->masterAngle == -90){
-		//negative rotation in relation to original position
-		if((myCubies[selected[0]]->masterAngle + angle) > -90){
-			for(int i=0;i<counter;i++){
-				//rearrange = myCubies[selected[i]]->faceRotate(axis,dir,angle);
-				myCubies[selected[i]]->faceRotate(axis,dir,angle);
+		if(dir){
+			//negative rotation in relation to original position
+			if((myCubies[selected[0]]->masterAngle + angle) > -90){
+				for(int i=0;i<counter;i++){
+					//rearrange = myCubies[selected[i]]->faceRotate(axis,dir,angle);
+					myCubies[selected[i]]->faceRotate(axis,dir,angle);
+				}
 			}
 		}
 	}
@@ -1287,7 +1295,7 @@ void puzzle::unDo(int id, SG_VECTOR axis, bool dir){
 	//it receives the id of a cubie,the axis and the direction of rotation
 	//it looks for the other 9 ids, according to the axis
 	//and makes those 9 myCubies[]->faceRotate
-	int selected[9];
+	//int selected[9];
 	int counter=0;
 	int selX =0;
 	int selY =0;

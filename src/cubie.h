@@ -66,7 +66,7 @@ public:
 	float animTime;
 
 	bool sample;
-	double rotXa;
+	//double rotXa;
 	double tempDeg2;
 
 	//undo

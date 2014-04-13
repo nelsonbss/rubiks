@@ -1354,32 +1354,32 @@ void game::guiInput(int in){
 			if(in == 'q') {
 				//clockwise
 				SG_VECTOR axis = {1,0,0};
-				rotateByIDandAxis(randcubie,axis,true,9);
+				rotateByIDandAxis(randcubie,axis,true,7);
 			}
 			if(in == 'a') {
 				//counter clockwise
 				SG_VECTOR axis = {1,0,0};
-				rotateByIDandAxis(randcubie,axis,false,-9);
+				rotateByIDandAxis(randcubie,axis,false,7);
 			}
 			////////  y axis  ////  y axis
 			if(in == 'w') {
 				//clockwise
 				SG_VECTOR axis = {0,1,0};
-				rotateByIDandAxis(randcubie,axis,true,9);
+				rotateByIDandAxis(randcubie,axis,true,7);
 			}if(in == 's') {
 				//counter clockwise
 				SG_VECTOR axis = {0,1,0};
-				rotateByIDandAxis(randcubie,axis,false,-9);
+				rotateByIDandAxis(randcubie,axis,false,7);
 			}
 			////////  z axis  ////  z axis
 			if(in == 'e') {
 				//clockwise
 				SG_VECTOR axis = {0,0,1};
-				rotateByIDandAxis(randcubie,axis,true,9);
+				rotateByIDandAxis(randcubie,axis,true,7);
 			}if(in == 'd') {
 				//counter clockwise
 				SG_VECTOR axis = {0,0,1};
-				rotateByIDandAxis(randcubie,axis,false,-9);
+				rotateByIDandAxis(randcubie,axis,false,7);
 			}
 		}
 		////////////////////////////////////move all puzzle
@@ -1791,9 +1791,9 @@ void game::drawPoints(){
 }
 
 void game::makeMove(ofVec3f _pnt){
-	SG_POINT axis;
+	//SG_POINT axis;
 	// get angle of gesture
-	if(sqrt((_pnt.y*_pnt.y)+(_pnt.x*_pnt.x)) > 75){
+	if(sqrt((_pnt.y*_pnt.y)+(_pnt.x*_pnt.x)) > 25){
 
 
 		double dragAngle = atan2(_pnt.y,_pnt.x);//atan2(newPt.Y - twistStartPoint.Y, newPt.X - twistStartPoint.X);

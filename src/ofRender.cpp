@@ -29,9 +29,9 @@ ofRender::ofRender(){
 	b = (float)31 / (float)255;
 	orange = ofFloatColor(r,g,b);
 	white = ofFloatColor(1,1,1);
-	r = (float)12/ (float)255;
-	g = (float)156 / (float)255;
-	b = (float)13 / (float)255;
+	r = (float)1/ (float)255;
+	g = (float)172 / (float)255;
+	b = (float)104/ (float)255;
 	//12,156,13 web
 	//1,172,104 p 
 	green = ofFloatColor(r,g,b);

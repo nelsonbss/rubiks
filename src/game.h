@@ -208,6 +208,9 @@ public:
 	bool bInAttract;
 	void startMove(ofVec3f _pnt);
 	void makeMove(ofVec3f _pnt);
+	float getMainComponent(ofVec3f _pnt);
+	bool bHaveAxis;
+	SG_VECTOR v;
 	double gestureAngles[6];
 	bool bClicked;
 

@@ -71,6 +71,9 @@ puzzle::puzzle(SG_VECTOR p, ofVec3f offset, int gSize){
 	activeCubie = -1;
 	bUnproject = false;
 	bHaveAxis = false;
+	for(int i=0; i< 36; i++){
+		selected[i] = -1;
+	}
 }
 //----------------------------------------------------------------
 void puzzle::setup(){
@@ -756,56 +759,58 @@ void puzzle::decideMove(){
 	int angleM;
 	bool dirM;
 
-	//only need to ask one of the selected cubies, thay all have the same rotation angle
-	angleM = myCubies[selected[0]]->masterAngle;
-	dirM =  myCubies[selected[0]]->dir;
+	if(selected[0] != -1){
+		//only need to ask one of the selected cubies, thay all have the same rotation angle
+		angleM = myCubies[selected[0]]->masterAngle;
+		dirM =  myCubies[selected[0]]->dir;
 
-	if(dirM == true){
-		//positive angle
-		if(angleM >= 45){
-			for(int i=0;i<counter;i++){
-				myCubies[selected[i]]->goForward();
-			}
-			//rearrange cubies involved on the move
-			if(myCubies[selected[0]]->vrotFace.x != 0){
-				rearrange3dArrayNew(0,selX,dirM);
-				//rearange3dArray(myCubies[selected[0]]->vrotFace,selX,dirM);
-			}else if(myCubies[selected[0]]->vrotFace.y != 0){
-				rearrange3dArrayNew(1,selY,dirM);
-				//rearange3dArray(myCubies[selected[0]]->vrotFace,selY,dirM);
+		if(dirM == true){
+			//positive angle
+			if(angleM >= 45){
+				for(int i=0;i<counter;i++){
+					myCubies[selected[i]]->goForward();
+				}
+				//rearrange cubies involved on the move
+				if(myCubies[selected[0]]->vrotFace.x != 0){
+					rearrange3dArrayNew(0,selX,dirM);
+					//rearange3dArray(myCubies[selected[0]]->vrotFace,selX,dirM);
+				}else if(myCubies[selected[0]]->vrotFace.y != 0){
+					rearrange3dArrayNew(1,selY,dirM);
+					//rearange3dArray(myCubies[selected[0]]->vrotFace,selY,dirM);
+				}else{
+					rearrange3dArrayNew(2,selZ,dirM);
+					//rearange3dArray(myCubies[selected[0]]->vrotFace,selZ,dirM);
+				}
 			}else{
-				rearrange3dArrayNew(2,selZ,dirM);
-				//rearange3dArray(myCubies[selected[0]]->vrotFace,selZ,dirM);
+				for(int i=0;i<counter;i++){
+					//only need to ask one of the selected cubies, thay all have the same rotation angle
+					myCubies[selected[i]]->goBack();
+				}
 			}
 		}else{
-			for(int i=0;i<counter;i++){
-				//only need to ask one of the selected cubies, thay all have the same rotation angle
-				myCubies[selected[i]]->goBack();
-			}
-		}
-	}else{
-		//negative angle
-		if(angleM <= -45){
-			for(int i=0;i<counter;i++){
-				//only need to ask one of the selected cubies, thay all have the same rotation angle
-				myCubies[selected[i]]->goForward();
-				//myCubies[selected[i]]->updatePosition();
-			}
-			//rearrange cubies involved on the move
-			if(myCubies[selected[0]]->vrotFace.x != 0){
-				rearrange3dArrayNew(0,selX,dirM);
-				//rearange3dArray(myCubies[selected[0]]->vrotFace,selX,dirM);
-			}else if(myCubies[selected[0]]->vrotFace.y != 0){
-				rearrange3dArrayNew(1,selY,dirM);
-				//rearange3dArray(myCubies[selected[0]]->vrotFace,selY,dirM);
+			//negative angle
+			if(angleM <= -45){
+				for(int i=0;i<counter;i++){
+					//only need to ask one of the selected cubies, thay all have the same rotation angle
+					myCubies[selected[i]]->goForward();
+					//myCubies[selected[i]]->updatePosition();
+				}
+				//rearrange cubies involved on the move
+				if(myCubies[selected[0]]->vrotFace.x != 0){
+					rearrange3dArrayNew(0,selX,dirM);
+					//rearange3dArray(myCubies[selected[0]]->vrotFace,selX,dirM);
+				}else if(myCubies[selected[0]]->vrotFace.y != 0){
+					rearrange3dArrayNew(1,selY,dirM);
+					//rearange3dArray(myCubies[selected[0]]->vrotFace,selY,dirM);
+				}else{
+					rearrange3dArrayNew(2,selZ,dirM);
+					//rearange3dArray(myCubies[selected[0]]->vrotFace,selZ,dirM);
+				}
 			}else{
-				rearrange3dArrayNew(2,selZ,dirM);
-				//rearange3dArray(myCubies[selected[0]]->vrotFace,selZ,dirM);
-			}
-		}else{
-			for(int i=0;i<counter;i++){
-				//only need to ask one of the selected cubies, thay all have the same rotation angle
-				myCubies[selected[i]]->goBack();
+				for(int i=0;i<counter;i++){
+					//only need to ask one of the selected cubies, thay all have the same rotation angle
+					myCubies[selected[i]]->goBack();
+				}
 			}
 		}
 	}
@@ -1004,7 +1009,7 @@ void puzzle::dragInput(ofVec3f _pnt){
 					if(angle < 0.0){
 						bDir = false;
 					}
-					rotateByIDandAxis(activeCubie, v, bDir, angle);		
+					rotateByIDandAxisNew(activeCubie, v, bDir, angle);		
 				}
 			}
 		}
@@ -1039,7 +1044,7 @@ ofVec3f puzzle::getDir(ofVec3f _pnt){
 	}
 }
 
-float puzzle::getMainComponent(ofVec3f _pnt){
+float puzzle::getMainComponent(ofVec3f _pnt){///////////////////////////////////////////////////
 	ofVec3f x(_pnt.x, 0, 0);
 	ofVec3f y(0, _pnt.y, 0);
 	ofVec3f z(0, 0, _pnt.z);
@@ -1340,7 +1345,6 @@ void puzzle::unDo(int id, SG_VECTOR axis, bool dir){
 }
 //----------------------------------------------------------------
 void puzzle::exit(){
-
 	for(int i=0;i<numPieces;i++){
 		if(myCubies[i] != NULL){
 			myCubies[i]->exit();

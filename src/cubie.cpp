@@ -158,7 +158,7 @@ void cubie::goForward(){
 }
 //--------------------------------------------------------------
 void cubie::update(){
-	int stepSize = 20;
+	int stepSize = 1;
 	int stepSize1 = 10;
 	int stepSize2 = 5;
 	int stepSize3 = 2;
@@ -173,78 +173,84 @@ void cubie::update(){
 				SG_POINT protFace = {pointRotate.x,pointRotate.y,pointRotate.z};		///////////////////////////////////////////								 
 				ofVec3f protFaceV(pointRotate.x, pointRotate.y, pointRotate.z);
 				ofVec3f vrotFaceV(vrotFace.x, vrotFace.y, vrotFace.z);
+
+
 				if(masterAngle < 0 ){
 					//double aux =  ofDegToRad(1);
-					//objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,aux);
-					if((masterAngle + stepSize) < 0){
-						//making a move of that size is possible
-						myMeshs[j].updatePosition(protFaceV, vrotFaceV, stepSize);
-						masterAngle +=stepSize;
-					}else if((masterAngle + stepSize) > 0){
-						//we cant move that amount,,, reduce it
-						if((masterAngle + stepSize1) < 0){
-							//making a move of that size is possible
-							myMeshs[j].updatePosition(protFaceV, vrotFaceV, stepSize1);
-							masterAngle +=stepSize1;
-						}else if((masterAngle + stepSize1) > 0){
-							//we cant move that amount,,, reduce it
-							if((masterAngle + stepSize2) < 0){
-								//making a move of that size is possible
-								myMeshs[j].updatePosition(protFaceV, vrotFaceV, stepSize2);
-								masterAngle +=stepSize2;
-							}else if((masterAngle + stepSize2) > 0){
-								//we cant move that amount,,, reduce it
-								if((masterAngle + stepSize3) < 0){
-									//making a move of that size is possible
-									myMeshs[j].updatePosition(protFaceV, vrotFaceV, stepSize3);
-									masterAngle +=stepSize3;
-								}else if((masterAngle + stepSize3) > 0){
-									//we cant move that amount,,, reduce it
-									if((masterAngle + stepSize4) < 0){
-										//making a move of that size is possible
-										myMeshs[j].updatePosition(protFaceV, vrotFaceV, stepSize4);
-										masterAngle +=stepSize4;
-									}
-								}
-							}
-						}
-					}
+					//objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,aux)
+					myMeshs[j].updatePosition(protFaceV, vrotFaceV, stepSize);
+					masterAngle +=stepSize;
+					//if((masterAngle + stepSize) < 0){
+					//	//making a move of that size is possible
+					//	myMeshs[j].updatePosition(protFaceV, vrotFaceV, stepSize);
+					//	masterAngle +=stepSize;
+					//}else if((masterAngle + stepSize) > 0){
+					//	//we cant move that amount,,, reduce it
+					//	if((masterAngle + stepSize1) < 0){
+					//		//making a move of that size is possible
+					//		myMeshs[j].updatePosition(protFaceV, vrotFaceV, stepSize1);
+					//		masterAngle +=stepSize1;
+					//	}else if((masterAngle + stepSize1) > 0){
+					//		//we cant move that amount,,, reduce it
+					//		if((masterAngle + stepSize2) < 0){
+					//			//making a move of that size is possible
+					//			myMeshs[j].updatePosition(protFaceV, vrotFaceV, stepSize2);
+					//			masterAngle +=stepSize2;
+					//		}else if((masterAngle + stepSize2) > 0){
+					//			//we cant move that amount,,, reduce it
+					//			if((masterAngle + stepSize3) < 0){
+					//				//making a move of that size is possible
+					//				myMeshs[j].updatePosition(protFaceV, vrotFaceV, stepSize3);
+					//				masterAngle +=stepSize3;
+					//			}else if((masterAngle + stepSize3) > 0){
+					//				//we cant move that amount,,, reduce it
+					//				if((masterAngle + stepSize4) < 0){
+					//					//making a move of that size is possible
+					//					myMeshs[j].updatePosition(protFaceV, vrotFaceV, stepSize4);
+					//					masterAngle +=stepSize4;
+					//				}
+					//			}
+					//		}
+					//	}
+					//}
 				}else if(masterAngle > 0 ){
 					//double aux =  ofDegToRad(-1);
 					//objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,aux);
-					if((masterAngle - stepSize) > 0){
-						//making a move of that size is possible
-						myMeshs[j].updatePosition(protFaceV, vrotFaceV, -stepSize);
-						masterAngle -=stepSize;
-					}else if((masterAngle - stepSize) < 0){
-						//we cant move that amount,,, reduce it
-						if((masterAngle - stepSize1) > 0){
-							//making a move of that size is possible
-							myMeshs[j].updatePosition(protFaceV, vrotFaceV, -stepSize1);
-							masterAngle -=stepSize1;
-						}else if((masterAngle - stepSize1) < 0){
-							//we cant move that amount,,, reduce it
-							if((masterAngle - stepSize2) > 0){
-								//making a move of that size is possible
-								myMeshs[j].updatePosition(protFaceV, vrotFaceV, -stepSize2);
-								masterAngle -=stepSize2;
-							}else if((masterAngle - stepSize2) < 0){
-								//we cant move that amount,,, reduce it
-								if((masterAngle - stepSize3) > 0){
-									//making a move of that size is possible
-									myMeshs[j].updatePosition(protFaceV, vrotFaceV, -stepSize3);
-									masterAngle -=stepSize3;
-								}else if((masterAngle - stepSize3) < 0){
-									//we cant move that amount,,, reduce it
-									if((masterAngle - stepSize4) > 0){
-										//making a move of that size is possible
-										myMeshs[j].updatePosition(protFaceV, vrotFaceV, -stepSize4);
-										masterAngle -=stepSize4;
-									}
-								}
-							}
-						}
-					}
+					myMeshs[j].updatePosition(protFaceV, vrotFaceV, -stepSize);
+					masterAngle -=stepSize;
+					//if((masterAngle - stepSize) > 0){
+					//	//making a move of that size is possible
+					//	myMeshs[j].updatePosition(protFaceV, vrotFaceV, -stepSize);
+					//	masterAngle -=stepSize;
+					//}else if((masterAngle - stepSize) < 0){
+					//	//we cant move that amount,,, reduce it
+					//	if((masterAngle - stepSize1) > 0){
+					//		//making a move of that size is possible
+					//		myMeshs[j].updatePosition(protFaceV, vrotFaceV, -stepSize1);
+					//		masterAngle -=stepSize1;
+					//	}else if((masterAngle - stepSize1) < 0){
+					//		//we cant move that amount,,, reduce it
+					//		if((masterAngle - stepSize2) > 0){
+					//			//making a move of that size is possible
+					//			myMeshs[j].updatePosition(protFaceV, vrotFaceV, -stepSize2);
+					//			masterAngle -=stepSize2;
+					//		}else if((masterAngle - stepSize2) < 0){
+					//			//we cant move that amount,,, reduce it
+					//			if((masterAngle - stepSize3) > 0){
+					//				//making a move of that size is possible
+					//				myMeshs[j].updatePosition(protFaceV, vrotFaceV, -stepSize3);
+					//				masterAngle -=stepSize3;
+					//			}else if((masterAngle - stepSize3) < 0){
+					//				//we cant move that amount,,, reduce it
+					//				if((masterAngle - stepSize4) > 0){
+					//					//making a move of that size is possible
+					//					myMeshs[j].updatePosition(protFaceV, vrotFaceV, -stepSize4);
+					//					masterAngle -=stepSize4;
+					//				}
+					//			}
+					//		}
+					//	}
+					//}
 				}else if(masterAngle == 0){
 					goBackb = false;
 					masterAngle = 0;

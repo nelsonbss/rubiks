@@ -1791,7 +1791,7 @@ void game::drawPoints(){
 }
 
 void game::makeMove(ofVec3f _pnt){
-
+	SG_POINT axis;
 	// get angle of gesture
 	if(sqrt((_pnt.y*_pnt.y)+(_pnt.x*_pnt.x)) > 75){
 
@@ -1827,13 +1827,13 @@ void game::makeMove(ofVec3f _pnt){
 				//we turn clockwise or counterclockwise depending on which side of the cube we're on (Y axis)
 
 				//twist function takes axis number (0-2), level number (0-2 for a 3x3x3), and direction (1 or -1)
-				SG_POINT axis = {0,0,1};
-				v.x = axis.x;
-				v.y = axis.y;
-				v.z = axis.z;
+				axis.x = 0;
+				axis.y = 0;
+				axis.z = 1;
+
 				bHaveAxis = true;//we have to make shure to constrain the first gesture vector
 				//if (cubieLoc[cubeToTwist].Y >= 0)//do function going throug cubies
-				if(myPuzzle->getCubieInfo(myPuzzle->activeCubie).y >= 1) //>0 gridzise/2 for the other aquare arm
+				if(myPuzzle->getCubieInfo(myPuzzle->activeCubie).y >= 1) //>0 gridzise/2 for the other square armmatures
 				{
 					dir = false;
 					//float angle = floor(getMainComponent(_pnt));
@@ -1849,10 +1849,10 @@ void game::makeMove(ofVec3f _pnt){
 
 			if (closest == 1)
 			{//-1,0,0
-				SG_POINT axis = {0,0,1};
-				v.x = axis.x;
-				v.y = axis.y;
-				v.z = axis.z;
+				axis.x = 0;
+				axis.y = 0;
+				axis.z = 1;
+
 				bHaveAxis = true;
 				if(myPuzzle->getCubieInfo(myPuzzle->activeCubie).y >=1)
 				{

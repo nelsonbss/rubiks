@@ -35,7 +35,7 @@ void drawingCanvas::draw(){
 	ofSetColor(ofColor(1,0,0));
 	ofSetLineWidth(2);
 	//the coordinates for this box are from the center!!!! not the left/up corner!!!
-	myCanvasImage.draw(50,-50,0,400,400);
+	//myCanvasImage.draw(50,-50,0,400,400);
 	//ofBox(posCanvas.x,posCanvas.y,posCanvas.z,width,height,0);
 	ofBox(250,150,0,400,400,0);
 
@@ -43,9 +43,9 @@ void drawingCanvas::draw(){
 	ofFill();
 	ofSetColor(ofColor(0,255,0,255));
 	myPolyline->draw();
-	//ofCircle(posCanvas, 10.0);
-	//ofSetColor(ofColor(255,0,0,255));
-	//ofCircle(728,910,-800, 10.0);
+	ofCircle(250,150,0, 10.0);
+	ofSetColor(ofColor(255,0,0,255));
+	ofCircle(0,0,0, 10.0);
 	if(drawDummy){
 		ofSetColor(ofColor(255,255,255,255));
 		ofSetLineWidth(5);
@@ -61,6 +61,7 @@ void drawingCanvas::update(string _eventName, SubObEvent _event){
 	if(_eventName == "ibox-drawing:1"){
 		int phase = _event.getArg("phase")->getInt();
 		cout << "puzzle phase = " << phase << endl;
+		
 		if(phase == 0){
 			ofVec2f pos = _event.getArg("absPos")->getVec2();
 			mousePressed(pos.x, pos.y, 0);
@@ -103,7 +104,8 @@ void drawingCanvas::makeLine(ofVec2f mouse){
 				}
 				if(intersect == 0){
 					//no intersection
-					myPolyline->addVertex(mouse);
+					myPolyline->addVertex(ofVec2f(mouse.x+500,mouse.y));
+					cout << "MX: " << mouse.x << "   my:  " << mouse.y << endl;
 					//fix offset of point since they are in in the "middle" of the screen
 					//they have to be where the slicing takes place
 					//////////////////////myPolyline2->addVertex(ofVec2f(mouse.x-posCanvas.x,mouse.y-posCanvas.y));
@@ -116,9 +118,6 @@ void drawingCanvas::makeLine(ofVec2f mouse){
 					myDummyLine = new ofPolyline();//////////////////////////////////////////////////////////////remember to dlete this *memory
 					myDummyLine->addVertex(points[points.size()-1]);
 					myDummyLine->addVertex(mouse);
-
-					//dummyA = points[points.size()-1];
-					//dummyB = mouse;
 				}
 			}else{
 				//do comparison wih dummyline, until there is no intersection with dummy line, there is no more adition to the real polyline
@@ -139,10 +138,6 @@ void drawingCanvas::makeLine(ofVec2f mouse){
 					myDummyLine->clear();
 					myDummyLine->addVertex(points[points.size()-1]);
 					myDummyLine->addVertex(mouse);
-
-					//dummyA = points[points.size()-1];
-					//dummyB = mouse;
-
 				}else{
 					//no intersection
 					//return to real polyline
@@ -257,15 +252,15 @@ void drawingCanvas::mouseDragged(int x, int y, int button){
 	if(closed == false){
 		//if((posCanvas.x-(width/2) < x) && (x < posCanvas.x+(width/2))){
 		//	if((posCanvas.y-(height/2) < y) && (y < posCanvas.y+(height/2))){
-		if((590 < x) && (x < 870)){
-			if((770 < y) && (y < 1050)){
+		//if((437 < x) && (x < 713)){
+		//	if((728 < y) && (y < 1004)){
 				ofVec2f mouse(x,y);
 				makeLine(mouse);
 				if(!drawDummy){
 					lastMouse = mouse;
 				}
-			}
-		}
+		//	}
+		//}
 	}
 }
 //--------------------------------------------------------------

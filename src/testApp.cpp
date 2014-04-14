@@ -7,7 +7,7 @@
 #define displayZ -800
 #define iddleTime 120
 //#define puzzleItems 10
-#define puzzleItems 7
+#define puzzleItems 0
 
 std::map<int,gwc::Point> active_points;
 
@@ -472,7 +472,7 @@ void testApp::mouseDragged(int x, int y, int button){
 		ev.setName("update-touch-point");
 		ev.addArg("position",ofVec3f((float)x / (float)ofGetWidth(),(float)y / (float)ofGetHeight(),0));
 		ev.addArg("touch-id", touchId + touchIdOffset);
-		SubObMediator::Instance()->sendEvent("update-touch-point", ev);
+		//SubObMediator::Instance()->sendEvent("update-touch-point", ev);
 	}
 	if(button == 2){
 		myGames[0]->mouseDragged(x,y,button);
@@ -488,7 +488,7 @@ void testApp::mousePressed(int x, int y, int button){
 		//ev.setName("add-touch-point");
 		ev.addArg("position",ofVec3f((float)x / (float)ofGetWidth(),(float)y / (float)ofGetHeight(),0));
 		ev.addArg("touch-id", touchId + touchIdOffset);
-		SubObMediator::Instance()->sendEvent("add-touch-point", ev);
+		//SubObMediator::Instance()->sendEvent("add-touch-point", ev);
 	}
 	if(button == 2){
 		myGames[0]->mousePressed(x,y,button);
@@ -503,7 +503,7 @@ void testApp::mouseReleased(int x, int y, int button){
 		ev.setName("remove-touch-point");
 		ev.addArg("position",ofVec3f((float)x / (float)ofGetWidth(),(float)y / (float)ofGetHeight(),0));
 		ev.addArg("touch-id", touchId + touchIdOffset);
-		SubObMediator::Instance()->sendEvent("remove-touch-point", ev);
+		//SubObMediator::Instance()->sendEvent("remove-touch-point", ev);
 	}
 	//myGames[0]->mouseReleased(x,y,button);
 }

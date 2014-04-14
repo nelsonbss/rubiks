@@ -441,7 +441,7 @@ void game::update(string _eventName, SubObEvent _event){
 			cout << "Game - phase = " << phase << endl;
 			if(phase == 0){
 				ofVec2f p = _event.getArg("absPos")->getVec2();
-				//cout << "phase = " << phase << " p = " << p.x << ", " << p.y << endl;
+				cout << "phase = " << phase << " p = " << p.x << ", " << p.y << endl;
 				if(!bUnproject){
 					bUnproject = true;
 					bDragInput = false;
@@ -451,7 +451,7 @@ void game::update(string _eventName, SubObEvent _event){
 			} else if(phase == 1){
 				ofVec2f p = _event.getArg("absPos")->getVec2();
 				int n = _event.getArg("n")->getInt();
-				//cout << "n = " << n << " p = " << p.x << ", " << p.y << endl;
+				cout << "n = " << n << " p = " << p.x << ", " << p.y << endl;
 				if(n == 0){
 					myPuzzle->endRotation();
 					return;

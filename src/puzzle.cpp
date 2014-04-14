@@ -646,7 +646,7 @@ void puzzle::rotateByIDandAxisNew(int id, SG_VECTOR axis, bool dir, float angle)
 	//look for rotation constraints
 	//user could be dragging the rotating face beyond he 90 deg move
 
-	if(myCubies[selected[0]]->masterAngle < 90 && myCubies[selected[0]]->masterAngle > -90){
+	if(myCubies[selected[0]]->masterAngle < 89 && myCubies[selected[0]]->masterAngle > -89){
 		//if(ofSign(myCubies[selected[0]]->masterAngle) > 0){
 		if(dir){
 			//positive rotation in relation to original position
@@ -685,26 +685,27 @@ void puzzle::rotateByIDandAxisNew(int id, SG_VECTOR axis, bool dir, float angle)
 				}
 			}
 		}
-	}else if(myCubies[selected[0]]->masterAngle == 90){
-		if(!dir){
-			if((myCubies[selected[0]]->masterAngle - angle) < 90){
-				for(int i=0;i<counter;i++){
-					//rearrange = myCubies[selected[i]]->faceRotate(axis,dir,angle);
-					myCubies[selected[i]]->faceRotate(axis,dir,angle);
-				}
-			}
-		}
-	}else if(myCubies[selected[0]]->masterAngle == -90){
-		if(dir){
-			//negative rotation in relation to original position
-			if((myCubies[selected[0]]->masterAngle + angle) > -90){
-				for(int i=0;i<counter;i++){
-					//rearrange = myCubies[selected[i]]->faceRotate(axis,dir,angle);
-					myCubies[selected[i]]->faceRotate(axis,dir,angle);
-				}
-			}
-		}
 	}
+	//else if(myCubies[selected[0]]->masterAngle == 90){
+	//	if(!dir){
+	//		if((myCubies[selected[0]]->masterAngle - angle) < 90){
+	//			for(int i=0;i<counter;i++){
+	//				//rearrange = myCubies[selected[i]]->faceRotate(axis,dir,angle);
+	//				myCubies[selected[i]]->faceRotate(axis,dir,angle);
+	//			}
+	//		}
+	//	}
+	//}else if(myCubies[selected[0]]->masterAngle == -90){
+	//	if(dir){
+	//		//negative rotation in relation to original position
+	//		if((myCubies[selected[0]]->masterAngle + angle) > -90){
+	//			for(int i=0;i<counter;i++){
+	//				//rearrange = myCubies[selected[i]]->faceRotate(axis,dir,angle);
+	//				myCubies[selected[i]]->faceRotate(axis,dir,angle);
+	//			}
+	//		}
+	//	}
+	//}
 
 	//rearrange cubies position
 	//do we do this after we complete 90 deg rotation???
@@ -1249,7 +1250,7 @@ void puzzle::colorFacesMenuPuzzle(int objectID,vector< ofVec3f > &menuUniqueNorm
 	ofRender *ofr = new ofRender();
 
 	//if((objectID != 4) && (objectID != 1) && (objectID != 200)){
-		if((objectID != 200)){
+	if((objectID != 200)){
 		//not the bunny or the cube -> they were already colored on puzzle::loadPieces->cubie::setObjects
 		//now we color faces following the colors that we have stored and the normals we have stored on the menuPuzzle
 		ofr->colorFacesMenuPuzzle(myCubies,numPieces,0.01, objectID,vcolors,menuUniqueNormals);

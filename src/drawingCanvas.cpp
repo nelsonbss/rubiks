@@ -35,8 +35,9 @@ void drawingCanvas::draw(){
 	ofSetColor(ofColor(1,0,0));
 	ofSetLineWidth(2);
 	//the coordinates for this box are from the center!!!! not the left/up corner!!!
-	myCanvasImage.draw(0,0,0,width,height);
-	ofBox(posCanvas.x,posCanvas.y,posCanvas.z,width,height,0);
+	myCanvasImage.draw(50,-50,0,400,400);
+	//ofBox(posCanvas.x,posCanvas.y,posCanvas.z,width,height,0);
+	ofBox(250,150,0,400,400,0);
 
 
 	ofFill();

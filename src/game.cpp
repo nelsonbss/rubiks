@@ -396,11 +396,12 @@ void game::update(string _eventName, SubObEvent _event){
 		//cout << "RESET" << endl;
 	}
 	if(_eventName == prefix + ":extrude"){
-		//cout << "got an extrude." << endl;
+		cout << "got an extrude." << endl;
 		//myGames[0]->guiInput('e');
 		guiExtrude();
 	}
 	if(_eventName == prefix + ":extrusion-success"){
+		cout << "extrusion success." << endl;
 		SubObEvent ev;
 		ev.setName("hide-node");
 		ev.addArg("target", prefix + ":make-one");
@@ -1605,7 +1606,7 @@ void game::decideMove(){
 }
 //----------------------------------------------------------------------
 bool game::extrudeObject(ofPolyline *drawing){
-	//this functino extrudes the input ofPolylne
+	//this function extrudes the input ofPolylne
 
 	vector< ofPoint > points = drawing->getVertices();
 

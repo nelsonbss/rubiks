@@ -87,7 +87,7 @@ public:
 	virtual void unhide();
 
 	bool isHidden(){return bHidden;}
-	bool isActive(){
+	virtual bool isActive(){
  		return bActive;
 	}
 

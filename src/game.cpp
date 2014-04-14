@@ -261,7 +261,7 @@ void game::update(string _eventName, SubObEvent _event){
 			ev.addArg("target",prefix + ":next-active");
 			SubObMediator::Instance()->sendEvent("unhide-node", ev);
 		}
-		if(step == 0  || step == 1 || step == 6){
+		if(step == 0  || step == 1 || step == 6 || step == 7){
 			int obj = _event.getArg("object")->getInt();
 			SG_VECTOR objectPos = {0,0,0};  //where it gets sliced
 			guiLoad(obj);
@@ -801,6 +801,10 @@ void game::loadPuzzle(puzzle *inputPuzzle){
 	myPuzzle->pos.z = posP.z;
 	step = 7;
 	objectID = -1;
+	SubObEvent ev;
+	ev.setName("hide-node");
+	ev.addArg("target", prefix + ":start-help");
+	SubObMediator::Instance()->sendEvent("hide-node", ev);
 } 
 //----------------------------------------------------------------------
 void game::loadObject(int objID, SG_VECTOR p, SG_VECTOR t){

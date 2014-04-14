@@ -51,12 +51,20 @@ public:
 	/*Gui Stuff*/
 	void nodeInit();
 	void nodeDraw(); 
+	void nodeExecute();
 	void input(string _type, int _ID, int _n, int _phase, ofVec2f _absPos, ofVec2f _deltaPos);
 	bool processMouse(int _x, int _y, int _state){return false;}
 	virtual void update(string _subName, Subject* _sub){}
-	virtual void update(string _eventName, SubObEvent _event){}
+	virtual void update(string _eventName, SubObEvent _event);
+
+	ofVec3f startPos;
 
 	ofRectangle viewport;
+	bool isActive(){return true;}
+	bool bWatchTime;
+	bool bSend;
+	int timeOfLastInteraction;
+	string targetGame;
 };
 
 #endif /* defined(__TmenuPuzzle__menuPuzzle__) */

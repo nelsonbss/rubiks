@@ -20,6 +20,8 @@ menuPuzzle::menuPuzzle(SG_VECTOR p, SG_VECTOR t, int ID ) : GuiNode(){
 	addParam("droppable", "true");
 	addParam("tap","true");
 	addParam("active","true");
+	addParam("hidden","false");
+	addParam("draw-position", "front");
 
 	//pos.set((float)tempPos.x, (float)tempPos.y);
 	//size.set(200,200);
@@ -31,6 +33,8 @@ menuPuzzle::menuPuzzle(SG_VECTOR p, SG_VECTOR t, int ID ) : GuiNode(){
 
 	drawPos.x = tempPos.x;
 	drawPos.y = tempPos.y;
+
+	startPos = drawPos;
 
 	viewport.x = drawPos.x;   
 	viewport.y = drawPos.y;
@@ -47,7 +51,14 @@ menuPuzzle::menuPuzzle(SG_VECTOR p, SG_VECTOR t, int ID ) : GuiNode(){
 	bHidden = false;
 	bActive = true;
 
+	bReadyForInput = true;
+	bWatchTime = false;
+
+	timer = new ofxTimer();
+
 	setName("menu-puzzle-" + ofToString(id));
+
+	timeOfLastInteraction = 0;
 }
 
 void menuPuzzle::nodeInit(){
@@ -67,6 +78,20 @@ void menuPuzzle::nodeInit(){
 	//drawPos.set(0,0);
 	//drawSize.set(200,200);
 	activate();
+	SubObMediator::Instance()->addObserver("menupuzzle-intercepted",this);
+}
+
+void menuPuzzle::nodeExecute(){
+	//bReadyForInput = false;
+	//timer->addTimer(1000, (int*)&bReadyForInput, 1);
+	SubObEvent ev;
+	ev.setName("menupuzzle-selected");
+	ev.addArg("puzzle-id", id);
+	ev.addArg("game-tag", targetGame);
+	SubObMediator::Instance()->sendEvent(ev.getName(), ev);
+	viewport.x = startPos.x;
+	viewport.y = startPos.y;
+	bWatchTime = false;
 }
 
 //--------------------------------------------------------------
@@ -136,12 +161,24 @@ void menuPuzzle::update(){
 	temp->ApplyTempMatrix();  
 }
 
+void menuPuzzle::update(string _eventName, SubObEvent _event){
+	if(_eventName == "menupuzzle-intercepted"){
+		string intercepter = _event.getArg("intercepter")->getString();
+		targetGame = ofSplitString(intercepter,":")[0];
+		cout << "got drop from " << targetGame << endl;
+		if(_event.getArg("object-name")->getString() == getName()){
+			//setPosition();
+			execute();
+		}
+	}
+}
+
 bool menuPuzzle::isInside(int _x, int _y){
-    cout << getName() << " checking insides " << drawPos.x << ", " << drawPos.x + tempSize.x << " - " << drawPos.y << ", " << drawPos.y + tempSize.y;
+    cout << getName() << " checking insides " << viewport.x << ", " << viewport.x + viewport.width << " - " << viewport.y << ", " << viewport.y + viewport.height;
 	cout << " against " << _x << ", " << _y << endl;
     //cout << getName() << " checking insides." << endl;
-	if((_x > drawPos.x && _x < (drawPos.x + tempSize.x) &&
-       (_y > drawPos.y && _y < (drawPos.y + tempSize.y)))){
+	if((_x > viewport.x && _x < (viewport.x + viewport.width) &&
+       (_y > viewport.y && _y < (viewport.y + viewport.height)))){
 		   if(getParam("send-select") == "true"){
 			   input("select", 0, 0, 0, ofVec2f(_x, _y), ofVec2f(0,0));
 		   }
@@ -156,7 +193,7 @@ void menuPuzzle::nodeDraw(){
 	
 	ofNoFill();
 	ofSetColor(0,0,255);
-	ofRect(viewport.x, viewport.y, viewport.width, viewport.height);
+	//ofRect(viewport.x, viewport.y, viewport.width, viewport.height);
 	ofSetColor(255,255,255);
 
 	ofPushView();
@@ -172,6 +209,25 @@ void menuPuzzle::nodeDraw(){
 	myVbo.draw(GL_TRIANGLES, 0,myMesh.getNumIndices());
 	ofPopMatrix();
 	ofPopView();
+	if(bWatchTime){
+		if(ofGetElapsedTimeMillis() - timeOfLastInteraction > 1000){
+			cout << "watch time triggered." << endl;
+			//setPosition();
+			viewport.x = startPos.x;
+			viewport.y = startPos.y;
+			bWatchTime = 0;
+		}
+		if(ofGetElapsedTimeMillis() - timeOfLastInteraction > 500){
+			if(bSend){
+				SubObEvent ev;
+				ev.setName("menupuzzle-dropped");
+				ev.addArg("object-name", getName());
+				ev.addArg("position", ofVec2f(viewport.x + (viewport.width / 2), viewport.y + (viewport.height / 2)));
+				SubObMediator::Instance()->sendEvent("menupuzzle-dropped", ev);
+				bSend = false;
+			}
+		}
+	}
 }
 //----------------------------------------------------------------
 void menuPuzzle::loadObject(sgC3DObject *obj, int ID){
@@ -256,23 +312,26 @@ void menuPuzzle::colorFacesMenu(){
 void menuPuzzle::input(string _type, int _ID, int _n, int _phase, ofVec2f _absPos, ofVec2f _deltaPos){
 	cout << "Type = " << _type << " dX, dY = " << _deltaPos.x << ", " << _deltaPos.y << endl;
 	if(_type == "drag"){
+		/*
 		cout << getName() << " dragging" << endl;
 		tempPos.x += _deltaPos.x;
 		tempPos.y += _deltaPos.y;
 		drawPos.set(tempPos.x, tempPos.y);
-		viewport.x = drawPos.x;
-		viewport.y = drawPos.y;
+		*/
+		viewport.x += _deltaPos.x;
+		viewport.y += _deltaPos.y;
 	}
 	if(_type == "tap"){
 		cout << name << " - executing" << endl;
 		execute();
 	}
-	/*
 	if(!bWatchTime){
 		bWatchTime = true;
 	}
+	if(!bSend){
+		bSend = true;
+	}
 	timeOfLastInteraction = ofGetElapsedTimeMillis();
-	*/
 }
 
 //----------------------------------------------------------------

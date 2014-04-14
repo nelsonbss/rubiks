@@ -7,7 +7,7 @@
 #define displayZ -800
 #define iddleTime 120
 //#define puzzleItems 10
-#define puzzleItems 0
+#define puzzleItems 1
 
 std::map<int,gwc::Point> active_points;
 
@@ -54,7 +54,7 @@ void testApp::setup(){
 	gameIds["bl"] = 0;
 	gameIds["br"] = 1;
 	gameIds["tl"] = 2;
-	gameIds["bl"] = 3;
+	gameIds["tr"] = 3;
 
 	gameTags[0] = "bl";
 	gameTags[1] = "br";
@@ -80,6 +80,8 @@ void testApp::setup(){
 	SubObMediator::Instance()->addObserver("gesture", this);
 	SubObMediator::Instance()->addObserver("extrude", this);
 	SubObMediator::Instance()->addObserver("extrusion-success", this);*/
+
+	SubObMediator::Instance()->addObserver("menupuzzle-selected", this);
 
 	/////////////////////////////initialize sgCore library
 	sgInitKernel();
@@ -410,10 +412,6 @@ void testApp::keyPressed(int key){
 		myGames[0]->guiInput(key);
 	}
 
-	if(key == 'v'){
-		myGames[0]->toggleUseViewport();
-	}
-
 	////////////////////////////////////////////////////////////////////////
 	/////////////////////////////loading puzzles from the middle
 	////////////////////////////////////////////////////////////////////////
@@ -510,6 +508,12 @@ void testApp::update(string _subName, Subject *_sub){
 }
 
 void testApp::update(string _eventName, SubObEvent _event){
+	if(_eventName == "menupuzzle-selected"){
+		int mpId = _event.getArg("puzzle-id")->getInt();
+		string gameTag = _event.getArg("game-tag")->getString();
+		myGames[gameIds[gameTag]]->loadPuzzle(middlePuzzles[mpId]->getPuzzle());
+		//myGames[gameIds[gameTag]]->setCurrentStep(7);
+	}
 }
 
 //--------------------------------------------------------------

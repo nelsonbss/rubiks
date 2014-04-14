@@ -7,7 +7,7 @@
 #define displayZ -800
 #define iddleTime 120
 //#define puzzleItems 10
-#define puzzleItems 1
+#define puzzleItems 7
 
 std::map<int,gwc::Point> active_points;
 
@@ -95,6 +95,8 @@ void testApp::setup(){
 	////////////////////////////create middle objects (puzzles with no twisting == normal objects with faces colores
 	//this objects are rendering of the sgCore obects just created.
 	//there are 7 objects to be created
+	//ofToggleFullscreen();
+
 	cout << "creating puzzle menu items" << endl;
 	middlePuzzlePos.x = 0;
 	middlePuzzlePos.y = (ofGetWindowHeight()/2)-90;
@@ -373,6 +375,7 @@ void testApp::draw(){
 	//		//create object by extrusion
 	//		ofDrawBitmapString("sSHOW DRAWING AREA!" +ofToString("")+"\n",20, 20);
 	//		//testing
+
 	//		ofDrawBitmapString("TEST: press 'e' to extrude: " + ofToString("") +"\n" ,20, 40);
 	//		//show object menu
 	//		ofDrawBitmapString("SELECT AN OBJECT from MENU:" + ofToString("") +"\n" + "1 - 7: objects"+ofToString("")+"\n"+ "9 : extrusion"+ofToString("")+"\n",20, 60);

@@ -648,17 +648,25 @@ void game::draw(){
 	}
 	if(step == 7){
 		//show puzzle
-		curRot.getRotate(angle, axistb);
-
 		glPushMatrix();
-		glTranslatef(posP.x,posP.y,posP.z);
+		//glTranslatef(posP.x,posP.y,posP.z);
+		ofTranslate(posP.x, posP.y-400, posP.z);
 		//new trackball
-		glRotatef(angle, axistb.x, axistb.y, axistb.z);
-
-
+		//glRotatef(angle, axistb.x, axistb.y, axistb.z);
+		//ofFill();
+		//ofBox(100);
 		//glTranslatef(-posP.x,-posP.y,-posP.z);
 		myPuzzle->draw();
+		if(bUnproject){
+			if(unprojectMode != UP_MODE_P){
+				unprojectPoint(mousePoint);//mousePoint gets set on bUnproject
+			} else {
+				projectPoint(mousePoint);
+			}
+			bUnproject = false;
+		}
 		glPopMatrix();
+		drawPoints();
 	}
 	if(bUseViewport){
 		//ofPopView();

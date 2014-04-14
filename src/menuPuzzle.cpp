@@ -101,7 +101,7 @@ void menuPuzzle::setup(){
 
 	temp = (sgC3DObject *) object->Clone();
 
-	SG_VECTOR transP = {position.x,position.y,position.z};
+	SG_VECTOR transP = {position.x,position.y-300,position.z};
 	object->InitTempMatrix()->Translate(transP);//this translates the object to be cut!!
 	object->ApplyTempMatrix();  
 	object->DestroyTempMatrix();
@@ -128,7 +128,7 @@ void menuPuzzle::update(){
 	temp->InitTempMatrix()->Translate(transP);
 	if(objectId == 2){
 		//cube
-		SG_VECTOR offset = {-0,-50,-0}; //for the cube to be in place
+		SG_VECTOR offset = {-50,-50,-0}; //for the cube to be in place
 		temp->GetTempMatrix()->Translate(offset);//this translates the object to be cut!!
 
 		//apply armature axis rotations (x-y-z) to the real object

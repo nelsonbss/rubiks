@@ -14,6 +14,7 @@ public:
 	void setNormals(ofMesh &mesh);
 	vector <ofFloatColor> colorsVector;
 	ofFloatColor mate;
+	ofFloatColor matePuzzle;
 	ofFloatColor mateSolid;
 	ofFloatColor green;
 	ofFloatColor orange;

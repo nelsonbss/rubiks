@@ -1214,7 +1214,8 @@ void puzzle::colorFaces(int objectID){
 	//and apply colors to those normals
 	ofRender *ofr = new ofRender();
 
-	if((objectID != 4) && (objectID != 1) && (objectID != 200)){
+	//if((objectID != 4) && (objectID != 1) && (objectID != 200)){
+	if((objectID != 200)){
 		//not the bunny or the cube -> they were already colored on puzzle::loadPieces->cubie::setObjects
 		ofr->colorFaces(myCubies,numPieces,0.01, objectID);
 	}
@@ -1247,7 +1248,8 @@ void puzzle::colorFacesMenuPuzzle(int objectID,vector< ofVec3f > &menuUniqueNorm
 	//this one compares those normals to the normals vector and gets the color for that normal from the menuPuzzle colorsVector
 	ofRender *ofr = new ofRender();
 
-	if((objectID != 4) && (objectID != 1) && (objectID != 200)){
+	//if((objectID != 4) && (objectID != 1) && (objectID != 200)){
+		if((objectID != 200)){
 		//not the bunny or the cube -> they were already colored on puzzle::loadPieces->cubie::setObjects
 		//now we color faces following the colors that we have stored and the normals we have stored on the menuPuzzle
 		ofr->colorFacesMenuPuzzle(myCubies,numPieces,0.01, objectID,vcolors,menuUniqueNormals);

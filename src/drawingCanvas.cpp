@@ -5,60 +5,98 @@ drawingCanvas::drawingCanvas(ofVec3f posCanvasi, int widthi, int heighti){
 	posCanvas = posCanvasi;
 	width = widthi;
 	height = heighti;
-
-	myPolyline = new ofPolyline();
-	myPolyline2 = new ofPolyline();
+	
+	//myPolyline = new ofPolyline();
+	//myPolyline2 = new ofPolyline();
 
 	poly2exists = false;
 	closed = false;
 	drawDummy = false;
 
-	//myCanvasImage.loadImage("drawingGrid.png");
-	SubObMediator::Instance()->addObserver("ibox-drawing:1", this);
-	SubObMediator::Instance()->addObserver("ibox-drawing:0", this);
+	SubObMediator::Instance()->addObserver("ibox:1", this);
+	SubObMediator::Instance()->addObserver("ibox:0", this);
 
 	bDrawing = false;
 
 	myCanvasImage.loadImage("drawingGrid.png");
 }
+
+drawingCanvas::drawingCanvas(){
+
+	poly2exists = false;
+	closed = false;
+	drawDummy = false;
+
+	SubObMediator::Instance()->addObserver("ibox:1", this);
+	SubObMediator::Instance()->addObserver("ibox:0", this);
+
+	bDrawing = false;
+
+	myCanvasImage.loadImage("drawingGrid.png");
+}
+
+void drawingCanvas::reset(){
+	myPolyline.clear();
+	myPolyline2.clear();
+}
+
 //--------------------------------------------------------------
 void drawingCanvas::setup(){
+}
+
+void drawingCanvas::setViewport(ofRectangle _vp){
+	vp = _vp;
+	drawArea.x = (vp.width / 2) - 200;
+	drawArea.y = (vp.height / 2) - 200;
+	drawArea.width = 400;
+	drawArea.height = 400;
 }
 //--------------------------------------------------------------
 void drawingCanvas::update(){
 }
+
+ofVec2f drawingCanvas::getRealPoint(ofVec2f _p){
+	return ofVec2f(_p.x - drawArea.x - vp.x - drawArea.width / 2, _p.y - drawArea.y - vp.y - drawArea.height / 2);
+}
+
 //--------------------------------------------------------------
 void drawingCanvas::draw(){  
-
-	//glPushMatrix();
+	ofDisableDepthTest();
+	glPushMatrix();
+	ofTranslate(drawArea.x, drawArea.y,0);
 	ofNoFill();
 	ofSetColor(ofColor(1,0,0));
 	ofSetLineWidth(2);
 	//the coordinates for this box are from the center!!!! not the left/up corner!!!
 	//myCanvasImage.draw(50,-50,0,400,400);
 	//ofBox(posCanvas.x,posCanvas.y,posCanvas.z,width,height,0);
-	ofBox(250,150,0,400,400,0);
+	//ofRect(drawArea.x,drawArea.y,drawArea.width,drawArea.height);
 
+	myCanvasImage.draw(0,0,drawArea.width, drawArea.height);
 
 	ofFill();
 	ofSetColor(ofColor(0,255,0,255));
-	myPolyline->draw();
-	ofCircle(250,150,0, 10.0);
+	ofPushMatrix();
+	ofTranslate(vp.width / 2, 200, 0);
+	myPolyline.draw();
+	ofPopMatrix();
+	/*ofCircle(250,150,0, 10.0);
 	ofSetColor(ofColor(255,0,0,255));
-	ofCircle(0,0,0, 10.0);
-	if(drawDummy){
-		ofSetColor(ofColor(255,255,255,255));
-		ofSetLineWidth(5);
-		myDummyLine->draw();
+	ofCircle(0,0,0, 10.0);*/
+	//if(drawDummy){
+	//	ofSetColor(ofColor(255,255,255,255));
+	//	ofSetLineWidth(5);
+	//	myDummyLine.draw();
 
-		//ofLine(dummyA,dummyB);
-	}
-	//glPopMatrix();
+	//	//ofLine(dummyA,dummyB);
+	//}
+	glPopMatrix();
+	ofEnableDepthTest();
 
 }
 
 void drawingCanvas::update(string _eventName, SubObEvent _event){
-	if(_eventName == "ibox-drawing:1"){
+	if(_eventName == "ibox:1"){
 		int phase = _event.getArg("phase")->getInt();
 		cout << "puzzle phase = " << phase << endl;
 		
@@ -71,7 +109,7 @@ void drawingCanvas::update(string _eventName, SubObEvent _event){
 			mouseDragged(pos.x, pos.y, 0);
 		}
 	}
-	if(_eventName == "ibox-drawing:0"){
+	if(_eventName == "ibox:0"){
 		if(bDrawing){
 			ofVec2f pos = _event.getArg("absPos")->getVec2();
 			mouseReleased(pos.x,pos.y,0);
@@ -82,76 +120,78 @@ void drawingCanvas::update(string _eventName, SubObEvent _event){
 //--------------------------------------------------------------
 void drawingCanvas::makeLine(ofVec2f mouse){
 	int intersect=0;
-	vector< ofPoint > points = myPolyline->getVertices();
+	vector< ofPoint > points = myPolyline.getVertices();
 	int size = points.size();
-
 	if(mouse.distance(lastMouse) > 2){
 		//check for intersection first!!
 		if(size > 10){
 			//check lines on the ofPolyline
 			if(drawDummy==false){
-				for(int i=0; i< myPolyline->size()-2; i ++){
+				for(int i=0; i< myPolyline.size()-2; i ++){
 					//only check if line is close to mouse
 					//if((points[i].x > mouse.x-6) && (points[i].x < mouse.x+6)){
 					//	if((points[i].y > mouse.y-6) && (points[i].y < mouse.y+6)){
-					intersect = intersection(points[i],points[i+1],lastMouse,mouse);
+					intersect = intersection(points[i],points[i+1],getRealPoint(lastMouse),getRealPoint(mouse));
 					if(intersect == 2){
 						//intersection found
-						i = myPolyline->size();//escape for loop
+						i = myPolyline.size();//escape for loop
 					}
 					//	}
 					//}
 				}
 				if(intersect == 0){
 					//no intersection
-					myPolyline->addVertex(ofVec2f(mouse.x,mouse.y));
+					//myPolyline.addVertex(ofVec2f(mouse.x,mouse.y));
 					cout << "MX: " << mouse.x << "   my:  " << mouse.y << endl;
 					//fix offset of point since they are in in the "middle" of the screen
 					//they have to be where the slicing takes place
 					//////////////////////myPolyline2->addVertex(ofVec2f(mouse.x-posCanvas.x,mouse.y-posCanvas.y));
-					myPolyline2->addVertex(ofVec2f(mouse.x-728,mouse.y-910));
+					//cout << "adding point " << realPoint.x << ", " << realPoint.y << endl;
+					myPolyline2.addVertex(getRealPoint(mouse));
+					myPolyline.addVertex(getRealPoint(mouse));
 					drawDummy = false;
 				}else if(intersect == 2){
 					//YES intersection
 					//draw the segment to the mouse but not saving it into the polyline
 					drawDummy = true;
-					myDummyLine = new ofPolyline();//////////////////////////////////////////////////////////////remember to dlete this *memory
-					myDummyLine->addVertex(points[points.size()-1]);
-					myDummyLine->addVertex(mouse);
+					//myDummyLine = new ofPolyline();//////////////////////////////////////////////////////////////remember to dlete this *memory
+					myDummyLine.clear();
+					myDummyLine.addVertex(points[points.size()-1]);
+					myDummyLine.addVertex(getRealPoint(mouse));
 				}
 			}else{
 				//do comparison wih dummyline, until there is no intersection with dummy line, there is no more adition to the real polyline
 				/*intersect = intersection(,lastMouse,mouse);*/
-				vector< ofPoint > pointsDummy = myDummyLine->getVertices();
-				for(int i=0; i< myPolyline->size()-2; i ++){
+				vector< ofPoint > pointsDummy = myDummyLine.getVertices();
+				for(int i=0; i< myPolyline.size()-2; i ++){
 					//only check if line is close to mouse
 					intersect = intersection(points[i],points[i+1],pointsDummy[0],pointsDummy[1]);
 					if(intersect == 2){
 						//intersection found
-						i = myPolyline->size();//escape for loop
+						i = myPolyline.size();//escape for loop
 					}
 				}
 				if(intersect == 2){
 					//YES intersection
 					//draw the segment to the mouse but not saving it into the polyline
 					drawDummy = true;
-					myDummyLine->clear();
-					myDummyLine->addVertex(points[points.size()-1]);
-					myDummyLine->addVertex(mouse);
+					myDummyLine.clear();
+					myDummyLine.addVertex(points[points.size()-1]);
+					myDummyLine.addVertex(getRealPoint(mouse));
 				}else{
 					//no intersection
 					//return to real polyline
 					drawDummy = false;
-					myDummyLine->clear();
+					myDummyLine.clear();
 				}
 			}
 		}else{
 			//not looking for intersection
-			myPolyline->addVertex(mouse);
+			myPolyline.addVertex(getRealPoint(mouse));
 			//fix offset of point since they are in in the "middle" of the screen
 			//they have to be where the slicing takes place
 			////////////////////////myPolyline2->addVertex(ofVec2f(mouse.x-posCanvas.x,mouse.y-posCanvas.y));
-			myPolyline2->addVertex(ofVec2f(mouse.x-728,mouse.y-910));
+			myPolyline2.addVertex(getRealPoint(mouse));
 			drawDummy = false;
 		}
 	}
@@ -254,30 +294,40 @@ void drawingCanvas::mouseDragged(int x, int y, int button){
 		//	if((posCanvas.y-(height/2) < y) && (y < posCanvas.y+(height/2))){
 		//if((437 < x) && (x < 713)){
 		//	if((728 < y) && (y < 1004)){
-				ofVec2f mouse(x,y);
-				makeLine(mouse);
-				if(!drawDummy){
-					lastMouse = mouse;
-				}
+			
+		ofVec2f mouse(x,y);
+		if((x != 0 && y != 0) && !bSetFirstPoint){
+			firstMouse = mouse; //to be able to close shape
+			bSetFirstPoint = true;
+		}		
+		makeLine(mouse);
+		if(!drawDummy){
+			lastMouse = mouse;
+		}
 		//	}
 		//}
 	}
 }
 //--------------------------------------------------------------
 void drawingCanvas::mousePressed(int x, int y, int button){
+	bSetFirstPoint = false;
 	//if(!bDrawing){
 		//cout << "starting drawing" << endl;
 		if(closed == false){
 			//check if its inside the area to be able to draw
 			//if((posCanvas.x-(width/2) < x) && (x < posCanvas.x+(width/2))){
 			//	if((posCanvas.y-(height/2) < y) && (y < posCanvas.y+(height/2))){
-			if((590 < x) && (x < 870)){
-				if((770 < y) && (y < 1050)){
+			if((x > drawArea.x) && (x < drawArea.x + drawArea.width)){
+				if((y > drawArea.y) && (y < drawArea.y + drawArea.height)){
 					lastMouse = ofVec2f(x,y);
-					firstMouse = lastMouse; //to be able to close shape
-					myPolyline->addVertex(lastMouse);//first vertex
+					if((x != 0 && y != 0) && !bSetFirstPoint){
+						firstMouse = lastMouse; //to be able to close shape
+						bSetFirstPoint = true;
+					}
+					//myPolyline.addVertex(lastMouse);//first vertex
 					////////////////myPolyline2->addVertex(ofVec2f(lastMouse.x-posCanvas.x,lastMouse.y-posCanvas.y));
-					myPolyline2->addVertex(ofVec2f(lastMouse.x-728,lastMouse.y-910));
+					myPolyline2.addVertex(getRealPoint(lastMouse));
+					myPolyline.addVertex(getRealPoint(lastMouse));
 					poly2exists = true;
 				}
 				else{
@@ -291,23 +341,27 @@ void drawingCanvas::mousePressed(int x, int y, int button){
 //--------------------------------------------------------------
 void drawingCanvas::mouseReleased(int x, int y, int button){
 	bDrawing = false;
-	if(poly2exists == true && closed == false){
+	if(closed == false){
+		cout << "adding last point" << endl;
+		cout << firstMouse.x << ", " << firstMouse.y << endl;
 		//add last point
-		myPolyline->addVertex(firstMouse);//close last vertex, with first vertex
+		//myPolyline.addVertex(firstMouse);//close last vertex, with first vertex
 		//////////////myPolyline2->addVertex(ofVec2f(firstMouse.x-posCanvas.x,firstMouse.y-posCanvas.y));//polyline2 is the one that is on slicing position
-		myPolyline2->addVertex(ofVec2f(firstMouse.x-728,firstMouse.y-910));
+		myPolyline2.addVertex(getRealPoint(firstMouse));
+		myPolyline.addVertex(getRealPoint(firstMouse));	
 		closed = true;
+		poly2exists = true;
 	}
 	cout << "finishing drawing" << endl;
 	if(drawDummy == true){
 		drawDummy = false;
-		myDummyLine->clear();
+		myDummyLine.clear();
 	}
 }
 //--------------------------------------------------------------
 ofPolyline* drawingCanvas::getPolyline(){
 	poly2exists = false;
-	return myPolyline2;
+	return &myPolyline2;
 }
 //--------------------------------------------------------------
 bool drawingCanvas::drawingExists(){
@@ -315,9 +369,9 @@ bool drawingCanvas::drawingExists(){
 }
 //--------------------------------------------------------------
 void drawingCanvas::exit(){
-	free(myPolyline);
+	/*free(myPolyline);
 	if(poly2exists){
 		free(myPolyline2);
-	}
+	}*/
 	//myCanvasImage.clear();
 }

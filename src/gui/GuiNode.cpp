@@ -17,6 +17,7 @@ GuiNode::GuiNode(){
 
 void GuiNode::draw(){
 	ofEnableBlendMode(OF_BLENDMODE_ALPHA);
+	ofDisableDepthTest();
 	if(!bHidden){
 		if(bDrawArea){
 			//cout << "drawing from " << drawPos.x << ", " << drawPos.y << " to " << drawSize.x << ", " << drawSize.y << endl;
@@ -44,6 +45,12 @@ void GuiNode::draw(){
 				if(bHaveText2){
 					currentText = GuiConfigurator::Instance()->getText(text2);
 					if(bFlipped){
+						ofRectangle bounds = font.getStringBoundingBox(currentText, 0, 0);
+						ofPushMatrix();
+						ofTranslate(drawPos.x + textPosition.x  + bounds.width / 2, drawPos.y + textPosition.y + bounds.height / 2, 0);
+						ofRotateZ(180.0);
+						font.drawString(currentText, -bounds.width / 2, bounds.height / 2);
+						ofPopMatrix();
 					} else {
 						font.drawString(currentText, drawPos.x + textPosition2.x, drawPos.y + textPosition2.y);
 					}
@@ -55,10 +62,19 @@ void GuiNode::draw(){
 				if(textAlign == "center"){
 					cx = drawPos.x + (drawSize.x / 2 - box.width / 2);
 				}
-				font.drawString(currentText, cx, cy);
+				if(bFlipped){
+					ofPushMatrix();
+					ofTranslate(cx + box.width, cy - box.height, 0);
+					ofRotateZ(180.0);
+					font.drawString(currentText, 0, 0);
+					ofPopMatrix();
+				} else {
+					font.drawString(currentText, cx, cy);
+				}
 			}
 		}
 	}
+	ofEnableDepthTest();
 }
 
 bool GuiNode::isInside(int _x, int _y){

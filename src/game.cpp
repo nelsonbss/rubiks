@@ -153,17 +153,20 @@ void game::update(){
 	}
 
 	if(bExtrude){
-		if(myCanvas->drawingExists()){
+		cout << "calling extrude." << endl;
+		if(myCanvas.drawingExists()){
 			//make extruded object
-			if(extrudeObject(myCanvas->getPolyline())){
+			if(extrudeObject(myCanvas.getPolyline())){
 				objectDisplayed->update();
-				//SubObEvent* e = new SubObEvent();
-				//e->setName("extrusion-success");
-				//SubObMediator::Instance()->sendEvent("extrusion-success", e);
+				SubObEvent ev;
+				ev.setName(prefix + ":extrusion-success");
+				SubObMediator::Instance()->sendEvent(prefix + ":extrusion-success", ev);
 				//delete e;
 			}else{
 				prepareDrawing();
 			}
+		} else {
+			cout << "no drawing." << endl;
 		}
 		bExtrude = false;
 	}
@@ -398,12 +401,11 @@ void game::update(string _eventName, SubObEvent _event){
 		//cout << "RESET" << endl;
 	}
 	if(_eventName == prefix + ":extrude"){
-		//cout << "got an extrude." << endl;
+		cout << "got an extrude." << endl;
 		//myGames[0]->guiInput('e');
 		guiExtrude();
 	}
 	if(_eventName == prefix + ":extrusion-success"){
-		//cout << "extrusion success." << endl;
 		SubObEvent ev;
 		ev.setName("hide-node");
 		ev.addArg("target", prefix + ":make-one");
@@ -424,6 +426,10 @@ void game::update(string _eventName, SubObEvent _event){
 		}
 	}
 	if(_eventName == prefix + ":ibox:0"){
+		if(step == 6){
+			ofVec2f pos = _event.getArg("absPos")->getVec2();
+			myCanvas.mouseReleased(pos.x, pos.y,0);
+		}
 		if(bDragInput){
 			//myPuzzle->endRotation();
 			myPuzzle->decideMove();
@@ -438,6 +444,17 @@ void game::update(string _eventName, SubObEvent _event){
 		if(step == 3){
 			ofVec3f m = _event.getArg("deltaPos")->getVec2();
 			moveA(m);
+		}
+		if(step == 6){
+			int p = _event.getArg("phase")->getInt();
+			ofVec2f pos = _event.getArg("absPos")->getVec2();
+			if(p == 0){
+				myCanvas.mousePressed(pos.x, pos.y, 0);
+			}
+			if(p == 1){
+				int n = _event.getArg("n")->getInt();
+				myCanvas.mouseDragged(pos.x, pos.y, 0);
+			}
 		}
 		if(step == 5){
 			int phase = _event.getArg("phase")->getInt();
@@ -567,6 +584,9 @@ void game::draw(){
 		/*ofPushView();
 		ofViewport(viewport);
 		ofSetupScreen();*/
+		ofNoFill();
+		ofSetColor(0.0,0.0,0.0);
+		//ofRect(viewport.x, viewport.y, viewport.width, viewport.height);
 		cam.begin(viewport);
 		//cam.disableMouseInput();
 		ofEnableAlphaBlending();
@@ -645,7 +665,10 @@ void game::draw(){
 	}
 	if(step == 6){
 		//show drawing area
-		myCanvas->draw();
+		//ofPushMatrix();
+		//ofTranslate(posP.x, posP.y, posP.z);
+		myCanvas.draw();
+		//ofPopMatrix();
 		ofSetColor(255,255,255);
 		/*myCanvasImage.draw(0,0,0,canvasSide,canvasSide);*///posCanvas.x-canvasSide/2,posCanvas.y-canvasSide/2,posCanvas.z,canvasSide,canvasSide);
 	}
@@ -762,8 +785,9 @@ void game::loadPuzzle(puzzle *inputPuzzle){
 	///////////do game reset..because loading a puzzle can happen at anytime
 	if(step == 6){
 		if(canvasB){
-			myCanvas->exit();
-			delete myCanvas;
+			//myCanvas->exit();
+			//delete myCanvas;
+			myCanvas.reset();
 			canvasB = false;
 		}
 		step = 0;
@@ -786,8 +810,9 @@ void game::loadPuzzle(puzzle *inputPuzzle){
 		step = 0;
 		objectID = -1;
 		if(canvasB){
-			myCanvas->exit();
-			delete myCanvas;
+			//myCanvas->exit();
+			//delete myCanvas;
+			myCanvas.reset();
 			canvasB = false;
 		}
 	}
@@ -1449,9 +1474,9 @@ void game::guiInput(int in){
 		if(in == 'e') {
 			//take drawing data
 			//check for existing drawing
-			if(myCanvas->drawingExists()){
+			if(myCanvas.drawingExists()){
 				//make extruded object
-				if(extrudeObject(myCanvas->getPolyline())){
+				if(extrudeObject(myCanvas.getPolyline())){
 
 				}else{
 					prepareDrawing();
@@ -1652,7 +1677,7 @@ bool game::extrudeObject(ofPolyline *drawing){
 		//we  have the sg3DObjcect to load
 		loadObject(200,slicingPos,posP);//using id=200
 
-		free(drawing);
+		//free(drawing);
 		sgDeleteObject(win_cont);
 		return true;
 	}
@@ -1694,14 +1719,18 @@ void game::extrudeObject(){
 void game::prepareDrawing(){
 	if(canvasB == false){
 		//create canvas object
-		myCanvas = new drawingCanvas(posCanvas,canvasSide,canvasSide);
+		//myCanvas = new drawingCanvas(posCanvas,canvasSide,canvasSide);
+		myCanvas.reset();
+		myCanvas.setViewport(viewport);
 		canvasB = true;
 	}
 	else{
 		/*myCanvas->exit();
 		delete myCanvas;*/
 		//create canvas object
-		myCanvas = new drawingCanvas(posCanvas,canvasSide,canvasSide);
+		//myCanvas = new drawingCanvas(posCanvas,canvasSide,canvasSide);
+		myCanvas.reset();
+		myCanvas.setViewport(viewport);
 	}
 	//extrusion
 	step = 6;
@@ -1741,8 +1770,9 @@ void game::restart(){
 		objectID = -1;
 	}else if(step == 6){
 		if(canvasB){
-			myCanvas->exit();
-			delete myCanvas;
+			//myCanvas->exit();
+			//delete myCanvas;
+			myCanvas.reset();
 			canvasB = false;
 		}
 		step = 0;
@@ -1765,8 +1795,9 @@ void game::restart(){
 		step = 0;
 		objectID = -1;
 		if(canvasB){
-			myCanvas->exit();
-			delete myCanvas;
+			//myCanvas->exit();
+			//delete myCanvas;
+			myCanvas.reset();
 			canvasB = false;
 		}
 	}
@@ -1813,7 +1844,7 @@ void game::mouseDragged(int x, int y, int button){
 		camPosition.rotate (r.y * 0.01, ofVec3f(posP.x, posP.y, posP.z), ofVec3f(1,0,0));
 		camPosition.rotate (r.x * 0.01, ofVec3f(posP.x, posP.y, posP.z), ofVec3f(0,1,0));
 	}else if(step == 6){
-		myCanvas->mouseDragged(x,y,button);
+		myCanvas.mouseDragged(x,y,button);
 	} else if(step == 3){
 		ofVec3f mouse(x,y);
 		ofVec3f r = lastMouse - mouse;
@@ -1827,14 +1858,14 @@ void game::mousePressed(int x, int y, int button){
 	if(step == 3 || step == 4 || step == 5 || step == 7){
 		lastMouse = ofVec2f(x,y);
 	}else if(step == 6){
-		myCanvas->mousePressed(x,y,button);
+		myCanvas.mousePressed(x,y,button);
 	}
 	timeOfLastInteraction = ofGetElapsedTimeMillis();
 }
 //--------------------------------------------------------------
 void game::mouseReleased(int x, int y, int button){
 	if(step == 6){
-		myCanvas->mouseReleased(x,y,button);
+		myCanvas.mouseReleased(x,y,button);
 	}
 	timeOfLastInteraction = ofGetElapsedTimeMillis();
 }

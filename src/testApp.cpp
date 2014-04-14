@@ -7,7 +7,7 @@
 #define displayZ -800
 #define iddleTime 120
 //#define puzzleItems 10
-#define puzzleItems 7
+#define puzzleItems 0
 
 std::map<int,gwc::Point> active_points;
 
@@ -540,8 +540,8 @@ void testApp::dragEvent(ofDragInfo dragInfo){
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------
 void testApp::exit(){
-	myGames[0]->restart();
-	myGames[0]->exit();
+	//myGames[0]->restart();
+	//myGames[0]->exit();
 
 	/*myGames[1]->restart();
 	myGames[1]->exit();*/

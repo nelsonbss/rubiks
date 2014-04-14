@@ -156,7 +156,7 @@ public:
 
 	//drawing canvas
 	ofVec3f posCanvas;
-	drawingCanvas *myCanvas;
+	drawingCanvas myCanvas;
 	bool canvasB;
 	void prepareDrawing();
 	ofImage myCanvasImage; //DrawingGrid_555x35.png

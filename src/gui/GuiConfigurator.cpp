@@ -13,7 +13,7 @@ GuiConfigurator::GuiConfigurator(){
 	SubObMediator::Instance()->addObserver("hide-node", this);
 	SubObMediator::Instance()->addObserver("unhide-node", this);
 	//SubObMediator::Instance()->sendEvent("add-gesture-receiver", dummy);
-	setCurrentLanguage("french");
+	setCurrentLanguage("english");
 	prefix = "";
 }
 

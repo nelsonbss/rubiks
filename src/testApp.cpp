@@ -383,6 +383,19 @@ void testApp::draw(){
 	//		ofDrawBitmapString("or drag a shape from above:" + ofToString("") +"\n",20, 100);
 	//		//show restart button.
 	//		ofDrawBitmapString("RESTART: press 'r' " + ofToString("") +"\n" ,20, 120);//
+	//	}else if(gStep == 7){
+	//		//loaded a puzzle form the middle
+	//		//rotations can happen
+	//		ofDrawBitmapString("ROTATE PUZZLE:  mouse DRAG" +ofToString("")+"\n",20, 20);
+	//		ofDrawBitmapString("X rotations: 'q' 'a'"+ofToString(" ")+"\n",20, 40);
+	//		ofDrawBitmapString("Y rotations: 'w' 's'"+ofToString(" ")+"\n",20, 60);
+	//		ofDrawBitmapString("Z rotations: 'e' 'd'"+ofToString(" ")+"\n",20, 80);
+	//		//undo move
+	//		ofDrawBitmapString("UNDO: press 'u' " + ofToString("") +"\n" ,20, 120);
+	//		//show restart button.
+	//		ofDrawBitmapString("RESTART: press 'r' " + ofToString("") +"\n" ,20, 140);
+	//		//show save button.
+	//		ofDrawBitmapString("make one: press 'n' " + ofToString("") +"\n" ,20, 160);
 	//	}
 	//}
 

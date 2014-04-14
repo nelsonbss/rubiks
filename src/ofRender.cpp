@@ -1285,7 +1285,7 @@ void ofRender::colorFacesMenuPuzzle(cubie **myCubies, int numPieces,float playRo
 				tcolors = myCubies[i]->myMeshs[j].getColors();
 				//change colors
 				for (int i = 0; i< tcolors.size(); i++){
-					tcolors[i] = matePuzzle;
+					tcolors[i] = vcolors[0];
 				}
 
 				//we now have a colors Vector with new colors assigned

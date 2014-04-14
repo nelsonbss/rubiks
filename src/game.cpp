@@ -807,6 +807,7 @@ void game::loadPuzzle(puzzle *inputPuzzle){
 	myPuzzle->pos.x = posP.x;
 	myPuzzle->pos.y = posP.y;
 	myPuzzle->pos.z = posP.z;
+	updatePuzzle = true;
 	step = 7;
 	objectID = -1;
 	SubObEvent ev;

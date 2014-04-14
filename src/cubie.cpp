@@ -179,7 +179,10 @@ void cubie::update(){
 				ofVec3f protFaceV(pointRotate.x, pointRotate.y, pointRotate.z);
 				ofVec3f vrotFaceV(vrotFace.x, vrotFace.y, vrotFace.z);
 				bool reducing = true;
-				if(masterAngle < 0 ){
+				if(masterAngle == 0){
+					goBackb = false;
+					masterAngle = 0;
+				}else if(masterAngle < 0 ){
 					//double aux =  ofDegToRad(1);
 					//objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,aux)
 					while (reducing){
@@ -207,9 +210,6 @@ void cubie::update(){
 							reducing = false;
 						}
 					}
-				}else if(masterAngle == 0){
-					goBackb = false;
-					masterAngle = 0;
 				}
 			}
 		}
@@ -232,7 +232,11 @@ void cubie::update(){
 					//tempDeg2 = 90-masterAngle;
 					//if(movingXC == true){
 					while (reducing){
-						if(masterAngle + stepSize > 90){
+						if(masterAngle==90){
+							moving = false;
+							masterAngle = 0;
+							reducing = false;
+						}else if(masterAngle + stepSize > 90){
 							//overshoots
 							//reduce stepZise
 							stepSize =  ceil(stepSize/2);
@@ -242,11 +246,7 @@ void cubie::update(){
 							myMeshs[j].updatePosition(protFaceV, vrotFaceV, stepSize);
 							reducing = false;
 						}
-						if(masterAngle==90){
-							moving = false;
-							masterAngle = 0;
-							reducing = false;
-						}
+						
 					}
 					/*if(rotXa < tempDeg2){*/
 					//ct2 = ofGetElapsedTimeMillis();
@@ -278,7 +278,11 @@ void cubie::update(){
 				}else{
 					//xcc
 					while (reducing){
-						if(masterAngle - stepSize < -90){
+						if(masterAngle==-90){
+							moving = false;
+							masterAngle = 0;
+							reducing = false;
+						}else if(masterAngle - stepSize < -90){
 							//overshoots
 							//reduce stepZise
 							stepSize =  ceil(stepSize/2);
@@ -286,11 +290,6 @@ void cubie::update(){
 							//move can be made
 							masterAngle -=stepSize;
 							myMeshs[j].updatePosition(protFaceV, vrotFaceV, -stepSize);
-							reducing = false;
-						}
-						if(masterAngle==-90){
-							moving = false;
-							masterAngle = 0;
 							reducing = false;
 						}
 					}

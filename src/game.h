@@ -214,6 +214,9 @@ public:
 	double gestureAngles[6];
 	bool bClicked;
 
+	ofVec3f cubiePos;
+	double lastDragDistance;
+
 	ofVec3f cp0;
 	ofVec3f cp1;
 	ofVec3f cp2;

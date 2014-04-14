@@ -104,7 +104,7 @@ void drawingCanvas::makeLine(ofVec2f mouse){
 				}
 				if(intersect == 0){
 					//no intersection
-					myPolyline->addVertex(ofVec2f(mouse.x+500,mouse.y));
+					myPolyline->addVertex(ofVec2f(mouse.x,mouse.y));
 					cout << "MX: " << mouse.x << "   my:  " << mouse.y << endl;
 					//fix offset of point since they are in in the "middle" of the screen
 					//they have to be where the slicing takes place

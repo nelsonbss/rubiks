@@ -33,6 +33,12 @@ private:
 	ofVec2f scrollPos;
 	float currentScroll;
 	bool bScrollable;
+
+	int numColumns;
+	int columnWidth;
+	int columnHeight;
+
+	ofRectangle scissorRect;
 };
 
 #endif

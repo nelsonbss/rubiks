@@ -54,6 +54,7 @@ public:
 	void setPosition(float _x, float _y){pos.x = _x; pos.y = _y;}
 	void setDrawPosition(ofVec2f _pos){drawPos = _pos;}
 	void draw();
+	void draw(ofVec2f _pnt);
 	void init();
 	virtual void adjustPosition(ofVec2f _dPos, ofVec2f _aPos){}
     virtual void message(map<string,string> _msg){}
@@ -143,6 +144,8 @@ public:
 	void setPrefix(string _p){prefix = _p;}
 	string getPrefix(){return prefix;}
 
+	bool isSelected(){return bSelected;}
+
 protected:
 
     map<string,string> attrs;
@@ -168,6 +171,7 @@ protected:
 	bool bFlipped;
 
 	string prefix;
+	bool bSelected;
 };
 
 

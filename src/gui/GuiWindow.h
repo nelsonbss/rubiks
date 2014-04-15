@@ -28,6 +28,7 @@ public:
 
 private:
 	vector<GuiNode*> nodes;
+	vector<ofVec2f> nodePositions;
 	ofRectangle drawWindow;
 
 	GuiScrollBar scrollBar;

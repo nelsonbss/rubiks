@@ -1,14 +1,24 @@
 #include "GuiWindow.h"
 
 void GuiWindow::nodeInit(){
+	for(int i = 0; i < nodes.size(); i++){
+		nodePositions.push_back(ofVec2f(0.0,0.0));
+	}
 	bScrollable = false;
 	currentTop = 0;
+	if(bMirrored){
+		drawPos.x = drawPos.x - drawSize.x;
+	}
 	calculateArea();
 	positionNodes();
 	if(bScrollable){
 		scrollBar.setName(getName() + "-scroll");
 		scrollBar.init();
-		scrollBar.setDrawPosition(drawPos + ofVec2f(263, 30));
+		if(!bMirrored){
+			scrollBar.setDrawPosition(drawPos + ofVec2f(263, 30));
+		} else {
+			scrollBar.setDrawPosition(drawPos + ofVec2f(0, 30));
+		}
 		scrollBar.setBar();
 		scrollBar.setTarget(getName());
 		scrollBar.activate();
@@ -33,21 +43,35 @@ void GuiWindow::nodeDeactivate(){
 }
 
 void GuiWindow::nodeDraw(){
-	ofDisableDepthTest();
 	if(bScrollable){
 		scrollBar.draw();
 	}
 	//glScissor(scissorRect.x, scissorRect.y, scissorRect.width, scissorRect.height);
 	//glEnable(GL_SCISSOR_TEST);
 	//ofRect(scissorRect);
-	for(vector<GuiNode*>::iterator nIter = nodes.begin(); nIter != nodes.end(); nIter++){
-		(*nIter)->draw();
+	ofPushView();
+	ofViewport(scissorRect);
+	ofSetupScreen();
+	ofDisableDepthTest();
+	ofEnableAlphaBlending();
+	int counter = 0;
+	for(auto nIter = nodes.begin(); nIter != nodes.end(); nIter++){
+		if(!((*nIter)->isSelected())){
+			(*nIter)->draw(nodePositions[counter]);
+		}
+		counter++;
 	}
 	ofFill();
 	ofSetColor(0,255,0);
 	//ofRect(drawPos.x, drawPos.y, 200, 200);
 	//glDisable(GL_SCISSOR_TEST);
 	ofEnableDepthTest();
+	ofPopView();
+	for(auto nIter = nodes.begin(); nIter != nodes.end(); nIter++){
+		if((*nIter)->isSelected()){
+			(*nIter)->draw();
+		}
+	}
 	//ofRect(scissorRect);
 }
 
@@ -69,7 +93,7 @@ void GuiWindow::unhide(){
 
 void GuiWindow::calculateArea(){
 	scissorRect.x = drawPos.x;
-	scissorRect.y = ofGetHeight() - drawPos.y;
+	scissorRect.y = drawPos.y;
 	scissorRect.width = drawSize.x;
 	scissorRect.height = drawSize.y;
 }
@@ -85,11 +109,13 @@ void GuiWindow::positionNodes(){
 		}
 		float nodeX = column * (columnWidth * ofGetWidth());
 		float nodeY = row * (columnHeight * ofGetHeight());
-		ofVec2f nodePos = (drawPos + ofVec2f(0, currentTop)) + ofVec2f(nodeX, nodeY);
-		ofVec2f nodePosF(drawPos.x / ofGetWidth(), drawPos.y / ofGetHeight());
+		ofVec2f nodePos = ofVec2f(0, currentTop) + ofVec2f(nodeX, nodeY);
+		ofVec2f nodePosD = nodePos + drawPos;
+		ofVec2f nodePosF(nodePos.x / ofGetWidth(), nodePos.y / ofGetHeight());
 		//cout << "setting node position to - " << nodePos.x << ", " << nodePos.y << endl;
-		nodes[i]->setPosition(nodePosF);
-		nodes[i]->setDrawPosition(nodePos);
+		//nodes[i]->setPosition(nodePosF);
+		nodes[i]->setDrawPosition(nodePosD);
+		nodePositions[i].set(nodePos);
 	}
 	windowHeight = (row + 1) * (columnHeight * ofGetHeight());
 	//cout << "Window height = " << windowHeight << endl;

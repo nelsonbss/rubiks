@@ -204,6 +204,9 @@
       <pos>0.0,0.73</pos>
       <size>0.154,0.225</size>
       <scale>1.0</scale>
+      <columns>3</columns>
+      <column-width>0.05</column-width>
+      <column-height>0.05</column-height>
       <param>
         <name>z</name>
         <val>-10000</val>
@@ -213,15 +216,11 @@
         <val>false</val>
       </param>
       <param>
-        <name>scrollable</name>
-        <val>false</val>
-      </param>
-      <param>
         <name>draw-position</name>
         <val>front</val>
       </param>
       <node type="button" name="shape1">
-			<pos>0.01,0.74</pos>
+			<pos>0.0,0.0</pos>
 			<size>1.0,1.0</size>
       <scale>1.0</scale>
       <event name="object-selected">
@@ -248,7 +247,7 @@
       </param>
 		</node>
     <node type="button" name="shape2">
-			<pos>0.01,0.805</pos>
+			<pos>0.0,0.0</pos>
 			<size>1.0,1.0</size>
       <scale>1.0</scale>
       <event name="object-selected">
@@ -275,7 +274,7 @@
       </param>
 		</node>
     <node type="button" name="shape6">
-			<pos>0.01,0.87</pos>
+			<pos>0.0,0.0</pos>
 			<size>1.0,1.0</size>
       <scale>1.0</scale>
       <event name="object-selected">
@@ -302,7 +301,7 @@
       </param>
 		</node>
     <node type="button" name="shape7">
-			<pos>0.055,0.74</pos>
+			<pos>0.0,0.0</pos>
 			<size>1.0,1.0</size>
       <scale>1.0</scale>
       <event name="object-selected">
@@ -329,7 +328,7 @@
       </param>
 		</node>
     <node type="button" name="shape4">
-			<pos>0.055,0.805</pos>
+			<pos>0.0,0.0</pos>
 			<size>1.0,1.0</size>
       <scale>1.0</scale>
       <event name="object-selected">
@@ -356,7 +355,7 @@
       </param>
 		</node>
     <node type="button" name="shape0">
-			<pos>0.055,0.87</pos>
+			<pos>0.0,0.0</pos>
 			<size>1.0,1.0</size>
       <scale>1.0</scale>
       <event name="object-selected">
@@ -383,7 +382,7 @@
       </param>
 		</node>
     <node type="button" name="shape3">
-			<pos>0.1,0.74</pos>
+			<pos>0.0,0.0</pos>
 			<size>1.0,1.0</size>
       <scale>1.0</scale>
       <event name="object-selected">
@@ -410,7 +409,7 @@
       </param>
 		</node>
     <node type="button" name="shape5">
-			<pos>0.1,0.805</pos>
+			<pos>0.0,0.0</pos>
 			<size>1.0,1.0</size>
       <scale>1.0</scale>
       <event name="object-selected">

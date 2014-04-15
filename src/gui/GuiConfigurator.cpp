@@ -405,6 +405,12 @@ void GuiConfigurator::loadNodes(string _sheetName, GuiWindow* _win){
 		string pos = mXML.getValue("pos", "0.0,0.0");
 		string size = mXML.getValue("size", "150.0,150.0");
 		string scale = mXML.getValue("scale","1.0");
+		if(nodeType == "window"){
+			int columns = mXML.getValue("columns",0);
+			float columnWidth = mXML.getValue("column-width",0.0);
+			float columnHeight = mXML.getValue("column-height", 0.0);
+			
+		}
 		ofVec2f posVec = stringToVec2f(pos);
 		if(bMirrored){
 			posVec.x = 1.0 - posVec.x;

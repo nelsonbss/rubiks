@@ -52,6 +52,7 @@ public:
     virtual bool processMouse(int _x, int _y, int _state) = 0;
 	virtual void setPosition(ofVec2f _pos){pos = _pos;}
 	void setPosition(float _x, float _y){pos.x = _x; pos.y = _y;}
+	void setDrawPosition(ofVec2f _pos){drawPos = _pos;}
 	void draw();
 	void init();
 	virtual void adjustPosition(ofVec2f _dPos, ofVec2f _aPos){}

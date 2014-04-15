@@ -1,37 +1,54 @@
 #include "GuiWindow.h"
 
 void GuiWindow::nodeInit(){
-	if(getParam("scrollable") == "true"){
-		bScrollable = true;
-		scrollBar.loadImage("Exports/Scrollbar_Slider_279x110.png");
-		scrollArrowT.loadImage("Exports/Scrollbar_TopArrow_273x94.png");
-		scrollArrowB.loadImage("Exports/Scrollbar_BottomArrow_273x310.png");
-	} else {
-		bScrollable = false;
+	bScrollable = false;
+	currentTop = 0;
+	calculateArea();
+	positionNodes();
+	if(bScrollable){
+		scrollBar.setName(getName() + "-scroll");
+		scrollBar.init();
+		scrollBar.setDrawPosition(drawPos + ofVec2f(263, 30));
+		scrollBar.setBar();
+		scrollBar.setTarget(getName());
+		scrollBar.activate();
 	}
+	SubObMediator::Instance()->addObserver(getName() + ":scroll", this);
+	topMax = 0;
+	topMin = drawSize.y - windowHeight;
 }
 
 void GuiWindow::nodeActivate(){
 	for(vector<GuiNode*>::iterator nIter = nodes.begin(); nIter != nodes.end(); nIter++){
 		(*nIter)->activate();
 	}
+	currentTop = 0;
 }
 
 void GuiWindow::nodeDeactivate(){
 	for(vector<GuiNode*>::iterator nIter = nodes.begin(); nIter != nodes.end(); nIter++){
 		(*nIter)->deactivate();
 	}
+	currentTop = 0;
 }
 
 void GuiWindow::nodeDraw(){
+	ofDisableDepthTest();
 	if(bScrollable){
-		scrollArrowT.draw(drawPos.x + 263, drawPos.y + 30);
-		scrollBar.draw(drawPos.x + 270, drawPos.y + 45);
-		scrollArrowB.draw(drawPos.x + 263, drawPos.y + 195);
+		scrollBar.draw();
 	}
+	//glScissor(scissorRect.x, scissorRect.y, scissorRect.width, scissorRect.height);
+	//glEnable(GL_SCISSOR_TEST);
+	//ofRect(scissorRect);
 	for(vector<GuiNode*>::iterator nIter = nodes.begin(); nIter != nodes.end(); nIter++){
 		(*nIter)->draw();
 	}
+	ofFill();
+	ofSetColor(0,255,0);
+	//ofRect(drawPos.x, drawPos.y, 200, 200);
+	//glDisable(GL_SCISSOR_TEST);
+	ofEnableDepthTest();
+	//ofRect(scissorRect);
 }
 
 void GuiWindow::hide(){
@@ -51,5 +68,45 @@ void GuiWindow::unhide(){
 }
 
 void GuiWindow::calculateArea(){
-	
+	scissorRect.x = drawPos.x;
+	scissorRect.y = ofGetHeight() - drawPos.y;
+	scissorRect.width = drawSize.x;
+	scissorRect.height = drawSize.y;
+}
+
+void GuiWindow::positionNodes(){
+	int numNodes = nodes.size();
+	int row = 0;
+	int column = 0;
+	for(int i = 0;i < numNodes; i++){
+		if(i > 0){
+			column = i % numColumns;
+			row = i / numColumns;
+		}
+		float nodeX = column * (columnWidth * ofGetWidth());
+		float nodeY = row * (columnHeight * ofGetHeight());
+		ofVec2f nodePos = (drawPos + ofVec2f(0, currentTop)) + ofVec2f(nodeX, nodeY);
+		ofVec2f nodePosF(drawPos.x / ofGetWidth(), drawPos.y / ofGetHeight());
+		//cout << "setting node position to - " << nodePos.x << ", " << nodePos.y << endl;
+		nodes[i]->setPosition(nodePosF);
+		nodes[i]->setDrawPosition(nodePos);
+	}
+	windowHeight = (row + 1) * (columnHeight * ofGetHeight());
+	//cout << "Window height = " << windowHeight << endl;
+	if(windowHeight > drawSize.y){
+		bScrollable = true;
+	}
+}
+
+void GuiWindow::update(string _eventName, SubObEvent _event){
+	if(_eventName == getName() + ":scroll"){
+		float amount = _event.getArg("amount")->getFloat();
+		currentTop -= amount;
+		if(currentTop > topMax){
+			currentTop = topMax;
+		} else if(currentTop < topMin){
+			currentTop = topMin;
+		}
+		positionNodes();
+	}
 }

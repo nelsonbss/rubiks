@@ -36,6 +36,7 @@ drawingCanvas::drawingCanvas(){
 }
 
 void drawingCanvas::reset(){
+	closed = false;
 	myPolyline.clear();
 	myPolyline2.clear();
 }
@@ -56,7 +57,7 @@ void drawingCanvas::update(){
 }
 
 ofVec2f drawingCanvas::getRealPoint(ofVec2f _p){
-	return ofVec2f(_p.x - drawArea.x - vp.x - drawArea.width / 2, _p.y - drawArea.y - vp.y - drawArea.height / 2);
+	return ofVec2f(_p.x - drawArea.x - vp.x - drawArea.width / 2,(_p.y - drawArea.y - vp.y - drawArea.height / 2));
 }
 
 //--------------------------------------------------------------

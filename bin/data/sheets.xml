@@ -204,9 +204,9 @@
       <pos>0.0,0.73</pos>
       <size>0.154,0.225</size>
       <scale>1.0</scale>
-      <columns>3</columns>
+      <columns>1</columns>
       <column-width>0.05</column-width>
-      <column-height>0.05</column-height>
+      <column-height>0.07</column-height>
       <param>
         <name>z</name>
         <val>-10000</val>
@@ -440,6 +440,9 @@
       <pos>0.0,0.73</pos>
       <size>0.154,0.225</size>
       <scale>1.0</scale>
+      <columns>3</columns>
+      <column-width>0.05</column-width>
+      <column-height>0.05</column-height>
       <param>
         <name>z</name>
         <val>-10000</val>
@@ -553,6 +556,9 @@
       <pos>0.0,0.73</pos>
       <size>0.154,0.225</size>
       <scale>1.0</scale>
+      <columns>3</columns>
+      <column-width>0.05</column-width>
+      <column-height>0.05</column-height>
       <param>
         <name>z</name>
         <val>-10000</val>

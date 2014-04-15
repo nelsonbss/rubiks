@@ -409,7 +409,10 @@ void GuiConfigurator::loadNodes(string _sheetName, GuiWindow* _win){
 			int columns = mXML.getValue("columns",0);
 			float columnWidth = mXML.getValue("column-width",0.0);
 			float columnHeight = mXML.getValue("column-height", 0.0);
-			
+			GuiWindow* tWinPtr = (GuiWindow*)nodePtr;
+			tWinPtr->setNumColumns(columns);
+			tWinPtr->setColumnWidth(columnWidth);
+			tWinPtr->setColumnHeight(columnHeight);
 		}
 		ofVec2f posVec = stringToVec2f(pos);
 		if(bMirrored){

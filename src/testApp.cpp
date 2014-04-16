@@ -7,7 +7,7 @@
 #define displayZ -800
 #define iddleTime 120
 //#define puzzleItems 10
-#define puzzleItems 7
+#define puzzleItems 3
 
 std::map<int,gwc::Point> active_points;
 
@@ -164,7 +164,7 @@ void testApp::setup(){
 
 		cout << "created puzzle menu item: " << i << endl;
 		
-		.push_back(puzzleDisplayed);
+		middlePuzzles.push_back(puzzleDisplayed);
 	}
 	cout << "puzzles menu created" << endl;
 	puzzleCounter = 0;

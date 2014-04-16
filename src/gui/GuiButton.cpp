@@ -65,7 +65,7 @@ void GuiButton::nodeInit(){
 	} else {
 		haveImage = false;
 	}
-	inactive.mirror(bFlipped, bMirrored);
+	inactive.mirror(bFlipped, false);
 	drawActive = false;
 	haveActive = false;
 	haveArabic = false;
@@ -88,6 +88,7 @@ void GuiButton::nodeInit(){
 		}
 	}
 	bSend = false;
+	SubObMediator::Instance()->addObserver(prefix + ":language-changed", this);
 }
 
 void GuiButton::nodeExecute(){
@@ -96,7 +97,7 @@ void GuiButton::nodeExecute(){
 	if(bSendSample){
 		cout << "sending sample" << endl;
 		SubObEvent ev;
-		ev.setName(getPrefix() + "new-color");
+		ev.setName(getPrefix() + ":new-color");
 		ev.addArg("color", sampleColor);
 		ev.addArg("pos", dragPos);
 		SubObMediator::Instance()->sendEvent(ev.getName(), ev);
@@ -189,6 +190,10 @@ void GuiButton::update(string _eventName, SubObEvent _event){
 			execute();
 		}
 	}
+	if(_eventName == prefix + ":language-changed"){
+		string lang = _event.getArg("lang")->getString();
+		currentLanguage = lang;
+	}
 }
 
 void GuiButton::sampleImage(){
@@ -210,7 +215,7 @@ void GuiButton::nodeDraw(){
             //if(haveArabic && SceneManager::Instance()->getDisplayArabic()){
              //   arabic.draw(pos.x,pos.y);
             //} else {
-            //cout << name << " drawing image at " << drawPos.x << ", " << drawPos.y << endl;    
+             //cout << name << " drawing image at " << drawPos.x << ", " << drawPos.y << endl;    
 			inactive.draw(drawPos.x,drawPos.y, scale * drawSize.x,scale * drawSize.y);
             //}
         } else {

@@ -87,6 +87,8 @@ game::game(SG_VECTOR gamePos, float w, float h, SG_VECTOR displayPos, ofRectangl
 
 	timeOfLastInteraction = ofGetElapsedTimeMillis();
 	bInAttract = false;
+
+	currentLanguage = "english";
 }
 //--------------------------------------------------------------
 void game::setup(sgCObject *sgBunnyi,sgCObject *sgTetrahedroni,sgCObject *sgDodecahedroni,sgCObject *sgIcosahedroni,sgCObject *sgOctahedroni, string _prefix){//,sgCObject *sgTeapoti){
@@ -324,12 +326,16 @@ void game::update(string _eventName, SubObEvent _event){
 			ev.setName("unhide-node");
 			ev.addArg("target",prefix + ":arm-window");
 			SubObMediator::Instance()->sendEvent("unhide-node", ev);
+			//ev.addArg("target",prefix + ":arm-help");
+			//SubObMediator::Instance()->sendEvent("unhide-node", ev);
 		}
 		if(step == 3){
 			SubObEvent ev;
 			ev.setName("hide-node");
 			ev.addArg("target",prefix + ":arm-window");
 			SubObMediator::Instance()->sendEvent("hide-node", ev);
+			//ev.addArg("target",prefix + ":arm-help");
+			//SubObMediator::Instance()->sendEvent("hide-node", ev);
 			ev.setName("unhide-node");
 			ev.addArg("target",prefix + ":color-window");
 			SubObMediator::Instance()->sendEvent("unhide-node", ev);
@@ -567,6 +573,14 @@ void game::goToAttract(){
 
 	bInAttract = true;
 	camPosition.set(viewport.width / 2, viewport.height / 2, 400);
+}
+
+void game::setLanguage(string _lang){
+	currentLanguage = _lang;
+	SubObEvent ev;
+	ev.setName(prefix + ":language-changed");
+	ev.addArg("lang", currentLanguage);
+	SubObMediator::Instance()->sendEvent(ev.getName(), ev);
 }
 
 void game::updateGui(){

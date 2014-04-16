@@ -172,6 +172,8 @@ protected:
 
 	string prefix;
 	bool bSelected;
+
+	string currentLanguage;
 };
 
 

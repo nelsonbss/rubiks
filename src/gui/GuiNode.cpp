@@ -14,6 +14,7 @@ GuiNode::GuiNode(){
 	bMirrored = false;
 	bFlipped = false;
 	bSelected = false;
+	currentLanguage = "english";
 }
 
 void GuiNode::draw(ofVec2f _pnt){
@@ -37,7 +38,7 @@ void GuiNode::draw(){
 		nodeDraw();
 		if(bHaveText){
 			ofSetColor(textColor.x, textColor.y, textColor.z);
-			string currentText = GuiConfigurator::Instance()->getText(text);
+			string currentText = GuiConfigurator::Instance()->getText(text, currentLanguage);
 			//cout << "drawing text - " << currentText << endl;
 			if(textAlign == "position"){
 				if(bFlipped){
@@ -51,7 +52,7 @@ void GuiNode::draw(){
 					font.drawString(currentText, drawPos.x + textPosition.x, drawPos.y + textPosition.y);
 				}
 				if(bHaveText2){
-					currentText = GuiConfigurator::Instance()->getText(text2);
+					currentText = GuiConfigurator::Instance()->getText(text2, currentLanguage);
 					if(bFlipped){
 						ofRectangle bounds = font.getStringBoundingBox(currentText, 0, 0);
 						ofPushMatrix();

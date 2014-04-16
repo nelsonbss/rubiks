@@ -62,9 +62,9 @@ void testApp::setup(){
 	gameTags[3] = "tr";
 
 	patterns["%COLOR%"] = "Blue";
-	GuiConfigurator::Instance()->extendGui("main", "sheets.xml", false, false, "bl:", patterns);
+	GuiConfigurator::Instance()->extendGui("main", "sheets.xml", false, false, "bl", patterns);
 	patterns["%COLOR%"] = "Red";
-	GuiConfigurator::Instance()->extendGui("main", "sheets.xml", true, false, "br:", patterns);
+	GuiConfigurator::Instance()->extendGui("main", "sheets.xml", true, false, "br", patterns);
 	/*patterns["%COLOR%"] = "Orange";
 	GuiConfigurator::Instance()->extendGui("main", "sheets.xml", false, true, "tl:", patterns);
 	patterns["%COLOR%"] = "Green";

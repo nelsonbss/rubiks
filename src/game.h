@@ -226,5 +226,8 @@ public:
 	ofVec3f cp6;
 
 	void drawPoints();
+
+	string currentLanguage;
+	void setLanguage(string _lang);
 };
 #endif /* defined(__Tgame__game__) */

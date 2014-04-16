@@ -79,7 +79,7 @@ public:
 	string currentLanguage;
 	void setCurrentLanguage(string _l){currentLanguage = _l;}
 
-	string getText(string _text){return texts[_text].getText(currentLanguage);}
+	string getText(string _text, string _lang){return texts[_text].getText(_lang);}
 
 	/*
     Subject/Observer interface
@@ -123,6 +123,8 @@ private:
 	bool bFlipped;
 
 	string prefix;
+
+	set<string> memberEvents;
 };
 
 

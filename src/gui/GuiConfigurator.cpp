@@ -12,9 +12,11 @@ GuiConfigurator::GuiConfigurator(){
 	SubObMediator::Instance()->addObserver("gesture",this);
 	SubObMediator::Instance()->addObserver("hide-node", this);
 	SubObMediator::Instance()->addObserver("unhide-node", this);
+	SubObMediator::Instance()->addObserver("toggle-node", this);
 	//SubObMediator::Instance()->sendEvent("add-gesture-receiver", dummy);
 	setCurrentLanguage("english");
 	prefix = "";
+	memberEvents.insert("toggle-node");
 }
 
 GuiConfigurator* GuiConfigurator::Instance(){
@@ -173,6 +175,16 @@ void GuiConfigurator::update(string _eventName, SubObEvent _event){
 			cout << "NODE_UNHIDE - don't have node - " << target << endl;
 		}
 	}
+	if(_eventName == "toggle-node"){
+		string target = _event.getArg("target")->getString();
+		if(activeNodes.count(target)){
+			if(activeNodes[target]->isHidden()){
+				activeNodes[target]->unhide();
+			} else {
+				activeNodes[target]->hide();
+			}
+		}
+	}
 }
 
 void GuiConfigurator::getTags(){
@@ -316,21 +328,36 @@ void GuiConfigurator::loadText(string _file){
 }
 
 void GuiConfigurator::specialTextLoadingCopOut(){
+
+	texts["english"] = GuiText();
+	texts["english"].setText("english", "English");
+	texts["english"].setText("french", "English");
+	texts["english"].setText("spanish", "English");
+	
+	texts["french"] = GuiText();
+	texts["french"].setText("english", "Français");
+	texts["french"].setText("french", "Français");
+	texts["french"].setText("spanish", "Français");
+
+	texts["spanish"] = GuiText();
+	texts["spanish"].setText("english", "Español");
+	texts["spanish"].setText("french", "Español");
+	texts["spanish"].setText("spanish", "Español");
+
 	texts["next"] = GuiText();
 	texts["next"].setText("english", "NEXT");
 	texts["next"].setText("french", "SUIVANT");
+	texts["next"].setText("spanish", "SIGUIENTE");
 	
 	texts["reset"] = GuiText();
 	texts["reset"].setText("english", "RESET");
 	texts["reset"].setText("french", "RÉINITIALISER");
+	texts["reset"].setText("spanish", "REINICIA");
 
     texts["make"] = GuiText();
 	texts["make"].setText("english", "MAKE ONE");
 	texts["make"].setText("french", "CRÉER");
- 
-	texts["drag"] = GuiText();
-	texts["drag"].setText("english", "Drag A Puzzle From\nAbove Or A Shape Here\nto Play");
-	texts["drag"].setText("french", "Faites glisser un puzzle ci-dessus ou une forme ici pour jouer");
+	texts["make"].setText("french", "HAZ UNO");
 
 	texts["start"] = GuiText();
     texts["start"].setText("english", "Drag a shape to begin\nto make a puzzle like\nthe one you selected.");
@@ -338,14 +365,17 @@ void GuiConfigurator::specialTextLoadingCopOut(){
     texts["play-help-1"] = GuiText();
     texts["play-help-1"].setText("english", "Single finger swipe\ntwists puzzle.");
 	texts["play-help-1"].setText("french", "Un doigt = glisse/déplace\nles pièces");
+	texts["play-help-1"].setText("spanish", "Un solo dedo mueve o\ndesliza las piezas");
 
     texts["play-help-2"] = GuiText();
     texts["play-help-2"].setText("english", "Two finger swipe\nrotates puzzle.");
 	texts["play-help-2"].setText("french", "Deux doigts = glisse/tourne\nle cube");
+	texts["play-help-2"].setText("spanish", "Dos dedos deslizan,\narrastran o hacen rotar al cubo");
   
     texts["start-help"] = GuiText();
     texts["start-help"].setText("english", "Drag A Puzzle From\nAbove Or A Shape Here\nto Play");
 	texts["start-help"].setText("french", "Faites glisser un puzzle\nci-dessus ou une forme\nici pour jouer");
+	texts["start-help"].setText("spanish", "Para jugar, arrastra aquí una forma o un rompecabezas desde arriba");
 }
 
 void GuiConfigurator::loadSheets(){
@@ -376,7 +406,7 @@ void GuiConfigurator::loadNodes(string _sheetName, GuiWindow* _win){
 		if(nodeName == "none"){
 			continue;
 		}
-		nodeName = prefix + nodeName;
+		nodeName = prefix + ":" + nodeName;
 		string nodeType = mXML.getAttribute("node","type","none",i);
 		cout << "have node of type - " << nodeType << endl;
 		if(nodeType == "none"){
@@ -463,8 +493,12 @@ void GuiConfigurator::loadEvents(GuiNode* _node){
 		if(eventName == "none"){
 			continue;
 		}
-		SubObEvent *event = new SubObEvent(); 
-		event->setName(prefix + eventName);
+		SubObEvent *event = new SubObEvent();
+		if(memberEvents.find(eventName) != memberEvents.end()){
+			event->setName(eventName);
+		} else {
+			event->setName(prefix + ":" + eventName);
+		}
 		mXML.pushTag("event", i);
 		loadArgs(event);
 		_node->addEvent(event);
@@ -484,6 +518,7 @@ void GuiConfigurator::loadArgs(SubObEvent* _event){
 		if((type == "none") || (val == "none")){
 			continue;
 		}
+		ofStringReplace(val,"%PREFIX%", prefix + ":");
 		_event->addArg(argName,type,val);
 	}
 }

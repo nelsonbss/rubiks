@@ -50,6 +50,9 @@ private:
 
 	int topMin;
 	int topMax;
-};
 
+	ofImage img;
+	bool bHaveImage;
+};
+	
 #endif

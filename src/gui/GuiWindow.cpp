@@ -1,6 +1,11 @@
 #include "GuiWindow.h"
 
 void GuiWindow::nodeInit(){
+	bHaveImage = false;
+	if(params.count("image")){
+		img.loadImage(params["image"]);
+		bHaveImage = true;
+	}
 	for(int i = 0; i < nodes.size(); i++){
 		nodePositions.push_back(ofVec2f(0.0,0.0));
 	}
@@ -17,7 +22,7 @@ void GuiWindow::nodeInit(){
 		if(!bMirrored){
 			scrollBar.setDrawPosition(drawPos + ofVec2f(263, 30));
 		} else {
-			scrollBar.setDrawPosition(drawPos + ofVec2f(0, 30));
+			scrollBar.setDrawPosition(drawPos + ofVec2f(-33, 30));
 		}
 		scrollBar.setBar();
 		scrollBar.setTarget(getName());
@@ -54,6 +59,9 @@ void GuiWindow::nodeDraw(){
 	ofSetupScreen();
 	ofDisableDepthTest();
 	ofEnableAlphaBlending();
+	if(bHaveImage){
+		img.draw(0,0);
+	}
 	int counter = 0;
 	for(auto nIter = nodes.begin(); nIter != nodes.end(); nIter++){
 		if(!((*nIter)->isSelected())){

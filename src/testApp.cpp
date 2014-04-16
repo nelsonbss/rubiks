@@ -65,10 +65,10 @@ void testApp::setup(){
 	GuiConfigurator::Instance()->extendGui("main", "sheets.xml", false, false, "bl:", patterns);
 	patterns["%COLOR%"] = "Red";
 	GuiConfigurator::Instance()->extendGui("main", "sheets.xml", true, false, "br:", patterns);
-	patterns["%COLOR%"] = "Orange";
+	/*patterns["%COLOR%"] = "Orange";
 	GuiConfigurator::Instance()->extendGui("main", "sheets.xml", false, true, "tl:", patterns);
 	patterns["%COLOR%"] = "Green";
-	GuiConfigurator::Instance()->extendGui("main", "sheets.xml", true, true, "tr:", patterns);
+	GuiConfigurator::Instance()->extendGui("main", "sheets.xml", true, true, "tr:", patterns);*/
 
 	GuiConfigurator::Instance()->loadText("assets.xml");
 

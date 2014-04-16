@@ -225,6 +225,7 @@ void GuiButton::nodeDraw(){
 			drawSize.x = inactive.getWidth();
 			drawSize.y = inactive.getHeight();
 			bWatchTime = 0;
+			bSelected = false;
 		}
 		if(ofGetElapsedTimeMillis() - timeOfLastInteraction > 500){
 			if(bSendActions && bSend){
@@ -234,6 +235,7 @@ void GuiButton::nodeDraw(){
 				ev.addArg("position", ofVec2f(drawPos.x, drawPos.y));
 				SubObMediator::Instance()->sendEvent("object-moved", ev);
 				bSend = false;
+				bSelected = false;
 			}
 		}
 	}

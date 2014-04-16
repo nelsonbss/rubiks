@@ -13,6 +13,14 @@ GuiNode::GuiNode(){
 	pos.set(0,0);
 	bMirrored = false;
 	bFlipped = false;
+	bSelected = false;
+}
+
+void GuiNode::draw(ofVec2f _pnt){
+	ofVec2f tPos = drawPos;
+	drawPos = _pnt;
+	draw();
+	drawPos = tPos;
 }
 
 void GuiNode::draw(){
@@ -85,6 +93,7 @@ bool GuiNode::isInside(int _x, int _y){
 		   if(getParam("send-select") == "true"){
 			   input("select", 0, 0, 0, ofVec2f(_x, _y), ofVec2f(0,0));
 		   }
+		   bSelected = true;
 		   return true;
        }
     return false;
@@ -191,4 +200,5 @@ void GuiNode::execute(){
 		SubObMediator::Instance()->sendEvent((*sIter)->getName(), *(*sIter));
 	}
 	nodeExecute();
+	bSelected = false;
 }

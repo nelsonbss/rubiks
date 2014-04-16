@@ -74,6 +74,8 @@ puzzle::puzzle(SG_VECTOR p, ofVec3f offset, int gSize){
 	for(int i=0; i< 36; i++){
 		selected[i] = -1;
 	}
+
+	pmoving = false;
 }
 //----------------------------------------------------------------
 void puzzle::setup(){
@@ -258,7 +260,7 @@ bool puzzle::isMoving(){
 	for(int i=0;i<numPieces;i++){
 		if(myCubies[i] != NULL){
 			if(myCubies[i]->isMoving()){
-				return pmoving;
+				return true;//pmoving;
 			}else{
 				return false;
 			}
@@ -480,6 +482,8 @@ void puzzle::rotateByIDandAxis(int id, SG_VECTOR axis, bool dir){
 	for(int i=0;i<9;i++){
 		myCubies[selected[i]]->faceRotate(axis,dir);
 	}
+
+
 	//myCubies[11]->faceRotate(axis,deg,dir);
 
 	//rearrange cubies position
@@ -656,6 +660,7 @@ void puzzle::rotateByIDandAxisNew(int id, SG_VECTOR axis, bool dir, float angle)
 
 				for(int i=0;i<counter;i++){
 					//rearrange = myCubies[selected[i]]->faceRotate(axis,dir,angle);
+					myCubies[selected[i]]->locked = false;
 					myCubies[selected[i]]->faceRotate(axis,dir,angle);
 				}
 			}else{
@@ -663,6 +668,7 @@ void puzzle::rotateByIDandAxisNew(int id, SG_VECTOR axis, bool dir, float angle)
 				//bool rearrange=false;
 				for(int i=0;i<counter;i++){
 					//rearrange = myCubies[selected[i]]->faceRotate(axis,dir,angle);
+					myCubies[selected[i]]->locked = false;
 					myCubies[selected[i]]->faceRotate(axis,dir,angle);
 				}
 			}
@@ -674,6 +680,7 @@ void puzzle::rotateByIDandAxisNew(int id, SG_VECTOR axis, bool dir, float angle)
 				angle=abs(angle);
 				for(int i=0;i<counter;i++){
 					//rearrange = myCubies[selected[i]]->faceRotate(axis,dir,angle);
+					myCubies[selected[i]]->locked = false;
 					myCubies[selected[i]]->faceRotate(axis,dir,angle);
 				}
 			}else{
@@ -681,6 +688,7 @@ void puzzle::rotateByIDandAxisNew(int id, SG_VECTOR axis, bool dir, float angle)
 				//bool rearrange=false;
 				for(int i=0;i<counter;i++){
 					//rearrange = myCubies[selected[i]]->faceRotate(axis,dir,angle);
+					myCubies[selected[i]]->locked = false;
 					myCubies[selected[i]]->faceRotate(axis,dir,angle);
 				}
 			}
@@ -772,7 +780,7 @@ void puzzle::decideMove(){
 
 		if(dirM == true){
 			//positive angle
-			if(angleM >= 45){
+			if(angleM >= 5){
 				for(int i=0;i<counter;i++){
 					myCubies[selected[i]]->goForward();
 				}
@@ -795,7 +803,7 @@ void puzzle::decideMove(){
 			}
 		}else{
 			//negative angle
-			if(angleM <= -45){
+			if(angleM <= -5){
 				for(int i=0;i<counter;i++){
 					//only need to ask one of the selected cubies, thay all have the same rotation angle
 					myCubies[selected[i]]->goForward();
@@ -819,7 +827,12 @@ void puzzle::decideMove(){
 				}
 			}
 		}
+		//clean selected
+		for(int i=0; i< 36; i++){
+			selected[i] = -1;
+		}
 	}
+	cout << "decide MOve OUT: " << endl;
 }
 
 void puzzle::endRotation(){
@@ -904,9 +917,9 @@ void puzzle::checkCubiesForHit(ofVec3f _pnt){
 	if(nearestId != -1){
 		if(nearest < MAX_DIST){
 			if(activeCubie != nearestId){
-				if(activeCubie > -1){
+				//if(activeCubie > -1){
 					//myCubies[activeCubie]->setDraw(true);
-				}
+				//}
 				activeCubie = nearestId;
 				//myCubies[activeCubie]->setDraw(false);
 				activeTriangle = myCubies[activeCubie]->getNearestTri(_pnt);

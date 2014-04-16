@@ -162,7 +162,7 @@ void armature::draw(){
 //--------------------------------------------------------------
 void armature::moveA(ofVec3f input){
 	center.x +=  input.x;
-	center.y += input.y;
+	center.y -= input.y;
 	center.z += input.z;
 }
 //--------------------------------------------------------------

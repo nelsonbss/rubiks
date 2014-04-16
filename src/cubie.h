@@ -60,6 +60,7 @@ public:
 	bool goBackb;
 	void goBack();
 	void goForward();
+	bool locked;
 
 	//float ct1;
 	//float ct2;

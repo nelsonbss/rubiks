@@ -432,7 +432,15 @@ void GuiConfigurator::loadNodes(string _sheetName, GuiWindow* _win){
 		}
 		nodePtr->setName(nodeName);
 		mXML.pushTag("node", i);
-		string pos = mXML.getValue("pos", "0.0,0.0");
+		string pos = "0.0,0.0";
+		if(!bMirrored){
+			pos = mXML.getValue("pos", "0.0,0.0");
+		} else {
+			pos = mXML.getValue("pos-mirrored", "none");
+			if(pos == "none"){
+				pos = mXML.getValue("pos", "0.0,0.0");
+			}
+		}
 		string size = mXML.getValue("size", "150.0,150.0");
 		string scale = mXML.getValue("scale","1.0");
 		if(nodeType == "window"){

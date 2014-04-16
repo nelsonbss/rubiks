@@ -433,6 +433,7 @@ void game::update(string _eventName, SubObEvent _event){
 		if(bDragInput){
 			//myPuzzle->endRotation();
 			myPuzzle->decideMove();
+			faceRotate = false;
 			bDragInput = false;
 		}
 	}
@@ -706,14 +707,17 @@ void game::unprojectPoint(ofVec3f _pnt){
 	cout << "UP = " << unprojectedPoint.x << ", " << unprojectedPoint.y << ", " << unprojectedPoint.z << endl;
 	if(unprojectMode == UP_MODE_MOUSE){
 		if(!bDragInput){
+			//cout << "down" << endl;
 			myPuzzle->checkCubiesForHit(unprojectedPoint);
 			lastUnprojectedPoint = unprojectedPoint;
 			bDragInput = true;
 			bHaveAxis = false;
 			startMove(mousePoint);
 		} else {
+			
 			//myPuzzle->dragInput((unprojectedPoint - lastUnprojectedPoint) * 25.0);
 			if(myPuzzle->isMoving() == false){
+				cout << "dragg" << endl;
 				makeMove((unprojectedPoint - lastUnprojectedPoint) * 25.0);
 				lastUnprojectedPoint = unprojectedPoint;
 			}

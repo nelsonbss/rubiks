@@ -101,8 +101,8 @@ void menuPuzzle::setup(){
 
 	temp = (sgC3DObject *) object->Clone();
 
-	SG_VECTOR transP = {position.x,position.y-300,position.z};
-	object->InitTempMatrix()->Translate(transP);//this translates the object to be cut!!
+	SG_VECTOR transP = {position.x,position.y,position.z};
+	object->InitTempMatrix()->Translate(transP);//this atranslates the object to be cut!!
 	object->ApplyTempMatrix();  
 	object->DestroyTempMatrix();
 

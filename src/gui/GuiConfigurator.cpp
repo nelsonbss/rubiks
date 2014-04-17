@@ -375,7 +375,7 @@ void GuiConfigurator::specialTextLoadingCopOut(){
     texts["start-help"] = GuiText();
     texts["start-help"].setText("english", "Drag A Puzzle From\nAbove Or A Shape Here\nto Play");
 	texts["start-help"].setText("french", "Faites glisser un puzzle\nci-dessus ou une forme\nici pour jouer");
-	texts["start-help"].setText("spanish", "Para jugar, arrastra aquí una forma o un rompecabezas desde arriba");
+	texts["start-help"].setText("spanish", "Para jugar, arrastra aquí\nuna forma o un rompecabezas\ndesde arriba");
 }
 
 void GuiConfigurator::loadSheets(){

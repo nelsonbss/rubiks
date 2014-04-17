@@ -137,7 +137,7 @@
     </event>
     <param>
       <name>image</name>
-      <val>Exports/Button_Language_0x0.png</val>
+      <val>Exports/Button_Language_0x0_%COLOR%.png</val>
     </param>
     <param>
       <name>z</name>
@@ -166,7 +166,7 @@
     <scale>1.0</scale>
     <param>
       <name>image</name>
-      <val>Exports/Button_Info_106x0.png</val>
+      <val>Exports/Button_Info_106x0_%COLOR%.png</val>
     </param>
     <param>
       <name>z</name>
@@ -182,15 +182,15 @@
     </param>
   </node>
   <node type="window" name="bg-language-dropdown">
-    <pos>0.0,0.6891</pos>
-    <size>1.0,1.0</size>
+    <pos>0.0,0.68</pos>
+    <size>0.236,0.042</size>
     <scale>1.0</scale>
     <columns>5</columns>
     <column-width>0.078</column-width>
     <column-height>0.041</column-height>
     <param>
       <name>image</name>
-      <val>Exports/TwistyLanguageBar.png</val>
+      <val>Exports/TwistyLanguageBar_%COLOR%.png</val>
     </param>
     <param>
       <name>z</name>

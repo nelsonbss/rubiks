@@ -423,22 +423,22 @@ void testApp::keyPressed(int key){
 			myGames[0]->loadMenuObject(middlePuzzles[0]->objectId,myGames[0]->slicingPos,myGames[0]->posP);
 			myGames[0]->setCurrentStep(5);
 		}
-		if(key == 'o'){
-			//myGames[0]->loadPuzzle(middlePuzzles[8]->getPuzzle());
-			myGames[0]->setCurrentStep(7);
-		}
-		if(key == 'i'){
-			//myGames[0]->loadPuzzle(middlePuzzles[7]->getPuzzle());
-			myGames[0]->setCurrentStep(7);
-		}
-		if(key == 'u'){
-			//myGames[0]->loadPuzzle(middlePuzzles[1]->getPuzzle());
-			myGames[0]->setCurrentStep(7);
-		}
-		if(key == 'y'){
-			//myGames[0]->loadPuzzle(middlePuzzles[0]->getPuzzle());
-			myGames[0]->setCurrentStep(7);
-		}
+		//if(key == 'o'){
+		//	//myGames[0]->loadPuzzle(middlePuzzles[8]->getPuzzle());
+		//	myGames[0]->setCurrentStep(7);
+		//}
+		//if(key == 'i'){
+		//	//myGames[0]->loadPuzzle(middlePuzzles[7]->getPuzzle());
+		//	myGames[0]->setCurrentStep(7);
+		//}
+		//if(key == 'u'){
+		//	//myGames[0]->loadPuzzle(middlePuzzles[1]->getPuzzle());
+		//	myGames[0]->setCurrentStep(7);
+		//}
+		//if(key == 'y'){
+		//	//myGames[0]->loadPuzzle(middlePuzzles[0]->getPuzzle());
+		//	myGames[0]->setCurrentStep(7);
+		//}
 	}
 	//////////////////////////////////////////////////////////////////////////////
 	//////////////////////////////////////////////////////////////////////////////

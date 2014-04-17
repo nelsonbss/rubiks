@@ -853,39 +853,39 @@ void game::loadPuzzle(puzzle *inputPuzzle){
 void game::loadMenuObject(int objID, SG_VECTOR p, SG_VECTOR t){
 	/////////////////////////////////////////////////////////
 	///////////do game reset..because loading a puzzle can happen at anytime
-	//if(step == 6){
-	//	if(canvasB){
-	//		//myCanvas->exit();
-	//		//delete myCanvas;
-	//		myCanvas.reset();
-	//		canvasB = false;
-	//	}
-	//	step = 0;
-	//	objectID = -1;
-	//}else if(step==4 || step==5){
-	//	myPuzzle->exit();
-	//	myCutter->exit();
-	//	mySlicer->exit();
-	//	objectDisplayed->exit();
-	//	objectID = -1;
-	//	step = 0;
-	//	armID = -1;
-	//}else if (step==3){
-	//	objectDisplayed->exit();             //clean displayed object after puzzle is created, so we dont keep it until the exit or restart
-	//	step = 0;
-	//	objectID = -1;
-	//	armID = -1;
-	//}else if (step==1 || step==2){
-	//	objectDisplayed->exit();
-	//	step = 0;
-	//	objectID = -1;
-	//	if(canvasB){
-	//		//myCanvas->exit();
-	//		//delete myCanvas;
-	//		myCanvas.reset();
-	//		canvasB = false;
-	//	}
-	//}
+	if(step == 6){
+		if(canvasB){
+			//myCanvas->exit();
+			//delete myCanvas;
+			myCanvas.reset();
+			canvasB = false;
+		}
+		step = 0;
+		objectID = -1;
+	}else if(step==4 || step==5){
+		myPuzzle->exit();
+		myCutter->exit();
+		mySlicer->exit();
+		objectDisplayed->exit();
+		objectID = -1;
+		step = 0;
+		armID = -1;
+	}else if (step==3){
+		objectDisplayed->exit();             //clean displayed object after puzzle is created, so we dont keep it until the exit or restart
+		step = 0;
+		objectID = -1;
+		armID = -1;
+	}else if (step==1 || step==2){
+		objectDisplayed->exit();
+		step = 0;
+		objectID = -1;
+		if(canvasB){
+			//myCanvas->exit();
+			//delete myCanvas;
+			myCanvas.reset();
+			canvasB = false;
+		}
+	}
 
 	offsetSlicer.x = 0;
 	offsetSlicer.y = 0;
@@ -895,12 +895,12 @@ void game::loadMenuObject(int objID, SG_VECTOR p, SG_VECTOR t){
 	rotateSlicer.y = 0;
 	rotateSlicer.z = 0;
 
-	//curRot.set (ofVec4f(0,0,0,0));
+	curRot.set (ofVec4f(0,0,0,0));
 
-	//if(extrudedB){
-	//	sgDeleteObject(extrudedObject);
-	//	extrudedB = false;
-	//}
+	if(extrudedB){
+		sgDeleteObject(extrudedObject);
+		extrudedB = false;
+	}
 	//////////////////////////////////////////////////////////
 	//load a puzzle Object from the puzzle menu on the center
 	if (objectID == -1){

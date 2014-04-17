@@ -47,7 +47,7 @@ void testApp::setup(){
 	string guiFile = "main.xml";
 	GuiConfigurator::Instance()->addFile(guiFile);
 	GuiConfigurator::Instance()->loadGui(false, false);
-	
+
 	map<string, string> patterns;
 
 	gameIds["bl"] = 0;
@@ -118,7 +118,7 @@ void testApp::setup(){
 		middlePuzzlePos.x = 10 + (i * 10) + (i*180);
 		/*
 		if(i > 6){
-			middlePuzzlePos.x = middlePuzzlePos.x - 60  + ((i-5)*10);
+		middlePuzzlePos.x = middlePuzzlePos.x - 60  + ((i-5)*10);
 		}
 		*/
 		puzzleDisplayed = new menuPuzzle(slicingPos, middlePuzzlePos, i);
@@ -147,7 +147,7 @@ void testApp::setup(){
 		puzzleDisplayed->setup();
 		puzzleDisplayed->update();
 		puzzleDisplayed->colorFacesMenu();
-		puzzleDisplayed->init();
+		puzzleDisplayed->init();//gui
 
 		//mySlicer->intersectCubes((sgCObject*)puzzleDisplayed->getObject());
 		//myPuzzle = new puzzle(middlePuzzlePos, offsetSlicer,3); // it receives the position to be displayed AND the offset of the armature/cutter to adapt slicing
@@ -223,7 +223,7 @@ void testApp::update(){
 	for(int i = 0; i < myGames.size(); i++){
 		myGames[i]->update();
 	}
-	
+
 	/////////////////////////////////////////update middle puzzles
 	for(int i=0; i < middlePuzzles.size();i++){
 		middlePuzzles[i]->update();
@@ -419,6 +419,8 @@ void testApp::keyPressed(int key){
 		//////instead of asking for a "key", with the GUI it should ask for the object ID
 		if(key == 'p'){
 			//myGames[0]->loadPuzzle(middlePuzzles[3]->getPuzzle());
+			myGames[0]->clearDisplayedObject();
+			myGames[0]->loadMenuObject(middlePuzzles[0]->objectId,myGames[0]->slicingPos,myGames[0]->posP);
 			myGames[0]->setCurrentStep(7);
 		}
 		if(key == 'o'){
@@ -510,6 +512,8 @@ void testApp::update(string _eventName, SubObEvent _event){
 		int mpId = _event.getArg("puzzle-id")->getInt();
 		string gameTag = _event.getArg("game-tag")->getString();
 		////////myGames[gameIds[gameTag]]->loadPuzzle(middlePuzzles[mpId]->getPuzzle());
+		myGames[0]->clearDisplayedObject();
+		myGames[gameIds[gameTag]]->loadMenuObject(middlePuzzles[mpId]->objectId,myGames[gameIds[gameTag]]->slicingPos,myGames[gameIds[gameTag]]->posP);
 		//myGames[gameIds[gameTag]]->setCurrentStep(7);
 	}
 }

@@ -171,6 +171,8 @@ public:
 
 	///////interaction with puzzles on the center
 	void loadPuzzle(puzzle *inputPuzzle); //load a puzzle from the puzzle menu on the center
+	void loadMenuObject (int objID,SG_VECTOR p,SG_VECTOR t);
+	void loadArmatureMenu(int type);
 	void makePuzzle();
 	bool savePuzzleB;
 	menuPuzzle* savePuzzle(SG_POINT slicingPos, SG_VECTOR middlePuzzlePos);

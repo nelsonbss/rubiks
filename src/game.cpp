@@ -328,8 +328,8 @@ void game::update(string _eventName, SubObEvent _event){
 			ev.setName("unhide-node");
 			ev.addArg("target",prefix + ":arm-window");
 			SubObMediator::Instance()->sendEvent("unhide-node", ev);
-			//ev.addArg("target",prefix + ":arm-help");
-			//SubObMediator::Instance()->sendEvent("unhide-node", ev);
+			ev.addArg("target",prefix + ":arm-help");
+			SubObMediator::Instance()->sendEvent("unhide-node", ev);
 		}
 		if(step == 3){
 			SubObEvent ev;

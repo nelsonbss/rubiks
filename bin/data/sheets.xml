@@ -137,7 +137,7 @@
     </event>
     <param>
       <name>image</name>
-      <val>Exports/Button_Language_0x0.png</val>
+      <val>Exports/Button_Language_0x0_%COLOR%.png</val>
     </param>
     <param>
       <name>z</name>
@@ -166,7 +166,7 @@
     <scale>1.0</scale>
     <param>
       <name>image</name>
-      <val>Exports/Button_Info_106x0.png</val>
+      <val>Exports/Button_Info_106x0_%COLOR%.png</val>
     </param>
     <param>
       <name>z</name>
@@ -182,15 +182,15 @@
     </param>
   </node>
   <node type="window" name="bg-language-dropdown">
-    <pos>0.0,0.6891</pos>
-    <size>1.0,1.0</size>
+    <pos>0.0,0.68</pos>
+    <size>0.236,0.042</size>
     <scale>1.0</scale>
     <columns>5</columns>
     <column-width>0.078</column-width>
     <column-height>0.041</column-height>
     <param>
       <name>image</name>
-      <val>Exports/TwistyLanguageBar.png</val>
+      <val>Exports/TwistyLanguageBar_%COLOR%.png</val>
     </param>
     <param>
       <name>z</name>
@@ -1513,20 +1513,16 @@
     </param>
   </node>
   <node type="button" name="arm-help">
-    <pos>0.01, 0.685</pos>
+    <pos>0.154, 0.685</pos>
     <size>1.0,1.0</size>
     <scale>1.0</scale>
     <param>
       <name>image</name>
-      <val>Exports/ArmatureGestures_Textbox_312x33_%COLOR%.png</val>
+      <val>Exports/SelectShape_Textbox_295x33_%COLOR%.png</val>
     </param>
     <param>
       <name>text</name>
-      <val>armature-help-1</val>
-    </param>
-    <param>
-      <name>text2</name>
-      <val>armature-help-2</val>
+      <val>arm-start</val>
     </param>
     <param>
       <name>font</name>
@@ -1538,11 +1534,7 @@
     </param>
     <param>
       <name>text-position</name>
-      <val>18,116</val>
-    </param>
-    <param>
-      <name>text-position2</name>
-      <val>90,250</val>
+      <val>25,90</val>
     </param>
     <param>
       <name>text-color</name>

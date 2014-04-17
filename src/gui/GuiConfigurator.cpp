@@ -359,6 +359,11 @@ void GuiConfigurator::specialTextLoadingCopOut(){
 	texts["make"].setText("french", "CRÉER");
 	texts["make"].setText("french", "HAZ UNO");
 
+	texts["arm-start"] = GuiText();
+	texts["arm-start"].setText("english", "Drag a structure\nto slice your shape.");
+	texts["arm-start"].setText("french", "Faites glisser une structure pour découper votre forme.");
+	texts["arm-start"].setText("french", "Para cortar tu forma, arrastra una estructura.");
+
 	texts["start"] = GuiText();
     texts["start"].setText("english", "Drag a shape to begin\nto make a puzzle like\nthe one you selected.");
   
@@ -375,7 +380,7 @@ void GuiConfigurator::specialTextLoadingCopOut(){
     texts["start-help"] = GuiText();
     texts["start-help"].setText("english", "Drag A Puzzle From\nAbove Or A Shape Here\nto Play");
 	texts["start-help"].setText("french", "Faites glisser un puzzle\nci-dessus ou une forme\nici pour jouer");
-	texts["start-help"].setText("spanish", "Para jugar, arrastra aquí una forma o un rompecabezas desde arriba");
+	texts["start-help"].setText("spanish", "Para jugar, arrastra aquí\nuna forma o un rompecabezas\ndesde arriba");
 }
 
 void GuiConfigurator::loadSheets(){

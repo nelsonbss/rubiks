@@ -164,13 +164,13 @@ void GuiButton::input(string _type, int _ID, int _n, int _phase, ofVec2f _absPos
 	if(_type == "drag"){
 		drawPos += _deltaPos;
 		dragPos = drawPos;
+		if(!bWatchTime){
+			bWatchTime = true;
+		}
 	}
 	if(_type == "tap"){
 		cout << name << " - executing" << endl;
 		execute();
-	}
-	if(!bWatchTime){
-		bWatchTime = true;
 	}
 	if(!bSend){
 		bSend = true;

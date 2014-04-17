@@ -22,7 +22,7 @@ void GuiWindow::nodeInit(){
 		if(!bMirrored){
 			scrollBar.setDrawPosition(drawPos + ofVec2f(263, 30));
 		} else {
-			scrollBar.setDrawPosition(drawPos + ofVec2f(-33, 30));
+			scrollBar.setDrawPosition(drawPos + ofVec2f(15, 30));
 		}
 		scrollBar.setBar();
 		scrollBar.setTarget(getName());
@@ -53,7 +53,9 @@ void GuiWindow::nodeDraw(){
 	}
 	//glScissor(scissorRect.x, scissorRect.y, scissorRect.width, scissorRect.height);
 	//glEnable(GL_SCISSOR_TEST);
-	//ofRect(scissorRect);
+	/*ofSetColor(0,0,0);
+	ofNoFill();
+	ofRect(scissorRect);*/
 	ofPushView();
 	ofViewport(scissorRect);
 	ofSetupScreen();
@@ -71,7 +73,7 @@ void GuiWindow::nodeDraw(){
 	}
 	ofFill();
 	ofSetColor(0,255,0);
-	//ofRect(drawPos.x, drawPos.y, 200, 200);
+	ofRect(drawPos.x, drawPos.y, 200, 200);
 	//glDisable(GL_SCISSOR_TEST);
 	ofEnableDepthTest();
 	ofPopView();
@@ -118,6 +120,9 @@ void GuiWindow::positionNodes(){
 		float nodeX = column * (columnWidth * ofGetWidth());
 		float nodeY = row * (columnHeight * ofGetHeight());
 		ofVec2f nodePos = ofVec2f(0, currentTop) + ofVec2f(nodeX, nodeY);
+		if(bMirrored){
+			nodePos += ofVec2f(40,0);
+		}
 		ofVec2f nodePosD = nodePos + drawPos;
 		ofVec2f nodePosF(nodePos.x / ofGetWidth(), nodePos.y / ofGetHeight());
 		//cout << "setting node position to - " << nodePos.x << ", " << nodePos.y << endl;

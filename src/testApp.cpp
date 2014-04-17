@@ -421,7 +421,7 @@ void testApp::keyPressed(int key){
 			//myGames[0]->loadPuzzle(middlePuzzles[3]->getPuzzle());
 			myGames[0]->clearDisplayedObject();
 			myGames[0]->loadMenuObject(middlePuzzles[0]->objectId,myGames[0]->slicingPos,myGames[0]->posP);
-			myGames[0]->setCurrentStep(7);
+			myGames[0]->setCurrentStep(5);
 		}
 		if(key == 'o'){
 			//myGames[0]->loadPuzzle(middlePuzzles[8]->getPuzzle());

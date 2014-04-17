@@ -980,27 +980,29 @@ void game::loadMenuObject(int objID, SG_VECTOR p, SG_VECTOR t){
 		////////////////////////
 		
 		//objectID = -1;
-		SubObEvent ev;
-		ev.setName("hide-node");
-		ev.addArg("target", prefix + ":start-help");
-		SubObMediator::Instance()->sendEvent("hide-node", ev);
+		
 		////////////////////////////////
 		objectDisplayed->setup();
 		//step = 1;
 
 		//make the puzzle automatically
-		loadArmatureMenu(1); ///have to adapt this to any armature on the menu puzzles!!!
+		int grid =3; ///have to adapt this to any armature on the menu puzzles!!!///have to adapt this to any armature on the menu puzzles!!!
+		loadArmatureMenu(grid); 
 		applyArmRotations();
 		createCutterSlicer();
 		////createPuzzle(posP);
-		myPuzzle = new puzzle(posP, offsetSlicer,1);///have to adapt this to any armature on the menu puzzles!!!
+		myPuzzle = new puzzle(posP, offsetSlicer,grid);
 		myPuzzle->setup();
 		mySlicer->intersectCubes((sgCObject*)objectDisplayed->getObject()); 
 		myPuzzle->loadPieces(mySlicer->getPieces(),objectID,rotateSlicer);
 		myPuzzle->colorFaces(objectID);
 
 		//step = 7;
-		step = 3;
+		step = 5;
+		SubObEvent ev;
+		ev.setName("hide-node");
+		ev.addArg("target", prefix + ":start-help");
+		SubObMediator::Instance()->sendEvent("hide-node", ev);
 	}
 }
 //----------------------------------------------------------------------

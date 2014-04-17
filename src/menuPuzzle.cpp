@@ -8,6 +8,7 @@ menuPuzzle::menuPuzzle(SG_VECTOR p, SG_VECTOR t, int ID ) : GuiNode(){
 	
 	id = ID;
 	
+	armRot = ofVec3f (0,0,0);
 	tempPos.x = t.x;
 	tempPos.y = t.y;
 	tempPos.z = t.z;
@@ -99,12 +100,12 @@ void menuPuzzle::setup(){
 	//the real object is never rendered or moved::::it is used to make the boolean intersection
 	//the rendered and animated object is temp
 
-	temp = (sgC3DObject *) object->Clone();
+	//temp = (sgC3DObject *) object->Clone();
 
-	SG_VECTOR transP = {position.x,position.y,position.z};
-	object->InitTempMatrix()->Translate(transP);//this atranslates the object to be cut!!
-	object->ApplyTempMatrix();  
-	object->DestroyTempMatrix();
+	//SG_VECTOR transP = {position.x,position.y,position.z};
+	//object->InitTempMatrix()->Translate(transP);//this atranslates the object to be cut!!
+	//object->ApplyTempMatrix();  
+	//object->DestroyTempMatrix();
 
 	temp->Triangulate(SG_VERTEX_TRIANGULATION);
 	ofRender *ofr = new ofRender(); //class that has the metods to transform sgCore to OF mesh and set the normals (in one function)
@@ -132,15 +133,15 @@ void menuPuzzle::update(){
 		temp->GetTempMatrix()->Translate(offset);//this translates the object to be cut!!
 
 		//apply armature axis rotations (x-y-z) to the real object
-		SG_POINT rotP = {0,0,0};
-		SG_VECTOR rotV = {1,0,0};
-		object->InitTempMatrix()->Rotate(rotP,rotV,ofDegToRad(armRot.x));
-		SG_VECTOR rotV2 = {0,1,0};
-		object->GetTempMatrix()->Rotate(rotP,rotV2,ofDegToRad(armRot.y));
-		SG_VECTOR rotV3 = {0,0,1};
-		object->GetTempMatrix()->Rotate(rotP,rotV3,ofDegToRad(armRot.z));
-		object->ApplyTempMatrix(); 
-		object->DestroyTempMatrix(); 
+		//SG_POINT rotP = {0,0,0};
+		//SG_VECTOR rotV = {1,0,0};
+		//object->InitTempMatrix()->Rotate(rotP,rotV,ofDegToRad(armRot.x));
+		//SG_VECTOR rotV2 = {0,1,0};
+		//object->GetTempMatrix()->Rotate(rotP,rotV2,ofDegToRad(armRot.y));
+		//SG_VECTOR rotV3 = {0,0,1};
+		//object->GetTempMatrix()->Rotate(rotP,rotV3,ofDegToRad(armRot.z));
+		//object->ApplyTempMatrix(); 
+		//object->DestroyTempMatrix(); 
 	}else if(objectId == 3){
 		////cone..pyramid
 		//SG_POINT rotP = transP;
@@ -233,10 +234,13 @@ void menuPuzzle::nodeDraw(){
 void menuPuzzle::loadObject(sgC3DObject *obj, int ID){
 
 	if(object==NULL){
-		object = obj;
+		//object = obj; //to make a puzzle at the beggining 
+		temp = obj;
 	}else{
-		sgDeleteObject(object);
-		object = obj;
+		//sgDeleteObject(object);
+		//object = obj;
+		sgDeleteObject(temp);
+		temp = obj;
 	}
 	objectId = ID;
 
@@ -250,7 +254,7 @@ void menuPuzzle::loadObject(sgC3DObject *obj, int ID){
 	//	object->ApplyTempMatrix();  
 	//	object->DestroyTempMatrix();
 	//}else if(objectId == 2){
-	//	//cube
+		//cube
 	//	SG_VECTOR offset = {-150,-150,-150}; //for the cube to be in center  place, it has sides of 300
 	//	object->InitTempMatrix()->Translate(offset);//this translates the object to be cut!!
 	//	object->ApplyTempMatrix();  
@@ -282,9 +286,9 @@ void menuPuzzle::loadObject(sgC3DObject *obj, int ID){
 	//}  
 }
 //--------------------------------------------------------------
-void menuPuzzle::loadPuzzle(puzzle *inpuzzle){
-	myMenuPuzzle = inpuzzle;
-}
+//void menuPuzzle::loadPuzzle(puzzle *inpuzzle){
+//	myMenuPuzzle = inpuzzle;
+//}
 //----------------------------------------------------------------
 sgC3DObject* menuPuzzle::getObject(){
 	return temp;
@@ -335,27 +339,28 @@ void menuPuzzle::input(string _type, int _ID, int _n, int _phase, ofVec2f _absPo
 }
 
 //----------------------------------------------------------------
-void menuPuzzle::applyArmRotations(ofVec3f v){
-	armRot = (v)*-1;
-	//apply armature axis rotations (x-y-z) to the real object
-	SG_POINT rotP = {0,0,0};
-	SG_VECTOR rotV = {1,0,0};
-	temp->InitTempMatrix()->Rotate(rotP,rotV,ofDegToRad(armRot.x));
-	SG_VECTOR rotV2 = {0,1,0};
-	temp->GetTempMatrix()->Rotate(rotP,rotV2,ofDegToRad(armRot.y));
-	SG_VECTOR rotV3 = {0,0,1};
-	temp->GetTempMatrix()->Rotate(rotP,rotV3,ofDegToRad(armRot.z));
-	temp->ApplyTempMatrix();
-	temp->DestroyTempMatrix(); 
-}
+//void menuPuzzle::applyArmRotations(ofVec3f v){
+//	armRot = (v)*-1;
+//	//apply armature axis rotations (x-y-z) to the real object
+//	SG_POINT rotP = {0,0,0};
+//	SG_VECTOR rotV = {1,0,0};
+//	temp->InitTempMatrix()->Rotate(rotP,rotV,ofDegToRad(armRot.x));
+//	SG_VECTOR rotV2 = {0,1,0};
+//	temp->GetTempMatrix()->Rotate(rotP,rotV2,ofDegToRad(armRot.y));
+//	SG_VECTOR rotV3 = {0,0,1};
+//	temp->GetTempMatrix()->Rotate(rotP,rotV3,ofDegToRad(armRot.z));
+//	temp->ApplyTempMatrix();
+//	temp->DestroyTempMatrix(); 
+//}
 //----------------------------------------------------------------
 void menuPuzzle::exit(){
 	sgCObject::DeleteObject(temp);
 }
 //-------------------------------------------------------
-puzzle* menuPuzzle::getPuzzle(){
-	return myMenuPuzzle;
-}
+//puzzle* menuPuzzle::getPuzzle(){
+//	return myMenuPuzzle;
+//}
+//---------------------------------------------------------
 void menuPuzzle::mouseDragged(int x, int y, int button){
 }
 //--------------------------------------------------------------

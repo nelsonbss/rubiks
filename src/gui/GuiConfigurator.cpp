@@ -359,6 +359,11 @@ void GuiConfigurator::specialTextLoadingCopOut(){
 	texts["make"].setText("french", "CRÉER");
 	texts["make"].setText("french", "HAZ UNO");
 
+	texts["arm-start"] = GuiText();
+	texts["arm-start"].setText("english", "Drag a structure\nto slice your shape.");
+	texts["arm-start"].setText("french", "Faites glisser une structure pour découper votre forme.");
+	texts["arm-start"].setText("french", "Para cortar tu forma, arrastra una estructura.");
+
 	texts["start"] = GuiText();
     texts["start"].setText("english", "Drag a shape to begin\nto make a puzzle like\nthe one you selected.");
   

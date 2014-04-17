@@ -328,8 +328,8 @@ void game::update(string _eventName, SubObEvent _event){
 			ev.setName("unhide-node");
 			ev.addArg("target",prefix + ":arm-window");
 			SubObMediator::Instance()->sendEvent("unhide-node", ev);
-			//ev.addArg("target",prefix + ":arm-help");
-			//SubObMediator::Instance()->sendEvent("unhide-node", ev);
+			ev.addArg("target",prefix + ":arm-help");
+			SubObMediator::Instance()->sendEvent("unhide-node", ev);
 		}
 		if(step == 3){
 			SubObEvent ev;
@@ -728,7 +728,7 @@ void game::unprojectPoint(ofVec3f _pnt){
 			bHaveAxis = false;
 			startMove(mousePoint);
 		} else {
-			
+
 			//myPuzzle->dragInput((unprojectedPoint - lastUnprojectedPoint) * 25.0);
 			if(myPuzzle->isMoving() == false){
 				cout << "dragg" << endl;
@@ -864,6 +864,162 @@ void game::loadPuzzle(puzzle *inputPuzzle){
 	SubObMediator::Instance()->sendEvent("hide-node", ev);
 } 
 //----------------------------------------------------------------------
+void game::loadMenuObject(int objID, SG_VECTOR p, SG_VECTOR t){
+	/////////////////////////////////////////////////////////
+	///////////do game reset..because loading a puzzle can happen at anytime
+	if(step == 6){
+		if(canvasB){
+			//myCanvas->exit();
+			//delete myCanvas;
+			myCanvas.reset();
+			canvasB = false;
+		}
+		step = 0;
+		objectID = -1;
+	}else if(step==4 || step==5){
+		myPuzzle->exit();
+		myCutter->exit();
+		mySlicer->exit();
+		objectDisplayed->exit();
+		objectID = -1;
+		step = 0;
+		armID = -1;
+	}else if (step==3){
+		objectDisplayed->exit();             //clean displayed object after puzzle is created, so we dont keep it until the exit or restart
+		step = 0;
+		objectID = -1;
+		armID = -1;
+	}else if (step==1 || step==2){
+		objectDisplayed->exit();
+		step = 0;
+		objectID = -1;
+		if(canvasB){
+			//myCanvas->exit();
+			//delete myCanvas;
+			myCanvas.reset();
+			canvasB = false;
+		}
+	}
+
+	offsetSlicer.x = 0;
+	offsetSlicer.y = 0;
+	offsetSlicer.z = 0;
+
+	rotateSlicer.x = 0;
+	rotateSlicer.y = 0;
+	rotateSlicer.z = 0;
+
+	curRot.set (ofVec4f(0,0,0,0));
+
+	if(extrudedB){
+		sgDeleteObject(extrudedObject);
+		extrudedB = false;
+	}
+	//////////////////////////////////////////////////////////
+	//load a puzzle Object from the puzzle menu on the center
+	if (objectID == -1){
+		objectDisplayed = new myobject3D(p,t);
+	}else{
+		objectDisplayed->exit();
+		delete objectDisplayed;
+		objectDisplayed = new myobject3D(p,t);
+	}
+	objectID = objID;
+	if(step == 0 ){//|| step==1 || step == 6){
+		if(objID == 1){
+			//torus
+			objectDisplayed->loadObject(sgCreateTorus(100,70,50,50),1);//(radius,thickness,meridiansDonut,meridiansDonutCut)
+			if(extrudedB){
+				sgDeleteObject(extrudedObject);
+				extrudedB = false;
+			}
+		}
+		if(objID == 2){
+			//cube
+			objectDisplayed->loadObject(sgCreateBox(300,300,300),2);//(tamX,tamY,tamZ)
+			if(extrudedB){
+				sgDeleteObject(extrudedObject);
+				extrudedB = false;
+			}
+		}if(objID == 3){
+			//cone
+			//objectDisplayed->loadObject(sgCreateCone(250,1,250,3),3);
+			objectDisplayed->loadObject((sgC3DObject *)sgTetrahedron->Clone(),3);
+			if(extrudedB){
+				sgDeleteObject(extrudedObject);
+				extrudedB = false;
+			}
+		}
+		if(objID == 4){
+			//try to load the bunny
+			objectDisplayed->loadObject((sgC3DObject *)sgBunny->Clone(),4);
+			if(extrudedB){
+				sgDeleteObject(extrudedObject);
+				extrudedB = false;
+			}
+		}
+		if(objID == 5){
+			//try to load the dodecahedron
+			objectDisplayed->loadObject((sgC3DObject *)sgDodecahedron->Clone(),5);
+			if(extrudedB){
+				sgDeleteObject(extrudedObject);
+				extrudedB = false;
+			}
+		}
+		if(objID == 6){
+			//try to load the Icosahedron
+			objectDisplayed->loadObject((sgC3DObject *)sgIcosahedron->Clone(),6);
+			if(extrudedB){
+				sgDeleteObject(extrudedObject);
+				extrudedB = false;
+			}
+		}
+		if(objID == 7){
+			//try to load the Octahedron
+			objectDisplayed->loadObject((sgC3DObject *)sgOctahedron->Clone(),7);
+			if(extrudedB){
+				sgDeleteObject(extrudedObject);
+				extrudedB = false;
+			}
+
+		}
+		//if(objID == 8){
+		//	//try to load the Teapot
+		//	objectDisplayed->loadObject((sgC3DObject *)sgTeapot->Clone(),8);
+		//}
+		if(objID == 200){
+			//load extruded object
+			objectDisplayed->loadObject((sgC3DObject *)extrudedObject->Clone(),200);
+		}
+		////////////////////////
+		
+		//objectID = -1;
+		
+		////////////////////////////////
+		objectDisplayed->setup();
+		//step = 1;
+
+		//make the puzzle automatically
+		int grid =3; ///have to adapt this to any armature on the menu puzzles!!!///have to adapt this to any armature on the menu puzzles!!!
+		loadArmatureMenu(grid); 
+		applyArmRotations();
+		createCutterSlicer();
+		////createPuzzle(posP);
+		myPuzzle = new puzzle(posP, offsetSlicer,grid);
+		myPuzzle->setup();
+		mySlicer->intersectCubes((sgCObject*)objectDisplayed->getObject()); 
+		myPuzzle->loadPieces(mySlicer->getPieces(),objectID,rotateSlicer);
+		myPuzzle->colorFaces(objectID);
+
+		//step = 7;
+		step = 5;
+		SubObEvent ev;
+		ev.setName("hide-node");
+		ev.addArg("target", prefix + ":start-help");
+		SubObMediator::Instance()->sendEvent("hide-node", ev);
+	}
+}
+//----------------------------------------------------------------------
 void game::loadObject(int objID, SG_VECTOR p, SG_VECTOR t){
 	if (objectID == -1){
 		objectDisplayed = new myobject3D(p,t);
@@ -942,9 +1098,6 @@ void game::loadObject(int objID, SG_VECTOR p, SG_VECTOR t){
 		objectDisplayed->setup();
 		step = 1;
 	}
-	////////////////////// from STL file
-	/*const char* nel =  ofToDataPath("cube.stl",false).c_str();
-	objectDisplayed.loadObjectFromFile(nel);*/
 }
 //----------------------------------------------------------------------
 void game::loadArmature(int type){
@@ -985,6 +1138,45 @@ void game::loadArmature(int type){
 
 	myArmature->setup();
 	step =3;
+}
+//----------------------------------------------------------------------
+void game::loadArmatureMenu(int type){
+	//loads armature and creates cutter and slicer
+	//have to clear myArmature, to load the new one, like load objects!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	rotateSlicer.x=0;
+	rotateSlicer.y=0;
+	rotateSlicer.z=0;
+
+	if (armID == -1){
+		//first time
+		if(type == 1){
+			tamCubie = 100;
+			myArmature = new armature (ofVec3f(posA.x,posA.y,posA.z),tamSideArmature,tamSideArmature,10,tamCubie);
+		}else if(type == 2){
+			tamCubie = 50;
+			myArmature = new armature (ofVec3f(posA.x,posA.y,posA.z),tamSideArmature,tamSideArmature,10,tamCubie);
+		}else if(type > 1){
+			tamCubie = 100;
+			myArmature = new armature (ofVec3f(posA.x,posA.y,posA.z),tamSideArmature,tamSideArmature,10,tamCubie);
+		}
+		armID = type;
+	}else{
+		//free (myArmature);
+		//delete myArmature;
+		if(type == 1){
+			tamCubie = 100;
+			myArmature = new armature (ofVec3f(posA.x,posA.y,posA.z),tamSideArmature,tamSideArmature,10,tamCubie);
+		}else if(type == 2){
+			tamCubie = 50;
+			myArmature = new armature (ofVec3f(posA.x,posA.y,posA.z),tamSideArmature,tamSideArmature,10,tamCubie);
+		}else if(type > 1){
+			tamCubie = 100;
+			myArmature = new armature (ofVec3f(posA.x,posA.y,posA.z),tamSideArmature,tamSideArmature,10,tamCubie);
+		}
+		armID = type;
+	}
+
+	myArmature->setup();
 }
 //-----------------------------------------------------------------------------------------
 void game::applyArmRotations(){
@@ -1762,7 +1954,13 @@ menuPuzzle*  game::savePuzzle(SG_POINT slicingPos, SG_VECTOR middlePuzzlePos){
 	puzzleToSave->update();
 	puzzleToSave->colorFacesMenu();
 
-	puzzleToSave->loadPuzzle(myPuzzle);
+	//need to pass this data to menuPuzzle
+	//vector< ofFloatColor > colorsVMenu;
+	//vector< ofVec3f > uniqueNormals;
+	//ofVec3f offsetSlicer;
+	//ofVec3f rotateSlicer;
+
+	////puzzleToSave->loadPuzzle(myPuzzle);
 	puzzleToSave->objectId = objectID; 
 
 	return puzzleToSave;

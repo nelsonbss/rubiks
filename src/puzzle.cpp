@@ -92,7 +92,7 @@ void puzzle::setup(){
 void puzzle::update(){
 	//iterate through cubies
 	//cout << "UPDATING PUZZLE" << endl;
-	for(int i=0;i<numPieces;i++){
+	/*for(int i=0;i<numPieces;i++){
 		if(myCubies[i] != NULL){
 			myCubies[i]->update();
 			if(myCubies[i]->getRotate()){
@@ -124,7 +124,7 @@ void puzzle::update(){
 				}
 			}
 		}
-	}
+	}*/
 }
 //----------------------------------------------------------------
 void puzzle::draw(){  

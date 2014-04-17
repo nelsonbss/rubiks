@@ -6,14 +6,8 @@
 #define displayYBlue 1150
 #define displayZ -800
 #define iddleTime 120
-//#define puzzleItems 10
-<<<<<<< HEAD
-#define puzzleItems 3
-=======
-#define puzzleItems 0
-
-#define USE_MOUSE 0
->>>>>>> 381151f46c9af748a1e18500f383556df1220c57
+#define puzzleItems 2
+#define USE_MOUSE 1
 
 std::map<int,gwc::Point> active_points;
 
@@ -54,7 +48,7 @@ void testApp::setup(){
 	string guiFile = "main.xml";
 	GuiConfigurator::Instance()->addFile(guiFile);
 	GuiConfigurator::Instance()->loadGui(false, false);
-	
+
 	map<string, string> patterns;
 
 	gameIds["bl"] = 0;
@@ -107,25 +101,25 @@ void testApp::setup(){
 	middlePuzzlePos.x = 0;
 	middlePuzzlePos.y = (ofGetWindowHeight()/2)-90;
 	middlePuzzlePos.z = 0;
-	////////////////////////////////create cutter
-	ofVec3f offsetSlicer = ofVec3f(0,0,0);
-	myCutter = new cutter(0.01,1000,100,1,offsetSlicer,3);// number of slices == same number in slicer
-	myCutter->setup();
-	//////////////////////////////////create slicer
-	mySlicer = new slicer(myCutter,3);
-	mySlicer->setup();
+	//////////////////////////////////create cutter
+	//ofVec3f offsetSlicer = ofVec3f(0,0,0);
+	//myCutter = new cutter(0.01,1000,100,1,offsetSlicer,3);// number of slices == same number in slicer
+	//myCutter->setup();
+	////////////////////////////////////create slicer
+	//mySlicer = new slicer(myCutter,3);
+	//mySlicer->setup();
 
 	slicingPos.x = 0;
 	slicingPos.y = 0;
 	slicingPos.z = 0;
 
-	ofVec3f rotateSlicer = ofVec3f (0,0,0);
+	//ofVec3f rotateSlicer = ofVec3f (0,0,0);
 
 	for(int i=0; i < puzzleItems; i++){
 		middlePuzzlePos.x = 10 + (i * 10) + (i*180);
 		/*
 		if(i > 6){
-			middlePuzzlePos.x = middlePuzzlePos.x - 60  + ((i-5)*10);
+		middlePuzzlePos.x = middlePuzzlePos.x - 60  + ((i-5)*10);
 		}
 		*/
 		puzzleDisplayed = new menuPuzzle(slicingPos, middlePuzzlePos, i);
@@ -154,22 +148,21 @@ void testApp::setup(){
 		puzzleDisplayed->setup();
 		puzzleDisplayed->update();
 		puzzleDisplayed->colorFacesMenu();
-		puzzleDisplayed->init();
+		puzzleDisplayed->init();//gui
 
-		mySlicer->intersectCubes((sgCObject*)puzzleDisplayed->getObject());
-		myPuzzle = new puzzle(middlePuzzlePos, offsetSlicer,3); // it receives the position to be displayed AND the offset of the armature/cutter to adapt slicing
-		myPuzzle->setup();
-		myPuzzle->loadPieces(mySlicer->getPieces(),puzzleDisplayed->objectId,rotateSlicer);//selected object id is used for coloring
+		//mySlicer->intersectCubes((sgCObject*)puzzleDisplayed->getObject());
+		//myPuzzle = new puzzle(middlePuzzlePos, offsetSlicer,3); // it receives the position to be displayed AND the offset of the armature/cutter to adapt slicing
+		//myPuzzle->setup();
+		//myPuzzle->loadPieces(mySlicer->getPieces(),puzzleDisplayed->objectId,rotateSlicer);//selected object id is used for coloring
 
-		//this is a special function that takes, the unique normals, and unique colors of the menuPuzzle, to repeat those colors on the real puzzle of the menuPuzzle
-		myPuzzle->colorFacesMenuPuzzle(puzzleDisplayed->objectId,puzzleDisplayed->uniqueNormals,puzzleDisplayed->colorsVMenu);
+		////this is a special function that takes, the unique normals, and unique colors of the menuPuzzle, to repeat those colors on the real puzzle of the menuPuzzle
+		//myPuzzle->colorFacesMenuPuzzle(puzzleDisplayed->objectId,puzzleDisplayed->uniqueNormals,puzzleDisplayed->colorsVMenu);
 
 
-		cout << "created puzzle menu puzzle: " << i <<endl;
-		puzzleDisplayed->loadPuzzle(myPuzzle);
+		//cout << "created puzzle menu puzzle: " << i <<endl;
+		//puzzleDisplayed->loadPuzzle(myPuzzle);
 
-		cout << "created puzzle menu item: " << i << endl;
-		
+		//cout << "created puzzle menu item: " << i << endl;
 		middlePuzzles.push_back(puzzleDisplayed);
 	}
 	cout << "puzzles menu created" << endl;
@@ -230,32 +223,11 @@ void testApp::update(){
 	for(int i = 0; i < myGames.size(); i++){
 		myGames[i]->update();
 	}
-	
-	/////////////////////////////////////////update middle puzzles
-	for(int i=0; i < middlePuzzles.size();i++){
-		middlePuzzles[i]->update();
-	}
-
-
-	/////////////////////////////////////////watch for new puzzles being saved
-	if(myGames[0]->savePuzzleB == true){
-		middlePuzzlePos.x = 100 + ((puzzleCounter+7)*180);
-		menuPuzzle * tempMidPuzzle = myGames[0]->savePuzzle(slicingPos,middlePuzzlePos);
-		middlePuzzles[puzzleCounter+7] = tempMidPuzzle;
-		puzzleCounter ++;
-		if(puzzleCounter == 3){
-			puzzleCounter=0;
-		}
-		myGames[0]->savePuzzleB = false;
-		//reset game
-		myGames[0]->restart();
-	}
 
 	/////////////////////////////////////////update middle puzzles
 	for(int i=0; i < middlePuzzles.size();i++){
 		middlePuzzles[i]->update();
 	}
-
 
 	/////////////////////////////////////////watch for new puzzles being saved
 	if(myGames[0]->savePuzzleB == true){
@@ -446,25 +418,27 @@ void testApp::keyPressed(int key){
 		///////////from puzzles in the center
 		//////instead of asking for a "key", with the GUI it should ask for the object ID
 		if(key == 'p'){
-			myGames[0]->loadPuzzle(middlePuzzles[3]->getPuzzle());
-			myGames[0]->setCurrentStep(7);
+			//myGames[0]->loadPuzzle(middlePuzzles[3]->getPuzzle());
+			myGames[0]->clearDisplayedObject();
+			myGames[0]->loadMenuObject(middlePuzzles[0]->objectId,myGames[0]->slicingPos,myGames[0]->posP);
+			myGames[0]->setCurrentStep(5);
 		}
-		if(key == 'o'){
-			myGames[0]->loadPuzzle(middlePuzzles[8]->getPuzzle());
-			myGames[0]->setCurrentStep(7);
-		}
-		if(key == 'i'){
-			myGames[0]->loadPuzzle(middlePuzzles[7]->getPuzzle());
-			myGames[0]->setCurrentStep(7);
-		}
-		if(key == 'u'){
-			myGames[0]->loadPuzzle(middlePuzzles[1]->getPuzzle());
-			myGames[0]->setCurrentStep(7);
-		}
-		if(key == 'y'){
-			myGames[0]->loadPuzzle(middlePuzzles[0]->getPuzzle());
-			myGames[0]->setCurrentStep(7);
-		}
+		//if(key == 'o'){
+		//	//myGames[0]->loadPuzzle(middlePuzzles[8]->getPuzzle());
+		//	myGames[0]->setCurrentStep(7);
+		//}
+		//if(key == 'i'){
+		//	//myGames[0]->loadPuzzle(middlePuzzles[7]->getPuzzle());
+		//	myGames[0]->setCurrentStep(7);
+		//}
+		//if(key == 'u'){
+		//	//myGames[0]->loadPuzzle(middlePuzzles[1]->getPuzzle());
+		//	myGames[0]->setCurrentStep(7);
+		//}
+		//if(key == 'y'){
+		//	//myGames[0]->loadPuzzle(middlePuzzles[0]->getPuzzle());
+		//	myGames[0]->setCurrentStep(7);
+		//}
 	}
 	//////////////////////////////////////////////////////////////////////////////
 	//////////////////////////////////////////////////////////////////////////////
@@ -543,7 +517,9 @@ void testApp::update(string _eventName, SubObEvent _event){
 	if(_eventName == "menupuzzle-selected"){
 		int mpId = _event.getArg("puzzle-id")->getInt();
 		string gameTag = _event.getArg("game-tag")->getString();
-		myGames[gameIds[gameTag]]->loadPuzzle(middlePuzzles[mpId]->getPuzzle());
+		////////myGames[gameIds[gameTag]]->loadPuzzle(middlePuzzles[mpId]->getPuzzle());
+		myGames[0]->clearDisplayedObject();
+		myGames[gameIds[gameTag]]->loadMenuObject(middlePuzzles[mpId]->objectId,myGames[gameIds[gameTag]]->slicingPos,myGames[gameIds[gameTag]]->posP);
 		//myGames[gameIds[gameTag]]->setCurrentStep(7);
 	}
 }

@@ -7,8 +7,13 @@
 #define displayZ -800
 #define iddleTime 120
 //#define puzzleItems 10
+<<<<<<< HEAD
+#define puzzleItems 3
+=======
 #define puzzleItems 0
-#define USE_MOUSE 1
+
+#define USE_MOUSE 0
+>>>>>>> 381151f46c9af748a1e18500f383556df1220c57
 
 std::map<int,gwc::Point> active_points;
 

@@ -1748,7 +1748,13 @@ menuPuzzle*  game::savePuzzle(SG_POINT slicingPos, SG_VECTOR middlePuzzlePos){
 	puzzleToSave->update();
 	puzzleToSave->colorFacesMenu();
 
-	puzzleToSave->loadPuzzle(myPuzzle);
+	//need to pass this data to menuPuzzle
+	//vector< ofFloatColor > colorsVMenu;
+	//vector< ofVec3f > uniqueNormals;
+	//ofVec3f offsetSlicer;
+	//ofVec3f rotateSlicer;
+
+	////puzzleToSave->loadPuzzle(myPuzzle);
 	puzzleToSave->objectId = objectID; 
 
 	return puzzleToSave;

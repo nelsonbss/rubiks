@@ -11,10 +11,10 @@ class menuPuzzle : public GuiNode{
 public:
 	menuPuzzle (SG_VECTOR pos, SG_VECTOR t, int ID);
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////
-	void loadPuzzle(puzzle *inpuzzle);
-	puzzle *myMenuPuzzle;
-	int id;
-	puzzle *getPuzzle();
+	//void loadPuzzle(puzzle *inpuzzle);
+	//puzzle *myMenuPuzzle;
+
+	//puzzle *getPuzzle();
 	////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//void draw();
 	void setup();
@@ -24,12 +24,13 @@ public:
 	void mousePressed(int x, int y, int button);
 	void mouseReleased(int x, int y, int button);
 	////////////////////////////////////////////////////////////////////////////////////////////////////////
+	int id;
 	void loadObject(sgC3DObject *obj, int ID); //it will load a sgCore lib object: torus, box...
 	sgC3DObject* getObject();//it will return the object, i.e to be used in boolean
 
 	int objectId; //the id of the 3d selected object, the id comes from the main app
 	sgC3DObject *object;
-	sgC3DObject *temp;//the original will be in 0,0,0 to be cut. the temp will be moved around and be drawn.
+	sgC3DObject *temp;//the slicing object will be in 0,0,0 to be cut. the temp will be moved around and be drawn.
 	CubieMesh myMesh;// this will be used to draw the object, 
 	ofVbo myVbo;
 
@@ -37,16 +38,16 @@ public:
 	//so that both objects have the same color
 	vector< ofFloatColor > colorsVMenu;
 	vector< ofVec3f > uniqueNormals;
-
+	ofVec3f offsetSlicer;
+	ofVec3f rotateSlicer;
 	SG_VECTOR position;
 	SG_VECTOR tempPos;
 	SG_VECTOR tempSize;
-
-	bool isInside(int _x, int _y);
-
 	void colorFacesMenu();
 	ofVec3f armRot;
-	void applyArmRotations(ofVec3f v);
+	//void applyArmRotations(ofVec3f v);
+
+	bool isInside(int _x, int _y);
 
 	/*Gui Stuff*/
 	void nodeInit();

@@ -290,12 +290,6 @@ void cubie::update(){
 				//////		}
 				//////	}
 				//////}
-
-
-
-
-
-
 				//if(sample==false){
 				//	//this should only be sampled once during the animation
 				//	rotXa = 0;//myMatrix.at(myMatrix.size()-2).deg;

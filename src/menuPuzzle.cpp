@@ -250,7 +250,7 @@ void menuPuzzle::loadObject(sgC3DObject *obj, int ID){
 	//	object->ApplyTempMatrix();  
 	//	object->DestroyTempMatrix();
 	//}else if(objectId == 2){
-	//	//cube
+		//cube
 	//	SG_VECTOR offset = {-150,-150,-150}; //for the cube to be in center  place, it has sides of 300
 	//	object->InitTempMatrix()->Translate(offset);//this translates the object to be cut!!
 	//	object->ApplyTempMatrix();  

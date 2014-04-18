@@ -188,9 +188,9 @@ void testApp::setup(){
 	game *tempGame3 = new game(gamePos, ofGetWidth(), ofGetHeight(),displayPos, tr, iddleTime,"tl");
 	myGames.push_back(tempGame3);
 	tr.x = 960;
-	/*game *tempGame4 = new game(gamePos, ofGetWidth(), ofGetHeight(),displayPos, tr, iddleTime,"tr");
+	game *tempGame4 = new game(gamePos, ofGetWidth(), ofGetHeight(),displayPos, tr, iddleTime,"tr");
 	myGames.push_back(tempGame4);
-	currentGame = 1;*/
+	currentGame = 1;
 	//create a second game
 	//game *tempGame2 = new game(gamePos, ofGetWidth(), ofGetHeight(),displayPos,iddleTime);
 	//myGames.push_back(tempGame2);

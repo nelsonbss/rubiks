@@ -121,10 +121,11 @@ void game::setup(sgCObject *sgBunnyi,sgCObject *sgTetrahedroni,sgCObject *sgDode
 	SubObMediator::Instance()->addObserver(prefix + ":armature-selected", this);
 	SubObMediator::Instance()->addObserver(prefix + ":next-step", this);
 	SubObMediator::Instance()->addObserver(prefix + ":reset", this);
-	SubObMediator::Instance()->addObserver(prefix + ":make-one", this);
 	SubObMediator::Instance()->addObserver(prefix + ":extrude", this);
 	SubObMediator::Instance()->addObserver(prefix + ":extrusion-success", this);
 
+	SubObMediator::Instance()->addObserver(prefix + ":make-one2", this);
+	SubObMediator::Instance()->addObserver(prefix + ":menupuzzle-selected", this);
 	//goToAttract();
 }
 //----------------------------------------------------------------------
@@ -416,6 +417,11 @@ void game::update(string _eventName, SubObEvent _event){
 		SubObMediator::Instance()->sendEvent("hide-node", ev);
 		ev.addArg("target", prefix + ":ibox");
 		SubObMediator::Instance()->sendEvent("hide-node", ev);
+		
+
+		ev.addArg("target", prefix + ":make-one");
+		SubObMediator::Instance()->sendEvent("hide-node", ev);
+
 
 		ev.setName("unhide-node");
 		ev.addArg("target", prefix + ":3d-window-box");
@@ -430,6 +436,7 @@ void game::update(string _eventName, SubObEvent _event){
 		SubObMediator::Instance()->sendEvent("unhide-node", ev);
 
 		camPosition.set(viewport.width / 2, viewport.height / 2, 400);
+		step = 0;
 	}
 	if((_eventName == prefix + ":reset") ){
 		SubObEvent ev;
@@ -452,6 +459,8 @@ void game::update(string _eventName, SubObEvent _event){
 		ev.addArg("target", prefix + ":puzzle-help");
 		SubObMediator::Instance()->sendEvent("hide-node", ev);
 		ev.addArg("target", prefix + ":ibox");
+		SubObMediator::Instance()->sendEvent("hide-node", ev);
+		ev.addArg("target", prefix + ":extrude");
 		SubObMediator::Instance()->sendEvent("hide-node", ev);
 
 		ev.setName("unhide-node");

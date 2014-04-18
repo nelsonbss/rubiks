@@ -38,7 +38,14 @@ void myobject3D::update(){
 	//SG_VECTOR transP = {tempPos.x,tempPos.y,tempPos.z};
 
 	//flip 180 on x axis the object for bl and br game stations
-	if(station.compare("bl") || station.compare("br")){
+	if(station.compare("bl") ){
+		SG_POINT rotP = {tempPos.x,tempPos.y,tempPos.z};
+		SG_VECTOR rotV = {1,0,0};
+		SG_VECTOR offset = {0,0,0}; //for the cube to be in place
+		temp->InitTempMatrix()->Translate(rotP);//this translates the object to be cut!!
+		temp->GetTempMatrix()->Rotate(rotP,rotV,ofDegToRad(180));
+		temp->ApplyTempMatrix(); 
+	}else if (station.compare("br")){
 		SG_POINT rotP = {tempPos.x,tempPos.y,tempPos.z};
 		SG_VECTOR rotV = {1,0,0};
 		SG_VECTOR offset = {0,0,0}; //for the cube to be in place
@@ -102,13 +109,20 @@ void myobject3D::loadObject(sgC3DObject *obj, int ID, string stationID){
 	objectId = ID;
 	station = stationID;
 	//flip 180 on x axis the object for bl and br game stations
-	if(station.compare("bl") || station.compare("br")){
+	if(station.compare("bl")){
+		SG_POINT rotP = {0,0,0};
+		SG_VECTOR rotV = {1,0,0};
+		object->InitTempMatrix()->Rotate(rotP,rotV,ofDegToRad(180));
+		object->ApplyTempMatrix(); 
+		object->DestroyTempMatrix();
+	}else if(station.compare("br")){
 		SG_POINT rotP = {0,0,0};
 		SG_VECTOR rotV = {1,0,0};
 		object->InitTempMatrix()->Rotate(rotP,rotV,ofDegToRad(180));
 		object->ApplyTempMatrix(); 
 		object->DestroyTempMatrix();
 	}
+
 
 	if(objectId == 1){
 		//torus

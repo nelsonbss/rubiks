@@ -615,118 +615,120 @@ void puzzle::rotateByIDandAxisNew(int id, SG_VECTOR axis, bool dir, float angle)
 	int gridSquared=gridSize*gridSize;
 	counter = 0;
 
-	//look for positon of cubie on the 3d data structure
-	selX =myCubies[id]->getXpos();
-	selY =myCubies[id]->getYpos();
-	selZ =myCubies[id]->getZpos();
-	//now we ask for the cubies on that axis
+	if(id != -1){
+		//look for positon of cubie on the 3d data structure
+		selX =myCubies[id]->getXpos();
+		selY =myCubies[id]->getYpos();
+		selZ =myCubies[id]->getZpos();
+		//now we ask for the cubies on that axis
 
-	if(axis.x != 0){
-		for (int i=0;i<numPieces;i++) {
-			if (myCubies[i]->getXpos()==selX) {
-				if (myCubies[i]->getNumObjs()>0) {
-					selected[counter]=i;
-					counter++;
+		if(axis.x != 0){
+			for (int i=0;i<numPieces;i++) {
+				if (myCubies[i]->getXpos()==selX) {
+					if (myCubies[i]->getNumObjs()>0) {
+						selected[counter]=i;
+						counter++;
+					}
 				}
 			}
-		}
-		//rearrange3dArrayNew(0,selX,dir);
-	}else if(axis.y != 0){
-		for (int i=0;i<numPieces;i++) {
-			if (myCubies[i]->getYpos()==selY) {
-				if (myCubies[i]->getNumObjs()>0) {
-					selected[counter]=i;
-					counter++;
+			//rearrange3dArrayNew(0,selX,dir);
+		}else if(axis.y != 0){
+			for (int i=0;i<numPieces;i++) {
+				if (myCubies[i]->getYpos()==selY) {
+					if (myCubies[i]->getNumObjs()>0) {
+						selected[counter]=i;
+						counter++;
+					}
 				}
 			}
-		}
-		//rearrange3dArrayNew(1,selY,dir);
-	}else{
-		//if the move is on a z axis
-		for (int i=0;i<numPieces;i++) {
-			if (myCubies[i]->getZpos()==selZ) {
-				if (myCubies[i]->getNumObjs()>0) {
-					selected[counter]=i;
-					counter++;
-				}
-			}
-		}
-		//rearrange3dArrayNew(2,selZ,dir);
-	}
-
-	//look for rotation constraints
-	//user could be dragging the rotating face beyond he 90 deg move
-
-	if(myCubies[selected[0]]->masterAngle < 89 && myCubies[selected[0]]->masterAngle > -89){
-		//if(ofSign(myCubies[selected[0]]->masterAngle) > 0){
-		if(dir){
-			//positive rotation in relation to original position
-			if((myCubies[selected[0]]->masterAngle + angle) > 90){
-				//move until 90
-				angle = 90 - myCubies[selected[0]]->masterAngle;
-
-				for(int i=0;i<counter;i++){
-					//rearrange = myCubies[selected[i]]->faceRotate(axis,dir,angle);
-					myCubies[selected[i]]->locked = false;
-					myCubies[selected[i]]->faceRotate(axis,dir,angle);
-				}
-			}else{
-				//now we tell the 9 selected cubies to rotate
-				//bool rearrange=false;
-				for(int i=0;i<counter;i++){
-					//rearrange = myCubies[selected[i]]->faceRotate(axis,dir,angle);
-					myCubies[selected[i]]->locked = false;
-					myCubies[selected[i]]->faceRotate(axis,dir,angle);
-				}
-			}
+			//rearrange3dArrayNew(1,selY,dir);
 		}else{
-			//negative rotation in relation to original position
-			if((myCubies[selected[0]]->masterAngle - angle) < -90){
-				//move until -90
-				angle = -90 - myCubies[selected[0]]->masterAngle;
-				angle=abs(angle);
-				for(int i=0;i<counter;i++){
-					//rearrange = myCubies[selected[i]]->faceRotate(axis,dir,angle);
-					myCubies[selected[i]]->locked = false;
-					myCubies[selected[i]]->faceRotate(axis,dir,angle);
+			//if the move is on a z axis
+			for (int i=0;i<numPieces;i++) {
+				if (myCubies[i]->getZpos()==selZ) {
+					if (myCubies[i]->getNumObjs()>0) {
+						selected[counter]=i;
+						counter++;
+					}
+				}
+			}
+			//rearrange3dArrayNew(2,selZ,dir);
+		}
+
+		//look for rotation constraints
+		//user could be dragging the rotating face beyond he 90 deg move
+
+		if(myCubies[selected[0]]->masterAngle < 89 && myCubies[selected[0]]->masterAngle > -89){
+			//if(ofSign(myCubies[selected[0]]->masterAngle) > 0){
+			if(dir){
+				//positive rotation in relation to original position
+				if((myCubies[selected[0]]->masterAngle + angle) > 90){
+					//move until 90
+					angle = 90 - myCubies[selected[0]]->masterAngle;
+
+					for(int i=0;i<counter;i++){
+						//rearrange = myCubies[selected[i]]->faceRotate(axis,dir,angle);
+						myCubies[selected[i]]->locked = false;
+						myCubies[selected[i]]->faceRotate(axis,dir,angle);
+					}
+				}else{
+					//now we tell the 9 selected cubies to rotate
+					//bool rearrange=false;
+					for(int i=0;i<counter;i++){
+						//rearrange = myCubies[selected[i]]->faceRotate(axis,dir,angle);
+						myCubies[selected[i]]->locked = false;
+						myCubies[selected[i]]->faceRotate(axis,dir,angle);
+					}
 				}
 			}else{
-				//now we tell the 9 selected cubies to rotate
-				//bool rearrange=false;
-				for(int i=0;i<counter;i++){
-					//rearrange = myCubies[selected[i]]->faceRotate(axis,dir,angle);
-					myCubies[selected[i]]->locked = false;
-					myCubies[selected[i]]->faceRotate(axis,dir,angle);
+				//negative rotation in relation to original position
+				if((myCubies[selected[0]]->masterAngle - angle) < -90){
+					//move until -90
+					angle = -90 - myCubies[selected[0]]->masterAngle;
+					angle=abs(angle);
+					for(int i=0;i<counter;i++){
+						//rearrange = myCubies[selected[i]]->faceRotate(axis,dir,angle);
+						myCubies[selected[i]]->locked = false;
+						myCubies[selected[i]]->faceRotate(axis,dir,angle);
+					}
+				}else{
+					//now we tell the 9 selected cubies to rotate
+					//bool rearrange=false;
+					for(int i=0;i<counter;i++){
+						//rearrange = myCubies[selected[i]]->faceRotate(axis,dir,angle);
+						myCubies[selected[i]]->locked = false;
+						myCubies[selected[i]]->faceRotate(axis,dir,angle);
+					}
 				}
 			}
 		}
-	}
-	//else if(myCubies[selected[0]]->masterAngle == 90){
-	//	if(!dir){
-	//		if((myCubies[selected[0]]->masterAngle - angle) < 90){
-	//			for(int i=0;i<counter;i++){
-	//				//rearrange = myCubies[selected[i]]->faceRotate(axis,dir,angle);
-	//				myCubies[selected[i]]->faceRotate(axis,dir,angle);
-	//			}
-	//		}
-	//	}
-	//}else if(myCubies[selected[0]]->masterAngle == -90){
-	//	if(dir){
-	//		//negative rotation in relation to original position
-	//		if((myCubies[selected[0]]->masterAngle + angle) > -90){
-	//			for(int i=0;i<counter;i++){
-	//				//rearrange = myCubies[selected[i]]->faceRotate(axis,dir,angle);
-	//				myCubies[selected[i]]->faceRotate(axis,dir,angle);
-	//			}
-	//		}
-	//	}
-	//}
+		//else if(myCubies[selected[0]]->masterAngle == 90){
+		//	if(!dir){
+		//		if((myCubies[selected[0]]->masterAngle - angle) < 90){
+		//			for(int i=0;i<counter;i++){
+		//				//rearrange = myCubies[selected[i]]->faceRotate(axis,dir,angle);
+		//				myCubies[selected[i]]->faceRotate(axis,dir,angle);
+		//			}
+		//		}
+		//	}
+		//}else if(myCubies[selected[0]]->masterAngle == -90){
+		//	if(dir){
+		//		//negative rotation in relation to original position
+		//		if((myCubies[selected[0]]->masterAngle + angle) > -90){
+		//			for(int i=0;i<counter;i++){
+		//				//rearrange = myCubies[selected[i]]->faceRotate(axis,dir,angle);
+		//				myCubies[selected[i]]->faceRotate(axis,dir,angle);
+		//			}
+		//		}
+		//	}
+		//}
 
-	//rearrange cubies position
-	//do we do this after we complete 90 deg rotation???
-	/////it doesnt matter, it can be that instant, since the 3d array is only looked upon before moving
-	/////the animation will lock selection of new cubie, so on ly one movement is done at a time
-	/////so the re-aranging of numbers can happen "during" the animation
+		//rearrange cubies position
+		//do we do this after we complete 90 deg rotation???
+		/////it doesnt matter, it can be that instant, since the 3d array is only looked upon before moving
+		/////the animation will lock selection of new cubie, so on ly one movement is done at a time
+		/////so the re-aranging of numbers can happen "during" the animation
+	}
 }
 //--------------------------------------------------------------------------------------
 void puzzle::rearrange3dArrayNew(int axisNum,int plane, bool dir) {

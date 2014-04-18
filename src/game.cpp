@@ -18,7 +18,7 @@
 
 #define USE_LIGHT 1
 
-game::game(SG_VECTOR gamePos, float w, float h, SG_VECTOR displayPos, ofRectangle _vp, float iddleTime){
+game::game(SG_VECTOR gamePos, float w, float h, SG_VECTOR displayPos, ofRectangle _vp, float iddleTime, string myPrefix){
 	posGame = gamePos;
 	slicingPos = posGame;
 	width = w;
@@ -90,7 +90,7 @@ game::game(SG_VECTOR gamePos, float w, float h, SG_VECTOR displayPos, ofRectangl
 	timeOfLastInteraction = ofGetElapsedTimeMillis();
 	bInAttract = false;
 
-	currentLanguage = "french";
+	currentLanguage = "english";
 
 	myCanvas.setViewport(viewport);
 }
@@ -918,9 +918,11 @@ void game::unprojectPoint(ofVec3f _pnt){
 			//cout << "down" << endl;
 			myPuzzle->checkCubiesForHit(unprojectedPoint);
 			lastUnprojectedPoint = unprojectedPoint;
-			bDragInput = true;
 			bHaveAxis = false;
 			startMove(mousePoint);
+			if(myPuzzle->activeCubie != -1){
+					bDragInput = true;
+			}
 		} else {
 			//myPuzzle->dragInput((unprojectedPoint - lastUnprojectedPoint) * 25.0);
 			if(myPuzzle->isMoving() == false){

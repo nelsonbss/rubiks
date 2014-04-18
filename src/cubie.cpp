@@ -833,6 +833,13 @@ void cubie::setColorToSet(vector<Triangle> _tris, ofFloatColor _c){
 	myVbos[0]=tempVbo;
 }
 
+void cubie::setColorToCurvedObject(ofFloatColor _c){
+	myMeshs[0].setColorToCurvedObject(_c);
+	ofVbo tempVbo;
+	tempVbo.setMesh(myMeshs[0], GL_STATIC_DRAW);
+	myVbos[0]=tempVbo;
+}
+
 void cubie::updatePosition(){
 	ofVec3f axis(vrotFace.x, vrotFace.y, vrotFace.z);
 	float angle = 0.0;

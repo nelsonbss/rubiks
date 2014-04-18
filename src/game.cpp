@@ -903,7 +903,7 @@ void game::unprojectPoint(ofVec3f _pnt){
 			if(myPuzzle->isMoving() == false){
 				//cout << "dragg" << endl;
 				makeMove((unprojectedPoint - lastUnprojectedPoint) * 25.0);
-				lastUnprojectedPoint = unprojectedPoint;
+				//lastUnprojectedPoint = unprojectedPoint;
 			}
 		}
 	} else if(unprojectMode == UP_MODE_COLOR){
@@ -1099,7 +1099,7 @@ void game::loadMenuObject(int objID, SG_VECTOR p, SG_VECTOR t){
 	if(step == 0 || step==1 || step == 7){
 		if(objID == 1){
 			//torus
-			objectDisplayed->loadObject(sgCreateTorus(100,70,50,50),1);//(radius,thickness,meridiansDonut,meridiansDonutCut)
+			objectDisplayed->loadObject(sgCreateTorus(100,70,50,50),1,prefix);//(radius,thickness,meridiansDonut,meridiansDonutCut)
 			if(extrudedB){
 				sgDeleteObject(extrudedObject);
 				extrudedB = false;
@@ -1108,7 +1108,7 @@ void game::loadMenuObject(int objID, SG_VECTOR p, SG_VECTOR t){
 		}
 		if(objID == 2){
 			//cube
-			objectDisplayed->loadObject(sgCreateBox(300,300,300),2);//(tamX,tamY,tamZ)
+			objectDisplayed->loadObject(sgCreateBox(300,300,300),2,prefix);//(tamX,tamY,tamZ)
 			if(extrudedB){
 				sgDeleteObject(extrudedObject);
 				extrudedB = false;
@@ -1117,7 +1117,7 @@ void game::loadMenuObject(int objID, SG_VECTOR p, SG_VECTOR t){
 		}if(objID == 3){
 			//cone
 			//objectDisplayed->loadObject(sgCreateCone(250,1,250,3),3);
-			objectDisplayed->loadObject((sgC3DObject *)sgTetrahedron->Clone(),3);
+			objectDisplayed->loadObject((sgC3DObject *)sgTetrahedron->Clone(),3,prefix);
 			if(extrudedB){
 				sgDeleteObject(extrudedObject);
 				extrudedB = false;
@@ -1126,7 +1126,7 @@ void game::loadMenuObject(int objID, SG_VECTOR p, SG_VECTOR t){
 		}
 		if(objID == 4){
 			//try to load the bunny
-			objectDisplayed->loadObject((sgC3DObject *)sgBunny->Clone(),4);
+			objectDisplayed->loadObject((sgC3DObject *)sgBunny->Clone(),4,prefix);
 			if(extrudedB){
 				sgDeleteObject(extrudedObject);
 				extrudedB = false;
@@ -1135,7 +1135,7 @@ void game::loadMenuObject(int objID, SG_VECTOR p, SG_VECTOR t){
 		}
 		if(objID == 5){
 			//try to load the dodecahedron
-			objectDisplayed->loadObject((sgC3DObject *)sgDodecahedron->Clone(),5);
+			objectDisplayed->loadObject((sgC3DObject *)sgDodecahedron->Clone(),5,prefix);
 			if(extrudedB){
 				sgDeleteObject(extrudedObject);
 				extrudedB = false;
@@ -1144,7 +1144,7 @@ void game::loadMenuObject(int objID, SG_VECTOR p, SG_VECTOR t){
 		}
 		if(objID == 6){
 			//try to load the Icosahedron
-			objectDisplayed->loadObject((sgC3DObject *)sgIcosahedron->Clone(),6);
+			objectDisplayed->loadObject((sgC3DObject *)sgIcosahedron->Clone(),6,prefix);
 			if(extrudedB){
 				sgDeleteObject(extrudedObject);
 				extrudedB = false;
@@ -1153,7 +1153,7 @@ void game::loadMenuObject(int objID, SG_VECTOR p, SG_VECTOR t){
 		}
 		if(objID == 7){
 			//try to load the Octahedron
-			objectDisplayed->loadObject((sgC3DObject *)sgOctahedron->Clone(),7);
+			objectDisplayed->loadObject((sgC3DObject *)sgOctahedron->Clone(),7,prefix);
 			if(extrudedB){
 				sgDeleteObject(extrudedObject);
 				extrudedB = false;
@@ -1166,7 +1166,7 @@ void game::loadMenuObject(int objID, SG_VECTOR p, SG_VECTOR t){
 		//}
 		if(objID == 200){
 			//load extruded object
-			objectDisplayed->loadObject((sgC3DObject *)extrudedObject->Clone(),200);
+			objectDisplayed->loadObject((sgC3DObject *)extrudedObject->Clone(),200,prefix);
 			loaded = true;
 		}
 		////////////////////////
@@ -1210,7 +1210,7 @@ void game::loadObject(int objID, SG_VECTOR p, SG_VECTOR t){
 	objectID = objID;
 	if(step == 0 || step==1 || step == 6){
 		if(objID != 200){
-			objectDisplayed->loadObject((sgC3DObject*)objects[objectID]->Clone(), objectID);
+			objectDisplayed->loadObject((sgC3DObject*)objects[objectID]->Clone(), objectID,prefix);
 		}
 		//if(objID == 1){
 		//	//torus
@@ -1275,7 +1275,7 @@ void game::loadObject(int objID, SG_VECTOR p, SG_VECTOR t){
 		//}
 		if(objID == 200){
 			//load extruded object
-			objectDisplayed->loadObject((sgC3DObject *)extrudedObject->Clone(),200);
+			objectDisplayed->loadObject((sgC3DObject *)extrudedObject->Clone(),200,prefix);
 		}
 		objectDisplayed->setup();
 		step = 1;
@@ -1393,11 +1393,11 @@ void game::createPuzzle(SG_VECTOR p){
 
 		///////////////////////////////  color puzzle   ////////////////////////////////// 
 		//color all the faces for platonic solids!! colors outside for most objects(not bunny), black on the insides
-		//if(objectID != 1){
-		myPuzzle->colorFaces(objectID);
-		//}else{
-		//	myPuzzle->colorTorus();
-		//}
+		if(objectID <8 ){
+			myPuzzle->colorFaces(objectID);
+		}else{
+			myPuzzle->colorTorus();
+		}
 
 		updatePuzzle = true;
 

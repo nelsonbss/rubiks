@@ -292,8 +292,10 @@ void game::update(){
 		bHaveNext = false;
 	}
 	if(bHaveReset){
-		guiInput('r');
-		bHaveReset = false;
+		if(!bDragInput){
+			guiInput('r');
+			bHaveReset = false;
+		}
 	}
 	//if(bHaveMakeOne){
 	//	guiInput('r');
@@ -488,7 +490,7 @@ void game::update(string _eventName, SubObEvent _event){
 		SubObMediator::Instance()->sendEvent("hide-node", ev);
 		ev.addArg("target", prefix + ":ibox");
 		SubObMediator::Instance()->sendEvent("hide-node", ev);
-		
+
 
 		ev.addArg("target", prefix + ":make-one");
 		SubObMediator::Instance()->sendEvent("hide-node", ev);

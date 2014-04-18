@@ -924,7 +924,8 @@ void game::loadMenuObject(int objID, SG_VECTOR p, SG_VECTOR t){
 		objectDisplayed = new myobject3D(p,t);
 	}
 	objectID = objID;
-	if(step == 0 ){//|| step==1 || step == 6){
+	bool loaded = false;
+	if(step == 0 || step==1 || step == 7){
 		if(objID == 1){
 			//torus
 			objectDisplayed->loadObject(sgCreateTorus(100,70,50,50),1);//(radius,thickness,meridiansDonut,meridiansDonutCut)
@@ -932,6 +933,7 @@ void game::loadMenuObject(int objID, SG_VECTOR p, SG_VECTOR t){
 				sgDeleteObject(extrudedObject);
 				extrudedB = false;
 			}
+			loaded = true;
 		}
 		if(objID == 2){
 			//cube
@@ -940,6 +942,7 @@ void game::loadMenuObject(int objID, SG_VECTOR p, SG_VECTOR t){
 				sgDeleteObject(extrudedObject);
 				extrudedB = false;
 			}
+			loaded = true;
 		}if(objID == 3){
 			//cone
 			//objectDisplayed->loadObject(sgCreateCone(250,1,250,3),3);
@@ -948,6 +951,7 @@ void game::loadMenuObject(int objID, SG_VECTOR p, SG_VECTOR t){
 				sgDeleteObject(extrudedObject);
 				extrudedB = false;
 			}
+			loaded = true;
 		}
 		if(objID == 4){
 			//try to load the bunny
@@ -956,6 +960,7 @@ void game::loadMenuObject(int objID, SG_VECTOR p, SG_VECTOR t){
 				sgDeleteObject(extrudedObject);
 				extrudedB = false;
 			}
+			loaded = true;
 		}
 		if(objID == 5){
 			//try to load the dodecahedron
@@ -964,6 +969,7 @@ void game::loadMenuObject(int objID, SG_VECTOR p, SG_VECTOR t){
 				sgDeleteObject(extrudedObject);
 				extrudedB = false;
 			}
+			loaded = true;
 		}
 		if(objID == 6){
 			//try to load the Icosahedron
@@ -972,6 +978,7 @@ void game::loadMenuObject(int objID, SG_VECTOR p, SG_VECTOR t){
 				sgDeleteObject(extrudedObject);
 				extrudedB = false;
 			}
+			loaded = true;
 		}
 		if(objID == 7){
 			//try to load the Octahedron
@@ -980,7 +987,7 @@ void game::loadMenuObject(int objID, SG_VECTOR p, SG_VECTOR t){
 				sgDeleteObject(extrudedObject);
 				extrudedB = false;
 			}
-
+			loaded = true;
 		}
 		//if(objID == 8){
 		//	//try to load the Teapot
@@ -989,33 +996,34 @@ void game::loadMenuObject(int objID, SG_VECTOR p, SG_VECTOR t){
 		if(objID == 200){
 			//load extruded object
 			objectDisplayed->loadObject((sgC3DObject *)extrudedObject->Clone(),200);
+			loaded = true;
 		}
 		////////////////////////
 
 		//objectID = -1;
+		if(loaded == true){
+			////////////////////////////////
+			objectDisplayed->setup();
+			//step = 1;
 
-		////////////////////////////////
-		objectDisplayed->setup();
-		//step = 1;
+			//make the puzzle automatically
+			int grid =3; ///have to adapt this to any armature on the menu puzzles!!!///have to adapt this to any armature on the menu puzzles!!!
+			loadArmatureMenu(grid); 
+			applyArmRotations();
+			createCutterSlicer();
+			////createPuzzle(posP);
+			myPuzzle = new puzzle(posP, offsetSlicer,grid);
+			myPuzzle->setup();
+			mySlicer->intersectCubes((sgCObject*)objectDisplayed->getObject()); 
+			myPuzzle->loadPieces(mySlicer->getPieces(),objectID,rotateSlicer);
+			myPuzzle->colorFaces(objectID);
 
-		//make the puzzle automatically
-		int grid =3; ///have to adapt this to any armature on the menu puzzles!!!///have to adapt this to any armature on the menu puzzles!!!
-		loadArmatureMenu(grid); 
-		applyArmRotations();
-		createCutterSlicer();
-		////createPuzzle(posP);
-		myPuzzle = new puzzle(posP, offsetSlicer,grid);
-		myPuzzle->setup();
-		mySlicer->intersectCubes((sgCObject*)objectDisplayed->getObject()); 
-		myPuzzle->loadPieces(mySlicer->getPieces(),objectID,rotateSlicer);
-		myPuzzle->colorFaces(objectID);
-
-		//step = 7;
-		step = 5;
-		SubObEvent ev;
-		ev.setName("hide-node");
-		ev.addArg("target", prefix + ":start-help");
-		SubObMediator::Instance()->sendEvent("hide-node", ev);
+			step = 7;
+			SubObEvent ev;
+			ev.setName("hide-node");
+			ev.addArg("target", prefix + ":start-help");
+			SubObMediator::Instance()->sendEvent("hide-node", ev);
+		}
 	}
 }
 //----------------------------------------------------------------------

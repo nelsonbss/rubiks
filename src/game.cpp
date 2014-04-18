@@ -121,6 +121,7 @@ void game::setup(sgCObject *sgBunnyi,sgCObject *sgTetrahedroni,sgCObject *sgDode
 	SubObMediator::Instance()->addObserver(prefix + ":armature-selected", this);
 	SubObMediator::Instance()->addObserver(prefix + ":next-step", this);
 	SubObMediator::Instance()->addObserver(prefix + ":reset", this);
+	SubObMediator::Instance()->addObserver(prefix + ":make-one", this);
 	SubObMediator::Instance()->addObserver(prefix + ":extrude", this);
 	SubObMediator::Instance()->addObserver(prefix + ":extrusion-success", this);
 
@@ -244,6 +245,10 @@ void game::update(){
 		guiInput('r');
 		bHaveReset = false;
 	}
+	//if(bHaveMakeOne){
+	//	guiInput('r');
+	//	bHaveReset = false;
+	//}
 	//camPosition.rotate(1, ofVec3f(viewport.width / 2,viewport.height / 2, posP.z));
 	if(!bInAttract){
 		int currentTime = ofGetElapsedTimeMillis();
@@ -389,7 +394,44 @@ void game::update(string _eventName, SubObEvent _event){
 		SG_VECTOR v = {0,0,0};
 		createPuzzle(v);
 	}
-	if(_eventName == prefix + ":reset"){
+	if ((_eventName == prefix + ":extrude")&& (step == 7)){
+		SubObEvent ev;
+		guiReset();
+		ev.setName("hide-node");
+		ev.addArg("target", prefix + ":color-window");
+		SubObMediator::Instance()->sendEvent("hide-node", ev);
+		ev.addArg("target", prefix + ":3d-window-box");
+		SubObMediator::Instance()->sendEvent("hide-node", ev);
+		ev.addArg("target", prefix + ":3d-window");
+		SubObMediator::Instance()->sendEvent("hide-node", ev);
+		ev.addArg("target", prefix + ":object-drop");
+		SubObMediator::Instance()->sendEvent("hide-node", ev);
+		ev.addArg("target", prefix + ":arm-window");
+		SubObMediator::Instance()->sendEvent("hide-node", ev);
+		ev.addArg("target", prefix + ":next-active");
+		SubObMediator::Instance()->sendEvent("hide-node", ev);
+		ev.addArg("target", prefix + ":start-help");
+		SubObMediator::Instance()->sendEvent("hide-node", ev);
+		ev.addArg("target", prefix + ":puzzle-help");
+		SubObMediator::Instance()->sendEvent("hide-node", ev);
+		ev.addArg("target", prefix + ":ibox");
+		SubObMediator::Instance()->sendEvent("hide-node", ev);
+
+		ev.setName("unhide-node");
+		ev.addArg("target", prefix + ":3d-window-box");
+		SubObMediator::Instance()->sendEvent("unhide-node", ev);
+		ev.addArg("target", prefix + ":start-help");
+		SubObMediator::Instance()->sendEvent("unhide-node", ev);
+		ev.addArg("target", prefix + ":object-drop");
+		SubObMediator::Instance()->sendEvent("unhide-node", ev);
+		ev.addArg("target", prefix + ":3d-window");
+		SubObMediator::Instance()->sendEvent("unhide-node", ev);
+		ev.addArg("target", prefix + ":next-inactive");
+		SubObMediator::Instance()->sendEvent("unhide-node", ev);
+
+		camPosition.set(viewport.width / 2, viewport.height / 2, 400);
+	}
+	if((_eventName == prefix + ":reset") ){
 		SubObEvent ev;
 		guiReset();
 		ev.setName("hide-node");

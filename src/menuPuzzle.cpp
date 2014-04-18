@@ -190,8 +190,6 @@ bool menuPuzzle::isInside(int _x, int _y){
 
 //------------------------------------------------------------------------
 void menuPuzzle::nodeDraw(){  
-
-	
 	ofNoFill();
 	ofSetColor(0,0,255);
 	//ofRect(viewport.x, viewport.y, viewport.width, viewport.height);

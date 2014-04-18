@@ -95,19 +95,19 @@ void testApp::setup(){
 	////////////////////////////create middle objects (puzzles with no twisting == normal objects with faces colores
 	//this objects are rendering of the sgCore obects just created.
 	//there are 7 objects to be created
-	//ofToggleFullscreen();
+	ofToggleFullscreen();
 
 	cout << "creating puzzle menu items" << endl;
 	middlePuzzlePos.x = 0;
 	middlePuzzlePos.y = (ofGetWindowHeight()/2)-90;
 	middlePuzzlePos.z = 0;
 	//////////////////////////////////create cutter
-	ofVec3f offsetSlicer = ofVec3f(0,0,0);
-	myCutter = new cutter(0.01,1000,100,1,offsetSlicer,3);// number of slices == same number in slicer /// where to get the grid value??
-	myCutter->setup();
-	//////////////////////////////////create slicer
-	mySlicer = new slicer(myCutter,3);
-	mySlicer->setup();
+	//ofVec3f offsetSlicer = ofVec3f(0,0,0);
+	//myCutter = new cutter(0.01,1000,100,1,offsetSlicer,3);// number of slices == same number in slicer /// where to get the grid value??
+	//myCutter->setup();
+	////////////////////////////////////create slicer
+	//mySlicer = new slicer(myCutter,3);
+	//mySlicer->setup();
 
 	slicingPos.x = 0;
 	slicingPos.y = 0;

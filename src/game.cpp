@@ -2520,11 +2520,11 @@ void game::makeMove(ofVec3f _pnt){
 			}
 		}
 	}else{
-		if (((dragDist-lastDragDistance)/300)>.5) {
+		//if (((dragDist-lastDragDistance)/300)>.5) {
 			rotateByIDandAxis(myPuzzle->activeCubie,axis,dir,5);
-		} else if (((dragDist-lastDragDistance)/300)<-.5) {
-			rotateByIDandAxis(myPuzzle->activeCubie,axis,dir,-5);
-		}
+		//} else if (((dragDist-lastDragDistance)/300)<-.5) {
+		//	rotateByIDandAxis(myPuzzle->activeCubie,axis,dir,-5);
+		//}
 	}
 	lastDragDistance=dragDist;
 }

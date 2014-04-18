@@ -6,7 +6,7 @@
 #define displayYBlue 1150
 #define displayZ -800
 #define iddleTime 120
-#define puzzleItems 0
+#define puzzleItems 7
 #define USE_MOUSE 1
 
 std::map<int,gwc::Point> active_points;
@@ -230,18 +230,18 @@ void testApp::update(){
 	}
 
 	/////////////////////////////////////////watch for new puzzles being saved
-	if(myGames[0]->savePuzzleB == true){
-		middlePuzzlePos.x = 100 + ((puzzleCounter+7)*180);
-		menuPuzzle * tempMidPuzzle = myGames[0]->savePuzzle(slicingPos,middlePuzzlePos);
-		middlePuzzles[puzzleCounter+7] = tempMidPuzzle;
-		puzzleCounter ++;
-		if(puzzleCounter == 3){
-			puzzleCounter=0;
-		}
-		myGames[0]->savePuzzleB = false;
-		//reset game
-		myGames[0]->restart();
-	}
+	//if(myGames[0]->savePuzzleB == true){
+	//	middlePuzzlePos.x = 100 + ((puzzleCounter+7)*180);
+	//	menuPuzzle * tempMidPuzzle = myGames[0]->savePuzzle(slicingPos,middlePuzzlePos);
+	//	middlePuzzles[puzzleCounter+7] = tempMidPuzzle;
+	//	puzzleCounter ++;
+	//	if(puzzleCounter == 3){
+	//		puzzleCounter=0;
+	//	}
+	//	myGames[0]->savePuzzleB = false;
+	//	//reset game
+	//	myGames[0]->restart();
+	//}
 
 	/*
 

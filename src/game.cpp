@@ -127,6 +127,8 @@ void game::setup(sgCObject *sgBunnyi,sgCObject *sgTetrahedroni,sgCObject *sgDode
 	SubObMediator::Instance()->addObserver(prefix + ":make-one2", this);
 	SubObMediator::Instance()->addObserver(prefix + ":menupuzzle-selected", this);
 	//goToAttract();
+	bHaveReset = false;
+
 }
 //----------------------------------------------------------------------
 void game::update(){

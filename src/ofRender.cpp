@@ -898,9 +898,10 @@ void ofRender::colorTorusMenu(ofMesh &mesh,vector< ofFloatColor > &vcolors){
 
 	int r = ofRandom(100);
 	int r2 = r%16;
-	if((r2) != 3){
-		//to avoid white
-		x =  colorsVector[r2];
+	//if((r2) != 3){
+	//to avoid white
+	x =  colorsVector[r2];
+	if(x.r != 1 && x.g!= 1 && x.b !=1){
 		vcolors.push_back(x);//we only need one color sample, not all the vertices colors
 	}
 

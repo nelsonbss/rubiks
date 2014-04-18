@@ -268,7 +268,7 @@ void game::update(string _eventName, SubObEvent _event){
 			ev.addArg("target",prefix + ":next-active");
 			SubObMediator::Instance()->sendEvent("unhide-node", ev);
 		}
-		if(step == 0  || step == 1 || step == 6 || step == 7){
+		if(step == 0  || step == 1 || step == 6){
 			int obj = _event.getArg("object")->getInt();
 			SG_VECTOR objectPos = {0,0,0};  //where it gets sliced
 			guiLoad(obj);
@@ -281,15 +281,37 @@ void game::update(string _eventName, SubObEvent _event){
 			ev.setName("unhide-node");
 			ev.addArg("target", prefix + ":make-one");
 			SubObMediator::Instance()->sendEvent("unhide-node", ev);
-		} else {
-			SubObEvent ev;
-			ev.setName("hide-node");
-			ev.addArg("target",prefix + ":make-one");
-			SubObMediator::Instance()->sendEvent("hide-node", ev);
-			ev.setName("unhide-node");
-			ev.addArg("target",prefix + ":next-active");
-			SubObMediator::Instance()->sendEvent("unhide-node", ev);
-		}
+		} 
+		//else if(step == 7){
+		//	SubObEvent ev;
+		//	ev.setName("hide-node");
+		//	ev.addArg("target",prefix + ":make-one");
+		//	SubObMediator::Instance()->sendEvent("hide-node", ev);
+		//	ev.setName("unhide-node");
+		//	ev.addArg("target",prefix + ":next-active");
+		//	SubObMediator::Instance()->sendEvent("unhide-node", ev);
+		//}
+	}
+
+	if(_eventName == prefix + ":menupuzzle-selected"){
+		SubObEvent ev;
+		ev.setName("hide-node");
+		ev.addArg("target",prefix + ":3d-window");
+		SubObMediator::Instance()->sendEvent("hide-node", ev);
+		ev.addArg("target",prefix + ":3d-window-box");
+		SubObMediator::Instance()->sendEvent("hide-node", ev);
+		///
+		ev.setName("unhide-node");
+		ev.addArg("target", prefix + ":make-one");
+		SubObMediator::Instance()->sendEvent("unhide-node", ev);
+		ev.addArg("target", prefix + ":bg-language");
+		SubObMediator::Instance()->sendEvent("unhide-node", ev);
+		ev.addArg("target", prefix + ":bg-info");
+		SubObMediator::Instance()->sendEvent("unhide-node", ev);
+		ev.addArg("target",prefix + ":puzzle-help");
+		SubObMediator::Instance()->sendEvent("unhide-node", ev);
+		ev.addArg("target",prefix + ":ibox");
+		SubObMediator::Instance()->sendEvent("unhide-node", ev);
 	}
 	if(_eventName == prefix + ":next-step"){
 		guiNext();
@@ -463,7 +485,7 @@ void game::update(string _eventName, SubObEvent _event){
 				myCanvas.mouseDragged(pos.x, pos.y, 0);
 			}
 		}
-		if(step == 5){
+		if(step == 5 || step == 7){
 			int phase = _event.getArg("phase")->getInt();
 			cout << "Game - phase = " << phase << endl;
 			if(phase == 0){
@@ -494,6 +516,7 @@ void game::update(string _eventName, SubObEvent _event){
 				myPuzzle->endRotation();
 			}
 		}
+
 	}
 	/*
 	if(_eventName == "ibox-bl:2"){
@@ -879,17 +902,17 @@ void game::loadMenuObject(int objID, SG_VECTOR p, SG_VECTOR t){
 		myPuzzle->exit();
 		myCutter->exit();
 		mySlicer->exit();
-		objectDisplayed->exit();
+		//objectDisplayed->exit();
 		objectID = -1;
 		step = 0;
 		armID = -1;
 	}else if (step==3){
-		objectDisplayed->exit();             //clean displayed object after puzzle is created, so we dont keep it until the exit or restart
+		//objectDisplayed->exit();             //clean displayed object after puzzle is created, so we dont keep it until the exit or restart
 		step = 0;
 		objectID = -1;
 		armID = -1;
 	}else if (step==1 || step==2){
-		objectDisplayed->exit();
+		//objectDisplayed->exit();
 		step = 0;
 		objectID = -1;
 		if(canvasB){
@@ -1018,7 +1041,7 @@ void game::loadMenuObject(int objID, SG_VECTOR p, SG_VECTOR t){
 			mySlicer->intersectCubes((sgCObject*)objectDisplayed->getObject()); 
 			myPuzzle->loadPieces(mySlicer->getPieces(),objectID,rotateSlicer);
 			myPuzzle->colorFaces(objectID);
-
+			updatePuzzle = true;
 			step = 7;
 			SubObEvent ev;
 			ev.setName("hide-node");

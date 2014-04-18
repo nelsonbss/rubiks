@@ -518,9 +518,11 @@ void testApp::update(string _eventName, SubObEvent _event){
 		int mpId = _event.getArg("puzzle-id")->getInt();
 		string gameTag = _event.getArg("game-tag")->getString();
 		////////myGames[gameIds[gameTag]]->loadPuzzle(middlePuzzles[mpId]->getPuzzle());
-		myGames[0]->clearDisplayedObject();
+		myGames[gameIds[gameTag]]->clearDisplayedObject();
 		myGames[gameIds[gameTag]]->loadMenuObject(middlePuzzles[mpId]->objectId,myGames[gameIds[gameTag]]->slicingPos,myGames[gameIds[gameTag]]->posP);
 		//myGames[gameIds[gameTag]]->setCurrentStep(7);
+		myGames[gameIds[gameTag]]->prefix = gameTag;
+		myGames[gameIds[gameTag]]->update(gameTag + ":"+_eventName,_event);
 	}
 }
 

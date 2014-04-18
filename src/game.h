@@ -43,6 +43,8 @@ public:
 	armature *myArmature;
 	puzzle *myPuzzle;
 
+	string station;
+
 
 	///OBJ file loading and convertion
 	sgCObject *sgBunny;

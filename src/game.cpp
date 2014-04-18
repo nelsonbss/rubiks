@@ -22,6 +22,8 @@ game::game(SG_VECTOR gamePos, float w, float h, SG_VECTOR displayPos, ofRectangl
 	width = w;
 	height = h;
 
+	station = myPrefix;
+
 	iddleTimer = iddleTime;
 
 	posP.x = displayPos.x; //for the puzzle & sample object

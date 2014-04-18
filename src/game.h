@@ -21,7 +21,7 @@ enum{UP_MODE_MOUSE, UP_MODE_COLOR, UP_MODE_P};
 
 class game : public Observer{
 public:
-	game(SG_VECTOR p, float w, float h, SG_VECTOR puzzlePos, ofRectangle _vp, float iddleTime);
+	game(SG_VECTOR p, float w, float h, SG_VECTOR puzzlePos, ofRectangle _vp, float iddleTime, string myPrefix);
 
 	void setup(sgCObject *sgBunnyi,sgCObject *sgTetrahedroni,sgCObject *sgDodecahedroni,sgCObject *sgIcosahedroni,sgCObject *sgOctahedroni, string _prefix);//,sgCObject *sgTeapoti);
 	void setup(string _prefix);

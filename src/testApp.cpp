@@ -178,19 +178,19 @@ void testApp::setup(){
 	tr.y = 700;
 	tr.width = 660;
 	tr.height = 320;
-	game *tempGame = new game(gamePos, ofGetWidth(), ofGetHeight(),displayPos, tr, iddleTime);
+	game *tempGame = new game(gamePos, ofGetWidth(), ofGetHeight(),displayPos, tr, iddleTime,"bl");
 	myGames.push_back(tempGame);
 	tr.x = 960;
-	game *tempGame2 = new game(gamePos, ofGetWidth(), ofGetHeight(),displayPos, tr, iddleTime);
+	game *tempGame2 = new game(gamePos, ofGetWidth(), ofGetHeight(),displayPos, tr, iddleTime,"br");
 	myGames.push_back(tempGame2);
 	tr.x = 300;
 	tr.y = 60;
-	game *tempGame3 = new game(gamePos, ofGetWidth(), ofGetHeight(),displayPos, tr, iddleTime);
+	game *tempGame3 = new game(gamePos, ofGetWidth(), ofGetHeight(),displayPos, tr, iddleTime,"tl");
 	myGames.push_back(tempGame3);
 	tr.x = 960;
-	game *tempGame4 = new game(gamePos, ofGetWidth(), ofGetHeight(),displayPos, tr, iddleTime);
+	/*game *tempGame4 = new game(gamePos, ofGetWidth(), ofGetHeight(),displayPos, tr, iddleTime,"tr");
 	myGames.push_back(tempGame4);
-	currentGame = 1;
+	currentGame = 1;*/
 	//create a second game
 	//game *tempGame2 = new game(gamePos, ofGetWidth(), ofGetHeight(),displayPos,iddleTime);
 	//myGames.push_back(tempGame2);

@@ -14,6 +14,9 @@ void GuiWindow::nodeInit(){
 	if(bMirrored){
 		drawPos.x = drawPos.x - drawSize.x;
 	}
+	if(bFlipped){
+		drawPos.y = drawPos.y - drawSize.y;
+	}
 	calculateArea();
 	positionNodes();
 	if(bScrollable){
@@ -39,6 +42,7 @@ void GuiWindow::nodeActivate(){
 		(*nIter)->activate();
 	}
 	currentTop = 0;
+	positionNodes();
 }
 
 void GuiWindow::nodeDeactivate(){
@@ -72,9 +76,9 @@ void GuiWindow::nodeDraw(){
 		}
 		counter++;
 	}
-	ofFill();
+	/*ofFill();
 	ofSetColor(0,255,0);
-	ofRect(drawPos.x, drawPos.y, 200, 200);
+	ofRect(drawPos.x, drawPos.y, 200, 200);*/
 	//glDisable(GL_SCISSOR_TEST);
 	ofEnableDepthTest();
 	ofPopView();
@@ -91,12 +95,13 @@ void GuiWindow::hide(){
 	bActive = false;
 	for(vector<GuiNode*>::iterator nIter = nodes.begin(); nIter != nodes.end(); nIter++){
 		(*nIter)->hide();
-		(*nIter)->deactivate();
+		//(*nIter)->deactivate();
 	}
 	if(bScrollable){
 		scrollBar.hide();
-		scrollBar.deactivate();
+		//scrollBar.deactivate();
 	}
+	//deactivate();
 }
 
 void GuiWindow::unhide(){
@@ -104,12 +109,13 @@ void GuiWindow::unhide(){
 	bActive = true;
 	for(vector<GuiNode*>::iterator nIter = nodes.begin(); nIter != nodes.end(); nIter++){
 		(*nIter)->unhide();
-		(*nIter)->activate();
+		//(*nIter)->activate();
 	}
 	if(bScrollable){
 		scrollBar.unhide();
-		scrollBar.activate();
+		//scrollBar.activate();
 	}
+	//activate();
 }
 
 void GuiWindow::calculateArea(){
@@ -123,6 +129,12 @@ void GuiWindow::positionNodes(){
 	int numNodes = nodes.size();
 	int row = 0;
 	int column = 0;
+	/*ofVec2f startPos = drawPos;
+	ofVec2f addPos(0,0);
+	if(bFlipped){
+		startPos.y = drawPos.y + drawSize.y;
+		addPos.y = drawSize.y;
+	}*/
 	for(int i = 0;i < numNodes; i++){
 		if(i > 0){
 			column = i % numColumns;
@@ -140,6 +152,15 @@ void GuiWindow::positionNodes(){
 		//cout << "setting node position to - " << nodePos.x << ", " << nodePos.y << endl;
 		//nodes[i]->setPosition(nodePosF);
 		nodes[i]->setDrawPosition(nodePosD);
+		if((nodePosD.y < drawPos.y) || (nodePosD.y > (drawPos.y + drawSize.y))){
+			if(nodes[i]->isActive()){
+				nodes[i]->deactivate();
+			}
+		} else {
+			if(!nodes[i]->isActive()){
+				nodes[i]->activate();
+			}
+		}
 		nodePositions[i].set(nodePos);
 	}
 	windowHeight = (row + 1) * (columnHeight * ofGetHeight());

@@ -146,6 +146,11 @@ public:
 
 	bool isSelected(){return bSelected;}
 
+	SubObEvent inter;
+	void sendInteraction();
+
+	bool bActive;
+
 protected:
 
     map<string,string> attrs;
@@ -167,7 +172,6 @@ protected:
 	ofVec3f drawColor;
 	ofxTimer* timer;
 	bool bHidden;
-	bool bActive;
 
 	bool bMirrored;
 	bool bFlipped;

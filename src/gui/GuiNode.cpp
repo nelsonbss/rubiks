@@ -9,7 +9,7 @@ GuiNode::GuiNode(){
 	bHaveText = false;
 	bHaveText2 = false;
 	bHidden = false;
-	bActive = true;
+	bActive = false;
 	pos.set(0,0);
 	bMirrored = false;
 	bFlipped = false;
@@ -23,6 +23,11 @@ void GuiNode::draw(ofVec2f _pnt){
 	drawPos = _pnt;
 	draw();
 	drawPos = tPos;
+}
+
+void GuiNode::sendInteraction(){
+	inter.setName(prefix + ":interaction");
+	SubObMediator::Instance()->sendEvent(inter.getName(), inter);
 }
 
 void GuiNode::draw(){
@@ -162,11 +167,14 @@ void GuiNode::setupText(){
 }
 
 void GuiNode::activate(){
+	bActive = true;
 	GuiConfigurator::Instance()->addActive(this);
+	//cout << name << " activating." << end;
 	nodeActivate();
 }
 
 void GuiNode::deactivate(){
+	bActive = false;
 	GuiConfigurator::Instance()->removeActive(this);
 	nodeDeactivate();
 }
@@ -180,6 +188,7 @@ void GuiNode::hide(){
 void GuiNode::unhide(){
 	bHidden = false;
 	bActive = true;
+	cout << name << " unhiding." << endl;
 	//activate();
 }
 

@@ -88,10 +88,44 @@ game::game(SG_VECTOR gamePos, float w, float h, SG_VECTOR displayPos, ofRectangl
 	timeOfLastInteraction = ofGetElapsedTimeMillis();
 	bInAttract = false;
 
-	currentLanguage = "english";
+	currentLanguage = "french";
 
 	myCanvas.setViewport(viewport);
 }
+
+void game::loadObjDir(string _path){
+	ofDirectory dir(_path);
+	dir.allowExt("obj");
+	dir.listDir();
+	vector<ofFile> files = dir.getFiles();
+	for(auto fIter = files.begin(); fIter != files.end(); fIter++){
+		string name = fIter->getFileName();
+		int id = ofToInt(ofSplitString(name, "_")[0]);
+		loader.loadModel(_path + name);
+		ofMesh tempMesh = loader.getMesh(0);
+		vector<ofVec3f> verts = tempMesh.getVertices();
+		//make an array[] from this vector
+		SG_POINT *vert = new SG_POINT[verts.size()];
+		for(int i=0;i<verts.size(); i++){
+			vert[i].x = verts[i].x;
+			vert[i].y = verts[i].y;
+			vert[i].z = verts[i].z;
+		}
+		//get indices from mesh
+		vector<ofIndexType> indices = tempMesh.getIndices();
+		//make an array[] from this vector
+		SG_INDEX_TRIANGLE *indexes = new SG_INDEX_TRIANGLE[indices.size()];
+		for(int i=0;i<indices.size(); i++){
+			indexes->ver_indexes[i] = indices[i];
+		}
+		//generate sgC3DObject from geometry information
+		sgCObject* tObj = sgFileManager::ObjectFromTriangles(vert,verts.size(),indexes,indices.size()/3); 
+		objects[id] = tObj;
+		delete [] vert;
+		delete [] indexes;
+	}
+}
+
 //--------------------------------------------------------------
 void game::setup(sgCObject *sgBunnyi,sgCObject *sgTetrahedroni,sgCObject *sgDodecahedroni,sgCObject *sgIcosahedroni,sgCObject *sgOctahedroni, string _prefix){//,sgCObject *sgTeapoti){
 	//gets the .obj files loaded and converted into sgC3DObject
@@ -105,6 +139,15 @@ void game::setup(sgCObject *sgBunnyi,sgCObject *sgTetrahedroni,sgCObject *sgDode
 	sgOctahedron = sgOctahedroni;
 	//sgTeapot = sgTeapoti;
 
+	setup();
+}
+
+void game::setup(string _prefix){
+	prefix = _prefix;
+	setup();
+}
+
+void game::setup(){
 	step = -1;
 	idcubie=0;
 
@@ -125,8 +168,12 @@ void game::setup(sgCObject *sgBunnyi,sgCObject *sgTetrahedroni,sgCObject *sgDode
 	SubObMediator::Instance()->addObserver(prefix + ":reset", this);
 	SubObMediator::Instance()->addObserver(prefix + ":extrude", this);
 	SubObMediator::Instance()->addObserver(prefix + ":extrusion-success", this);
+	SubObMediator::Instance()->addObserver(prefix + ":interaction", this);
 
 	goToAttract();
+
+	bHaveNewObject = false;
+	objectID = -1;
 }
 //----------------------------------------------------------------------
 void game::update(){
@@ -144,7 +191,7 @@ void game::update(){
 		if(step == 1){
 			clearDisplayedObject();
 		}
-		if(newObject == 9){
+		if(newObject == 50){
 			prepareDrawing();
 		} else {
 			loadObject(newObject, objectPos, posP);
@@ -266,6 +313,8 @@ void game::update(string _eventName, SubObEvent _event){
 			ev.setName("hide-node");
 			ev.addArg("target",prefix + ":start-help");
 			SubObMediator::Instance()->sendEvent("hide-node", ev);
+			ev.addArg("target", prefix + ":make-one");
+			SubObMediator::Instance()->sendEvent("hide-node", ev);
 			ev.setName("unhide-node");
 			ev.addArg("target",prefix + ":next-active");
 			SubObMediator::Instance()->sendEvent("unhide-node", ev);
@@ -275,7 +324,7 @@ void game::update(string _eventName, SubObEvent _event){
 			SG_VECTOR objectPos = {0,0,0};  //where it gets sliced
 			guiLoad(obj);
 		}
-		if(_event.getArg("object")->getInt() == 9){
+		if(_event.getArg("object")->getInt() == 50){
 			SubObEvent ev;
 			ev.setName("hide-node");
 			ev.addArg("target", prefix + ":next-active");
@@ -283,10 +332,14 @@ void game::update(string _eventName, SubObEvent _event){
 			ev.setName("unhide-node");
 			ev.addArg("target", prefix + ":make-one");
 			SubObMediator::Instance()->sendEvent("unhide-node", ev);
+			ev.addArg("target", prefix + ":draw-help");
+			SubObMediator::Instance()->sendEvent("unhide-node", ev);
 		} else {
 			SubObEvent ev;
 			ev.setName("hide-node");
 			ev.addArg("target",prefix + ":make-one");
+			SubObMediator::Instance()->sendEvent("hide-node", ev);
+			ev.addArg("target",prefix + ":draw-help");
 			SubObMediator::Instance()->sendEvent("hide-node", ev);
 			ev.setName("unhide-node");
 			ev.addArg("target",prefix + ":next-active");
@@ -338,7 +391,7 @@ void game::update(string _eventName, SubObEvent _event){
 			ev.setName("hide-node");
 			ev.addArg("target",prefix + ":arm-window");
 			SubObMediator::Instance()->sendEvent("hide-node", ev);
-			ev.addArg("target",prefix + ":arm-help");
+			ev.addArg("target",prefix + ":arm-rotate");
 			SubObMediator::Instance()->sendEvent("hide-node", ev);
 			//ev.addArg("target",prefix + ":arm-help");
 			//SubObMediator::Instance()->sendEvent("hide-node", ev);
@@ -366,6 +419,13 @@ void game::update(string _eventName, SubObEvent _event){
 		string armStr = ofToString(_event.getArg("object")->getInt());
 		//myGames[0]->setCurrentStep(3);
 		guiInput(armStr.c_str()[0]);
+		SubObEvent ev;
+		ev.setName("hide-node");
+		ev.addArg("target",prefix + ":arm-help");
+		SubObMediator::Instance()->sendEvent("hide-node", ev);
+		ev.setName("unhide-node");
+		ev.addArg("target",prefix + ":arm-rotate");
+		SubObMediator::Instance()->sendEvent("unhide-node", ev);
 	}
 	if(_eventName == prefix + ":cut-object"){
 		SG_VECTOR v = {0,0,0};
@@ -395,6 +455,10 @@ void game::update(string _eventName, SubObEvent _event){
 		//SubObMediator::Instance()->sendEvent("hide-node", ev);
 		ev.addArg("target",prefix + ":arm-help");
 		SubObMediator::Instance()->sendEvent("hide-node", ev);
+		ev.addArg("target",prefix + ":arm-rotate");
+		SubObMediator::Instance()->sendEvent("hide-node", ev);
+		ev.addArg("target",prefix + ":draw-help");
+		SubObMediator::Instance()->sendEvent("hide-node", ev);
 
 		ev.setName("unhide-node");
 		ev.addArg("target", prefix + ":3d-window-box");
@@ -421,6 +485,8 @@ void game::update(string _eventName, SubObEvent _event){
 		SubObEvent ev;
 		ev.setName("hide-node");
 		ev.addArg("target", prefix + ":make-one");
+		SubObMediator::Instance()->sendEvent("hide-node", ev);
+		ev.addArg("target", prefix + ":draw-help");
 		SubObMediator::Instance()->sendEvent("hide-node", ev);
 		ev.setName("unhide-node");
 		ev.addArg("target", prefix + ":next-active");
@@ -536,6 +602,10 @@ void game::update(string _eventName, SubObEvent _event){
 		//sc = menuColor;
 		//changeFaceColor(pos, menuColor);
 	}
+	if(_eventName == prefix + ":interaction"){
+		//cout << "got interaction" << endl;
+		timeOfLastInteraction = ofGetElapsedTimeMillis();
+	}
 	timeOfLastInteraction = ofGetElapsedTimeMillis();
 }
 
@@ -573,9 +643,15 @@ void game::goToAttract(){
 	SubObMediator::Instance()->sendEvent("hide-node", ev);
 	ev.addArg("target", prefix + ":next-inactive");
 	SubObMediator::Instance()->sendEvent("hide-node", ev);
+	ev.addArg("target", prefix + ":make-one");
+	SubObMediator::Instance()->sendEvent("hide-node", ev);
 	ev.addArg("target", prefix + ":reset");
 	SubObMediator::Instance()->sendEvent("hide-node", ev);
 	ev.addArg("target",prefix + ":arm-help");
+	SubObMediator::Instance()->sendEvent("hide-node", ev);
+	ev.addArg("target",prefix + ":arm-rotate");
+	SubObMediator::Instance()->sendEvent("hide-node", ev);
+	ev.addArg("target",prefix + ":draw-help");
 	SubObMediator::Instance()->sendEvent("hide-node", ev);
 
 	ev.setName("unhide-node");
@@ -613,7 +689,11 @@ void game::draw(){
 		cam.begin(viewport);
 		//cam.disableMouseInput();
 		//ofSetupScreen();
-		cam.setupPerspective();
+		if(step == 6){
+			ofSetupScreen();
+		} else {
+			cam.setupPerspective();
+		}
 		ofEnableAlphaBlending();
 		ofSetColor(1.0,1.0,1.0,0.5);
 		cam.setPosition(camPosition);
@@ -1039,63 +1119,66 @@ void game::loadObject(int objID, SG_VECTOR p, SG_VECTOR t){
 	}
 	objectID = objID;
 	if(step == 0 || step==1 || step == 6){
-		if(objID == 1){
-			//torus
-			objectDisplayed->loadObject(sgCreateTorus(100,70,50,50),1);//(radius,thickness,meridiansDonut,meridiansDonutCut)
-			if(extrudedB){
-				sgDeleteObject(extrudedObject);
-				extrudedB = false;
-			}
+		if(objID != 200){
+			objectDisplayed->loadObject((sgC3DObject*)objects[objectID]->Clone(), objectID);
 		}
-		if(objID == 2){
-			//cube
-			objectDisplayed->loadObject(sgCreateBox(300,300,300),2);//(tamX,tamY,tamZ)
-			if(extrudedB){
-				sgDeleteObject(extrudedObject);
-				extrudedB = false;
-			}
-		}if(objID == 3){
-			//cone
-			//objectDisplayed->loadObject(sgCreateCone(250,1,250,3),3);
-			objectDisplayed->loadObject((sgC3DObject *)sgTetrahedron->Clone(),3);
-			if(extrudedB){
-				sgDeleteObject(extrudedObject);
-				extrudedB = false;
-			}
-		}
-		if(objID == 4){
-			//try to load the bunny
-			objectDisplayed->loadObject((sgC3DObject *)sgBunny->Clone(),4);
-			if(extrudedB){
-				sgDeleteObject(extrudedObject);
-				extrudedB = false;
-			}
-		}
-		if(objID == 5){
-			//try to load the dodecahedron
-			objectDisplayed->loadObject((sgC3DObject *)sgDodecahedron->Clone(),5);
-			if(extrudedB){
-				sgDeleteObject(extrudedObject);
-				extrudedB = false;
-			}
-		}
-		if(objID == 6){
-			//try to load the Icosahedron
-			objectDisplayed->loadObject((sgC3DObject *)sgIcosahedron->Clone(),6);
-			if(extrudedB){
-				sgDeleteObject(extrudedObject);
-				extrudedB = false;
-			}
-		}
-		if(objID == 7){
-			//try to load the Octahedron
-			objectDisplayed->loadObject((sgC3DObject *)sgOctahedron->Clone(),7);
-			if(extrudedB){
-				sgDeleteObject(extrudedObject);
-				extrudedB = false;
-			}
+		//if(objID == 1){
+		//	//torus
+		//	objectDisplayed->loadObject(sgCreateTorus(100,70,50,50),1);//(radius,thickness,meridiansDonut,meridiansDonutCut)
+		//	if(extrudedB){
+		//		sgDeleteObject(extrudedObject);
+		//		extrudedB = false;
+		//	}
+		//}
+		//if(objID == 2){
+		//	//cube
+		//	objectDisplayed->loadObject(sgCreateBox(300,300,300),2);//(tamX,tamY,tamZ)
+		//	if(extrudedB){
+		//		sgDeleteObject(extrudedObject);
+		//		extrudedB = false;
+		//	}
+		//}if(objID == 3){
+		//	//cone
+		//	//objectDisplayed->loadObject(sgCreateCone(250,1,250,3),3);
+		//	objectDisplayed->loadObject((sgC3DObject *)sgTetrahedron->Clone(),3);
+		//	if(extrudedB){
+		//		sgDeleteObject(extrudedObject);
+		//		extrudedB = false;
+		//	}
+		//}
+		//if(objID == 4){
+		//	//try to load the bunny
+		//	objectDisplayed->loadObject((sgC3DObject *)sgBunny->Clone(),4);
+		//	if(extrudedB){
+		//		sgDeleteObject(extrudedObject);
+		//		extrudedB = false;
+		//	}
+		//}
+		//if(objID == 5){
+		//	//try to load the dodecahedron
+		//	objectDisplayed->loadObject((sgC3DObject *)sgDodecahedron->Clone(),5);
+		//	if(extrudedB){
+		//		sgDeleteObject(extrudedObject);
+		//		extrudedB = false;
+		//	}
+		//}
+		//if(objID == 6){
+		//	//try to load the Icosahedron
+		//	objectDisplayed->loadObject((sgC3DObject *)sgIcosahedron->Clone(),6);
+		//	if(extrudedB){
+		//		sgDeleteObject(extrudedObject);
+		//		extrudedB = false;
+		//	}
+		//}
+		//if(objID == 7){
+		//	//try to load the Octahedron
+		//	objectDisplayed->loadObject((sgC3DObject *)sgOctahedron->Clone(),7);
+		//	if(extrudedB){
+		//		sgDeleteObject(extrudedObject);
+		//		extrudedB = false;
+		//	}
 
-		}
+		//}
 		//if(objID == 8){
 		//	//try to load the Teapot
 		//	objectDisplayed->loadObject((sgC3DObject *)sgTeapot->Clone(),8);

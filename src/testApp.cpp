@@ -65,10 +65,10 @@ void testApp::setup(){
 	GuiConfigurator::Instance()->extendGui("main", "sheets.xml", false, false, "bl", patterns);
 	patterns["%COLOR%"] = "Red";
 	GuiConfigurator::Instance()->extendGui("main", "sheets.xml", true, false, "br", patterns);
-	/*patterns["%COLOR%"] = "Orange";
-	GuiConfigurator::Instance()->extendGui("main", "sheets.xml", false, true, "tl:", patterns);
 	patterns["%COLOR%"] = "Green";
-	GuiConfigurator::Instance()->extendGui("main", "sheets.xml", true, true, "tr:", patterns);*/
+	GuiConfigurator::Instance()->extendGui("main", "sheets.xml", false, true, "tl", patterns);
+	patterns["%COLOR%"] = "Orange";
+	GuiConfigurator::Instance()->extendGui("main", "sheets.xml", true, true, "tr", patterns);
 
 	GuiConfigurator::Instance()->loadText("assets.xml");
 
@@ -91,7 +91,7 @@ void testApp::setup(){
 
 	/////////////////////////////load obj files into sgCore objects
 	cout << "loading obj files " << endl;
-	loadOBJfiles();
+	//loadOBJfiles();
 	////////////////////////////create middle objects (puzzles with no twisting == normal objects with faces colores
 	//this objects are rendering of the sgCore obects just created.
 	//there are 7 objects to be created
@@ -196,7 +196,9 @@ void testApp::setup(){
 	//myGames.push_back(tempGame2);
 	///////////////////////////////setup games
 	for(int i = 0; i < myGames.size(); i++){
-		myGames[i]->setup(sgBunny->Clone(),sgTetrahedron->Clone(),sgDodecahedron->Clone(),sgIcosahedron->Clone(),sgOctahedron->Clone(), gameTags[i]);//,sgTeapot->Clone());
+		//myGames[i]->setup(sgBunny->Clone(),sgTetrahedron->Clone(),sgDodecahedron->Clone(),sgIcosahedron->Clone(),sgOctahedron->Clone(), gameTags[i]);//,sgTeapot->Clone());
+		myGames[i]->loadObjDir("obj/");
+		myGames[i]->setup(gameTags[i]);
 	}
 
 	//////setup GUI/////////////
@@ -538,11 +540,11 @@ void testApp::exit(){
 	/*myGames[1]->restart();
 	myGames[1]->exit();*/
 
-	sgDeleteObject(sgBunny);
-	sgDeleteObject(sgTetrahedron);
-	sgDeleteObject(sgDodecahedron);
-	sgDeleteObject(sgIcosahedron);
-	sgDeleteObject(sgOctahedron);
+	//sgDeleteObject(sgBunny);
+	//sgDeleteObject(sgTetrahedron);
+	//sgDeleteObject(sgDodecahedron);
+	//sgDeleteObject(sgIcosahedron);
+	//sgDeleteObject(sgOctahedron);
 	//sgDeleteObject(sgTeapot);
 
 	//myCutter->exit();

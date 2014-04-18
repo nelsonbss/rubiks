@@ -65,7 +65,7 @@ void GuiButton::nodeInit(){
 	} else {
 		haveImage = false;
 	}
-	inactive.mirror(bFlipped, false);
+	inactive.mirror(bFlipped, prefix == "tr");
 	drawActive = false;
 	haveActive = false;
 	haveArabic = false;
@@ -176,6 +176,7 @@ void GuiButton::input(string _type, int _ID, int _n, int _phase, ofVec2f _absPos
 		bSend = true;
 	}
 	timeOfLastInteraction = ofGetElapsedTimeMillis();
+	sendInteraction();
 }
 
 void GuiButton::update(string _subName, Subject* _sub){

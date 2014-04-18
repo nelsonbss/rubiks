@@ -364,6 +364,21 @@ void GuiConfigurator::specialTextLoadingCopOut(){
 	texts["arm-start"].setText("french", "Faites glisser une\nstructure pour découper\nvotre forme.");
 	texts["arm-start"].setText("spanish", "Para cortar tu forma,\narrastra una estructura.");
 
+	texts["arm-rotate-1"] = GuiText();
+	texts["arm-rotate-1"].setText("english", "Single finger swipe\nmoves structure.");
+	texts["arm-rotate-1"].setText("french", "Glissez avec un doigt\npour déplacer la\nstructure.");
+	texts["arm-rotate-1"].setText("spanish", "Para girar la estructura,\ndeslízala con un\nsolo dedo.");
+
+	texts["arm-rotate-2"] = GuiText();
+	texts["arm-rotate-2"].setText("english", "Two-finger swipe\nrotates structure.");
+	texts["arm-rotate-2"].setText("french", "Glissez avec deux doigts\npour faire tourner la structure.");
+	texts["arm-rotate-2"].setText("spanish", "Para rotar la estructura,\ndeslízala con dos dedos.");
+
+	texts["draw-help"] = GuiText();
+	texts["draw-help"].setText("english", "Draw an outline with \nyour finger to make\nyour own shape.");
+	texts["draw-help"].setText("french", "Dessinez un contour\ndu doigt pour créer\nvotre propre forme.");
+	texts["draw-help"].setText("spanish", "Para crear tu propia figura,\ndibuja un contorno\ncon el dedo.");
+
 	texts["start"] = GuiText();
     texts["start"].setText("english", "Drag a shape to begin\nto make a puzzle like\nthe one you selected.");
   

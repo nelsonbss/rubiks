@@ -375,7 +375,7 @@
     <pos>0.0,0.73</pos>
     <size>0.154,0.2215</size>
     <scale>1.0</scale>
-    <columns>1</columns>
+    <columns>3</columns>
     <column-width>0.05</column-width>
     <column-height>0.07</column-height>
     <directory>windows/objects/%COLOR%/</directory>
@@ -427,8 +427,8 @@
     <pos>0.0,0.73</pos>
     <size>0.154,0.2215</size>
     <scale>1.0</scale>
-    <columns>1</columns>
-    <column-width>0.05</column-width>
+    <columns>4</columns>
+    <column-width>0.038</column-width>
     <column-height>0.05</column-height>
     <directory>windows/colors/</directory>
     <offset>0,10</offset>
@@ -574,6 +574,51 @@
       <val>front</val>
     </param>
   </node>
+  <node type="button" name="draw-help">
+    <pos>0.154, 0.685</pos>
+    <size>1.0,1.0</size>
+    <scale>1.0</scale>
+    <param>
+      <name>image</name>
+      <val>Exports/DrawShape_Textbox_295x33_%COLOR%.png</val>
+    </param>
+    <param>
+      <name>text</name>
+      <val>draw-help</val>
+    </param>
+    <param>
+      <name>font</name>
+      <val>Fonts/GothamRnd-Medium.otf</val>
+    </param>
+    <param>
+      <name>font-size</name>
+      <val>10</val>
+    </param>
+    <param>
+      <name>text-position</name>
+      <val>25,90</val>
+    </param>
+    <param>
+      <name>text-color</name>
+      <val>255,255,255</val>
+    </param>
+    <param>
+      <name>hidden</name>
+      <val>true</val>
+    </param>
+    <param>
+      <name>active</name>
+      <val>false</val>
+    </param>
+    <param>
+      <name>draw-position</name>
+      <val>back</val>
+    </param>
+    <param>
+      <name>z</name>
+      <val>-10000</val>
+    </param>
+  </node>
   <node type="button" name="arm-help">
     <pos>0.154, 0.685</pos>
     <size>1.0,1.0</size>
@@ -597,6 +642,51 @@
     <param>
       <name>text-position</name>
       <val>25,90</val>
+    </param>
+    <param>
+      <name>text-color</name>
+      <val>255,255,255</val>
+    </param>
+    <param>
+      <name>hidden</name>
+      <val>true</val>
+    </param>
+    <param>
+      <name>active</name>
+      <val>false</val>
+    </param>
+    <param>
+      <name>draw-position</name>
+      <val>back</val>
+    </param>
+    <param>
+      <name>z</name>
+      <val>-10000</val>
+    </param>
+  </node>
+  <node type="button" name="arm-rotate">
+    <pos>0.163, 0.685</pos>
+    <size>1.0,1.0</size>
+    <scale>1.0</scale>
+    <param>
+      <name>image</name>
+      <val>Exports/ArmatureGestures_Textbox_312x33_%COLOR%.png</val>
+    </param>
+    <param>
+      <name>text</name>
+      <val>arm-rotate-1</val>
+    </param>
+    <param>
+      <name>font</name>
+      <val>Fonts/GothamRnd-Medium.otf</val>
+    </param>
+    <param>
+      <name>font-size</name>
+      <val>10</val>
+    </param>
+    <param>
+      <name>text-position</name>
+      <val>8,100</val>
     </param>
     <param>
       <name>text-color</name>
@@ -759,6 +849,7 @@
       <val>front</val>
     </param>
   </node>
+  <!--
   <node type="button" name="make-one">
     <pos>0.4,0.95</pos>
     <pos-mirrored>0.33,0.95</pos-mirrored>
@@ -814,5 +905,6 @@
       <val>front</val>
     </param>
   </node>
+  -->
   <!--</sheet>-->
 </gui>

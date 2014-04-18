@@ -36,6 +36,7 @@ public:
 
 	///OBJ file loading and convertion
 	void loadOBJfiles();
+	void loadOBJDir();
 	ofxAssimpModelLoader bunny;
 	sgCObject *sgBunny;
 	ofxAssimpModelLoader tetrahedron;

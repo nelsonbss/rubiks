@@ -46,4 +46,5 @@ void GuiScrollBar::input(string _type, int _ID, int _n, int _phase, ofVec2f _abs
 		ev.addArg("amount", _deltaPos.y);
 		SubObMediator::Instance()->sendEvent(ev.getName(), ev);
 	}
+	sendInteraction();
 }

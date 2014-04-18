@@ -53,10 +53,10 @@ vector<Triangle> CubieMesh::getTrianglesByNormal(ofVec3f _n){
 	vector<Triangle> tris;
 	for(auto tIter = triangles.begin(); tIter != triangles.end(); tIter++){
 		ofVec3f n = tIter->getNormal();
-		float d = n.distance(_n);
-		cout << "compared " << n.x << ", " << n.y << ", " << n.z << " to " << _n.x << ", " << _n.y << ", " << _n.z << " got " << d << endl;
+		//float d = n.distance(_n);
+		//cout << "compared " << n.x << ", " << n.y << ", " << n.z << " to " << _n.x << ", " << _n.y << ", " << _n.z << " got " << d << endl;
 		if(tIter->getNormal().distance(_n) < 0.05){
-			cout << "adding to vector." << endl;
+			//cout << "adding to vector." << endl;
 			tris.push_back(*tIter);
 		}
 	}

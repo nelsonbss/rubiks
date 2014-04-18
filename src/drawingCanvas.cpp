@@ -47,10 +47,10 @@ void drawingCanvas::setup(){
 
 void drawingCanvas::setViewport(ofRectangle _vp){
 	vp = _vp;
-	drawArea.x = (vp.width / 2) - 200;
-	drawArea.y = (vp.height / 2) - 200;
-	drawArea.width = 400;
-	drawArea.height = 400;
+	drawArea.x = (vp.width / 2) - 100;
+	drawArea.y = (vp.height / 2) - 100;
+	drawArea.width = 200;
+	drawArea.height = 200;
 }
 //--------------------------------------------------------------
 void drawingCanvas::update(){

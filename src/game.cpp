@@ -199,38 +199,38 @@ void game::update(){
 			}
 			//updatePuzzle = false;
 			if(myPuzzle->faceRotateB == true) {
-				//int ans = myPuzzle->rotateTwoIds(idcubieA,idcubieB,dir);
+				//////int ans = myPuzzle->rotateTwoIds(idcubieA,idcubieB,dir);
 
-				int ans;
-				if(myPuzzle->bHaveActiveCubie && myPuzzle->bHaveRotationCubie){
-					ans = myPuzzle->rotateTwoIds(myPuzzle->activeCubie,myPuzzle->rotationCubie,dir);
-					myPuzzle->bHaveActiveCubie = false;
-					myPuzzle->bHaveRotationCubie = false;
-				} else {
-					ans = myPuzzle->rotateTwoIds(myPuzzle->activeCubie,myPuzzle->activeCubie,dir);
-					myPuzzle->bHaveActiveCubie = false;
-				}
-				//ans has encripted the axis and the direction 10-x 20-y 30-z 1 or 0 direction
-				//put this move on the game history vector
-				//undo will look for the other 9 cubies involved and do a pop x2 on their history
-				if(ans/10 == 1){
-					//1
-					axis.x = 1;
-					axis.y = 0;
-					axis.z = 0;
-				}else if(ans/10 == 2){
-					//2
-					axis.x = 0;
-					axis.y = 1;
-					axis.z = 0;
-				}else{
-					//3
-					axis.x = 0;
-					axis.y = 0;
-					axis.z = 1;
-				}
-				bool d = ans%2;//this is 0 or 1
-				historyV.push_back(history(idcubieA,axis,!d)); //save inverse move (!), to do it at undo, and do 2 pop 
+				////int ans;
+				////if(myPuzzle->bHaveActiveCubie && myPuzzle->bHaveRotationCubie){
+				////	ans = myPuzzle->rotateTwoIds(myPuzzle->activeCubie,myPuzzle->rotationCubie,dir);
+				////	myPuzzle->bHaveActiveCubie = false;
+				////	myPuzzle->bHaveRotationCubie = false;
+				////} else {
+				////	ans = myPuzzle->rotateTwoIds(myPuzzle->activeCubie,myPuzzle->activeCubie,dir);
+				////	myPuzzle->bHaveActiveCubie = false;
+				////}
+				//////ans has encripted the axis and the direction 10-x 20-y 30-z 1 or 0 direction
+				//////put this move on the game history vector
+				//////undo will look for the other 9 cubies involved and do a pop x2 on their history
+				////if(ans/10 == 1){
+				////	//1
+				////	axis.x = 1;
+				////	axis.y = 0;
+				////	axis.z = 0;
+				////}else if(ans/10 == 2){
+				////	//2
+				////	axis.x = 0;
+				////	axis.y = 1;
+				////	axis.z = 0;
+				////}else{
+				////	//3
+				////	axis.x = 0;
+				////	axis.y = 0;
+				////	axis.z = 1;
+				////}
+				////bool d = ans%2;//this is 0 or 1
+				////historyV.push_back(history(idcubieA,axis,!d)); //save inverse move (!), to do it at undo, and do 2 pop 
 				myPuzzle->faceRotateB = false;
 			}
 		}

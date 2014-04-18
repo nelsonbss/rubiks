@@ -95,11 +95,11 @@ void GuiWindow::hide(){
 	bActive = false;
 	for(vector<GuiNode*>::iterator nIter = nodes.begin(); nIter != nodes.end(); nIter++){
 		(*nIter)->hide();
-		//(*nIter)->deactivate();
+		(*nIter)->deactivate();
 	}
 	if(bScrollable){
 		scrollBar.hide();
-		//scrollBar.deactivate();
+		scrollBar.deactivate();
 	}
 	//deactivate();
 }
@@ -109,11 +109,11 @@ void GuiWindow::unhide(){
 	bActive = true;
 	for(vector<GuiNode*>::iterator nIter = nodes.begin(); nIter != nodes.end(); nIter++){
 		(*nIter)->unhide();
-		//(*nIter)->activate();
+		(*nIter)->activate();
 	}
 	if(bScrollable){
 		scrollBar.unhide();
-		//scrollBar.activate();
+		scrollBar.activate();
 	}
 	//activate();
 }

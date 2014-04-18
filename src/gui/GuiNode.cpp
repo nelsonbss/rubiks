@@ -15,6 +15,7 @@ GuiNode::GuiNode(){
 	bFlipped = false;
 	bSelected = false;
 	currentLanguage = "english";
+	bUseHomePos = false;
 }
 
 void GuiNode::draw(ofVec2f _pnt){
@@ -183,10 +184,15 @@ void GuiNode::unhide(){
 }
 
 void GuiNode::setPosition(){
-	drawPos.x = ofGetWidth() * pos.x;
-	drawPos.y = ofGetHeight() * pos.y;
-	drawSize.x = ofGetWidth() * size.x;
-	drawSize.y = ofGetHeight() * size.y;
+	if(bUseHomePos){
+		drawPos = homePos;
+		bSelected = false;
+	} else {
+		drawPos.x = ofGetWidth() * pos.x;
+		drawPos.y = ofGetHeight() * pos.y;
+		drawSize.x = ofGetWidth() * size.x;
+		drawSize.y = ofGetHeight() * size.y;
+	}
 	nodeSetPosition();
 }
 

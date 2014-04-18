@@ -29,7 +29,8 @@ void GuiWindow::nodeInit(){
 		scrollBar.activate();
 	}
 	SubObMediator::Instance()->addObserver(getName() + ":scroll", this);
-	topMax = 0;
+	//offset.set(0,0);
+	topMax = offset.y;
 	topMin = drawSize.y - windowHeight;
 }
 
@@ -90,6 +91,11 @@ void GuiWindow::hide(){
 	bActive = false;
 	for(vector<GuiNode*>::iterator nIter = nodes.begin(); nIter != nodes.end(); nIter++){
 		(*nIter)->hide();
+		(*nIter)->deactivate();
+	}
+	if(bScrollable){
+		scrollBar.hide();
+		scrollBar.deactivate();
 	}
 }
 
@@ -98,6 +104,11 @@ void GuiWindow::unhide(){
 	bActive = true;
 	for(vector<GuiNode*>::iterator nIter = nodes.begin(); nIter != nodes.end(); nIter++){
 		(*nIter)->unhide();
+		(*nIter)->activate();
+	}
+	if(bScrollable){
+		scrollBar.unhide();
+		scrollBar.activate();
 	}
 }
 
@@ -120,6 +131,7 @@ void GuiWindow::positionNodes(){
 		float nodeX = column * (columnWidth * ofGetWidth());
 		float nodeY = row * (columnHeight * ofGetHeight());
 		ofVec2f nodePos = ofVec2f(0, currentTop) + ofVec2f(nodeX, nodeY);
+		nodePos += offset;
 		if(bMirrored){
 			nodePos += ofVec2f(40,0);
 		}

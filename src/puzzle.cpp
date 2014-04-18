@@ -906,7 +906,7 @@ void puzzle::checkCubiesForHit(ofVec3f _pnt){
 			//float dist = centroid.distance(mouse);
 			//float dist = myCubies[i]->getDistanceByVertex(mouse);
 			float dist = myCubies[i]->getDistanceByCentroid(_pnt);
-			cout << "dist = " << dist << endl;
+			//cout << "dist = " << dist << endl;
 			if(dist < nearest){
 				nearestId = myCubies[i]->getId();
 				//cout << "nearest = " << i << endl;

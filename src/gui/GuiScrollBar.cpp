@@ -30,7 +30,7 @@ void GuiScrollBar::nodeDraw(){
 bool GuiScrollBar::isInside(int _x, int _y){
     //cout << name << " checking insides " << drawPos.x << ", " << drawPos.x + (scale * drawSize.x) << " - " << drawPos.y << ", " << drawPos.y + (scale * drawSize.y);
 	//cout << " against " << _x << ", " << _y << endl;
-    cout << "ScrollBar checking - " << barRect.x << ", " << barRect.y << " - " << barRect.x + barRect.width << ", " << barRect.y + barRect.height << endl;
+    //cout << "ScrollBar checking - " << barRect.x << ", " << barRect.y << " - " << barRect.x + barRect.width << ", " << barRect.y + barRect.height << endl;
 	if((_x > barRect.x && _x < barRect.x + barRect.width &&
        (_y > barRect.y && _y < barRect.y + barRect.height))){
 		   return true;

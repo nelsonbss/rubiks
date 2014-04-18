@@ -52,7 +52,7 @@ public:
     virtual bool processMouse(int _x, int _y, int _state) = 0;
 	virtual void setPosition(ofVec2f _pos){pos = _pos;}
 	void setPosition(float _x, float _y){pos.x = _x; pos.y = _y;}
-	void setDrawPosition(ofVec2f _pos){drawPos = _pos;}
+	void setDrawPosition(ofVec2f _pos){drawPos = _pos; homePos = drawPos; bUseHomePos = true;}
 	void draw();
 	void draw(ofVec2f _pnt);
 	void init();
@@ -154,6 +154,8 @@ protected:
     ofVec2f pos;
 	ofVec2f drawPos;
 	ofVec2f dragPos;
+	ofVec2f homePos;
+	bool bUseHomePos;
 	ofVec2f drawSize;
     float scale;
 	ofVec2f size;

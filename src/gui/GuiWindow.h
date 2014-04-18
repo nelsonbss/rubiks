@@ -25,6 +25,7 @@ public:
 	void positionNodes();
 	void hide();
 	void unhide();
+	void setOffset(ofVec2f _o){offset = _o; topMax = offset.y;}
 
 private:
 	vector<GuiNode*> nodes;
@@ -53,6 +54,8 @@ private:
 
 	ofImage img;
 	bool bHaveImage;
+
+	ofVec2f offset;
 };
 	
 #endif

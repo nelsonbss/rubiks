@@ -67,6 +67,7 @@ public:
 	void extendGui(string _sheet, string _file, bool _mirrored, bool _flipped, string _prefix, map<string,string> _patterns); 
 	void loadSheets();
 	void loadNodes(string _sheetName, GuiWindow* _win);
+	void loadNodesFromDirectory(string _path, GuiWindow* _win);
 	void loadParams(GuiNode* _node);
 	void loadEvents(GuiNode* _node);
 	void loadArgs(SubObEvent* _event);

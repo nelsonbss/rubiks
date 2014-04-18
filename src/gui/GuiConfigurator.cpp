@@ -361,8 +361,8 @@ void GuiConfigurator::specialTextLoadingCopOut(){
 
 	texts["arm-start"] = GuiText();
 	texts["arm-start"].setText("english", "Drag a structure\nto slice your shape.");
-	texts["arm-start"].setText("french", "Faites glisser une structure pour découper votre forme.");
-	texts["arm-start"].setText("french", "Para cortar tu forma, arrastra una estructura.");
+	texts["arm-start"].setText("french", "Faites glisser une\nstructure pour découper\nvotre forme.");
+	texts["arm-start"].setText("spanish", "Para cortar tu forma,\narrastra una estructura.");
 
 	texts["start"] = GuiText();
     texts["start"].setText("english", "Drag a shape to begin\nto make a puzzle like\nthe one you selected.");
@@ -427,7 +427,12 @@ void GuiConfigurator::loadNodes(string _sheetName, GuiWindow* _win){
 		} else if (nodeType == "window"){	
 			nodePtr = new GuiWindow();
 			mXML.pushTag("node",i);
-			loadNodes("",(GuiWindow*)nodePtr);
+			string path = mXML.getValue("directory", "none");
+			if(path != "none"){
+				loadNodesFromDirectory(path, (GuiWindow*)nodePtr);
+			} else {
+				loadNodes("", (GuiWindow*)nodePtr);
+			}
 			mXML.popTag();
 		} else {
 			continue;
@@ -452,10 +457,12 @@ void GuiConfigurator::loadNodes(string _sheetName, GuiWindow* _win){
 			int columns = mXML.getValue("columns",0);
 			float columnWidth = mXML.getValue("column-width",0.0);
 			float columnHeight = mXML.getValue("column-height", 0.0);
+			string offset = mXML.getValue("offset", "0.0,0.0");
 			GuiWindow* tWinPtr = (GuiWindow*)nodePtr;
 			tWinPtr->setNumColumns(columns);
 			tWinPtr->setColumnWidth(columnWidth);
 			tWinPtr->setColumnHeight(columnHeight);
+			tWinPtr->setOffset(stringToVec2f(offset));
 		}
 		ofVec2f posVec = stringToVec2f(pos);
 		if(bMirrored){
@@ -479,6 +486,69 @@ void GuiConfigurator::loadNodes(string _sheetName, GuiWindow* _win){
 			_win->addNode(nodePtr);
 		}
 		mXML.popTag();
+	}
+}
+
+void GuiConfigurator::loadNodesFromDirectory(string _path, GuiWindow* _win){
+	cout << "Loading directory - " << _path << endl;
+	string path = _path;
+	for(auto pIter = patterns.begin(); pIter != patterns.end(); pIter++){
+		ofStringReplace(path, pIter->first, pIter->second);
+	}
+	string type = ofSplitString(path, "/")[1];
+	ofDirectory dir(path);
+	dir.allowExt("png");
+	dir.listDir();
+	vector<ofFile> files = dir.getFiles();
+	string eventName = "";
+	string offset = mXML.getValue("offset", "0.0,0.0");
+	int columns = mXML.getValue("columns",0);
+	float columnWidth = mXML.getValue("column-width",0.0);
+	float columnHeight = mXML.getValue("column-height", 0.0);
+	_win->setNumColumns(columns);
+	_win->setColumnWidth(columnWidth);
+	_win->setColumnHeight(columnHeight);
+	_win->setOffset(stringToVec2f(offset));
+	if(type == "objects"){
+		eventName = prefix + ":object-selected";
+	}
+	if(type == "armatures"){
+		eventName = prefix + ":armature-selected";
+	}
+	if(type == "colors"){
+		eventName = prefix + ":color-selected";
+	}
+	for(auto fIter = files.begin(); fIter != files.end(); fIter++){
+		string name = fIter->getFileName();
+		int id = 0;
+		if(type != "colors"){
+			id = ofToInt(ofSplitString(name, "_")[0]);
+		}
+		GuiButton* buttonPtr = new GuiButton();
+		SubObEvent* eventPtr = new SubObEvent();
+		eventPtr->setName(eventName);
+		if(type != "colors"){
+			eventPtr->addArg("object", id);
+		}
+		buttonPtr->addEvent(eventPtr);
+		buttonPtr->setPosition(ofVec2f(0.0,0.0));
+		buttonPtr->setSize(ofVec2f(1.0,1.0));
+		buttonPtr->setScale(1.0);
+		buttonPtr->setMirrored(bMirrored);
+		buttonPtr->setFlipped(bFlipped);
+		buttonPtr->setPrefix(prefix);
+		buttonPtr->setName(prefix + "-" + name);
+		buttonPtr->addParam("image", path + name);
+		buttonPtr->addParam("drag", "true");
+		buttonPtr->addParam("n","1");
+		buttonPtr->addParam("droppable", "true");
+		buttonPtr->addParam("hidden", "true");
+		buttonPtr->addParam("active", "false");
+		if(type == "colors"){
+			buttonPtr->addParam("attach-sample", "true");
+		}
+		buttonPtr->init();
+		_win->addNode(buttonPtr);
 	}
 }
 

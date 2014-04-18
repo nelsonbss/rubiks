@@ -57,7 +57,10 @@ void drawingCanvas::update(){
 }
 
 ofVec2f drawingCanvas::getRealPoint(ofVec2f _p){
-	return ofVec2f(_p.x - drawArea.x - vp.x - drawArea.width / 2,(_p.y - drawArea.y - vp.y - drawArea.height / 2));
+	//return ofVec2f(_p.x - drawArea.x - vp.x - drawArea.width / 2,(_p.y - drawArea.y - vp.y - drawArea.height / 2));
+	//ofVec2f realPoint(_p.x - vp.x - drawArea.x,vp.height - (_p.y - vp.y));
+	ofVec2f realPoint((_p.x - (vp.x + drawArea.x) - drawArea.width / 2),(/*drawArea.height - */(_p.y - (vp.y + drawArea.y)) - drawArea.height / 2));
+	return realPoint;
 }
 
 //--------------------------------------------------------------
@@ -78,19 +81,19 @@ void drawingCanvas::draw(){
 	ofFill();
 	ofSetColor(ofColor(0,255,0,255));
 	ofPushMatrix();
-	ofTranslate(vp.width / 2, 200, 0);
+	ofTranslate(drawArea.width / 2, drawArea.height / 2, 0);
 	myPolyline.draw();
+	if(drawDummy){
+		ofSetColor(ofColor(255,255,255,255));
+		ofSetLineWidth(5);
+		myDummyLine.draw();
+
+	//	//ofLine(dummyA,dummyB);
+	}
 	ofPopMatrix();
 	/*ofCircle(250,150,0, 10.0);
 	ofSetColor(ofColor(255,0,0,255));
 	ofCircle(0,0,0, 10.0);*/
-	//if(drawDummy){
-	//	ofSetColor(ofColor(255,255,255,255));
-	//	ofSetLineWidth(5);
-	//	myDummyLine.draw();
-
-	//	//ofLine(dummyA,dummyB);
-	//}
 	glPopMatrix();
 	ofEnableDepthTest();
 
@@ -143,7 +146,7 @@ void drawingCanvas::makeLine(ofVec2f mouse){
 				if(intersect == 0){
 					//no intersection
 					//myPolyline.addVertex(ofVec2f(mouse.x,mouse.y));
-					cout << "MX: " << mouse.x << "   my:  " << mouse.y << endl;
+					//cout << "MX: " << mouse.x << "   my:  " << mouse.y << endl;
 					//fix offset of point since they are in in the "middle" of the screen
 					//they have to be where the slicing takes place
 					//////////////////////myPolyline2->addVertex(ofVec2f(mouse.x-posCanvas.x,mouse.y-posCanvas.y));
@@ -352,8 +355,8 @@ void drawingCanvas::mouseReleased(int x, int y, int button){
 		myPolyline.addVertex(getRealPoint(firstMouse));	
 		closed = true;
 		poly2exists = true;
+		cout << "finishing drawing" << endl;
 	}
-	cout << "finishing drawing" << endl;
 	if(drawDummy == true){
 		drawDummy = false;
 		myDummyLine.clear();

@@ -724,7 +724,7 @@ void game::draw(){
 		cam.end();
 	}
 }
-
+//--------------------------------------------------------------------------------------------------------------------------------------
 void game::unprojectPoint(ofVec3f _pnt){
 	unprojectedPoint = picker.unproject(mousePoint, &viewport);
 	//unprojectedPoint = cam.screenToWorld(_pnt, viewport);
@@ -738,10 +738,9 @@ void game::unprojectPoint(ofVec3f _pnt){
 			bHaveAxis = false;
 			startMove(mousePoint);
 		} else {
-
 			//myPuzzle->dragInput((unprojectedPoint - lastUnprojectedPoint) * 25.0);
 			if(myPuzzle->isMoving() == false){
-				cout << "dragg" << endl;
+				//cout << "dragg" << endl;
 				makeMove((unprojectedPoint - lastUnprojectedPoint) * 25.0);
 				lastUnprojectedPoint = unprojectedPoint;
 			}
@@ -1002,9 +1001,9 @@ void game::loadMenuObject(int objID, SG_VECTOR p, SG_VECTOR t){
 			objectDisplayed->loadObject((sgC3DObject *)extrudedObject->Clone(),200);
 		}
 		////////////////////////
-		
+
 		//objectID = -1;
-		
+
 		////////////////////////////////
 		objectDisplayed->setup();
 		//step = 1;
@@ -1460,12 +1459,23 @@ void game::guiInput(int in){
 		//armature was selected
 		////showing armature    another armature can be selected
 		if(in == '1') {
-			//select armature 1
-			loadArmature(1); 
+			//3 is number of slices
+			loadArmature(3); 
 		}
 		if(in == '2') {
-			//select armature 2
 			loadArmature(2);
+		}
+		if(in == '3') {
+			loadArmature(3);
+		}
+		if(in == '4') {
+			loadArmature(4);
+		}
+		if(in == '5') {
+			loadArmature(5);
+		}
+		if(in == '6') {
+			loadArmature(6);
 		}
 		//////////////////////////////move all armature
 		if(in == 'l') {
@@ -2147,7 +2157,7 @@ void game::drawPoints(){
 	ofCircle(cp6,20);
 }
 //-----------------------------------------------------------------------------------------------------------------------
-//void game::makeMove(ofVec3f _pnt){
+//void game::makeMove(ofVec3f _pnt){ oldest version
 //	//SG_POINT axis;
 //	// get angle of gesture
 //	if(sqrt((_pnt.y*_pnt.y)+(_pnt.x*_pnt.x)) > 25){
@@ -2278,13 +2288,304 @@ void game::drawPoints(){
 //	}
 //}
 //------------------------------------------------------------------------------------------------------------------------
+//////////void game::makeMove(ofVec3f _pnt){ OLD version of make move
+//////////	//SG_POINT axis;
+//////////	// get angle of gesture
+//////////	double dragDist=sqrt((_pnt.y*_pnt.y)+(_pnt.x*_pnt.x));
+//////////
+//////////	if(bHaveAxis == false){
+//////////		if(dragDist > 25){
+//////////
+//////////			double dragAngle = atan2(_pnt.y,_pnt.x);//atan2(newPt.Y - twistStartPoint.Y, newPt.X - twistStartPoint.X);
+//////////
+//////////			double offset = 100000;
+//////////			int closest=-1;
+//////////			for (int i = 0; i < 6; i++)
+//////////			{
+//////////				double dist= abs(dragAngle-gestureAngles[i]);
+//////////				if (dist < offset)
+//////////				{
+//////////					offset = dist;
+//////////					closest = i;
+//////////				}
+//////////			}
+//////////
+//////////			cubiePos = myPuzzle->getCubieInfo(myPuzzle->activeCubie);
+//////////			ofVec3f normal = myPuzzle->activeTriangle.getNormal();
+//////////			int normalAng=0;
+//////////			// this one is easy since we're only dealing with six absolute directions... so we can see which vector of the normal is the most extreme
+//////////			if (abs(normal.x)>abs(normal.y) && abs(normal.x)>abs(normal.z)) {
+//////////				// x axis is most prominent
+//////////				normalAng=0;
+//////////				//cout << "~~~~~~~~~~~~~~~~~~~~~~~~cubie normal is X" << endl;
+//////////			} else if (abs(normal.y)>abs(normal.z)) {
+//////////				// y axis is most prominent
+//////////				normalAng=1;
+//////////				//cout << "~~~~~~~~~~~~~~~~~~~~~~~~cubie normal is Y" << endl;
+//////////			} else {
+//////////				// z axis is most prominent
+//////////				normalAng=2;
+//////////				//cout << "~~~~~~~~~~~~~~~~~~~~~~~~cubie normal is Z" << endl;
+//////////			}
+//////////
+//////////			/// version with normals
+//////////
+//////////			/*
+//////////			if (closest==1 || closest==0) {
+//////////			// x axis
+//////////			bHaveAxis = true;//we have to make shure to constrain the first gesture vector
+//////////
+//////////
+//////////			if (normalAng==1) {
+//////////			axis.x = 0;
+//////////			axis.y = 0;
+//////////			axis.z = 1;
+//////////			dir=true;
+//////////			if(myPuzzle->getCubieInfo(myPuzzle->activeCubie).y <= 1) {
+//////////			dir = false;
+//////////			}
+//////////
+//////////			if (closest==1) {
+//////////			dir=!dir;
+//////////			}
+//////////			rotateByIDandAxis(myPuzzle->activeCubie,axis,dir,10);
+//////////
+//////////			} else {
+//////////			axis.x = 0;
+//////////			axis.y = 1;
+//////////			axis.z = 0;
+//////////
+//////////			dir=true;
+//////////			if(myPuzzle->getCubieInfo(myPuzzle->activeCubie).z <= 1) {
+//////////
+//////////			dir = false;
+//////////			}
+//////////			if (closest==1) {
+//////////			dir=!dir;
+//////////			}
+//////////			rotateByIDandAxis(myPuzzle->activeCubie,axis,dir,10);
+//////////
+//////////			}
+//////////
+//////////
+//////////			}
+//////////
+//////////
+//////////			if (closest==3 || closest==2) {
+//////////			// y axis
+//////////			bHaveAxis = true;//we have to make shure to constrain the first gesture vector
+//////////
+//////////
+//////////			if (normalAng==0) {
+//////////			axis.x = 0;
+//////////			axis.y = 0;
+//////////			axis.z = 1;
+//////////			dir=true;
+//////////			if(myPuzzle->getCubieInfo(myPuzzle->activeCubie).x <= 1) {
+//////////			dir = false;
+//////////			}
+//////////			if (closest==3) {
+//////////			dir=!dir;
+//////////			}
+//////////			rotateByIDandAxis(myPuzzle->activeCubie,axis,dir,10);
+//////////
+//////////			} else {
+//////////			axis.x = 1;
+//////////			axis.y = 0;
+//////////			axis.z = 0;
+//////////
+//////////			dir=true;
+//////////			if(myPuzzle->getCubieInfo(myPuzzle->activeCubie).z <= 1) {
+//////////			dir = false;
+//////////			}
+//////////			if (closest==3) {
+//////////			dir=!dir;
+//////////			}
+//////////
+//////////			rotateByIDandAxis(myPuzzle->activeCubie,axis,dir,10);
+//////////
+//////////			}
+//////////
+//////////
+//////////			}
+//////////
+//////////			if (closest==4 || closest==5) {
+//////////			// z axis
+//////////			bHaveAxis = true;//we have to make shure to constrain the first gesture vector
+//////////
+//////////
+//////////			if (normalAng==0) {
+//////////			axis.x = 0;
+//////////			axis.y = 1;
+//////////			axis.z = 0;
+//////////			dir=true;
+//////////			if(myPuzzle->getCubieInfo(myPuzzle->activeCubie).x <= 1) {
+//////////			dir = false;
+//////////			}
+//////////			if (closest==5) {
+//////////			dir=!dir;
+//////////			}
+//////////			rotateByIDandAxis(myPuzzle->activeCubie,axis,dir,10);
+//////////
+//////////			} else {
+//////////			axis.x = 1;
+//////////			axis.y = 0;
+//////////			axis.z = 0;
+//////////
+//////////			dir=true;
+//////////			if(myPuzzle->getCubieInfo(myPuzzle->activeCubie).y <= 1) {
+//////////			dir = false;
+//////////			}
+//////////			if (closest==5) {
+//////////			dir=!dir;
+//////////			}
+//////////			rotateByIDandAxis(myPuzzle->activeCubie,axis,dir,10);
+//////////
+//////////			}
+//////////
+//////////
+//////////			}
+//////////
+//////////			*/
+//////////
+//////////
+//////////			if (closest == 0)
+//////////			{//1,0,0
+//////////				axis.x = 0;
+//////////				axis.y = 1;
+//////////				axis.z = 0;
+//////////
+//////////				bHaveAxis = true;//we have to make shure to constrain the first gesture vector
+//////////				if(myPuzzle->getCubieInfo(myPuzzle->activeCubie).z >= 1) //>0 gridzise/2 for the other square armmatures
+//////////				{
+//////////					dir = true;
+//////////					rotateByIDandAxis(myPuzzle->activeCubie,axis,dir,10);//need to find the "angle" 
+//////////				}
+//////////				else
+//////////				{
+//////////					dir = true;
+//////////					rotateByIDandAxis(myPuzzle->activeCubie,axis,dir,10);
+//////////				}
+//////////			}
+//////////
+//////////			if (closest == 1)
+//////////			{//-1,0,0
+//////////				axis.x = 0;
+//////////				axis.y = 1;
+//////////				axis.z = 0;
+//////////
+//////////				bHaveAxis = true;
+//////////				if(myPuzzle->getCubieInfo(myPuzzle->activeCubie).z <=1)
+//////////				{
+//////////					dir = false;
+//////////					rotateByIDandAxis(myPuzzle->activeCubie,axis,dir,10);
+//////////				}
+//////////				else
+//////////				{
+//////////					dir = false;
+//////////					rotateByIDandAxis(myPuzzle->activeCubie,axis,dir,10);
+//////////				}
+//////////			}
+//////////
+//////////
+//////////			if (closest == 2)
+//////////			{//1,0,0
+//////////				axis.x = 0;
+//////////				axis.y = 0;
+//////////				axis.z = 1;
+//////////
+//////////				bHaveAxis = true;//we have to make shure to constrain the first gesture vector
+//////////				if(myPuzzle->getCubieInfo(myPuzzle->activeCubie).x <= 1) //>0 gridzise/2 for the other square armmatures
+//////////				{
+//////////					dir = true;
+//////////					rotateByIDandAxis(myPuzzle->activeCubie,axis,dir,10);//need to find the "angle" 
+//////////				}
+//////////				else
+//////////				{
+//////////					dir = false;
+//////////					rotateByIDandAxis(myPuzzle->activeCubie,axis,dir,10);
+//////////				}
+//////////			}
+//////////
+//////////			if (closest == 3)
+//////////			{//-1,0,0
+//////////				axis.x = 0;
+//////////				axis.y = 0;
+//////////				axis.z = 1;
+//////////
+//////////				bHaveAxis = true;
+//////////				if(myPuzzle->getCubieInfo(myPuzzle->activeCubie).x <=1)
+//////////				{
+//////////					dir = false;
+//////////					rotateByIDandAxis(myPuzzle->activeCubie,axis,dir,10);
+//////////				}
+//////////				else
+//////////				{
+//////////					dir = true;
+//////////					rotateByIDandAxis(myPuzzle->activeCubie,axis,dir,10);
+//////////				}
+//////////			}
+//////////
+//////////			if (closest == 4)
+//////////			{//1,0,0
+//////////				axis.x = 1;
+//////////				axis.y = 0;
+//////////				axis.z = 0;
+//////////
+//////////				bHaveAxis = true;//we have to make shure to constrain the first gesture vector
+//////////				if(myPuzzle->getCubieInfo(myPuzzle->activeCubie).y >= 1) //>0 gridzise/2 for the other square armmatures
+//////////				{
+//////////					dir = true;
+//////////					rotateByIDandAxis(myPuzzle->activeCubie,axis,dir,10);//need to find the "angle" 
+//////////				}
+//////////				else
+//////////				{
+//////////					dir = false;
+//////////					rotateByIDandAxis(myPuzzle->activeCubie,axis,dir,10);
+//////////				}
+//////////			}
+//////////
+//////////			if (closest == 5)
+//////////			{//-1,0,0
+//////////				axis.x = 1;
+//////////				axis.y = 0;
+//////////				axis.z = 0;
+//////////
+//////////				bHaveAxis = true;
+//////////				if(myPuzzle->getCubieInfo(myPuzzle->activeCubie).y >=1)
+//////////				{
+//////////					dir = false;
+//////////					rotateByIDandAxis(myPuzzle->activeCubie,axis,dir,10);
+//////////				}
+//////////				else
+//////////				{
+//////////					dir = true;
+//////////					rotateByIDandAxis(myPuzzle->activeCubie,axis,dir,10);
+//////////				}
+//////////			}
+//////////
+//////////		}
+//////////
+//////////	}else{
+//////////
+//////////
+//////////		/*if (((dragDist-lastDragDistance)/300)>.5) {
+//////////		rotateByIDandAxis(myPuzzle->activeCubie,axis,dir,5);
+//////////		} else if (((dragDist-lastDragDistance)/300)<-.5) {
+//////////		rotateByIDandAxis(myPuzzle->activeCubie,axis,dir,-5);
+//////////		}*/
+//////////
+//////////		rotateByIDandAxis(myPuzzle->activeCubie,axis,dir,5);
+//////////	}
+//////////	//lastDragDistance=dragDist;
+//////////}
+//--------------------------------------------------------------------------------------------------------------------------
 void game::makeMove(ofVec3f _pnt){
 	//SG_POINT axis;
 	// get angle of gesture
 	double dragDist=sqrt((_pnt.y*_pnt.y)+(_pnt.x*_pnt.x));
-
 	if(bHaveAxis == false){
-		if(dragDist > 25){
+		if(dragDist > 75){
 
 			double dragAngle = atan2(_pnt.y,_pnt.x);//atan2(newPt.Y - twistStartPoint.Y, newPt.X - twistStartPoint.X);
 
@@ -2293,283 +2594,163 @@ void game::makeMove(ofVec3f _pnt){
 			for (int i = 0; i < 6; i++)
 			{
 				double dist= abs(dragAngle-gestureAngles[i]);
-				if (dist < offset)
-				{
+				double dist2= abs(dragAngle-gestureAngles[i]+(2*3.14159));
+				double dist3= abs(dragAngle-gestureAngles[i]-(2*3.14159));
+				if (dist < offset){
 					offset = dist;
 					closest = i;
-				}
+				} 
+				if (dist2 < offset){
+					offset = dist2;
+					closest = i;
+				} 
+				if (dist3 < offset){
+					offset = dist3;
+					closest = i;
+				} 
 			}
-
-			cubiePos = myPuzzle->getCubieInfo(myPuzzle->activeCubie);
+			cubiePos=myPuzzle->getCubieInfo(myPuzzle->activeCubie);
 			ofVec3f normal = myPuzzle->activeTriangle.getNormal();
+			//			ofVec3f normal=camPosition-ofVec3f(posP.x, posP.y, posP.z);
+			int normalNum=-1;
 			int normalAng=0;
+
 			// this one is easy since we're only dealing with six absolute directions... so we can see which vector of the normal is the most extreme
-			if (abs(normal.x)>abs(normal.y) && abs(normal.x)>abs(normal.z)) {
+			if(abs(normal.x)>abs(normal.y) && abs(normal.x)>abs(normal.z)){
 				// x axis is most prominent
 				normalAng=0;
-				//cout << "~~~~~~~~~~~~~~~~~~~~~~~~cubie normal is X" << endl;
-			} else if (abs(normal.y)>abs(normal.z)) {
+				if(normal.x>0){
+					normalNum=0;
+				}else{
+					normalNum=1;
+				}
+			}else if (abs(normal.y)>abs(normal.z)) {
 				// y axis is most prominent
 				normalAng=1;
-				//cout << "~~~~~~~~~~~~~~~~~~~~~~~~cubie normal is Y" << endl;
-			} else {
+				if(normal.y>0){
+					normalNum=2;
+				}else{
+					normalNum=3;
+				}
+			}else {
 				// z axis is most prominent
 				normalAng=2;
-				//cout << "~~~~~~~~~~~~~~~~~~~~~~~~cubie normal is Z" << endl;
+				if (normal.z>0) {
+					normalNum=4;
+				} else {
+					normalNum=5;
+				}
 			}
-
-			/// version with normals
-
-			/*
 			if (closest==1 || closest==0) {
-			// x axis
-			bHaveAxis = true;//we have to make shure to constrain the first gesture vector
+				// x axis
+				bHaveAxis = true;
+				if (normalAng==1) {
+					// rotate on z
+					axis.x = 0;
+					axis.y = 0;
+					axis.z = 1;
+					dir=true;
+					if(myPuzzle->getCubieInfo(myPuzzle->activeCubie).y >= 1) {
+						dir = false;
+					}
+					if (closest==1) {
+						dir=!dir;
+					}
+					rotateByIDandAxis(myPuzzle->activeCubie,axis,dir,10);
 
+				}else{
+					// rotate on y
+					axis.x = 0;
+					axis.y = 1;
+					axis.z = 0;
 
-			if (normalAng==1) {
-			axis.x = 0;
-			axis.y = 0;
-			axis.z = 1;
-			dir=true;
-			if(myPuzzle->getCubieInfo(myPuzzle->activeCubie).y <= 1) {
-			dir = false;
+					dir=true;
+					if(myPuzzle->getCubieInfo(myPuzzle->activeCubie).z <= 1) {
+						dir = false;
+					}
+					if (closest==1) {
+						dir=!dir;
+					}
+					rotateByIDandAxis(myPuzzle->activeCubie,axis,dir,10);
+				}
 			}
-
-			if (closest==1) {
-			dir=!dir;
-			}
-			rotateByIDandAxis(myPuzzle->activeCubie,axis,dir,10);
-
-			} else {
-			axis.x = 0;
-			axis.y = 1;
-			axis.z = 0;
-
-			dir=true;
-			if(myPuzzle->getCubieInfo(myPuzzle->activeCubie).z <= 1) {
-
-			dir = false;
-			}
-			if (closest==1) {
-			dir=!dir;
-			}
-			rotateByIDandAxis(myPuzzle->activeCubie,axis,dir,10);
-
-			}
-
-
-			}
-
-
 			if (closest==3 || closest==2) {
-			// y axis
-			bHaveAxis = true;//we have to make shure to constrain the first gesture vector
+				// y axis
+				bHaveAxis = true;
+				if (normalAng==0) {
+					// rotate on z
+					axis.x = 0;
+					axis.y = 0;
+					axis.z = 1;
+					dir=true;
+					if(myPuzzle->getCubieInfo(myPuzzle->activeCubie).x <= 1) {
+						dir = false;
+					}
+					if (closest==3) {
+						dir=!dir;
+					}
+					rotateByIDandAxis(myPuzzle->activeCubie,axis,dir,10);
 
+				} else {
+					// rotate on x
+					axis.x = 1;
+					axis.y = 0;
+					axis.z = 0;
 
-			if (normalAng==0) {
-			axis.x = 0;
-			axis.y = 0;
-			axis.z = 1;
-			dir=true;
-			if(myPuzzle->getCubieInfo(myPuzzle->activeCubie).x <= 1) {
-			dir = false;
+					dir=false;
+					if(myPuzzle->getCubieInfo(myPuzzle->activeCubie).z <= 1) {
+						dir = true;
+					}
+					if (closest==3) {
+						dir=!dir;
+					}
+					rotateByIDandAxis(myPuzzle->activeCubie,axis,dir,10);
+				}
 			}
-			if (closest==3) {
-			dir=!dir;
-			}
-			rotateByIDandAxis(myPuzzle->activeCubie,axis,dir,10);
-
-			} else {
-			axis.x = 1;
-			axis.y = 0;
-			axis.z = 0;
-
-			dir=true;
-			if(myPuzzle->getCubieInfo(myPuzzle->activeCubie).z <= 1) {
-			dir = false;
-			}
-			if (closest==3) {
-			dir=!dir;
-			}
-
-			rotateByIDandAxis(myPuzzle->activeCubie,axis,dir,10);
-
-			}
-
-
-			}
-
 			if (closest==4 || closest==5) {
-			// z axis
-			bHaveAxis = true;//we have to make shure to constrain the first gesture vector
-
-
-			if (normalAng==0) {
-			axis.x = 0;
-			axis.y = 1;
-			axis.z = 0;
-			dir=true;
-			if(myPuzzle->getCubieInfo(myPuzzle->activeCubie).x <= 1) {
-			dir = false;
-			}
-			if (closest==5) {
-			dir=!dir;
-			}
-			rotateByIDandAxis(myPuzzle->activeCubie,axis,dir,10);
-
-			} else {
-			axis.x = 1;
-			axis.y = 0;
-			axis.z = 0;
-
-			dir=true;
-			if(myPuzzle->getCubieInfo(myPuzzle->activeCubie).y <= 1) {
-			dir = false;
-			}
-			if (closest==5) {
-			dir=!dir;
-			}
-			rotateByIDandAxis(myPuzzle->activeCubie,axis,dir,10);
-
-			}
-
-
-			}
-
-			*/
-
-
-			if (closest == 0)
-			{//1,0,0
-				axis.x = 0;
-				axis.y = 1;
-				axis.z = 0;
-
-				bHaveAxis = true;//we have to make shure to constrain the first gesture vector
-				if(myPuzzle->getCubieInfo(myPuzzle->activeCubie).z >= 1) //>0 gridzise/2 for the other square armmatures
-				{
-					dir = true;
-					rotateByIDandAxis(myPuzzle->activeCubie,axis,dir,10);//need to find the "angle" 
-				}
-				else
-				{
-					dir = true;
-					rotateByIDandAxis(myPuzzle->activeCubie,axis,dir,10);
-				}
-			}
-
-			if (closest == 1)
-			{//-1,0,0
-				axis.x = 0;
-				axis.y = 1;
-				axis.z = 0;
-
+				// z axis
 				bHaveAxis = true;
-				if(myPuzzle->getCubieInfo(myPuzzle->activeCubie).z <=1)
-				{
-					dir = false;
+
+				if(normalAng==0){
+					// rotate on y
+					axis.x = 0;
+					axis.y = 1;
+					axis.z = 0;
+					dir=false;
+					if(myPuzzle->getCubieInfo(myPuzzle->activeCubie).x <= 1) {
+						dir = true;
+					}
+					if (closest==5) {
+						dir=!dir;
+					}
 					rotateByIDandAxis(myPuzzle->activeCubie,axis,dir,10);
-				}
-				else
-				{
-					dir = false;
+				} else {
+					// rotate on x
+					axis.x = 1;
+					axis.y = 0;
+					axis.z = 0;
+
+					dir=true;
+					if(myPuzzle->getCubieInfo(myPuzzle->activeCubie).y <= 1) {
+						dir = false;
+					}
+					if (closest==5) {
+						dir=!dir;
+					}
 					rotateByIDandAxis(myPuzzle->activeCubie,axis,dir,10);
+
 				}
 			}
-
-
-			if (closest == 2)
-			{//1,0,0
-				axis.x = 0;
-				axis.y = 0;
-				axis.z = 1;
-
-				bHaveAxis = true;//we have to make shure to constrain the first gesture vector
-				if(myPuzzle->getCubieInfo(myPuzzle->activeCubie).x <= 1) //>0 gridzise/2 for the other square armmatures
-				{
-					dir = true;
-					rotateByIDandAxis(myPuzzle->activeCubie,axis,dir,10);//need to find the "angle" 
-				}
-				else
-				{
-					dir = false;
-					rotateByIDandAxis(myPuzzle->activeCubie,axis,dir,10);
-				}
-			}
-
-			if (closest == 3)
-			{//-1,0,0
-				axis.x = 0;
-				axis.y = 0;
-				axis.z = 1;
-
-				bHaveAxis = true;
-				if(myPuzzle->getCubieInfo(myPuzzle->activeCubie).x <=1)
-				{
-					dir = false;
-					rotateByIDandAxis(myPuzzle->activeCubie,axis,dir,10);
-				}
-				else
-				{
-					dir = true;
-					rotateByIDandAxis(myPuzzle->activeCubie,axis,dir,10);
-				}
-			}
-
-			if (closest == 4)
-			{//1,0,0
-				axis.x = 1;
-				axis.y = 0;
-				axis.z = 0;
-
-				bHaveAxis = true;//we have to make shure to constrain the first gesture vector
-				if(myPuzzle->getCubieInfo(myPuzzle->activeCubie).y >= 1) //>0 gridzise/2 for the other square armmatures
-				{
-					dir = true;
-					rotateByIDandAxis(myPuzzle->activeCubie,axis,dir,10);//need to find the "angle" 
-				}
-				else
-				{
-					dir = false;
-					rotateByIDandAxis(myPuzzle->activeCubie,axis,dir,10);
-				}
-			}
-
-			if (closest == 5)
-			{//-1,0,0
-				axis.x = 1;
-				axis.y = 0;
-				axis.z = 0;
-
-				bHaveAxis = true;
-				if(myPuzzle->getCubieInfo(myPuzzle->activeCubie).y >=1)
-				{
-					dir = false;
-					rotateByIDandAxis(myPuzzle->activeCubie,axis,dir,10);
-				}
-				else
-				{
-					dir = true;
-					rotateByIDandAxis(myPuzzle->activeCubie,axis,dir,10);
-				}
-			}
-
 		}
-
 	}else{
-
-
-		/*if (((dragDist-lastDragDistance)/300)>.5) {
-		rotateByIDandAxis(myPuzzle->activeCubie,axis,dir,5);
+		if (((dragDist-lastDragDistance)/300)>.5) {
+			rotateByIDandAxis(myPuzzle->activeCubie,axis,dir,5);
 		} else if (((dragDist-lastDragDistance)/300)<-.5) {
-		rotateByIDandAxis(myPuzzle->activeCubie,axis,dir,-5);
-		}*/
-
-		rotateByIDandAxis(myPuzzle->activeCubie,axis,dir,5);
+			rotateByIDandAxis(myPuzzle->activeCubie,axis,dir,-5);
+		}
 	}
-	//lastDragDistance=dragDist;
+	lastDragDistance=dragDist;
 }
-
 //-----------------------------------------------------------------------------------------------------------------------
 float game::getMainComponent(ofVec3f _pnt){
 	ofVec3f x(_pnt.x, 0, 0);

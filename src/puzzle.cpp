@@ -93,37 +93,37 @@ void puzzle::update(){
 	//iterate through cubies
 	//cout << "UPDATING PUZZLE" << endl;
 	/*for(int i=0;i<numPieces;i++){
-		if(myCubies[i] != NULL){
-			myCubies[i]->update();
-			if(myCubies[i]->getRotate()){
-				cout << "rotating cubies." << endl;
-				int id = myCubies[i]->getId() - 1;
-				int rotationDirection = myCubies[i]->getRotationDirection();
-				myCubies[i]->setRotate(false);
-				SG_VECTOR axis;
-				if(rotationDirection == ROTATE_UP){
-					axis.x = 0;
-					axis.y = 1;
-					axis.z = 0;
-					rotateByIDandAxis(id, axis, true);
-				} else if(rotationDirection == ROTATE_DOWN){
-					axis.x = 0;
-					axis.y = 1;
-					axis.z = 0;
-					rotateByIDandAxis(id, axis, false);
-				} else if(rotationDirection == ROTATE_LEFT){
-					axis.x = 1;
-					axis.y = 0;
-					axis.z = 0;
-					rotateByIDandAxis(id, axis, true);
-				} else {
-					axis.x = 1;
-					axis.y = 0;
-					axis.z = 0;
-					rotateByIDandAxis(id, axis, false);
-				}
-			}
-		}
+	if(myCubies[i] != NULL){
+	myCubies[i]->update();
+	if(myCubies[i]->getRotate()){
+	cout << "rotating cubies." << endl;
+	int id = myCubies[i]->getId() - 1;
+	int rotationDirection = myCubies[i]->getRotationDirection();
+	myCubies[i]->setRotate(false);
+	SG_VECTOR axis;
+	if(rotationDirection == ROTATE_UP){
+	axis.x = 0;
+	axis.y = 1;
+	axis.z = 0;
+	rotateByIDandAxis(id, axis, true);
+	} else if(rotationDirection == ROTATE_DOWN){
+	axis.x = 0;
+	axis.y = 1;
+	axis.z = 0;
+	rotateByIDandAxis(id, axis, false);
+	} else if(rotationDirection == ROTATE_LEFT){
+	axis.x = 1;
+	axis.y = 0;
+	axis.z = 0;
+	rotateByIDandAxis(id, axis, true);
+	} else {
+	axis.x = 1;
+	axis.y = 0;
+	axis.z = 0;
+	rotateByIDandAxis(id, axis, false);
+	}
+	}
+	}
 	}*/
 }
 //----------------------------------------------------------------
@@ -620,19 +620,24 @@ void puzzle::rotateByIDandAxisNew(int id, SG_VECTOR axis, bool dir, float angle)
 	selY =myCubies[id]->getYpos();
 	selZ =myCubies[id]->getZpos();
 	//now we ask for the cubies on that axis
+
 	if(axis.x != 0){
 		for (int i=0;i<numPieces;i++) {
 			if (myCubies[i]->getXpos()==selX) {
-				selected[counter]=i;
-				counter++;
+				if (myCubies[i]->getNumObjs()>0) {
+					selected[counter]=i;
+					counter++;
+				}
 			}
 		}
 		//rearrange3dArrayNew(0,selX,dir);
 	}else if(axis.y != 0){
 		for (int i=0;i<numPieces;i++) {
 			if (myCubies[i]->getYpos()==selY) {
-				selected[counter]=i;
-				counter++;
+				if (myCubies[i]->getNumObjs()>0) {
+					selected[counter]=i;
+					counter++;
+				}
 			}
 		}
 		//rearrange3dArrayNew(1,selY,dir);
@@ -640,8 +645,10 @@ void puzzle::rotateByIDandAxisNew(int id, SG_VECTOR axis, bool dir, float angle)
 		//if the move is on a z axis
 		for (int i=0;i<numPieces;i++) {
 			if (myCubies[i]->getZpos()==selZ) {
-				selected[counter]=i;
-				counter++;
+				if (myCubies[i]->getNumObjs()>0) {
+					selected[counter]=i;
+					counter++;
+				}
 			}
 		}
 		//rearrange3dArrayNew(2,selZ,dir);
@@ -918,7 +925,7 @@ void puzzle::checkCubiesForHit(ofVec3f _pnt){
 		if(nearest < MAX_DIST){
 			if(activeCubie != nearestId){
 				//if(activeCubie > -1){
-					//myCubies[activeCubie]->setDraw(true);
+				//myCubies[activeCubie]->setDraw(true);
 				//}
 				activeCubie = nearestId;
 				//myCubies[activeCubie]->setDraw(false);

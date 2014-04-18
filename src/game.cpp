@@ -16,7 +16,7 @@
 
 #define canvasSide 500
 
-#define USE_LIGHT 1
+#define USE_LIGHT 1  //0 is off
 
 game::game(SG_VECTOR gamePos, float w, float h, SG_VECTOR displayPos, ofRectangle _vp, float iddleTime, string myPrefix){
 	posGame = gamePos;
@@ -1115,18 +1115,18 @@ void game::loadMenuObject(int objID, SG_VECTOR p, SG_VECTOR t){
 	//////////////////////////////////////////////////////////
 	//load a puzzle Object from the puzzle menu on the center
 	if (objectID == -1){
-		objectDisplayed = new myobject3D(p,t);
+		objectDisplayed = new myobject3D(p,t,station);
 	}else{
 		objectDisplayed->exit();
 		delete objectDisplayed;
-		objectDisplayed = new myobject3D(p,t);
+		objectDisplayed = new myobject3D(p,t,station);
 	}
 	objectID = objID;
 	bool loaded = false;
 	if(step == 0 || step==1 || step == 7){
 		if(objID == 1){
 			//torus
-			objectDisplayed->loadObject(sgCreateTorus(100,70,50,50),1,prefix);//(radius,thickness,meridiansDonut,meridiansDonutCut)
+			objectDisplayed->loadObject(sgCreateTorus(100,70,50,50),1);//(radius,thickness,meridiansDonut,meridiansDonutCut)
 			if(extrudedB){
 				sgDeleteObject(extrudedObject);
 				extrudedB = false;
@@ -1135,7 +1135,7 @@ void game::loadMenuObject(int objID, SG_VECTOR p, SG_VECTOR t){
 		}
 		if(objID == 2){
 			//cube
-			objectDisplayed->loadObject(sgCreateBox(300,300,300),2,prefix);//(tamX,tamY,tamZ)
+			objectDisplayed->loadObject(sgCreateBox(300,300,300),2);//(tamX,tamY,tamZ)
 			if(extrudedB){
 				sgDeleteObject(extrudedObject);
 				extrudedB = false;
@@ -1144,7 +1144,7 @@ void game::loadMenuObject(int objID, SG_VECTOR p, SG_VECTOR t){
 		}if(objID == 3){
 			//cone
 			//objectDisplayed->loadObject(sgCreateCone(250,1,250,3),3);
-			objectDisplayed->loadObject((sgC3DObject *)sgTetrahedron->Clone(),3,prefix);
+			objectDisplayed->loadObject((sgC3DObject *)sgTetrahedron->Clone(),3);
 			if(extrudedB){
 				sgDeleteObject(extrudedObject);
 				extrudedB = false;
@@ -1153,7 +1153,7 @@ void game::loadMenuObject(int objID, SG_VECTOR p, SG_VECTOR t){
 		}
 		if(objID == 4){
 			//try to load the bunny
-			objectDisplayed->loadObject((sgC3DObject *)sgBunny->Clone(),4,prefix);
+			objectDisplayed->loadObject((sgC3DObject *)sgBunny->Clone(),4);
 			if(extrudedB){
 				sgDeleteObject(extrudedObject);
 				extrudedB = false;
@@ -1162,7 +1162,7 @@ void game::loadMenuObject(int objID, SG_VECTOR p, SG_VECTOR t){
 		}
 		if(objID == 5){
 			//try to load the dodecahedron
-			objectDisplayed->loadObject((sgC3DObject *)sgDodecahedron->Clone(),5,prefix);
+			objectDisplayed->loadObject((sgC3DObject *)sgDodecahedron->Clone(),5);
 			if(extrudedB){
 				sgDeleteObject(extrudedObject);
 				extrudedB = false;
@@ -1171,7 +1171,7 @@ void game::loadMenuObject(int objID, SG_VECTOR p, SG_VECTOR t){
 		}
 		if(objID == 6){
 			//try to load the Icosahedron
-			objectDisplayed->loadObject((sgC3DObject *)sgIcosahedron->Clone(),6,prefix);
+			objectDisplayed->loadObject((sgC3DObject *)sgIcosahedron->Clone(),6);
 			if(extrudedB){
 				sgDeleteObject(extrudedObject);
 				extrudedB = false;
@@ -1180,7 +1180,7 @@ void game::loadMenuObject(int objID, SG_VECTOR p, SG_VECTOR t){
 		}
 		if(objID == 7){
 			//try to load the Octahedron
-			objectDisplayed->loadObject((sgC3DObject *)sgOctahedron->Clone(),7,prefix);
+			objectDisplayed->loadObject((sgC3DObject *)sgOctahedron->Clone(),7);
 			if(extrudedB){
 				sgDeleteObject(extrudedObject);
 				extrudedB = false;
@@ -1193,7 +1193,7 @@ void game::loadMenuObject(int objID, SG_VECTOR p, SG_VECTOR t){
 		//}
 		if(objID == 200){
 			//load extruded object
-			objectDisplayed->loadObject((sgC3DObject *)extrudedObject->Clone(),200,prefix);
+			objectDisplayed->loadObject((sgC3DObject *)extrudedObject->Clone(),200);
 			loaded = true;
 		}
 		////////////////////////
@@ -1228,16 +1228,16 @@ void game::loadMenuObject(int objID, SG_VECTOR p, SG_VECTOR t){
 //----------------------------------------------------------------------
 void game::loadObject(int objID, SG_VECTOR p, SG_VECTOR t){
 	if (objectID == -1){
-		objectDisplayed = new myobject3D(p,t);
+		objectDisplayed = new myobject3D(p,t,station);
 	}else{
 		objectDisplayed->exit();
 		delete objectDisplayed;
-		objectDisplayed = new myobject3D(p,t);
+		objectDisplayed = new myobject3D(p,t,station);
 	}
 	objectID = objID;
 	if(step == 0 || step==1 || step == 6){
 		if(objID != 200){
-			objectDisplayed->loadObject((sgC3DObject*)objects[objectID]->Clone(), objectID,prefix);
+			objectDisplayed->loadObject((sgC3DObject*)objects[objectID]->Clone(), objectID);
 		}
 		//if(objID == 1){
 		//	//torus
@@ -1302,7 +1302,7 @@ void game::loadObject(int objID, SG_VECTOR p, SG_VECTOR t){
 		//}
 		if(objID == 200){
 			//load extruded object
-			objectDisplayed->loadObject((sgC3DObject *)extrudedObject->Clone(),200,prefix);
+			objectDisplayed->loadObject((sgC3DObject *)extrudedObject->Clone(),200);
 		}
 		objectDisplayed->setup();
 		step = 1;

@@ -8,14 +8,14 @@
 class myobject3D {
 	
 public:
-	myobject3D (SG_VECTOR pos, SG_VECTOR t);
+	myobject3D (SG_VECTOR pos, SG_VECTOR t, string stationID);
     
 	void setup();
 	void update();
 	void draw();
 	void exit();
 
-	void loadObject(sgC3DObject *obj, int ID, string stationID); //it will load a sgCore lib object: torus, box...
+	void loadObject(sgC3DObject *obj, int ID); //it will load a sgCore lib object: torus, box...
 	sgC3DObject* getObject();//it will return the object, i.e to be used in boolean
 
 	int objectId; //the id of the 3d selected object, the id comes from the main app

@@ -2,7 +2,7 @@
 #include "sgCore.h"
 #include "ofRender.h"
 
-myobject3D::myobject3D(SG_VECTOR p, SG_VECTOR t){
+myobject3D::myobject3D(SG_VECTOR p, SG_VECTOR t, string stationID){
 	pos.x = p.x;
 	pos.y = p.y;
 	pos.z = p.z;
@@ -13,6 +13,8 @@ myobject3D::myobject3D(SG_VECTOR p, SG_VECTOR t){
 
 	objectId=0;
 	object = NULL;
+
+	station = stationID;
 }
 //--------------------------------------------------------------
 void myobject3D::setup(){
@@ -38,19 +40,31 @@ void myobject3D::update(){
 	//SG_VECTOR transP = {tempPos.x,tempPos.y,tempPos.z};
 
 	//flip 180 on x axis the object for bl and br game stations
-	if(station.compare("bl") ){
+	if(station.compare("bl") ==0){
 		SG_POINT rotP = {tempPos.x,tempPos.y,tempPos.z};
 		SG_VECTOR rotV = {1,0,0};
 		SG_VECTOR offset = {0,0,0}; //for the cube to be in place
 		temp->InitTempMatrix()->Translate(rotP);//this translates the object to be cut!!
 		temp->GetTempMatrix()->Rotate(rotP,rotV,ofDegToRad(180));
+		SG_VECTOR rotV2 = {0,1,0};
+		temp->GetTempMatrix()->Rotate(rotP,rotV2,ofDegToRad(180));
 		temp->ApplyTempMatrix(); 
-	}else if (station.compare("br")){
+	}else if (station.compare("br")==0){
 		SG_POINT rotP = {tempPos.x,tempPos.y,tempPos.z};
 		SG_VECTOR rotV = {1,0,0};
 		SG_VECTOR offset = {0,0,0}; //for the cube to be in place
 		temp->InitTempMatrix()->Translate(rotP);//this translates the object to be cut!!
 		temp->GetTempMatrix()->Rotate(rotP,rotV,ofDegToRad(180));
+		SG_VECTOR rotV2 = {0,1,0};
+		temp->GetTempMatrix()->Rotate(rotP,rotV2,ofDegToRad(180));
+		temp->ApplyTempMatrix(); 
+	}else if (station.compare("tr")==0){
+		SG_POINT rotP = {tempPos.x,tempPos.y,tempPos.z};
+		temp->InitTempMatrix()->Translate(rotP);//this translates the object to be cut!!
+		temp->ApplyTempMatrix(); 
+	}else if (station.compare("tl")==0){
+		SG_POINT rotP = {tempPos.x,tempPos.y,tempPos.z};
+		temp->InitTempMatrix()->Translate(rotP);//this translates the object to be cut!!
 		temp->ApplyTempMatrix(); 
 	}
 
@@ -85,19 +99,21 @@ void myobject3D::update(){
 		SG_VECTOR offset = {0,150,0}; 
 		temp->GetTempMatrix()->Translate(offset);
 	}
-	temp->ApplyTempMatrix();  
+	//temp->ApplyTempMatrix();  
 }
 //--------------------------------------------------------------
 void myobject3D::draw(){
 	ofPushMatrix();
 	//ofScale(1,1,1);
-	glMultMatrixd(temp->GetTempMatrix()->GetTransparentData());
-	temp->DestroyTempMatrix();
+	if(temp->GetTempMatrix()){
+		glMultMatrixd(temp->GetTempMatrix()->GetTransparentData());
+		temp->DestroyTempMatrix();
+	}
 	myVbo.draw(GL_TRIANGLES, 0,myMesh.getNumIndices());
 	ofPopMatrix();
 }
 //----------------------------------------------------------------
-void myobject3D::loadObject(sgC3DObject *obj, int ID, string stationID){
+void myobject3D::loadObject(sgC3DObject *obj, int ID){
 	//it will load a sgCore lib object: torus, box
 
 	if(object==NULL){
@@ -107,18 +123,22 @@ void myobject3D::loadObject(sgC3DObject *obj, int ID, string stationID){
 		object = obj;
 	}
 	objectId = ID;
-	station = stationID;
+
 	//flip 180 on x axis the object for bl and br game stations
-	if(station.compare("bl")){
+	if(station.compare("bl")==0){
 		SG_POINT rotP = {0,0,0};
 		SG_VECTOR rotV = {1,0,0};
 		object->InitTempMatrix()->Rotate(rotP,rotV,ofDegToRad(180));
+		SG_VECTOR rotV2 = {0,1,0};
+		object->GetTempMatrix()->Rotate(rotP,rotV2,ofDegToRad(180));
 		object->ApplyTempMatrix(); 
 		object->DestroyTempMatrix();
-	}else if(station.compare("br")){
+	}else if(station.compare("br")==0){
 		SG_POINT rotP = {0,0,0};
 		SG_VECTOR rotV = {1,0,0};
 		object->InitTempMatrix()->Rotate(rotP,rotV,ofDegToRad(180));
+		SG_VECTOR rotV2 = {0,1,0};
+		object->GetTempMatrix()->Rotate(rotP,rotV2,ofDegToRad(180));
 		object->ApplyTempMatrix(); 
 		object->DestroyTempMatrix();
 	}

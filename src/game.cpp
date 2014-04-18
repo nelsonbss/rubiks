@@ -181,7 +181,9 @@ void game::setup(){
 	SubObMediator::Instance()->addObserver(prefix + ":make-one2", this);
 	SubObMediator::Instance()->addObserver(prefix + ":menupuzzle-selected", this);
 
-	light.setPointLight();
+	//light.setPointLight();
+	light.setSpotlight(60.0);
+	//light.setDirectional();
 	light.setDiffuseColor( ofColor(255.f, 255.f, 255.f));
 	light.setSpecularColor( ofColor(255.f, 255.f, 255.f));
 
@@ -788,6 +790,7 @@ void game::draw(){
 			ofEnableLighting();
 			light.enable();
 			light.setPosition(camPosition);
+			light.lookAt(ofVec3f(posP.x, posP.y, posP.z));
 		}
 		//cam.disableMouseInput();
 		//ofSetupScreen();

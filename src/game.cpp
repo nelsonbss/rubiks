@@ -139,7 +139,7 @@ void game::update(){
 	//}
 	if(bHaveNewObject){
 		SG_VECTOR objectPos = {0,0,0};
-		if(step == 1){
+		if(step == 1 || step == 7){
 			clearDisplayedObject();
 		}
 		if(newObject == 9){
@@ -691,7 +691,7 @@ void game::draw(){
 		//show puzzle
 		glPushMatrix();
 		//glTranslatef(posP.x,posP.y,posP.z);
-		ofTranslate(posP.x, posP.y-400, posP.z);
+		ofTranslate(posP.x, posP.y, posP.z);
 		//new trackball
 		//glRotatef(angle, axistb.x, axistb.y, axistb.z);
 		//ofFill();

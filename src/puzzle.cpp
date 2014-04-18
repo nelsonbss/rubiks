@@ -92,10 +92,10 @@ void puzzle::setup(){
 void puzzle::update(){
 	//iterate through cubies
 	//cout << "UPDATING PUZZLE" << endl;
-	/*for(int i=0;i<numPieces;i++){
+	for(int i=0;i<numPieces;i++){
 		if(myCubies[i] != NULL){
 			myCubies[i]->update();
-			if(myCubies[i]->getRotate()){
+			/*if(myCubies[i]->getRotate()){
 				cout << "rotating cubies." << endl;
 				int id = myCubies[i]->getId() - 1;
 				int rotationDirection = myCubies[i]->getRotationDirection();
@@ -122,9 +122,9 @@ void puzzle::update(){
 					axis.z = 0;
 					rotateByIDandAxis(id, axis, false);
 				}
-			}
+			}*/
 		}
-	}*/
+	}
 }
 //----------------------------------------------------------------
 void puzzle::draw(){  

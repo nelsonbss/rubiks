@@ -129,8 +129,8 @@ void menuPuzzle::update(){
 	temp->InitTempMatrix()->Translate(transP);
 	if(objectId == 2){
 		//cube
-		SG_VECTOR offset = {-50,-50,-0}; //for the cube to be in place
-		temp->GetTempMatrix()->Translate(offset);//this translates the object to be cut!!
+		//SG_VECTOR offset = {-50,-50,-0}; //for the cube to be in place
+		//temp->GetTempMatrix()->Translate(offset);//this translates the object to be cut!!
 
 		//apply armature axis rotations (x-y-z) to the real object
 		//SG_POINT rotP = {0,0,0};

@@ -96,32 +96,32 @@ void puzzle::update(){
 		if(myCubies[i] != NULL){
 			myCubies[i]->update();
 			/*if(myCubies[i]->getRotate()){
-				cout << "rotating cubies." << endl;
-				int id = myCubies[i]->getId() - 1;
-				int rotationDirection = myCubies[i]->getRotationDirection();
-				myCubies[i]->setRotate(false);
-				SG_VECTOR axis;
-				if(rotationDirection == ROTATE_UP){
-					axis.x = 0;
-					axis.y = 1;
-					axis.z = 0;
-					rotateByIDandAxis(id, axis, true);
-				} else if(rotationDirection == ROTATE_DOWN){
-					axis.x = 0;
-					axis.y = 1;
-					axis.z = 0;
-					rotateByIDandAxis(id, axis, false);
-				} else if(rotationDirection == ROTATE_LEFT){
-					axis.x = 1;
-					axis.y = 0;
-					axis.z = 0;
-					rotateByIDandAxis(id, axis, true);
-				} else {
-					axis.x = 1;
-					axis.y = 0;
-					axis.z = 0;
-					rotateByIDandAxis(id, axis, false);
-				}
+			cout << "rotating cubies." << endl;
+			int id = myCubies[i]->getId() - 1;
+			int rotationDirection = myCubies[i]->getRotationDirection();
+			myCubies[i]->setRotate(false);
+			SG_VECTOR axis;
+			if(rotationDirection == ROTATE_UP){
+			axis.x = 0;
+			axis.y = 1;
+			axis.z = 0;
+			rotateByIDandAxis(id, axis, true);
+			} else if(rotationDirection == ROTATE_DOWN){
+			axis.x = 0;
+			axis.y = 1;
+			axis.z = 0;
+			rotateByIDandAxis(id, axis, false);
+			} else if(rotationDirection == ROTATE_LEFT){
+			axis.x = 1;
+			axis.y = 0;
+			axis.z = 0;
+			rotateByIDandAxis(id, axis, true);
+			} else {
+			axis.x = 1;
+			axis.y = 0;
+			axis.z = 0;
+			rotateByIDandAxis(id, axis, false);
+			}
 			}*/
 		}
 	}
@@ -1045,10 +1045,17 @@ void puzzle::dragInput(ofVec3f _pnt){
 void puzzle::changeFaceColor(ofVec3f _pnt, ofFloatColor _c){
 	activeCubie = -1;
 	checkCubiesForHit(_pnt);
+	int obid;
+
 	if(activeCubie > -1){
-		ofVec3f n = activeTriangle.getNormal();
-		vector<Triangle> tris = myCubies[activeCubie]->getTrianglesByNormal(n);
-		myCubies[activeCubie]->setColorToSet(tris, _c);
+		obid = myCubies[activeCubie]->selectedObjectID;
+		if(obid < 8){
+			ofVec3f n = activeTriangle.getNormal();
+			vector<Triangle> tris = myCubies[activeCubie]->getTrianglesByNormal(n);
+			myCubies[activeCubie]->setColorToSet(tris, _c);
+		}else{
+			myCubies[activeCubie]->setColorToCurvedObject(_c);
+		}
 	}
 }
 

@@ -94,6 +94,17 @@ void CubieMesh::setColorToSet(vector<Triangle> tris, ofFloatColor _c){
 	addColors(colorsVectorT);
 }
 
+void CubieMesh::setColorToCurvedObject(ofFloatColor _c){
+	vector <ofFloatColor> colorsVectorT;
+	colorsVectorT = getColors();
+	for(int i=0; i< colorsVectorT.size(); i++){
+		colorsVectorT[i] = _c;
+	}
+	clearColors();
+	addColors(colorsVectorT);
+}
+
+
 void CubieMesh::rotateNormals(float _angle, ofVec3f _axis){
 	for(auto tIter = triangles.begin(); tIter != triangles.end(); tIter++){
 		tIter->setNormal(tIter->getNormal().rotate(_angle, _axis).normalize());

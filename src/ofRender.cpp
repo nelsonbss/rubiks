@@ -223,7 +223,7 @@ void ofRender::colorFaces(cubie **myCubies, int numPieces, float playRoom, int o
 	ofPoint yn = ofPoint(0,-1,0);
 	ofPoint zn = ofPoint(0,0,-1);
 
-	if(objectID != 1 && objectID != 4){
+	if(objectID < 8){//(objectID != 1 && objectID != 4){
 
 		for(int i=0;i<numPieces;i++){
 			float meshesCubie =  myCubies[i]->getNumObjs();
@@ -297,7 +297,7 @@ void ofRender::colorFaces(cubie **myCubies, int numPieces, float playRoom, int o
 					for(int n=0; n< tnormals.size() ; n++){
 						if(armX==0 && armY==0 && armZ == 0){
 							//if there are no arm rotations.. this works for cube official colors
-							if(objectID == 2){
+							if(objectID == 1){
 								//have to use the official colors
 								///rotate normal vectors to compensate for armature rotations z-y-x
 								//ask direction to color faces of cube 
@@ -328,7 +328,7 @@ void ofRender::colorFaces(cubie **myCubies, int numPieces, float playRoom, int o
 							}
 						}else{
 							//arm rotations
-							if(objectID == 2){
+							if(objectID == 1){
 								//have to use the official colors
 								///rotate normal vectors to compensate for armature rotations z-y-x
 								//ask direction to color faces of cube 
@@ -898,10 +898,13 @@ void ofRender::colorTorusMenu(ofMesh &mesh,vector< ofFloatColor > &vcolors){
 
 	int r = ofRandom(100);
 	int r2 = r%16;
-	if((r2) != 3){
+	if(abs(r2) != 3){
 		//to avoid white
 		x =  colorsVector[r2];
 		vcolors.push_back(x);//we only need one color sample, not all the vertices colors
+	}else{
+		x =  colorsVector[7];
+		vcolors.push_back(x);
 	}
 
 	for(int i=0; i<tcolors.size(); i++){
@@ -1014,7 +1017,7 @@ void ofRender::colorFacesMenu(ofMesh &mesh,ofVec3f armRot,float playRoom, int ob
 		for(int n=0; n< tnormals.size() ; n++){
 			if(armX==0 && armY==0 && armZ == 0){
 				//if there are no arm rotations.. this works for cube official colors
-				if(objectID == 2){
+				if(objectID == 1){
 					//have to use the official colors
 					///rotate normal vectors to compensate for armature rotations z-y-x
 					//ask direction to color faces of cube 
@@ -1045,7 +1048,7 @@ void ofRender::colorFacesMenu(ofMesh &mesh,ofVec3f armRot,float playRoom, int ob
 				}
 			}else{
 				//arm rotations
-				if(objectID == 2){
+				if(objectID == 1){
 					//have to use the official colors
 					///rotate normal vectors to compensate for armature rotations z-y-x
 					//ask direction to color faces of cube 
@@ -1113,7 +1116,7 @@ void ofRender::colorFacesMenuPuzzle(cubie **myCubies, int numPieces,float playRo
 	ofPoint yn = ofPoint(0,-1,0);
 	ofPoint zn = ofPoint(0,0,-1);
 
-	if(objectID != 1 && objectID != 4){
+	if(objectID < 8){//(objectID != 1 && objectID != 4){
 		for(int i=0;i<numPieces;i++){
 			float meshesCubie =  myCubies[i]->getNumObjs();
 			for (int j = 0 ; j< meshesCubie; j++){
@@ -1194,7 +1197,7 @@ void ofRender::colorFacesMenuPuzzle(cubie **myCubies, int numPieces,float playRo
 					for(int n=0; n< tnormals.size() ; n++){
 						if(armX==0 && armY==0 && armZ == 0){
 							//if there are no arm rotations.. this works for cube official colors
-							if(objectID == 2){
+							if(objectID == 1){
 								//have to use the official colors
 								///rotate normal vectors to compensate for armature rotations z-y-x
 								//ask direction to color faces of cube 
@@ -1225,7 +1228,7 @@ void ofRender::colorFacesMenuPuzzle(cubie **myCubies, int numPieces,float playRo
 							}
 						}else{
 							//arm rotations
-							if(objectID == 2){
+							if(objectID == 1){
 								//have to use the official colors
 								///rotate normal vectors to compensate for armature rotations z-y-x
 								//ask direction to color faces of cube 

@@ -15,10 +15,11 @@ public:
 	void draw();
 	void exit();
 
-	void loadObject(sgC3DObject *obj, int ID); //it will load a sgCore lib object: torus, box...
+	void loadObject(sgC3DObject *obj, int ID, string stationID); //it will load a sgCore lib object: torus, box...
 	sgC3DObject* getObject();//it will return the object, i.e to be used in boolean
 
 	int objectId; //the id of the 3d selected object, the id comes from the main app
+	string station;
 	sgC3DObject *object;
 	sgC3DObject *temp;//the original will be in 0,0,0 to be cut. the temp will be moved around and be drawn.
 	CubieMesh myMesh;// this will be used to draw the object, 

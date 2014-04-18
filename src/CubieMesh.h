@@ -35,6 +35,8 @@ public:
 	vector<Triangle> getTrianglesByNormal(ofVec3f _n);
 	vector<Triangle> getTrianglesByColor(ofVec3f _c);
 	void setColorToSet(vector<Triangle>, ofFloatColor _c);
+	void setColorToCurvedObject(ofFloatColor _c);
+
 	void rotateNormals(float _angle, ofVec3f _axis);
 	void rotateNormalsAround(float _angle, ofVec3f _axis, ofVec3f _pivot);
 	void rotateVertices(float _angle, ofVec3f _axis);

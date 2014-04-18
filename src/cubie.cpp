@@ -114,7 +114,7 @@ void cubie::faceRotate(SG_VECTOR axis,bool di,float angle){
 				//c
 				//myMatrix.push_back(matrix(axis,angle,di));
 				bool reducing = true;
-				cout << "masterAngle face rotate IN: " << masterAngle << endl;
+				//cout << "masterAngle face rotate IN: " << masterAngle << endl;
 				if(dir){
 					//if(masterAngle > 45){
 					//	moving = true;
@@ -157,7 +157,7 @@ void cubie::faceRotate(SG_VECTOR axis,bool di,float angle){
 					}
 
 				}
-				cout << "masterAngle face rotate OUT: " << masterAngle << endl;
+				//cout << "masterAngle face rotate OUT: " << masterAngle << endl;
 				//////////for (int j=0; j < numObjs; j++){
 				//////////	/*if (objectList[j]->GetTempMatrix()==0){
 				//////////	objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,ofDegToRad(angle));

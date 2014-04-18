@@ -92,10 +92,10 @@ void puzzle::setup(){
 void puzzle::update(){
 	//iterate through cubies
 	//cout << "UPDATING PUZZLE" << endl;
-	/*for(int i=0;i<numPieces;i++){
+	for(int i=0;i<numPieces;i++){
 		if(myCubies[i] != NULL){
 			myCubies[i]->update();
-			if(myCubies[i]->getRotate()){
+			/*if(myCubies[i]->getRotate()){
 				cout << "rotating cubies." << endl;
 				int id = myCubies[i]->getId() - 1;
 				int rotationDirection = myCubies[i]->getRotationDirection();
@@ -122,9 +122,9 @@ void puzzle::update(){
 					axis.z = 0;
 					rotateByIDandAxis(id, axis, false);
 				}
-			}
+			}*/
 		}
-	}*/
+	}
 }
 //----------------------------------------------------------------
 void puzzle::draw(){  
@@ -660,7 +660,7 @@ void puzzle::rotateByIDandAxisNew(int id, SG_VECTOR axis, bool dir, float angle)
 
 				for(int i=0;i<counter;i++){
 					//rearrange = myCubies[selected[i]]->faceRotate(axis,dir,angle);
-					myCubies[selected[i]]->locked = false;
+					//myCubies[selected[i]]->locked = false;
 					myCubies[selected[i]]->faceRotate(axis,dir,angle);
 				}
 			}else{
@@ -668,7 +668,7 @@ void puzzle::rotateByIDandAxisNew(int id, SG_VECTOR axis, bool dir, float angle)
 				//bool rearrange=false;
 				for(int i=0;i<counter;i++){
 					//rearrange = myCubies[selected[i]]->faceRotate(axis,dir,angle);
-					myCubies[selected[i]]->locked = false;
+					//myCubies[selected[i]]->locked = false;
 					myCubies[selected[i]]->faceRotate(axis,dir,angle);
 				}
 			}
@@ -680,7 +680,7 @@ void puzzle::rotateByIDandAxisNew(int id, SG_VECTOR axis, bool dir, float angle)
 				angle=abs(angle);
 				for(int i=0;i<counter;i++){
 					//rearrange = myCubies[selected[i]]->faceRotate(axis,dir,angle);
-					myCubies[selected[i]]->locked = false;
+					//myCubies[selected[i]]->locked = false;
 					myCubies[selected[i]]->faceRotate(axis,dir,angle);
 				}
 			}else{
@@ -688,7 +688,7 @@ void puzzle::rotateByIDandAxisNew(int id, SG_VECTOR axis, bool dir, float angle)
 				//bool rearrange=false;
 				for(int i=0;i<counter;i++){
 					//rearrange = myCubies[selected[i]]->faceRotate(axis,dir,angle);
-					myCubies[selected[i]]->locked = false;
+					//myCubies[selected[i]]->locked = false;
 					myCubies[selected[i]]->faceRotate(axis,dir,angle);
 				}
 			}

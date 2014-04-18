@@ -174,6 +174,8 @@ void game::setup(){
 
 	bHaveNewObject = false;
 	objectID = -1;
+	SubObMediator::Instance()->addObserver(prefix + ":make-one2", this);
+	SubObMediator::Instance()->addObserver(prefix + ":menupuzzle-selected", this);
 }
 //----------------------------------------------------------------------
 void game::update(){
@@ -188,7 +190,7 @@ void game::update(){
 	//}
 	if(bHaveNewObject){
 		SG_VECTOR objectPos = {0,0,0};
-		if(step == 1){
+		if(step == 1 || step == 7){
 			clearDisplayedObject();
 		}
 		if(newObject == 50){
@@ -248,38 +250,38 @@ void game::update(){
 			}
 			//updatePuzzle = false;
 			if(myPuzzle->faceRotateB == true) {
-				//int ans = myPuzzle->rotateTwoIds(idcubieA,idcubieB,dir);
+				//////int ans = myPuzzle->rotateTwoIds(idcubieA,idcubieB,dir);
 
-				int ans;
-				if(myPuzzle->bHaveActiveCubie && myPuzzle->bHaveRotationCubie){
-					ans = myPuzzle->rotateTwoIds(myPuzzle->activeCubie,myPuzzle->rotationCubie,dir);
-					myPuzzle->bHaveActiveCubie = false;
-					myPuzzle->bHaveRotationCubie = false;
-				} else {
-					ans = myPuzzle->rotateTwoIds(myPuzzle->activeCubie,myPuzzle->activeCubie,dir);
-					myPuzzle->bHaveActiveCubie = false;
-				}
-				//ans has encripted the axis and the direction 10-x 20-y 30-z 1 or 0 direction
-				//put this move on the game history vector
-				//undo will look for the other 9 cubies involved and do a pop x2 on their history
-				if(ans/10 == 1){
-					//1
-					axis.x = 1;
-					axis.y = 0;
-					axis.z = 0;
-				}else if(ans/10 == 2){
-					//2
-					axis.x = 0;
-					axis.y = 1;
-					axis.z = 0;
-				}else{
-					//3
-					axis.x = 0;
-					axis.y = 0;
-					axis.z = 1;
-				}
-				bool d = ans%2;//this is 0 or 1
-				historyV.push_back(history(idcubieA,axis,!d)); //save inverse move (!), to do it at undo, and do 2 pop 
+				////int ans;
+				////if(myPuzzle->bHaveActiveCubie && myPuzzle->bHaveRotationCubie){
+				////	ans = myPuzzle->rotateTwoIds(myPuzzle->activeCubie,myPuzzle->rotationCubie,dir);
+				////	myPuzzle->bHaveActiveCubie = false;
+				////	myPuzzle->bHaveRotationCubie = false;
+				////} else {
+				////	ans = myPuzzle->rotateTwoIds(myPuzzle->activeCubie,myPuzzle->activeCubie,dir);
+				////	myPuzzle->bHaveActiveCubie = false;
+				////}
+				//////ans has encripted the axis and the direction 10-x 20-y 30-z 1 or 0 direction
+				//////put this move on the game history vector
+				//////undo will look for the other 9 cubies involved and do a pop x2 on their history
+				////if(ans/10 == 1){
+				////	//1
+				////	axis.x = 1;
+				////	axis.y = 0;
+				////	axis.z = 0;
+				////}else if(ans/10 == 2){
+				////	//2
+				////	axis.x = 0;
+				////	axis.y = 1;
+				////	axis.z = 0;
+				////}else{
+				////	//3
+				////	axis.x = 0;
+				////	axis.y = 0;
+				////	axis.z = 1;
+				////}
+				////bool d = ans%2;//this is 0 or 1
+				////historyV.push_back(history(idcubieA,axis,!d)); //save inverse move (!), to do it at undo, and do 2 pop 
 				myPuzzle->faceRotateB = false;
 			}
 		}
@@ -293,6 +295,10 @@ void game::update(){
 		guiInput('r');
 		bHaveReset = false;
 	}
+	//if(bHaveMakeOne){
+	//	guiInput('r');
+	//	bHaveReset = false;
+	//}
 	//camPosition.rotate(1, ofVec3f(viewport.width / 2,viewport.height / 2, posP.z));
 	if(!bInAttract){
 		int currentTime = ofGetElapsedTimeMillis();
@@ -319,7 +325,7 @@ void game::update(string _eventName, SubObEvent _event){
 			ev.addArg("target",prefix + ":next-active");
 			SubObMediator::Instance()->sendEvent("unhide-node", ev);
 		}
-		if(step == 0  || step == 1 || step == 6 || step == 7){
+		if(step == 0  || step == 1 || step == 6){
 			int obj = _event.getArg("object")->getInt();
 			SG_VECTOR objectPos = {0,0,0};  //where it gets sliced
 			guiLoad(obj);
@@ -345,6 +351,35 @@ void game::update(string _eventName, SubObEvent _event){
 			ev.addArg("target",prefix + ":next-active");
 			SubObMediator::Instance()->sendEvent("unhide-node", ev);
 		}
+		//else if(step == 7){
+		//	SubObEvent ev;
+		//	ev.setName("hide-node");
+		//	ev.addArg("target",prefix + ":make-one");
+		//	SubObMediator::Instance()->sendEvent("hide-node", ev);
+		//	ev.setName("unhide-node");
+		//	ev.addArg("target",prefix + ":next-active");
+		//	SubObMediator::Instance()->sendEvent("unhide-node", ev);
+		//}
+	}
+	if(_eventName == prefix + ":menupuzzle-selected"){
+		SubObEvent ev;
+		ev.setName("hide-node");
+		ev.addArg("target",prefix + ":3d-window");
+		SubObMediator::Instance()->sendEvent("hide-node", ev);
+		ev.addArg("target",prefix + ":3d-window-box");
+		SubObMediator::Instance()->sendEvent("hide-node", ev);
+		///
+		ev.setName("unhide-node");
+		ev.addArg("target", prefix + ":make-one");
+		SubObMediator::Instance()->sendEvent("unhide-node", ev);
+		ev.addArg("target", prefix + ":bg-language");
+		SubObMediator::Instance()->sendEvent("unhide-node", ev);
+		ev.addArg("target", prefix + ":bg-info");
+		SubObMediator::Instance()->sendEvent("unhide-node", ev);
+		ev.addArg("target",prefix + ":puzzle-help");
+		SubObMediator::Instance()->sendEvent("unhide-node", ev);
+		ev.addArg("target",prefix + ":ibox");
+		SubObMediator::Instance()->sendEvent("unhide-node", ev);
 	}
 	if(_eventName == prefix + ":next-step"){
 		guiNext();
@@ -431,7 +466,50 @@ void game::update(string _eventName, SubObEvent _event){
 		SG_VECTOR v = {0,0,0};
 		createPuzzle(v);
 	}
-	if(_eventName == prefix + ":reset"){
+	if ((_eventName == prefix + ":extrude")&& (step == 7)){
+		SubObEvent ev;
+		guiReset();
+		ev.setName("hide-node");
+		ev.addArg("target", prefix + ":color-window");
+		SubObMediator::Instance()->sendEvent("hide-node", ev);
+		ev.addArg("target", prefix + ":3d-window-box");
+		SubObMediator::Instance()->sendEvent("hide-node", ev);
+		ev.addArg("target", prefix + ":3d-window");
+		SubObMediator::Instance()->sendEvent("hide-node", ev);
+		ev.addArg("target", prefix + ":object-drop");
+		SubObMediator::Instance()->sendEvent("hide-node", ev);
+		ev.addArg("target", prefix + ":arm-window");
+		SubObMediator::Instance()->sendEvent("hide-node", ev);
+		ev.addArg("target", prefix + ":next-active");
+		SubObMediator::Instance()->sendEvent("hide-node", ev);
+		ev.addArg("target", prefix + ":start-help");
+		SubObMediator::Instance()->sendEvent("hide-node", ev);
+		ev.addArg("target", prefix + ":puzzle-help");
+		SubObMediator::Instance()->sendEvent("hide-node", ev);
+		ev.addArg("target", prefix + ":ibox");
+		SubObMediator::Instance()->sendEvent("hide-node", ev);
+		
+
+		ev.addArg("target", prefix + ":make-one");
+		SubObMediator::Instance()->sendEvent("hide-node", ev);
+
+
+		ev.setName("unhide-node");
+		ev.addArg("target", prefix + ":3d-window-box");
+		SubObMediator::Instance()->sendEvent("unhide-node", ev);
+		ev.addArg("target", prefix + ":start-help");
+		SubObMediator::Instance()->sendEvent("unhide-node", ev);
+		ev.addArg("target", prefix + ":object-drop");
+		SubObMediator::Instance()->sendEvent("unhide-node", ev);
+		ev.addArg("target", prefix + ":3d-window");
+		SubObMediator::Instance()->sendEvent("unhide-node", ev);
+		ev.addArg("target", prefix + ":next-inactive");
+		SubObMediator::Instance()->sendEvent("unhide-node", ev);
+
+		camPosition.set(viewport.width / 2, viewport.height / 2, 400);
+		step = 0;
+	}
+	if((_eventName == prefix + ":reset") ){
 		SubObEvent ev;
 		guiReset();
 		ev.setName("hide-node");
@@ -458,6 +536,8 @@ void game::update(string _eventName, SubObEvent _event){
 		ev.addArg("target",prefix + ":arm-rotate");
 		SubObMediator::Instance()->sendEvent("hide-node", ev);
 		ev.addArg("target",prefix + ":draw-help");
+		SubObMediator::Instance()->sendEvent("hide-node", ev);
+		ev.addArg("target", prefix + ":extrude");
 		SubObMediator::Instance()->sendEvent("hide-node", ev);
 
 		ev.setName("unhide-node");
@@ -535,7 +615,7 @@ void game::update(string _eventName, SubObEvent _event){
 				myCanvas.mouseDragged(pos.x, pos.y, 0);
 			}
 		}
-		if(step == 5){
+		if(step == 5 || step == 7){
 			int phase = _event.getArg("phase")->getInt();
 			cout << "Game - phase = " << phase << endl;
 			if(phase == 0){
@@ -566,6 +646,7 @@ void game::update(string _eventName, SubObEvent _event){
 				myPuzzle->endRotation();
 			}
 		}
+
 	}
 	/*
 	if(_eventName == "ibox-bl:2"){
@@ -781,7 +862,7 @@ void game::draw(){
 		//show puzzle
 		glPushMatrix();
 		//glTranslatef(posP.x,posP.y,posP.z);
-		ofTranslate(posP.x, posP.y-400, posP.z);
+		ofTranslate(posP.x, posP.y, posP.z);
 		//new trackball
 		//glRotatef(angle, axistb.x, axistb.y, axistb.z);
 		//ofFill();
@@ -969,17 +1050,17 @@ void game::loadMenuObject(int objID, SG_VECTOR p, SG_VECTOR t){
 		myPuzzle->exit();
 		myCutter->exit();
 		mySlicer->exit();
-		objectDisplayed->exit();
+		//objectDisplayed->exit();
 		objectID = -1;
 		step = 0;
 		armID = -1;
 	}else if (step==3){
-		objectDisplayed->exit();             //clean displayed object after puzzle is created, so we dont keep it until the exit or restart
+		//objectDisplayed->exit();             //clean displayed object after puzzle is created, so we dont keep it until the exit or restart
 		step = 0;
 		objectID = -1;
 		armID = -1;
 	}else if (step==1 || step==2){
-		objectDisplayed->exit();
+		//objectDisplayed->exit();
 		step = 0;
 		objectID = -1;
 		if(canvasB){
@@ -1014,7 +1095,8 @@ void game::loadMenuObject(int objID, SG_VECTOR p, SG_VECTOR t){
 		objectDisplayed = new myobject3D(p,t);
 	}
 	objectID = objID;
-	if(step == 0 ){//|| step==1 || step == 6){
+	bool loaded = false;
+	if(step == 0 || step==1 || step == 7){
 		if(objID == 1){
 			//torus
 			objectDisplayed->loadObject(sgCreateTorus(100,70,50,50),1);//(radius,thickness,meridiansDonut,meridiansDonutCut)
@@ -1022,6 +1104,7 @@ void game::loadMenuObject(int objID, SG_VECTOR p, SG_VECTOR t){
 				sgDeleteObject(extrudedObject);
 				extrudedB = false;
 			}
+			loaded = true;
 		}
 		if(objID == 2){
 			//cube
@@ -1030,6 +1113,7 @@ void game::loadMenuObject(int objID, SG_VECTOR p, SG_VECTOR t){
 				sgDeleteObject(extrudedObject);
 				extrudedB = false;
 			}
+			loaded = true;
 		}if(objID == 3){
 			//cone
 			//objectDisplayed->loadObject(sgCreateCone(250,1,250,3),3);
@@ -1038,6 +1122,7 @@ void game::loadMenuObject(int objID, SG_VECTOR p, SG_VECTOR t){
 				sgDeleteObject(extrudedObject);
 				extrudedB = false;
 			}
+			loaded = true;
 		}
 		if(objID == 4){
 			//try to load the bunny
@@ -1046,6 +1131,7 @@ void game::loadMenuObject(int objID, SG_VECTOR p, SG_VECTOR t){
 				sgDeleteObject(extrudedObject);
 				extrudedB = false;
 			}
+			loaded = true;
 		}
 		if(objID == 5){
 			//try to load the dodecahedron
@@ -1054,6 +1140,7 @@ void game::loadMenuObject(int objID, SG_VECTOR p, SG_VECTOR t){
 				sgDeleteObject(extrudedObject);
 				extrudedB = false;
 			}
+			loaded = true;
 		}
 		if(objID == 6){
 			//try to load the Icosahedron
@@ -1062,6 +1149,7 @@ void game::loadMenuObject(int objID, SG_VECTOR p, SG_VECTOR t){
 				sgDeleteObject(extrudedObject);
 				extrudedB = false;
 			}
+			loaded = true;
 		}
 		if(objID == 7){
 			//try to load the Octahedron
@@ -1070,7 +1158,7 @@ void game::loadMenuObject(int objID, SG_VECTOR p, SG_VECTOR t){
 				sgDeleteObject(extrudedObject);
 				extrudedB = false;
 			}
-
+			loaded = true;
 		}
 		//if(objID == 8){
 		//	//try to load the Teapot
@@ -1079,33 +1167,35 @@ void game::loadMenuObject(int objID, SG_VECTOR p, SG_VECTOR t){
 		if(objID == 200){
 			//load extruded object
 			objectDisplayed->loadObject((sgC3DObject *)extrudedObject->Clone(),200);
+			loaded = true;
 		}
 		////////////////////////
 
 		//objectID = -1;
 
-		////////////////////////////////
-		objectDisplayed->setup();
-		//step = 1;
+		if(loaded == true){
+			////////////////////////////////
+			objectDisplayed->setup();
+			//step = 1;
 
-		//make the puzzle automatically
-		int grid =3; ///have to adapt this to any armature on the menu puzzles!!!///have to adapt this to any armature on the menu puzzles!!!
-		loadArmatureMenu(grid); 
-		applyArmRotations();
-		createCutterSlicer();
-		////createPuzzle(posP);
-		myPuzzle = new puzzle(posP, offsetSlicer,grid);
-		myPuzzle->setup();
-		mySlicer->intersectCubes((sgCObject*)objectDisplayed->getObject()); 
-		myPuzzle->loadPieces(mySlicer->getPieces(),objectID,rotateSlicer);
-		myPuzzle->colorFaces(objectID);
-
-		//step = 7;
-		step = 5;
-		SubObEvent ev;
-		ev.setName("hide-node");
-		ev.addArg("target", prefix + ":start-help");
-		SubObMediator::Instance()->sendEvent("hide-node", ev);
+			//make the puzzle automatically
+			int grid =3; ///have to adapt this to any armature on the menu puzzles!!!///have to adapt this to any armature on the menu puzzles!!!
+			loadArmatureMenu(grid); 
+			applyArmRotations();
+			createCutterSlicer();
+			////createPuzzle(posP);
+			myPuzzle = new puzzle(posP, offsetSlicer,grid);
+			myPuzzle->setup();
+			mySlicer->intersectCubes((sgCObject*)objectDisplayed->getObject()); 
+			myPuzzle->loadPieces(mySlicer->getPieces(),objectID,rotateSlicer);
+			myPuzzle->colorFaces(objectID);
+			updatePuzzle = true;
+			step = 7;
+			SubObEvent ev;
+			ev.setName("hide-node");
+			ev.addArg("target", prefix + ":start-help");
+			SubObMediator::Instance()->sendEvent("hide-node", ev);
+		}
 	}
 }
 //----------------------------------------------------------------------

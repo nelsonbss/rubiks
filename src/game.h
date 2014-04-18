@@ -73,6 +73,7 @@ public:
 	void guiNext(){bHaveNext = true;}
 
 	bool bHaveReset;
+	bool bHaveMakeOne;
 	void guiReset(){bHaveReset = true;}
 
 	void update(string _eventName, SubObEvent _event);

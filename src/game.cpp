@@ -691,7 +691,7 @@ void game::draw(){
 		//show puzzle
 		glPushMatrix();
 		//glTranslatef(posP.x,posP.y,posP.z);
-		ofTranslate(posP.x, posP.y-400, posP.z);
+		ofTranslate(posP.x, posP.y, posP.z);
 		//new trackball
 		//glRotatef(angle, axistb.x, axistb.y, axistb.z);
 		//ofFill();
@@ -924,7 +924,7 @@ void game::loadMenuObject(int objID, SG_VECTOR p, SG_VECTOR t){
 		objectDisplayed = new myobject3D(p,t);
 	}
 	objectID = objID;
-	if(step == 0 ){//|| step==1 || step == 6){
+	if(step == 0 || step==1 || step == 7){
 		if(objID == 1){
 			//torus
 			objectDisplayed->loadObject(sgCreateTorus(100,70,50,50),1);//(radius,thickness,meridiansDonut,meridiansDonutCut)
@@ -1010,8 +1010,8 @@ void game::loadMenuObject(int objID, SG_VECTOR p, SG_VECTOR t){
 		myPuzzle->loadPieces(mySlicer->getPieces(),objectID,rotateSlicer);
 		myPuzzle->colorFaces(objectID);
 
-		//step = 7;
-		step = 5;
+		step = 7;
+
 		SubObEvent ev;
 		ev.setName("hide-node");
 		ev.addArg("target", prefix + ":start-help");

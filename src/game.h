@@ -245,5 +245,8 @@ public:
 
 	string currentLanguage;
 	void setLanguage(string _lang);
+
+	ofLight light;
+	int dragId;
 };
 #endif /* defined(__Tgame__game__) */

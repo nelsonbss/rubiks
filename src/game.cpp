@@ -16,6 +16,8 @@
 
 #define canvasSide 500
 
+#define USE_LIGHT 1
+
 game::game(SG_VECTOR gamePos, float w, float h, SG_VECTOR displayPos, ofRectangle _vp, float iddleTime, string myPrefix){
 	posGame = gamePos;
 	slicingPos = posGame;
@@ -90,7 +92,7 @@ game::game(SG_VECTOR gamePos, float w, float h, SG_VECTOR displayPos, ofRectangl
 	timeOfLastInteraction = ofGetElapsedTimeMillis();
 	bInAttract = false;
 
-	currentLanguage = "french";
+	currentLanguage = "english";
 
 	myCanvas.setViewport(viewport);
 }
@@ -178,6 +180,12 @@ void game::setup(){
 	objectID = -1;
 	SubObMediator::Instance()->addObserver(prefix + ":make-one2", this);
 	SubObMediator::Instance()->addObserver(prefix + ":menupuzzle-selected", this);
+
+	light.setPointLight();
+	light.setDiffuseColor( ofColor(255.f, 255.f, 255.f));
+	light.setSpecularColor( ofColor(255.f, 255.f, 255.f));
+
+	dragId = -1;
 }
 //----------------------------------------------------------------------
 void game::update(){
@@ -621,15 +629,17 @@ void game::update(string _eventName, SubObEvent _event){
 		}
 		if(step == 5 || step == 7){
 			int phase = _event.getArg("phase")->getInt();
+			int gId = _event.getArg("ID")->getInt();
 			cout << "Game - phase = " << phase << endl;
 			if(phase == 0){
 				ofVec2f p = _event.getArg("absPos")->getVec2();
-				cout << "phase = " << phase << " p = " << p.x << ", " << p.y << endl;
-				if(!bUnproject){
+				//cout << "phase = " << phase << " p = " << p.x << ", " << p.y << endl;
+				if(!bUnproject && (dragId == -1)){
 					bUnproject = true;
 					bDragInput = false;
 					mousePoint.set(p.x, p.y, 0);
 					unprojectMode = UP_MODE_MOUSE;
+					dragId = gId;
 				}
 			} else if(phase == 1){
 				ofVec2f p = _event.getArg("absPos")->getVec2();
@@ -637,9 +647,10 @@ void game::update(string _eventName, SubObEvent _event){
 				cout << "n = " << n << " p = " << p.x << ", " << p.y << endl;
 				if(n == 0){
 					myPuzzle->endRotation();
+					dragId = -1;
 					return;
 				}
-				if(!bUnproject){
+				if(!bUnproject && (gId == dragId)){
 					bUnproject = true;
 					//bDragInput = true;
 					mousePoint.set(p.x, p.y, 0);
@@ -648,6 +659,7 @@ void game::update(string _eventName, SubObEvent _event){
 			} else if(phase > 1){
 				cout << "Ending rotation." << endl;
 				myPuzzle->endRotation();
+				dragId = -1;
 			}
 		}
 
@@ -772,6 +784,11 @@ void game::draw(){
 		ofSetColor(0.0,0.0,0.0);
 		//ofRect(viewport.x, viewport.y, viewport.width, viewport.height);
 		cam.begin(viewport);
+		if(USE_LIGHT){
+			ofEnableLighting();
+			light.enable();
+			light.setPosition(camPosition);
+		}
 		//cam.disableMouseInput();
 		//ofSetupScreen();
 		if(step == 6){
@@ -886,6 +903,10 @@ void game::draw(){
 	}
 	if(bUseViewport){
 		//ofPopView();
+		if(USE_LIGHT){
+			light.disable();
+			ofDisableLighting();
+		}
 		cam.end();
 	}
 }

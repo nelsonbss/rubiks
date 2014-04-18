@@ -188,7 +188,7 @@ void GuiNode::hide(){
 void GuiNode::unhide(){
 	bHidden = false;
 	bActive = true;
-	cout << name << " unhiding." << endl;
+	//cout << name << " unhiding." << endl;
 	//activate();
 }
 

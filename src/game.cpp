@@ -96,7 +96,7 @@ game::game(SG_VECTOR gamePos, float w, float h, SG_VECTOR displayPos, ofRectangl
 
 	myCanvas.setViewport(viewport);
 }
-
+//----------------------------------------------------------------------------------------
 void game::loadObjDir(string _path){
 	ofDirectory dir(_path);
 	dir.allowExt("obj");
@@ -129,28 +129,27 @@ void game::loadObjDir(string _path){
 		delete [] indexes;
 	}
 }
-
 //--------------------------------------------------------------
-void game::setup(sgCObject *sgBunnyi,sgCObject *sgTetrahedroni,sgCObject *sgDodecahedroni,sgCObject *sgIcosahedroni,sgCObject *sgOctahedroni, string _prefix){//,sgCObject *sgTeapoti){
-	//gets the .obj files loaded and converted into sgC3DObject
-
-	prefix = _prefix;
-
-	sgBunny = sgBunnyi;
-	sgTetrahedron = sgTetrahedroni;
-	sgDodecahedron = sgDodecahedroni;
-	sgIcosahedron = sgIcosahedroni;
-	sgOctahedron = sgOctahedroni;
-	//sgTeapot = sgTeapoti;
-
-	setup();
-}
-
+//void game::setup(sgCObject *sgBunnyi,sgCObject *sgTetrahedroni,sgCObject *sgDodecahedroni,sgCObject *sgIcosahedroni,sgCObject *sgOctahedroni, string _prefix){//,sgCObject *sgTeapoti){
+//	//gets the .obj files loaded and converted into sgC3DObject
+//
+//	prefix = _prefix;
+//
+//	sgBunny = sgBunnyi;
+//	sgTetrahedron = sgTetrahedroni;
+//	sgDodecahedron = sgDodecahedroni;
+//	sgIcosahedron = sgIcosahedroni;
+//	sgOctahedron = sgOctahedroni;
+//	//sgTeapot = sgTeapoti;
+//
+//	setup();
+//}
+//---------------------------------------------------------------
 void game::setup(string _prefix){
 	prefix = _prefix;
 	setup();
 }
-
+//-------------------------------------------------------------
 void game::setup(){
 	step = -1;
 	idcubie=0;
@@ -707,7 +706,7 @@ void game::update(string _eventName, SubObEvent _event){
 	}
 	timeOfLastInteraction = ofGetElapsedTimeMillis();
 }
-
+//------------------------------------------------------------------------
 void game::goToAttract(){
 	SubObEvent ev;
 	guiReset();
@@ -760,7 +759,7 @@ void game::goToAttract(){
 	bInAttract = true;
 	camPosition.set(viewport.width / 2, viewport.height / 2, 400);
 }
-
+//-------------------------------------------------------------------------
 void game::setLanguage(string _lang){
 	currentLanguage = _lang;
 	SubObEvent ev;
@@ -768,11 +767,10 @@ void game::setLanguage(string _lang){
 	ev.addArg("lang", currentLanguage);
 	SubObMediator::Instance()->sendEvent(ev.getName(), ev);
 }
-
+//-----------------------------------------------------------------------
 void game::updateGui(){
 
 }
-
 //----------------------------------------------------------------------
 void game::draw(){  
 	////////////////////////////////Draw game steps////////////////////////////////////
@@ -941,12 +939,12 @@ void game::unprojectPoint(ofVec3f _pnt){
 		myPuzzle->changeFaceColor(unprojectedPoint, newFaceColor);
 	}
 }
-
+//---------------------------------------------------------------------------------------------
 void game::projectPoint(ofVec3f _pnt){
 	projectedPoint = picker.project(_pnt, &viewport);
 
 }
-
+//----------------------------------------------------------------------------------------------
 void game::drawViewportOutline(const ofRectangle & _vp){
 	ofPushStyle();
 	ofNoFill();
@@ -959,7 +957,6 @@ void game::drawViewportOutline(const ofRectangle & _vp){
 	ofRect(_vp);
 	ofPopStyle();
 }
-
 //----------------------------------------------------------------------
 void game::rotateByIDandAxis(int id, SG_VECTOR axs, bool d, float anglei){
 	if(axs.x==0 && axs.y==0 && axs.z==0){
@@ -975,20 +972,6 @@ void game::rotateByIDandAxis(int id, SG_VECTOR axs, bool d, float anglei){
 		faceRotate = true;
 	}
 }
-//----------------------------------------------------------------------
-//void game::rotateByIDandAxis(int id, SG_VECTOR axs, bool d){
-//	if(axs.x==0 && axs.y==0 && axs.z==0){
-//		//stop any rotation
-//		faceRotate = false;
-//	}else{
-//		//allow rotation
-//		idcubie = id;
-//		dir = d;
-//		axis = axs;
-//		//updatePuzzle = true;
-//		faceRotate = true;
-//	}
-//}
 //----------------------------------------------------------------------
 void game::rotateTwoIds(int cubieA, int cubieB,bool inside){
 	faceRotateB = true; //this is usedn on update, to do rotationanimations
@@ -2191,12 +2174,15 @@ void game::restart(){
 }
 //----------------------------------------------------------------------
 void game::exit(){
-	sgDeleteObject(sgBunny);
-	sgDeleteObject(sgTetrahedron);
-	sgDeleteObject(sgDodecahedron);
-	sgDeleteObject(sgIcosahedron);
-	sgDeleteObject(sgOctahedron);
+	//sgDeleteObject(sgBunny);
+	//sgDeleteObject(sgTetrahedron);
+	//sgDeleteObject(sgDodecahedron);
+	//sgDeleteObject(sgIcosahedron);
+	//sgDeleteObject(sgOctahedron);
 	//sgDeleteObject(sgTeapot);
+
+	////////////have to delete the objects in 
+	//map<int, sgCObject*> objects;
 }
 //--------------------------------------------------------------
 void game::mouseDragged(int x, int y, int button){

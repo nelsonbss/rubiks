@@ -35,24 +35,25 @@ public:
 	void gotMessage(ofMessage msg);
 
 	///OBJ file loading and convertion
-	void loadOBJfiles();
-	void loadOBJDir();
-	ofxAssimpModelLoader bunny;
-	sgCObject *sgBunny;
-	ofxAssimpModelLoader tetrahedron;
-	sgCObject *sgTetrahedron;
-	ofxAssimpModelLoader dodecahedron;
-	sgCObject *sgDodecahedron;
-	ofxAssimpModelLoader icosahedron;
-	sgCObject *sgIcosahedron;
-	ofxAssimpModelLoader octahedron;
-	sgCObject *sgOctahedron;
-	ofxAssimpModelLoader pot;
-	sgCObject *sgTeapot;
+	//void loadOBJfiles();
+	//ofxAssimpModelLoader bunny;
+	//sgCObject *sgBunny;
+	//ofxAssimpModelLoader tetrahedron;
+	//sgCObject *sgTetrahedron;
+	//ofxAssimpModelLoader dodecahedron;
+	//sgCObject *sgDodecahedron;
+	//ofxAssimpModelLoader icosahedron;
+	//sgCObject *sgIcosahedron;
+	//ofxAssimpModelLoader octahedron;
+	//sgCObject *sgOctahedron;
+	//ofxAssimpModelLoader pot;
+	//sgCObject *sgTeapot;
+	//ofxAssimpModelLoader sphere;
+	//sgCObject *sgSphere;
 
-	ofxAssimpModelLoader sphere;
-	sgCObject *sgSphere;
-
+	map<int, sgCObject*> objects;
+	ofxAssimpModelLoader loader;
+	void loadObjDir(string _path);
 	/////////////////////////////////////////games
 	vector<game*> myGames;
 	int currentGame;

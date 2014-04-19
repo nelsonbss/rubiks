@@ -151,7 +151,7 @@ void cubie::faceRotate(SG_VECTOR axis,bool di,float angle){
 						}else{
 							masterAngle -= angle;
 							for (int j=0; j < numObjs; j++){
-								objectList[j]->InitTempMatrix()->Rotate(protFace,vrotFace,ofDegToRad(-angle));
+								objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,ofDegToRad(-angle));
 								//////////myMeshs[j].updatePosition(protFaceV, vrotFaceV, -angle);
 							}
 							reducing = false;

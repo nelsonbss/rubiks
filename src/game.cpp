@@ -1127,81 +1127,15 @@ void game::loadMenuObject(int objID, SG_VECTOR p, SG_VECTOR t){
 	objectID = objID;
 	bool loaded = false;
 	if(step == 0 || step==1 || step == 7){
-		if(objID == 1){
-			//torus
-			objectDisplayed->loadObject(sgCreateTorus(100,70,50,50),1);//(radius,thickness,meridiansDonut,meridiansDonutCut)
-			if(extrudedB){
-				sgDeleteObject(extrudedObject);
-				extrudedB = false;
-			}
+		if(objID != 200){
+			objectDisplayed->loadObject((sgC3DObject*)objects[objectID]->Clone(), objectID);
 			loaded = true;
 		}
-		if(objID == 2){
-			//cube
-			objectDisplayed->loadObject(sgCreateBox(300,300,300),2);//(tamX,tamY,tamZ)
-			if(extrudedB){
-				sgDeleteObject(extrudedObject);
-				extrudedB = false;
-			}
-			loaded = true;
-		}if(objID == 3){
-			//cone
-			//objectDisplayed->loadObject(sgCreateCone(250,1,250,3),3);
-			objectDisplayed->loadObject((sgC3DObject *)sgTetrahedron->Clone(),3);
-			if(extrudedB){
-				sgDeleteObject(extrudedObject);
-				extrudedB = false;
-			}
-			loaded = true;
-		}
-		if(objID == 4){
-			//try to load the bunny
-			objectDisplayed->loadObject((sgC3DObject *)sgBunny->Clone(),4);
-			if(extrudedB){
-				sgDeleteObject(extrudedObject);
-				extrudedB = false;
-			}
-			loaded = true;
-		}
-		if(objID == 5){
-			//try to load the dodecahedron
-			objectDisplayed->loadObject((sgC3DObject *)sgDodecahedron->Clone(),5);
-			if(extrudedB){
-				sgDeleteObject(extrudedObject);
-				extrudedB = false;
-			}
-			loaded = true;
-		}
-		if(objID == 6){
-			//try to load the Icosahedron
-			objectDisplayed->loadObject((sgC3DObject *)sgIcosahedron->Clone(),6);
-			if(extrudedB){
-				sgDeleteObject(extrudedObject);
-				extrudedB = false;
-			}
-			loaded = true;
-		}
-		if(objID == 7){
-			//try to load the Octahedron
-			objectDisplayed->loadObject((sgC3DObject *)sgOctahedron->Clone(),7);
-			if(extrudedB){
-				sgDeleteObject(extrudedObject);
-				extrudedB = false;
-			}
-			loaded = true;
-		}
-		//if(objID == 8){
-		//	//try to load the Teapot
-		//	objectDisplayed->loadObject((sgC3DObject *)sgTeapot->Clone(),8);
-		//}
 		if(objID == 200){
 			//load extruded object
 			objectDisplayed->loadObject((sgC3DObject *)extrudedObject->Clone(),200);
 			loaded = true;
 		}
-		////////////////////////
-
-		//objectID = -1;
 
 		if(loaded == true){
 			////////////////////////////////

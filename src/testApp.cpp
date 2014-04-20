@@ -7,7 +7,7 @@
 #define displayYBlue 1150
 #define displayZ -800
 #define iddleTime 120
-#define puzzleItems 0
+#define puzzleItems 1
 #define USE_MOUSE 1
 
 std::map<int,gwc::Point> active_points;
@@ -118,10 +118,10 @@ void testApp::setup(){
 	//ofVec3f rotateSlicer = ofVec3f (0,0,0);
 	loadObjDirG("obj/");
 
-	for(int i=1; i <= puzzleItems; i++){
-		middlePuzzlePos.x = 10 + (i-1 * 10) + (i-1*180);
+	for(int i=0; i < puzzleItems; i++){
+		middlePuzzlePos.x = 10 + (i * 10) + (i*180);
 		puzzleDisplayed = new menuPuzzle(slicingPos, middlePuzzlePos, i);
-		puzzleDisplayed->loadObjectMP((sgC3DObject*)objectsMP[i]->Clone(),i);
+		puzzleDisplayed->loadObjectMP((sgC3DObject*)objectsMP[i+1]->Clone(),i+1);
 		//if(i==0){
 		//	//puzzleDisplayed->loadObject(sgCreateTorus(100,70,50,50),1);
 		//}else if(i == 1){

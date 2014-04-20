@@ -32,7 +32,7 @@ void GuiNode::sendInteraction(){
 
 void GuiNode::draw(){
 	ofEnableBlendMode(OF_BLENDMODE_ALPHA);
-	//ofDisableDepthTest();
+	ofDisableDepthTest();
 	if(!bHidden){
 		if(bDrawArea){
 			//cout << "drawing from " << drawPos.x << ", " << drawPos.y << " to " << drawSize.x << ", " << drawSize.y << endl;
@@ -89,7 +89,7 @@ void GuiNode::draw(){
 			}
 		}
 	}
-	//ofEnableDepthTest();
+	ofEnableDepthTest();
 }
 
 bool GuiNode::isInside(int _x, int _y){

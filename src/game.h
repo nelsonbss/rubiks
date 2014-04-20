@@ -237,7 +237,7 @@ public:
 	ofVec3f cp5;
 	ofVec3f cp6;
 
-	void drawPoints();
+	//void drawPoints();
 
 	string currentLanguage;
 	void setLanguage(string _lang);

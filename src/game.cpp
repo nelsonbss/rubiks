@@ -2226,11 +2226,8 @@ void game::mouseReleased(int x, int y, int button){
 	}
 	timeOfLastInteraction = ofGetElapsedTimeMillis();
 }
-
+//----------------------------------------------------------------------------------------------------------------------
 void game::startMove(ofVec3f _pnt){
-	//--------------------------------------------------------------------
-	//void view1_MouseDown(object sender, MouseButtonEventArgs e) // checks if mouse click is on a center piece, and if so, twists it clockwise
-	//{
 	if (myPuzzle->isMoving()){
 		return;
 	}
@@ -2267,18 +2264,6 @@ void game::startMove(ofVec3f _pnt){
 		gestureAngles[4] = atan2(cp5.y - cp0.y, cp5.x - cp0.x);
 		gestureAngles[5] = atan2(cp6.y - cp0.y, cp6.x - cp0.x);
 	}
-}
-
-void game::drawPoints(){
-	ofFill();
-	ofSetColor(0,0,0);
-	ofCircle(cp0,20);
-	ofCircle(cp1,20);
-	ofCircle(cp2,20);
-	ofCircle(cp3,20);
-	ofCircle(cp4,20);
-	ofCircle(cp5,20);
-	ofCircle(cp6,20);
 }
 //--------------------------------------------------------------------------------------------------------------------------
 void game::makeMove(ofVec3f _pnt){

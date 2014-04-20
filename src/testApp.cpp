@@ -709,49 +709,49 @@ void testApp::initOFRender(){
 	ofSetVerticalSync(true);
 	ofEnableDepthTest();
 
-	// turn on smooth lighting //
-	bSmoothLighting = true;
-	ofSetSmoothLighting(true);
+	//////////// turn on smooth lighting //
+	//////////bSmoothLighting = true;
+	//////////ofSetSmoothLighting(true);
 
-	// Point lights emit light in all directions //
-	// set the diffuse color, color reflected from the light source //
-	pointLight.setDiffuseColor( ofColor(255.f, 255.f, 255.f));
+	//////////// Point lights emit light in all directions //
+	//////////// set the diffuse color, color reflected from the light source //
+	//////////pointLight.setDiffuseColor( ofColor(255.f, 255.f, 255.f));
 
-	// specular color, the highlight/shininess color //
-	pointLight.setSpecularColor( ofColor(255.f, 255.f, 0.f));
-	pointLight.setPointLight();
+	//////////// specular color, the highlight/shininess color //
+	//////////pointLight.setSpecularColor( ofColor(255.f, 255.f, 0.f));
+	//////////pointLight.setPointLight();
 
-	spotLight.setDiffuseColor( ofColor(255.f, 255.f, 255.f));
-	spotLight.setSpecularColor( ofColor(255.f, 255.f, 255.f));
+	//////////spotLight.setDiffuseColor( ofColor(255.f, 255.f, 255.f));
+	//////////spotLight.setSpecularColor( ofColor(255.f, 255.f, 255.f));
 
-	// turn the light into spotLight, emit a cone of light //
-	spotLight.setSpotlight();
+	//////////// turn the light into spotLight, emit a cone of light //
+	//////////spotLight.setSpotlight();
 
-	// size of the cone of emitted light, angle between light axis and side of cone //
-	// angle range between 0 - 90 in degrees //
-	spotLight.setSpotlightCutOff( 50 );
+	//////////// size of the cone of emitted light, angle between light axis and side of cone //
+	//////////// angle range between 0 - 90 in degrees //
+	//////////spotLight.setSpotlightCutOff( 50 );
 
-	// rate of falloff, illumitation decreases as the angle from the cone axis increases //
-	// range 0 - 128, zero is even illumination, 128 is max falloff //
-	spotLight.setSpotConcentration( 45 );
+	//////////// rate of falloff, illumitation decreases as the angle from the cone axis increases //
+	//////////// range 0 - 128, zero is even illumination, 128 is max falloff //
+	//////////spotLight.setSpotConcentration( 45 );
 
-	// Directional Lights emit light based on their orientation, regardless of their position //
-	directionalLight.setDiffuseColor(ofColor(0.f, 0.f, 0.f));
-	directionalLight.setSpecularColor(ofColor(255.f, 255.f, 255.f));
-	directionalLight.setDirectional();
+	//////////// Directional Lights emit light based on their orientation, regardless of their position //
+	//////////directionalLight.setDiffuseColor(ofColor(0.f, 0.f, 0.f));
+	//////////directionalLight.setSpecularColor(ofColor(255.f, 255.f, 255.f));
+	//////////directionalLight.setDirectional();
 
-	// set the direction of the light
-	// set it pointing from left to right -> //
-	directionalLight.setOrientation( ofVec3f(0, 90, 0) );
+	//////////// set the direction of the light
+	//////////// set it pointing from left to right -> //
+	//////////directionalLight.setOrientation( ofVec3f(0, 90, 0) );
 
 
-	bShiny = true;
-	// shininess is a value between 0 - 128, 128 being the most shiny //
-	material.setShininess( 120 );
-	// the light highlight of the material //
-	material.setSpecularColor(ofColor(255, 255, 255, 1));
+	//////////bShiny = true;
+	//////////// shininess is a value between 0 - 128, 128 being the most shiny //
+	//////////material.setShininess( 120 );
+	//////////// the light highlight of the material //
+	//////////material.setSpecularColor(ofColor(255, 255, 255, 1));
 
-	bPointLight = bSpotLight = bDirLight = true;
+	//////////bPointLight = bSpotLight = bDirLight = true;
 
 	// tex coords for 3D objects in OF are from 0 -> 1, not 0 -> image.width
 	// so we must disable the arb rectangle call to allow 0 -> 1
@@ -763,22 +763,22 @@ void testApp::initOFRender(){
 //------------------------------------------------------------------------------
 void testApp::startOFLights(){
 	// enable lighting //
-	ofEnableLighting();
-	// enable the material, so that it applies to all 3D objects before material.end() call //
-	material.begin();
-	// activate the lights //
-	if (bPointLight) pointLight.enable();
-	//if (bSpotLight) spotLight.enable();
-	if (bDirLight) directionalLight.enable();
+	////////////ofEnableLighting();
+	////////////// enable the material, so that it applies to all 3D objects before material.end() call //
+	////////////material.begin();
+	////////////// activate the lights //
+	////////////if (bPointLight) pointLight.enable();
+	//////////////if (bSpotLight) spotLight.enable();
+	////////////if (bDirLight) directionalLight.enable();
 
-	// grab the texture reference and bind it //
-	// this will apply the texture to all drawing (vertex) calls before unbind() //
-	//if(bUseTexture) ofLogoImage.getTextureReference().bind();
-	//if(bUseTexture) ofLogoImage.getTextureReference().unbind();
+	////////////// grab the texture reference and bind it //
+	////////////// this will apply the texture to all drawing (vertex) calls before unbind() //
+	//////////////if(bUseTexture) ofLogoImage.getTextureReference().bind();
+	//////////////if(bUseTexture) ofLogoImage.getTextureReference().unbind();
 
-	if (!bPointLight) pointLight.disable();
-	//if (!bSpotLight) spotLight.disable();
-	if (!bDirLight) directionalLight.disable();
+	////////////if (!bPointLight) pointLight.disable();
+	//////////////if (!bSpotLight) spotLight.disable();
+	////////////if (!bDirLight) directionalLight.disable();
 }
 //------------------------------------------------------------------------------
 void testApp::updateOFLights(){

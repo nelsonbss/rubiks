@@ -5,9 +5,9 @@
 
 ///////////////////////////////////////////////////////
 menuPuzzle::menuPuzzle(SG_VECTOR p, SG_VECTOR t, int ID ) : GuiNode(){
-	
+
 	id = ID;
-	
+
 	armRot = ofVec3f (0,0,0);
 	tempPos.x = t.x;
 	tempPos.y = t.y;
@@ -61,7 +61,7 @@ menuPuzzle::menuPuzzle(SG_VECTOR p, SG_VECTOR t, int ID ) : GuiNode(){
 
 	timeOfLastInteraction = 0;
 }
-
+//-------------------------------------------------------------------------------------------------------
 void menuPuzzle::nodeInit(){
 	//drawPos.set((float)tempPos.x, (float)tempPos.y);
 	//drawPos.set(200,200);
@@ -81,7 +81,7 @@ void menuPuzzle::nodeInit(){
 	activate();
 	SubObMediator::Instance()->addObserver("menupuzzle-intercepted",this);
 }
-
+//---------------------------------------------------------------------------------------------------
 void menuPuzzle::nodeExecute(){
 	//bReadyForInput = false;
 	//timer->addTimer(1000, (int*)&bReadyForInput, 1);
@@ -94,9 +94,26 @@ void menuPuzzle::nodeExecute(){
 	viewport.y = startPos.y;
 	bWatchTime = false;
 }
-
-//--------------------------------------------------------------
+//-------------------------------------------------------------------------------------------
 void menuPuzzle::setup(){
+	GLfloat light_ambient[] = { 0.0, 0.2, 0.0, 1.0 };
+	GLfloat light_diffuse[] = { 0.0, 1.0, 0.0, 1.0 };
+	GLfloat light_specular[] = { 0.0, 1.0, 0.0, 1.0 };
+	GLfloat light_position[] = { 1.0, 1.0, 1.0, 0.0 };
+	glLightfv(GL_LIGHT0, GL_AMBIENT, light_ambient);
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, light_diffuse);
+	glLightfv(GL_LIGHT0, GL_SPECULAR, light_specular);
+	glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+	glEnable(GL_LIGHT0);
+	GLfloat light_ambient1[] = { 0.0, 0.0, 0.2, 1.0 };
+	GLfloat light_diffuse1[] = { 0.0, 0.0, 1.0, 1.0 };
+	GLfloat light_specular1[] = { 0.0, 0.0, 1.0, 1.0 };
+	GLfloat light_position1[] = { -1.0, 1.0, 1.0, 0.0 };
+	glLightfv(GL_LIGHT1, GL_AMBIENT, light_ambient1);
+	glLightfv(GL_LIGHT1, GL_DIFFUSE, light_diffuse1);
+	glLightfv(GL_LIGHT1, GL_SPECULAR, light_specular1);
+	glLightfv(GL_LIGHT1, GL_POSITION, light_position1);
+	glEnable(GL_LIGHT1);
 	//the real object is never rendered or moved::::it is used to make the boolean intersection
 	//the rendered and animated object is temp
 
@@ -114,7 +131,7 @@ void menuPuzzle::setup(){
 	myVbo.setMesh(myMesh, GL_STATIC_DRAW);
 	free(ofr);
 }
-//--------------------------------------------------------------
+//------------------------------------------------------------------------------------------
 void menuPuzzle::update(){
 	SG_VECTOR transP = {tempPos.x,tempPos.y,tempPos.z};
 	//drawPos.set((float)tempPos.x, (float)tempPos.y);
@@ -161,7 +178,7 @@ void menuPuzzle::update(){
 	}
 	//temp->ApplyTempMatrix();  
 }
-
+//--------------------------------------------------------------------------------
 void menuPuzzle::update(string _eventName, SubObEvent _event){
 	if(_eventName == "menupuzzle-intercepted"){
 		string intercepter = _event.getArg("intercepter")->getString();
@@ -173,23 +190,24 @@ void menuPuzzle::update(string _eventName, SubObEvent _event){
 		}
 	}
 }
-
+//-------------------------------------------------------------------------------
 bool menuPuzzle::isInside(int _x, int _y){
-    cout << getName() << " checking insides " << viewport.x << ", " << viewport.x + viewport.width << " - " << viewport.y << ", " << viewport.y + viewport.height;
+	cout << getName() << " checking insides " << viewport.x << ", " << viewport.x + viewport.width << " - " << viewport.y << ", " << viewport.y + viewport.height;
 	cout << " against " << _x << ", " << _y << endl;
-    //cout << getName() << " checking insides." << endl;
+	//cout << getName() << " checking insides." << endl;
 	if((_x > viewport.x && _x < (viewport.x + viewport.width) &&
-       (_y > viewport.y && _y < (viewport.y + viewport.height)))){
-		   if(getParam("send-select") == "true"){
-			   input("select", 0, 0, 0, ofVec2f(_x, _y), ofVec2f(0,0));
-		   }
-		   return true;
-       }
-    return false;
+		(_y > viewport.y && _y < (viewport.y + viewport.height)))){
+			if(getParam("send-select") == "true"){
+				input("select", 0, 0, 0, ofVec2f(_x, _y), ofVec2f(0,0));
+			}
+			return true;
+	}
+	return false;
 }
-
 //------------------------------------------------------------------------
 void menuPuzzle::nodeDraw(){  
+	ofEnableDepthTest();
+	
 	ofNoFill();
 	ofSetColor(0,0,255);
 	//ofRect(viewport.x, viewport.y, viewport.width, viewport.height);
@@ -204,6 +222,12 @@ void menuPuzzle::nodeDraw(){
 	//temp->DestroyTempMatrix();
 	ofTranslate(viewport.width / 2, viewport.height / 2, position.z);
 	glScalef(0.39,0.39,0.39);
+
+
+	//ofEnableLighting();
+	//light.enable();
+	//light.setPosition(viewport.width / 2, viewport.height / 2, 400);
+	//light.lookAt(ofVec3f(tempPos.x, tempPos.y, tempPos.z));
 	//myMenuPuzzle->draw();
 	myVbo.draw(GL_TRIANGLES, 0,myMesh.getNumIndices());
 	ofPopMatrix();
@@ -227,6 +251,7 @@ void menuPuzzle::nodeDraw(){
 			}
 		}
 	}
+	ofDisableDepthTest();
 }
 //----------------------------------------------------------------
 void menuPuzzle::loadObjectMP(sgC3DObject *obj, int ID){
@@ -252,7 +277,7 @@ void menuPuzzle::loadObjectMP(sgC3DObject *obj, int ID){
 	//	object->ApplyTempMatrix();  
 	//	object->DestroyTempMatrix();
 	//}else if(objectId == 2){
-		//cube
+	//cube
 	//	SG_VECTOR offset = {-150,-150,-150}; //for the cube to be in center  place, it has sides of 300
 	//	object->InitTempMatrix()->Translate(offset);//this translates the object to be cut!!
 	//	object->ApplyTempMatrix();  

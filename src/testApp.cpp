@@ -98,6 +98,14 @@ void testApp::setup(){
 	//there are 7 objects to be created
 	ofToggleFullscreen();
 
+
+	light.setPointLight();
+	light.setSpotlight(60.0);
+	light.setDirectional();
+	light.setDiffuseColor( ofColor(255.f, 255.f, 255.f));
+	light.setSpecularColor( ofColor(255.f, 255.f, 255.f));
+
+
 	cout << "creating puzzle menu items" << endl;
 
 	middlePuzzlePos.x = 0;
@@ -371,16 +379,23 @@ void testApp::draw(){
 	//}
 
 
+
 	////////////////////////PUZZLE //////////////////////
 	///////////////////////////////draw games
 	for(int i = 0; i < myGames.size(); i++){
 		myGames[i]->draw();
 	}
 
+	ofEnableLighting();
+	light.enable();
+	light.setPosition(ofGetWindowWidth()/ 2, ofGetWindowHeight()/ 2, -400);
+	light.lookAt(ofVec3f(ofGetWindowWidth()/ 2, ofGetWindowHeight()/ 2, 0));
 	//middle puzzles
 	for(int i=0; i < middlePuzzles.size();i++){
 		middlePuzzles[i]->draw();
 	}
+	light.disable();
+	ofDisableLighting();
 
 	///////////////////END OF RENDERING////////////////////
 	//stopOFLights();

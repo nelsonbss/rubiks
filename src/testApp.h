@@ -125,4 +125,7 @@ public:
 
 	ofPoint unprojectPoint(ofVec3f pnt);
 	double gestureAngles[6];
+
+
+	ofLight light;
 };

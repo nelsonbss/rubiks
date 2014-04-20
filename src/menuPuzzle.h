@@ -67,7 +67,7 @@ public:
 	int timeOfLastInteraction;
 	string targetGame;
 
-	ofLight light;
+	//ofLight light;
 };
 
 #endif /* defined(__TmenuPuzzle__menuPuzzle__) */

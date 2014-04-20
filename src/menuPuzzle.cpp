@@ -96,24 +96,31 @@ void menuPuzzle::nodeExecute(){
 }
 //-------------------------------------------------------------------------------------------
 void menuPuzzle::setup(){
-	GLfloat light_ambient[] = { 0.0, 0.2, 0.0, 1.0 };
-	GLfloat light_diffuse[] = { 0.0, 1.0, 0.0, 1.0 };
-	GLfloat light_specular[] = { 0.0, 1.0, 0.0, 1.0 };
-	GLfloat light_position[] = { 1.0, 1.0, 1.0, 0.0 };
-	glLightfv(GL_LIGHT0, GL_AMBIENT, light_ambient);
-	glLightfv(GL_LIGHT0, GL_DIFFUSE, light_diffuse);
-	glLightfv(GL_LIGHT0, GL_SPECULAR, light_specular);
-	glLightfv(GL_LIGHT0, GL_POSITION, light_position);
-	glEnable(GL_LIGHT0);
-	GLfloat light_ambient1[] = { 0.0, 0.0, 0.2, 1.0 };
-	GLfloat light_diffuse1[] = { 0.0, 0.0, 1.0, 1.0 };
-	GLfloat light_specular1[] = { 0.0, 0.0, 1.0, 1.0 };
-	GLfloat light_position1[] = { -1.0, 1.0, 1.0, 0.0 };
-	glLightfv(GL_LIGHT1, GL_AMBIENT, light_ambient1);
-	glLightfv(GL_LIGHT1, GL_DIFFUSE, light_diffuse1);
-	glLightfv(GL_LIGHT1, GL_SPECULAR, light_specular1);
-	glLightfv(GL_LIGHT1, GL_POSITION, light_position1);
-	glEnable(GL_LIGHT1);
+	//GLfloat light_ambient[] = { 0.0, 0.2, 0.0, 1.0 };
+	//GLfloat light_diffuse[] = { 0.0, 1.0, 0.0, 1.0 };
+	//GLfloat light_specular[] = { 0.0, 1.0, 0.0, 1.0 };
+	//GLfloat light_position[] = { 1.0, 1.0, 1.0, 0.0 };
+	//glLightfv(GL_LIGHT0, GL_AMBIENT, light_ambient);
+	//glLightfv(GL_LIGHT0, GL_DIFFUSE, light_diffuse);
+	//glLightfv(GL_LIGHT0, GL_SPECULAR, light_specular);
+	//glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+	//glEnable(GL_LIGHT0);
+	//GLfloat light_ambient1[] = { 0.0, 0.0, 0.2, 1.0 };
+	//GLfloat light_diffuse1[] = { 0.0, 0.0, 1.0, 1.0 };
+	//GLfloat light_specular1[] = { 0.0, 0.0, 1.0, 1.0 };
+	//GLfloat light_position1[] = { -1.0, 1.0, 1.0, 0.0 };
+	//glLightfv(GL_LIGHT1, GL_AMBIENT, light_ambient1);
+	//glLightfv(GL_LIGHT1, GL_DIFFUSE, light_diffuse1);
+	//glLightfv(GL_LIGHT1, GL_SPECULAR, light_specular1);
+	//glLightfv(GL_LIGHT1, GL_POSITION, light_position1);
+	//glEnable(GL_LIGHT1);
+
+	////////light.setPointLight();
+	//////light.setSpotlight(60.0);
+	////////light.setDirectional();
+	//////light.setDiffuseColor( ofColor(255.f, 255.f, 255.f));
+	//////light.setSpecularColor( ofColor(255.f, 255.f, 255.f));
+
 	//the real object is never rendered or moved::::it is used to make the boolean intersection
 	//the rendered and animated object is temp
 
@@ -207,7 +214,7 @@ bool menuPuzzle::isInside(int _x, int _y){
 //------------------------------------------------------------------------
 void menuPuzzle::nodeDraw(){  
 	ofEnableDepthTest();
-	
+
 	ofNoFill();
 	ofSetColor(0,0,255);
 	//ofRect(viewport.x, viewport.y, viewport.width, viewport.height);
@@ -228,6 +235,9 @@ void menuPuzzle::nodeDraw(){
 	//light.enable();
 	//light.setPosition(viewport.width / 2, viewport.height / 2, 400);
 	//light.lookAt(ofVec3f(tempPos.x, tempPos.y, tempPos.z));
+	//light.disable();
+	//ofDisableLighting();
+
 	//myMenuPuzzle->draw();
 	myVbo.draw(GL_TRIANGLES, 0,myMesh.getNumIndices());
 	ofPopMatrix();

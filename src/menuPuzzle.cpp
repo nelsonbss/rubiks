@@ -7,6 +7,12 @@
 menuPuzzle::menuPuzzle(SG_VECTOR p, SG_VECTOR t, int ID ) : GuiNode(){
 
 	id = ID;
+	objectId=0;
+	object = NULL;
+	temp = NULL;
+
+	myMesh = CubieMesh();
+	myVbo = ofVbo();
 
 	armRot = ofVec3f (0,0,0);
 	tempPos.x = t.x;
@@ -46,16 +52,13 @@ menuPuzzle::menuPuzzle(SG_VECTOR p, SG_VECTOR t, int ID ) : GuiNode(){
 	position.y = tempSize.y / 2;
 	position.z = 0;
 
-	objectId=0;
-	object = NULL;
-
 	bHidden = false;
 	bActive = true;
 
 	bReadyForInput = true;
 	bWatchTime = false;
 
-	timer = new ofxTimer();
+	//timer = new ofxTimer();
 
 	setName("menu-puzzle-" + ofToString(id));
 
@@ -115,11 +118,11 @@ void menuPuzzle::setup(){
 	//glLightfv(GL_LIGHT1, GL_POSITION, light_position1);
 	//glEnable(GL_LIGHT1);
 
-	////////light.setPointLight();
-	//////light.setSpotlight(60.0);
-	////////light.setDirectional();
-	//////light.setDiffuseColor( ofColor(255.f, 255.f, 255.f));
-	//////light.setSpecularColor( ofColor(255.f, 255.f, 255.f));
+	////light.setPointLight();
+	//light.setSpotlight(60.0);
+	////light.setDirectional();
+	//light.setDiffuseColor( ofColor(255.f, 255.f, 255.f));
+	//light.setSpecularColor( ofColor(255.f, 255.f, 255.f));
 
 	//the real object is never rendered or moved::::it is used to make the boolean intersection
 	//the rendered and animated object is temp
@@ -140,15 +143,14 @@ void menuPuzzle::setup(){
 }
 //------------------------------------------------------------------------------------------
 void menuPuzzle::update(){
-	SG_VECTOR transP = {tempPos.x,tempPos.y,tempPos.z};
-	//drawPos.set((float)tempPos.x, (float)tempPos.y);
-	//SG_VECTOR transP = {drawPos.x, drawPos.y, 0};
 
-	SG_POINT rot = {0,0,0};
-	SG_VECTOR rotM = {1,0,0};
-	/*temp->InitTempMatrix()->Rotate(rot,rotM,ofDegToRad(45));
-	SG_VECTOR rotM2 = {1,0,0};
-	temp->GetTempMatrix()->Rotate(rot,rotM2,ofDegToRad(45));*/
+	SG_POINT rotP = {position.x,position.y,position.z};
+	SG_VECTOR rotV = {1,0,0};
+	SG_VECTOR offset = {0,0,0}; //for the cube to be in place
+	temp->InitTempMatrix()->Rotate(rotP,rotV,ofDegToRad(-45));
+	SG_VECTOR rotV2 = {0,1,0};
+	temp->GetTempMatrix()->Rotate(rotP,rotV2,ofDegToRad(35));
+	temp->ApplyTempMatrix(); 
 
 	//temp->InitTempMatrix()->Translate(transP);
 	if(objectId == 2){
@@ -201,7 +203,7 @@ void menuPuzzle::update(string _eventName, SubObEvent _event){
 bool menuPuzzle::isInside(int _x, int _y){
 	cout << getName() << " checking insides " << viewport.x << ", " << viewport.x + viewport.width << " - " << viewport.y << ", " << viewport.y + viewport.height;
 	cout << " against " << _x << ", " << _y << endl;
-	//cout << getName() << " checking insides." << endl;
+	cout << getName() << " checking insides." << endl;
 	if((_x > viewport.x && _x < (viewport.x + viewport.width) &&
 		(_y > viewport.y && _y < (viewport.y + viewport.height)))){
 			if(getParam("send-select") == "true"){
@@ -225,10 +227,10 @@ void menuPuzzle::nodeDraw(){
 	ofSetupScreen();
 	//glPushMatrix();
 	ofPushMatrix();
-	//glMultMatrixd(temp->GetTempMatrix()->GetTransparentData());
+	glMultMatrixd(temp->GetTempMatrix()->GetTransparentData());
 	//temp->DestroyTempMatrix();
 	ofTranslate(viewport.width / 2, viewport.height / 2, position.z);
-	glScalef(0.39,0.39,0.39);
+	glScalef(0.3,0.3,0.3);
 
 
 	//ofEnableLighting();
@@ -319,13 +321,13 @@ void menuPuzzle::loadObjectMP(sgC3DObject *obj, int ID){
 	//}  
 }
 //--------------------------------------------------------------
-void menuPuzzle::loadPuzzle(puzzle *inpuzzle){
-	myMenuPuzzle = inpuzzle;
-}
-//----------------------------------------------------------------
-sgC3DObject* menuPuzzle::getObject(){
-	return temp;
-}
+//void menuPuzzle::loadPuzzle(puzzle *inpuzzle){
+//	myMenuPuzzle = inpuzzle;
+//}
+////----------------------------------------------------------------
+//sgC3DObject* menuPuzzle::getObject(){
+//	return temp;
+//}
 //-----------------------------------------------------------------
 void menuPuzzle::colorFacesMenu(){
 	ofRender *ofr = new ofRender();
@@ -369,6 +371,25 @@ void menuPuzzle::input(string _type, int _ID, int _n, int _phase, ofVec2f _absPo
 	}
 	timeOfLastInteraction = ofGetElapsedTimeMillis();
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //----------------------------------------------------------------
 //void menuPuzzle::applyArmRotations(ofVec3f v){
 //	armRot = (v)*-1;
@@ -391,12 +412,3 @@ void menuPuzzle::exit(){
 //puzzle* menuPuzzle::getPuzzle(){
 //	return myMenuPuzzle;
 //}
-//---------------------------------------------------------
-void menuPuzzle::mouseDragged(int x, int y, int button){
-}
-//--------------------------------------------------------------
-void menuPuzzle::mousePressed(int x, int y, int button){
-}
-//--------------------------------------------------------------
-void menuPuzzle::mouseReleased(int x, int y, int button){
-}

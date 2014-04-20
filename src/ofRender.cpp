@@ -1002,8 +1002,12 @@ void ofRender::colorFacesMenu(ofMesh &mesh,ofVec3f armRot,float playRoom, int ob
 		//for each unique normal
 		//for now we select from 9 possible colors that we have right now
 		ofFloatColor x =  colorsVector[i%16];
-		uniqueColors.push_back(x);
-		vcolorsMenu.push_back(x); //to remember the colors used on the main object,  to be used on the puzzle, so both have the same colorss
+		if(x.r == 1 && x.g == 1 && x.b == 1){
+			x = lightGreen;
+		}
+			uniqueColors.push_back(x);
+			vcolorsMenu.push_back(x); //to remember the colors used on the main object,  to be used on the puzzle, so both have the same colors
+		
 	}
 	//now -> uniqueColors.size = uniqueNormals.size
 

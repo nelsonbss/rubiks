@@ -379,14 +379,11 @@ void testApp::draw(){
 	//}
 
 
-
 	////////////////////////PUZZLE  //////////////////////
 	///////////////////////////////draw games
 	for(int i = 0; i < myGames.size(); i++){
 		myGames[i]->draw();
 	}
-
-	
 
 	///////////////////END OF RENDERING     ////////////////////
 	//stopOFLights();
@@ -398,16 +395,18 @@ void testApp::draw(){
 	ofEnableDepthTest();
 	ofDisableAlphaBlending();
 
+	///////////////////////////////middle puzzles  ///////////////////////////////
 	ofEnableLighting();
 	light.enable();
 	light.setPosition(ofGetWindowWidth()/ 2, ofGetWindowHeight()/ 2, -400);
 	light.lookAt(ofVec3f(ofGetWindowWidth()/ 2, ofGetWindowHeight()/ 2, 0));
-	///////////////////////////////middle puzzles  ///////////////////////////////
+	
 	for(int i=0; i < middlePuzzles.size();i++){
 		middlePuzzles[i]->draw();
 	}
 	light.disable();
 	ofDisableLighting();
+	///////////////////////////////middle puzzles  ///////////////////////////////
 
 	ofEnableAlphaBlending();
 	ofDisableDepthTest();

@@ -262,41 +262,41 @@ void game::update(){
 				}
 			}
 			//updatePuzzle = false;
-			if(myPuzzle->faceRotateB == true) {
-				//////int ans = myPuzzle->rotateTwoIds(idcubieA,idcubieB,dir);
+			//if(myPuzzle->faceRotateB == true) {
+			//	//////int ans = myPuzzle->rotateTwoIds(idcubieA,idcubieB,dir);
 
-				////int ans;
-				////if(myPuzzle->bHaveActiveCubie && myPuzzle->bHaveRotationCubie){
-				////	ans = myPuzzle->rotateTwoIds(myPuzzle->activeCubie,myPuzzle->rotationCubie,dir);
-				////	myPuzzle->bHaveActiveCubie = false;
-				////	myPuzzle->bHaveRotationCubie = false;
-				////} else {
-				////	ans = myPuzzle->rotateTwoIds(myPuzzle->activeCubie,myPuzzle->activeCubie,dir);
-				////	myPuzzle->bHaveActiveCubie = false;
-				////}
-				//////ans has encripted the axis and the direction 10-x 20-y 30-z 1 or 0 direction
-				//////put this move on the game history vector
-				//////undo will look for the other 9 cubies involved and do a pop x2 on their history
-				////if(ans/10 == 1){
-				////	//1
-				////	axis.x = 1;
-				////	axis.y = 0;
-				////	axis.z = 0;
-				////}else if(ans/10 == 2){
-				////	//2
-				////	axis.x = 0;
-				////	axis.y = 1;
-				////	axis.z = 0;
-				////}else{
-				////	//3
-				////	axis.x = 0;
-				////	axis.y = 0;
-				////	axis.z = 1;
-				////}
-				////bool d = ans%2;//this is 0 or 1
-				////historyV.push_back(history(idcubieA,axis,!d)); //save inverse move (!), to do it at undo, and do 2 pop 
-				myPuzzle->faceRotateB = false;
-			}
+			//	////int ans;
+			//	////if(myPuzzle->bHaveActiveCubie && myPuzzle->bHaveRotationCubie){
+			//	////	ans = myPuzzle->rotateTwoIds(myPuzzle->activeCubie,myPuzzle->rotationCubie,dir);
+			//	////	myPuzzle->bHaveActiveCubie = false;
+			//	////	myPuzzle->bHaveRotationCubie = false;
+			//	////} else {
+			//	////	ans = myPuzzle->rotateTwoIds(myPuzzle->activeCubie,myPuzzle->activeCubie,dir);
+			//	////	myPuzzle->bHaveActiveCubie = false;
+			//	////}
+			//	//////ans has encripted the axis and the direction 10-x 20-y 30-z 1 or 0 direction
+			//	//////put this move on the game history vector
+			//	//////undo will look for the other 9 cubies involved and do a pop x2 on their history
+			//	////if(ans/10 == 1){
+			//	////	//1
+			//	////	axis.x = 1;
+			//	////	axis.y = 0;
+			//	////	axis.z = 0;
+			//	////}else if(ans/10 == 2){
+			//	////	//2
+			//	////	axis.x = 0;
+			//	////	axis.y = 1;
+			//	////	axis.z = 0;
+			//	////}else{
+			//	////	//3
+			//	////	axis.x = 0;
+			//	////	axis.y = 0;
+			//	////	axis.z = 1;
+			//	////}
+			//	////bool d = ans%2;//this is 0 or 1
+			//	////historyV.push_back(history(idcubieA,axis,!d)); //save inverse move (!), to do it at undo, and do 2 pop 
+			//	myPuzzle->faceRotateB = false;
+			//}
 		}
 	}
 
@@ -377,14 +377,27 @@ void game::update(string _eventName, SubObEvent _event){
 		//}
 	}
 	if(_eventName == prefix + ":menupuzzle-selected"){
+		
 		SubObEvent ev;
 		ev.setName("hide-node");
 		ev.addArg("target",prefix + ":3d-window");
 		SubObMediator::Instance()->sendEvent("hide-node", ev);
 		ev.addArg("target",prefix + ":3d-window-box");
 		SubObMediator::Instance()->sendEvent("hide-node", ev);
+		ev.addArg("target",prefix + ":attract");
+		SubObMediator::Instance()->sendEvent("hide-node", ev);
+		ev.addArg("target",prefix + ":color-window");
+		SubObMediator::Instance()->sendEvent("hide-node", ev);
+		ev.addArg("target",prefix + ":arm-window");
+		SubObMediator::Instance()->sendEvent("hide-node", ev);
+		ev.addArg("target",prefix + ":arm-rotate");
+		SubObMediator::Instance()->sendEvent("hide-node", ev);
+		ev.addArg("target",prefix + ":arm-help");
+		SubObMediator::Instance()->sendEvent("hide-node", ev);
 		///
 		ev.setName("unhide-node");
+		ev.addArg("target", prefix + ":reset");
+		SubObMediator::Instance()->sendEvent("unhide-node", ev);
 		ev.addArg("target", prefix + ":make-one");
 		SubObMediator::Instance()->sendEvent("unhide-node", ev);
 		ev.addArg("target", prefix + ":bg-language");
@@ -926,7 +939,7 @@ void game::unprojectPoint(ofVec3f _pnt){
 			bHaveAxis = false;
 			startMove(mousePoint);
 			if(myPuzzle->activeCubie != -1){
-					bDragInput = true;
+				bDragInput = true;
 			}
 		} else {
 			//myPuzzle->dragInput((unprojectedPoint - lastUnprojectedPoint) * 25.0);
@@ -2430,7 +2443,7 @@ void game::makeMove(ofVec3f _pnt){
 		}
 	}else{
 		//if (((dragDist-lastDragDistance)/300)>.5) {
-			rotateByIDandAxis(myPuzzle->activeCubie,axis,dir,5);
+		rotateByIDandAxis(myPuzzle->activeCubie,axis,dir,5);
 		//} else if (((dragDist-lastDragDistance)/300)<-.5) {
 		//	rotateByIDandAxis(myPuzzle->activeCubie,axis,dir,-5);
 		//}

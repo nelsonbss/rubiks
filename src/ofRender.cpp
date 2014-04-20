@@ -164,9 +164,9 @@ void ofRender::sgCoretoOFmesh(sgC3DObject *obj, CubieMesh&mesh,int idCubie,int s
 			//we only want to color PLAIN the sample object
 			//the face coloring will be done separately
 
-			if(selectedObjectID == 1){
+			if(selectedObjectID >= 8){
 				//c = decideColorCubieBox(dir,idCubie); //we color the cube here so it gets the official colors on its faces
-				c = mate; //decideColorCubieDEBUG(dir,idCubie); //this is to test the offset slicing and rotations
+				c = matePuzzle; //decideColorCubieDEBUG(dir,idCubie); //this is to test the offset slicing and rotations
 				//}else if(selectedObjectID == 3){
 				//	//cone(ish)
 				//	c = decideColor(decideAxisRange(dir,10.0));
@@ -1021,17 +1021,17 @@ void ofRender::colorFacesMenu(ofMesh &mesh,ofVec3f armRot,float playRoom, int ob
 					//have to use the official colors
 					///rotate normal vectors to compensate for armature rotations z-y-x
 					//ask direction to color faces of cube 
-					if(tnormals[n].align(x, 2.0)){
+					if(tnormals[n].align(x, 4.0)){
 						tcolors[n] = blue; 
-					}else if(tnormals[n].align(y, 2.0)){
+					}else if(tnormals[n].align(y, 4.0)){
 						tcolors[n] = orange; 
-					}else if(tnormals[n].align(z, 2.0)){
+					}else if(tnormals[n].align(z, 4.0)){
 						tcolors[n] = yellow;
-					}else if(tnormals[n].align(xn, 2.0)){
+					}else if(tnormals[n].align(xn, 4.0)){
 						tcolors[n] = green; 
-					}else if(tnormals[n].align(yn, 2.0)){
+					}else if(tnormals[n].align(yn, 4.0)){
 						tcolors[n] = red; 
-					}else if(tnormals[n].align(zn, 2.0)){
+					}else if(tnormals[n].align(zn, 4.0)){
 						tcolors[n] = white;
 					}
 				}else {

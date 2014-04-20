@@ -284,9 +284,9 @@ void menuPuzzle::loadObjectMP(sgC3DObject *obj, int ID){
 	//}  
 }
 //--------------------------------------------------------------
-//void menuPuzzle::loadPuzzle(puzzle *inpuzzle){
-//	myMenuPuzzle = inpuzzle;
-//}
+void menuPuzzle::loadPuzzle(puzzle *inpuzzle){
+	myMenuPuzzle = inpuzzle;
+}
 //----------------------------------------------------------------
 sgC3DObject* menuPuzzle::getObject(){
 	return temp;
@@ -294,7 +294,7 @@ sgC3DObject* menuPuzzle::getObject(){
 //-----------------------------------------------------------------
 void menuPuzzle::colorFacesMenu(){
 	ofRender *ofr = new ofRender();
-	if(objectId == 1 || objectId == 4){
+	if(objectId >= 8 ){//(objectId == 1 || objectId == 4){
 		//torus or bunny
 		ofr->colorTorusMenu(myMesh, colorsVMenu);
 	}else if( objectId == 200){
@@ -304,7 +304,6 @@ void menuPuzzle::colorFacesMenu(){
 		ofr->colorFacesMenu(myMesh,armRot, 0.01, objectId,colorsVMenu,uniqueNormals);
 	}
 	free(ofr);
-
 	//have to replace the vbo
 	ofVbo tempVbo;
 	tempVbo.setMesh(myMesh, GL_STATIC_DRAW);
@@ -335,7 +334,6 @@ void menuPuzzle::input(string _type, int _ID, int _n, int _phase, ofVec2f _absPo
 	}
 	timeOfLastInteraction = ofGetElapsedTimeMillis();
 }
-
 //----------------------------------------------------------------
 //void menuPuzzle::applyArmRotations(ofVec3f v){
 //	armRot = (v)*-1;

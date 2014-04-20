@@ -25,7 +25,7 @@ public:
 	void mouseReleased(int x, int y, int button);
 	////////////////////////////////////////////////////////////////////////////////////////////////////////
 	int id;
-	void loadObject(sgC3DObject *obj, int ID); //it will load a sgCore lib object: torus, box...
+	void loadObjectMP(sgC3DObject *obj, int ID); //it will load a sgCore lib object: torus, box...
 	sgC3DObject* getObject();//it will return the object, i.e to be used in boolean
 
 	int objectId; //the id of the 3d selected object, the id comes from the main app

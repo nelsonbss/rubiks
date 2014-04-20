@@ -56,7 +56,7 @@ public:
 	ofxAssimpModelLoader loader;
 	void loadObjDir(string _path);
 	////
-	void loadObject (int objID,SG_VECTOR p,SG_VECTOR t);
+	void loadObjectG(int objID,SG_VECTOR p,SG_VECTOR t);
 	int objectID;
 
 	/*

@@ -95,6 +95,8 @@ game::game(SG_VECTOR gamePos, float w, float h, SG_VECTOR displayPos, ofRectangl
 	currentLanguage = "english";
 
 	myCanvas.setViewport(viewport);
+
+	step=0;
 }
 //----------------------------------------------------------------------------------------
 void game::loadObjDir(string _path){
@@ -207,7 +209,7 @@ void game::update(){
 		if(newObject == 50){
 			prepareDrawing();
 		} else {
-			loadObject(newObject, objectPos, posP);
+			loadObjectG(newObject, objectPos, posP);
 		}
 		bHaveNewObject = false;
 	}
@@ -1111,12 +1113,12 @@ void game::loadMenuObject(int objID, SG_VECTOR p, SG_VECTOR t){
 	bool loaded = false;
 	if(step == 0 || step==1 || step == 7){
 		if(objID != 200){
-			objectDisplayed->loadObject((sgC3DObject*)objects[objectID]->Clone(), objectID);
+			objectDisplayed->loadObjectOD((sgC3DObject*)objects[objectID]->Clone(), objectID);
 			loaded = true;
 		}
 		if(objID == 200){
 			//load extruded object
-			objectDisplayed->loadObject((sgC3DObject *)extrudedObject->Clone(),200);
+			objectDisplayed->loadObjectOD((sgC3DObject *)extrudedObject->Clone(),200);
 			loaded = true;
 		}
 
@@ -1146,7 +1148,7 @@ void game::loadMenuObject(int objID, SG_VECTOR p, SG_VECTOR t){
 	}
 }
 //----------------------------------------------------------------------
-void game::loadObject(int objID, SG_VECTOR p, SG_VECTOR t){
+void game::loadObjectG(int objID, SG_VECTOR p, SG_VECTOR t){
 	if (objectID == -1){
 		objectDisplayed = new myobject3D(p,t,station);
 	}else{
@@ -1157,11 +1159,11 @@ void game::loadObject(int objID, SG_VECTOR p, SG_VECTOR t){
 	objectID = objID;
 	if(step == 0 || step==1 || step == 6){
 		if(objID != 200){
-			objectDisplayed->loadObject((sgC3DObject*)objects[objectID]->Clone(), objectID);
+			objectDisplayed->loadObjectOD((sgC3DObject*)objects[objectID]->Clone(), objectID);
 		}
 		//if(objID == 1){
 		//	//torus
-		//	objectDisplayed->loadObject(sgCreateTorus(100,70,50,50),1);//(radius,thickness,meridiansDonut,meridiansDonutCut)
+		//	objectDisplayed->loadObjectOD(sgCreateTorus(100,70,50,50),1);//(radius,thickness,meridiansDonut,meridiansDonutCut)
 		//	if(extrudedB){
 		//		sgDeleteObject(extrudedObject);
 		//		extrudedB = false;
@@ -1169,15 +1171,15 @@ void game::loadObject(int objID, SG_VECTOR p, SG_VECTOR t){
 		//}
 		//if(objID == 2){
 		//	//cube
-		//	objectDisplayed->loadObject(sgCreateBox(300,300,300),2);//(tamX,tamY,tamZ)
+		//	objectDisplayed->loadObjectOD(sgCreateBox(300,300,300),2);//(tamX,tamY,tamZ)
 		//	if(extrudedB){
 		//		sgDeleteObject(extrudedObject);
 		//		extrudedB = false;
 		//	}
 		//}if(objID == 3){
 		//	//cone
-		//	//objectDisplayed->loadObject(sgCreateCone(250,1,250,3),3);
-		//	objectDisplayed->loadObject((sgC3DObject *)sgTetrahedron->Clone(),3);
+		//	//objectDisplayed->loadObjectOD(sgCreateCone(250,1,250,3),3);
+		//	objectDisplayed->loadObjectOD((sgC3DObject *)sgTetrahedron->Clone(),3);
 		//	if(extrudedB){
 		//		sgDeleteObject(extrudedObject);
 		//		extrudedB = false;
@@ -1185,7 +1187,7 @@ void game::loadObject(int objID, SG_VECTOR p, SG_VECTOR t){
 		//}
 		//if(objID == 4){
 		//	//try to load the bunny
-		//	objectDisplayed->loadObject((sgC3DObject *)sgBunny->Clone(),4);
+		//	objectDisplayed->loadObjectOD((sgC3DObject *)sgBunny->Clone(),4);
 		//	if(extrudedB){
 		//		sgDeleteObject(extrudedObject);
 		//		extrudedB = false;
@@ -1193,7 +1195,7 @@ void game::loadObject(int objID, SG_VECTOR p, SG_VECTOR t){
 		//}
 		//if(objID == 5){
 		//	//try to load the dodecahedron
-		//	objectDisplayed->loadObject((sgC3DObject *)sgDodecahedron->Clone(),5);
+		//	objectDisplayed->loadObjectOD((sgC3DObject *)sgDodecahedron->Clone(),5);
 		//	if(extrudedB){
 		//		sgDeleteObject(extrudedObject);
 		//		extrudedB = false;
@@ -1201,7 +1203,7 @@ void game::loadObject(int objID, SG_VECTOR p, SG_VECTOR t){
 		//}
 		//if(objID == 6){
 		//	//try to load the Icosahedron
-		//	objectDisplayed->loadObject((sgC3DObject *)sgIcosahedron->Clone(),6);
+		//	objectDisplayed->loadObjectOD((sgC3DObject *)sgIcosahedron->Clone(),6);
 		//	if(extrudedB){
 		//		sgDeleteObject(extrudedObject);
 		//		extrudedB = false;
@@ -1209,7 +1211,7 @@ void game::loadObject(int objID, SG_VECTOR p, SG_VECTOR t){
 		//}
 		//if(objID == 7){
 		//	//try to load the Octahedron
-		//	objectDisplayed->loadObject((sgC3DObject *)sgOctahedron->Clone(),7);
+		//	objectDisplayed->loadObjectOD((sgC3DObject *)sgOctahedron->Clone(),7);
 		//	if(extrudedB){
 		//		sgDeleteObject(extrudedObject);
 		//		extrudedB = false;
@@ -1218,11 +1220,11 @@ void game::loadObject(int objID, SG_VECTOR p, SG_VECTOR t){
 		//}
 		//if(objID == 8){
 		//	//try to load the Teapot
-		//	objectDisplayed->loadObject((sgC3DObject *)sgTeapot->Clone(),8);
+		//	objectDisplayed->loadObjectOD((sgC3DObject *)sgTeapot->Clone(),8);
 		//}
 		if(objID == 200){
 			//load extruded object
-			objectDisplayed->loadObject((sgC3DObject *)extrudedObject->Clone(),200);
+			objectDisplayed->loadObjectOD((sgC3DObject *)extrudedObject->Clone(),200);
 		}
 		objectDisplayed->setup();
 		step = 1;
@@ -1430,7 +1432,7 @@ void game::unDo(){
 void game::guiLoad(int _obj){
 	/*
 	SG_VECTOR objectPos = {0,0,0};
-	loadObject(_obj, objectPos, posP);
+	loadObjectOD(_obj, objectPos, posP);
 	*/
 	bHaveNewObject = true;
 	newObject = _obj;
@@ -1466,28 +1468,28 @@ void game::guiInput(int in){
 		//waiting for shape to be selected
 		if(in == '1') {
 			//load object recieves (object id, boolean position, display position) 
-			loadObject(1,slicingPos,posP);
+			loadObjectG(1,slicingPos,posP);
 		}
 		if(in == '2') {
-			loadObject(2,slicingPos,posP);
+			loadObjectG(2,slicingPos,posP);
 		}
 		if(in == '3') {
-			loadObject(3,slicingPos,posP);
+			loadObjectG(3,slicingPos,posP);
 		}
 		if(in == '4') {
-			loadObject(4,slicingPos,posP);
+			loadObjectG(4,slicingPos,posP);
 		}
 		if(in == '5') {
-			loadObject(5,slicingPos,posP);
+			loadObjectG(5,slicingPos,posP);
 		}
 		if(in == '6') {
-			loadObject(6,slicingPos,posP);
+			loadObjectG(6,slicingPos,posP);
 		}
 		if(in == '7') { 
-			loadObject(7,slicingPos,posP);
+			loadObjectG(7,slicingPos,posP);
 		}
 		//if(in == '8') { 
-		//	loadObject(8,objectPos,posP);
+		//	loadObjectG(8,objectPos,posP);
 		//}
 		if(in == '9') {
 			prepareDrawing();
@@ -1509,37 +1511,36 @@ void game::guiInput(int in){
 				//user can change the selected object
 				clearDisplayedObject();
 				//load object recieves (object id, boolean position, display position) 
-				loadObject(1,slicingPos,posP); //pos.z its the torus radious
+				loadObjectG(1,slicingPos,posP); //pos.z its the torus radious
 			}
 			if(in == '2') {
 				clearDisplayedObject();
-				loadObject(2,slicingPos,posP);
+				loadObjectG(2,slicingPos,posP);
 			}
 			if(in == '3') {
 				clearDisplayedObject();
-				loadObject(3,slicingPos,posP);
+				loadObjectG(3,slicingPos,posP);
 			}
 			if(in == '4') {
 				clearDisplayedObject();
-				loadObject(4,slicingPos,posP);
+				loadObjectG(4,slicingPos,posP);
 			}
 			if(in == '5') {
 				clearDisplayedObject();
-				loadObject(5,slicingPos,posP);
+				loadObjectG(5,slicingPos,posP);
 			}
 			if(in == '6') {
 				//user can change the selected object
 				clearDisplayedObject();
-				loadObject(6,slicingPos,posP);
+				loadObjectG(6,slicingPos,posP);
 			}
 			if(in == '7') {
 				//user can change the selected object
 				clearDisplayedObject();
-
-				loadObject(7,slicingPos,posP);
+				loadObjectG(7,slicingPos,posP);
 			}
 			/*if(in == '8') { 
-			loadObject(8,objectPos,posP);
+			loadObjectG(8,objectPos,posP);
 			}*/
 			if(in == '9') { 
 				clearDisplayedObject();
@@ -1856,34 +1857,34 @@ void game::guiInput(int in){
 		else if(in == '1') {
 			clearDisplayedObject();
 			//load object recieves (object id, boolean position, display position) 
-			loadObject(1,slicingPos,posP);
+			loadObjectG(1,slicingPos,posP);
 		}
 		else if(in == '2') {
 			clearDisplayedObject();
-			loadObject(2,slicingPos,posP);
+			loadObjectG(2,slicingPos,posP);
 		}
 		else if(in == '3') {
 			clearDisplayedObject();
-			loadObject(3,slicingPos,posP);
+			loadObjectG(3,slicingPos,posP);
 		}
 		else if(in == '4') {
 			clearDisplayedObject();
-			loadObject(4,slicingPos,posP);
+			loadObjectG(4,slicingPos,posP);
 		}
 		else if(in == '5') {
 			clearDisplayedObject();
-			loadObject(5,slicingPos,posP);
+			loadObjectG(5,slicingPos,posP);
 		}
 		else if(in == '6') {
 			clearDisplayedObject();
-			loadObject(6,slicingPos,posP);
+			loadObjectG(6,slicingPos,posP);
 		}
 		else if(in == '7') { 
 			clearDisplayedObject();
-			loadObject(7,slicingPos,posP);
+			loadObjectG(7,slicingPos,posP);
 		}
 		//if(in == '8') { 
-		//	loadObject(8,objectPos,posP);
+		//	loadObjectG(8,objectPos,posP);
 		//}
 		else if(in == '9') { 
 			clearDisplayedObject();
@@ -2025,7 +2026,7 @@ bool game::extrudeObject(ofPolyline *drawing){
 
 		extrudedB = true;
 		//we  have the sg3DObjcect to load
-		loadObject(200,slicingPos,posP);//using id=200
+		loadObjectG(200,slicingPos,posP);//using id=200
 
 		//free(drawing);
 		sgDeleteObject(win_cont);
@@ -2062,7 +2063,7 @@ void game::extrudeObject(){
 	sgDeleteObject(cr);
 
 	//we  have the sg3DObjcect to load
-	loadObject(200,slicingPos,posP);//using id=200
+	loadObjectG(200,slicingPos,posP);//using id=200
 
 }
 //----------------------------------------------------------------------
@@ -2088,7 +2089,7 @@ void game::prepareDrawing(){
 menuPuzzle*  game::savePuzzle(SG_POINT slicingPos, SG_VECTOR middlePuzzlePos){
 	//build a menuPuzzle object and give it to the mainApp
 	menuPuzzle *puzzleToSave = new menuPuzzle(slicingPos, middlePuzzlePos, 0);
-	puzzleToSave->loadObject(objectDisplayed->getObject(),objectID);
+	puzzleToSave->loadObjectMP(objectDisplayed->getObject(),objectID);
 	puzzleToSave->setup();
 	puzzleToSave->update();
 	puzzleToSave->colorFacesMenu();

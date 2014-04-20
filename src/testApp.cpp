@@ -1,5 +1,6 @@
 #include "testApp.h"
 #include "game.h"
+#include "ofxAssimpModelLoader.h"
 ///////////////////////////////////////////
 
 #define displayXBlue 550
@@ -90,7 +91,7 @@ void testApp::setup(){
 	initOFRender();
 
 	/////////////////////////////load obj files into sgCore objects
-	cout << "loading obj files " << endl;
+	//cout << "loading obj files " << endl;
 	//loadOBJfiles();
 	////////////////////////////create middle objects (puzzles with no twisting == normal objects with faces colores
 	//this objects are rendering of the sgCore obects just created.
@@ -98,6 +99,7 @@ void testApp::setup(){
 	ofToggleFullscreen();
 
 	cout << "creating puzzle menu items" << endl;
+
 	middlePuzzlePos.x = 0;
 	middlePuzzlePos.y = (ofGetWindowHeight()/2)-90;
 	middlePuzzlePos.z = 0;
@@ -114,36 +116,33 @@ void testApp::setup(){
 	slicingPos.z = 0;
 
 	//ofVec3f rotateSlicer = ofVec3f (0,0,0);
+	loadObjDirG("obj/");
 
-	for(int i=0; i < puzzleItems; i++){
-		middlePuzzlePos.x = 10 + (i * 10) + (i*180);
-		/*
-		if(i > 6){
-		middlePuzzlePos.x = middlePuzzlePos.x - 60  + ((i-5)*10);
-		}
-		*/
+	for(int i=1; i <= puzzleItems; i++){
+		middlePuzzlePos.x = 10 + (i-1 * 10) + (i-1*180);
 		puzzleDisplayed = new menuPuzzle(slicingPos, middlePuzzlePos, i);
-		if(i==0){
-			puzzleDisplayed->loadObject(sgCreateTorus(100,70,50,50),1);
-		}else if(i == 1){
-			puzzleDisplayed->loadObject(sgCreateBox(300,300,300),2);
-		}else if(i == 2){
-			//puzzleDisplayed->loadObject((sgC3DObject *)sgTetrahedron->Clone(),3);
-		}else if(i == 3){
-			//puzzleDisplayed->loadObject((sgC3DObject *)sgBunny->Clone(),4);
-		}else if(i == 4){
-			//puzzleDisplayed->loadObject((sgC3DObject *)sgDodecahedron->Clone(),5);
-		}else if(i == 5){
-			//puzzleDisplayed->loadObject((sgC3DObject *)sgIcosahedron->Clone(),6);
-		}else if(i == 6){
-			//puzzleDisplayed->loadObject((sgC3DObject *)sgOctahedron->Clone(),7);
-		}else if(i == 7){
-			//puzzleDisplayed->loadObject((sgC3DObject *)sgOctahedron->Clone(),8);
-			//puzzleDisplayed->loadObject((sgC3DObject *)sgBunny->Clone(),4);
-		}else{
-			//slots for other user created puzzles
-			//puzzleDisplayed->loadObject(sgCreateBox(300,300,300),2);
-		}
+		puzzleDisplayed->loadObjectMP((sgC3DObject*)objectsMP[i]->Clone(),i);
+		//if(i==0){
+		//	//puzzleDisplayed->loadObject(sgCreateTorus(100,70,50,50),1);
+		//}else if(i == 1){
+		//	//puzzleDisplayed->loadObject(sgCreateBox(300,300,300),2);
+		//}else if(i == 2){
+		//	//puzzleDisplayed->loadObject((sgC3DObject *)sgTetrahedron->Clone(),3);
+		//}else if(i == 3){
+		//	//puzzleDisplayed->loadObject((sgC3DObject *)sgBunny->Clone(),4);
+		//}else if(i == 4){
+		//	//puzzleDisplayed->loadObject((sgC3DObject *)sgDodecahedron->Clone(),5);
+		//}else if(i == 5){
+		//	//puzzleDisplayed->loadObject((sgC3DObject *)sgIcosahedron->Clone(),6);
+		//}else if(i == 6){
+		//	//puzzleDisplayed->loadObject((sgC3DObject *)sgOctahedron->Clone(),7);
+		//}else if(i == 7){
+		//	//puzzleDisplayed->loadObject((sgC3DObject *)sgOctahedron->Clone(),8);
+		//	//puzzleDisplayed->loadObject((sgC3DObject *)sgBunny->Clone(),4);
+		//}else{
+		//	//slots for other user created puzzles
+		//	//puzzleDisplayed->loadObject(sgCreateBox(300,300,300),2);
+		//}
 		cout << "created puzzle menu object: " << i <<endl;
 		puzzleDisplayed->setup();
 		puzzleDisplayed->update();
@@ -178,6 +177,7 @@ void testApp::setup(){
 	tr.y = 700;
 	tr.width = 660;
 	tr.height = 320;
+	//myGames.erase (myGames.begin(),myGames.end());
 	game *tempGame = new game(gamePos, ofGetWidth(), ofGetHeight(),displayPos, tr, iddleTime,"bl");
 	myGames.push_back(tempGame);
 	tr.x = 960;
@@ -190,6 +190,7 @@ void testApp::setup(){
 	tr.x = 960;
 	game *tempGame4 = new game(gamePos, ofGetWidth(), ofGetHeight(),displayPos, tr, iddleTime,"tr");
 	myGames.push_back(tempGame4);
+
 	currentGame = 1;
 	//create a second game
 	//game *tempGame2 = new game(gamePos, ofGetWidth(), ofGetHeight(),displayPos,iddleTime);
@@ -213,6 +214,8 @@ void testApp::setup(){
 	//ofSetupScreenOrtho(ofGetWidth(), ofGetHeight());
 	//ofSetupScreenPerspective(ofGetWidth(), ofGetHeight(), 0.0);
 	//ofEnableAntiAliasing();
+
+
 }
 //--------------------------------------------------------------
 void testApp::update(){
@@ -558,36 +561,36 @@ void testApp::exit(){
 	//sgFreeKernel();
 }
 //----------------------------------------------------------------------------------------
-void testApp::loadObjDir(string _path){
-	ofDirectory dir(_path);
-	dir.allowExt("obj");
-	dir.listDir();
-	vector<ofFile> files = dir.getFiles();
-	for(auto fIter = files.begin(); fIter != files.end(); fIter++){
+void testApp::loadObjDirG(string _path){
+	ofDirectory dir2(_path);
+	dir2.allowExt("obj");
+	dir2.listDir();
+	vector<ofFile> filesG = dir2.getFiles();
+	for(auto fIter = filesG.begin(); fIter != filesG.end(); fIter++){
 		string name = fIter->getFileName();
 		int id = ofToInt(ofSplitString(name, "_")[0]);
-		loader.loadModel(_path + name);
-		ofMesh tempMesh = loader.getMesh(0);
-		vector<ofVec3f> verts = tempMesh.getVertices();
+		loaderG.loadModel(_path + name);
+		ofMesh tempMesh = loaderG.getMesh(0);
+		vector<ofVec3f> vertsG = tempMesh.getVertices();
 		//make an array[] from this vector
-		SG_POINT *vert = new SG_POINT[verts.size()];
-		for(int i=0;i<verts.size(); i++){
-			vert[i].x = verts[i].x;
-			vert[i].y = verts[i].y;
-			vert[i].z = verts[i].z;
+		SG_POINT *vertG = new SG_POINT[vertsG.size()];
+		for(int i=0;i<vertsG.size(); i++){
+			vertG[i].x = vertsG[i].x;
+			vertG[i].y = vertsG[i].y;
+			vertG[i].z = vertsG[i].z;
 		}
 		//get indices from mesh
 		vector<ofIndexType> indices = tempMesh.getIndices();
 		//make an array[] from this vector
-		SG_INDEX_TRIANGLE *indexes = new SG_INDEX_TRIANGLE[indices.size()];
+		SG_INDEX_TRIANGLE *indexes2 = new SG_INDEX_TRIANGLE[indices.size()];
 		for(int i=0;i<indices.size(); i++){
-			indexes->ver_indexes[i] = indices[i];
+			indexes2->ver_indexes[i] = indices[i];
 		}
 		//generate sgC3DObject from geometry information
-		sgCObject* tObj = sgFileManager::ObjectFromTriangles(vert,verts.size(),indexes,indices.size()/3); 
-		objects[id] = tObj;
-		delete [] vert;
-		delete [] indexes;
+		sgCObject* tObj2 = sgFileManager::ObjectFromTriangles(vertG,vertsG.size(),indexes2,indices.size()/3); 
+		objectsMP[id] = tObj2;
+		delete [] vertG;
+		delete [] indexes2;
 	}
 }
 //---------------------------------------------------------------------------------------

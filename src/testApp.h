@@ -12,7 +12,7 @@
 #include "GestureManager.h"
 #include <math.h>
 #include "menuPuzzle.h"
-
+#include "ofxAssimpModelLoader.h"
 #include <vector>
 
 class testApp : public ofBaseApp, public Observer, public Subject{
@@ -50,15 +50,17 @@ public:
 	//sgCObject *sgTeapot;
 	//ofxAssimpModelLoader sphere;
 	//sgCObject *sgSphere;
-
-	map<int, sgCObject*> objects;
-	ofxAssimpModelLoader loader;
-	void loadObjDir(string _path);
-	/////////////////////////////////////////games
-	vector<game*> myGames;
+	vector <game*> myGames;
 	int currentGame;
 
-	
+
+	map<int, sgCObject*> objectsMP;
+	ofxAssimpModelLoader loaderG;
+	void loadObjDirG(string _path);
+	/////////////////////////////////////////games
+
+
+
 	cutter *myCutter;
 	slicer *mySlicer;
 	puzzle *myPuzzle;
@@ -71,7 +73,7 @@ public:
 	void updateOFLights();
 	void stopOFLights();
 
-	ofMesh myMesh;
+	//ofMesh myMesh;
 	ofLight pointLight;
 	ofLight spotLight;
 	ofLight directionalLight;
@@ -88,14 +90,14 @@ public:
 	map<string,string> attrs;
 	void update(string _subName, Subject* _sub);
 	void update(string _eventName, SubObEvent _event);
-    string getAttr(const char* _key){return attrs[_key];}
+	string getAttr(const char* _key){return attrs[_key];}
 
 	ofVec2f lastRightDragPos;
 
 	float timeOfLastInteraction;
-    float timeOutCounter;
+	float timeOutCounter;
 	float timeOfLastInput;
-    float inputDelayTime;
+	float inputDelayTime;
 	float radius;
 	ofVec3f center;
 	bool bShiny;

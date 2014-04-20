@@ -229,7 +229,7 @@ void menuPuzzle::nodeDraw(){
 	}
 }
 //----------------------------------------------------------------
-void menuPuzzle::loadObject(sgC3DObject *obj, int ID){
+void menuPuzzle::loadObjectMP(sgC3DObject *obj, int ID){
 
 	if(object==NULL){
 		//object = obj; //to make a puzzle at the beggining 

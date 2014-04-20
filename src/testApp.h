@@ -98,12 +98,12 @@ public:
 	float timeOutCounter;
 	float timeOfLastInput;
 	float inputDelayTime;
-	float radius;
-	ofVec3f center;
-	bool bShiny;
-	bool bSmoothLighting;
-	bool bPointLight, bSpotLight, bDirLight;
-	bool bUseTexture;
+	//float radius;
+	//ofVec3f center;
+	//bool bShiny;
+	//bool bSmoothLighting;
+	//bool bPointLight, bSpotLight, bDirLight;
+	//bool bUseTexture;
 
 	GestureManager gm;
 	int touchId;

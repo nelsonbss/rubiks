@@ -380,24 +380,15 @@ void testApp::draw(){
 
 
 
-	////////////////////////PUZZLE //////////////////////
+	////////////////////////PUZZLE  //////////////////////
 	///////////////////////////////draw games
 	for(int i = 0; i < myGames.size(); i++){
 		myGames[i]->draw();
 	}
 
-	ofEnableLighting();
-	light.enable();
-	light.setPosition(ofGetWindowWidth()/ 2, ofGetWindowHeight()/ 2, -400);
-	light.lookAt(ofVec3f(ofGetWindowWidth()/ 2, ofGetWindowHeight()/ 2, 0));
-	//middle puzzles
-	for(int i=0; i < middlePuzzles.size();i++){
-		middlePuzzles[i]->draw();
-	}
-	light.disable();
-	ofDisableLighting();
+	
 
-	///////////////////END OF RENDERING////////////////////
+	///////////////////END OF RENDERING     ////////////////////
 	//stopOFLights();
 	//ofDisableDepthTest();
 
@@ -406,6 +397,20 @@ void testApp::draw(){
 	SceneManager::Instance()->draw("front");
 	ofEnableDepthTest();
 	ofDisableAlphaBlending();
+
+	ofEnableLighting();
+	light.enable();
+	light.setPosition(ofGetWindowWidth()/ 2, ofGetWindowHeight()/ 2, -400);
+	light.lookAt(ofVec3f(ofGetWindowWidth()/ 2, ofGetWindowHeight()/ 2, 0));
+	///////////////////////////////middle puzzles  ///////////////////////////////
+	for(int i=0; i < middlePuzzles.size();i++){
+		middlePuzzles[i]->draw();
+	}
+	light.disable();
+	ofDisableLighting();
+
+	ofEnableAlphaBlending();
+	ofDisableDepthTest();
 }
 
 //-------------------------------------------------------------- 
@@ -725,8 +730,8 @@ void testApp::initOFRender(){
 	ofEnableDepthTest();
 
 	//////////// turn on smooth lighting //
-	//////////bSmoothLighting = true;
-	//////////ofSetSmoothLighting(true);
+	//bSmoothLighting = true;
+	ofSetSmoothLighting(true);
 
 	//////////// Point lights emit light in all directions //
 	//////////// set the diffuse color, color reflected from the light source //

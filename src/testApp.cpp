@@ -126,22 +126,6 @@ void testApp::setup(){
 		//	//puzzleDisplayed->loadObject(sgCreateTorus(100,70,50,50),1);
 		//}else if(i == 1){
 		//	//puzzleDisplayed->loadObject(sgCreateBox(300,300,300),2);
-		//}else if(i == 2){
-		//	//puzzleDisplayed->loadObject((sgC3DObject *)sgTetrahedron->Clone(),3);
-		//}else if(i == 3){
-		//	//puzzleDisplayed->loadObject((sgC3DObject *)sgBunny->Clone(),4);
-		//}else if(i == 4){
-		//	//puzzleDisplayed->loadObject((sgC3DObject *)sgDodecahedron->Clone(),5);
-		//}else if(i == 5){
-		//	//puzzleDisplayed->loadObject((sgC3DObject *)sgIcosahedron->Clone(),6);
-		//}else if(i == 6){
-		//	//puzzleDisplayed->loadObject((sgC3DObject *)sgOctahedron->Clone(),7);
-		//}else if(i == 7){
-		//	//puzzleDisplayed->loadObject((sgC3DObject *)sgOctahedron->Clone(),8);
-		//	//puzzleDisplayed->loadObject((sgC3DObject *)sgBunny->Clone(),4);
-		//}else{
-		//	//slots for other user created puzzles
-		//	//puzzleDisplayed->loadObject(sgCreateBox(300,300,300),2);
 		//}
 		cout << "created puzzle menu object: " << i <<endl;
 		puzzleDisplayed->setup();

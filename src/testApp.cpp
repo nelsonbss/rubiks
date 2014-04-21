@@ -275,7 +275,7 @@ void testApp::update(){
 }
 //--------------------------------------------------------------
 void testApp::draw(){
-	//ofEnableDepthTest();
+	ofEnableDepthTest();
 	ofEnableAlphaBlending();
 	ofDisableDepthTest();
 	//SceneManager::Instance()->draw("back");
@@ -393,6 +393,8 @@ void testApp::draw(){
 	ofDisableDepthTest();
 	//SceneManager::Instance()->draw("front");
 	GuiConfigurator::Instance()->draw("front");
+
+
 	ofEnableDepthTest();
 	ofDisableAlphaBlending();
 

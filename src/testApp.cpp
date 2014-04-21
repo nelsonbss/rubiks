@@ -8,7 +8,7 @@
 #define displayZ -800
 #define iddleTime 120
 #define puzzleItems 10
-#define USE_MOUSE 0
+#define USE_MOUSE 1
 
 std::map<int,gwc::Point> active_points;
 
@@ -275,7 +275,7 @@ void testApp::update(){
 }
 //--------------------------------------------------------------
 void testApp::draw(){
-	//ofEnableDepthTest();
+	ofEnableDepthTest();
 	ofEnableAlphaBlending();
 	ofDisableDepthTest();
 	//SceneManager::Instance()->draw("back");
@@ -393,8 +393,6 @@ void testApp::draw(){
 	ofDisableDepthTest();
 	//SceneManager::Instance()->draw("front");
 	GuiConfigurator::Instance()->draw("front");
-	//ofEnableDepthTest();
-	ofDisableAlphaBlending();
 
 	///////////////////////////////middle puzzles  ///////////////////////////////
 	ofEnableLighting();
@@ -412,7 +410,6 @@ void testApp::draw(){
 	///////////////////////////////middle puzzles  ///////////////////////////////
 
 	ofEnableAlphaBlending();
-	//ofDisableDepthTest();
 }
 
 //-------------------------------------------------------------- 
@@ -431,7 +428,7 @@ void testApp::keyPressed(int key){
 		if(key == 'p'){
 			//myGames[0]->loadPuzzle(middlePuzzles[3]->getPuzzle());
 			myGames[0]->clearDisplayedObject();
-			myGames[0]->loadMenuObject(middlePuzzles[0]->objectId,myGames[0]->slicingPos,myGames[0]->posP);
+			myGames[0]->loadMenuObject(middlePuzzles[0]->objectId,myGames[0]->slicingPos,myGames[0]->posP,middlePuzzles[0]->colorsVMenu,middlePuzzles[0]->uniqueNormals);
 			myGames[0]->setCurrentStep(5);
 		}
 		//if(key == 'o'){
@@ -530,7 +527,7 @@ void testApp::update(string _eventName, SubObEvent _event){
 		string gameTag = _event.getArg("game-tag")->getString();
 		////////myGames[gameIds[gameTag]]->loadPuzzle(middlePuzzles[mpId]->getPuzzle());
 		myGames[gameIds[gameTag]]->clearDisplayedObject();
-		myGames[gameIds[gameTag]]->loadMenuObject(middlePuzzles[mpId]->objectId,myGames[gameIds[gameTag]]->slicingPos,myGames[gameIds[gameTag]]->posP);
+		myGames[gameIds[gameTag]]->loadMenuObject(middlePuzzles[mpId]->objectId,myGames[gameIds[gameTag]]->slicingPos,myGames[gameIds[gameTag]]->posP,middlePuzzles[mpId]->colorsVMenu,middlePuzzles[mpId]->uniqueNormals);
 		//myGames[gameIds[gameTag]]->setCurrentStep(7);
 		myGames[gameIds[gameTag]]->prefix = gameTag;
 		myGames[gameIds[gameTag]]->update(gameTag + ":"+_eventName,_event);

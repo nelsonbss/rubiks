@@ -1150,7 +1150,8 @@ void game::loadMenuObject(int objID, SG_VECTOR p, SG_VECTOR t){
 			myPuzzle->setup();
 			mySlicer->intersectCubes((sgCObject*)objectDisplayed->getObject()); 
 			myPuzzle->loadPieces(mySlicer->getPieces(),objectID,rotateSlicer);
-			myPuzzle->colorFaces(objectID);
+			myPuzzle->colorFacesMenuPuzzle(objectDisplayed->objectId,objectDisplayed->uniqueNormals,objectDisplayed->colorsVMenu);
+			//myPuzzle->colorFaces(objectID);
 			updatePuzzle = true;
 			step = 7;
 			SubObEvent ev;

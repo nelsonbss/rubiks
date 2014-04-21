@@ -109,6 +109,7 @@ void armature::draw(){
 	glPushMatrix();
 
 	glTranslatef(center.x,center.y,center.z);
+
 	glRotatef(rot.z,0,0,1);
 	glRotatef(rot.y,0,1,0);
 	glRotatef(rot.x,1,0,0);
@@ -162,7 +163,7 @@ void armature::draw(){
 //--------------------------------------------------------------
 void armature::moveA(ofVec3f input){
 	center.x +=  input.x;
-	center.y -= input.y;
+	center.y += input.y;
 	center.z += input.z;
 }
 //--------------------------------------------------------------

@@ -13,7 +13,7 @@ class GestureManager : public ofThread, public Observer{
 public:
 	GestureManager();
 	GestureManager(string _gwcDLL);
-	//virtual ~GestureManager(){}
+	virtual ~GestureManager(){}
 	void loadGMLFile(string _gml);
 	bool isLoadedDLL(){return bLoadedDLL;}
 	bool isLoadedGML(){return bLoadedGML;}
@@ -30,13 +30,8 @@ public:
 
 	void setFrameRate(int _rate){frameDelay = 1000 / _rate;}
 
-	void update(string _eventName, SubObEvent _event);
+	void update(string _eventName, SubObEvent* _event);
 	void update();
-
-	SubObEvent gEvent;
-	SubObEvent tEvent;
-
-	std::map<int,gwc::Point> activePoints;
 
 private:
 
@@ -46,11 +41,14 @@ private:
 	bool bLoadedGML;
 	bool bRegisteredWindow;
 
-	
+	std::map<int,gwc::Point> activePoints;
 	int frameDelay;
 	int timeOfLastUpdate;
 
 	int receivers;
+
+	SubObEvent *gEvent;
+	SubObEvent *tEvent;
 };
 
 #endif

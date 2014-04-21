@@ -11,15 +11,12 @@ class drawingCanvas: public Observer{
 
 public:
 	drawingCanvas(ofVec3f posCanvas, int width, int heigh);
-	drawingCanvas();
 
 	void setup();
 	void update();
 	void draw();
 
 	void exit();
-
-	void reset();
 
 	void mouseDragged(int x, int y, int button);
 	void mousePressed(int x, int y, int button);
@@ -31,9 +28,9 @@ public:
 
 	//ofImage myCanvasImage; //DrawingGrid_555x35.png
 
-	ofPolyline myPolyline;//the user sees
-	ofPolyline myPolyline2;//its on the slicing position
-	ofPolyline myDummyLine;
+	ofPolyline *myPolyline;//the user sees
+	ofPolyline *myPolyline2;//its on the slicing position
+	ofPolyline *myDummyLine;
 	bool poly2exists;
 	bool drawingExists();
 	bool closed;
@@ -48,18 +45,10 @@ public:
 	ofVec2f dummyA;
 	ofVec2f dummyB;
 
-	void update(string _eventName, SubObEvent _event);
+	void update(string _eventName, SubObEvent* _event);
 	bool bDrawing;
 
 	ofImage myCanvasImage; //DrawingGrid_555x35.png
-
-	ofVec2f getRealPoint(ofVec2f _p);
-
-	bool bSetFirstPoint;
-
-	void setViewport(ofRectangle _vp);
-	ofRectangle vp;
-	ofRectangle drawArea;
 };
 
 #endif /* defined(__TdrawingCanvas__drawingCanvas__) */

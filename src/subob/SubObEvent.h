@@ -7,6 +7,7 @@ class SubObEventArg{
 
 public:
 	SubObEventArg();
+	~SubObEventArg(){}
 	void setName(string _name){name = _name;}
 	string getName(){return name;}
 	void setType(string _type){type = _type;}
@@ -37,10 +38,7 @@ class SubObEvent{
 
 public:
 	SubObEvent(){bActive = false;}
-	SubObEvent(string _name){bActive = false; name = _name;}
-	~SubObEvent();
-	SubObEvent(const SubObEvent& e);
-	SubObEvent & SubObEvent::operator=(const SubObEvent& e);
+	//virtual ~SubObEvent(){}
 	void setName(string _name){name = _name;}
 	string getName(){return name;}
 	SubObEventArg* getArg(string _name);
@@ -53,12 +51,10 @@ public:
 	bool hasArg(string _arg){return args.count(_arg);}
 	void setActive(bool _active){bActive = _active;}
 	bool isActive(){return bActive;}
-
-	map<string,SubObEventArg*> args;
-
 private:
 	string name;
 	bool bActive;
+	map<string,SubObEventArg*> args;
 };
 
 #endif

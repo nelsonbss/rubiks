@@ -60,14 +60,13 @@ public:
 	bool goBackb;
 	void goBack();
 	void goForward();
-	bool locked;
 
 	//float ct1;
 	//float ct2;
 	float animTime;
 
 	bool sample;
-	//double rotXa;
+	double rotXa;
 	double tempDeg2;
 
 	//undo
@@ -137,7 +136,6 @@ public:
 	Triangle getNearestTri(ofVec3f _pnt);
 	vector<Triangle> getTrianglesByNormal(ofVec3f _n){return myMeshs[0].getTrianglesByNormal(_n);}
 	void setColorToSet(vector<Triangle> _tris, ofFloatColor _c);
-	void setColorToCurvedObject(ofFloatColor _c);
 
 	void printCurrentCentroid();
 

@@ -65,7 +65,6 @@ void GuiButton::nodeInit(){
 	} else {
 		haveImage = false;
 	}
-	inactive.mirror(bFlipped, prefix == "tr");
 	drawActive = false;
 	haveActive = false;
 	haveArabic = false;
@@ -87,8 +86,6 @@ void GuiButton::nodeInit(){
 			bSendSample = true;
 		}
 	}
-	bSend = false;
-	SubObMediator::Instance()->addObserver(prefix + ":language-changed", this);
 }
 
 void GuiButton::nodeExecute(){
@@ -97,22 +94,12 @@ void GuiButton::nodeExecute(){
 	if(bSendSample){
 		cout << "sending sample" << endl;
 		SubObEvent ev;
-		ev.setName(getPrefix() + ":new-color");
+		ev.setName("new-color");
 		ev.addArg("color", sampleColor);
-		ev.addArg("pos", dragPos);
-		SubObMediator::Instance()->sendEvent(ev.getName(), ev);
+		ev.addArg("pos", drawPos);
+		SubObMediator::Instance()->sendEvent("new-color", &ev);
 	}
 	cout << name << " executing." << endl;
-}
-
-void GuiButton::nodeSetPosition(){
-	if(bMirrored){
-		cout << name << " adjusting." << endl;
-		drawPos.x -= (inactive.getWidth() * scale);
-	}
-	if(bFlipped){
-		drawPos.y -= (inactive.getHeight() * scale);
-	}
 }
 
 bool GuiButton::processMouse(int _x, int _y, int _state){
@@ -163,37 +150,28 @@ void GuiButton::input(string _type, int _ID, int _n, int _phase, ofVec2f _absPos
 	//cout << "Type = " << _type << " dX, dY = " << _deltaPos.x << ", " << _deltaPos.y << endl;
 	if(_type == "drag"){
 		drawPos += _deltaPos;
-		dragPos = drawPos;
-		if(!bWatchTime){
-			bWatchTime = true;
-		}
 	}
 	if(_type == "tap"){
 		cout << name << " - executing" << endl;
 		execute();
 	}
-	if(!bSend){
-		bSend = true;
+	if(!bWatchTime){
+		bWatchTime = true;
 	}
 	timeOfLastInteraction = ofGetElapsedTimeMillis();
-	sendInteraction();
 }
 
 void GuiButton::update(string _subName, Subject* _sub){
 }
  
-void GuiButton::update(string _eventName, SubObEvent _event){
+void GuiButton::update(string _eventName, SubObEvent* _event){
 	if(_eventName == "object-intercepted"){
-		if(_event.getArg("object-name")->getString() == name){
+		if(_event->getArg("object-name")->getString() == name){
 			setPosition();
 			drawSize.x = inactive.getWidth();
 			drawSize.y = inactive.getHeight();
 			execute();
 		}
-	}
-	if(_eventName == prefix + ":language-changed"){
-		string lang = _event.getArg("lang")->getString();
-		currentLanguage = lang;
 	}
 }
 
@@ -216,7 +194,7 @@ void GuiButton::nodeDraw(){
             //if(haveArabic && SceneManager::Instance()->getDisplayArabic()){
              //   arabic.draw(pos.x,pos.y);
             //} else {
-             //cout << name << " drawing image at " << drawPos.x << ", " << drawPos.y << endl;    
+            //cout << name << " drawing image at " << drawPos.x << ", " << drawPos.y << endl;    
 			inactive.draw(drawPos.x,drawPos.y, scale * drawSize.x,scale * drawSize.y);
             //}
         } else {
@@ -231,17 +209,14 @@ void GuiButton::nodeDraw(){
 			drawSize.x = inactive.getWidth();
 			drawSize.y = inactive.getHeight();
 			bWatchTime = 0;
-			bSelected = false;
 		}
 		if(ofGetElapsedTimeMillis() - timeOfLastInteraction > 500){
-			if(bSendActions && bSend){
+			if(bSendActions){
 				SubObEvent ev;
 				ev.setName("object-moved");
 				ev.addArg("object-name", name);
 				ev.addArg("position", ofVec2f(drawPos.x, drawPos.y));
-				SubObMediator::Instance()->sendEvent("object-moved", ev);
-				bSend = false;
-				bSelected = false;
+				SubObMediator::Instance()->sendEvent("object-moved", &ev);
 			}
 		}
 	}

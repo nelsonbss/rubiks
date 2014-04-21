@@ -129,9 +129,6 @@
     <ClCompile Include="src\CubieMesh.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\gui\GuiScrollBar.cpp">
-      <Filter>src\gui</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -398,9 +395,6 @@
     </ClInclude>
     <ClInclude Include="src\CubieMesh.h">
       <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\gui\GuiScrollBar.h">
-      <Filter>src\gui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

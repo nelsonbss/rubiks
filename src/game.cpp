@@ -16,15 +16,11 @@
 
 #define canvasSide 500
 
-#define USE_LIGHT 1  //0 is off
-
-game::game(SG_VECTOR gamePos, float w, float h, SG_VECTOR displayPos, ofRectangle _vp, float iddleTime, string myPrefix){
+game::game(SG_VECTOR gamePos, float w, float h, SG_VECTOR displayPos, float iddleTime){
 	posGame = gamePos;
 	slicingPos = posGame;
 	width = w;
 	height = h;
-
-	station = myPrefix;
 
 	iddleTimer = iddleTime;
 
@@ -63,10 +59,16 @@ game::game(SG_VECTOR gamePos, float w, float h, SG_VECTOR displayPos, ofRectangl
 	bHaveNewObject = false;
 	bHaveNext = false;
 
+	SubObMediator::Instance()->addObserver("ibox-bl:2", this);
+	SubObMediator::Instance()->addObserver("ibox-bl-tap", this);
+	SubObMediator::Instance()->addObserver("new-color", this);
+	SubObMediator::Instance()->addObserver("ibox-bl:1", this);
+	SubObMediator::Instance()->addObserver("ibox-bl:0", this);
+
 	extrudedB = false;
 	bExtrude = false;
 
-	myCanvasImage.loadImage("drawingGrid.png");
+	/*myCanvasImage.loadImage("drawingGrid.png");*/
 	sc = ofFloatColor (1, 1, 0); //yellow
 
 	savePuzzleB = false;
@@ -77,7 +79,10 @@ game::game(SG_VECTOR gamePos, float w, float h, SG_VECTOR displayPos, ofRectangl
 
 	bDragInput = false;
 
-	viewport = _vp;
+	viewport.x = 300;
+	viewport.y = 700;
+	viewport.width = 640;
+	viewport.height = 320;
 
 	posP.x = viewport.getWidth() / 2;
 	posP.y = viewport.getHeight() / 2;
@@ -86,73 +91,17 @@ game::game(SG_VECTOR gamePos, float w, float h, SG_VECTOR displayPos, ofRectangl
 	posA = posP;
 
 	bUseViewport = true;
-
-	camPosition.set(viewport.width / 2, viewport.height / 2, 400);
-
-	timeOfLastInteraction = ofGetElapsedTimeMillis();
-	bInAttract = false;
-
-	currentLanguage = "english";
-
-	myCanvas.setViewport(viewport);
-
-	step=0;
-}
-//----------------------------------------------------------------------------------------
-void game::loadObjDir(string _path){
-	ofDirectory dir(_path);
-	dir.allowExt("obj");
-	dir.listDir();
-	vector<ofFile> files = dir.getFiles();
-	for(auto fIter = files.begin(); fIter != files.end(); fIter++){
-		string name = fIter->getFileName();
-		int id = ofToInt(ofSplitString(name, "_")[0]);
-		loader.loadModel(_path + name);
-		ofMesh tempMesh = loader.getMesh(0);
-		vector<ofVec3f> verts = tempMesh.getVertices();
-		//make an array[] from this vector
-		SG_POINT *vert = new SG_POINT[verts.size()];
-		for(int i=0;i<verts.size(); i++){
-			vert[i].x = verts[i].x;
-			vert[i].y = verts[i].y;
-			vert[i].z = verts[i].z;
-		}
-		//get indices from mesh
-		vector<ofIndexType> indices = tempMesh.getIndices();
-		//make an array[] from this vector
-		SG_INDEX_TRIANGLE *indexes = new SG_INDEX_TRIANGLE[indices.size()];
-		for(int i=0;i<indices.size(); i++){
-			indexes->ver_indexes[i] = indices[i];
-		}
-		//generate sgC3DObject from geometry information
-		sgCObject* tObj = sgFileManager::ObjectFromTriangles(vert,verts.size(),indexes,indices.size()/3); 
-		objects[id] = tObj;
-		delete [] vert;
-		delete [] indexes;
-	}
 }
 //--------------------------------------------------------------
-//void game::setup(sgCObject *sgBunnyi,sgCObject *sgTetrahedroni,sgCObject *sgDodecahedroni,sgCObject *sgIcosahedroni,sgCObject *sgOctahedroni, string _prefix){//,sgCObject *sgTeapoti){
-//	//gets the .obj files loaded and converted into sgC3DObject
-//
-//	prefix = _prefix;
-//
-//	sgBunny = sgBunnyi;
-//	sgTetrahedron = sgTetrahedroni;
-//	sgDodecahedron = sgDodecahedroni;
-//	sgIcosahedron = sgIcosahedroni;
-//	sgOctahedron = sgOctahedroni;
-//	//sgTeapot = sgTeapoti;
-//
-//	setup();
-//}
-//---------------------------------------------------------------
-void game::setup(string _prefix){
-	prefix = _prefix;
-	setup();
-}
-//-------------------------------------------------------------
-void game::setup(){
+void game::setup(sgCObject *sgBunnyi,sgCObject *sgTetrahedroni,sgCObject *sgDodecahedroni,sgCObject *sgIcosahedroni,sgCObject *sgOctahedroni){//,sgCObject *sgTeapoti){
+	//gets the .obj files loaded and converted into sgC3DObject
+	sgBunny = sgBunnyi;
+	sgTetrahedron = sgTetrahedroni;
+	sgDodecahedron = sgDodecahedroni;
+	sgIcosahedron = sgIcosahedroni;
+	sgOctahedron = sgOctahedroni;
+	//sgTeapot = sgTeapoti;
+
 	step = -1;
 	idcubie=0;
 
@@ -161,34 +110,6 @@ void game::setup(){
 	//
 	faceRotate = false;
 	faceRotateB = false;//used in the 2 id rotation function
-
-	SubObMediator::Instance()->addObserver(prefix + ":ibox:2", this);
-	SubObMediator::Instance()->addObserver(prefix + ":ibox-tap", this);
-	SubObMediator::Instance()->addObserver(prefix + ":new-color", this);
-	SubObMediator::Instance()->addObserver(prefix + ":ibox:1", this);
-	SubObMediator::Instance()->addObserver(prefix + ":ibox:0", this);
-	SubObMediator::Instance()->addObserver(prefix + ":object-selected", this);
-	SubObMediator::Instance()->addObserver(prefix + ":armature-selected", this);
-	SubObMediator::Instance()->addObserver(prefix + ":next-step", this);
-	SubObMediator::Instance()->addObserver(prefix + ":reset", this);
-	SubObMediator::Instance()->addObserver(prefix + ":extrude", this);
-	SubObMediator::Instance()->addObserver(prefix + ":extrusion-success", this);
-	SubObMediator::Instance()->addObserver(prefix + ":interaction", this);
-
-	goToAttract();
-
-	bHaveNewObject = false;
-	objectID = -1;
-	SubObMediator::Instance()->addObserver(prefix + ":make-one2", this);
-	SubObMediator::Instance()->addObserver(prefix + ":menupuzzle-selected", this);
-
-	//light.setPointLight();
-	light.setSpotlight(60.0);
-	//light.setDirectional();
-	light.setDiffuseColor( ofColor(255.f, 255.f, 255.f));
-	light.setSpecularColor( ofColor(255.f, 255.f, 255.f));
-
-	dragId = -1;
 }
 //----------------------------------------------------------------------
 void game::update(){
@@ -203,13 +124,13 @@ void game::update(){
 	//}
 	if(bHaveNewObject){
 		SG_VECTOR objectPos = {0,0,0};
-		if(step == 1 || step == 7){
+		if(step == 1){
 			clearDisplayedObject();
 		}
-		if(newObject == 50){
+		if(newObject == 9){
 			prepareDrawing();
 		} else {
-			loadObjectG(newObject, objectPos, posP);
+			loadObject(newObject, objectPos, posP);
 		}
 		bHaveNewObject = false;
 	}
@@ -219,20 +140,17 @@ void game::update(){
 	}
 
 	if(bExtrude){
-		cout << "calling extrude." << endl;
-		if(myCanvas.drawingExists()){
+		if(myCanvas->drawingExists()){
 			//make extruded object
-			if(extrudeObject(myCanvas.getPolyline())){
+			if(extrudeObject(myCanvas->getPolyline())){
 				objectDisplayed->update();
-				SubObEvent ev;
-				ev.setName(prefix + ":extrusion-success");
-				SubObMediator::Instance()->sendEvent(prefix + ":extrusion-success", ev);
+				//SubObEvent* e = new SubObEvent();
+				//e->setName("extrusion-success");
+				//SubObMediator::Instance()->sendEvent("extrusion-success", e);
 				//delete e;
 			}else{
 				prepareDrawing();
 			}
-		} else {
-			cout << "no drawing." << endl;
 		}
 		bExtrude = false;
 	}
@@ -251,52 +169,50 @@ void game::update(){
 			//myPuzzle->rotate(rotP);
 			//////////////////////////////////////////make face rotation
 			if(faceRotate == true) {
-				if(myPuzzle->isMoving() == false){
-					myPuzzle->rotateByIDandAxisNew(idcubie,axis,dir,angleR);
-					//myPuzzle->rotateByIDandAxis(idcubie,axis,dir,angleR);
-					//put this move on the game history vector
-					//undo will look for the other 9 cubies involved and do a pop x2 on their history
-					historyV.push_back(history(idcubie,axis,!dir)); //save inverse move (!), to do it at undo, and do 2 pop 
-					faceRotate = false;
-					angleR = 0;
-				}
+				myPuzzle->rotateByIDandAxisNew(idcubie,axis,dir,angleR);
+				//myPuzzle->rotateByIDandAxis(idcubie,axis,dir,angleR);
+				//put this move on the game history vector
+				//undo will look for the other 9 cubies involved and do a pop x2 on their history
+				historyV.push_back(history(idcubie,axis,!dir)); //save inverse move (!), to do it at undo, and do 2 pop 
+				faceRotate = false;
+				angleR = 0;
 			}
 			//updatePuzzle = false;
-			//if(myPuzzle->faceRotateB == true) {
-			//	//////int ans = myPuzzle->rotateTwoIds(idcubieA,idcubieB,dir);
+			if(myPuzzle->faceRotateB == true) {
+				//int ans = myPuzzle->rotateTwoIds(idcubieA,idcubieB,dir);
 
-			//	////int ans;
-			//	////if(myPuzzle->bHaveActiveCubie && myPuzzle->bHaveRotationCubie){
-			//	////	ans = myPuzzle->rotateTwoIds(myPuzzle->activeCubie,myPuzzle->rotationCubie,dir);
-			//	////	myPuzzle->bHaveActiveCubie = false;
-			//	////	myPuzzle->bHaveRotationCubie = false;
-			//	////} else {
-			//	////	ans = myPuzzle->rotateTwoIds(myPuzzle->activeCubie,myPuzzle->activeCubie,dir);
-			//	////	myPuzzle->bHaveActiveCubie = false;
-			//	////}
-			//	//////ans has encripted the axis and the direction 10-x 20-y 30-z 1 or 0 direction
-			//	//////put this move on the game history vector
-			//	//////undo will look for the other 9 cubies involved and do a pop x2 on their history
-			//	////if(ans/10 == 1){
-			//	////	//1
-			//	////	axis.x = 1;
-			//	////	axis.y = 0;
-			//	////	axis.z = 0;
-			//	////}else if(ans/10 == 2){
-			//	////	//2
-			//	////	axis.x = 0;
-			//	////	axis.y = 1;
-			//	////	axis.z = 0;
-			//	////}else{
-			//	////	//3
-			//	////	axis.x = 0;
-			//	////	axis.y = 0;
-			//	////	axis.z = 1;
-			//	////}
-			//	////bool d = ans%2;//this is 0 or 1
-			//	////historyV.push_back(history(idcubieA,axis,!d)); //save inverse move (!), to do it at undo, and do 2 pop 
-			//	myPuzzle->faceRotateB = false;
-			//}
+				int ans;
+				if(myPuzzle->bHaveActiveCubie && myPuzzle->bHaveRotationCubie){
+					ans = myPuzzle->rotateTwoIds(myPuzzle->activeCubie,myPuzzle->rotationCubie,dir);
+					myPuzzle->bHaveActiveCubie = false;
+					myPuzzle->bHaveRotationCubie = false;
+				} else {
+					ans = myPuzzle->rotateTwoIds(myPuzzle->activeCubie,myPuzzle->activeCubie,dir);
+					myPuzzle->bHaveActiveCubie = false;
+				}
+				//ans has encripted the axis and the direction 10-x 20-y 30-z 1 or 0 direction
+				//put this move on the game history vector
+				//undo will look for the other 9 cubies involved and do a pop x2 on their history
+				if(ans/10 == 1){
+					//1
+					axis.x = 1;
+					axis.y = 0;
+					axis.z = 0;
+				}else if(ans/10 == 2){
+					//2
+					axis.x = 0;
+					axis.y = 1;
+					axis.z = 0;
+				}else{
+					//3
+					axis.x = 0;
+					axis.y = 0;
+					axis.z = 1;
+				}
+				bool d = ans%2;//this is 0 or 1
+				historyV.push_back(history(idcubieA,axis,!d)); //save inverse move (!), to do it at undo, and do 2 pop 
+				myPuzzle->faceRotateB = false;
+			}
 		}
 	}
 
@@ -305,305 +221,16 @@ void game::update(){
 		bHaveNext = false;
 	}
 	if(bHaveReset){
-		if(!bDragInput){
-			guiInput('r');
-			bHaveReset = false;
-		}
-	}
-	//if(bHaveMakeOne){
-	//	guiInput('r');
-	//	bHaveReset = false;
-	//}
-	//camPosition.rotate(1, ofVec3f(viewport.width / 2,viewport.height / 2, posP.z));
-	if(!bInAttract){
-		int currentTime = ofGetElapsedTimeMillis();
-		if(currentTime - timeOfLastInteraction > DELAY){
-			goToAttract();
-		}
+		guiInput('r');
+		bHaveReset = false;
 	}
 }
 //----------------------------------------------------------------------
-void game::update(string _eventName, SubObEvent _event){
-	if(_eventName == prefix + ":object-selected"){
-		if(step == 0){
-			//SubObEvent *ev = new SubObEvent();
-			SubObEvent ev;
-			ev.setName("hide-node");
-			ev.addArg("target", prefix + ":next-inactive");
-			SubObMediator::Instance()->sendEvent("hide-node", ev);
-			ev.setName("hide-node");
-			ev.addArg("target",prefix + ":start-help");
-			SubObMediator::Instance()->sendEvent("hide-node", ev);
-			ev.addArg("target", prefix + ":make-one");
-			SubObMediator::Instance()->sendEvent("hide-node", ev);
-			ev.setName("unhide-node");
-			ev.addArg("target",prefix + ":next-active");
-			SubObMediator::Instance()->sendEvent("unhide-node", ev);
-		}
-		if(step == 0  || step == 1 || step == 6){
-			int obj = _event.getArg("object")->getInt();
-			SG_VECTOR objectPos = {0,0,0};  //where it gets sliced
-			guiLoad(obj);
-		}
-		if(_event.getArg("object")->getInt() == 50){
-			SubObEvent ev;
-			ev.setName("hide-node");
-			ev.addArg("target", prefix + ":next-active");
-			SubObMediator::Instance()->sendEvent("hide-node", ev);
-			ev.setName("unhide-node");
-			ev.addArg("target", prefix + ":make-one");
-			SubObMediator::Instance()->sendEvent("unhide-node", ev);
-			ev.addArg("target", prefix + ":draw-help");
-			SubObMediator::Instance()->sendEvent("unhide-node", ev);
-		} else {
-			SubObEvent ev;
-			ev.setName("hide-node");
-			ev.addArg("target",prefix + ":make-one");
-			SubObMediator::Instance()->sendEvent("hide-node", ev);
-			ev.addArg("target",prefix + ":draw-help");
-			SubObMediator::Instance()->sendEvent("hide-node", ev);
-			ev.setName("unhide-node");
-			ev.addArg("target",prefix + ":next-active");
-			SubObMediator::Instance()->sendEvent("unhide-node", ev);
-		}
-		//else if(step == 7){
-		//	SubObEvent ev;
-		//	ev.setName("hide-node");
-		//	ev.addArg("target",prefix + ":make-one");
-		//	SubObMediator::Instance()->sendEvent("hide-node", ev);
-		//	ev.setName("unhide-node");
-		//	ev.addArg("target",prefix + ":next-active");
-		//	SubObMediator::Instance()->sendEvent("unhide-node", ev);
-		//}
-	}
-	if(_eventName == prefix + ":menupuzzle-selected"){
-		
-		SubObEvent ev;
-		ev.setName("hide-node");
-		ev.addArg("target",prefix + ":3d-window");
-		SubObMediator::Instance()->sendEvent("hide-node", ev);
-		ev.addArg("target",prefix + ":3d-window-box");
-		SubObMediator::Instance()->sendEvent("hide-node", ev);
-		ev.addArg("target",prefix + ":attract");
-		SubObMediator::Instance()->sendEvent("hide-node", ev);
-		ev.addArg("target",prefix + ":color-window");
-		SubObMediator::Instance()->sendEvent("hide-node", ev);
-		ev.addArg("target",prefix + ":arm-window");
-		SubObMediator::Instance()->sendEvent("hide-node", ev);
-		ev.addArg("target",prefix + ":arm-rotate");
-		SubObMediator::Instance()->sendEvent("hide-node", ev);
-		ev.addArg("target",prefix + ":arm-help");
-		SubObMediator::Instance()->sendEvent("hide-node", ev);
-		///
-		ev.setName("unhide-node");
-		ev.addArg("target", prefix + ":reset");
-		SubObMediator::Instance()->sendEvent("unhide-node", ev);
-		ev.addArg("target", prefix + ":make-one");
-		SubObMediator::Instance()->sendEvent("unhide-node", ev);
-		ev.addArg("target", prefix + ":bg-language");
-		SubObMediator::Instance()->sendEvent("unhide-node", ev);
-		ev.addArg("target", prefix + ":bg-info");
-		SubObMediator::Instance()->sendEvent("unhide-node", ev);
-		ev.addArg("target",prefix + ":puzzle-help");
-		SubObMediator::Instance()->sendEvent("unhide-node", ev);
-		ev.addArg("target",prefix + ":ibox");
-		SubObMediator::Instance()->sendEvent("unhide-node", ev);
-	}
-	if(_eventName == prefix + ":next-step"){
-		guiNext();
-		cout << "set game to - " << step << endl;
-		if(step == 0){
-			cout << "No more attract" << endl;
-			SubObEvent ev;
-			ev.setName("hide-node");
-			ev.addArg("target",prefix + ":attract");
-			SubObMediator::Instance()->sendEvent("hide-node", ev);
-			ev.setName("unhide-node");
-			ev.addArg("target", prefix + ":bg-language");
-			SubObMediator::Instance()->sendEvent("unhide-node", ev);
-			ev.addArg("target", prefix + ":bg-info");
-			SubObMediator::Instance()->sendEvent("unhide-node", ev);
-			ev.addArg("target", prefix + ":next-inactive");
-			SubObMediator::Instance()->sendEvent("unhide-node", ev);
-			ev.addArg("target", prefix + ":reset");
-			SubObMediator::Instance()->sendEvent("unhide-node", ev);
-			ev.addArg("target", prefix + ":3d-window-box");
-			SubObMediator::Instance()->sendEvent("unhide-node", ev);
-			ev.addArg("target", prefix + ":start-help");
-			SubObMediator::Instance()->sendEvent("unhide-node", ev);
-			//ev.addArg("target", prefix + ":object-drop");
-			//SubObMediator::Instance()->sendEvent("unhide-node", ev);
-			ev.addArg("target", prefix + ":3d-window");
-			SubObMediator::Instance()->sendEvent("unhide-node", ev);
-
-			bInAttract = false;
-		}
-		if(step == 1){
-			SubObEvent ev;
-			ev.setName("hide-node");
-			ev.addArg("target",prefix + ":3d-window");
-			SubObMediator::Instance()->sendEvent("hide-node", ev);
-			ev.setName("unhide-node");
-			ev.addArg("target",prefix + ":arm-window");
-			SubObMediator::Instance()->sendEvent("unhide-node", ev);
-			ev.addArg("target",prefix + ":arm-help");
-			SubObMediator::Instance()->sendEvent("unhide-node", ev);
-		}
-		if(step == 3){
-			SubObEvent ev;
-			ev.setName("hide-node");
-			ev.addArg("target",prefix + ":arm-window");
-			SubObMediator::Instance()->sendEvent("hide-node", ev);
-			ev.addArg("target",prefix + ":arm-rotate");
-			SubObMediator::Instance()->sendEvent("hide-node", ev);
-			//ev.addArg("target",prefix + ":arm-help");
-			//SubObMediator::Instance()->sendEvent("hide-node", ev);
-			ev.setName("unhide-node");
-			ev.addArg("target",prefix + ":color-window");
-			SubObMediator::Instance()->sendEvent("unhide-node", ev);
-		}
-		if(step == 4){
-			SubObEvent ev;
-			ev.setName("hide-node");
-			ev.addArg("target",prefix + ":color-window");
-			SubObMediator::Instance()->sendEvent("hide-node", ev);
-			ev.addArg("target",prefix + ":3d-window-box");
-			SubObMediator::Instance()->sendEvent("hide-node", ev);
-			//ev.addArg("target",prefix + ":object-drop");
-			//SubObMediator::Instance()->sendEvent("hide-node", ev);
-			ev.setName("unhide-node");
-			ev.addArg("target",prefix + ":puzzle-help");
-			SubObMediator::Instance()->sendEvent("unhide-node", ev);
-			ev.addArg("target",prefix + ":ibox");
-			SubObMediator::Instance()->sendEvent("unhide-node", ev);
-		}
-	}
-	if(_eventName == prefix + ":armature-selected"){
-		string armStr = ofToString(_event.getArg("object")->getInt());
-		//myGames[0]->setCurrentStep(3);
-		guiInput(armStr.c_str()[0]);
-		SubObEvent ev;
-		ev.setName("hide-node");
-		ev.addArg("target",prefix + ":arm-help");
-		SubObMediator::Instance()->sendEvent("hide-node", ev);
-		ev.setName("unhide-node");
-		ev.addArg("target",prefix + ":arm-rotate");
-		SubObMediator::Instance()->sendEvent("unhide-node", ev);
-	}
-	if(_eventName == prefix + ":cut-object"){
-		SG_VECTOR v = {0,0,0};
-		createPuzzle(v);
-	}
-	if ((_eventName == prefix + ":extrude")&& (step == 7)){
-		SubObEvent ev;
-		guiReset();
-		ev.setName("hide-node");
-		ev.addArg("target", prefix + ":color-window");
-		SubObMediator::Instance()->sendEvent("hide-node", ev);
-		ev.addArg("target", prefix + ":3d-window-box");
-		SubObMediator::Instance()->sendEvent("hide-node", ev);
-		ev.addArg("target", prefix + ":3d-window");
-		SubObMediator::Instance()->sendEvent("hide-node", ev);
-		ev.addArg("target", prefix + ":object-drop");
-		SubObMediator::Instance()->sendEvent("hide-node", ev);
-		ev.addArg("target", prefix + ":arm-window");
-		SubObMediator::Instance()->sendEvent("hide-node", ev);
-		ev.addArg("target", prefix + ":next-active");
-		SubObMediator::Instance()->sendEvent("hide-node", ev);
-		ev.addArg("target", prefix + ":start-help");
-		SubObMediator::Instance()->sendEvent("hide-node", ev);
-		ev.addArg("target", prefix + ":puzzle-help");
-		SubObMediator::Instance()->sendEvent("hide-node", ev);
-		ev.addArg("target", prefix + ":ibox");
-		SubObMediator::Instance()->sendEvent("hide-node", ev);
-
-
-		ev.addArg("target", prefix + ":make-one");
-		SubObMediator::Instance()->sendEvent("hide-node", ev);
-
-
-		ev.setName("unhide-node");
-		ev.addArg("target", prefix + ":3d-window-box");
-		SubObMediator::Instance()->sendEvent("unhide-node", ev);
-		ev.addArg("target", prefix + ":start-help");
-		SubObMediator::Instance()->sendEvent("unhide-node", ev);
-		ev.addArg("target", prefix + ":object-drop");
-		SubObMediator::Instance()->sendEvent("unhide-node", ev);
-		ev.addArg("target", prefix + ":3d-window");
-		SubObMediator::Instance()->sendEvent("unhide-node", ev);
-		ev.addArg("target", prefix + ":next-inactive");
-		SubObMediator::Instance()->sendEvent("unhide-node", ev);
-
-		camPosition.set(viewport.width / 2, viewport.height / 2, 400);
-		step = 0;
-	}
-	if((_eventName == prefix + ":reset") ){
-		SubObEvent ev;
-		guiReset();
-		ev.setName("hide-node");
-		ev.addArg("target", prefix + ":color-window");
-		SubObMediator::Instance()->sendEvent("hide-node", ev);
-		ev.addArg("target", prefix + ":3d-window-box");
-		SubObMediator::Instance()->sendEvent("hide-node", ev);
-		ev.addArg("target", prefix + ":3d-window");
-		SubObMediator::Instance()->sendEvent("hide-node", ev);
-		//ev.addArg("target", prefix + ":object-drop");
-		//SubObMediator::Instance()->sendEvent("hide-node", ev);
-		ev.addArg("target", prefix + ":arm-window");
-		SubObMediator::Instance()->sendEvent("hide-node", ev);
-		ev.addArg("target", prefix + ":next-active");
-		SubObMediator::Instance()->sendEvent("hide-node", ev);
-		ev.addArg("target", prefix + ":start-help");
-		SubObMediator::Instance()->sendEvent("hide-node", ev);
-		ev.addArg("target", prefix + ":puzzle-help");
-		SubObMediator::Instance()->sendEvent("hide-node", ev);
-		//ev.addArg("target", prefix + ":ibox");
-		//SubObMediator::Instance()->sendEvent("hide-node", ev);
-		ev.addArg("target",prefix + ":arm-help");
-		SubObMediator::Instance()->sendEvent("hide-node", ev);
-		ev.addArg("target",prefix + ":arm-rotate");
-		SubObMediator::Instance()->sendEvent("hide-node", ev);
-		ev.addArg("target",prefix + ":draw-help");
-		SubObMediator::Instance()->sendEvent("hide-node", ev);
-		ev.addArg("target", prefix + ":extrude");
-		SubObMediator::Instance()->sendEvent("hide-node", ev);
-
-		ev.setName("unhide-node");
-		ev.addArg("target", prefix + ":3d-window-box");
-		SubObMediator::Instance()->sendEvent("unhide-node", ev);
-		ev.addArg("target", prefix + ":start-help");
-		SubObMediator::Instance()->sendEvent("unhide-node", ev);
-		//ev.addArg("target", prefix + ":object-drop");
-		//SubObMediator::Instance()->sendEvent("unhide-node", ev);
-		ev.addArg("target", prefix + ":3d-window");
-		SubObMediator::Instance()->sendEvent("unhide-node", ev);
-		ev.addArg("target", prefix + ":next-inactive");
-		SubObMediator::Instance()->sendEvent("unhide-node", ev);
-
-		camPosition.set(viewport.width / 2, viewport.height / 2, 400);
-		//SceneManager::Instance()->reset();
-		//cout << "RESET" << endl;
-	}
-	if(_eventName == prefix + ":extrude"){
-		cout << "got an extrude." << endl;
-		//myGames[0]->guiInput('e');
-		guiExtrude();
-	}
-	if(_eventName == prefix + ":extrusion-success"){
-		SubObEvent ev;
-		ev.setName("hide-node");
-		ev.addArg("target", prefix + ":make-one");
-		SubObMediator::Instance()->sendEvent("hide-node", ev);
-		ev.addArg("target", prefix + ":draw-help");
-		SubObMediator::Instance()->sendEvent("hide-node", ev);
-		ev.setName("unhide-node");
-		ev.addArg("target", prefix + ":next-active");
-		SubObMediator::Instance()->sendEvent("unhide-node", ev);
-	}
-	if(_eventName == prefix + ":ibox-tap"){
+void game::update(string _eventName, SubObEvent* _event){
+	if(_eventName == "ibox-bl-tap"){
 		//ofVec3f pos = _event->getArg("absPos")->getVec2();
 		//mousePressed(pos.x, pos.y, 2);
-		ofVec2f p = _event.getArg("absPos")->getVec2();
+		ofVec2f p = _event->getArg("absPos")->getVec2();
 		//cout << "phase = " << phase << " p = " << p.x << ", " << p.y << endl;
 		if(!bUnproject){
 			bUnproject = true;
@@ -611,62 +238,37 @@ void game::update(string _eventName, SubObEvent _event){
 			mousePoint.set(p.x, p.y, 0);
 		}
 	}
-	if(_eventName == prefix + ":ibox:0"){
-		if(step == 6){
-			ofVec2f pos = _event.getArg("absPos")->getVec2();
-			myCanvas.mouseReleased(pos.x, pos.y,0);
-		}
+	if(_eventName == "ibox-bl:0"){
 		if(bDragInput){
-			//myPuzzle->endRotation();
+			myPuzzle->endRotation();
 			myPuzzle->decideMove();
-			faceRotate = false;
 			bDragInput = false;
 		}
 	}
-	////////////////////////////
-	/////Receive input from touch.
-	////////////////////////////
-	if(_eventName == prefix + ":ibox:1"){
+	if(_eventName == "ibox-bl:1"){
 		//cout << "game bl:1" << endl;
-		if(step == 3){
-			ofVec3f m = _event.getArg("deltaPos")->getVec2();
-			moveA(m);
-		}
-		if(step == 6){
-			int p = _event.getArg("phase")->getInt();
-			ofVec2f pos = _event.getArg("absPos")->getVec2();
-			if(p == 0){
-				myCanvas.mousePressed(pos.x, pos.y, 0);
-			}
-			if(p == 1){
-				int n = _event.getArg("n")->getInt();
-				myCanvas.mouseDragged(pos.x, pos.y, 0);
-			}
-		}
-		if(step == 5 || step == 7){
-			int phase = _event.getArg("phase")->getInt();
-			int gId = _event.getArg("ID")->getInt();
+		ofVec3f m = _event->getArg("deltaPos")->getVec2();
+		moveA(m);
+		if(step == 5){
+			int phase = _event->getArg("phase")->getInt();
 			cout << "Game - phase = " << phase << endl;
 			if(phase == 0){
-				ofVec2f p = _event.getArg("absPos")->getVec2();
+				ofVec2f p = _event->getArg("absPos")->getVec2();
 				//cout << "phase = " << phase << " p = " << p.x << ", " << p.y << endl;
-				if(!bUnproject && (dragId == -1)){
+				if(!bUnproject){
 					bUnproject = true;
 					bDragInput = false;
 					mousePoint.set(p.x, p.y, 0);
-					unprojectMode = UP_MODE_MOUSE;
-					dragId = gId;
 				}
 			} else if(phase == 1){
-				ofVec2f p = _event.getArg("absPos")->getVec2();
-				int n = _event.getArg("n")->getInt();
+				ofVec2f p = _event->getArg("absPos")->getVec2();
+				int n = _event->getArg("n")->getInt();
 				cout << "n = " << n << " p = " << p.x << ", " << p.y << endl;
 				if(n == 0){
 					myPuzzle->endRotation();
-					dragId = -1;
 					return;
 				}
-				if(!bUnproject && (gId == dragId)){
+				if(!bUnproject){
 					bUnproject = true;
 					//bDragInput = true;
 					mousePoint.set(p.x, p.y, 0);
@@ -675,10 +277,8 @@ void game::update(string _eventName, SubObEvent _event){
 			} else if(phase > 1){
 				cout << "Ending rotation." << endl;
 				myPuzzle->endRotation();
-				dragId = -1;
 			}
 		}
-
 	}
 	/*
 	if(_eventName == "ibox-bl:2"){
@@ -686,28 +286,28 @@ void game::update(string _eventName, SubObEvent _event){
 	rotateA(r);
 	}
 	*/
-	if(_eventName == prefix + ":ibox:2"){
-		//cout << "game drag - " << _event.getArg("phase")->getInt() << endl;
+	if(_eventName == "ibox-bl:2"){
+		//cout << "game drag - " << _event->getArg("phase")->getInt() << endl;
 		if(step == 3){
-			ofVec3f r = _event.getArg("deltaPos")->getVec2();
+			ofVec3f r = _event->getArg("deltaPos")->getVec2();
 			rotateA(r);
 		} else {
-			if(_event.getArg("phase")->getInt() == 0){
-				ofVec2f pos = _event.getArg("absPos")->getVec2();
+			if(_event->getArg("phase")->getInt() == 0){
+				ofVec2f pos = _event->getArg("absPos")->getVec2();
 				mousePressed(pos.x, pos.y, 2);
 			} else {
-				ofVec2f pos = _event.getArg("absPos")->getVec2();
+				ofVec2f pos = _event->getArg("absPos")->getVec2();
 				mouseDragged(pos.x, pos.y, 2);
 			}
 		}
 	}
-	if(_eventName == prefix + ":new-color"){
+	if(_eventName == "new-color"){
 		//ofFloatColor menuColor = ofFloatColor (1, 0, 1); //this color comes from the GUI
-		ofVec3f newColor = _event.getArg("color")->getVec3();
-		ofVec2f pos = _event.getArg("pos")->getVec2();
+		ofVec3f newColor = _event->getArg("color")->getVec3();
+		ofVec2f pos = _event->getArg("pos")->getVec2();
 		newFaceColor = ofFloatColor(newColor.x / 255.0, newColor.y / 255.0, newColor.z / 255.0);
 		if(!bUnproject){
-			mousePoint.set(ofGetMouseX(), ofGetMouseY(), 0);
+			mousePoint.set(pos.x, pos.y, 0);
 			bUnproject = true;
 			unprojectMode = UP_MODE_COLOR;
 		}
@@ -715,76 +315,6 @@ void game::update(string _eventName, SubObEvent _event){
 		//sc = menuColor;
 		//changeFaceColor(pos, menuColor);
 	}
-	if(_eventName == prefix + ":interaction"){
-		//cout << "got interaction" << endl;
-		timeOfLastInteraction = ofGetElapsedTimeMillis();
-	}
-	timeOfLastInteraction = ofGetElapsedTimeMillis();
-}
-//------------------------------------------------------------------------
-void game::goToAttract(){
-	SubObEvent ev;
-	guiReset();
-	ev.setName("hide-node");
-	ev.addArg("target", prefix + ":color-window");
-	SubObMediator::Instance()->sendEvent("hide-node", ev);
-	ev.setName("hide-node");
-	ev.addArg("target", prefix + ":3d-window-box");
-	SubObMediator::Instance()->sendEvent("hide-node", ev);
-	ev.setName("hide-node");
-	ev.addArg("target", prefix + ":3d-window");
-	SubObMediator::Instance()->sendEvent("hide-node", ev);
-	ev.setName("hide-node");
-	//ev.addArg("target", prefix + ":object-drop");
-	//SubObMediator::Instance()->sendEvent("hide-node", ev);
-	ev.setName("hide-node");
-	ev.addArg("target", prefix + ":arm-window");
-	SubObMediator::Instance()->sendEvent("hide-node", ev);
-	ev.setName("hide-node");
-	ev.addArg("target", prefix + ":next-active");
-	SubObMediator::Instance()->sendEvent("hide-node", ev);
-	ev.setName("hide-node");
-	ev.addArg("target", prefix + ":start-help");
-	SubObMediator::Instance()->sendEvent("hide-node", ev);
-	ev.setName("hide-node");
-	ev.addArg("target", prefix + ":puzzle-help");
-	SubObMediator::Instance()->sendEvent("hide-node", ev);
-	ev.setName("hide-node");
-	ev.addArg("target", prefix + ":bg-language");
-	SubObMediator::Instance()->sendEvent("hide-node", ev);
-	ev.addArg("target", prefix + ":bg-info");
-	SubObMediator::Instance()->sendEvent("hide-node", ev);
-	ev.addArg("target", prefix + ":next-inactive");
-	SubObMediator::Instance()->sendEvent("hide-node", ev);
-	ev.addArg("target", prefix + ":make-one");
-	SubObMediator::Instance()->sendEvent("hide-node", ev);
-	ev.addArg("target", prefix + ":reset");
-	SubObMediator::Instance()->sendEvent("hide-node", ev);
-	ev.addArg("target",prefix + ":arm-help");
-	SubObMediator::Instance()->sendEvent("hide-node", ev);
-	ev.addArg("target",prefix + ":arm-rotate");
-	SubObMediator::Instance()->sendEvent("hide-node", ev);
-	ev.addArg("target",prefix + ":draw-help");
-	SubObMediator::Instance()->sendEvent("hide-node", ev);
-
-	ev.setName("unhide-node");
-	ev.addArg("target", prefix + ":attract");
-	SubObMediator::Instance()->sendEvent("unhide-node", ev);
-
-	bInAttract = true;
-	camPosition.set(viewport.width / 2, viewport.height / 2, 400);
-}
-//-------------------------------------------------------------------------
-void game::setLanguage(string _lang){
-	currentLanguage = _lang;
-	SubObEvent ev;
-	ev.setName(prefix + ":language-changed");
-	ev.addArg("lang", currentLanguage);
-	SubObMediator::Instance()->sendEvent(ev.getName(), ev);
-}
-//-----------------------------------------------------------------------
-void game::updateGui(){
-
 }
 //----------------------------------------------------------------------
 void game::draw(){  
@@ -792,31 +322,11 @@ void game::draw(){
 	//drawViewportOutline(viewport);
 	ofDisableAlphaBlending();
 	if(bUseViewport){
-		/*ofPushView();
+		ofPushView();
 		ofViewport(viewport);
-		ofSetupScreen();*/
-		ofNoFill();
-		ofSetColor(0.0,0.0,0.0);
-		//ofRect(viewport.x, viewport.y, viewport.width, viewport.height);
-		cam.begin(viewport);
-		if(USE_LIGHT){
-			ofEnableLighting();
-			light.enable();
-			light.setPosition(camPosition);
-			light.lookAt(ofVec3f(posP.x, posP.y, posP.z));
-		}
-		//cam.disableMouseInput();
-		//ofSetupScreen();
-		if(step == 6){
-			ofSetupScreen();
-		} else {
-			cam.setupPerspective();
-		}
+		ofSetupScreen();
 		ofEnableAlphaBlending();
 		ofSetColor(1.0,1.0,1.0,0.5);
-		cam.setPosition(camPosition);
-		//cam.setDistance(1000);
-		cam.lookAt(ofVec3f(posP.x, posP.y, posP.z));
 	}
 	if(step == -1){
 		//waiting for initializing touch
@@ -857,109 +367,95 @@ void game::draw(){
 		//glTranslatef(-posP.x,-posP.y,-posP.z);
 		myPuzzle->draw();
 		if(bUnproject){
-			unprojectPoint(mousePoint);
+			ofVec3f realPoint = mousePoint;
+			if(bUseViewport){
+				//realPoint.x = (float)viewport.getWidth() * (mousePoint.x / (float)ofGetWidth()) + viewport.x;
+				//realPoint.y = (float)viewport.getHeight() * (mousePoint.y / (float)ofGetHeight()) + viewport.y;
+				//realPoint.x -= viewport.x;
+				//realPoint.y -= viewport.y;
+			}
+			unprojectedPoint = picker.unproject(realPoint, &viewport);
+			cout << "UP = " << unprojectedPoint.x << ", " << unprojectedPoint.y << ", " << unprojectedPoint.z << endl;
+			if(unprojectMode == UP_MODE_MOUSE){
+				if(!bDragInput){
+					myPuzzle->checkCubiesForHit(unprojectedPoint);
+					lastUnprojectedPoint = unprojectedPoint;
+				} else {
+					myPuzzle->dragInput(unprojectedPoint - lastUnprojectedPoint);
+					lastUnprojectedPoint = unprojectedPoint;
+				}
+			} else if(unprojectMode == UP_MODE_COLOR){
+				myPuzzle->changeFaceColor(unprojectedPoint, newFaceColor);
+			}
 			bUnproject = false;
 		}
 		glPopMatrix();
 	}
 	if(step == 5){
 		//show puzzle
-		//curRot.getRotate(angle, axistb);
+
+		curRot.getRotate(angle, axistb);
 
 		glPushMatrix();
 		//glTranslatef(posP.x,posP.y,posP.z);
 		ofTranslate(posP.x, posP.y, posP.z);
-		//new trackball
-		//glRotatef(angle, axistb.x, axistb.y, axistb.z);
+		//new trackballb
+		glRotatef(angle, axistb.x, axistb.y, axistb.z);
 		//ofFill();
 		//ofBox(100);
 		//glTranslatef(-posP.x,-posP.y,-posP.z);
 		myPuzzle->draw();
 		if(bUnproject){
-			if(unprojectMode != UP_MODE_P){
-				unprojectPoint(mousePoint);//mousePoint gets set on bUnproject
-			} else {
-				projectPoint(mousePoint);
+			ofVec3f realPoint = mousePoint;
+			if(bUseViewport){
+				//realPoint.x = (float)viewport.getWidth() * (mousePoint.x / (float)ofGetWidth()) + viewport.x;
+				//realPoint.y = (float)viewport.getHeight() * (mousePoint.y / (float)ofGetHeight()) + viewport.y;
+				//realPoint.x -= viewport.x;
+				//realPoint.y -= viewport.y;
+			}
+			unprojectedPoint = picker.unproject(realPoint, &viewport);
+			cout << "UP = " << unprojectedPoint.x << ", " << unprojectedPoint.y << ", " << unprojectedPoint.z << endl;
+			if(unprojectMode == UP_MODE_MOUSE){
+				if(!bDragInput){
+					myPuzzle->checkCubiesForHit(unprojectedPoint);
+					lastUnprojectedPoint = unprojectedPoint;
+					bDragInput = true;
+				} else {
+					myPuzzle->dragInput(unprojectedPoint - lastUnprojectedPoint);
+					lastUnprojectedPoint = unprojectedPoint;
+				}
+			} else if(unprojectMode == UP_MODE_COLOR){
+				myPuzzle->changeFaceColor(unprojectedPoint, newFaceColor);
 			}
 			bUnproject = false;
 		}
 		glPopMatrix();
-		//drawPoints();
 	}
 	if(step == 6){
 		//show drawing area
-		//ofPushMatrix();
-		//ofTranslate(posP.x, posP.y, posP.z);
-		myCanvas.draw();
-		//ofPopMatrix();
+		myCanvas->draw();
 		ofSetColor(255,255,255);
 		/*myCanvasImage.draw(0,0,0,canvasSide,canvasSide);*///posCanvas.x-canvasSide/2,posCanvas.y-canvasSide/2,posCanvas.z,canvasSide,canvasSide);
 	}
 	if(step == 7){
 		//show puzzle
+		curRot.getRotate(angle, axistb);
+
 		glPushMatrix();
-		//glTranslatef(posP.x,posP.y,posP.z);
-		ofTranslate(posP.x, posP.y, posP.z);
+		glTranslatef(posP.x,posP.y,posP.z);
 		//new trackball
-		//glRotatef(angle, axistb.x, axistb.y, axistb.z);
-		//ofFill();
-		//ofBox(100);
+		glRotatef(angle, axistb.x, axistb.y, axistb.z);
+
+
 		//glTranslatef(-posP.x,-posP.y,-posP.z);
 		myPuzzle->draw();
-		if(bUnproject){
-			if(unprojectMode != UP_MODE_P){
-				unprojectPoint(mousePoint);//mousePoint gets set on bUnproject
-			} else {
-				projectPoint(mousePoint);
-			}
-			bUnproject = false;
-		}
 		glPopMatrix();
-		//drawPoints();
 	}
 	if(bUseViewport){
-		//ofPopView();
-		if(USE_LIGHT){
-			light.disable();
-			ofDisableLighting();
-		}
-		cam.end();
+		ofPopView();
 	}
 }
-//--------------------------------------------------------------------------------------------------------------------------------------
-void game::unprojectPoint(ofVec3f _pnt){
-	unprojectedPoint = picker.unproject(mousePoint, &viewport);
-	//unprojectedPoint = cam.screenToWorld(_pnt, viewport);
-	cout << "UP = " << unprojectedPoint.x << ", " << unprojectedPoint.y << ", " << unprojectedPoint.z << endl;
-	if(unprojectMode == UP_MODE_MOUSE){
-		if(!bDragInput){
-			//cout << "down" << endl;
-			myPuzzle->checkCubiesForHit(unprojectedPoint);
-			lastUnprojectedPoint = unprojectedPoint;
-			bHaveAxis = false;
-			startMove(mousePoint);
-			if(myPuzzle->activeCubie != -1){
-				bDragInput = true;
-			}
-		} else {
-			//myPuzzle->dragInput((unprojectedPoint - lastUnprojectedPoint) * 25.0);
-			if(myPuzzle->isMoving() == false){
-				//cout << "dragg" << endl;
-				makeMove((unprojectedPoint - lastUnprojectedPoint) * 25.0);
-				//lastUnprojectedPoint = unprojectedPoint;
-			}
-		}
-	} else if(unprojectMode == UP_MODE_COLOR){
-		cout << "setting color." << endl;
-		myPuzzle->changeFaceColor(unprojectedPoint, newFaceColor);
-	}
-}
-//---------------------------------------------------------------------------------------------
-void game::projectPoint(ofVec3f _pnt){
-	projectedPoint = picker.project(_pnt, &viewport);
 
-}
-//----------------------------------------------------------------------------------------------
 void game::drawViewportOutline(const ofRectangle & _vp){
 	ofPushStyle();
 	ofNoFill();
@@ -972,6 +468,7 @@ void game::drawViewportOutline(const ofRectangle & _vp){
 	ofRect(_vp);
 	ofPopStyle();
 }
+
 //----------------------------------------------------------------------
 void game::rotateByIDandAxis(int id, SG_VECTOR axs, bool d, float anglei){
 	if(axs.x==0 && axs.y==0 && axs.z==0){
@@ -988,6 +485,20 @@ void game::rotateByIDandAxis(int id, SG_VECTOR axs, bool d, float anglei){
 	}
 }
 //----------------------------------------------------------------------
+//void game::rotateByIDandAxis(int id, SG_VECTOR axs, bool d){
+//	if(axs.x==0 && axs.y==0 && axs.z==0){
+//		//stop any rotation
+//		faceRotate = false;
+//	}else{
+//		//allow rotation
+//		idcubie = id;
+//		dir = d;
+//		axis = axs;
+//		//updatePuzzle = true;
+//		faceRotate = true;
+//	}
+//}
+//----------------------------------------------------------------------
 void game::rotateTwoIds(int cubieA, int cubieB,bool inside){
 	faceRotateB = true; //this is usedn on update, to do rotationanimations
 	idcubieA = cubieA;
@@ -1001,9 +512,8 @@ void game::loadPuzzle(puzzle *inputPuzzle){
 	///////////do game reset..because loading a puzzle can happen at anytime
 	if(step == 6){
 		if(canvasB){
-			//myCanvas->exit();
-			//delete myCanvas;
-			myCanvas.reset();
+			myCanvas->exit();
+			delete myCanvas;
 			canvasB = false;
 		}
 		step = 0;
@@ -1026,9 +536,8 @@ void game::loadPuzzle(puzzle *inputPuzzle){
 		step = 0;
 		objectID = -1;
 		if(canvasB){
-			//myCanvas->exit();
-			//delete myCanvas;
-			myCanvas.reset();
+			myCanvas->exit();
+			delete myCanvas;
 			canvasB = false;
 		}
 	}
@@ -1053,195 +562,91 @@ void game::loadPuzzle(puzzle *inputPuzzle){
 	myPuzzle->pos.x = posP.x;
 	myPuzzle->pos.y = posP.y;
 	myPuzzle->pos.z = posP.z;
-	updatePuzzle = true;
 	step = 7;
 	objectID = -1;
-	SubObEvent ev;
-	ev.setName("hide-node");
-	ev.addArg("target", prefix + ":start-help");
-	SubObMediator::Instance()->sendEvent("hide-node", ev);
 } 
 //----------------------------------------------------------------------
-void game::loadMenuObject(int objID, SG_VECTOR p, SG_VECTOR t){
-	/////////////////////////////////////////////////////////
-	///////////do game reset..because loading a puzzle can happen at anytime
-	if(step == 6){
-		if(canvasB){
-			//myCanvas->exit();
-			//delete myCanvas;
-			myCanvas.reset();
-			canvasB = false;
-		}
-		step = 0;
-		objectID = -1;
-	}else if(step==4 || step==5){
-		myPuzzle->exit();
-		myCutter->exit();
-		mySlicer->exit();
-		//objectDisplayed->exit();
-		objectID = -1;
-		step = 0;
-		armID = -1;
-	}else if (step==3){
-		//objectDisplayed->exit();             //clean displayed object after puzzle is created, so we dont keep it until the exit or restart
-		step = 0;
-		objectID = -1;
-		armID = -1;
-	}else if (step==1 || step==2){
-		//objectDisplayed->exit();
-		step = 0;
-		objectID = -1;
-		if(canvasB){
-			//myCanvas->exit();
-			//delete myCanvas;
-			myCanvas.reset();
-			canvasB = false;
-		}
-	}
-
-	offsetSlicer.x = 0;
-	offsetSlicer.y = 0;
-	offsetSlicer.z = 0;
-
-	rotateSlicer.x = 0;
-	rotateSlicer.y = 0;
-	rotateSlicer.z = 0;
-
-	curRot.set (ofVec4f(0,0,0,0));
-
-	if(extrudedB){
-		sgDeleteObject(extrudedObject);
-		extrudedB = false;
-	}
-	//////////////////////////////////////////////////////////
-	//load a puzzle Object from the puzzle menu on the center
+void game::loadObject(int objID, SG_VECTOR p, SG_VECTOR t){
 	if (objectID == -1){
-		objectDisplayed = new myobject3D(p,t,station);
+		objectDisplayed = new myobject3D(p,t);
 	}else{
 		objectDisplayed->exit();
 		delete objectDisplayed;
-		objectDisplayed = new myobject3D(p,t,station);
-	}
-	objectID = objID;
-	bool loaded = false;
-	if(step == 0 || step==1 || step == 7){
-		if(objID != 200){
-			objectDisplayed->loadObjectOD((sgC3DObject*)objects[objectID]->Clone(), objectID);
-			loaded = true;
-		}
-		if(objID == 200){
-			//load extruded object
-			objectDisplayed->loadObjectOD((sgC3DObject *)extrudedObject->Clone(),200);
-			loaded = true;
-		}
-
-		if(loaded == true){
-			////////////////////////////////
-			objectDisplayed->setup();
-			//step = 1;
-
-			//make the puzzle automatically
-			int grid =3; ///have to adapt this to any armature on the menu puzzles!!!///have to adapt this to any armature on the menu puzzles!!!
-			loadArmatureMenu(grid); 
-			applyArmRotations();
-			createCutterSlicer();
-			////createPuzzle(posP);
-			myPuzzle = new puzzle(posP, offsetSlicer,grid);
-			myPuzzle->setup();
-			mySlicer->intersectCubes((sgCObject*)objectDisplayed->getObject()); 
-			myPuzzle->loadPieces(mySlicer->getPieces(),objectID,rotateSlicer);
-			myPuzzle->colorFaces(objectID);
-			updatePuzzle = true;
-			step = 7;
-			SubObEvent ev;
-			ev.setName("hide-node");
-			ev.addArg("target", prefix + ":start-help");
-			SubObMediator::Instance()->sendEvent("hide-node", ev);
-		}
-	}
-}
-//----------------------------------------------------------------------
-void game::loadObjectG(int objID, SG_VECTOR p, SG_VECTOR t){
-	if (objectID == -1){
-		objectDisplayed = new myobject3D(p,t,station);
-	}else{
-		objectDisplayed->exit();
-		delete objectDisplayed;
-		objectDisplayed = new myobject3D(p,t,station);
+		objectDisplayed = new myobject3D(p,t);
 	}
 	objectID = objID;
 	if(step == 0 || step==1 || step == 6){
-		if(objID != 200){
-			objectDisplayed->loadObjectOD((sgC3DObject*)objects[objectID]->Clone(), objectID);
+		if(objID == 1){
+			//torus
+			objectDisplayed->loadObject(sgCreateTorus(100,70,50,50),1);//(radius,thickness,meridiansDonut,meridiansDonutCut)
+			if(extrudedB){
+				sgDeleteObject(extrudedObject);
+				extrudedB = false;
+			}
 		}
-		//if(objID == 1){
-		//	//torus
-		//	objectDisplayed->loadObjectOD(sgCreateTorus(100,70,50,50),1);//(radius,thickness,meridiansDonut,meridiansDonutCut)
-		//	if(extrudedB){
-		//		sgDeleteObject(extrudedObject);
-		//		extrudedB = false;
-		//	}
-		//}
-		//if(objID == 2){
-		//	//cube
-		//	objectDisplayed->loadObjectOD(sgCreateBox(300,300,300),2);//(tamX,tamY,tamZ)
-		//	if(extrudedB){
-		//		sgDeleteObject(extrudedObject);
-		//		extrudedB = false;
-		//	}
-		//}if(objID == 3){
-		//	//cone
-		//	//objectDisplayed->loadObjectOD(sgCreateCone(250,1,250,3),3);
-		//	objectDisplayed->loadObjectOD((sgC3DObject *)sgTetrahedron->Clone(),3);
-		//	if(extrudedB){
-		//		sgDeleteObject(extrudedObject);
-		//		extrudedB = false;
-		//	}
-		//}
-		//if(objID == 4){
-		//	//try to load the bunny
-		//	objectDisplayed->loadObjectOD((sgC3DObject *)sgBunny->Clone(),4);
-		//	if(extrudedB){
-		//		sgDeleteObject(extrudedObject);
-		//		extrudedB = false;
-		//	}
-		//}
-		//if(objID == 5){
-		//	//try to load the dodecahedron
-		//	objectDisplayed->loadObjectOD((sgC3DObject *)sgDodecahedron->Clone(),5);
-		//	if(extrudedB){
-		//		sgDeleteObject(extrudedObject);
-		//		extrudedB = false;
-		//	}
-		//}
-		//if(objID == 6){
-		//	//try to load the Icosahedron
-		//	objectDisplayed->loadObjectOD((sgC3DObject *)sgIcosahedron->Clone(),6);
-		//	if(extrudedB){
-		//		sgDeleteObject(extrudedObject);
-		//		extrudedB = false;
-		//	}
-		//}
-		//if(objID == 7){
-		//	//try to load the Octahedron
-		//	objectDisplayed->loadObjectOD((sgC3DObject *)sgOctahedron->Clone(),7);
-		//	if(extrudedB){
-		//		sgDeleteObject(extrudedObject);
-		//		extrudedB = false;
-		//	}
+		if(objID == 2){
+			//cube
+			objectDisplayed->loadObject(sgCreateBox(300,300,300),2);//(tamX,tamY,tamZ)
+			if(extrudedB){
+				sgDeleteObject(extrudedObject);
+				extrudedB = false;
+			}
+		}if(objID == 3){
+			//cone
+			//objectDisplayed->loadObject(sgCreateCone(250,1,250,3),3);
+			objectDisplayed->loadObject((sgC3DObject *)sgTetrahedron->Clone(),3);
+			if(extrudedB){
+				sgDeleteObject(extrudedObject);
+				extrudedB = false;
+			}
+		}
+		if(objID == 4){
+			//try to load the bunny
+			objectDisplayed->loadObject((sgC3DObject *)sgBunny->Clone(),4);
+			if(extrudedB){
+				sgDeleteObject(extrudedObject);
+				extrudedB = false;
+			}
+		}
+		if(objID == 5){
+			//try to load the dodecahedron
+			objectDisplayed->loadObject((sgC3DObject *)sgDodecahedron->Clone(),5);
+			if(extrudedB){
+				sgDeleteObject(extrudedObject);
+				extrudedB = false;
+			}
+		}
+		if(objID == 6){
+			//try to load the Icosahedron
+			objectDisplayed->loadObject((sgC3DObject *)sgIcosahedron->Clone(),6);
+			if(extrudedB){
+				sgDeleteObject(extrudedObject);
+				extrudedB = false;
+			}
+		}
+		if(objID == 7){
+			//try to load the Octahedron
+			objectDisplayed->loadObject((sgC3DObject *)sgOctahedron->Clone(),7);
+			if(extrudedB){
+				sgDeleteObject(extrudedObject);
+				extrudedB = false;
+			}
 
-		//}
+		}
 		//if(objID == 8){
 		//	//try to load the Teapot
-		//	objectDisplayed->loadObjectOD((sgC3DObject *)sgTeapot->Clone(),8);
+		//	objectDisplayed->loadObject((sgC3DObject *)sgTeapot->Clone(),8);
 		//}
 		if(objID == 200){
 			//load extruded object
-			objectDisplayed->loadObjectOD((sgC3DObject *)extrudedObject->Clone(),200);
+			objectDisplayed->loadObject((sgC3DObject *)extrudedObject->Clone(),200);
 		}
 		objectDisplayed->setup();
 		step = 1;
 	}
+	////////////////////// from STL file
+	/*const char* nel =  ofToDataPath("cube.stl",false).c_str();
+	objectDisplayed.loadObjectFromFile(nel);*/
 }
 //----------------------------------------------------------------------
 void game::loadArmature(int type){
@@ -1283,45 +688,6 @@ void game::loadArmature(int type){
 	myArmature->setup();
 	step =3;
 }
-//----------------------------------------------------------------------
-void game::loadArmatureMenu(int type){
-	//loads armature and creates cutter and slicer
-	//have to clear myArmature, to load the new one, like load objects!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	rotateSlicer.x=0;
-	rotateSlicer.y=0;
-	rotateSlicer.z=0;
-
-	if (armID == -1){
-		//first time
-		if(type == 1){
-			tamCubie = 100;
-			myArmature = new armature (ofVec3f(posA.x,posA.y,posA.z),tamSideArmature,tamSideArmature,10,tamCubie);
-		}else if(type == 2){
-			tamCubie = 50;
-			myArmature = new armature (ofVec3f(posA.x,posA.y,posA.z),tamSideArmature,tamSideArmature,10,tamCubie);
-		}else if(type > 1){
-			tamCubie = 100;
-			myArmature = new armature (ofVec3f(posA.x,posA.y,posA.z),tamSideArmature,tamSideArmature,10,tamCubie);
-		}
-		armID = type;
-	}else{
-		//free (myArmature);
-		//delete myArmature;
-		if(type == 1){
-			tamCubie = 100;
-			myArmature = new armature (ofVec3f(posA.x,posA.y,posA.z),tamSideArmature,tamSideArmature,10,tamCubie);
-		}else if(type == 2){
-			tamCubie = 50;
-			myArmature = new armature (ofVec3f(posA.x,posA.y,posA.z),tamSideArmature,tamSideArmature,10,tamCubie);
-		}else if(type > 1){
-			tamCubie = 100;
-			myArmature = new armature (ofVec3f(posA.x,posA.y,posA.z),tamSideArmature,tamSideArmature,10,tamCubie);
-		}
-		armID = type;
-	}
-
-	myArmature->setup();
-}
 //-----------------------------------------------------------------------------------------
 void game::applyArmRotations(){
 	//this rotates the object sgC3DObject to be sliced
@@ -1355,11 +721,11 @@ void game::createPuzzle(SG_VECTOR p){
 
 		///////////////////////////////  color puzzle   ////////////////////////////////// 
 		//color all the faces for platonic solids!! colors outside for most objects(not bunny), black on the insides
-		if(objectID <8 ){
-			myPuzzle->colorFaces(objectID);
-		}else{
-			myPuzzle->colorTorus();
-		}
+		//if(objectID != 1){
+		myPuzzle->colorFaces(objectID);
+		//}else{
+		//	myPuzzle->colorTorus();
+		//}
 
 		updatePuzzle = true;
 
@@ -1445,7 +811,7 @@ void game::unDo(){
 void game::guiLoad(int _obj){
 	/*
 	SG_VECTOR objectPos = {0,0,0};
-	loadObjectOD(_obj, objectPos, posP);
+	loadObject(_obj, objectPos, posP);
 	*/
 	bHaveNewObject = true;
 	newObject = _obj;
@@ -1481,28 +847,28 @@ void game::guiInput(int in){
 		//waiting for shape to be selected
 		if(in == '1') {
 			//load object recieves (object id, boolean position, display position) 
-			loadObjectG(1,slicingPos,posP);
+			loadObject(1,slicingPos,posP);
 		}
 		if(in == '2') {
-			loadObjectG(2,slicingPos,posP);
+			loadObject(2,slicingPos,posP);
 		}
 		if(in == '3') {
-			loadObjectG(3,slicingPos,posP);
+			loadObject(3,slicingPos,posP);
 		}
 		if(in == '4') {
-			loadObjectG(4,slicingPos,posP);
+			loadObject(4,slicingPos,posP);
 		}
 		if(in == '5') {
-			loadObjectG(5,slicingPos,posP);
+			loadObject(5,slicingPos,posP);
 		}
 		if(in == '6') {
-			loadObjectG(6,slicingPos,posP);
+			loadObject(6,slicingPos,posP);
 		}
 		if(in == '7') { 
-			loadObjectG(7,slicingPos,posP);
+			loadObject(7,slicingPos,posP);
 		}
 		//if(in == '8') { 
-		//	loadObjectG(8,objectPos,posP);
+		//	loadObject(8,objectPos,posP);
 		//}
 		if(in == '9') {
 			prepareDrawing();
@@ -1524,36 +890,37 @@ void game::guiInput(int in){
 				//user can change the selected object
 				clearDisplayedObject();
 				//load object recieves (object id, boolean position, display position) 
-				loadObjectG(1,slicingPos,posP); //pos.z its the torus radious
+				loadObject(1,slicingPos,posP); //pos.z its the torus radious
 			}
 			if(in == '2') {
 				clearDisplayedObject();
-				loadObjectG(2,slicingPos,posP);
+				loadObject(2,slicingPos,posP);
 			}
 			if(in == '3') {
 				clearDisplayedObject();
-				loadObjectG(3,slicingPos,posP);
+				loadObject(3,slicingPos,posP);
 			}
 			if(in == '4') {
 				clearDisplayedObject();
-				loadObjectG(4,slicingPos,posP);
+				loadObject(4,slicingPos,posP);
 			}
 			if(in == '5') {
 				clearDisplayedObject();
-				loadObjectG(5,slicingPos,posP);
+				loadObject(5,slicingPos,posP);
 			}
 			if(in == '6') {
 				//user can change the selected object
 				clearDisplayedObject();
-				loadObjectG(6,slicingPos,posP);
+				loadObject(6,slicingPos,posP);
 			}
 			if(in == '7') {
 				//user can change the selected object
 				clearDisplayedObject();
-				loadObjectG(7,slicingPos,posP);
+
+				loadObject(7,slicingPos,posP);
 			}
 			/*if(in == '8') { 
-			loadObjectG(8,objectPos,posP);
+			loadObject(8,objectPos,posP);
 			}*/
 			if(in == '9') { 
 				clearDisplayedObject();
@@ -1593,23 +960,12 @@ void game::guiInput(int in){
 		//armature was selected
 		////showing armature    another armature can be selected
 		if(in == '1') {
-			//3 is number of slices
-			loadArmature(3); 
+			//select armature 1
+			loadArmature(1); 
 		}
 		if(in == '2') {
+			//select armature 2
 			loadArmature(2);
-		}
-		if(in == '3') {
-			loadArmature(3);
-		}
-		if(in == '4') {
-			loadArmature(4);
-		}
-		if(in == '5') {
-			loadArmature(5);
-		}
-		if(in == '6') {
-			loadArmature(6);
 		}
 		//////////////////////////////move all armature
 		if(in == 'l') {
@@ -1761,32 +1117,32 @@ void game::guiInput(int in){
 			if(in == 'q') {
 				//clockwise
 				SG_VECTOR axis = {1,0,0};
-				rotateByIDandAxis(randcubie,axis,true,7);
+				rotateByIDandAxis(randcubie,axis,true,9);
 			}
 			if(in == 'a') {
 				//counter clockwise
 				SG_VECTOR axis = {1,0,0};
-				rotateByIDandAxis(randcubie,axis,false,7);
+				rotateByIDandAxis(randcubie,axis,false,-9);
 			}
 			////////  y axis  ////  y axis
 			if(in == 'w') {
 				//clockwise
 				SG_VECTOR axis = {0,1,0};
-				rotateByIDandAxis(randcubie,axis,true,7);
+				rotateByIDandAxis(randcubie,axis,true,9);
 			}if(in == 's') {
 				//counter clockwise
 				SG_VECTOR axis = {0,1,0};
-				rotateByIDandAxis(randcubie,axis,false,7);
+				rotateByIDandAxis(randcubie,axis,false,-9);
 			}
 			////////  z axis  ////  z axis
 			if(in == 'e') {
 				//clockwise
 				SG_VECTOR axis = {0,0,1};
-				rotateByIDandAxis(randcubie,axis,true,7);
+				rotateByIDandAxis(randcubie,axis,true,9);
 			}if(in == 'd') {
 				//counter clockwise
 				SG_VECTOR axis = {0,0,1};
-				rotateByIDandAxis(randcubie,axis,false,7);
+				rotateByIDandAxis(randcubie,axis,false,-9);
 			}
 		}
 		////////////////////////////////////move all puzzle
@@ -1838,9 +1194,9 @@ void game::guiInput(int in){
 		if(in == 'e') {
 			//take drawing data
 			//check for existing drawing
-			if(myCanvas.drawingExists()){
+			if(myCanvas->drawingExists()){
 				//make extruded object
-				if(extrudeObject(myCanvas.getPolyline())){
+				if(extrudeObject(myCanvas->getPolyline())){
 
 				}else{
 					prepareDrawing();
@@ -1870,117 +1226,38 @@ void game::guiInput(int in){
 		else if(in == '1') {
 			clearDisplayedObject();
 			//load object recieves (object id, boolean position, display position) 
-			loadObjectG(1,slicingPos,posP);
+			loadObject(1,slicingPos,posP);
 		}
 		else if(in == '2') {
 			clearDisplayedObject();
-			loadObjectG(2,slicingPos,posP);
+			loadObject(2,slicingPos,posP);
 		}
 		else if(in == '3') {
 			clearDisplayedObject();
-			loadObjectG(3,slicingPos,posP);
+			loadObject(3,slicingPos,posP);
 		}
 		else if(in == '4') {
 			clearDisplayedObject();
-			loadObjectG(4,slicingPos,posP);
+			loadObject(4,slicingPos,posP);
 		}
 		else if(in == '5') {
 			clearDisplayedObject();
-			loadObjectG(5,slicingPos,posP);
+			loadObject(5,slicingPos,posP);
 		}
 		else if(in == '6') {
 			clearDisplayedObject();
-			loadObjectG(6,slicingPos,posP);
+			loadObject(6,slicingPos,posP);
 		}
 		else if(in == '7') { 
 			clearDisplayedObject();
-			loadObjectG(7,slicingPos,posP);
+			loadObject(7,slicingPos,posP);
 		}
 		//if(in == '8') { 
-		//	loadObjectG(8,objectPos,posP);
+		//	loadObject(8,objectPos,posP);
 		//}
 		else if(in == '9') { 
 			clearDisplayedObject();
 			prepareDrawing();
-		}
-	}else if(step == 7){
-		//selected color (or not, its not mandatory)
-		//pressed next on color palette step
-		//showing puzzle
-		//now the puzzle can be played with
-		int randcubie=7;//rand()%26;//to follow this cubie for now //this will be decided upon touch, or click on top of puzzle
-		if(myPuzzle->isMoving() == false){ //this is to prevent from reading events while puzzle is moving
-			//if(in == 'u'){
-			//	//undo last move 
-			//	unDo();
-			//}
-			/////////////////////////////////////////////// SAVE PUZZLE /////////////////////////////////////////
-			if(in == '.') {
-				//save current puzzle and put it on the middle puzzle section
-				savePuzzleB = true;
-			}
-			////////////////////////////////////////////// FACE ROTATIONS 2 ids /////////////////////////////////
-			//if(in == 'z') {
-			//	//do rotationbased ontwo cubies id
-			//	int cubieA = 11;
-			//	int cubieB = 10;
-			//	rotateTwoIds(cubieA,cubieB,true);
-			//}
-			///////////////////////do go back animation
-			if(in == 'z') {
-				// simulates mouse released
-				//it activates forward, or go back animations
-				decideMove();
-			}
-			////////////////////////////////////////////// FACE ROTATIONS axis dir //////////////////////////////
-			////////  x axis  ////  x axis
-			if(in == 'q') {
-				//clockwise
-				SG_VECTOR axis = {1,0,0};
-				rotateByIDandAxis(randcubie,axis,true,7);
-			}
-			if(in == 'a') {
-				//counter clockwise
-				SG_VECTOR axis = {1,0,0};
-				rotateByIDandAxis(randcubie,axis,false,7);
-			}
-			////////  y axis  ////  y axis
-			if(in == 'w') {
-				//clockwise
-				SG_VECTOR axis = {0,1,0};
-				rotateByIDandAxis(randcubie,axis,true,7);
-			}if(in == 's') {
-				//counter clockwise
-				SG_VECTOR axis = {0,1,0};
-				rotateByIDandAxis(randcubie,axis,false,7);
-			}
-			////////  z axis  ////  z axis
-			if(in == 'e') {
-				//clockwise
-				SG_VECTOR axis = {0,0,1};
-				rotateByIDandAxis(randcubie,axis,true,7);
-			}if(in == 'd') {
-				//counter clockwise
-				SG_VECTOR axis = {0,0,1};
-				rotateByIDandAxis(randcubie,axis,false,7);
-			}
-		}
-		////////////////////////////////////move all puzzle
-		if(in == 'l') {
-			SG_VECTOR p = {10,0,0};
-			moveP(p);
-		}
-		if(in == 'j') {
-			SG_VECTOR p = {-10,0,0};
-			moveP(p);
-		}
-		if(in == 'i') {
-			SG_VECTOR p = {0,-10,0};
-			moveP(p);
-		}
-		if(in == 'k') {
-			SG_VECTOR p = {0,10,0};
-			moveP(p);
 		}
 	}
 
@@ -1995,11 +1272,10 @@ void game::guiInput(int in){
 void game::decideMove(){
 	//it looks at current face rotation angle and decides to do a cmplete move, or go back to previous possition
 	myPuzzle->decideMove();
-	//}
 }
 //----------------------------------------------------------------------
 bool game::extrudeObject(ofPolyline *drawing){
-	//this function extrudes the input ofPolylne
+	//this functino extrudes the input ofPolylne
 
 	vector< ofPoint > points = drawing->getVertices();
 
@@ -2039,9 +1315,9 @@ bool game::extrudeObject(ofPolyline *drawing){
 
 		extrudedB = true;
 		//we  have the sg3DObjcect to load
-		loadObjectG(200,slicingPos,posP);//using id=200
+		loadObject(200,slicingPos,posP);//using id=200
 
-		//free(drawing);
+		free(drawing);
 		sgDeleteObject(win_cont);
 		return true;
 	}
@@ -2076,24 +1352,21 @@ void game::extrudeObject(){
 	sgDeleteObject(cr);
 
 	//we  have the sg3DObjcect to load
-	loadObjectG(200,slicingPos,posP);//using id=200
+	loadObject(200,slicingPos,posP);//using id=200
 
 }
 //----------------------------------------------------------------------
 void game::prepareDrawing(){
 	if(canvasB == false){
 		//create canvas object
-		//myCanvas = new drawingCanvas(posCanvas,canvasSide,canvasSide);
-		myCanvas.reset();
-		//canvasB = true;
+		myCanvas = new drawingCanvas(posCanvas,canvasSide,canvasSide);
+		canvasB = true;
 	}
 	else{
-		/*myCanvas->exit();
-		delete myCanvas;*/
+		//myCanvas->exit();
+		//delete myCanvas;
 		//create canvas object
-		//myCanvas = new drawingCanvas(posCanvas,canvasSide,canvasSide);
-		myCanvas.reset();
-		//myCanvas.setViewport(viewport);
+		myCanvas = new drawingCanvas(posCanvas,canvasSide,canvasSide);
 	}
 	//extrusion
 	step = 6;
@@ -2102,18 +1375,12 @@ void game::prepareDrawing(){
 menuPuzzle*  game::savePuzzle(SG_POINT slicingPos, SG_VECTOR middlePuzzlePos){
 	//build a menuPuzzle object and give it to the mainApp
 	menuPuzzle *puzzleToSave = new menuPuzzle(slicingPos, middlePuzzlePos, 0);
-	puzzleToSave->loadObjectMP(objectDisplayed->getObject(),objectID);
+	puzzleToSave->loadObject(objectDisplayed->getObject(),objectID);
 	puzzleToSave->setup();
 	puzzleToSave->update();
 	puzzleToSave->colorFacesMenu();
 
-	//need to pass this data to menuPuzzle
-	//vector< ofFloatColor > colorsVMenu;
-	//vector< ofVec3f > uniqueNormals;
-	//ofVec3f offsetSlicer;
-	//ofVec3f rotateSlicer;
-
-	////puzzleToSave->loadPuzzle(myPuzzle);
+	puzzleToSave->loadPuzzle(myPuzzle);
 	puzzleToSave->objectId = objectID; 
 
 	return puzzleToSave;
@@ -2139,9 +1406,8 @@ void game::restart(){
 		objectID = -1;
 	}else if(step == 6){
 		if(canvasB){
-			//myCanvas->exit();
-			//delete myCanvas;
-			myCanvas.reset();
+			myCanvas->exit();
+			delete myCanvas;
 			canvasB = false;
 		}
 		step = 0;
@@ -2164,9 +1430,8 @@ void game::restart(){
 		step = 0;
 		objectID = -1;
 		if(canvasB){
-			//myCanvas->exit();
-			//delete myCanvas;
-			myCanvas.reset();
+			myCanvas->exit();
+			delete myCanvas;
 			canvasB = false;
 		}
 	}
@@ -2188,283 +1453,42 @@ void game::restart(){
 }
 //----------------------------------------------------------------------
 void game::exit(){
-	//sgDeleteObject(sgBunny);
-	//sgDeleteObject(sgTetrahedron);
-	//sgDeleteObject(sgDodecahedron);
-	//sgDeleteObject(sgIcosahedron);
-	//sgDeleteObject(sgOctahedron);
+	sgDeleteObject(sgBunny);
+	sgDeleteObject(sgTetrahedron);
+	sgDeleteObject(sgDodecahedron);
+	sgDeleteObject(sgIcosahedron);
+	sgDeleteObject(sgOctahedron);
 	//sgDeleteObject(sgTeapot);
-
-	////////////have to delete the objects in 
-	//map<int, sgCObject*> objects;
 }
 //--------------------------------------------------------------
 void game::mouseDragged(int x, int y, int button){
 	if(step == 4 || step == 5 || step == 7){
-		//ofVec2f mouse(x,y);
-		//ofQuaternion yRot(x-lastMouse.x, ofVec3f(0,1,0));
-		//ofQuaternion xRot(y-lastMouse.y, ofVec3f(-1,0,0));
-		////curRot *= yRot*xRot;
-		//curRot.set(curRot*yRot*xRot);
-		//lastMouse = mouse;
-		//curRot.getRotate(angle, axistb);
-		//camPosition.rotate(angle * 0.01, ofVec3f(posP.x, posP.y, posP.z), axistb);
-		ofVec3f mouse(x,y);
-		ofVec3f r = lastMouse - mouse;
-		camPosition.rotate (r.y * 0.01, ofVec3f(posP.x, posP.y, posP.z), ofVec3f(1,0,0));
-		camPosition.rotate (r.x * 0.01, ofVec3f(posP.x, posP.y, posP.z), ofVec3f(0,1,0));
+		ofVec2f mouse(x,y);
+		ofQuaternion yRot(x-lastMouse.x, ofVec3f(0,1,0));
+		ofQuaternion xRot(y-lastMouse.y, ofVec3f(-1,0,0));
+		//curRot *= yRot*xRot;
+		curRot.set(curRot*yRot*xRot);
+		lastMouse = mouse;
 	}else if(step == 6){
-		myCanvas.mouseDragged(x,y,button);
+		myCanvas->mouseDragged(x,y,button);
 	} else if(step == 3){
 		ofVec3f mouse(x,y);
 		ofVec3f r = lastMouse - mouse;
 		rotateA(r);
 		lastMouse = mouse;
 	}
-	timeOfLastInteraction = ofGetElapsedTimeMillis();
 }
 //--------------------------------------------------------------
 void game::mousePressed(int x, int y, int button){
 	if(step == 3 || step == 4 || step == 5 || step == 7){
 		lastMouse = ofVec2f(x,y);
 	}else if(step == 6){
-		myCanvas.mousePressed(x,y,button);
+		myCanvas->mousePressed(x,y,button);
 	}
-	timeOfLastInteraction = ofGetElapsedTimeMillis();
 }
 //--------------------------------------------------------------
 void game::mouseReleased(int x, int y, int button){
 	if(step == 6){
-		myCanvas.mouseReleased(x,y,button);
-	}
-	timeOfLastInteraction = ofGetElapsedTimeMillis();
-}
-//----------------------------------------------------------------------------------------------------------------------
-void game::startMove(ofVec3f _pnt){
-	if (myPuzzle->isMoving()){
-		return;
-	}
-	if(myPuzzle->activeCubie < 0){
-		return;
-	}
-
-	else{ 
-		// get the id number of the cubie and keep track of it
-		int id = myPuzzle->activeCubie;
-
-		// keep track of the mouse/touch position as well
-
-		ofVec3f twistStartPoint = ofVec3f((float)_pnt.x / (float)ofGetWidth(),(float)_pnt.y / (float)ofGetHeight());
-		//twistStartPoint = new Point(e.GetPosition(view1).X, e.GetPosition(view1).Y);
-		double dist = 300;
-
-		// translate the six axes into 2D screen/camera space:
-
-		cp0 = picker.project(ofVec3f (0,0,0), &viewport);
-		cp1 = picker.project(ofVec3f (dist,0,0), &viewport);
-		cp2 = picker.project(ofVec3f (-dist,0,0), &viewport);
-		cp3 = picker.project(ofVec3f (0,dist,0), &viewport);
-		cp4 = picker.project(ofVec3f (0,-dist,0), &viewport);
-		cp5 = picker.project(ofVec3f (0,0,dist), &viewport);
-		cp6 = picker.project(ofVec3f (0,0,-dist), &viewport);
-		//Point cp0 = Viewport3DHelper.Point3DtoPoint2D(view1.Viewport, new Point3D(0, 0, 0));
-
-		//// and calculate their angles (in radians) from the center of the axes:
-		gestureAngles[0] = atan2(cp1.y - cp0.y, cp1.x - cp0.x);
-		gestureAngles[1] = atan2(cp2.y - cp0.y, cp2.x - cp0.x);
-		gestureAngles[2] = atan2(cp3.y - cp0.y, cp3.x - cp0.x);
-		gestureAngles[3] = atan2(cp4.y - cp0.y, cp4.x - cp0.x);
-		gestureAngles[4] = atan2(cp5.y - cp0.y, cp5.x - cp0.x);
-		gestureAngles[5] = atan2(cp6.y - cp0.y, cp6.x - cp0.x);
-	}
-}
-//--------------------------------------------------------------------------------------------------------------------------
-void game::makeMove(ofVec3f _pnt){
-	//SG_POINT axis;
-	// get angle of gesture
-	double dragDist=sqrt((_pnt.y*_pnt.y)+(_pnt.x*_pnt.x));
-	if(bHaveAxis == false){
-		if(dragDist > 75){
-
-			double dragAngle = atan2(_pnt.y,_pnt.x);//atan2(newPt.Y - twistStartPoint.Y, newPt.X - twistStartPoint.X);
-
-			double offset = 100000;
-			int closest=-1;
-			for (int i = 0; i < 6; i++)
-			{
-				double dist= abs(dragAngle-gestureAngles[i]);
-				double dist2= abs(dragAngle-gestureAngles[i]+(2*3.14159));
-				double dist3= abs(dragAngle-gestureAngles[i]-(2*3.14159));
-				if (dist < offset){
-					offset = dist;
-					closest = i;
-				} 
-				if (dist2 < offset){
-					offset = dist2;
-					closest = i;
-				} 
-				if (dist3 < offset){
-					offset = dist3;
-					closest = i;
-				} 
-			}
-			cubiePos=myPuzzle->getCubieInfo(myPuzzle->activeCubie);
-			ofVec3f normal = myPuzzle->activeTriangle.getNormal();
-			//			ofVec3f normal=camPosition-ofVec3f(posP.x, posP.y, posP.z);
-			int normalNum=-1;
-			int normalAng=0;
-
-			// this one is easy since we're only dealing with six absolute directions... so we can see which vector of the normal is the most extreme
-			if(abs(normal.x)>abs(normal.y) && abs(normal.x)>abs(normal.z)){
-				// x axis is most prominent
-				normalAng=0;
-				if(normal.x>0){
-					normalNum=0;
-				}else{
-					normalNum=1;
-				}
-			}else if (abs(normal.y)>abs(normal.z)) {
-				// y axis is most prominent
-				normalAng=1;
-				if(normal.y>0){
-					normalNum=2;
-				}else{
-					normalNum=3;
-				}
-			}else {
-				// z axis is most prominent
-				normalAng=2;
-				if (normal.z>0) {
-					normalNum=4;
-				} else {
-					normalNum=5;
-				}
-			}
-			if (closest==1 || closest==0) {
-				// x axis
-				bHaveAxis = true;
-				if (normalAng==1) {
-					// rotate on z
-					axis.x = 0;
-					axis.y = 0;
-					axis.z = 1;
-					dir=true;
-					if(myPuzzle->getCubieInfo(myPuzzle->activeCubie).y >= 1) {
-						dir = false;
-					}
-					if (closest==1) {
-						dir=!dir;
-					}
-					rotateByIDandAxis(myPuzzle->activeCubie,axis,dir,10);
-
-				}else{
-					// rotate on y
-					axis.x = 0;
-					axis.y = 1;
-					axis.z = 0;
-
-					dir=true;
-					if(myPuzzle->getCubieInfo(myPuzzle->activeCubie).z <= 1) {
-						dir = false;
-					}
-					if (closest==1) {
-						dir=!dir;
-					}
-					rotateByIDandAxis(myPuzzle->activeCubie,axis,dir,10);
-				}
-			}
-			if (closest==3 || closest==2) {
-				// y axis
-				bHaveAxis = true;
-				if (normalAng==0) {
-					// rotate on z
-					axis.x = 0;
-					axis.y = 0;
-					axis.z = 1;
-					dir=true;
-					if(myPuzzle->getCubieInfo(myPuzzle->activeCubie).x <= 1) {
-						dir = false;
-					}
-					if (closest==3) {
-						dir=!dir;
-					}
-					rotateByIDandAxis(myPuzzle->activeCubie,axis,dir,10);
-
-				} else {
-					// rotate on x
-					axis.x = 1;
-					axis.y = 0;
-					axis.z = 0;
-
-					dir=false;
-					if(myPuzzle->getCubieInfo(myPuzzle->activeCubie).z <= 1) {
-						dir = true;
-					}
-					if (closest==3) {
-						dir=!dir;
-					}
-					rotateByIDandAxis(myPuzzle->activeCubie,axis,dir,10);
-				}
-			}
-			if (closest==4 || closest==5) {
-				// z axis
-				bHaveAxis = true;
-
-				if(normalAng==0){
-					// rotate on y
-					axis.x = 0;
-					axis.y = 1;
-					axis.z = 0;
-					dir=false;
-					if(myPuzzle->getCubieInfo(myPuzzle->activeCubie).x <= 1) {
-						dir = true;
-					}
-					if (closest==5) {
-						dir=!dir;
-					}
-					rotateByIDandAxis(myPuzzle->activeCubie,axis,dir,10);
-				} else {
-					// rotate on x
-					axis.x = 1;
-					axis.y = 0;
-					axis.z = 0;
-
-					dir=true;
-					if(myPuzzle->getCubieInfo(myPuzzle->activeCubie).y <= 1) {
-						dir = false;
-					}
-					if (closest==5) {
-						dir=!dir;
-					}
-					rotateByIDandAxis(myPuzzle->activeCubie,axis,dir,10);
-
-				}
-			}
-		}
-	}else{
-		//if (((dragDist-lastDragDistance)/300)>.5) {
-		rotateByIDandAxis(myPuzzle->activeCubie,axis,dir,5);
-		//} else if (((dragDist-lastDragDistance)/300)<-.5) {
-		//	rotateByIDandAxis(myPuzzle->activeCubie,axis,dir,-5);
-		//}
-	}
-	lastDragDistance=dragDist;
-}
-//-----------------------------------------------------------------------------------------------------------------------
-float game::getMainComponent(ofVec3f _pnt){
-	ofVec3f x(_pnt.x, 0, 0);
-	ofVec3f y(0, _pnt.y, 0);
-	ofVec3f z(0, 0, _pnt.z);
-	float magX = x.lengthSquared();
-	float magY = y.lengthSquared();
-	float magZ = z.lengthSquared();
-	if(magX > magY && magX > magZ){
-		return _pnt.x;
-	}
-	if(magY > magX && magY > magZ){
-		return _pnt.y;
-	}
-	if(magZ > magX && magZ > magY){
-		return _pnt.z;
+		myCanvas->mouseReleased(x,y,button);
 	}
 }

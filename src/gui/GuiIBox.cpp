@@ -12,12 +12,6 @@ void GuiIBox::nodeInit(){
 			font.loadFont("verdana.ttf", true, true);
 		}
 	}
-	if(bMirrored){
-		drawPos.x -= drawSize.x;
-	}
-	if(bFlipped){
-		drawPos.y -= drawSize.y;
-	}
 }
 
 void GuiIBox::input(string _type, int _ID, int _n, int _phase, ofVec2f _absPos, ofVec2f _deltaPos){
@@ -29,7 +23,7 @@ void GuiIBox::input(string _type, int _ID, int _n, int _phase, ofVec2f _absPos, 
 		ev.addArg("n",_n);
 		ev.addArg("absPos",_absPos);
 		ev.addArg("deltaPos",_deltaPos);
-		SubObMediator::Instance()->sendEvent(evName, ev);
+		SubObMediator::Instance()->sendEvent(evName, &ev);
 	}
 	if(_type == "drag"){
 		//cout << "ibox sending - " << _deltaPos.x << ", " << _deltaPos.y << ". N = " << _n << endl;
@@ -40,7 +34,7 @@ void GuiIBox::input(string _type, int _ID, int _n, int _phase, ofVec2f _absPos, 
 		ev.addArg("absPos",_absPos);
 		ev.addArg("deltaPos",_deltaPos);
 		ev.addArg("phase",_phase);
-		SubObMediator::Instance()->sendEvent(evName, ev);
+		SubObMediator::Instance()->sendEvent(evName, &ev);
 	}
 }
 

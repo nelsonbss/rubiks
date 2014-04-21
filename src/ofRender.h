@@ -12,9 +12,9 @@ public:
 	ofRender();
 	void sgCoretoOFmesh(sgC3DObject *obj, CubieMesh &mesh,int numCubie,int selectedObjectID);
 	void setNormals(ofMesh &mesh);
+
 	vector <ofFloatColor> colorsVector;
 	ofFloatColor mate;
-	ofFloatColor matePuzzle;
 	ofFloatColor mateSolid;
 	ofFloatColor green;
 	ofFloatColor orange;

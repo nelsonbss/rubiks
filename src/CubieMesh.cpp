@@ -12,14 +12,6 @@ Triangle::Triangle(int _in1, int _in2, int _in3, ofVec3f _v1, ofVec3f _v2, ofVec
 	vertices.push_back(_v3);
 }
 
-void Triangle::setVertex(int _i, ofVec3f _v){
-	vertices[_i] = _v;
-}
-
-void Triangle::resetCenter(){
-	center = (vertices[0] + vertices[1] + vertices[2]) / 3;
-}
-
 CubieMesh::CubieMesh() : ofMesh(){
 }
 
@@ -29,14 +21,6 @@ void CubieMesh::addTriangle(int _in1, int _in2, int _in3, ofVec3f _v1, ofVec3f _
 }
 
 Triangle CubieMesh::getNearest(ofVec3f _pnt){
-	if (triangles.size()==0) {
-		/*
-		This changed so it will generate a triangle if it is empty when the function is called. 
-		I was not able to reproduce the error but I think this should cover it.
-		*/
-		cout << "Triangles has no content ERROR" << endl;
-		addTriangle(0,1,2,ofVec3f(0,0,0),ofVec3f(0,0,0),ofVec3f(0,0,0),ofVec3f(0,0,1),ofFloatColor(0,1));
-	}
 	Triangle r = triangles[0];
 	float distance = r.getCenter().distance(_pnt);
 	for(auto tIter = triangles.begin() + 1; tIter != triangles.end(); tIter++){
@@ -53,10 +37,10 @@ vector<Triangle> CubieMesh::getTrianglesByNormal(ofVec3f _n){
 	vector<Triangle> tris;
 	for(auto tIter = triangles.begin(); tIter != triangles.end(); tIter++){
 		ofVec3f n = tIter->getNormal();
-		//float d = n.distance(_n);
-		//cout << "compared " << n.x << ", " << n.y << ", " << n.z << " to " << _n.x << ", " << _n.y << ", " << _n.z << " got " << d << endl;
+		float d = n.distance(_n);
+		cout << "compared " << n.x << ", " << n.y << ", " << n.z << " to " << _n.x << ", " << _n.y << ", " << _n.z << " got " << d << endl;
 		if(tIter->getNormal().distance(_n) < 0.05){
-			//cout << "adding to vector." << endl;
+			cout << "adding to vector." << endl;
 			tris.push_back(*tIter);
 		}
 	}
@@ -77,7 +61,7 @@ vector<Triangle> CubieMesh::getTrianglesByColor(ofVec3f _c){
 	}
 	return tris;
 }
-void CubieMesh::setColorToSet(vector<Triangle> tris, ofFloatColor _c){
+ void CubieMesh::setColorToSet(vector<Triangle> tris, ofFloatColor _c){
 	vector <ofFloatColor> colorsVectorT;
 	colorsVectorT = getColors();
 	for(auto tIter = tris.begin(); tIter != tris.end(); tIter++){
@@ -94,69 +78,17 @@ void CubieMesh::setColorToSet(vector<Triangle> tris, ofFloatColor _c){
 	addColors(colorsVectorT);
 }
 
-void CubieMesh::setColorToCurvedObject(ofFloatColor _c){
-	vector <ofFloatColor> colorsVectorT;
-	colorsVectorT = getColors();
-	for(int i=0; i< colorsVectorT.size(); i++){
-		colorsVectorT[i] = _c;
-	}
-	clearColors();
-	addColors(colorsVectorT);
-}
-
-
-void CubieMesh::rotateNormals(float _angle, ofVec3f _axis){
+ void CubieMesh::rotateNormals(float _angle, ofVec3f _axis){
 	for(auto tIter = triangles.begin(); tIter != triangles.end(); tIter++){
 		tIter->setNormal(tIter->getNormal().rotate(_angle, _axis).normalize());
 	}
-}
+ }
 
-void CubieMesh::rotateNormalsAround(float _angle, ofVec3f _axis, ofVec3f _pivot){
-	for(auto tIter = triangles.begin(); tIter != triangles.end(); tIter++){
-		tIter->setNormal(tIter->getNormal().rotate(_angle, _pivot, _axis).normalize());
-	}
-}
-
-void CubieMesh::rotateVertices(float _angle, ofVec3f _axis){
+ void CubieMesh::rotateVertices(float _angle, ofVec3f _axis){
 	for(auto tIter = triangles.begin(); tIter != triangles.end(); tIter++){
 		//tIter->getNormal().rotate(_angle, _axis);
 		tIter->getVertices()[0].rotate(_angle, _axis);
 		tIter->getVertices()[1].rotate(_angle, _axis);
 		tIter->getVertices()[2].rotate(_angle, _axis);
 	}
-}
-
-void CubieMesh::rotateVerticesAround(float _angle, ofVec3f _axis, ofVec3f _pivot){
-	for(auto tIter = triangles.begin(); tIter != triangles.end(); tIter++){
-		ofVec3f r = tIter->getVertices()[0].rotate(_angle, _pivot, _axis);
-		tIter->setVertex(0,r);
-		r = tIter->getVertices()[1].rotate(_angle, _pivot, _axis);
-		tIter->setVertex(1,r);
-		r = tIter->getVertices()[2].rotate(_angle, _pivot, _axis);
-		tIter->setVertex(2, r);
-		ofVec3f v1 = tIter->getVertices()[0];
-		ofVec3f v2 = tIter->getVertices()[1];
-		ofVec3f v3 = tIter->getVertices()[2];
-		tIter->resetCenter();
-	}
-}
-
-void CubieMesh::updatePosition(ofVec3f _pivot, ofVec3f _axis, float _angle){
-	rotateVerticesAround(_angle, _axis, _pivot);
-	rotateNormalsAround(_angle, _axis, _pivot);
-	resetVertices();
-}
-
-void CubieMesh::resetVertices(){
-	for(auto tIter = triangles.begin(); tIter != triangles.end(); tIter++){
-		//tIter->getNormal().rotate(_angle, _axis);
-		vector<int>indeces = tIter->getIndeces();
-		vector<ofVec3f> vertices = tIter->getVertices(); 
-		for(int i = 0; i < indeces.size(); i++){
-			ofVec3f currV = getVertex(indeces[i]);
-			setVertex(indeces[i], vertices[i]);
-			ofVec3f newV = getVertex(indeces[i]);
-			//cout << "Set " << currV.x << ", " << currV.y << ", " << currV.z << " to " << newV.x << ", " << newV.y << ", " << newV.z << endl;
-		}
-	}
-}
+ }

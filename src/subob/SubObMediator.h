@@ -15,7 +15,7 @@ class SubObMediator
         virtual ~SubObMediator(){}
         static SubObMediator* Instance();
         void update(string _subName, Subject* _sub);
-		void sendEvent(string _eventName, SubObEvent* _event);
+		void sendEvent(string _eventName, SubObEvent _event);
         void addObserver(string _subName, Observer* _obs);
         void removeObserver(Observer* _obs);
     protected:

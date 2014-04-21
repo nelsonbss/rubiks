@@ -9,6 +9,41 @@ SubObEventArg::SubObEventArg(){
 	vec3Arg.set(0,0,0);
 }
 
+SubObEvent::~SubObEvent(){
+	/*
+	for(auto mIter = args.begin(); mIter != args.end(); mIter++){
+		if(mIter->second){
+			delete [] mIter->second;
+		}
+	}
+	*/
+	if(!args.empty()){
+		args.clear();
+	}
+}
+
+SubObEvent::SubObEvent(const SubObEvent& e){
+	//this->args = e.args;
+	for(auto mIter = e.args.begin(); mIter != e.args.end(); mIter++){
+		this->args[mIter->first] = mIter->second;
+	}
+	this->name = e.name;
+	this->bActive = e.bActive;
+}
+
+SubObEvent & SubObEvent::operator=(const SubObEvent& e){
+	if(this == &e){
+		return *this;
+	}
+
+	name = e.name;
+	bActive = e.bActive;
+
+	for(auto mIter = e.args.begin(); mIter != e.args.end(); mIter++){
+		args[mIter->first] = mIter->second;
+	}
+}
+
 void SubObEvent::addArg(string _name, string _type, string _val){
 	args[_name] = new SubObEventArg();
 	args[_name]->setName(_name);

@@ -9,12 +9,30 @@ GuiNode::GuiNode(){
 	bHaveText = false;
 	bHaveText2 = false;
 	bHidden = false;
-	bActive = true;
+	bActive = false;
 	pos.set(0,0);
+	bMirrored = false;
+	bFlipped = false;
+	bSelected = false;
+	currentLanguage = "english";
+	bUseHomePos = false;
+}
+
+void GuiNode::draw(ofVec2f _pnt){
+	ofVec2f tPos = drawPos;
+	drawPos = _pnt;
+	draw();
+	drawPos = tPos;
+}
+
+void GuiNode::sendInteraction(){
+	inter.setName(prefix + ":interaction");
+	SubObMediator::Instance()->sendEvent(inter.getName(), inter);
 }
 
 void GuiNode::draw(){
 	ofEnableBlendMode(OF_BLENDMODE_ALPHA);
+	ofDisableDepthTest();
 	if(!bHidden){
 		if(bDrawArea){
 			//cout << "drawing from " << drawPos.x << ", " << drawPos.y << " to " << drawSize.x << ", " << drawSize.y << endl;
@@ -26,13 +44,31 @@ void GuiNode::draw(){
 		nodeDraw();
 		if(bHaveText){
 			ofSetColor(textColor.x, textColor.y, textColor.z);
-			string currentText = GuiConfigurator::Instance()->getText(text);
+			string currentText = GuiConfigurator::Instance()->getText(text, currentLanguage);
 			//cout << "drawing text - " << currentText << endl;
 			if(textAlign == "position"){
-				font.drawString(currentText, drawPos.x + textPosition.x, drawPos.y + textPosition.y);
+				if(bFlipped){
+					ofRectangle bounds = font.getStringBoundingBox(currentText, 0, 0);
+					ofPushMatrix();
+					ofTranslate(drawPos.x + textPosition.x  + bounds.width / 2, drawPos.y + textPosition.y + bounds.height / 2, 0);
+					ofRotateZ(180.0);
+					font.drawString(currentText, -bounds.width / 2, bounds.height / 2);
+					ofPopMatrix();
+				} else {
+					font.drawString(currentText, drawPos.x + textPosition.x, drawPos.y + textPosition.y);
+				}
 				if(bHaveText2){
-					currentText = GuiConfigurator::Instance()->getText(text2);
-					font.drawString(currentText, drawPos.x + textPosition2.x, drawPos.y + textPosition2.y);
+					currentText = GuiConfigurator::Instance()->getText(text2, currentLanguage);
+					if(bFlipped){
+						ofRectangle bounds = font.getStringBoundingBox(currentText, 0, 0);
+						ofPushMatrix();
+						ofTranslate(drawPos.x + textPosition.x  + bounds.width / 2, drawPos.y + textPosition.y + bounds.height / 2, 0);
+						ofRotateZ(180.0);
+						font.drawString(currentText, -bounds.width / 2, bounds.height / 2);
+						ofPopMatrix();
+					} else {
+						font.drawString(currentText, drawPos.x + textPosition2.x, drawPos.y + textPosition2.y);
+					}
 				}
 			} else {
 				ofRectangle box = font.getStringBoundingBox(currentText,0,0);
@@ -41,20 +77,30 @@ void GuiNode::draw(){
 				if(textAlign == "center"){
 					cx = drawPos.x + (drawSize.x / 2 - box.width / 2);
 				}
-				font.drawString(currentText, cx, cy);
+				if(bFlipped){
+					ofPushMatrix();
+					ofTranslate(cx + box.width, cy - box.height, 0);
+					ofRotateZ(180.0);
+					font.drawString(currentText, 0, 0);
+					ofPopMatrix();
+				} else {
+					font.drawString(currentText, cx, cy);
+				}
 			}
 		}
 	}
+	ofEnableDepthTest();
 }
 
 bool GuiNode::isInside(int _x, int _y){
-    cout << name << " checking insides " << drawPos.x << ", " << drawPos.x + (scale * drawSize.x) << " - " << drawPos.y << ", " << drawPos.y + (scale * drawSize.y);
-	cout << " against " << _x << ", " << _y << endl;
+    //cout << name << " checking insides " << drawPos.x << ", " << drawPos.x + (scale * drawSize.x) << " - " << drawPos.y << ", " << drawPos.y + (scale * drawSize.y);
+	//cout << " against " << _x << ", " << _y << endl;
     if((_x > drawPos.x && _x < (drawPos.x + (scale * drawSize.x)) &&
        (_y > drawPos.y && _y < (drawPos.y + (scale * drawSize.y))))){
 		   if(getParam("send-select") == "true"){
 			   input("select", 0, 0, 0, ofVec2f(_x, _y), ofVec2f(0,0));
 		   }
+		   bSelected = true;
 		   return true;
        }
     return false;
@@ -86,6 +132,7 @@ void GuiNode::init(){
 		bHidden= true;
 	}
 	nodeInit();
+	nodeSetPosition();
 	//timer = new ofxTimer();
 }
 
@@ -120,11 +167,14 @@ void GuiNode::setupText(){
 }
 
 void GuiNode::activate(){
+	bActive = true;
 	GuiConfigurator::Instance()->addActive(this);
+	//cout << name << " activating." << end;
 	nodeActivate();
 }
 
 void GuiNode::deactivate(){
+	bActive = false;
 	GuiConfigurator::Instance()->removeActive(this);
 	nodeDeactivate();
 }
@@ -138,14 +188,21 @@ void GuiNode::hide(){
 void GuiNode::unhide(){
 	bHidden = false;
 	bActive = true;
+	//cout << name << " unhiding." << endl;
 	//activate();
 }
 
 void GuiNode::setPosition(){
-	drawPos.x = ofGetWidth() * pos.x;
-	drawPos.y = ofGetHeight() * pos.y;
-	drawSize.x = ofGetWidth() * size.x;
-	drawSize.y = ofGetHeight() * size.y;
+	if(bUseHomePos){
+		drawPos = homePos;
+		bSelected = false;
+	} else {
+		drawPos.x = ofGetWidth() * pos.x;
+		drawPos.y = ofGetHeight() * pos.y;
+		drawSize.x = ofGetWidth() * size.x;
+		drawSize.y = ofGetHeight() * size.y;
+	}
+	nodeSetPosition();
 }
 
 void GuiNode::_windowResized(){
@@ -155,8 +212,9 @@ void GuiNode::_windowResized(){
 
 void GuiNode::execute(){
 	//cout << "sending " << events.size() << " events." << endl;
-	for(vector<SubObEvent*>::iterator sIter = events.begin(); sIter != events.end(); ++sIter){
-		SubObMediator::Instance()->sendEvent((*sIter)->getName(), (*sIter));
+	for(auto sIter = events.begin(); sIter != events.end(); ++sIter){
+		SubObMediator::Instance()->sendEvent((*sIter)->getName(), *(*sIter));
 	}
 	nodeExecute();
+	bSelected = false;
 }

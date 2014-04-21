@@ -15,13 +15,17 @@
 #include "menuPuzzle.h"
 #include "Picker.h"
 
-enum{UP_MODE_MOUSE, UP_MODE_COLOR};
+#define DELAY 30000
+
+enum{UP_MODE_MOUSE, UP_MODE_COLOR, UP_MODE_P};
 
 class game : public Observer{
 public:
-	game(SG_VECTOR p, float w, float h, SG_VECTOR puzzlePos, float iddleTime);
+	game(SG_VECTOR p, float w, float h, SG_VECTOR puzzlePos, ofRectangle _vp, float iddleTime, string myPrefix);
 
-	void setup(sgCObject *sgBunnyi,sgCObject *sgTetrahedroni,sgCObject *sgDodecahedroni,sgCObject *sgIcosahedroni,sgCObject *sgOctahedroni);//,sgCObject *sgTeapoti);
+	//void setup(sgCObject *sgBunnyi,sgCObject *sgTetrahedroni,sgCObject *sgDodecahedroni,sgCObject *sgIcosahedroni,sgCObject *sgOctahedroni, string _prefix);//,sgCObject *sgTeapoti);
+	void setup(string _prefix);
+	void setup();
 	void update();
 	void draw();
 	void exit();
@@ -39,16 +43,20 @@ public:
 	armature *myArmature;
 	puzzle *myPuzzle;
 
-
+	string station;
 	///OBJ file loading and convertion
-	sgCObject *sgBunny;
-	sgCObject *sgTetrahedron;
-	sgCObject *sgDodecahedron;
-	sgCObject *sgIcosahedron;
-	sgCObject *sgOctahedron;
-	sgCObject *sgTeapot;
+	//sgCObject *sgBunny;
+	//sgCObject *sgTetrahedron;
+	//sgCObject *sgDodecahedron;
+	//sgCObject *sgIcosahedron;
+	//sgCObject *sgOctahedron;
+	//sgCObject *sgTeapot;
+
+	map<int, sgCObject*> objects;
+	ofxAssimpModelLoader loader;
+	void loadObjDir(string _path);
 	////
-	void loadObject (int objID,SG_VECTOR p,SG_VECTOR t);
+	void loadObjectG(int objID,SG_VECTOR p,SG_VECTOR t);
 	int objectID;
 
 	/*
@@ -63,9 +71,10 @@ public:
 	void guiNext(){bHaveNext = true;}
 
 	bool bHaveReset;
+	bool bHaveMakeOne;
 	void guiReset(){bHaveReset = true;}
 
-	void update(string _eventName, SubObEvent* _event);
+	void update(string _eventName, SubObEvent _event);
 
 	bool bExtrude;
 	void guiExtrude(){bExtrude = true;}
@@ -154,7 +163,7 @@ public:
 
 	//drawing canvas
 	ofVec3f posCanvas;
-	drawingCanvas *myCanvas;
+	drawingCanvas myCanvas;
 	bool canvasB;
 	void prepareDrawing();
 	ofImage myCanvasImage; //DrawingGrid_555x35.png
@@ -169,11 +178,17 @@ public:
 
 	///////interaction with puzzles on the center
 	void loadPuzzle(puzzle *inputPuzzle); //load a puzzle from the puzzle menu on the center
+	void loadMenuObject (int objID,SG_VECTOR p,SG_VECTOR t);
+	void loadArmatureMenu(int type);
+	void makePuzzle();
 	bool savePuzzleB;
 	menuPuzzle* savePuzzle(SG_POINT slicingPos, SG_VECTOR middlePuzzlePos);
-
+	vector< ofFloatColor > colorsVMenu;
+	vector< ofVec3f > uniqueNormals;
+	////////////////////////////////////////////
 	Picker picker;
 	ofVec3f unprojectedPoint;
+	ofVec3f projectedPoint;
 	ofVec3f lastUnprojectedPoint;
 	ofVec3f mousePoint;
 	bool bUnproject;
@@ -186,7 +201,48 @@ public:
 	void setUseViewport(bool _b){bUseViewport = _b;}
 	void toggleUseViewport(){bUseViewport != bUseViewport;}
 
+	void unprojectPoint(ofVec3f _pnt);
+	void projectPoint(ofVec3f _pnt);
 	int unprojectMode;
 	ofFloatColor newFaceColor;
+
+	ofCamera cam;
+	ofVec3f camPosition;
+
+	string prefix;
+	void setPrefix(string _p){prefix = _p;}
+
+	void updateGui();
+
+	void goToAttract();
+
+	int timeOfLastInteraction;
+	bool bInAttract;
+	void startMove(ofVec3f _pnt);
+	void makeMove(ofVec3f _pnt);
+	float getMainComponent(ofVec3f _pnt);
+	bool bHaveAxis;
+	SG_VECTOR v;
+	double gestureAngles[6];
+	bool bClicked;
+
+	ofVec3f cubiePos;
+	double lastDragDistance;
+
+	ofVec3f cp0;
+	ofVec3f cp1;
+	ofVec3f cp2;
+	ofVec3f cp3;
+	ofVec3f cp4;
+	ofVec3f cp5;
+	ofVec3f cp6;
+
+	//void drawPoints();
+
+	string currentLanguage;
+	void setLanguage(string _lang);
+
+	ofLight light;
+	int dragId;
 };
 #endif /* defined(__Tgame__game__) */

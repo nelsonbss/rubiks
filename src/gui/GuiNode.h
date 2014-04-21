@@ -52,7 +52,9 @@ public:
     virtual bool processMouse(int _x, int _y, int _state) = 0;
 	virtual void setPosition(ofVec2f _pos){pos = _pos;}
 	void setPosition(float _x, float _y){pos.x = _x; pos.y = _y;}
+	void setDrawPosition(ofVec2f _pos){drawPos = _pos; homePos = drawPos; bUseHomePos = true;}
 	void draw();
+	void draw(ofVec2f _pnt);
 	void init();
 	virtual void adjustPosition(ofVec2f _dPos, ofVec2f _aPos){}
     virtual void message(map<string,string> _msg){}
@@ -87,7 +89,7 @@ public:
 	virtual void unhide();
 
 	bool isHidden(){return bHidden;}
-	bool isActive(){
+	virtual bool isActive(){
  		return bActive;
 	}
 
@@ -123,6 +125,9 @@ public:
 	bool bReadyForInput;
 	bool getReadyForInput(){return bReadyForInput;}
 
+	void setMirrored(bool _m){bMirrored = _m;}
+	void setFlipped(bool _f){bFlipped = _f;}
+
     //Virtual methods that each subclass is responsible for defining.
     virtual void execute();
     virtual void executeDrag(int _x, int _y){}
@@ -133,7 +138,18 @@ public:
 	virtual void nodeExecute(){}
 	virtual void nodeActivate(){}
 	virtual void nodeDeactivate(){}
+	virtual void nodeSetPosition(){}
 	virtual void input(string _type, int _ID, int _n, int _phase, ofVec2f _absPos, ofVec2f _deltaPos){cout << "node input" << endl;}
+
+	void setPrefix(string _p){prefix = _p;}
+	string getPrefix(){return prefix;}
+
+	bool isSelected(){return bSelected;}
+
+	SubObEvent inter;
+	void sendInteraction();
+
+	bool bActive;
 
 protected:
 
@@ -142,6 +158,9 @@ protected:
 	vector<SubObEvent*> events;
     ofVec2f pos;
 	ofVec2f drawPos;
+	ofVec2f dragPos;
+	ofVec2f homePos;
+	bool bUseHomePos;
 	ofVec2f drawSize;
     float scale;
 	ofVec2f size;
@@ -153,7 +172,14 @@ protected:
 	ofVec3f drawColor;
 	ofxTimer* timer;
 	bool bHidden;
-	bool bActive;
+
+	bool bMirrored;
+	bool bFlipped;
+
+	string prefix;
+	bool bSelected;
+
+	string currentLanguage;
 };
 
 

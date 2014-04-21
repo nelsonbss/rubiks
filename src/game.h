@@ -248,5 +248,7 @@ public:
 
 	ofLight light;
 	int dragId;
+
+	void setPage(string _page);
 };
 #endif /* defined(__Tgame__game__) */

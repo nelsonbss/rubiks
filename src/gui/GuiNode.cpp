@@ -16,6 +16,7 @@ GuiNode::GuiNode(){
 	bSelected = false;
 	currentLanguage = "english";
 	bUseHomePos = false;
+	bHaveCustomArea = false;
 }
 
 void GuiNode::draw(ofVec2f _pnt){
@@ -33,7 +34,7 @@ void GuiNode::sendInteraction(){
 void GuiNode::draw(){
 	ofEnableBlendMode(OF_BLENDMODE_ALPHA);
 	ofDisableDepthTest();
-	if(!bHidden){
+	//if(!bHidden){
 		if(bDrawArea){
 			//cout << "drawing from " << drawPos.x << ", " << drawPos.y << " to " << drawSize.x << ", " << drawSize.y << endl;
 			ofNoFill();
@@ -88,14 +89,19 @@ void GuiNode::draw(){
 				}
 			}
 		}
-	}
+	//}
 	ofEnableDepthTest();
 }
 
 bool GuiNode::isInside(int _x, int _y){
     //cout << name << " checking insides " << drawPos.x << ", " << drawPos.x + (scale * drawSize.x) << " - " << drawPos.y << ", " << drawPos.y + (scale * drawSize.y);
 	//cout << " against " << _x << ", " << _y << endl;
-    if((_x > drawPos.x && _x < (drawPos.x + (scale * drawSize.x)) &&
+    if(bHaveCustomArea){
+		if((drawPos.x + drawSize.x) < customArea.x || drawPos.y < customArea.y || (drawPos.x + drawSize.x) > (customArea.x + customSize.x) || (drawPos.y + drawSize.y) > (customArea.y + customSize.y)){
+			return false;
+		}
+	}
+	if((_x > drawPos.x && _x < (drawPos.x + (scale * drawSize.x)) &&
        (_y > drawPos.y && _y < (drawPos.y + (scale * drawSize.y))))){
 		   if(getParam("send-select") == "true"){
 			   input("select", 0, 0, 0, ofVec2f(_x, _y), ofVec2f(0,0));
@@ -104,6 +110,12 @@ bool GuiNode::isInside(int _x, int _y){
 		   return true;
        }
     return false;
+}
+
+void GuiNode::setCustomArea(ofVec2f _a, ofVec2f _s){
+	bHaveCustomArea = true;
+	customArea = _a;
+	customSize = _s;
 }
 
 void GuiNode::init(){
@@ -115,6 +127,9 @@ void GuiNode::init(){
 		if(params["draw-area"] == "true"){
 			bDrawArea = true;
 		}
+	}
+	if(getPages() != "none"){
+		registerPages(getPages());
 	}
 	drawZ = 0.0;
 	if(params.count("z")){
@@ -134,6 +149,14 @@ void GuiNode::init(){
 	nodeInit();
 	nodeSetPosition();
 	//timer = new ofxTimer();
+}
+
+void GuiNode::registerPages(string _pages){
+	cout << getName() << " registering pages - " << _pages << endl;
+	vector<string> pages = ofSplitString(_pages, ",");
+	for(auto pIter = pages.begin(); pIter != pages.end(); pIter++){
+		GuiConfigurator::Instance()->addNodeToPage(prefix, *pIter, this);
+	}
 }
 
 void GuiNode::setupText(){

@@ -149,7 +149,18 @@ public:
 	SubObEvent inter;
 	void sendInteraction();
 
+	void registerPages(string _pages);
+
+	string pages;
+	void setPages(string _pages){pages = _pages;}
+	string getPages(){return pages;}
+
 	bool bActive;
+
+	bool bHaveCustomArea;
+	ofVec2f customArea;
+	ofVec2f customSize;
+	void setCustomArea(ofVec2f _a, ofVec2f _s);
 
 protected:
 

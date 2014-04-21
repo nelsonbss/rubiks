@@ -41,6 +41,7 @@
       <pos>0.0,0.0</pos>
       <size>1.0,1.0</size>
       <scale>1.0</scale>
+      <pages>attract,object-start,object-selected,armature-start,armature-selected,color-start,play,draw</pages>
       <param>
         <name>image</name>
         <val>Exports/Background_Top.png</val>
@@ -62,6 +63,7 @@
       <pos>0.0,0.351</pos>
       <size>1.0,1.0</size>
       <scale>1.0</scale>
+      <pages>attract,object-start,object-selected,armature-start,armature-selected,color-start,play,draw</pages>
       <param>
         <name>image</name>
         <val>Exports/Background_Middle.png</val>
@@ -72,7 +74,7 @@
       </param>
       <param>
         <name>active</name>
-        <val>false</val>
+        <val>true</val>
       </param>
       <param>
         <name>draw-position</name>
@@ -83,6 +85,7 @@
       <pos>0.0,0.647</pos>
       <size>1.0,1.0</size>
       <scale>1.0</scale>
+      <pages>attract,object-start,object-selected,armature-start,armature-selected,color-start,play,draw</pages>
       <param>
         <name>image</name>
         <val>Exports/Background_Bottom.png</val>

@@ -63,12 +63,12 @@ void testApp::setup(){
 
 	patterns["%COLOR%"] = "Blue";
 	GuiConfigurator::Instance()->extendGui("main", "sheets.xml", false, false, "bl", patterns);
-	patterns["%COLOR%"] = "Red";
+	/*patterns["%COLOR%"] = "Red";
 	GuiConfigurator::Instance()->extendGui("main", "sheets.xml", true, false, "br", patterns);
 	patterns["%COLOR%"] = "Green";
 	GuiConfigurator::Instance()->extendGui("main", "sheets.xml", false, true, "tl", patterns);
 	patterns["%COLOR%"] = "Orange";
-	GuiConfigurator::Instance()->extendGui("main", "sheets.xml", true, true, "tr", patterns);
+	GuiConfigurator::Instance()->extendGui("main", "sheets.xml", true, true, "tr", patterns);*/
 
 	GuiConfigurator::Instance()->loadText("assets.xml");
 
@@ -180,7 +180,7 @@ void testApp::setup(){
 	tr.height = 320;
 	game *tempGame = new game(gamePos, ofGetWidth(), ofGetHeight(),displayPos, tr, iddleTime,"bl");
 	myGames.push_back(tempGame);
-	tr.x = 960;
+	/*tr.x = 960;
 	game *tempGame2 = new game(gamePos, ofGetWidth(), ofGetHeight(),displayPos, tr, iddleTime,"br");
 	myGames.push_back(tempGame2);
 	tr.x = 300;
@@ -189,7 +189,7 @@ void testApp::setup(){
 	myGames.push_back(tempGame3);
 	tr.x = 960;
 	game *tempGame4 = new game(gamePos, ofGetWidth(), ofGetHeight(),displayPos, tr, iddleTime,"tr");
-	myGames.push_back(tempGame4);
+	myGames.push_back(tempGame4);*/
 	currentGame = 1;
 	//create a second game
 	//game *tempGame2 = new game(gamePos, ofGetWidth(), ofGetHeight(),displayPos,iddleTime);
@@ -284,7 +284,8 @@ void testApp::draw(){
 	//ofEnableDepthTest();
 	ofEnableAlphaBlending();
 	ofDisableDepthTest();
-	SceneManager::Instance()->draw("back");
+	//SceneManager::Instance()->draw("back");
+	GuiConfigurator::Instance()->draw("back");
 	ofEnableDepthTest();
 	ofDisableAlphaBlending();
 	///////////////////START OF RENDERING////////////////////
@@ -401,7 +402,8 @@ void testApp::draw(){
 
 	ofEnableAlphaBlending();
 	ofDisableDepthTest();
-	SceneManager::Instance()->draw("front");
+	//SceneManager::Instance()->draw("front");
+	GuiConfigurator::Instance()->draw("front");
 	ofEnableDepthTest();
 	ofDisableAlphaBlending();
 }

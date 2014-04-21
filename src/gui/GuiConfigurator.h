@@ -48,6 +48,7 @@ public:
 	void makeEvents();
     void print();
     void draw();
+	void draw(string _position);
     void addSheet(string _handle, GuiSheet *_sheet);
     GuiSheet* openSheet(string _name);
     void closeSheet(string _name);
@@ -98,6 +99,12 @@ public:
 
 	map<string, string> patterns;
 
+	void addNodeToPage(string _segment, string _page, GuiNode* _node);
+	void registerGestures(GuiNode* _node);
+	map<string, map<string, vector<GuiNode*> > > nodePages;
+
+	void setCurrentPage(string _member, string _page);
+	map<string, string> currentPages;
 private:
 
     GuiConfigurator();

@@ -216,15 +216,17 @@ void GuiButton::nodeDraw(){
             //if(haveArabic && SceneManager::Instance()->getDisplayArabic()){
              //   arabic.draw(pos.x,pos.y);
             //} else {
-             //cout << name << " drawing image at " << drawPos.x << ", " << drawPos.y << endl;    
+			//cout << name << " drawing image at " << drawPos.x << ", " << drawPos.y << endl;
 			inactive.draw(drawPos.x,drawPos.y, scale * drawSize.x,scale * drawSize.y);
             //}
         } else {
+			//cout << name << " drawing active image at " << drawPos.x << ", " << drawPos.y << endl;
             active.draw(drawPos.x,drawPos.y, drawSize.x, drawSize.y);
         }
     } else {
         //ofRect(pos.x, pos.y, size.x, size.y);
-    }
+		//cout << getName() << " has no image." << endl;
+	}
 	if(bWatchTime){
 		if(ofGetElapsedTimeMillis() - timeOfLastInteraction > 1000){
 			setPosition();

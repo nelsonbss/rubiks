@@ -21,6 +21,8 @@ void GuiWindow::nodeInit(){
 	positionNodes();
 	if(bScrollable){
 		scrollBar.setName(getName() + "-scroll");
+		scrollBar.setPrefix(prefix);
+		scrollBar.setPages(pages);
 		scrollBar.init();
 		if(!bMirrored){
 			scrollBar.setDrawPosition(drawPos + ofVec2f(263, 30));
@@ -152,6 +154,7 @@ void GuiWindow::positionNodes(){
 		//cout << "setting node position to - " << nodePos.x << ", " << nodePos.y << endl;
 		//nodes[i]->setPosition(nodePosF);
 		nodes[i]->setDrawPosition(nodePosD);
+		/*
 		if((nodePosD.y < drawPos.y) || (nodePosD.y > (drawPos.y + drawSize.y))){
 			if(nodes[i]->isActive()){
 				nodes[i]->deactivate();
@@ -161,6 +164,8 @@ void GuiWindow::positionNodes(){
 				nodes[i]->activate();
 			}
 		}
+		*/
+		nodes[i]->setCustomArea(drawPos, drawSize);
 		nodePositions[i].set(nodePos);
 	}
 	windowHeight = (row + 1) * (columnHeight * ofGetHeight());

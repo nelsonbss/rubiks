@@ -6,6 +6,7 @@
     <pos>0.0,0.6475</pos>
     <size>1.0,1.0</size>
     <scale>1.0</scale>
+    <pages>attract</pages>
     <event name="next-step"></event>
     <param>
       <name>tap</name>
@@ -108,6 +109,7 @@
     <pos>0.0,0.73</pos>
     <size>1.0,1.0</size>
     <scale>1.0</scale>
+    <pages>object-start,object-selected,armature-start,armature-selected,color-start,play,draw</pages>
     <param>
       <name>image</name>
       <val>Exports/Rectangle_0x89.png</val>
@@ -129,6 +131,7 @@
     <pos>0.0,0.6475</pos>
     <size>1.0,1.0</size>
     <scale>1.0</scale>
+    <pages>object-start,object-selected,armature-start,armature-selected,color-start,play,draw</pages>
     <event name="toggle-node">
       <arg name="target">
         <type>string</type>
@@ -164,6 +167,7 @@
     <pos>0.055,0.6475</pos>
     <size>1.0,1.0</size>
     <scale>1.0</scale>
+    <pages>object-start,object-selected,armature-start,armature-selected,color-start,play,draw</pages>
     <param>
       <name>image</name>
       <val>Exports/Button_Info_106x0_%COLOR%.png</val>
@@ -188,6 +192,7 @@
     <columns>5</columns>
     <column-width>0.078</column-width>
     <column-height>0.041</column-height>
+    <pages>object-start,object-selected,armature-start,armature-selected,color-start,play,draw</pages>
     <param>
       <name>image</name>
       <val>Exports/TwistyLanguageBar_%COLOR%.png</val>
@@ -212,6 +217,7 @@
       <pos>0.0,0.0</pos>
       <size>0.078,0.041</size>
       <scale>1.0</scale>
+      <pages>object-start,object-selected,armature-start,armature-selected,color-start,play,draw</pages>
       <event name="language-changed">
         <arg name="lang">
           <type>string</type>
@@ -255,6 +261,7 @@
       <pos>0.0,0.0</pos>
       <size>0.078,0.041</size>
       <scale>1.0</scale>
+      <pages>object-start,object-selected,armature-start,armature-selected,color-start,play,draw</pages>
       <event name="language-changed">
         <arg name="lang">
           <type>string</type>
@@ -298,6 +305,7 @@
       <pos>0.0,0.0</pos>
       <size>0.078,0.041</size>
       <scale>1.0</scale>
+      <pages>object-start,object-selected,armature-start,armature-selected,color-start,play,draw</pages>
       <event name="language-changed">
         <arg name="lang">
           <type>string</type>
@@ -342,6 +350,7 @@
     <pos>0.25, 0.7</pos>
     <size>1.0,1.0</size>
     <scale>1.0</scale>
+    <pages>object-start</pages>
     <param>
       <name>image</name>
       <val>Exports/Start_Textbox_456x53_%COLOR%.png</val>
@@ -375,6 +384,7 @@
     <pos>0.0,0.73</pos>
     <size>0.154,0.2215</size>
     <scale>1.0</scale>
+    <pages>object-start,object-selected</pages>
     <columns>3</columns>
     <column-width>0.05</column-width>
     <column-height>0.07</column-height>
@@ -396,6 +406,7 @@
     <pos>0.0,0.73</pos>
     <size>0.154,0.2215</size>
     <scale>1.0</scale>
+    <pages>armature-start,armature-selected</pages>
     <columns>3</columns>
     <column-width>0.05</column-width>
     <column-height>0.05</column-height>
@@ -427,6 +438,7 @@
     <pos>0.0,0.73</pos>
     <size>0.154,0.2215</size>
     <scale>1.0</scale>
+    <pages>color-start</pages>
     <columns>4</columns>
     <column-width>0.038</column-width>
     <column-height>0.05</column-height>
@@ -461,6 +473,7 @@
     <pos>0.2, 0.68</pos>
     <size>0.3,0.25</size>
     <scale>1.0</scale>
+    <pages>object-start,object-selected,armature-start,armature-selected,color-start</pages>
     <param>
       <name>draw-area</name>
       <val>false</val>
@@ -486,6 +499,7 @@
     <pos>0.2, 0.68</pos>
     <size>0.3,0.25</size>
     <scale>1.0</scale>
+    <pages>object-start,object-selected,armature-start,armature-selected,color-start,play,draw</pages>
     <param>
       <name>draw-area</name>
       <val>false</val>
@@ -529,6 +543,7 @@
     <pos>0.01, 0.685</pos>
     <size>1.0,1.0</size>
     <scale>1.0</scale>
+    <pages>play</pages>
     <param>
       <name>image</name>
       <val>Exports/Play_Textbox_22x44_%COLOR%.png</val>
@@ -578,6 +593,7 @@
     <pos>0.154, 0.685</pos>
     <size>1.0,1.0</size>
     <scale>1.0</scale>
+    <pages>draw</pages>
     <param>
       <name>image</name>
       <val>Exports/DrawShape_Textbox_295x33_%COLOR%.png</val>
@@ -623,6 +639,7 @@
     <pos>0.154, 0.685</pos>
     <size>1.0,1.0</size>
     <scale>1.0</scale>
+    <pages>armature-start</pages>
     <param>
       <name>image</name>
       <val>Exports/SelectShape_Textbox_295x33_%COLOR%.png</val>
@@ -668,6 +685,7 @@
     <pos>0.163, 0.685</pos>
     <size>1.0,1.0</size>
     <scale>1.0</scale>
+    <pages>armature-select</pages>
     <param>
       <name>image</name>
       <val>Exports/ArmatureGestures_Textbox_312x33_%COLOR%.png</val>
@@ -714,6 +732,7 @@
     <pos-mirrored>0.4,0.95</pos-mirrored>
     <size>1.0,1.0</size>
     <scale>1.0</scale>
+    <pages>object-start,object-selected,armature-start,armature-selected,color-start,play,draw</pages>
     <event name="reset"></event>
     <param>
       <name>tap</name>
@@ -761,6 +780,7 @@
     <pos-mirrored>0.33,0.95</pos-mirrored>
     <size>1.0,1.0</size>
     <scale>1.0</scale>
+    <pages>object-start</pages>
     <param>
       <name>image</name>
       <val>Exports/Button_Next_789x328_%COLOR%1.png</val>
@@ -799,6 +819,7 @@
     <pos-mirrored>0.33,0.95</pos-mirrored>
     <size>1.0,1.0</size>
     <scale>1.0</scale>
+    <pages>object-selected,armature-start,armature-selected,color-start,play,draw</pages>
     <event name="next-step"></event>
     <param>
       <name>tap</name>

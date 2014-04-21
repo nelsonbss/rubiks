@@ -377,7 +377,7 @@ void game::update(string _eventName, SubObEvent _event){
 		//}
 	}
 	if(_eventName == prefix + ":menupuzzle-selected"){
-		
+
 		SubObEvent ev;
 		ev.setName("hide-node");
 		ev.addArg("target",prefix + ":3d-window");
@@ -1062,7 +1062,7 @@ void game::loadPuzzle(puzzle *inputPuzzle){
 	SubObMediator::Instance()->sendEvent("hide-node", ev);
 } 
 //----------------------------------------------------------------------
-void game::loadMenuObject(int objID, SG_VECTOR p, SG_VECTOR t){
+void game::loadMenuObject(int objID, SG_VECTOR p, SG_VECTOR t, vector< ofFloatColor > colorsVMenu,vector< ofVec3f > uniqueNormals){
 	/////////////////////////////////////////////////////////
 	///////////do game reset..because loading a puzzle can happen at anytime
 	if(step == 6){
@@ -1123,6 +1123,8 @@ void game::loadMenuObject(int objID, SG_VECTOR p, SG_VECTOR t){
 		objectDisplayed = new myobject3D(p,t,station);
 	}
 	objectID = objID;
+	colorsVMenuG =colorsVMenu;
+	uniqueNormalsG = uniqueNormals;
 	bool loaded = false;
 	if(step == 0 || step==1 || step == 7){
 		if(objID != 200){
@@ -1150,7 +1152,7 @@ void game::loadMenuObject(int objID, SG_VECTOR p, SG_VECTOR t){
 			myPuzzle->setup();
 			mySlicer->intersectCubes((sgCObject*)objectDisplayed->getObject()); 
 			myPuzzle->loadPieces(mySlicer->getPieces(),objectID,rotateSlicer);
-			myPuzzle->colorFacesMenuPuzzle(objectDisplayed->objectId,objectDisplayed->uniqueNormals,objectDisplayed->colorsVMenu);
+			myPuzzle->colorFacesMenuPuzzle(objectDisplayed->objectId,uniqueNormalsG,colorsVMenuG);
 			//myPuzzle->colorFaces(objectID);
 			updatePuzzle = true;
 			step = 7;

@@ -96,7 +96,7 @@ void testApp::setup(){
 	////////////////////////////create middle objects (puzzles with no twisting == normal objects with faces colores
 	//this objects are rendering of the sgCore obects just created.
 	//there are 7 objects to be created
-	//ofToggleFullscreen();
+	ofToggleFullscreen();
 
 
 	light.setPointLight();
@@ -275,7 +275,7 @@ void testApp::update(){
 }
 //--------------------------------------------------------------
 void testApp::draw(){
-	ofEnableDepthTest();
+	//ofEnableDepthTest();
 	ofEnableAlphaBlending();
 	ofDisableDepthTest();
 	//SceneManager::Instance()->draw("back");

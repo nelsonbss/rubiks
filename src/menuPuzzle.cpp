@@ -201,14 +201,15 @@ void menuPuzzle::update(string _eventName, SubObEvent _event){
 }
 //-------------------------------------------------------------------------------
 bool menuPuzzle::isInside(int _x, int _y){
-	cout << getName() << " checking insides " << viewport.x << ", " << viewport.x + viewport.width << " - " << viewport.y << ", " << viewport.y + viewport.height;
-	cout << " against " << _x << ", " << _y << endl;
-	cout << getName() << " checking insides." << endl;
+	//cout << getName() << " checking insides " << viewport.x << ", " << viewport.x + viewport.width << " - " << viewport.y << ", " << viewport.y + viewport.height;
+	//cout << " against " << _x << ", " << _y << endl;
+	//cout << getName() << " checking insides." << endl;
 	if((_x > viewport.x && _x < (viewport.x + viewport.width) &&
 		(_y > viewport.y && _y < (viewport.y + viewport.height)))){
 			if(getParam("send-select") == "true"){
 				input("select", 0, 0, 0, ofVec2f(_x, _y), ofVec2f(0,0));
 			}
+			lastMouse.set(_x, _y);
 			return true;
 	}
 	return false;
@@ -356,8 +357,13 @@ void menuPuzzle::input(string _type, int _ID, int _n, int _phase, ofVec2f _absPo
 		tempPos.y += _deltaPos.y;
 		drawPos.set(tempPos.x, tempPos.y);
 		*/
-		viewport.x += _deltaPos.x;
-		viewport.y += _deltaPos.y;
+		ofVec2f currentMouse = _absPos;
+		ofVec2f delta = currentMouse - lastMouse;
+		//drawPos += _deltaPos;
+		//dragPos = drawPos;
+		viewport.x += delta.x;
+		viewport.y += delta.y;
+		lastMouse = currentMouse;
 	}
 	if(_type == "tap"){
 		cout << name << " - executing" << endl;

@@ -130,7 +130,8 @@ void cubie::faceRotate(SG_VECTOR axis,bool di,float angle){
 						}else{
 							masterAngle += angle;
 							for (int j=0; j < numObjs; j++){
-								myMeshs[j].updatePosition(protFaceV, vrotFaceV, angle);
+								objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,ofDegToRad(angle));
+								//////////myMeshs[j].updatePosition(protFaceV, vrotFaceV, angle);
 							}
 							reducing = false;
 						}
@@ -150,7 +151,8 @@ void cubie::faceRotate(SG_VECTOR axis,bool di,float angle){
 						}else{
 							masterAngle -= angle;
 							for (int j=0; j < numObjs; j++){
-								myMeshs[j].updatePosition(protFaceV, vrotFaceV, -angle);
+								objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,ofDegToRad(-angle));
+								//////////myMeshs[j].updatePosition(protFaceV, vrotFaceV, -angle);
 							}
 							reducing = false;
 						}
@@ -213,187 +215,201 @@ void cubie::update(){
 
 			//////////////////////////////////////////////////////////////////////////////////////////////////////
 			//do animation to 0 position from masterAngle position
-			for (int j=0; j < numObjs; j++){
-				SG_POINT protFace = {pointRotate.x,pointRotate.y,pointRotate.z};		///////////////////////////////////////////								 
-				ofVec3f protFaceV(pointRotate.x, pointRotate.y, pointRotate.z);
-				ofVec3f vrotFaceV(vrotFace.x, vrotFace.y, vrotFace.z);
-				bool reducing = true;
-				if(masterAngle == 0){
-					goBackb = false;
-					masterAngle = 0;
-					locked = true;
-				}else if(masterAngle < 0 ){
-					//double aux =  ofDegToRad(1);
-					//objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,aux)
-					while (reducing){
-						if((masterAngle + stepSize) > 0){
-							//overshoots
-							//reduce stepZise
-							stepSize = ceil(stepSize/2);
-						}else{
-							//move can be made
-							masterAngle +=stepSize;
-							myMeshs[j].updatePosition(protFaceV, vrotFaceV, stepSize);
-							reducing = false;
+			//for (int j=0; j < numObjs; j++){
+			SG_POINT protFace = {pointRotate.x,pointRotate.y,pointRotate.z};		///////////////////////////////////////////								 
+			ofVec3f protFaceV(pointRotate.x, pointRotate.y, pointRotate.z);
+			ofVec3f vrotFaceV(vrotFace.x, vrotFace.y, vrotFace.z);
+			bool reducing = true;
+			if(masterAngle == 0){
+				goBackb = false;
+				masterAngle = 0;
+				locked = true;
+			}else if(masterAngle < 0 ){
+
+				while (reducing){
+					if((masterAngle + stepSize) > 0){
+						//overshoots
+						//reduce stepZise
+						stepSize = ceil(stepSize/2);
+					}else{
+						//move can be made
+						masterAngle +=stepSize;
+						for (int j=0; j < numObjs; j++){
+							double aux =  ofDegToRad(stepSize);
+							objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,aux);
+							//////////myMeshs[j].updatePosition(protFaceV, vrotFaceV, stepSize);
 						}
+						reducing = false;
 					}
-				}else if(masterAngle > 0 ){
-					//double aux =  ofDegToRad(-1);
-					//objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,aux);
-					while (reducing){
-						if((masterAngle - stepSize) < 0){
-							//we cant move that amount,,, reduce it
-							stepSize =  ceil(stepSize/2);
-						}else{
-							masterAngle -=stepSize;
-							myMeshs[j].updatePosition(protFaceV, vrotFaceV, -stepSize);
-							reducing = false;
+				}
+			}else if(masterAngle > 0 ){
+
+				while (reducing){
+					if((masterAngle - stepSize) < 0){
+						//we cant move that amount,,, reduce it
+						stepSize =  ceil(stepSize/2);
+					}else{
+						masterAngle -=stepSize;
+						for (int j=0; j < numObjs; j++){
+							double aux =  ofDegToRad(stepSize);
+							objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,-aux);
+							//////////myMeshs[j].updatePosition(protFaceV, vrotFaceV, -stepSize);
 						}
+						reducing = false;
 					}
 				}
 			}
+			//}
 		}
 		if(moving==true){
 
 			/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			//do 90 deg animation to new position
-			for (int j=0; j < numObjs; j++){
-				SG_POINT protFace = {pointRotate.x,pointRotate.y,pointRotate.z};
-				ofVec3f protFaceV(pointRotate.x, pointRotate.y, pointRotate.z);
-				ofVec3f vrotFaceV(vrotFace.x, vrotFace.y, vrotFace.z);
-				bool reducing = true;
-				//////if(masterAngle == 90 || masterAngle == -90){
-				//////	moving = false;
-				//////	masterAngle = 0;
-				//////}else if(masterAngle >= 45 ){
-				//////	while (reducing){
-				//////		if((masterAngle + stepSize) > 90){
-				//////			//overshoots
-				//////			//reduce stepZise
-				//////			stepSize = ceil(stepSize/2);
-				//////		}else{
-				//////			//move can be made
-				//////			masterAngle +=stepSize;
-				//////			myMeshs[j].updatePosition(protFaceV, vrotFaceV, stepSize);
-				//////			reducing = false;
-				//////		}
-				//////	}
-				//////}else if(masterAngle < 45 ){
-				//////	while (reducing){
-				//////		if((masterAngle - stepSize) < -90){
-				//////			//we cant move that amount,,, reduce it
-				//////			stepSize =  ceil(stepSize/2);
-				//////		}else{
-				//////			masterAngle -=stepSize;
-				//////			myMeshs[j].updatePosition(protFaceV, vrotFaceV, -stepSize);
-				//////			reducing = false;
-				//////		}
-				//////	}
-				//////}
-				//if(sample==false){
-				//	//this should only be sampled once during the animation
-				//	rotXa = 0;//myMatrix.at(myMatrix.size()-2).deg;
-				//	sample=true;
-				//}
-				if(dir == true){
-					//animate rotation xc
-					//tempDeg2 = 90-masterAngle;
-					//if(movingXC == true){
-					while (reducing){
-						if(masterAngle==90){
-							moving = false;
-							masterAngle = 0;
-							reducing = false;
-							locked = true;
-						}else if(masterAngle + stepSize > 90){
-							//overshoots
-							//reduce stepZise
-							stepSize =  ceil(stepSize/2);
-						}else{
-							//move can be made
-							masterAngle +=stepSize;
-							myMeshs[j].updatePosition(protFaceV, vrotFaceV, stepSize);
-							reducing = false;
+			//for (int j=0; j < numObjs; j++){
+			SG_POINT protFace = {pointRotate.x,pointRotate.y,pointRotate.z};
+			ofVec3f protFaceV(pointRotate.x, pointRotate.y, pointRotate.z);
+			ofVec3f vrotFaceV(vrotFace.x, vrotFace.y, vrotFace.z);
+			bool reducing = true;
+			//////if(masterAngle == 90 || masterAngle == -90){
+			//////	moving = false;
+			//////	masterAngle = 0;
+			//////}else if(masterAngle >= 45 ){
+			//////	while (reducing){
+			//////		if((masterAngle + stepSize) > 90){
+			//////			//overshoots
+			//////			//reduce stepZise
+			//////			stepSize = ceil(stepSize/2);
+			//////		}else{
+			//////			//move can be made
+			//////			masterAngle +=stepSize;
+			//////			myMeshs[j].updatePosition(protFaceV, vrotFaceV, stepSize);
+			//////			reducing = false;
+			//////		}
+			//////	}
+			//////}else if(masterAngle < 45 ){
+			//////	while (reducing){
+			//////		if((masterAngle - stepSize) < -90){
+			//////			//we cant move that amount,,, reduce it
+			//////			stepSize =  ceil(stepSize/2);
+			//////		}else{
+			//////			masterAngle -=stepSize;
+			//////			myMeshs[j].updatePosition(protFaceV, vrotFaceV, -stepSize);
+			//////			reducing = false;
+			//////		}
+			//////	}
+			//////}
+			//if(sample==false){
+			//	//this should only be sampled once during the animation
+			//	rotXa = 0;//myMatrix.at(myMatrix.size()-2).deg;
+			//	sample=true;
+			//}
+			if(dir == true){
+				//animate rotation xc
+				//tempDeg2 = 90-masterAngle;
+				//if(movingXC == true){
+				while (reducing){
+					if(masterAngle==90){
+						moving = false;
+						masterAngle = 0;
+						reducing = false;
+						locked = true;
+					}else if(masterAngle + stepSize > 90){
+						//overshoots
+						//reduce stepZise
+						stepSize =  ceil(stepSize/2);
+					}else{
+						//move can be made
+						masterAngle +=stepSize;
+						for (int j=0; j < numObjs; j++){
+							double aux =  ofDegToRad(stepSize);
+							objectList[0]->GetTempMatrix()->Rotate(protFace,vrotFace,aux);
+							//////////myMeshs[j].updatePosition(protFaceV, vrotFaceV, stepSize);
 						}
+						reducing = false;
+					}
 
-					}
-					/*if(rotXa < tempDeg2){*/
-					//ct2 = ofGetElapsedTimeMillis();
-					//rotXa += stepSize;//animTime;//0.1;//(ct2 - ct1)*((1.57)/animTime);
-					//double aux =  ofDegToRad(1);
-					/*for (int j=0; j < numObjs; j++){*/
-					//objectList[0]->GetTempMatrix()->Rotate(protFace,vrotFace,aux);
-					//myMeshs[j].updatePosition(protFaceV, vrotFaceV, stepSize);
-					//}
-					//ct1 = ct2;
-					//}else if(rotXa >= tempDeg2){
-					//	//////rotXa = tempDeg2;
-					//	//////double aux =  ofDegToRad(rotXa);
-					//	////////for (int j=0; j < numObjs; j++){
-					//	//objectList[0]->GetTempMatrix()->Rotate(protFace,vrotFace,90);
-					//	////////}
-					//	moving = false;
-					//	masterAngle = 0;
-					//	//movingXC = false;
-					//	//if(undoing == true){
-					//	//	//pop 2 histories on this cubie
-					//	//	//this will leave us in the same position
-					//	//	myMatrix.pop_back();
-					//	//	myMatrix.pop_back();
-					//	//	undoing=false;
-					//	//}
-					//}
-					//}
-				}else{
-					//xcc
-					while (reducing){
-						if(masterAngle==-90){
-							moving = false;
-							masterAngle = 0;
-							reducing = false;
-							locked = true;
-						}else if(masterAngle - stepSize < -90){
-							//overshoots
-							//reduce stepZise
-							stepSize =  ceil(stepSize/2);
-						}else{
-							//move can be made
-							masterAngle -=stepSize;
-							myMeshs[j].updatePosition(protFaceV, vrotFaceV, -stepSize);
-							reducing = false;
-						}
-					}
-					//tempDeg2 = -90-masterAngle;
-					////if(movingXCC == true){
-					//if(rotXa > tempDeg2){
-					//	//ct2 = ofGetElapsedTimeMillis();
-					//	rotXa -= stepSize;//animTime;//0.1;  //(ct2 - ct1)*((1.57)/animTime);
-					//	//double aux =  ofDegToRad(-1);
-					//	//////for (int j=0; j < numObjs; j++){
-					//	//objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,aux);
-					//	myMeshs[j].updatePosition(protFaceV, vrotFaceV, -stepSize);
-					//	//////}
-					//	//ct1 = ct2;
-					//}else  if(rotXa <= tempDeg2){
-					//	//////rotXa = tempDeg2;
-					//	//////double aux =  ofDegToRad(rotXa);
-					//	//////for (int j=0; j < numObjs; j++){
-					//	//////	objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,aux);
-					//	//////}
-					//	moving = false;
-					//	masterAngle = 0;
-					//	//movingXCC = false;
-					//	//if(undoing == true){
-					//	//	//pop 2 histories on this cubie
-					//	//	//this wwill leave us in the same position
-					//	//	myMatrix.pop_back();
-					//	//	myMatrix.pop_back();
-					//	//	undoing=false;
-					//	//}
-					//}
-					//}
 				}
+				/*if(rotXa < tempDeg2){*/
+				//ct2 = ofGetElapsedTimeMillis();
+				//rotXa += stepSize;//animTime;//0.1;//(ct2 - ct1)*((1.57)/animTime);
+				//double aux =  ofDegToRad(1);
+				/*for (int j=0; j < numObjs; j++){*/
+				//objectList[0]->GetTempMatrix()->Rotate(protFace,vrotFace,aux);
+				//myMeshs[j].updatePosition(protFaceV, vrotFaceV, stepSize);
+				//}
+				//ct1 = ct2;
+				//}else if(rotXa >= tempDeg2){
+				//	//////rotXa = tempDeg2;
+				//	//////double aux =  ofDegToRad(rotXa);
+				//	////////for (int j=0; j < numObjs; j++){
+				//	//objectList[0]->GetTempMatrix()->Rotate(protFace,vrotFace,90);
+				//	////////}
+				//	moving = false;
+				//	masterAngle = 0;
+				//	//movingXC = false;
+				//	//if(undoing == true){
+				//	//	//pop 2 histories on this cubie
+				//	//	//this will leave us in the same position
+				//	//	myMatrix.pop_back();
+				//	//	myMatrix.pop_back();
+				//	//	undoing=false;
+				//	//}
+				//}
+				//}
+			}else{
+				//xcc
+				while (reducing){
+					if(masterAngle==-90){
+						moving = false;
+						masterAngle = 0;
+						reducing = false;
+						locked = true;
+					}else if(masterAngle - stepSize < -90){
+						//overshoots
+						//reduce stepZise
+						stepSize =  ceil(stepSize/2);
+					}else{
+						//move can be made
+						masterAngle -=stepSize;
+						for (int j=0; j < numObjs; j++){
+							double aux =  ofDegToRad(stepSize);
+							objectList[0]->GetTempMatrix()->Rotate(protFace,vrotFace,-aux);
+							//////////myMeshs[j].updatePosition(protFaceV, vrotFaceV, -stepSize);
+						}
+						reducing = false;
+					}
+				}
+				//tempDeg2 = -90-masterAngle;
+				////if(movingXCC == true){
+				//if(rotXa > tempDeg2){
+				//	//ct2 = ofGetElapsedTimeMillis();
+				//	rotXa -= stepSize;//animTime;//0.1;  //(ct2 - ct1)*((1.57)/animTime);
+				//	//double aux =  ofDegToRad(-1);
+				//	//////for (int j=0; j < numObjs; j++){
+				//	//objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,aux);
+				//	myMeshs[j].updatePosition(protFaceV, vrotFaceV, -stepSize);
+				//	//////}
+				//	//ct1 = ct2;
+				//}else  if(rotXa <= tempDeg2){
+				//	//////rotXa = tempDeg2;
+				//	//////double aux =  ofDegToRad(rotXa);
+				//	//////for (int j=0; j < numObjs; j++){
+				//	//////	objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,aux);
+				//	//////}
+				//	moving = false;
+				//	masterAngle = 0;
+				//	//movingXCC = false;
+				//	//if(undoing == true){
+				//	//	//pop 2 histories on this cubie
+				//	//	//this wwill leave us in the same position
+				//	//	myMatrix.pop_back();
+				//	//	myMatrix.pop_back();
+				//	//	undoing=false;
+				//	//}
+				//}
+				//}
 			}
+			//}
 
 
 
@@ -560,8 +576,8 @@ void cubie::draw(){
 		for (int j=0; j < numObjs; j++){
 			glPushMatrix();
 			//ofScale(1.2,1.2,1.2);
-			//if (objectList[j]->GetTempMatrix()!=0)
-			//glMultMatrixd(objectList[j]->GetTempMatrix()->GetTransparentData());
+			if (objectList[j]->GetTempMatrix()!=0)
+			glMultMatrixd(objectList[j]->GetTempMatrix()->GetTransparentData());
 			//objectList[j]->DestroyTempMatrix();
 			if(bDraw){
 				if(bDrawWire){

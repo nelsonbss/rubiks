@@ -191,6 +191,8 @@ protected:
 	bool bSelected;
 
 	string currentLanguage;
+
+	ofVec2f lastMouse;
 };
 
 

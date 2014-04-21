@@ -798,7 +798,7 @@ void GuiConfigurator::draw(string _position){
 			}
 		}
 		for(auto nIter = nodePages["all"][page].begin(); nIter != nodePages["all"][page].end(); nIter++){	
-			cout << "\tDrawing " << (*nIter)->getName() << endl;
+			//cout << "\tDrawing " << (*nIter)->getName() << endl;
 			if((*nIter)->getParam("draw-position") == _position){
 				//cout << "Drawing " << (*nIter)->getName() << endl;
 				(*nIter)->draw();

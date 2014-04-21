@@ -1,13 +1,14 @@
 #include "testApp.h"
 #include "game.h"
+#include "ofxAssimpModelLoader.h"
 ///////////////////////////////////////////
 
 #define displayXBlue 550
 #define displayYBlue 1150
 #define displayZ -800
 #define iddleTime 120
-#define puzzleItems 0
-#define USE_MOUSE 1
+#define puzzleItems 10
+#define USE_MOUSE 0
 
 std::map<int,gwc::Point> active_points;
 
@@ -63,12 +64,12 @@ void testApp::setup(){
 
 	patterns["%COLOR%"] = "Blue";
 	GuiConfigurator::Instance()->extendGui("main", "sheets.xml", false, false, "bl", patterns);
-	/*patterns["%COLOR%"] = "Red";
+	patterns["%COLOR%"] = "Red";
 	GuiConfigurator::Instance()->extendGui("main", "sheets.xml", true, false, "br", patterns);
 	patterns["%COLOR%"] = "Green";
 	GuiConfigurator::Instance()->extendGui("main", "sheets.xml", false, true, "tl", patterns);
 	patterns["%COLOR%"] = "Orange";
-	GuiConfigurator::Instance()->extendGui("main", "sheets.xml", true, true, "tr", patterns);*/
+	GuiConfigurator::Instance()->extendGui("main", "sheets.xml", true, true, "tr", patterns);
 
 	GuiConfigurator::Instance()->loadText("assets.xml");
 
@@ -90,14 +91,23 @@ void testApp::setup(){
 	initOFRender();
 
 	/////////////////////////////load obj files into sgCore objects
-	cout << "loading obj files " << endl;
+	//cout << "loading obj files " << endl;
 	//loadOBJfiles();
 	////////////////////////////create middle objects (puzzles with no twisting == normal objects with faces colores
 	//this objects are rendering of the sgCore obects just created.
 	//there are 7 objects to be created
-	ofToggleFullscreen();
+	//ofToggleFullscreen();
+
+
+	light.setPointLight();
+	light.setSpotlight(60.0);
+	light.setDirectional();
+	light.setDiffuseColor( ofColor(255.f, 255.f, 255.f));
+	light.setSpecularColor( ofColor(255.f, 255.f, 255.f));
+
 
 	cout << "creating puzzle menu items" << endl;
+
 	middlePuzzlePos.x = 0;
 	middlePuzzlePos.y = (ofGetWindowHeight()/2)-90;
 	middlePuzzlePos.z = 0;
@@ -114,36 +124,17 @@ void testApp::setup(){
 	slicingPos.z = 0;
 
 	//ofVec3f rotateSlicer = ofVec3f (0,0,0);
+	loadObjDirG("obj/");
 
 	for(int i=0; i < puzzleItems; i++){
 		middlePuzzlePos.x = 10 + (i * 10) + (i*180);
-		/*
-		if(i > 6){
-		middlePuzzlePos.x = middlePuzzlePos.x - 60  + ((i-5)*10);
-		}
-		*/
 		puzzleDisplayed = new menuPuzzle(slicingPos, middlePuzzlePos, i);
-		if(i==0){
-			puzzleDisplayed->loadObject(sgCreateTorus(100,70,50,50),1);
-		}else if(i == 1){
-			puzzleDisplayed->loadObject(sgCreateBox(300,300,300),2);
-		}else if(i == 2){
-			puzzleDisplayed->loadObject((sgC3DObject *)sgTetrahedron->Clone(),3);
-		}else if(i == 3){
-			puzzleDisplayed->loadObject((sgC3DObject *)sgBunny->Clone(),4);
-		}else if(i == 4){
-			puzzleDisplayed->loadObject((sgC3DObject *)sgDodecahedron->Clone(),5);
-		}else if(i == 5){
-			puzzleDisplayed->loadObject((sgC3DObject *)sgIcosahedron->Clone(),6);
-		}else if(i == 6){
-			puzzleDisplayed->loadObject((sgC3DObject *)sgOctahedron->Clone(),7);
-		}else if(i == 7){
-			//puzzleDisplayed->loadObject((sgC3DObject *)sgOctahedron->Clone(),8);
-			puzzleDisplayed->loadObject((sgC3DObject *)sgBunny->Clone(),4);
-		}else{
-			//slots for other user created puzzles
-			puzzleDisplayed->loadObject(sgCreateBox(300,300,300),2);
-		}
+		puzzleDisplayed->loadObjectMP((sgC3DObject*)objectsMP[i+1]->Clone(),i+1);
+		//if(i==0){
+		//	//puzzleDisplayed->loadObject(sgCreateTorus(100,70,50,50),1);
+		//}else if(i == 1){
+		//	//puzzleDisplayed->loadObject(sgCreateBox(300,300,300),2);
+		//}
 		cout << "created puzzle menu object: " << i <<endl;
 		puzzleDisplayed->setup();
 		puzzleDisplayed->update();
@@ -178,9 +169,10 @@ void testApp::setup(){
 	tr.y = 700;
 	tr.width = 660;
 	tr.height = 320;
+	//myGames.erase (myGames.begin(),myGames.end());
 	game *tempGame = new game(gamePos, ofGetWidth(), ofGetHeight(),displayPos, tr, iddleTime,"bl");
 	myGames.push_back(tempGame);
-	/*tr.x = 960;
+	tr.x = 960;
 	game *tempGame2 = new game(gamePos, ofGetWidth(), ofGetHeight(),displayPos, tr, iddleTime,"br");
 	myGames.push_back(tempGame2);
 	tr.x = 300;
@@ -189,7 +181,7 @@ void testApp::setup(){
 	myGames.push_back(tempGame3);
 	tr.x = 960;
 	game *tempGame4 = new game(gamePos, ofGetWidth(), ofGetHeight(),displayPos, tr, iddleTime,"tr");
-	myGames.push_back(tempGame4);*/
+	myGames.push_back(tempGame4);
 	currentGame = 1;
 	//create a second game
 	//game *tempGame2 = new game(gamePos, ofGetWidth(), ofGetHeight(),displayPos,iddleTime);
@@ -213,6 +205,8 @@ void testApp::setup(){
 	//ofSetupScreenOrtho(ofGetWidth(), ofGetHeight());
 	//ofSetupScreenPerspective(ofGetWidth(), ofGetHeight(), 0.0);
 	//ofEnableAntiAliasing();
+
+
 }
 //--------------------------------------------------------------
 void testApp::update(){
@@ -385,18 +379,13 @@ void testApp::draw(){
 	//}
 
 
-	////////////////////////PUZZLE //////////////////////
+	////////////////////////PUZZLE  //////////////////////
 	///////////////////////////////draw games
 	for(int i = 0; i < myGames.size(); i++){
 		myGames[i]->draw();
 	}
 
-	//middle puzzles
-	for(int i=0; i < middlePuzzles.size();i++){
-		middlePuzzles[i]->draw();
-	}
-
-	///////////////////END OF RENDERING////////////////////
+	///////////////////END OF RENDERING     ////////////////////
 	//stopOFLights();
 	//ofDisableDepthTest();
 
@@ -406,6 +395,22 @@ void testApp::draw(){
 	GuiConfigurator::Instance()->draw("front");
 	ofEnableDepthTest();
 	ofDisableAlphaBlending();
+
+	///////////////////////////////middle puzzles  ///////////////////////////////
+	ofEnableLighting();
+	light.enable();
+	light.setPosition(ofGetWindowWidth()/ 2, ofGetWindowHeight()/ 2, -400);
+	light.lookAt(ofVec3f(ofGetWindowWidth()/ 2, ofGetWindowHeight()/ 2, 0));
+	
+	for(int i=0; i < middlePuzzles.size();i++){
+		middlePuzzles[i]->draw();
+	}
+	light.disable();
+	ofDisableLighting();
+	///////////////////////////////middle puzzles  ///////////////////////////////
+
+	ofEnableAlphaBlending();
+	ofDisableDepthTest();
 }
 
 //-------------------------------------------------------------- 
@@ -559,177 +564,162 @@ void testApp::exit(){
 
 	//sgFreeKernel();
 }
-//------------------------------------------------------------------------------
-void testApp::loadOBJfiles(){
-	////////////////////////////////////////load heavy models
-	bunny.loadModel("bunny.obj");
-	//need to make it an sgCore3DObject to be able to slice it
-	ofMesh tempMesh = bunny.getMesh(0);
-	//get vertices from mesh
-	vector<ofVec3f> bunnyVert = tempMesh.getVertices();
-	//make an array[] from this vector
-	SG_POINT *vert = new SG_POINT[bunnyVert.size()];
-	for(int i=0;i<bunnyVert.size(); i++){
-		vert[i].x = bunnyVert[i].x;
-		vert[i].y = bunnyVert[i].y;
-		vert[i].z = bunnyVert[i].z;
+//----------------------------------------------------------------------------------------
+void testApp::loadObjDirG(string _path){
+	ofDirectory dir2(_path);
+	dir2.allowExt("obj");
+	dir2.listDir();
+	vector<ofFile> filesG = dir2.getFiles();
+	for(auto fIter = filesG.begin(); fIter != filesG.end(); fIter++){
+		string name = fIter->getFileName();
+		int id = ofToInt(ofSplitString(name, "_")[0]);
+		loaderG.loadModel(_path + name);
+		ofMesh tempMesh = loaderG.getMesh(0);
+		vector<ofVec3f> vertsG = tempMesh.getVertices();
+		//make an array[] from this vector
+		SG_POINT *vertG = new SG_POINT[vertsG.size()];
+		for(int i=0;i<vertsG.size(); i++){
+			vertG[i].x = vertsG[i].x;
+			vertG[i].y = vertsG[i].y;
+			vertG[i].z = vertsG[i].z;
+		}
+		//get indices from mesh
+		vector<ofIndexType> indices = tempMesh.getIndices();
+		//make an array[] from this vector
+		SG_INDEX_TRIANGLE *indexes2 = new SG_INDEX_TRIANGLE[indices.size()];
+		for(int i=0;i<indices.size(); i++){
+			indexes2->ver_indexes[i] = indices[i];
+		}
+		//generate sgC3DObject from geometry information
+		sgCObject* tObj2 = sgFileManager::ObjectFromTriangles(vertG,vertsG.size(),indexes2,indices.size()/3); 
+		objectsMP[id] = tObj2;
+		delete [] vertG;
+		delete [] indexes2;
 	}
-	//get indices from mesh
-	vector<ofIndexType> bunnyIndices = tempMesh.getIndices();
-	//make an array[] from this vector
-	SG_INDEX_TRIANGLE *indexes = new SG_INDEX_TRIANGLE[bunnyIndices.size()];
-	for(int i=0;i<bunnyIndices.size(); i++){
-		indexes->ver_indexes[i] = bunnyIndices[i];
-	}
-	//generate sgC3DObject from geometry information
-	sgBunny = sgFileManager::ObjectFromTriangles(vert,bunnyVert.size(),indexes,bunnyIndices.size()/3); 
-	delete [] vert;
-	delete [] indexes;
-	////////////////////////////////////////load heavy models
-	tetrahedron.loadModel("tetrahedronNew.obj");
-	//need to make it an sgCore3DObject to be able to slice it
-	ofMesh tempMesh1 = tetrahedron.getMesh(0);
-	//get vertices from mesh
-	vector<ofVec3f> tetrahedronVert = tempMesh1.getVertices();
-	//make an array[] from this vector
-	SG_POINT *vert1 = new SG_POINT[tetrahedronVert.size()];
-	for(int i=0;i<tetrahedronVert.size(); i++){
-		vert1[i].x = tetrahedronVert[i].x;
-		vert1[i].y = tetrahedronVert[i].y;
-		vert1[i].z = tetrahedronVert[i].z;
-	}
-	//get indices from mesh
-	vector<ofIndexType>  tetrahedronIndices = tempMesh1.getIndices();
-	//make an array[] from this vector
-	SG_INDEX_TRIANGLE *indexes1 = new SG_INDEX_TRIANGLE[tetrahedronIndices.size()];
-	for(int i=0;i<tetrahedronIndices.size(); i++){
-		indexes1->ver_indexes[i] = tetrahedronIndices[i];
-	}
-	//generate sgC3DObject from geometry information
-	sgTetrahedron = sgFileManager::ObjectFromTriangles(vert1,tetrahedronVert.size(),indexes1,tetrahedronIndices.size()/3); 
-	delete [] vert1;
-	delete [] indexes1;
-	////////////////////////////////////////load heavy models
-	dodecahedron.loadModel("dodecahedron.obj");
-	//need to make it an sgCore3DObject to be able to slice it
-	ofMesh tempMesh2 = dodecahedron.getMesh(0);
-	//get vertices from mesh
-	vector<ofVec3f> dodecahedronVert = tempMesh2.getVertices();
-	//make an array[] from this vector
-	SG_POINT *vert2 = new SG_POINT[dodecahedronVert.size()];
-	for(int i=0;i<dodecahedronVert.size(); i++){
-		vert2[i].x = dodecahedronVert[i].x;
-		vert2[i].y = dodecahedronVert[i].y;
-		vert2[i].z = dodecahedronVert[i].z;
-	}
-	//get indices from mesh
-	vector<ofIndexType>  dodecahedronIndices = tempMesh2.getIndices();
-	//make an array[] from this vector
-	SG_INDEX_TRIANGLE *indexes2 = new SG_INDEX_TRIANGLE[dodecahedronIndices.size()];
-	for(int i=0;i<dodecahedronIndices.size(); i++){
-		indexes2->ver_indexes[i] = dodecahedronIndices[i];
-	}
-	//generate sgC3DObject from geometry information
-	sgDodecahedron = sgFileManager::ObjectFromTriangles(vert2,dodecahedronVert.size(),indexes2,dodecahedronIndices.size()/3); 
-	delete [] vert2;
-	delete [] indexes2;
-	////////////////////////////////////////load heavy models
-	icosahedron.loadModel("icosahedron.obj");
-	//need to make it an sgCore3DObject to be able to slice it
-	ofMesh tempMesh3 = icosahedron.getMesh(0);
-	//get vertices from mesh
-	vector<ofVec3f> icosahedronVert = tempMesh3.getVertices();
-	//make an array[] from this vector
-	SG_POINT *vert3 = new SG_POINT[icosahedronVert.size()];
-	for(int i=0;i<icosahedronVert.size(); i++){
-		vert3[i].x = icosahedronVert[i].x;
-		vert3[i].y = icosahedronVert[i].y;
-		vert3[i].z = icosahedronVert[i].z;
-	}
-	//get indices from mesh
-	vector<ofIndexType>  icosahedronIndices = tempMesh3.getIndices();
-	//make an array[] from this vector
-	SG_INDEX_TRIANGLE *indexes3 = new SG_INDEX_TRIANGLE[icosahedronIndices.size()];
-	for(int i=0;i<icosahedronIndices.size(); i++){
-		indexes3->ver_indexes[i] = icosahedronIndices[i];
-	}
-	//generate sgC3DObject from geometry information
-	sgIcosahedron = sgFileManager::ObjectFromTriangles(vert3,icosahedronVert.size(),indexes3,icosahedronIndices.size()/3); 
-	delete [] vert3;
-	delete [] indexes3;
-	////////////////////////////////////////load heavy models
-	octahedron.loadModel("octahedron.obj");
-	//need to make it an sgCore3DObject to be able to slice it
-	ofMesh tempMesh4 = octahedron.getMesh(0);
-	//get vertices from mesh
-	vector<ofVec3f> octahedronVert = tempMesh4.getVertices();
-	//make an array[] from this vector
-	SG_POINT *vert4 = new SG_POINT[octahedronVert.size()];
-	for(int i=0;i<octahedronVert.size(); i++){
-		vert4[i].x = octahedronVert[i].x;
-		vert4[i].y = octahedronVert[i].y;
-		vert4[i].z = octahedronVert[i].z;
-	}
-	//get indices from mesh
-	vector<ofIndexType>  octahedronIndices = tempMesh4.getIndices();
-	//make an array[] from this vector
-	SG_INDEX_TRIANGLE *indexes4 = new SG_INDEX_TRIANGLE[octahedronIndices.size()];
-	for(int i=0;i<octahedronIndices.size(); i++){
-		indexes4->ver_indexes[i] = octahedronIndices[i];
-	}
-	//generate sgC3DObject from geometry information
-	sgOctahedron = sgFileManager::ObjectFromTriangles(vert4,octahedronVert.size(),indexes4,octahedronIndices.size()/3); 
-	delete [] vert4;
-	delete [] indexes4;
-	//////////////////////////////////////////load heavy models
-	//sphere.loadModel("sphere300_20.obj");
-	////need to make it an sgCore3DObject to be able to slice it
-	//ofMesh tempMesh5 = sphere.getMesh(0);
-	////get vertices from mesh
-	//vector<ofVec3f> sphereVert = tempMesh5.getVertices();
-	////make an array[] from this vector
-	//SG_POINT *vert5 = new SG_POINT[sphereVert.size()];
-	//for(int i=0;i<sphereVert.size(); i++){
-	//	vert5[i].x = sphereVert[i].x;
-	//	vert5[i].y = sphereVert[i].y;
-	//	vert5[i].z = sphereVert[i].z;
-	//}
-	////get indices from mesh
-	//vector<ofIndexType>  sphereIndices = tempMesh5.getIndices();
-	////make an array[] from this vector
-	//SG_INDEX_TRIANGLE *indexes5 = new SG_INDEX_TRIANGLE[sphereIndices.size()];
-	//for(int i=0;i<sphereIndices.size(); i++){
-	//	indexes5->ver_indexes[i] = sphereIndices[i];
-	//}
-	////generate sgC3DObject from geometry information
-	//sgSphere = sgFileManager::ObjectFromTriangles(vert5,sphereVert.size(),indexes5,sphereIndices.size()/3); 
-	//delete [] vert5;
-	//delete [] indexes5;
-	//////////////////////////////////////////load heavy models
-	//pot.loadModel("teapot.obj");
-	////need to make it an sgCore3DObject to be able to slice it
-	//ofMesh tempMesh5 = pot.getMesh(0);
-	////get vertices from mesh
-	//vector<ofVec3f> teapot3Vert = tempMesh5.getVertices();
-	////make an array[] from this vector
-	//SG_POINT *vert5 = new SG_POINT[teapot3Vert.size()];
-	//for(int i=0;i<teapot3Vert.size(); i++){
-	//	vert5[i].x = teapot3Vert[i].x;
-	//	vert5[i].y = teapot3Vert[i].y;
-	//	vert5[i].z = teapot3Vert[i].z;
-	//}
-	////get indices from mesh
-	//vector<ofIndexType>  teapot3Indices = tempMesh5.getIndices();
-	////make an array[] from this vector
-	//SG_INDEX_TRIANGLE *indexes5 = new SG_INDEX_TRIANGLE[teapot3Indices.size()];
-	//for(int i=0;i<teapot3Indices.size(); i++){
-	//	indexes5->ver_indexes[i] = teapot3Indices[i];
-	//}
-	////generate sgC3DObject from geometry information
-	//sgTeapot = (sgC3DObject *) sgFileManager::ObjectFromTriangles(vert5,teapot3Vert.size(),indexes5,teapot3Vert.size()/3); 
-	//delete [] vert5;
-	//delete [] indexes5;
 }
+//---------------------------------------------------------------------------------------
+//void testApp::loadOBJfiles(){
+//	////////////////////////////////////////load heavy models
+//	bunny.loadModel("bunny.obj");
+//	//need to make it an sgCore3DObject to be able to slice it
+//	ofMesh tempMesh = bunny.getMesh(0);
+//	//get vertices from mesh
+//	vector<ofVec3f> bunnyVert = tempMesh.getVertices();
+//	//make an array[] from this vector
+//	SG_POINT *vert = new SG_POINT[bunnyVert.size()];
+//	for(int i=0;i<bunnyVert.size(); i++){
+//		vert[i].x = bunnyVert[i].x;
+//		vert[i].y = bunnyVert[i].y;
+//		vert[i].z = bunnyVert[i].z;
+//	}
+//	//get indices from mesh
+//	vector<ofIndexType> bunnyIndices = tempMesh.getIndices();
+//	//make an array[] from this vector
+//	SG_INDEX_TRIANGLE *indexes = new SG_INDEX_TRIANGLE[bunnyIndices.size()];
+//	for(int i=0;i<bunnyIndices.size(); i++){
+//		indexes->ver_indexes[i] = bunnyIndices[i];
+//	}
+//	//generate sgC3DObject from geometry information
+//	sgBunny = sgFileManager::ObjectFromTriangles(vert,bunnyVert.size(),indexes,bunnyIndices.size()/3); 
+//	delete [] vert;
+//	delete [] indexes;
+//	////////////////////////////////////////load heavy models
+//	tetrahedron.loadModel("tetrahedronNew.obj");
+//	//need to make it an sgCore3DObject to be able to slice it
+//	ofMesh tempMesh1 = tetrahedron.getMesh(0);
+//	//get vertices from mesh
+//	vector<ofVec3f> tetrahedronVert = tempMesh1.getVertices();
+//	//make an array[] from this vector
+//	SG_POINT *vert1 = new SG_POINT[tetrahedronVert.size()];
+//	for(int i=0;i<tetrahedronVert.size(); i++){
+//		vert1[i].x = tetrahedronVert[i].x;
+//		vert1[i].y = tetrahedronVert[i].y;
+//		vert1[i].z = tetrahedronVert[i].z;
+//	}
+//	//get indices from mesh
+//	vector<ofIndexType>  tetrahedronIndices = tempMesh1.getIndices();
+//	//make an array[] from this vector
+//	SG_INDEX_TRIANGLE *indexes1 = new SG_INDEX_TRIANGLE[tetrahedronIndices.size()];
+//	for(int i=0;i<tetrahedronIndices.size(); i++){
+//		indexes1->ver_indexes[i] = tetrahedronIndices[i];
+//	}
+//	//generate sgC3DObject from geometry information
+//	sgTetrahedron = sgFileManager::ObjectFromTriangles(vert1,tetrahedronVert.size(),indexes1,tetrahedronIndices.size()/3); 
+//	delete [] vert1;
+//	delete [] indexes1;
+//	////////////////////////////////////////load heavy models
+//	dodecahedron.loadModel("dodecahedron.obj");
+//	//need to make it an sgCore3DObject to be able to slice it
+//	ofMesh tempMesh2 = dodecahedron.getMesh(0);
+//	//get vertices from mesh
+//	vector<ofVec3f> dodecahedronVert = tempMesh2.getVertices();
+//	//make an array[] from this vector
+//	SG_POINT *vert2 = new SG_POINT[dodecahedronVert.size()];
+//	for(int i=0;i<dodecahedronVert.size(); i++){
+//		vert2[i].x = dodecahedronVert[i].x;
+//		vert2[i].y = dodecahedronVert[i].y;
+//		vert2[i].z = dodecahedronVert[i].z;
+//	}
+//	//get indices from mesh
+//	vector<ofIndexType>  dodecahedronIndices = tempMesh2.getIndices();
+//	//make an array[] from this vector
+//	SG_INDEX_TRIANGLE *indexes2 = new SG_INDEX_TRIANGLE[dodecahedronIndices.size()];
+//	for(int i=0;i<dodecahedronIndices.size(); i++){
+//		indexes2->ver_indexes[i] = dodecahedronIndices[i];
+//	}
+//	//generate sgC3DObject from geometry information
+//	sgDodecahedron = sgFileManager::ObjectFromTriangles(vert2,dodecahedronVert.size(),indexes2,dodecahedronIndices.size()/3); 
+//	delete [] vert2;
+//	delete [] indexes2;
+//	////////////////////////////////////////load heavy models
+//	icosahedron.loadModel("icosahedron.obj");
+//	//need to make it an sgCore3DObject to be able to slice it
+//	ofMesh tempMesh3 = icosahedron.getMesh(0);
+//	//get vertices from mesh
+//	vector<ofVec3f> icosahedronVert = tempMesh3.getVertices();
+//	//make an array[] from this vector
+//	SG_POINT *vert3 = new SG_POINT[icosahedronVert.size()];
+//	for(int i=0;i<icosahedronVert.size(); i++){
+//		vert3[i].x = icosahedronVert[i].x;
+//		vert3[i].y = icosahedronVert[i].y;
+//		vert3[i].z = icosahedronVert[i].z;
+//	}
+//	//get indices from mesh
+//	vector<ofIndexType>  icosahedronIndices = tempMesh3.getIndices();
+//	//make an array[] from this vector
+//	SG_INDEX_TRIANGLE *indexes3 = new SG_INDEX_TRIANGLE[icosahedronIndices.size()];
+//	for(int i=0;i<icosahedronIndices.size(); i++){
+//		indexes3->ver_indexes[i] = icosahedronIndices[i];
+//	}
+//	//generate sgC3DObject from geometry information
+//	sgIcosahedron = sgFileManager::ObjectFromTriangles(vert3,icosahedronVert.size(),indexes3,icosahedronIndices.size()/3); 
+//	delete [] vert3;
+//	delete [] indexes3;
+//	////////////////////////////////////////load heavy models
+//	octahedron.loadModel("octahedron.obj");
+//	//need to make it an sgCore3DObject to be able to slice it
+//	ofMesh tempMesh4 = octahedron.getMesh(0);
+//	//get vertices from mesh
+//	vector<ofVec3f> octahedronVert = tempMesh4.getVertices();
+//	//make an array[] from this vector
+//	SG_POINT *vert4 = new SG_POINT[octahedronVert.size()];
+//	for(int i=0;i<octahedronVert.size(); i++){
+//		vert4[i].x = octahedronVert[i].x;
+//		vert4[i].y = octahedronVert[i].y;
+//		vert4[i].z = octahedronVert[i].z;
+//	}
+//	//get indices from mesh
+//	vector<ofIndexType>  octahedronIndices = tempMesh4.getIndices();
+//	//make an array[] from this vector
+//	SG_INDEX_TRIANGLE *indexes4 = new SG_INDEX_TRIANGLE[octahedronIndices.size()];
+//	for(int i=0;i<octahedronIndices.size(); i++){
+//		indexes4->ver_indexes[i] = octahedronIndices[i];
+//	}
+//	//generate sgC3DObject from geometry information
+//	sgOctahedron = sgFileManager::ObjectFromTriangles(vert4,octahedronVert.size(),indexes4,octahedronIndices.size()/3); 
+//	delete [] vert4;
+//	delete [] indexes4;
+//}
 //-----------------------------------------------------------------------------
 /////////////////////////////////////////////////////////////////////////////////////
 // OF rendering
@@ -738,61 +728,50 @@ void testApp::initOFRender(){
 
 	ofSetVerticalSync(true);
 	ofEnableDepthTest();
-	/////background
-	//ofBackground(100, 100, 100, 0);//gray
-	//ofBackground(30, 144, 255, 0);//blue
-	//ofBackground(65, 105, 225, 0);//blue
-	// turn on smooth lighting //
-	bSmoothLighting = true;
+
+	//////////// turn on smooth lighting //
+	//bSmoothLighting = true;
 	ofSetSmoothLighting(true);
 
-	// lets make a high-res sphere //
-	// default is 20 //
-	//ofSetSphereResolution(128);
+	//////////// Point lights emit light in all directions //
+	//////////// set the diffuse color, color reflected from the light source //
+	//////////pointLight.setDiffuseColor( ofColor(255.f, 255.f, 255.f));
 
-	// radius of the sphere //
-	//radius = 180.f;
-	//center.set(ofGetWidth()*.5, ofGetHeight()*.5, 0);
+	//////////// specular color, the highlight/shininess color //
+	//////////pointLight.setSpecularColor( ofColor(255.f, 255.f, 0.f));
+	//////////pointLight.setPointLight();
 
-	// Point lights emit light in all directions //
-	// set the diffuse color, color reflected from the light source //
-	pointLight.setDiffuseColor( ofColor(255.f, 255.f, 255.f));
+	//////////spotLight.setDiffuseColor( ofColor(255.f, 255.f, 255.f));
+	//////////spotLight.setSpecularColor( ofColor(255.f, 255.f, 255.f));
 
-	// specular color, the highlight/shininess color //
-	pointLight.setSpecularColor( ofColor(255.f, 255.f, 0.f));
-	pointLight.setPointLight();
+	//////////// turn the light into spotLight, emit a cone of light //
+	//////////spotLight.setSpotlight();
 
-	spotLight.setDiffuseColor( ofColor(255.f, 255.f, 255.f));
-	spotLight.setSpecularColor( ofColor(255.f, 255.f, 255.f));
+	//////////// size of the cone of emitted light, angle between light axis and side of cone //
+	//////////// angle range between 0 - 90 in degrees //
+	//////////spotLight.setSpotlightCutOff( 50 );
 
-	// turn the light into spotLight, emit a cone of light //
-	spotLight.setSpotlight();
+	//////////// rate of falloff, illumitation decreases as the angle from the cone axis increases //
+	//////////// range 0 - 128, zero is even illumination, 128 is max falloff //
+	//////////spotLight.setSpotConcentration( 45 );
 
-	// size of the cone of emitted light, angle between light axis and side of cone //
-	// angle range between 0 - 90 in degrees //
-	spotLight.setSpotlightCutOff( 50 );
+	//////////// Directional Lights emit light based on their orientation, regardless of their position //
+	//////////directionalLight.setDiffuseColor(ofColor(0.f, 0.f, 0.f));
+	//////////directionalLight.setSpecularColor(ofColor(255.f, 255.f, 255.f));
+	//////////directionalLight.setDirectional();
 
-	// rate of falloff, illumitation decreases as the angle from the cone axis increases //
-	// range 0 - 128, zero is even illumination, 128 is max falloff //
-	spotLight.setSpotConcentration( 45 );
-
-	// Directional Lights emit light based on their orientation, regardless of their position //
-	directionalLight.setDiffuseColor(ofColor(0.f, 0.f, 0.f));
-	directionalLight.setSpecularColor(ofColor(255.f, 255.f, 255.f));
-	directionalLight.setDirectional();
-
-	// set the direction of the light
-	// set it pointing from left to right -> //
-	directionalLight.setOrientation( ofVec3f(0, 90, 0) );
+	//////////// set the direction of the light
+	//////////// set it pointing from left to right -> //
+	//////////directionalLight.setOrientation( ofVec3f(0, 90, 0) );
 
 
-	bShiny = true;
-	// shininess is a value between 0 - 128, 128 being the most shiny //
-	material.setShininess( 120 );
-	// the light highlight of the material //
-	material.setSpecularColor(ofColor(255, 255, 255, 1));
+	//////////bShiny = true;
+	//////////// shininess is a value between 0 - 128, 128 being the most shiny //
+	//////////material.setShininess( 120 );
+	//////////// the light highlight of the material //
+	//////////material.setSpecularColor(ofColor(255, 255, 255, 1));
 
-	bPointLight = bSpotLight = bDirLight = true;
+	//////////bPointLight = bSpotLight = bDirLight = true;
 
 	// tex coords for 3D objects in OF are from 0 -> 1, not 0 -> image.width
 	// so we must disable the arb rectangle call to allow 0 -> 1
@@ -804,51 +783,22 @@ void testApp::initOFRender(){
 //------------------------------------------------------------------------------
 void testApp::startOFLights(){
 	// enable lighting //
-	ofEnableLighting();
-	// enable the material, so that it applies to all 3D objects before material.end() call //
-	material.begin();
-	// activate the lights //
-	if (bPointLight) pointLight.enable();
-	//if (bSpotLight) spotLight.enable();
-	if (bDirLight) directionalLight.enable();
+	////////////ofEnableLighting();
+	////////////// enable the material, so that it applies to all 3D objects before material.end() call //
+	////////////material.begin();
+	////////////// activate the lights //
+	////////////if (bPointLight) pointLight.enable();
+	//////////////if (bSpotLight) spotLight.enable();
+	////////////if (bDirLight) directionalLight.enable();
 
-	// grab the texture reference and bind it //
-	// this will apply the texture to all drawing (vertex) calls before unbind() //
-	//if(bUseTexture) ofLogoImage.getTextureReference().bind();
+	////////////// grab the texture reference and bind it //
+	////////////// this will apply the texture to all drawing (vertex) calls before unbind() //
+	//////////////if(bUseTexture) ofLogoImage.getTextureReference().bind();
+	//////////////if(bUseTexture) ofLogoImage.getTextureReference().unbind();
 
-	//ofSetColor(255, 255, 255, 255);
-	/*ofPushMatrix();
-	ofTranslate(center.x, center.y, center.z-300);
-	ofRotate(ofGetElapsedTimef() * .8 * RAD_TO_DEG, 0, 1, 0);
-	ofDrawSphere( 0,0,0, radius);
-	ofPopMatrix();
-
-	ofPushMatrix();
-	ofTranslate(300, 300, cos(ofGetElapsedTimef()*1.4) * 300.f);
-	ofRotate(ofGetElapsedTimef()*.6 * RAD_TO_DEG, 1, 0, 0);
-	ofRotate(ofGetElapsedTimef()*.8 * RAD_TO_DEG, 0, 1, 0);
-	ofDrawBox(0, 0, 0, 60);
-	ofPopMatrix();
-
-	ofPushMatrix();
-	ofTranslate(center.x, center.y, -900);
-	ofRotate(ofGetElapsedTimef() * .2 * RAD_TO_DEG, 0, 1, 0);
-	ofDrawBox( 0, 0, 0, 850);
-	ofPopMatrix();*/
-
-	//small test of openFrameworks drawing embeded with sgCore geometry 
-	//ofPushMatrix();
-	//ofTranslate(300,300);
-	//ofSetColor(ofColor(255,0,255));
-	//ofCircle(ofPoint(0,0),5);
-	////ofRotate(ofGetElapsedTimef() * .2 * RAD_TO_DEG, 0, 1, 0);
-	//ofPopMatrix();
-
-	//if(bUseTexture) ofLogoImage.getTextureReference().unbind();
-
-	if (!bPointLight) pointLight.disable();
-	//if (!bSpotLight) spotLight.disable();
-	if (!bDirLight) directionalLight.disable();
+	////////////if (!bPointLight) pointLight.disable();
+	//////////////if (!bSpotLight) spotLight.disable();
+	////////////if (!bDirLight) directionalLight.disable();
 }
 //------------------------------------------------------------------------------
 void testApp::updateOFLights(){

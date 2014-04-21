@@ -162,8 +162,11 @@ bool GuiButton::processMouse(int _x, int _y, int _state){
 void GuiButton::input(string _type, int _ID, int _n, int _phase, ofVec2f _absPos, ofVec2f _deltaPos){
 	//cout << "Type = " << _type << " dX, dY = " << _deltaPos.x << ", " << _deltaPos.y << endl;
 	if(_type == "drag"){
-		drawPos += _deltaPos;
+		ofVec2f currentMouse = _absPos;
+		drawPos += currentMouse - lastMouse;
+		//drawPos += _deltaPos;
 		dragPos = drawPos;
+		lastMouse = currentMouse;
 		if(!bWatchTime){
 			bWatchTime = true;
 		}

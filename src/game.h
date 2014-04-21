@@ -23,7 +23,7 @@ class game : public Observer{
 public:
 	game(SG_VECTOR p, float w, float h, SG_VECTOR puzzlePos, ofRectangle _vp, float iddleTime, string myPrefix);
 
-	void setup(sgCObject *sgBunnyi,sgCObject *sgTetrahedroni,sgCObject *sgDodecahedroni,sgCObject *sgIcosahedroni,sgCObject *sgOctahedroni, string _prefix);//,sgCObject *sgTeapoti);
+	//void setup(sgCObject *sgBunnyi,sgCObject *sgTetrahedroni,sgCObject *sgDodecahedroni,sgCObject *sgIcosahedroni,sgCObject *sgOctahedroni, string _prefix);//,sgCObject *sgTeapoti);
 	void setup(string _prefix);
 	void setup();
 	void update();
@@ -44,23 +44,19 @@ public:
 	puzzle *myPuzzle;
 
 	string station;
-
-
 	///OBJ file loading and convertion
-	sgCObject *sgBunny;
-	sgCObject *sgTetrahedron;
-	sgCObject *sgDodecahedron;
-	sgCObject *sgIcosahedron;
-	sgCObject *sgOctahedron;
-	sgCObject *sgTeapot;
+	//sgCObject *sgBunny;
+	//sgCObject *sgTetrahedron;
+	//sgCObject *sgDodecahedron;
+	//sgCObject *sgIcosahedron;
+	//sgCObject *sgOctahedron;
+	//sgCObject *sgTeapot;
 
 	map<int, sgCObject*> objects;
-
 	ofxAssimpModelLoader loader;
-
 	void loadObjDir(string _path);
 	////
-	void loadObject (int objID,SG_VECTOR p,SG_VECTOR t);
+	void loadObjectG(int objID,SG_VECTOR p,SG_VECTOR t);
 	int objectID;
 
 	/*
@@ -241,7 +237,7 @@ public:
 	ofVec3f cp5;
 	ofVec3f cp6;
 
-	void drawPoints();
+	//void drawPoints();
 
 	string currentLanguage;
 	void setLanguage(string _lang);

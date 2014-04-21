@@ -12,7 +12,7 @@
 #include "GestureManager.h"
 #include <math.h>
 #include "menuPuzzle.h"
-
+#include "ofxAssimpModelLoader.h"
 #include <vector>
 
 class testApp : public ofBaseApp, public Observer, public Subject{
@@ -35,29 +35,32 @@ public:
 	void gotMessage(ofMessage msg);
 
 	///OBJ file loading and convertion
-	void loadOBJfiles();
-	void loadOBJDir();
-	ofxAssimpModelLoader bunny;
-	sgCObject *sgBunny;
-	ofxAssimpModelLoader tetrahedron;
-	sgCObject *sgTetrahedron;
-	ofxAssimpModelLoader dodecahedron;
-	sgCObject *sgDodecahedron;
-	ofxAssimpModelLoader icosahedron;
-	sgCObject *sgIcosahedron;
-	ofxAssimpModelLoader octahedron;
-	sgCObject *sgOctahedron;
-	ofxAssimpModelLoader pot;
-	sgCObject *sgTeapot;
-
-	ofxAssimpModelLoader sphere;
-	sgCObject *sgSphere;
-
-	/////////////////////////////////////////games
-	vector<game*> myGames;
+	//void loadOBJfiles();
+	//ofxAssimpModelLoader bunny;
+	//sgCObject *sgBunny;
+	//ofxAssimpModelLoader tetrahedron;
+	//sgCObject *sgTetrahedron;
+	//ofxAssimpModelLoader dodecahedron;
+	//sgCObject *sgDodecahedron;
+	//ofxAssimpModelLoader icosahedron;
+	//sgCObject *sgIcosahedron;
+	//ofxAssimpModelLoader octahedron;
+	//sgCObject *sgOctahedron;
+	//ofxAssimpModelLoader pot;
+	//sgCObject *sgTeapot;
+	//ofxAssimpModelLoader sphere;
+	//sgCObject *sgSphere;
+	vector <game*> myGames;
 	int currentGame;
 
-	
+
+	map<int, sgCObject*> objectsMP;
+	ofxAssimpModelLoader loaderG;
+	void loadObjDirG(string _path);
+	/////////////////////////////////////////games
+
+
+
 	cutter *myCutter;
 	slicer *mySlicer;
 	puzzle *myPuzzle;
@@ -70,7 +73,7 @@ public:
 	void updateOFLights();
 	void stopOFLights();
 
-	ofMesh myMesh;
+	//ofMesh myMesh;
 	ofLight pointLight;
 	ofLight spotLight;
 	ofLight directionalLight;
@@ -87,20 +90,20 @@ public:
 	map<string,string> attrs;
 	void update(string _subName, Subject* _sub);
 	void update(string _eventName, SubObEvent _event);
-    string getAttr(const char* _key){return attrs[_key];}
+	string getAttr(const char* _key){return attrs[_key];}
 
 	ofVec2f lastRightDragPos;
 
 	float timeOfLastInteraction;
-    float timeOutCounter;
+	float timeOutCounter;
 	float timeOfLastInput;
-    float inputDelayTime;
-	float radius;
-	ofVec3f center;
-	bool bShiny;
-	bool bSmoothLighting;
-	bool bPointLight, bSpotLight, bDirLight;
-	bool bUseTexture;
+	float inputDelayTime;
+	//float radius;
+	//ofVec3f center;
+	//bool bShiny;
+	//bool bSmoothLighting;
+	//bool bPointLight, bSpotLight, bDirLight;
+	//bool bUseTexture;
 
 	GestureManager gm;
 	int touchId;
@@ -122,4 +125,7 @@ public:
 
 	ofPoint unprojectPoint(ofVec3f pnt);
 	double gestureAngles[6];
+
+
+	ofLight light;
 };

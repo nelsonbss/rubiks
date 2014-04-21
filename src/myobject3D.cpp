@@ -113,7 +113,7 @@ void myobject3D::draw(){
 	ofPopMatrix();
 }
 //----------------------------------------------------------------
-void myobject3D::loadObject(sgC3DObject *obj, int ID){
+void myobject3D::loadObjectOD(sgC3DObject *obj, int ID){
 	//it will load a sgCore lib object: torus, box
 
 	if(object==NULL){

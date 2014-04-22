@@ -175,6 +175,7 @@ void game::setup(){
 	SubObMediator::Instance()->addObserver(prefix + ":extrude", this);
 	SubObMediator::Instance()->addObserver(prefix + ":extrusion-success", this);
 	SubObMediator::Instance()->addObserver(prefix + ":interaction", this);
+	SubObMediator::Instance()->addObserver(prefix + ":save", this); //to make the save button registered to do something
 
 	goToAttract();
 
@@ -325,6 +326,14 @@ void game::update(){
 }
 //----------------------------------------------------------------------
 void game::update(string _eventName, SubObEvent _event){
+	if(_eventName == prefix + ":save"){
+		//call save functionality here
+		//do nt make opengl calls here... no drawing anything
+		setPage("object-start");
+		camPosition.set(viewport.width / 2, viewport.height / 2, 400);
+		guiReset();
+	}
+
 	if(_eventName == prefix + ":object-selected"){
 		if(step == 0){
 			//SubObEvent *ev = new SubObEvent();
@@ -403,11 +412,14 @@ void game::update(string _eventName, SubObEvent _event){
 		SG_VECTOR v = {0,0,0};
 		createPuzzle(v);
 	}
-	if ((_eventName == prefix + ":extrude")&& (step == 7)){
-		setPage("object-selected");
-
-		camPosition.set(viewport.width / 2, viewport.height / 2, 400);
-		step = 0;
+	if (_eventName == prefix + ":extrude"){
+		if(step == 6){
+			guiExtrude();
+		}else{
+			setPage("game-start");
+			camPosition.set(viewport.width / 2, viewport.height / 2, 400);
+			guiReset();
+		}
 	}
 	if((_eventName == prefix + ":reset") ){
 		setPage("object-start");
@@ -419,7 +431,7 @@ void game::update(string _eventName, SubObEvent _event){
 	if(_eventName == prefix + ":extrude"){
 		cout << "got an extrude." << endl;
 		//myGames[0]->guiInput('e');
-		guiExtrude();
+		
 	}
 	if(_eventName == prefix + ":extrusion-success"){
 		setPage("play");

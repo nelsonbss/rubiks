@@ -216,7 +216,7 @@ bool menuPuzzle::isInside(int _x, int _y){
 }
 //------------------------------------------------------------------------
 void menuPuzzle::nodeDraw(){  
-	ofEnableDepthTest();
+	
 
 	ofNoFill();
 	ofSetColor(0,0,255);
@@ -224,6 +224,7 @@ void menuPuzzle::nodeDraw(){
 	//ofSetColor(255,255,255);
 
 	ofPushView();
+	ofEnableDepthTest();
 	ofViewport(viewport);
 	ofSetupScreen();
 	//glPushMatrix();

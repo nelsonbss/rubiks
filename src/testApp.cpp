@@ -385,6 +385,9 @@ void testApp::draw(){
 		myGames[i]->draw();
 	}
 
+
+
+
 	///////////////////END OF RENDERING     ////////////////////
 	//stopOFLights();
 	//ofDisableDepthTest();
@@ -395,21 +398,24 @@ void testApp::draw(){
 	GuiConfigurator::Instance()->draw("front");
 
 	///////////////////////////////middle puzzles  ///////////////////////////////
+	//ofEnableDepthTest();
+	ofDisableAlphaBlending();
 	ofEnableLighting();
 	light.enable();
 	light.setPosition(ofGetWindowWidth()/ 2, ofGetWindowHeight()/ 2, -400);
 	light.lookAt(ofVec3f(ofGetWindowWidth()/ 2, ofGetWindowHeight()/ 2, 0));
 	
-	//ofDisableDepthTest();
+	
 	for(int i=0; i < middlePuzzles.size();i++){
 		middlePuzzles[i]->draw();
 	}
 	//ofEnableDepthTest();
 	light.disable();
 	ofDisableLighting();
+	ofEnableAlphaBlending();
+	//ofDisableDepthTest();
 	///////////////////////////////middle puzzles  ///////////////////////////////
 
-	ofEnableAlphaBlending();
 }
 
 //-------------------------------------------------------------- 

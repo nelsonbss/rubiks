@@ -17,6 +17,7 @@ GuiNode::GuiNode(){
 	currentLanguage = "english";
 	bUseHomePos = false;
 	bHaveCustomArea = false;
+	bControlled = false;
 }
 
 void GuiNode::draw(ofVec2f _pnt){
@@ -97,7 +98,7 @@ bool GuiNode::isInside(int _x, int _y){
     //cout << name << " checking insides " << drawPos.x << ", " << drawPos.x + (scale * drawSize.x) << " - " << drawPos.y << ", " << drawPos.y + (scale * drawSize.y);
 	//cout << " against " << _x << ", " << _y << endl;
     if(bHaveCustomArea){
-		if((drawPos.x + drawSize.x) < customArea.x || drawPos.y < customArea.y || (drawPos.x + drawSize.x) > (customArea.x + customSize.x) || (drawPos.y + drawSize.y) > (customArea.y + customSize.y)){
+		if(/*(drawPos.x + drawSize.x) < customArea.x || */drawPos.y < customArea.y /*|| (drawPos.x + drawSize.x) > (customArea.x + customSize.x)*/ || (drawPos.y + drawSize.y) > (customArea.y + customSize.y)){
 			return false;
 		}
 	}

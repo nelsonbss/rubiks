@@ -333,13 +333,12 @@ void game::update(string _eventName, SubObEvent _event){
 		camPosition.set(viewport.width / 2, viewport.height / 2, 400);
 		guiReset();
 	}
-
 	if(_eventName == prefix + ":object-selected"){
 		if(step == 0){
 			//SubObEvent *ev = new SubObEvent();
 			setPage("object-selected");
 		}
-		if(step == 0  || step == 1 || step == 6){
+		if(step == 0  || step == 1 || step == 6 || step == 7){
 			int obj = _event.getArg("object")->getInt();
 			SG_VECTOR objectPos = {0,0,0};  //where it gets sliced
 			guiLoad(obj);
@@ -351,8 +350,8 @@ void game::update(string _eventName, SubObEvent _event){
 		}
 	}
 	if(_eventName == prefix + ":menupuzzle-selected"){
-
-		SubObEvent ev;
+		
+		/*SubObEvent ev;
 		ev.setName("hide-node");
 		ev.addArg("target",prefix + ":3d-window");
 		SubObMediator::Instance()->sendEvent("hide-node", ev);
@@ -381,7 +380,8 @@ void game::update(string _eventName, SubObEvent _event){
 		ev.addArg("target",prefix + ":puzzle-help");
 		SubObMediator::Instance()->sendEvent("unhide-node", ev);
 		ev.addArg("target",prefix + ":ibox");
-		SubObMediator::Instance()->sendEvent("unhide-node", ev);
+		SubObMediator::Instance()->sendEvent("unhide-node", ev);*/
+		//setPage("draw");
 	}
 	if(_eventName == prefix + ":next-step"){
 		guiNext();
@@ -415,11 +415,15 @@ void game::update(string _eventName, SubObEvent _event){
 	if (_eventName == prefix + ":extrude"){
 		if(step == 6){
 			guiExtrude();
-		}else{
-			setPage("game-start");
+			camPosition.set(viewport.width / 2, viewport.height / 2, 400);
+		} else {
+			setPage("object-start");
 			camPosition.set(viewport.width / 2, viewport.height / 2, 400);
 			guiReset();
 		}
+	}
+	if(_eventName == prefix + ":extrusion-success"){
+		setPage("object-selected");
 	}
 	if((_eventName == prefix + ":reset") ){
 		setPage("object-start");
@@ -427,14 +431,6 @@ void game::update(string _eventName, SubObEvent _event){
 		guiReset();
 		//SceneManager::Instance()->reset();
 		//cout << "RESET" << endl;
-	}
-	if(_eventName == prefix + ":extrude"){
-		cout << "got an extrude." << endl;
-		//myGames[0]->guiInput('e');
-		
-	}
-	if(_eventName == prefix + ":extrusion-success"){
-		setPage("play");
 	}
 	if(_eventName == prefix + ":ibox-tap"){
 		//ofVec3f pos = _event->getArg("absPos")->getVec2();
@@ -773,7 +769,7 @@ void game::draw(){
 void game::unprojectPoint(ofVec3f _pnt){
 	unprojectedPoint = picker.unproject(mousePoint, &viewport);
 	//unprojectedPoint = cam.screenToWorld(_pnt, viewport);
-	cout << "UP = " << unprojectedPoint.x << ", " << unprojectedPoint.y << ", " << unprojectedPoint.z << endl;
+	//cout << "UP = " << unprojectedPoint.x << ", " << unprojectedPoint.y << ", " << unprojectedPoint.z << endl;
 	if(unprojectMode == UP_MODE_MOUSE){
 		if(!bDragInput){
 			//cout << "down" << endl;
@@ -1005,6 +1001,7 @@ void game::loadMenuObject(int objID, SG_VECTOR p, SG_VECTOR t,vector< ofFloatCol
 			SubObMediator::Instance()->sendEvent("hide-node", ev);
 		}
 	}
+	setPage("play2");
 }
 //----------------------------------------------------------------------
 void game::loadObjectG(int objID, SG_VECTOR p, SG_VECTOR t){

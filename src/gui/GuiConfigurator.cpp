@@ -358,9 +358,15 @@ void GuiConfigurator::specialTextLoadingCopOut(){
 	texts["spanish"].setText("spanish", "Español");
 
 	texts["save"] = GuiText();
+<<<<<<< HEAD
 	texts["save"].setText("english","SAVE");
 	texts["save"].setText("french","ENREGISTER");
 	texts["save"].setText("spanish","GUARDAR");
+=======
+	texts["save"].setText("english", "SAVE");
+	texts["save"].setText("french","ENREGISTRER");
+	texts["save"].setText("spanish", "GUARDAR");
+>>>>>>> a508258afb9c79044c1b6a93c7b3d06649f4f9b3
 
 	texts["next"] = GuiText();
 	texts["next"].setText("english", "NEXT");
@@ -795,18 +801,22 @@ void GuiConfigurator::draw(string _position){
 		string page = currentPages[mIter->first];
 		for(auto nIter = nodePages[mIter->first][page].begin(); nIter != nodePages[mIter->first][page].end(); nIter++){	
 			//cout << "\tDrawing " << (*nIter)->getName() << endl;
-			if((*nIter)->getParam("draw-position") == _position){
-				//cout << "Drawing " << (*nIter)->getName() << endl;
-				(*nIter)->draw();
+			if(!(*nIter)->getIsControlled()){
+				if((*nIter)->getParam("draw-position") == _position){
+					//cout << "Drawing " << (*nIter)->getName() << endl;
+					(*nIter)->draw();
+				}
 			} else {
 				//cout << "\t" << (*nIter)->getName() << " not in " << _position << endl; 
 			}
 		}
 		for(auto nIter = nodePages["all"][page].begin(); nIter != nodePages["all"][page].end(); nIter++){	
 			//cout << "\tDrawing " << (*nIter)->getName() << endl;
-			if((*nIter)->getParam("draw-position") == _position){
-				//cout << "Drawing " << (*nIter)->getName() << endl;
-				(*nIter)->draw();
+			if(!(*nIter)->getIsControlled()){
+				if((*nIter)->getParam("draw-position") == _position){
+					//cout << "Drawing " << (*nIter)->getName() << endl;
+					(*nIter)->draw();
+				}
 			} else {
 				//cout << "\t" << (*nIter)->getName() << " not in " << _position << endl; 
 			}
@@ -846,12 +856,11 @@ void GuiConfigurator::addNodeToPage(string _segment, string _page, GuiNode* _nod
 	nodePages[_segment][_page].push_back(_node);
 	registerGestures(_node);
 	addActive(_node);
-	cout << "adding " << _node->getName() << " to " << _page << " for " << _segment << endl; 
+	//cout << "adding " << _node->getName() << " to " << _page << " for " << _segment << endl; 
 }
 
 void GuiConfigurator::setCurrentPage(string _member, string _page){
 	currentPages[_member] = _page;
-	cout << "Set current page of " << _member << " to " << _page << endl;
 }
 
 void GuiConfigurator::registerGestures(GuiNode* _node){

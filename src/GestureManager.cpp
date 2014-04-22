@@ -132,7 +132,7 @@ void GestureManager::update(string _eventName, SubObEvent _event){
 		int id = ev.getArg("id")->getInt();
 		string target = ev.getArg("target")->getString();
 		assignTouchPoint(target, id);
-		cout << "assigning " << id << " to " << target << endl;
+		//cout << "assigning " << id << " to " << target << endl;
 	}
 }
 
@@ -147,7 +147,7 @@ void GestureManager::getGestures(){
 			case gwc::TOUCHADDED:
 				{
 				//assignTouchPoint("touchReceiver", event_it->point_id);
-				cout << "new touch point - " << eIter->position.getX() << ", " << eIter->position.getY() << endl;
+				//cout << "new touch point - " << eIter->position.getX() << ", " << eIter->position.getY() << endl;
 				SubObEvent e;
 				e.setName("touch-point");
 				e.setActive(true);

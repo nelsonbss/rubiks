@@ -109,7 +109,7 @@
     <pos>0.0,0.73</pos>
     <size>1.0,1.0</size>
     <scale>1.0</scale>
-    <pages>object-start,object-selected,armature-start,armature-selected,color-start,play,draw</pages>
+    <pages>object-start,object-selected,armature-start,armature-selected,color-start,draw</pages>
     <param>
       <name>image</name>
       <val>Exports/Rectangle_0x89.png</val>
@@ -131,20 +131,12 @@
     <pos>0.0,0.6475</pos>
     <size>1.0,1.0</size>
     <scale>1.0</scale>
-    <pages>object-start,object-selected,armature-start,armature-selected,color-start,play,draw</pages>
-    <event name="toggle-node">
-      <arg name="target">
-        <type>string</type>
-        <val>%PREFIX%bg-language-dropdown</val>
-      </arg>
+    <pages>object-start,object-selected,armature-start,armature-selected,color-start,play,play2,draw</pages>
+    <event name="toggle">
     </event>
     <param>
       <name>image</name>
       <val>Exports/Button_Language_0x0_%COLOR%.png</val>
-    </param>
-    <param>
-      <name>z</name>
-      <val>-10000</val>
     </param>
     <param>
       <name>tap</name>
@@ -167,7 +159,7 @@
     <pos>0.055,0.6475</pos>
     <size>1.0,1.0</size>
     <scale>1.0</scale>
-    <pages>object-start,object-selected,armature-start,armature-selected,color-start,play,draw</pages>
+    <pages>object-start,object-selected,armature-start,armature-selected,color-start,play,play2,draw</pages>
     <param>
       <name>image</name>
       <val>Exports/Button_Info_106x0_%COLOR%.png</val>
@@ -192,7 +184,7 @@
     <columns>5</columns>
     <column-width>0.078</column-width>
     <column-height>0.041</column-height>
-    <pages>object-start,object-selected,armature-start,armature-selected,color-start,play,draw</pages>
+    <pages>object-start,object-selected,armature-start,armature-selected,color-start,play,play2,draw</pages>
     <param>
       <name>image</name>
       <val>Exports/TwistyLanguageBar_%COLOR%.png</val>
@@ -213,11 +205,15 @@
       <name>draw-position</name>
       <val>front</val>
     </param>
+    <param>
+      <name>toggler</name>
+      <val>true</val>
+    </param>
     <node type="button" name="language-english">
       <pos>0.0,0.0</pos>
       <size>0.078,0.041</size>
       <scale>1.0</scale>
-      <pages>object-start,object-selected,armature-start,armature-selected,color-start,play,draw</pages>
+      <pages>object-start,object-selected,armature-start,armature-selected,color-start,play,play2,draw</pages>
       <event name="language-changed">
         <arg name="lang">
           <type>string</type>
@@ -261,7 +257,7 @@
       <pos>0.0,0.0</pos>
       <size>0.078,0.041</size>
       <scale>1.0</scale>
-      <pages>object-start,object-selected,armature-start,armature-selected,color-start,play,draw</pages>
+      <pages>object-start,object-selected,armature-start,armature-selected,color-start,play,play2,draw</pages>
       <event name="language-changed">
         <arg name="lang">
           <type>string</type>
@@ -305,7 +301,7 @@
       <pos>0.0,0.0</pos>
       <size>0.078,0.041</size>
       <scale>1.0</scale>
-      <pages>object-start,object-selected,armature-start,armature-selected,color-start,play,draw</pages>
+      <pages>object-start,object-selected,armature-start,armature-selected,color-start,play,play2,draw</pages>
       <event name="language-changed">
         <arg name="lang">
           <type>string</type>
@@ -384,7 +380,7 @@
     <pos>0.0,0.73</pos>
     <size>0.154,0.2215</size>
     <scale>1.0</scale>
-    <pages>object-start,object-selected</pages>
+    <pages>object-start,object-selected,draw</pages>
     <columns>3</columns>
     <column-width>0.05</column-width>
     <column-height>0.07</column-height>
@@ -409,7 +405,7 @@
     <pages>armature-start,armature-selected</pages>
     <columns>3</columns>
     <column-width>0.05</column-width>
-    <column-height>0.05</column-height>
+    <column-height>0.09</column-height>
     <directory>windows/armatures/</directory>
     <param>
       <name>z</name>
@@ -543,7 +539,7 @@
     <pos>0.01, 0.685</pos>
     <size>1.0,1.0</size>
     <scale>1.0</scale>
-    <pages>play</pages>
+    <pages>play,play2</pages>
     <param>
       <name>image</name>
       <val>Exports/Play_Textbox_22x44_%COLOR%.png</val>
@@ -732,7 +728,7 @@
     <pos-mirrored>0.4,0.95</pos-mirrored>
     <size>1.0,1.0</size>
     <scale>1.0</scale>
-    <pages>object-start,object-selected,armature-start,armature-selected,color-start,play,draw</pages>
+    <pages>object-start,object-selected,armature-start,armature-selected,color-start,play,play2,draw</pages>
     <event name="reset"></event>
     <param>
       <name>tap</name>
@@ -819,7 +815,11 @@
     <pos-mirrored>0.33,0.95</pos-mirrored>
     <size>1.0,1.0</size>
     <scale>1.0</scale>
+<<<<<<< HEAD
     <pages>object-selected,armature-start,armature-selected,color-start,draw</pages>
+=======
+    <pages>object-selected,armature-start,armature-selected,color-start</pages>
+>>>>>>> a508258afb9c79044c1b6a93c7b3d06649f4f9b3
     <event name="next-step"></event>
     <param>
       <name>tap</name>
@@ -899,7 +899,11 @@
     </param>
     <param>
       <name>text</name>
+<<<<<<< HEAD
       <val>next</val>
+=======
+      <val>save</val>
+>>>>>>> a508258afb9c79044c1b6a93c7b3d06649f4f9b3
     </param>
     <param>
       <name>font</name>
@@ -926,12 +930,16 @@
       <val>front</val>
     </param>
   </node>
+<<<<<<< HEAD
   <!--
+=======
+>>>>>>> a508258afb9c79044c1b6a93c7b3d06649f4f9b3
   <node type="button" name="make-one">
     <pos>0.4,0.95</pos>
     <pos-mirrored>0.33,0.95</pos-mirrored>
     <size>1.0,1.0</size>
     <scale>1.0</scale>
+    <pages>play2,draw</pages>
     <event name="extrude"></event>
     <param>
       <name>tap</name>
@@ -982,6 +990,5 @@
       <val>front</val>
     </param>
   </node>
-  -->
   <!--</sheet>-->
 </gui>

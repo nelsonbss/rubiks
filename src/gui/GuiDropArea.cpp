@@ -28,7 +28,7 @@ void GuiDropArea::update(string _eventName, SubObEvent _event){
 		}
 	}
 	if(_eventName == "menupuzzle-dropped"){
-		cout << "got menupuzzle" << endl;
+		//cout << "got menupuzzle" << endl;
 		ofVec2f objPos = _event.getArg("position")->getVec2();
 		if(isInside(objPos.x, objPos.y)){
 			//cout << "DROP AREA ACTIVATED." << endl;

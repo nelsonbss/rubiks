@@ -415,7 +415,12 @@ void testApp::draw(){
 	ofEnableAlphaBlending();
 	//ofDisableDepthTest();
 	///////////////////////////////middle puzzles  ///////////////////////////////
+<<<<<<< HEAD
 
+=======
+	ofEnableDepthTest();
+	ofEnableAlphaBlending();
+>>>>>>> a508258afb9c79044c1b6a93c7b3d06649f4f9b3
 }
 
 //-------------------------------------------------------------- 

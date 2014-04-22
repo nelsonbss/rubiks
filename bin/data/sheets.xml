@@ -373,7 +373,7 @@
     </param>
     <param>
       <name>draw-position</name>
-      <val>front</val>
+      <val>back</val>
     </param>
   </node>
   <node type="window" name="3d-window">
@@ -582,7 +582,7 @@
     </param>
     <param>
       <name>draw-position</name>
-      <val>front</val>
+      <val>back</val>
     </param>
   </node>
   <node type="button" name="draw-help">
@@ -768,7 +768,7 @@
     </param>
     <param>
       <name>draw-position</name>
-      <val>front</val>
+      <val>back</val>
     </param>
   </node>
   <node type="button" name="next-inactive">
@@ -807,7 +807,7 @@
     </param>
     <param>
       <name>draw-position</name>
-      <val>front</val>
+      <val>back</val>
     </param>
   </node>
   <node type="button" name="next-active">
@@ -863,7 +863,7 @@
     </param>
     <param>
       <name>draw-position</name>
-      <val>front</val>
+      <val>back</val>
     </param>
   </node>
   <node type="button" name="save">
@@ -919,7 +919,7 @@
     </param>
     <param>
       <name>draw-position</name>
-      <val>front</val>
+      <val>back</val>
     </param>
   </node>
   <node type="button" name="make-one">
@@ -975,7 +975,7 @@
     </param>
     <param>
       <name>draw-position</name>
-      <val>front</val>
+      <val>back</val>
     </param>
   </node>
   <!--</sheet>-->

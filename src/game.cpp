@@ -390,16 +390,18 @@ void game::update(string _eventName, SubObEvent _event){
 			cout << "No more attract" << endl;
 			setPage("object-start");
 			bInAttract = false;
-		}
-		if(step == 1){
+		} else if(step == 1){
 			setPage("armature-start");
 
-		}
-		if(step == 3){
+		} else if(step == 3){
 			setPage("color-start");
-		}
-		if(step == 4){
+		} else if(step == 4){
 			setPage("play");
+		} else {
+			setPage("object-start");
+			camPosition.set(viewport.width / 2, viewport.height / 2, 400);
+			guiReset();
+
 		}
 	}
 	if(_eventName == prefix + ":armature-selected"){

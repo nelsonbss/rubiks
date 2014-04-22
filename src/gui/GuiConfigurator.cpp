@@ -790,10 +790,16 @@ void GuiConfigurator::draw(){
 }
 
 void GuiConfigurator::draw(string _position){
+	for(auto mIter = nodePages["all"]["all"].begin() ; mIter != nodePages["all"]["all"].end(); mIter++){
+		if((*mIter)->getParam("draw-position") == _position){
+			(*mIter)->draw();
+		}
+	}
 	for(auto mIter = nodePages.begin(); mIter != nodePages.end(); mIter++){
 		//cout << "Drawing nodes for " << mIter->first << endl;
 		string page = currentPages[mIter->first];
-		for(auto nIter = nodePages[mIter->first][page].begin(); nIter != nodePages[mIter->first][page].end(); nIter++){	
+		/*
+		for(auto nIter = nodePages["all"][page].begin(); nIter != nodePages["all"][page].end(); nIter++){	
 			//cout << "\tDrawing " << (*nIter)->getName() << endl;
 			if(!(*nIter)->getIsControlled()){
 				if((*nIter)->getParam("draw-position") == _position){
@@ -803,8 +809,8 @@ void GuiConfigurator::draw(string _position){
 			} else {
 				//cout << "\t" << (*nIter)->getName() << " not in " << _position << endl; 
 			}
-		}
-		for(auto nIter = nodePages["all"][page].begin(); nIter != nodePages["all"][page].end(); nIter++){	
+		}*/
+		for(auto nIter = nodePages[mIter->first][page].begin(); nIter != nodePages[mIter->first][page].end(); nIter++){	
 			//cout << "\tDrawing " << (*nIter)->getName() << endl;
 			if(!(*nIter)->getIsControlled()){
 				if((*nIter)->getParam("draw-position") == _position){

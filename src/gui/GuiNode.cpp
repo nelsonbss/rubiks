@@ -157,6 +157,9 @@ void GuiNode::registerPages(string _pages){
 	cout << getName() << " registering pages - " << _pages << endl;
 	vector<string> pages = ofSplitString(_pages, ",");
 	for(auto pIter = pages.begin(); pIter != pages.end(); pIter++){
+		if(*pIter == "all"){
+			prefix = "all";
+		}
 		GuiConfigurator::Instance()->addNodeToPage(prefix, *pIter, this);
 	}
 }

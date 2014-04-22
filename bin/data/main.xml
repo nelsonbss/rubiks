@@ -41,7 +41,7 @@
       <pos>0.0,0.0</pos>
       <size>1.0,1.0</size>
       <scale>1.0</scale>
-      <pages>attract,object-start,object-selected,armature-start,armature-selected,color-start,play,draw</pages>
+      <pages>all</pages>
       <param>
         <name>image</name>
         <val>Exports/Background_Top.png</val>
@@ -63,7 +63,7 @@
       <pos>0.0,0.351</pos>
       <size>1.0,1.0</size>
       <scale>1.0</scale>
-      <pages>attract,object-start,object-selected,armature-start,armature-selected,color-start,play,draw</pages>
+      <pages>all</pages>
       <param>
         <name>image</name>
         <val>Exports/Background_Middle.png</val>
@@ -85,7 +85,7 @@
       <pos>0.0,0.647</pos>
       <size>1.0,1.0</size>
       <scale>1.0</scale>
-      <pages>attract,object-start,object-selected,armature-start,armature-selected,color-start,play,draw</pages>
+      <pages>all</pages>
       <param>
         <name>image</name>
         <val>Exports/Background_Bottom.png</val>
@@ -103,5 +103,5 @@
         <val>back</val>
       </param>
     </node>
-  </sheet>
+   </sheet>
 </gui>

@@ -1005,9 +1005,9 @@ void ofRender::colorFacesMenu(ofMesh &mesh,ofVec3f armRot,float playRoom, int ob
 		if(x.r == 1 && x.g == 1 && x.b == 1){
 			x = lightGreen;
 		}
-			uniqueColors.push_back(x);
-			vcolorsMenu.push_back(x); //to remember the colors used on the main object,  to be used on the puzzle, so both have the same colors
-		
+		uniqueColors.push_back(x);
+		vcolorsMenu.push_back(x); //to remember the colors used on the main object,  to be used on the puzzle, so both have the same colors
+
 	}
 	//now -> uniqueColors.size = uniqueNormals.size
 
@@ -1166,25 +1166,40 @@ void ofRender::colorFacesMenuPuzzle(cubie **myCubies, int numPieces,float playRo
 				}
 			}
 		}
-		//at this point we have the unique normals of the object
-		//each of these normals should have a unique color
+
 		vector< ofFloatColor > uniqueColors;
 		//build roster of colors for the current object
 		for(int i =0; i< uniqueNormals.size(); i++){
 			//for each unique normal
-			//we search for that normal on the normal vector
-			for(int y=0; y<menuUniqueNormals.size();y++){
-				if(uniqueNormals[i].align(menuUniqueNormals[y], 2.0)){
-					//when found
-					//we get the color from the colorVector on that same uniqueNormals index
-					uniqueColors.push_back(vcolors[y]);
-				}
-				else{
-					uniqueColors.push_back(white);
-				}
-			}
-
+			//for now we select from 9 possible colors that we have right now
+			ofFloatColor x =  colorsVector[i%16];
+			uniqueColors.push_back(x);
 		}
+		//now -> uniqueColors.size = uniqueNormals.size
+
+		////////at this point we have the unique normals of the object
+		////////each of these normals should have a unique color
+		//////vector< ofFloatColor > uniqueColors;
+		////////build roster of colors for the current object
+		//////for(int i =0; i< uniqueNormals.size(); i++){
+		//////	//for each unique normal
+		//////	//we search for that normal on the normal vector
+		//////	for(int y=0; y<menuUniqueNormals.size();y++){
+		//////		//if(uniqueNormals[i].align(menuUniqueNormals[y], 6.0)){
+		//////		if (((uniqueNormals[y].x - playRoom) <= menuUniqueNormals[i].x) && (menuUniqueNormals[i].x <= (uniqueNormals[y].x + playRoom)) &&
+		//////			((uniqueNormals[y].y - playRoom) <= menuUniqueNormals[i].y) && (menuUniqueNormals[i].y <= (uniqueNormals[y].y + playRoom)) &&
+		//////			((uniqueNormals[y].z - playRoom) <= menuUniqueNormals[i].z) && (menuUniqueNormals[i].z <= (uniqueNormals[y].z + playRoom))
+		//////			){
+		//////				//when found
+		//////				//we get the color from the colorVector on that same uniqueNormals index
+		//////				uniqueColors.push_back(vcolors[y]);
+		//////		}
+		//////		else{
+		//////			uniqueColors.push_back(white);
+		//////		}
+		//////	}
+
+		//////}
 		//now -> uniqueColors.size = uniqueNormals.size
 
 		//got through each cubie again
@@ -1233,7 +1248,7 @@ void ofRender::colorFacesMenuPuzzle(cubie **myCubies, int numPieces,float playRo
 						}else{
 							//arm rotations
 							if(objectID == 1){
-								//have to use the official colors
+								//have to use the official colors for cube
 								///rotate normal vectors to compensate for armature rotations z-y-x
 								//ask direction to color faces of cube 
 								ofVec3f t = tnormals[n].getRotated(armZ,ofVec3f(0,0,1));
@@ -1284,6 +1299,7 @@ void ofRender::colorFacesMenuPuzzle(cubie **myCubies, int numPieces,float playRo
 			}
 		}
 	}else{
+		//shapes with non flat surfaces
 		//got through each cubie
 		for(int i=0;i<numPieces;i++){
 			float meshesCubie =  myCubies[i]->getNumObjs();

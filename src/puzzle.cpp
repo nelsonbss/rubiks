@@ -1052,10 +1052,12 @@ void puzzle::changeFaceColor(ofVec3f _pnt, ofFloatColor _c){
 	if(activeCubie > -1){
 		obid = myCubies[activeCubie]->selectedObjectID;
 		if(obid < 8){
+			//object with flat faces
 			ofVec3f n = activeTriangle.getNormal();
 			vector<Triangle> tris = myCubies[activeCubie]->getTrianglesByNormal(n);
 			myCubies[activeCubie]->setColorToSet(tris, _c);
 		}else{
+			//objects with curved faces
 			myCubies[activeCubie]->setColorToCurvedObject(_c);
 		}
 	}
@@ -1288,12 +1290,12 @@ void puzzle::colorFacesMenuPuzzle(int objectID,vector< ofVec3f > &menuUniqueNorm
 		//extrudd object
 		ofr->colorFacesExtruded(myCubies,numPieces,0.01, objectID);
 	}
-	if(objectID != 4){
+	//if(objectID != 4){
 		//color black all the inside faces of each cubie (after all other face colors have been applied)
 		//all the puzzles have to do this
 		colorCubiesBlackSides();
 		//need to color black sides of bunny in a better way.. will they be colored? or leave it plain?
-	}
+	//}
 	free(ofr);
 }
 //----------------------------------------------------------------

@@ -569,6 +569,14 @@
       <val>90,250</val>
     </param>
     <param>
+      <name>text-position-flipped</name>
+      <val>106,215</val>
+    </param>
+    <param>
+      <name>text-position2-flipped</name>
+      <val>47,78</val>
+    </param>
+    <param>
       <name>text-color</name>
       <val>255,255,255</val>
     </param>
@@ -755,6 +763,14 @@
     <param>
       <name>text-position2</name>
       <val>30,250</val>
+    </param>
+    <param>
+      <name>text-position-flipped</name>
+      <val>55,225</val>
+    </param>
+    <param>
+      <name>text-position2-flipped</name>
+      <val>47,78</val>
     </param>
     <param>
       <name>text-color</name>

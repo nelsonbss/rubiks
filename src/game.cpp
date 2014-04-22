@@ -308,6 +308,7 @@ void game::update(){
 	}
 	if(bHaveReset){
 		if(!bDragInput){
+			//to prevent resetting while doing a rotation
 			guiInput('r');
 			bHaveReset = false;
 		}
@@ -698,10 +699,10 @@ void game::draw(){
 		glRotatef(angle, axistb.x, axistb.y, axistb.z);
 		//glTranslatef(-posP.x,-posP.y,-posP.z);
 		myPuzzle->draw();
-		if(bUnproject){
+		//if(bUnproject){
 			unprojectPoint(mousePoint);
 			bUnproject = false;
-		}
+		//}
 		glPopMatrix();
 	}
 	if(step == 5){

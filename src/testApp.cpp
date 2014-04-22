@@ -96,7 +96,9 @@ void testApp::setup(){
 	////////////////////////////create middle objects (puzzles with no twisting == normal objects with faces colores
 	//this objects are rendering of the sgCore obects just created.
 	//there are 7 objects to be created
-	ofToggleFullscreen();
+	if(USE_MOUSE != 0){
+		ofToggleFullscreen();
+	}
 
 
 	light.setPointLight();
@@ -404,8 +406,8 @@ void testApp::draw(){
 	light.enable();
 	light.setPosition(ofGetWindowWidth()/ 2, ofGetWindowHeight()/ 2, -400);
 	light.lookAt(ofVec3f(ofGetWindowWidth()/ 2, ofGetWindowHeight()/ 2, 0));
-	
-	
+
+
 	for(int i=0; i < middlePuzzles.size();i++){
 		middlePuzzles[i]->draw();
 	}

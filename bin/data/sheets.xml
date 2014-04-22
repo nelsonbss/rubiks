@@ -109,7 +109,7 @@
     <pos>0.0,0.73</pos>
     <size>1.0,1.0</size>
     <scale>1.0</scale>
-    <pages>object-start,object-selected,armature-start,armature-selected,color-start,play,draw</pages>
+    <pages>object-start,object-selected,armature-start,armature-selected,color-start,draw</pages>
     <param>
       <name>image</name>
       <val>Exports/Rectangle_0x89.png</val>
@@ -132,19 +132,11 @@
     <size>1.0,1.0</size>
     <scale>1.0</scale>
     <pages>object-start,object-selected,armature-start,armature-selected,color-start,play,draw</pages>
-    <event name="toggle-node">
-      <arg name="target">
-        <type>string</type>
-        <val>%PREFIX%bg-language-dropdown</val>
-      </arg>
+    <event name="toggle">
     </event>
     <param>
       <name>image</name>
       <val>Exports/Button_Language_0x0_%COLOR%.png</val>
-    </param>
-    <param>
-      <name>z</name>
-      <val>-10000</val>
     </param>
     <param>
       <name>tap</name>
@@ -212,6 +204,10 @@
     <param>
       <name>draw-position</name>
       <val>front</val>
+    </param>
+    <param>
+      <name>toggler</name>
+      <val>true</val>
     </param>
     <node type="button" name="language-english">
       <pos>0.0,0.0</pos>
@@ -384,7 +380,7 @@
     <pos>0.0,0.73</pos>
     <size>0.154,0.2215</size>
     <scale>1.0</scale>
-    <pages>object-start,object-selected</pages>
+    <pages>object-start,object-selected,draw</pages>
     <columns>3</columns>
     <column-width>0.05</column-width>
     <column-height>0.07</column-height>
@@ -409,7 +405,7 @@
     <pages>armature-start,armature-selected</pages>
     <columns>3</columns>
     <column-width>0.05</column-width>
-    <column-height>0.05</column-height>
+    <column-height>0.09</column-height>
     <directory>windows/armatures/</directory>
     <param>
       <name>z</name>

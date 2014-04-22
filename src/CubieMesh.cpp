@@ -81,7 +81,6 @@ void CubieMesh::setColorToSet(vector<Triangle> tris, ofFloatColor _c){
 	vector <ofFloatColor> colorsVectorT;
 	colorsVectorT = getColors();
 	for(auto tIter = tris.begin(); tIter != tris.end(); tIter++){
-		cout << "resetting color" << endl;
 		//setColorForIndices(tIter->getIndeces()[0], tIter->getIndeces()[2], _c);
 		//setColor(tIter->getIndeces()[0], _c);
 		//setColor(tIter->getIndeces()[1], _c);

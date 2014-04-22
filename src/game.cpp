@@ -342,8 +342,8 @@ void game::update(string _eventName, SubObEvent _event){
 		}
 	}
 	if(_eventName == prefix + ":menupuzzle-selected"){
-
-		SubObEvent ev;
+		
+		/*SubObEvent ev;
 		ev.setName("hide-node");
 		ev.addArg("target",prefix + ":3d-window");
 		SubObMediator::Instance()->sendEvent("hide-node", ev);
@@ -372,7 +372,8 @@ void game::update(string _eventName, SubObEvent _event){
 		ev.addArg("target",prefix + ":puzzle-help");
 		SubObMediator::Instance()->sendEvent("unhide-node", ev);
 		ev.addArg("target",prefix + ":ibox");
-		SubObMediator::Instance()->sendEvent("unhide-node", ev);
+		SubObMediator::Instance()->sendEvent("unhide-node", ev);*/
+		//setPage("draw");
 	}
 	if(_eventName == prefix + ":next-step"){
 		guiNext();
@@ -761,7 +762,7 @@ void game::draw(){
 void game::unprojectPoint(ofVec3f _pnt){
 	unprojectedPoint = picker.unproject(mousePoint, &viewport);
 	//unprojectedPoint = cam.screenToWorld(_pnt, viewport);
-	cout << "UP = " << unprojectedPoint.x << ", " << unprojectedPoint.y << ", " << unprojectedPoint.z << endl;
+	//cout << "UP = " << unprojectedPoint.x << ", " << unprojectedPoint.y << ", " << unprojectedPoint.z << endl;
 	if(unprojectMode == UP_MODE_MOUSE){
 		if(!bDragInput){
 			//cout << "down" << endl;

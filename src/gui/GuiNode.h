@@ -124,6 +124,7 @@ public:
 
 	bool bReadyForInput;
 	bool getReadyForInput(){return bReadyForInput;}
+	void setReadyForInput(bool _i){bReadyForInput = _i;}
 
 	void setMirrored(bool _m){bMirrored = _m;}
 	void setFlipped(bool _f){bFlipped = _f;}
@@ -161,6 +162,10 @@ public:
 	ofVec2f customArea;
 	ofVec2f customSize;
 	void setCustomArea(ofVec2f _a, ofVec2f _s);
+
+	void setControlled(){bControlled = true;}
+	bool getIsControlled(){return bControlled;}
+	bool bControlled;
 
 protected:
 

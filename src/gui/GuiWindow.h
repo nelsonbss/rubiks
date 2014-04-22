@@ -39,6 +39,9 @@ private:
 	float currentScroll;
 	bool bScrollable;
 
+	bool bToggler;
+	bool bToggled;
+
 	int numColumns;
 	float columnWidth;
 	float columnHeight;

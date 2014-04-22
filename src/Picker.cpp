@@ -20,7 +20,7 @@ ofVec3f Picker::project(ofVec3f _pnt, ofRectangle* _vp){
 }
 
 ofVec3f Picker::unproject(ofVec3f _pnt, ofRectangle* _vp){
-	cout << "unprojecting " << _pnt.x << ", " << _pnt.y << ", " << _pnt.z << endl;
+	//cout << "unprojecting " << _pnt.x << ", " << _pnt.y << ", " << _pnt.z << endl;
 	GLint vp[4];
     GLdouble modelview[16];
     GLdouble projection[16];
@@ -30,10 +30,6 @@ ofVec3f Picker::unproject(ofVec3f _pnt, ofRectangle* _vp){
     glGetDoublev( GL_MODELVIEW_MATRIX, modelview );
     glGetDoublev( GL_PROJECTION_MATRIX, projection );
 	glGetIntegerv( GL_VIEWPORT, vp );
- 
-	for(int i = 0; i < 4; i++){
-		cout << "vp " << i << " = " << vp[i] << endl;
-	}
 
 	ofVec3f unprojectedPoint;
 

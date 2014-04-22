@@ -93,7 +93,7 @@ void GuiButton::nodeInit(){
 
 void GuiButton::nodeExecute(){
 	bReadyForInput = false;
-	timer->addTimer(1000, (int*)&bReadyForInput, 1);
+	timer->addTimer(200, (int*)&bReadyForInput, 1);
 	if(bSendSample){
 		cout << "sending sample" << endl;
 		SubObEvent ev;
@@ -102,12 +102,12 @@ void GuiButton::nodeExecute(){
 		ev.addArg("pos", dragPos);
 		SubObMediator::Instance()->sendEvent(ev.getName(), ev);
 	}
-	cout << name << " executing." << endl;
+	//cout << name << " executing." << endl;
 }
 
 void GuiButton::nodeSetPosition(){
 	if(bMirrored){
-		cout << name << " adjusting." << endl;
+		//cout << name << " adjusting." << endl;
 		drawPos.x -= (inactive.getWidth() * scale);
 	}
 	if(bFlipped){
@@ -172,7 +172,7 @@ void GuiButton::input(string _type, int _ID, int _n, int _phase, ofVec2f _absPos
 		}
 	}
 	if(_type == "tap"){
-		cout << name << " - executing" << endl;
+		//cout << name << " - executing" << endl;
 		execute();
 	}
 	if(!bSend){

@@ -6,6 +6,17 @@ void GuiWindow::nodeInit(){
 		img.loadImage(params["image"]);
 		bHaveImage = true;
 	}
+	bToggler = false;
+	if(params.count("toggler")){
+		if(params["toggler"] == "true"){
+			bToggler = true;
+			bToggled = false;
+			SubObMediator::Instance()->addObserver(prefix + ":toggle", this);
+			for(auto nIter = nodes.begin(); nIter != nodes.end(); nIter++){
+				(*nIter)->setReadyForInput(bToggled);
+			}
+		}
+	}
 	for(int i = 0; i < nodes.size(); i++){
 		nodePositions.push_back(ofVec2f(0.0,0.0));
 	}
@@ -40,7 +51,7 @@ void GuiWindow::nodeInit(){
 }
 
 void GuiWindow::nodeActivate(){
-	for(vector<GuiNode*>::iterator nIter = nodes.begin(); nIter != nodes.end(); nIter++){
+	for(auto nIter = nodes.begin(); nIter != nodes.end(); nIter++){
 		(*nIter)->activate();
 	}
 	currentTop = 0;
@@ -55,38 +66,68 @@ void GuiWindow::nodeDeactivate(){
 }
 
 void GuiWindow::nodeDraw(){
-	if(bScrollable){
-		scrollBar.draw();
-	}
-	//glScissor(scissorRect.x, scissorRect.y, scissorRect.width, scissorRect.height);
-	//glEnable(GL_SCISSOR_TEST);
-	/*ofSetColor(0,0,0);
-	ofNoFill();
-	ofRect(scissorRect);*/
-	ofPushView();
-	ofViewport(scissorRect);
-	ofSetupScreen();
-	ofDisableDepthTest();
-	ofEnableAlphaBlending();
-	if(bHaveImage){
-		img.draw(0,0);
-	}
-	int counter = 0;
-	for(auto nIter = nodes.begin(); nIter != nodes.end(); nIter++){
-		if(!((*nIter)->isSelected())){
-			(*nIter)->draw(nodePositions[counter]);
+	if(!bToggler){
+		if(bScrollable){
+			scrollBar.draw();
 		}
-		counter++;
-	}
-	/*ofFill();
-	ofSetColor(0,255,0);
-	ofRect(drawPos.x, drawPos.y, 200, 200);*/
-	//glDisable(GL_SCISSOR_TEST);
-	ofEnableDepthTest();
-	ofPopView();
-	for(auto nIter = nodes.begin(); nIter != nodes.end(); nIter++){
-		if((*nIter)->isSelected()){
+		//glScissor(scissorRect.x, scissorRect.y, scissorRect.width, scissorRect.height);
+		//glEnable(GL_SCISSOR_TEST);
+		/*ofSetColor(0,0,0);
+		ofNoFill();
+		ofRect(scissorRect);*/
+		ofPushView();
+		ofViewport(scissorRect);
+		ofSetupScreen();
+		ofDisableDepthTest();
+		ofEnableAlphaBlending();
+		if(bHaveImage){
+			img.draw(0,0);
+		}
+		int counter = 0;
+		for(auto nIter = nodes.begin(); nIter != nodes.end(); nIter++){
+			if(!((*nIter)->isSelected())){
+				(*nIter)->draw(nodePositions[counter]);
+			}
+			counter++;
+		}
+		/*ofFill();
+		ofSetColor(0,255,0);
+		ofRect(drawPos.x, drawPos.y, 200, 200);*/
+		//glDisable(GL_SCISSOR_TEST);
+		ofEnableDepthTest();
+		ofPopView();
+		for(auto nIter = nodes.begin(); nIter != nodes.end(); nIter++){
+			if((*nIter)->isSelected()){
+				(*nIter)->draw();
+			}
+		}
+	} else {
+		if(bToggled){
+			ofPushView();
+			ofViewport(scissorRect);
+			ofSetupScreen();
+			ofDisableDepthTest();
+			ofEnableAlphaBlending();
+			if(bHaveImage){
+				img.draw(0,0);
+			}
+			int counter = 0;
+			for(auto nIter = nodes.begin(); nIter != nodes.end(); nIter++){
+				if(!((*nIter)->isSelected())){
+					(*nIter)->draw(nodePositions[counter]);
+				}
+				counter++;
+			}
+			ofEnableDepthTest();
+			ofPopView();
+			/*if(bHaveImage){
+			img.draw(drawPos.x, drawPos.y);
+			}
+			for(auto nIter = nodes.begin(); nIter != nodes.end(); nIter++){
+			if((*nIter)->isSelected()){
 			(*nIter)->draw();
+			}
+			}*/
 		}
 	}
 	//ofRect(scissorRect);
@@ -134,8 +175,8 @@ void GuiWindow::positionNodes(){
 	/*ofVec2f startPos = drawPos;
 	ofVec2f addPos(0,0);
 	if(bFlipped){
-		startPos.y = drawPos.y + drawSize.y;
-		addPos.y = drawSize.y;
+	startPos.y = drawPos.y + drawSize.y;
+	addPos.y = drawSize.y;
 	}*/
 	for(int i = 0;i < numNodes; i++){
 		if(i > 0){
@@ -156,17 +197,18 @@ void GuiWindow::positionNodes(){
 		nodes[i]->setDrawPosition(nodePosD);
 		/*
 		if((nodePosD.y < drawPos.y) || (nodePosD.y > (drawPos.y + drawSize.y))){
-			if(nodes[i]->isActive()){
-				nodes[i]->deactivate();
-			}
+		if(nodes[i]->isActive()){
+		nodes[i]->deactivate();
+		}
 		} else {
-			if(!nodes[i]->isActive()){
-				nodes[i]->activate();
-			}
+		if(!nodes[i]->isActive()){
+		nodes[i]->activate();
+		}
 		}
 		*/
 		nodes[i]->setCustomArea(drawPos, drawSize);
 		nodePositions[i].set(nodePos);
+		nodes[i]->setControlled();
 	}
 	windowHeight = (row + 1) * (columnHeight * ofGetHeight());
 	//cout << "Window height = " << windowHeight << endl;
@@ -185,5 +227,15 @@ void GuiWindow::update(string _eventName, SubObEvent _event){
 			currentTop = topMin;
 		}
 		positionNodes();
+	}
+	if(_eventName == prefix + ":toggle"){
+		//cout << prefix << " toggling." << endl;
+		if(bToggler){
+			bToggled = !bToggled;
+			for(auto nIter = nodes.begin(); nIter != nodes.end(); nIter++){
+				(*nIter)->setReadyForInput(bToggled);
+			}
+			//cout << "bToggled = " << bToggled << endl;
+		}
 	}
 }

@@ -790,18 +790,22 @@ void GuiConfigurator::draw(string _position){
 		string page = currentPages[mIter->first];
 		for(auto nIter = nodePages[mIter->first][page].begin(); nIter != nodePages[mIter->first][page].end(); nIter++){	
 			//cout << "\tDrawing " << (*nIter)->getName() << endl;
-			if((*nIter)->getParam("draw-position") == _position){
-				//cout << "Drawing " << (*nIter)->getName() << endl;
-				(*nIter)->draw();
+			if(!(*nIter)->getIsControlled()){
+				if((*nIter)->getParam("draw-position") == _position){
+					//cout << "Drawing " << (*nIter)->getName() << endl;
+					(*nIter)->draw();
+				}
 			} else {
 				//cout << "\t" << (*nIter)->getName() << " not in " << _position << endl; 
 			}
 		}
 		for(auto nIter = nodePages["all"][page].begin(); nIter != nodePages["all"][page].end(); nIter++){	
 			//cout << "\tDrawing " << (*nIter)->getName() << endl;
-			if((*nIter)->getParam("draw-position") == _position){
-				//cout << "Drawing " << (*nIter)->getName() << endl;
-				(*nIter)->draw();
+			if(!(*nIter)->getIsControlled()){
+				if((*nIter)->getParam("draw-position") == _position){
+					//cout << "Drawing " << (*nIter)->getName() << endl;
+					(*nIter)->draw();
+				}
 			} else {
 				//cout << "\t" << (*nIter)->getName() << " not in " << _position << endl; 
 			}
@@ -841,12 +845,11 @@ void GuiConfigurator::addNodeToPage(string _segment, string _page, GuiNode* _nod
 	nodePages[_segment][_page].push_back(_node);
 	registerGestures(_node);
 	addActive(_node);
-	cout << "adding " << _node->getName() << " to " << _page << " for " << _segment << endl; 
+	//cout << "adding " << _node->getName() << " to " << _page << " for " << _segment << endl; 
 }
 
 void GuiConfigurator::setCurrentPage(string _member, string _page){
 	currentPages[_member] = _page;
-	cout << "Set current page of " << _member << " to " << _page << endl;
 }
 
 void GuiConfigurator::registerGestures(GuiNode* _node){

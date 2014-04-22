@@ -175,6 +175,7 @@ void game::setup(){
 	SubObMediator::Instance()->addObserver(prefix + ":extrude", this);
 	SubObMediator::Instance()->addObserver(prefix + ":extrusion-success", this);
 	SubObMediator::Instance()->addObserver(prefix + ":interaction", this);
+	SubObMediator::Instance()->addObserver(prefix + ":save", this);
 
 	goToAttract();
 
@@ -325,12 +326,17 @@ void game::update(){
 }
 //----------------------------------------------------------------------
 void game::update(string _eventName, SubObEvent _event){
+	if(_eventName == prefix + ":save"){
+		setPage("object-start");
+		camPosition.set(viewport.width / 2, viewport.height / 2, 400);
+		guiReset();
+	}
 	if(_eventName == prefix + ":object-selected"){
 		if(step == 0){
 			//SubObEvent *ev = new SubObEvent();
 			setPage("object-selected");
 		}
-		if(step == 0  || step == 1 || step == 6){
+		if(step == 0  || step == 1 || step == 6 || step == 7){
 			int obj = _event.getArg("object")->getInt();
 			SG_VECTOR objectPos = {0,0,0};  //where it gets sliced
 			guiLoad(obj);
@@ -404,11 +410,18 @@ void game::update(string _eventName, SubObEvent _event){
 		SG_VECTOR v = {0,0,0};
 		createPuzzle(v);
 	}
-	if ((_eventName == prefix + ":extrude")&& (step == 7)){
+	if (_eventName == prefix + ":extrude"){
+		if(step == 6){
+			guiExtrude();
+			camPosition.set(viewport.width / 2, viewport.height / 2, 400);
+		} else {
+			setPage("object-start");
+			camPosition.set(viewport.width / 2, viewport.height / 2, 400);
+			guiReset();
+		}
+	}
+	if(_eventName == prefix + ":extrusion-success"){
 		setPage("object-selected");
-
-		camPosition.set(viewport.width / 2, viewport.height / 2, 400);
-		step = 0;
 	}
 	if((_eventName == prefix + ":reset") ){
 		setPage("object-start");
@@ -416,14 +429,6 @@ void game::update(string _eventName, SubObEvent _event){
 		guiReset();
 		//SceneManager::Instance()->reset();
 		//cout << "RESET" << endl;
-	}
-	if(_eventName == prefix + ":extrude"){
-		cout << "got an extrude." << endl;
-		//myGames[0]->guiInput('e');
-		guiExtrude();
-	}
-	if(_eventName == prefix + ":extrusion-success"){
-		setPage("play");
 	}
 	if(_eventName == prefix + ":ibox-tap"){
 		//ofVec3f pos = _event->getArg("absPos")->getVec2();
@@ -994,6 +999,7 @@ void game::loadMenuObject(int objID, SG_VECTOR p, SG_VECTOR t,vector< ofFloatCol
 			SubObMediator::Instance()->sendEvent("hide-node", ev);
 		}
 	}
+	setPage("play2");
 }
 //----------------------------------------------------------------------
 void game::loadObjectG(int objID, SG_VECTOR p, SG_VECTOR t){

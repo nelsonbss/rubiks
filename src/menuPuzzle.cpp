@@ -216,7 +216,6 @@ bool menuPuzzle::isInside(int _x, int _y){
 }
 //------------------------------------------------------------------------
 void menuPuzzle::nodeDraw(){  
-	ofEnableDepthTest();
 
 	ofNoFill();
 	ofSetColor(0,0,255);
@@ -226,6 +225,7 @@ void menuPuzzle::nodeDraw(){
 	ofPushView();
 	ofViewport(viewport);
 	ofSetupScreen();
+	//ofEnableDepthTest();
 	//glPushMatrix();
 	ofPushMatrix();
 	glMultMatrixd(temp->GetTempMatrix()->GetTransparentData());
@@ -244,6 +244,7 @@ void menuPuzzle::nodeDraw(){
 	//myMenuPuzzle->draw();
 	myVbo.draw(GL_TRIANGLES, 0,myMesh.getNumIndices());
 	ofPopMatrix();
+	//ofDisableDepthTest();
 	ofPopView();
 	if(bWatchTime){
 		if(ofGetElapsedTimeMillis() - timeOfLastInteraction > 1000){
@@ -264,7 +265,6 @@ void menuPuzzle::nodeDraw(){
 			}
 		}
 	}
-	ofDisableDepthTest();
 }
 //----------------------------------------------------------------
 void menuPuzzle::loadObjectMP(sgC3DObject *obj, int ID){

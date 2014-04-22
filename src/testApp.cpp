@@ -7,7 +7,7 @@
 #define displayYBlue 1150
 #define displayZ -800
 #define iddleTime 120
-#define puzzleItems 0
+#define puzzleItems 10
 #define USE_MOUSE 1
 
 std::map<int,gwc::Point> active_points;
@@ -408,7 +408,7 @@ void testApp::draw(){
 	light.disable();
 	ofDisableLighting();
 	///////////////////////////////middle puzzles  ///////////////////////////////
-
+	ofEnableDepthTest();
 	ofEnableAlphaBlending();
 }
 

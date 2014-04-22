@@ -815,11 +815,7 @@
     <pos-mirrored>0.33,0.95</pos-mirrored>
     <size>1.0,1.0</size>
     <scale>1.0</scale>
-<<<<<<< HEAD
-    <pages>object-selected,armature-start,armature-selected,color-start,draw</pages>
-=======
     <pages>object-selected,armature-start,armature-selected,color-start</pages>
->>>>>>> a508258afb9c79044c1b6a93c7b3d06649f4f9b3
     <event name="next-step"></event>
     <param>
       <name>tap</name>
@@ -899,11 +895,7 @@
     </param>
     <param>
       <name>text</name>
-<<<<<<< HEAD
-      <val>next</val>
-=======
       <val>save</val>
->>>>>>> a508258afb9c79044c1b6a93c7b3d06649f4f9b3
     </param>
     <param>
       <name>font</name>
@@ -930,10 +922,6 @@
       <val>front</val>
     </param>
   </node>
-<<<<<<< HEAD
-  <!--
-=======
->>>>>>> a508258afb9c79044c1b6a93c7b3d06649f4f9b3
   <node type="button" name="make-one">
     <pos>0.4,0.95</pos>
     <pos-mirrored>0.33,0.95</pos-mirrored>

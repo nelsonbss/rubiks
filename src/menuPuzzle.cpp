@@ -216,10 +216,6 @@ bool menuPuzzle::isInside(int _x, int _y){
 }
 //------------------------------------------------------------------------
 void menuPuzzle::nodeDraw(){  
-<<<<<<< HEAD
-	
-=======
->>>>>>> a508258afb9c79044c1b6a93c7b3d06649f4f9b3
 
 	ofNoFill();
 	ofSetColor(0,0,255);

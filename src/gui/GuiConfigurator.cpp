@@ -375,7 +375,12 @@ void GuiConfigurator::specialTextLoadingCopOut(){
 	texts["make"] = GuiText();
 	texts["make"].setText("english", "MAKE ONE");
 	texts["make"].setText("french", "CRÉER");
-	texts["make"].setText("french", "HAZ UNO");
+	texts["make"].setText("spanish", "HAZ UNO");
+
+	texts["color"] = GuiText();
+	texts["color"].setText("english", "Drag colors to\ndecorate your puzzle.");
+	texts["color"].setText("french", "Faites glisser les\ncouleurs pour décorer votre\npuzzle.");
+	texts["color"].setText("spanish", "Para decorar tu puzle,\narrastra los colores.");
 
 	texts["arm-start"] = GuiText();
 	texts["arm-start"].setText("english", "Drag a structure\nto slice your shape.");

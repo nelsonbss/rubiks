@@ -342,40 +342,6 @@
       </param>
     </node>
   </node>
-  <node type="button" name="start-help">
-    <pos>0.25, 0.7</pos>
-    <size>1.0,1.0</size>
-    <scale>1.0</scale>
-    <pages>object-start</pages>
-    <param>
-      <name>image</name>
-      <val>Exports/Start_Textbox_456x53_%COLOR%.png</val>
-    </param>
-    <param>
-      <name>text</name>
-      <val>start-help</val>
-    </param>
-    <param>
-      <name>font</name>
-      <val>Fonts/GothamRnd-Medium.otf</val>
-    </param>
-    <param>
-      <name>font-size</name>
-      <val>10</val>
-    </param>
-    <param>
-      <name>text-position</name>
-      <val>25,140</val>
-    </param>
-    <param>
-      <name>text-color</name>
-      <val>255,255,255</val>
-    </param>
-    <param>
-      <name>draw-position</name>
-      <val>back</val>
-    </param>
-  </node>
   <node type="window" name="3d-window">
     <pos>0.0,0.73</pos>
     <size>0.154,0.2215</size>
@@ -535,6 +501,40 @@
     </param>
     -->
     </node>
+  <node type="button" name="start-help">
+    <pos>0.25, 0.7</pos>
+    <size>1.0,1.0</size>
+    <scale>1.0</scale>
+    <pages>object-start</pages>
+    <param>
+      <name>image</name>
+      <val>Exports/Start_Textbox_456x53_%COLOR%.png</val>
+    </param>
+    <param>
+      <name>text</name>
+      <val>start-help</val>
+    </param>
+    <param>
+      <name>font</name>
+      <val>Fonts/GothamRnd-Medium.otf</val>
+    </param>
+    <param>
+      <name>font-size</name>
+      <val>10</val>
+    </param>
+    <param>
+      <name>text-position</name>
+      <val>25,140</val>
+    </param>
+    <param>
+      <name>text-color</name>
+      <val>255,255,255</val>
+    </param>
+    <param>
+      <name>draw-position</name>
+      <val>back</val>
+    </param>
+  </node>
   <node type="button" name="puzzle-help">
     <pos>0.01, 0.685</pos>
     <size>1.0,1.0</size>
@@ -677,11 +677,57 @@
       <val>-10000</val>
     </param>
   </node>
+  <node type="button" name="color-help">
+    <pos>0.154, 0.685</pos>
+    <size>1.0,1.0</size>
+    <scale>1.0</scale>
+    <pages>color-start</pages>
+    <param>
+      <name>image</name>
+      <val>Exports/SelectShape_Textbox_295x33_%COLOR%.png</val>
+    </param>
+    <param>
+      <name>text</name>
+      <val>color</val>
+    </param>
+    <param>
+      <name>font</name>
+      <val>Fonts/GothamRnd-Medium.otf</val>
+    </param>
+    <param>
+      <name>font-size</name>
+      <val>10</val>
+    </param>
+    <param>
+      <name>text-position</name>
+      <val>20,90</val>
+    </param>
+    <param>
+      <name>text-color</name>
+      <val>255,255,255</val>
+    </param>
+    <param>
+      <name>hidden</name>
+      <val>true</val>
+    </param>
+    <param>
+      <name>active</name>
+      <val>false</val>
+    </param>
+    <param>
+      <name>draw-position</name>
+      <val>back</val>
+    </param>
+    <param>
+      <name>z</name>
+      <val>-10000</val>
+    </param>
+  </node>
   <node type="button" name="arm-rotate">
     <pos>0.163, 0.685</pos>
     <size>1.0,1.0</size>
     <scale>1.0</scale>
-    <pages>armature-select</pages>
+    <pages>armature-selected</pages>
     <param>
       <name>image</name>
       <val>Exports/ArmatureGestures_Textbox_312x33_%COLOR%.png</val>
@@ -689,6 +735,10 @@
     <param>
       <name>text</name>
       <val>arm-rotate-1</val>
+    </param>
+    <param>
+      <name>text2</name>
+      <val>arm-rotate-2</val>
     </param>
     <param>
       <name>font</name>
@@ -701,6 +751,10 @@
     <param>
       <name>text-position</name>
       <val>8,100</val>
+    </param>
+    <param>
+      <name>text-position2</name>
+      <val>30,250</val>
     </param>
     <param>
       <name>text-color</name>

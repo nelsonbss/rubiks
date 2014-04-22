@@ -52,7 +52,7 @@ void GuiNode::draw(){
 				if(bFlipped){
 					ofRectangle bounds = font.getStringBoundingBox(currentText, 0, 0);
 					ofPushMatrix();
-					ofTranslate(drawPos.x + textPosition.x  + bounds.width / 2, drawPos.y + textPosition.y + bounds.height / 2, 0);
+					ofTranslate(drawPos.x + textPositionFlipped.x  + bounds.width / 2, drawPos.y + textPositionFlipped.y + bounds.height / 2, 0);
 					ofRotateZ(180.0);
 					font.drawString(currentText, -bounds.width / 2, bounds.height / 2);
 					ofPopMatrix();
@@ -64,7 +64,7 @@ void GuiNode::draw(){
 					if(bFlipped){
 						ofRectangle bounds = font.getStringBoundingBox(currentText, 0, 0);
 						ofPushMatrix();
-						ofTranslate(drawPos.x + textPosition.x  + bounds.width / 2, drawPos.y + textPosition.y + bounds.height / 2, 0);
+						ofTranslate(drawPos.x + textPosition2Flipped.x  + bounds.width / 2, drawPos.y + textPosition2Flipped.y + bounds.height / 2, 0);
 						ofRotateZ(180.0);
 						font.drawString(currentText, -bounds.width / 2, bounds.height / 2);
 						ofPopMatrix();
@@ -186,11 +186,25 @@ void GuiNode::setupText(){
 	textPosition.set(0,0);
 	if(params.count("text-position")){
 		textPosition = stringToVec2f(params["text-position"]);
+		if(bFlipped){
+			if(params.count("text-position-flipped")){
+				textPositionFlipped = stringToVec2f(params["text-position-flipped"]);
+			} else {
+				textPositionFlipped = textPosition;
+			}
+		}
 	}
 	if(params.count("text2")){
 		bHaveText2 = true;
 		text2 = params["text2"];
 		textPosition2 = stringToVec2f(params["text-position2"]);
+		if(bFlipped){
+			if(params.count("text-position2-flipped")){
+				textPosition2Flipped = stringToVec2f(params["text-position2-flipped"]);
+			} else {
+				textPosition2Flipped = textPosition;
+			}
+		}
 	}
 }
 

@@ -105,6 +105,8 @@ public:
 	ofVec3f textColor;
 	ofVec2f textPosition;
 	ofVec2f textPosition2;
+	ofVec2f textPositionFlipped;
+	ofVec2f textPosition2Flipped;
 
 	//new event and param
 	void addEvent(SubObEvent* _event){events.push_back(_event);}

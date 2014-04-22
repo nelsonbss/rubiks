@@ -54,7 +54,7 @@
     </param>
     <param>
       <name>draw-position</name>
-      <val>front</val>
+      <val>back</val>
     </param>
   </node>
   <!--

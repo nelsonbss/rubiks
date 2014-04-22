@@ -5,20 +5,20 @@ GuiButton::GuiButton(map<string, string> &_attrs, vector<SubObEvent*> _events) :
 	attrs = _attrs;
 	events = _events;
 	//cout << "button has " << events.size() << endl;
-    if(attrs["image"] != "none"){
-        inactive.loadImage(attrs["image"]);
-        haveImage = true;
-        size.x = inactive.getWidth() * scale;
-        size.y = inactive.getHeight() * scale;
-    } else {
-        haveImage = false;
-        size = stringToVec2f(attrs["size"]);
-    }
-    haveActive = false;
-    if(attrs["clicked"] != "none"){
-        active.loadImage(attrs["clicked"]);
-        haveActive = true;
-    }
+	if(attrs["image"] != "none"){
+		inactive.loadImage(attrs["image"]);
+		haveImage = true;
+		size.x = inactive.getWidth() * scale;
+		size.y = inactive.getHeight() * scale;
+	} else {
+		haveImage = false;
+		size = stringToVec2f(attrs["size"]);
+	}
+	haveActive = false;
+	if(attrs["clicked"] != "none"){
+		active.loadImage(attrs["clicked"]);
+		haveActive = true;
+	}
 	bDraggable = false;
 	bTacky = false;
 	bSelected = false;
@@ -32,26 +32,26 @@ GuiButton::GuiButton(map<string, string> &_attrs, vector<SubObEvent*> _events) :
 			}
 		}
 	}
-    drawActive = false;
-    setName("button");
+	drawActive = false;
+	setName("button");
 	setChannel("button");
 	haveArabic = false;
-    map<string,string>::iterator mIter;
-    mIter = attrs.find("arabic");
-    if(mIter != attrs.end()){
-        haveArabic = true;
-        arabic.loadImage(attrs["arabic"]);
-    }
+	map<string,string>::iterator mIter;
+	mIter = attrs.find("arabic");
+	if(mIter != attrs.end()){
+		haveArabic = true;
+		arabic.loadImage(attrs["arabic"]);
+	}
 }
 
 GuiButton::GuiButton(string _img) : GuiNode(){
-    inactive.loadImage(_img);
-    haveArabic = false;
-    size.x = inactive.getWidth();
-    size.y = inactive.getHeight();
-    haveImage = true;
-    drawActive = false;
-    setName("button");
+	inactive.loadImage(_img);
+	haveArabic = false;
+	size.x = inactive.getWidth();
+	size.y = inactive.getHeight();
+	haveImage = true;
+	drawActive = false;
+	setName("button");
 	setChannel("button");
 }
 
@@ -116,14 +116,14 @@ void GuiButton::nodeSetPosition(){
 }
 
 bool GuiButton::processMouse(int _x, int _y, int _state){
-    //cout << name << " being checked." << endl;
-        //cout << name << " checking isInside." << endl;
+	//cout << name << " being checked." << endl;
+	//cout << name << " checking isInside." << endl;
 	if(isInside(_x,_y)){
 		//cout << "button clicked." << endl;
 		if(_state == MOUSE_STATE_DOWN){
 			if(!bDraggable){
 				execute();
-			    return true;
+				return true;
 			} else {
 				bSelected = true;
 				selectionLocation.set(_x, _y);
@@ -184,7 +184,7 @@ void GuiButton::input(string _type, int _ID, int _n, int _phase, ofVec2f _absPos
 
 void GuiButton::update(string _subName, Subject* _sub){
 }
- 
+
 void GuiButton::update(string _eventName, SubObEvent _event){
 	if(_eventName == "object-intercepted"){
 		if(_event.getArg("object-name")->getString() == name){
@@ -214,31 +214,34 @@ void GuiButton::sampleImage(){
 }
 
 void GuiButton::nodeDraw(){
-    if(haveImage){
-        if(!drawActive){
-            //if(haveArabic && SceneManager::Instance()->getDisplayArabic()){
-             //   arabic.draw(pos.x,pos.y);
-            //} else {
+	if(haveImage){
+		if(!drawActive){
+			//if(haveArabic && SceneManager::Instance()->getDisplayArabic()){
+			//   arabic.draw(pos.x,pos.y);
+			//} else {
 			//cout << name << " drawing image at " << drawPos.x << ", " << drawPos.y << endl;
 			inactive.draw(drawPos.x,drawPos.y, scale * drawSize.x,scale * drawSize.y);
-            //}
-        } else {
+			//}
+		} else {
 			//cout << name << " drawing active image at " << drawPos.x << ", " << drawPos.y << endl;
-            active.draw(drawPos.x,drawPos.y, drawSize.x, drawSize.y);
-        }
-    } else {
-        //ofRect(pos.x, pos.y, size.x, size.y);
+			active.draw(drawPos.x,drawPos.y, drawSize.x, drawSize.y);
+		}
+	} else {
+		//ofRect(pos.x, pos.y, size.x, size.y);
 		//cout << getName() << " has no image." << endl;
 	}
 	if(bWatchTime){
-		if(ofGetElapsedTimeMillis() - timeOfLastInteraction > 1000){
+		if(ofGetElapsedTimeMillis() - timeOfLastInteraction > 400){
 			setPosition();
 			drawSize.x = inactive.getWidth();
 			drawSize.y = inactive.getHeight();
 			bWatchTime = 0;
 			bSelected = false;
+			SubObEvent ev;
+			ev.setName(prefix + ":object-released");
+			SubObMediator::Instance()->sendEvent(ev.getName(), ev);
 		}
-		if(ofGetElapsedTimeMillis() - timeOfLastInteraction > 500){
+		if(ofGetElapsedTimeMillis() - timeOfLastInteraction > 200){
 			if(bSendActions && bSend){
 				SubObEvent ev;
 				ev.setName("object-moved");
@@ -247,6 +250,8 @@ void GuiButton::nodeDraw(){
 				SubObMediator::Instance()->sendEvent("object-moved", ev);
 				bSend = false;
 				bSelected = false;
+				ev.setName(prefix + ":object-released");
+				SubObMediator::Instance()->sendEvent(ev.getName(), ev);
 			}
 		}
 	}

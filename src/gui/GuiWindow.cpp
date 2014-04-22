@@ -45,6 +45,7 @@ void GuiWindow::nodeInit(){
 		scrollBar.activate();
 	}
 	SubObMediator::Instance()->addObserver(getName() + ":scroll", this);
+	SubObMediator::Instance()->addObserver(prefix + ":object-released()", this);
 	//offset.set(0,0);
 	topMax = offset.y;
 	topMin = drawSize.y - windowHeight;
@@ -237,5 +238,8 @@ void GuiWindow::update(string _eventName, SubObEvent _event){
 			}
 			//cout << "bToggled = " << bToggled << endl;
 		}
+	}
+	if(_eventName == getName() + ":object-released"){
+		positionNodes();
 	}
 }

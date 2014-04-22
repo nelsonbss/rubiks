@@ -61,11 +61,11 @@ void GuiButton::nodeInit(){
 		inactive.loadImage(params["image"]);
 		drawSize.x = inactive.getWidth();
 		drawSize.y = inactive.getHeight();
+		inactive.mirror(bFlipped, bFlipped);
 		haveImage = true;
 	} else {
 		haveImage = false;
 	}
-	inactive.mirror(bFlipped, prefix == "tr");
 	drawActive = false;
 	haveActive = false;
 	haveArabic = false;

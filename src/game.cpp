@@ -611,6 +611,7 @@ void game::goToAttract(){
 
 	bInAttract = true;
 	camPosition.set(viewport.width / 2, viewport.height / 2, 400);
+	guiReset();
 }
 void game::setPage(string _page){
 	GuiConfigurator::Instance()->setCurrentPage(prefix, _page);

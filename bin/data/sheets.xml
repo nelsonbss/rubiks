@@ -461,7 +461,7 @@
     <pos>0.2, 0.68</pos>
     <size>0.3,0.25</size>
     <scale>1.0</scale>
-    <pages>object-start,object-selected,armature-start,armature-selected,color-start,play,draw</pages>
+    <pages>object-start,object-selected,armature-start,armature-selected,color-start,play,play2,draw</pages>
     <param>
       <name>draw-area</name>
       <val>false</val>

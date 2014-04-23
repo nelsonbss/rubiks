@@ -8,6 +8,7 @@ cutter::cutter(float thick, float tamCutter, float tamCuby,float numCutr, ofVec3
 	cutterSize = tamCutter; //how big is the cutter cube
 	///
 	tamCubie = tamCuby;
+	tamCubie=3*tamCuby/gsize;
 
 	gridSize=gsize;
 	if (gsize==1) {
@@ -87,7 +88,8 @@ void cutter::setup(){
 
 				cc[index] = sgCreateBox(xsize,ysize,zsize); //it expands -> x
 				cc[index]->InitTempMatrix()->Translate(centerCube);//center box
-				SG_VECTOR transc2 = {xtrans,ytrans,ztrans};//move to its position
+				//SG_VECTOR transc2 = {xtrans,ytrans,ztrans};//move to its position
+				SG_VECTOR transc2 = {xtrans+1,ytrans+1,ztrans+1};//move to its position
 				cc[index]->GetTempMatrix()->Translate(transc2);
 				cc[index]->ApplyTempMatrix();  
 				cc[index]->DestroyTempMatrix();

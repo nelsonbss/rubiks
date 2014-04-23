@@ -909,6 +909,11 @@ void puzzle::update(string _eventName, SubObEvent _event){
 void puzzle::checkCubiesForHit(ofVec3f _pnt){
 	float nearest = 10000.0;
 	int nearestId = -1;
+	//so previous cubie doesn not render as mesh
+	if(activeCubie > -1){
+		myCubies[activeCubie]->setDrawWire(false);
+	}
+
 	for(int i=0;i<numPieces;i++){
 		if(myCubies[i] != NULL){
 			//ofVec3f centroid = myCubies[i]->getCentroidScreen();
@@ -926,10 +931,12 @@ void puzzle::checkCubiesForHit(ofVec3f _pnt){
 	if(nearestId != -1){
 		if(nearest < MAX_DIST){
 			if(activeCubie != nearestId){
-				//if(activeCubie > -1){
-				//myCubies[activeCubie]->setDraw(true);
-				//}
+				
 				activeCubie = nearestId;
+				if(activeCubie > -1){
+					//myCubies[activeCubie]->setDraw(true);
+					myCubies[activeCubie]->setDrawWire(true);
+				}
 				//myCubies[activeCubie]->setDraw(false);
 				activeTriangle = myCubies[activeCubie]->getNearestTri(_pnt);
 
@@ -997,9 +1004,11 @@ bool puzzle::isInside(int _x, int _y){
 			*/
 			if(!bHaveActiveCubie){
 				activeCubie = nearestId;
+				myCubies[activeCubie]->setDrawWire(true);
 				bHaveActiveCubie = true;
 			} else if(nearestId != activeCubie){
 				rotationCubie = nearestId;
+				myCubies[rotationCubie]->setDrawWire(true);
 				bHaveRotationCubie = true;
 			}
 		} else {
@@ -1050,6 +1059,7 @@ void puzzle::changeFaceColor(ofVec3f _pnt, ofFloatColor _c){
 	int obid;
 
 	if(activeCubie > -1){
+		cout << "setting color." << endl;
 		obid = myCubies[activeCubie]->selectedObjectID;
 		if(obid < 8){
 			//object with flat faces
@@ -1060,6 +1070,10 @@ void puzzle::changeFaceColor(ofVec3f _pnt, ofFloatColor _c){
 			//objects with curved faces
 			myCubies[activeCubie]->setColorToCurvedObject(_c);
 		}
+	}else{
+		cout << "NOT setting color." << endl;
+		//we dont have a cubie... thats why its not setting a color..
+
 	}
 }
 
@@ -1291,10 +1305,10 @@ void puzzle::colorFacesMenuPuzzle(int objectID,vector< ofVec3f > &menuUniqueNorm
 		ofr->colorFacesExtruded(myCubies,numPieces,0.01, objectID);
 	}
 	//if(objectID != 4){
-		//color black all the inside faces of each cubie (after all other face colors have been applied)
-		//all the puzzles have to do this
-		colorCubiesBlackSides();
-		//need to color black sides of bunny in a better way.. will they be colored? or leave it plain?
+	//color black all the inside faces of each cubie (after all other face colors have been applied)
+	//all the puzzles have to do this
+	colorCubiesBlackSides();
+	//need to color black sides of bunny in a better way.. will they be colored? or leave it plain?
 	//}
 	free(ofr);
 }

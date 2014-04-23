@@ -546,6 +546,14 @@ void game::update(string _eventName, SubObEvent _event){
 			bUnproject = true;
 			unprojectMode = UP_MODE_COLOR;
 		}
+		//else{
+		//	if(unprojectMode != UP_MODE_P){
+		//		unprojectPoint(mousePoint);//mousePoint gets set on bUnproject
+		//	} else {
+		//		projectPoint(mousePoint);
+		//	}
+		//	bUnproject = false;
+		//}
 		//changeColorToColor(sc,menuColor);
 		//sc = menuColor;
 		//changeFaceColor(pos, menuColor);
@@ -793,7 +801,6 @@ void game::unprojectPoint(ofVec3f _pnt){
 			}
 		}
 	} else if(unprojectMode == UP_MODE_COLOR){
-		cout << "setting color." << endl;
 		myPuzzle->changeFaceColor(unprojectedPoint, newFaceColor);
 	}
 }
@@ -1091,6 +1098,46 @@ void game::loadObjectG(int objID, SG_VECTOR p, SG_VECTOR t){
 	}
 }
 //----------------------------------------------------------------------
+//void game::loadArmature(int type){
+//	//loads armature and creates cutter and slicer
+//	//have to clear myArmature, to load the new one, like load objects!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//	rotateSlicer.x=0;
+//	rotateSlicer.y=0;
+//	rotateSlicer.z=0;
+//
+//	if (armID == -1){
+//		//first time
+//		if(type == 1){
+//			tamCubie = 100;
+//			myArmature = new armature (ofVec3f(posA.x,posA.y,posA.z),tamSideArmature,tamSideArmature,10,tamCubie);
+//		}else if(type == 2){
+//			tamCubie = 50;
+//			myArmature = new armature (ofVec3f(posA.x,posA.y,posA.z),tamSideArmature,tamSideArmature,10,tamCubie);
+//		}else if(type > 1){
+//			tamCubie = 100;
+//			myArmature = new armature (ofVec3f(posA.x,posA.y,posA.z),tamSideArmature,tamSideArmature,10,tamCubie);
+//		}
+//		armID = type;
+//	}else{
+//		//free (myArmature);
+//		//delete myArmature;
+//		if(type == 1){
+//			tamCubie = 100;
+//			myArmature = new armature (ofVec3f(posA.x,posA.y,posA.z),tamSideArmature,tamSideArmature,10,tamCubie);
+//		}else if(type == 2){
+//			tamCubie = 50;
+//			myArmature = new armature (ofVec3f(posA.x,posA.y,posA.z),tamSideArmature,tamSideArmature,10,tamCubie);
+//		}else if(type > 1){
+//			tamCubie = 100;
+//			myArmature = new armature (ofVec3f(posA.x,posA.y,posA.z),tamSideArmature,tamSideArmature,10,tamCubie);
+//		}
+//		armID = type;
+//	}
+//
+//	myArmature->setup();
+//	step =3;
+//}
+//----------------------------------------------------------------------
 void game::loadArmature(int type){
 	//loads armature and creates cutter and slicer
 	//have to clear myArmature, to load the new one, like load objects!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -1098,76 +1145,88 @@ void game::loadArmature(int type){
 	rotateSlicer.y=0;
 	rotateSlicer.z=0;
 
+	if (type==1) {
+		type=3;
+	}
+
 	if (armID == -1){
+		armID=type;
 		//first time
-		if(type == 1){
-			tamCubie = 100;
-			myArmature = new armature (ofVec3f(posA.x,posA.y,posA.z),tamSideArmature,tamSideArmature,10,tamCubie);
-		}else if(type == 2){
-			tamCubie = 50;
-			myArmature = new armature (ofVec3f(posA.x,posA.y,posA.z),tamSideArmature,tamSideArmature,10,tamCubie);
-		}else if(type > 1){
-			tamCubie = 100;
-			myArmature = new armature (ofVec3f(posA.x,posA.y,posA.z),tamSideArmature,tamSideArmature,10,tamCubie);
-		}
-		armID = type;
+		tamCubie = 100;
+		myArmature = new armature (ofVec3f(posA.x,posA.y,posA.z),tamSideArmature,tamSideArmature,10,tamCubie,armID);
 	}else{
 		//free (myArmature);
 		//delete myArmature;
-		if(type == 1){
-			tamCubie = 100;
-			myArmature = new armature (ofVec3f(posA.x,posA.y,posA.z),tamSideArmature,tamSideArmature,10,tamCubie);
-		}else if(type == 2){
-			tamCubie = 50;
-			myArmature = new armature (ofVec3f(posA.x,posA.y,posA.z),tamSideArmature,tamSideArmature,10,tamCubie);
-		}else if(type > 1){
-			tamCubie = 100;
-			myArmature = new armature (ofVec3f(posA.x,posA.y,posA.z),tamSideArmature,tamSideArmature,10,tamCubie);
-		}
 		armID = type;
+		tamCubie = 100;
+		myArmature = new armature (ofVec3f(posA.x,posA.y,posA.z),tamSideArmature,tamSideArmature,10,tamCubie,armID);
 	}
 
 	myArmature->setup();
 	step =3;
 }
+
 //----------------------------------------------------------------------
 void game::loadArmatureMenu(int type){
 	//loads armature and creates cutter and slicer
 	//have to clear myArmature, to load the new one, like load objects!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	//rotateSlicer.x=0;
+	//rotateSlicer.y=0;
+	//rotateSlicer.z=0;
+
+	//if (armID == -1){
+	//	//first time
+	//	if(type == 1){
+	//		tamCubie = 100;
+	//		myArmature = new armature (ofVec3f(posA.x,posA.y,posA.z),tamSideArmature,tamSideArmature,10,tamCubie);
+	//	}else if(type == 2){
+	//		tamCubie = 50;
+	//		myArmature = new armature (ofVec3f(posA.x,posA.y,posA.z),tamSideArmature,tamSideArmature,10,tamCubie);
+	//	}else if(type > 1){
+	//		tamCubie = 100;
+	//		myArmature = new armature (ofVec3f(posA.x,posA.y,posA.z),tamSideArmature,tamSideArmature,10,tamCubie);
+	//	}
+	//	armID = type;
+	//}else{
+	//	//free (myArmature);
+	//	//delete myArmature;
+	//	if(type == 1){
+	//		tamCubie = 100;
+	//		myArmature = new armature (ofVec3f(posA.x,posA.y,posA.z),tamSideArmature,tamSideArmature,10,tamCubie);
+	//	}else if(type == 2){
+	//		tamCubie = 50;
+	//		myArmature = new armature (ofVec3f(posA.x,posA.y,posA.z),tamSideArmature,tamSideArmature,10,tamCubie);
+	//	}else if(type > 1){
+	//		tamCubie = 100;
+	//		myArmature = new armature (ofVec3f(posA.x,posA.y,posA.z),tamSideArmature,tamSideArmature,10,tamCubie);
+	//	}
+	//	armID = type;
+	//}
+
+	//myArmature->setup();
 	rotateSlicer.x=0;
 	rotateSlicer.y=0;
 	rotateSlicer.z=0;
 
+	if (type==1) {
+		type=3;
+	}
+
 	if (armID == -1){
+		armID=type;
 		//first time
-		if(type == 1){
-			tamCubie = 100;
-			myArmature = new armature (ofVec3f(posA.x,posA.y,posA.z),tamSideArmature,tamSideArmature,10,tamCubie);
-		}else if(type == 2){
-			tamCubie = 50;
-			myArmature = new armature (ofVec3f(posA.x,posA.y,posA.z),tamSideArmature,tamSideArmature,10,tamCubie);
-		}else if(type > 1){
-			tamCubie = 100;
-			myArmature = new armature (ofVec3f(posA.x,posA.y,posA.z),tamSideArmature,tamSideArmature,10,tamCubie);
-		}
-		armID = type;
+		tamCubie = 100;
+		myArmature = new armature (ofVec3f(posA.x,posA.y,posA.z),tamSideArmature,tamSideArmature,10,tamCubie,armID);
 	}else{
 		//free (myArmature);
 		//delete myArmature;
-		if(type == 1){
-			tamCubie = 100;
-			myArmature = new armature (ofVec3f(posA.x,posA.y,posA.z),tamSideArmature,tamSideArmature,10,tamCubie);
-		}else if(type == 2){
-			tamCubie = 50;
-			myArmature = new armature (ofVec3f(posA.x,posA.y,posA.z),tamSideArmature,tamSideArmature,10,tamCubie);
-		}else if(type > 1){
-			tamCubie = 100;
-			myArmature = new armature (ofVec3f(posA.x,posA.y,posA.z),tamSideArmature,tamSideArmature,10,tamCubie);
-		}
 		armID = type;
+		tamCubie = 100;
+		myArmature = new armature (ofVec3f(posA.x,posA.y,posA.z),tamSideArmature,tamSideArmature,10,tamCubie,armID);
 	}
 
 	myArmature->setup();
+	step =3;
 }
 //-----------------------------------------------------------------------------------------
 void game::applyArmRotations(){
@@ -2126,6 +2185,180 @@ void game::startMove(ofVec3f _pnt){
 	}
 }
 //--------------------------------------------------------------------------------------------------------------------------
+//void game::makeMove(ofVec3f _pnt){
+//	//SG_POINT axis;
+//	// get angle of gesture
+//	double dragDist=sqrt((_pnt.y*_pnt.y)+(_pnt.x*_pnt.x));
+//	if(bHaveAxis == false){
+//		if(dragDist > 75){
+//
+//			double dragAngle = atan2(_pnt.y,_pnt.x);//atan2(newPt.Y - twistStartPoint.Y, newPt.X - twistStartPoint.X);
+//
+//			double offset = 100000;
+//			int closest=-1;
+//			for (int i = 0; i < 6; i++)
+//			{
+//				double dist= abs(dragAngle-gestureAngles[i]);
+//				double dist2= abs(dragAngle-gestureAngles[i]+(2*3.14159));
+//				double dist3= abs(dragAngle-gestureAngles[i]-(2*3.14159));
+//				if (dist < offset){
+//					offset = dist;
+//					closest = i;
+//				} 
+//				if (dist2 < offset){
+//					offset = dist2;
+//					closest = i;
+//				} 
+//				if (dist3 < offset){
+//					offset = dist3;
+//					closest = i;
+//				} 
+//			}
+//			cubiePos=myPuzzle->getCubieInfo(myPuzzle->activeCubie);
+//			//normal
+//			//ofVec3f normal = myPuzzle->activeTriangle.getNormal();
+//			ofVec3f normal=camPosition-ofVec3f(posP.x, posP.y, posP.z);
+//			//
+//			int normalNum=-1;
+//			int normalAng=0;
+//
+//			// this one is easy since we're only dealing with six absolute directions... so we can see which vector of the normal is the most extreme
+//			if(abs(normal.x)>abs(normal.y) && abs(normal.x)>abs(normal.z)){
+//				// x axis is most prominent
+//				normalAng=0;
+//				if(normal.x>0){
+//					normalNum=0;
+//				}else{
+//					normalNum=1;
+//				}
+//			}else if (abs(normal.y)>abs(normal.z)) {
+//				// y axis is most prominent
+//				normalAng=1;
+//				if(normal.y>0){
+//					normalNum=2;
+//				}else{
+//					normalNum=3;
+//				}
+//			}else {
+//				// z axis is most prominent
+//				normalAng=2;
+//				if (normal.z>0) {
+//					normalNum=4;
+//				} else {
+//					normalNum=5;
+//				}
+//			}
+//			if (closest==1 || closest==0) {
+//				// x axis
+//				bHaveAxis = true;
+//				if (normalAng==1) {
+//					// rotate on z
+//					axis.x = 0;
+//					axis.y = 0;
+//					axis.z = 1;
+//					dir=true;
+//					if(myPuzzle->getCubieInfo(myPuzzle->activeCubie).y >= 1) {
+//						dir = false;
+//					}
+//					if (closest==1) {
+//						dir=!dir;
+//					}
+//					rotateByIDandAxis(myPuzzle->activeCubie,axis,dir,10);
+//
+//				}else{
+//					// rotate on y
+//					axis.x = 0;
+//					axis.y = 1;
+//					axis.z = 0;
+//
+//					dir=true;
+//					if(myPuzzle->getCubieInfo(myPuzzle->activeCubie).z <= 1) {
+//						dir = false;
+//					}
+//					if (closest==1) {
+//						dir=!dir;
+//					}
+//					rotateByIDandAxis(myPuzzle->activeCubie,axis,dir,10);
+//				}
+//			}
+//			if (closest==3 || closest==2) {
+//				// y axis
+//				bHaveAxis = true;
+//				if (normalAng==0) {
+//					// rotate on z
+//					axis.x = 0;
+//					axis.y = 0;
+//					axis.z = 1;
+//					dir=true;
+//					if(myPuzzle->getCubieInfo(myPuzzle->activeCubie).x <= 1) {
+//						dir = false;
+//					}
+//					if (closest==3) {
+//						dir=!dir;
+//					}
+//					rotateByIDandAxis(myPuzzle->activeCubie,axis,dir,10);
+//
+//				} else {
+//					// rotate on x
+//					axis.x = 1;
+//					axis.y = 0;
+//					axis.z = 0;
+//
+//					dir=false;
+//					if(myPuzzle->getCubieInfo(myPuzzle->activeCubie).z <= 1) {
+//						dir = true;
+//					}
+//					if (closest==3) {
+//						dir=!dir;
+//					}
+//					rotateByIDandAxis(myPuzzle->activeCubie,axis,dir,10);
+//				}
+//			}
+//			if (closest==4 || closest==5) {
+//				// z axis
+//				bHaveAxis = true;
+//
+//				if(normalAng==0){
+//					// rotate on y
+//					axis.x = 0;
+//					axis.y = 1;
+//					axis.z = 0;
+//					dir=false;
+//					if(myPuzzle->getCubieInfo(myPuzzle->activeCubie).x <= 1) {
+//						dir = true;
+//					}
+//					if (closest==5) {
+//						dir=!dir;
+//					}
+//					rotateByIDandAxis(myPuzzle->activeCubie,axis,dir,10);
+//				} else {
+//					// rotate on x
+//					axis.x = 1;
+//					axis.y = 0;
+//					axis.z = 0;
+//
+//					dir=true;
+//					if(myPuzzle->getCubieInfo(myPuzzle->activeCubie).y <= 1) {
+//						dir = false;
+//					}
+//					if (closest==5) {
+//						dir=!dir;
+//					}
+//					rotateByIDandAxis(myPuzzle->activeCubie,axis,dir,10);
+//
+//				}
+//			}
+//		}
+//	}else{
+//		//if (((dragDist-lastDragDistance)/300)>.5) {
+//		rotateByIDandAxis(myPuzzle->activeCubie,axis,dir,5);
+//		//} else if (((dragDist-lastDragDistance)/300)<-.5) {
+//		//	rotateByIDandAxis(myPuzzle->activeCubie,axis,dir,-5);
+//		//}
+//	}
+//	lastDragDistance=dragDist;
+//}
+//--------------------------------------------------------------------------------------------------------------------------
 void game::makeMove(ofVec3f _pnt){
 	//SG_POINT axis;
 	// get angle of gesture
@@ -2156,8 +2389,8 @@ void game::makeMove(ofVec3f _pnt){
 				} 
 			}
 			cubiePos=myPuzzle->getCubieInfo(myPuzzle->activeCubie);
-			ofVec3f normal = myPuzzle->activeTriangle.getNormal();
-			//			ofVec3f normal=camPosition-ofVec3f(posP.x, posP.y, posP.z);
+			//ofVec3f normal = myPuzzle->activeTriangle.getNormal(); // swap this line for the next one if you want to use camera angle vs. selection normal
+			ofVec3f normal=camPosition-ofVec3f(posP.x, posP.y, posP.z);
 			int normalNum=-1;
 			int normalAng=0;
 
@@ -2196,7 +2429,7 @@ void game::makeMove(ofVec3f _pnt){
 					axis.y = 0;
 					axis.z = 1;
 					dir=true;
-					if(myPuzzle->getCubieInfo(myPuzzle->activeCubie).y >= 1) {
+					if(myPuzzle->getCubieInfo(myPuzzle->activeCubie).y >= armID/2) {
 						dir = false;
 					}
 					if (closest==1) {
@@ -2211,7 +2444,7 @@ void game::makeMove(ofVec3f _pnt){
 					axis.z = 0;
 
 					dir=true;
-					if(myPuzzle->getCubieInfo(myPuzzle->activeCubie).z <= 1) {
+					if(myPuzzle->getCubieInfo(myPuzzle->activeCubie).z < armID/2) {
 						dir = false;
 					}
 					if (closest==1) {
@@ -2229,7 +2462,7 @@ void game::makeMove(ofVec3f _pnt){
 					axis.y = 0;
 					axis.z = 1;
 					dir=true;
-					if(myPuzzle->getCubieInfo(myPuzzle->activeCubie).x <= 1) {
+					if(myPuzzle->getCubieInfo(myPuzzle->activeCubie).x < armID/2) {
 						dir = false;
 					}
 					if (closest==3) {
@@ -2244,7 +2477,7 @@ void game::makeMove(ofVec3f _pnt){
 					axis.z = 0;
 
 					dir=false;
-					if(myPuzzle->getCubieInfo(myPuzzle->activeCubie).z <= 1) {
+					if(myPuzzle->getCubieInfo(myPuzzle->activeCubie).z < armID/2) {
 						dir = true;
 					}
 					if (closest==3) {
@@ -2263,7 +2496,7 @@ void game::makeMove(ofVec3f _pnt){
 					axis.y = 1;
 					axis.z = 0;
 					dir=false;
-					if(myPuzzle->getCubieInfo(myPuzzle->activeCubie).x <= 1) {
+					if(myPuzzle->getCubieInfo(myPuzzle->activeCubie).x < armID/2) {
 						dir = true;
 					}
 					if (closest==5) {
@@ -2277,7 +2510,7 @@ void game::makeMove(ofVec3f _pnt){
 					axis.z = 0;
 
 					dir=true;
-					if(myPuzzle->getCubieInfo(myPuzzle->activeCubie).y <= 1) {
+					if(myPuzzle->getCubieInfo(myPuzzle->activeCubie).y < armID/2) {
 						dir = false;
 					}
 					if (closest==5) {
@@ -2290,7 +2523,7 @@ void game::makeMove(ofVec3f _pnt){
 		}
 	}else{
 		//if (((dragDist-lastDragDistance)/300)>.5) {
-		rotateByIDandAxis(myPuzzle->activeCubie,axis,dir,5);
+			rotateByIDandAxis(myPuzzle->activeCubie,axis,dir,5);
 		//} else if (((dragDist-lastDragDistance)/300)<-.5) {
 		//	rotateByIDandAxis(myPuzzle->activeCubie,axis,dir,-5);
 		//}

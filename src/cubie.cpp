@@ -51,6 +51,8 @@ cubie::cubie(float x, float y,float z, int idi, int selObjId, ofVec3f offset, in
 
 	bHavePoint = false;
 	bUnproject = false;
+
+	radiurS = 10;
 }
 //--------------------------------------------------------------
 void cubie::setup(){
@@ -584,6 +586,7 @@ void cubie::draw(){
 					myMeshs[j].drawWireframe();
 				} else {
 					//myVbos[j].draw(GL_TRIANGLES, 0,myMeshs[j].getNumIndices());
+					//myMeshs[j].drawWireframe();
 					myMeshs[j].draw();
 				}
 			}
@@ -592,12 +595,16 @@ void cubie::draw(){
 			myMeshs[j].drawWireframe();
 			}
 			*/
-			//ofPushMatrix();
-			//ofTranslate(centroid3d.x, centroid3d.y, centroid3d.z);
-			//ofSetColor(centroidColor.x, centroidColor.y, centroidColor.z);
-			//ofDrawSphere(0,0,0,10);
-			//centroid2d = projectPoint(centroid3d);
-			//ofPopMatrix();
+
+			
+			
+			ofPushMatrix();
+			ofTranslate(centroid3d.x, centroid3d.y, centroid3d.z);
+			ofSetColor(centroidColor.x, centroidColor.y, centroidColor.z);
+			ofDrawSphere(0,0,0,radiurS);
+			centroid2d = projectPoint(centroid3d);
+			ofPopMatrix();
+
 			glPopMatrix();
 		}
 	}
@@ -851,6 +858,7 @@ void cubie::setColorToSet(vector<Triangle> _tris, ofFloatColor _c){
 
 void cubie::setColorToCurvedObject(ofFloatColor _c){
 	myMeshs[0].setColorToCurvedObject(_c);
+	//need to recolor black faces
 	ofVbo tempVbo;
 	tempVbo.setMesh(myMeshs[0], GL_STATIC_DRAW);
 	myVbos[0]=tempVbo;

@@ -95,7 +95,7 @@ void GuiButton::nodeExecute(){
 	bReadyForInput = false;
 	timer->addTimer(200, (int*)&bReadyForInput, 1);
 	if(bSendSample){
-		cout << "sending sample" << endl;
+		cout << "sending sample from" << getPrefix() << endl;
 		SubObEvent ev;
 		ev.setName(getPrefix() + ":new-color");
 		ev.addArg("color", sampleColor);

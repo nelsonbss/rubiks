@@ -96,7 +96,7 @@ public:
 	/*
 	Paul's
 	*/
-
+	float radiurS;
 	bool bDrawWire;
 	void setDrawWire(bool _drawWire){bDrawWire = _drawWire;}
 

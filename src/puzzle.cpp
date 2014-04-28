@@ -47,22 +47,6 @@ puzzle::puzzle(SG_VECTOR p, ofVec3f offset, int gSize){
 	three_dim1[0][1][0] = 4;		three_dim1[1][1][0] = 3;		three_dim1[2][1][0] = 2;
 	three_dim1[0][2][0] = 22;	three_dim1[1][2][0] = 21;	three_dim1[2][2][0] = 20;
 
-	/* now read the value: */
-	//std::cout << "It should be 13: " << three_dim1[0][0][0] << "\n";
-	//std::cout << "It should be 4: " << three_dim1[0][1][0] << "\n";
-
-	/* get X slize 1*/
-	//TwoDimensions& two_dim(three_dim[1]);
-	/* read it: */
-	//std::cout << "It should be 0: " << two_dim[1][1] << "\n";
-
-	/* get Y=2 strip fom  of that X slice 1 */
-	//OneDimension& one_dim(two_dim[2]);
-
-	/* read it (this is two_dim[2][1], aka three_dim[1][2][1]): */
-	//std::cout << "It should be 18: " << one_dim[1] << "\n";
-	/* or */
-	//std::cout << "It should be 21: " << one_dim.at(2) << "\n";
 	SubObMediator::Instance()->addObserver("ibox-bl:1", this);
 	SubObMediator::Instance()->addObserver("ibox-bl:0", this);
 	bDrawLine = false;
@@ -234,12 +218,12 @@ void puzzle::rotate(SG_VECTOR r){
 	//}
 }
 //----------------------------------------------------------------
-void puzzle::rotateTB(float anglei, ofVec3f axisi){
-	//this function is being called from the trackBall object, which has the pointer to the puzzle object
-	//gets info from trackball object
-	qaxis = axisi; 
-	qangle = anglei;
-}
+//void puzzle::rotateTB(float anglei, ofVec3f axisi){
+//	//this function is being called from the trackBall object, which has the pointer to the puzzle object
+//	//gets info from trackball object
+//	qaxis = axisi; 
+//	qangle = anglei;
+//}
 //----------------------------------------------------------------
 void puzzle::move(SG_VECTOR p){
 	//iterate through cubies
@@ -951,7 +935,7 @@ void puzzle::checkCubiesForHit(ofVec3f _pnt){
 		}
 	}
 }
-
+//----------------------------------------------------------------------------------------------------------
 bool puzzle::isInside(int _x, int _y){
 	//cout << "puzzle checking insides" << endl;
 	ofVec3f mouse(_x,_y, 0);
@@ -1019,7 +1003,7 @@ bool puzzle::isInside(int _x, int _y){
 	}
 	return false;
 }
-
+//------------------------------------------------------------------------------------------------------------------------------
 void puzzle::dragInput(ofVec3f _pnt){
 	if(activeCubie > -1){
 		//ofVec3f pnt = _pnt.normalize();
@@ -1053,7 +1037,7 @@ void puzzle::dragInput(ofVec3f _pnt){
 		}
 	}
 }
-
+//------------------------------------------------------------------------------------------------------
 void puzzle::changeFaceColor(ofVec3f _pnt, ofFloatColor _c){
 	activeCubie = -1;
 	checkCubiesForHit(_pnt);
@@ -1077,7 +1061,7 @@ void puzzle::changeFaceColor(ofVec3f _pnt, ofFloatColor _c){
 
 	}
 }
-
+//----------------------------------------------------------------------------------------------------------------
 ofVec3f puzzle::getDir(ofVec3f _pnt){
 	ofVec3f x(abs(_pnt.x), 0, 0);
 	ofVec3f y(0, abs(_pnt.y), 0);
@@ -1095,8 +1079,8 @@ ofVec3f puzzle::getDir(ofVec3f _pnt){
 		return z;
 	}
 }
-
-float puzzle::getMainComponent(ofVec3f _pnt){///////////////////////////////////////////////////
+//------------------------------------------------------------------------------------------------------------------
+float puzzle::getMainComponent(ofVec3f _pnt){
 	ofVec3f x(_pnt.x, 0, 0);
 	ofVec3f y(0, _pnt.y, 0);
 	ofVec3f z(0, 0, _pnt.z);
@@ -1113,7 +1097,7 @@ float puzzle::getMainComponent(ofVec3f _pnt){///////////////////////////////////
 		return _pnt.z;
 	}
 }
-
+//----------------------------------------------------------------------------------------------------------------
 void puzzle::doRotation(){
 	if(bHaveActiveCubie && bHaveRotationCubie){
 		//rotateTwoIds(activeCubie, rotationCubie, true);
@@ -1127,7 +1111,7 @@ void puzzle::doRotation(){
 		cout << "single rotation." << endl;
 	}
 }
-
+//-------------------------------------------------------------------------------------------------------------------------------------
 void puzzle::input(string _type, int _ID, int _n, int _phase, ofVec2f _absPos, ofVec2f _deltaPos){
 	if(bHaveLine){
 		lineStart = _absPos;
@@ -1335,6 +1319,23 @@ void puzzle::colorCubiesBlackSides(){
 void puzzle::changeColorToColor(ofFloatColor Sc, ofFloatColor Tc){
 	for(int i=0;i<numPieces;i++){
 		myCubies[i]->changeColorToColor(Sc,Tc);
+	}
+}
+//------------------------------------------------------------------
+void puzzle::clonePuzzleColors(puzzle &templatePuzzle){
+	//gets the colors from the templatepuzzle and applies those to the current puzzle cubies
+	for(int i=0;i<numPieces;i++){
+		int numMeshes = templatePuzzle.myCubies[i]->myMeshs.size();
+		for(int j=0;j<numMeshes;j++){
+			//get the colors from the meshs of the template
+			vector <ofFloatColor> colorsVectorTemplate = templatePuzzle.myCubies[i]->myMeshs[j].getColors();
+			//put those colors in the current puzzles cubie
+			myCubies[i]->myMeshs[j].clearColors();
+			myCubies[i]->myMeshs[j].addColors(colorsVectorTemplate);
+			ofVbo tempVbo;
+			tempVbo.setMesh(myCubies[i]->myMeshs[j], GL_STATIC_DRAW);
+			myCubies[i]->myVbos[j]=tempVbo;
+		}
 	}
 }
 //----------------------------------------------------------------

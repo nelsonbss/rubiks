@@ -584,7 +584,8 @@ void cubie::draw(){
 			//objectList[j]->DestroyTempMatrix();
 			if(bDraw){
 				if(bDrawWire){
-					myMeshs[j].drawWireframe();
+					//myMeshs[j].drawWireframe();
+					myMeshs[j].draw();
 				} else {
 					//myVbos[j].draw(GL_TRIANGLES, 0,myMeshs[j].getNumIndices());
 					//myMeshs[j].drawWireframe();

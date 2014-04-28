@@ -41,9 +41,9 @@ public:
 
 	SG_VECTOR rot;
 	void rotate(SG_VECTOR r);
-	void rotateTB(float angle, ofVec3f axis);
-	ofVec3f qaxis; 
-	float qangle; 
+	//void rotateTB(float angle, ofVec3f axis);
+	//ofVec3f qaxis; 
+	//float qangle; 
 
 	typedef std::vector<int>OneDimension;
 	typedef std::vector<OneDimension>TwoDimensions;
@@ -82,6 +82,8 @@ public:
 	void colorTorusMenuPuzzle();
 	///color change
 	void changeColorToColor(ofFloatColor Sc, ofFloatColor Tc);
+	//color cloning
+	void clonePuzzleColors(puzzle &templatePuzzle);
 
 	int gridSize;
 
@@ -115,7 +117,8 @@ public:
 
 	//   //current state of the rotation
 	//ofQuaternion curRot;
-	////a place to store the mouse position so we can measure incremental change
+	////a place to store the mouse position so we can measure incremental 
+
 	//ofVec2f lastMouse;
 	//void mouseDragged(int x, int y, int button);
 	//void mousePressed(int x, int y, int button);

@@ -543,7 +543,7 @@ void game::update(string _eventName, SubObEvent _event){
 		ofVec2f pos = _event.getArg("pos")->getVec2();
 		newFaceColor = ofFloatColor(newColor.x / 255.0, newColor.y / 255.0, newColor.z / 255.0);
 		if(!bUnproject){
-			mousePoint.set(ofGetMouseX(), ofGetMouseY(), 0);
+			mousePoint.set(pos.x,pos.y, 0);//(ofGetMouseX(), ofGetMouseY(), 0);
 			bUnproject = true;
 			unprojectMode = UP_MODE_COLOR;
 		}
@@ -923,11 +923,9 @@ void game::loadPuzzle(puzzle *inputPuzzle,int objID, SG_VECTOR p, SG_VECTOR t){
 	//	if(loaded == true){
 	////////////////////////////////
 	//objectDisplayed->setup();
-	//step = 1;
+
 	myPuzzle = inputPuzzle;
-	//for(int i =0 ; i< myPuzzle->numPieces ; i++){
-	//	myPuzzle->myCubies[i]->numObjs= myPuzzle->numPieces;
-	//}
+
 	myPuzzle->pos.x = posP.x;
 	myPuzzle->pos.y = posP.y;
 	myPuzzle->pos.z = posP.z;
@@ -2038,10 +2036,6 @@ void game::prepareDrawing(){
 menuPuzzle*  game::savePuzzle(SG_POINT slicingPos, SG_VECTOR middlePuzzlePos, int puzzleCounter){
 
 	//return the puzzle that has been created
-	//also return the info on offset and rotation and object displayed
-
-
-
 	//build a menuPuzzle object and give it to the mainApp
 	menuPuzzle *puzzleToSave;// = new menuPuzzle(slicingPos, middlePuzzlePos, puzzleCounter);
 	////puzzleToSave->loadObjectMP(objectDisplayed->getObject(),objectID);
@@ -2071,8 +2065,6 @@ menuPuzzle*  game::savePuzzle(SG_POINT slicingPos, SG_VECTOR middlePuzzlePos, in
 	//we have one puzzle, use this puzzle to 
 	puzzleToSave->offsetSlicer = offsetSlicer;
 	puzzleToSave->rotateSlicer = rotateSlicer;
-
-	puzzleToSave->myMenuPuzzle = myPuzzle;
 
 	return puzzleToSave;
 }

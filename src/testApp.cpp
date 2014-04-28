@@ -8,7 +8,7 @@
 #define displayZ -800
 #define iddleTime 120
 #define puzzleItems 0
-#define USE_MOUSE 1
+#define USE_MOUSE 0
 
 std::map<int,gwc::Point> active_points;
 
@@ -150,7 +150,7 @@ void testApp::setup(){
 			//objectDisplayed->init();//gui//no need for this, the objecs displayed will be created later "puzzles on demand"
 			puzzleDisplayed->setup();
 			puzzleDisplayed->update();
-			//puzzleDisplayed->colorFacesMenu();
+			puzzleDisplayed->colorFacesMenu();
 			puzzleDisplayed->init();//gui
 
 			//loop to make 5 puzzles for each menuPuzzle (puzzleDisplayed)
@@ -273,6 +273,8 @@ void testApp::update(){
 		middlePuzzles[i]->update();
 	}
 
+	////////////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////SAVE PUZZLES ///////////////////////////////////
 	/////////////////////////////////////////watch for new puzzles being saved
 	for(int i = 0; i < myGames.size(); i++){
 		if(myGames[i]->savePuzzleB == true){
@@ -282,6 +284,7 @@ void testApp::update(){
 
 			//loop to make 5 puzzles for the new menuPuzzle (puzzleDisplayed)
 			//1 for the middle
+			
 			//4 for the stations, one for each station
 			for(int j=0;j<5;j++){
 				//mySlicer->intersectCubes((sgCObject*)objectToMakePuzzle->getObject());
@@ -289,12 +292,13 @@ void testApp::update(){
 				//myPuzzles[j+((puzzleCounter+7)*5)]->setup();
 				myPuzzles[j+((puzzleCounter+7)*5)]->loadPieces(myGames[i]->mySlicer->getPieces(),myGames[i]->objectID,tempMidPuzzle->rotateSlicer);//selected object id is used for coloring
 				//copy color from original puzle
-				
-				
+				//the original puzzle is tempMidPuzzle->myMenuPuzzle
+				//myPuzzles[j+((puzzleCounter+7)*5)]->clonePuzzleColors(myGames[i]->myPuzzle);
+
 				////myPuzzles[j+((puzzleCounter+7)*5)]->colorFacesMenuPuzzle(puzzleDisplayed->objectId,puzzleDisplayed->uniqueNormals,puzzleDisplayed->colorsVMenu);
 				//myPuzzle->colorFaces(i+1);
 				////myPuzzles[j+((puzzleCounter+7)*5)]->colorCubiesBlackSides();
-				puzzleDisplayed->loadPuzzle(myPuzzles[j+((puzzleCounter+7)*5)],j);
+				tempMidPuzzle->loadPuzzle(myPuzzles[j+((puzzleCounter+7)*5)],j);
 			}
 
 			//replace current position 8,9,10 on the middelPuzzle Vector
@@ -637,14 +641,14 @@ void testApp::exit(){
 
 	//sgDeleteObject(sgBunny);
 
-	myCutter->exit();
-	mySlicer->exit();
+	//myCutter->exit();
+	//mySlicer->exit();
 	//objectDisplayed->exit();
 	//delete menu puzzles correctly
-	free(myPuzzles);
-	for(int i=0; i < middlePuzzles.size();i++){
-		middlePuzzles[i]->exit();
-	}
+	//free(myPuzzles);
+	//for(int i=0; i < middlePuzzles.size();i++){
+	//	middlePuzzles[i]->exit();
+	//}
 
 	//sgFreeKernel();
 }

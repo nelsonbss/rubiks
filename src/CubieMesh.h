@@ -44,6 +44,7 @@ public:
 	void updatePosition(ofVec3f _pivot, ofVec3f _axis, float _angle);
 	void resetVertices();
 	vector<Triangle> triangles;
+	void rotateTriangles(ofVec3f _pivot, ofVec3f _axis, float _angle);
 
 private:
 	

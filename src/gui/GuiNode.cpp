@@ -211,7 +211,7 @@ void GuiNode::setupText(){
 void GuiNode::activate(){
 	bActive = true;
 	GuiConfigurator::Instance()->addActive(this);
-	//cout << name << " activating." << end;
+	//cout << name << " activating" << end;
 	nodeActivate();
 }
 

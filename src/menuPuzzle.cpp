@@ -8,13 +8,13 @@ menuPuzzle::menuPuzzle(SG_VECTOR p, SG_VECTOR t, int ID ) : GuiNode(){
 
 	id = ID;
 	objectId=0;
-	object = NULL;
-	temp = NULL;
+	////////object = NULL;
+	////////temp = NULL;
 
-	myMesh = CubieMesh();
-	myVbo = ofVbo();
+	////////myMesh = CubieMesh();
+	////////myVbo = ofVbo();
 
-	armRot = ofVec3f (0,0,0);
+	////////armRot = ofVec3f (0,0,0);
 	tempPos.x = t.x;
 	tempPos.y = t.y;
 	tempPos.z = t.z;
@@ -81,6 +81,9 @@ void menuPuzzle::nodeInit(){
 	//drawPos.set((float)tempPos.x, (float)tempPos.y);
 	//drawPos.set(0,0);
 	//drawSize.set(200,200);
+	
+	
+
 	activate();
 	SubObMediator::Instance()->addObserver("menupuzzle-intercepted",this);
 }
@@ -95,7 +98,7 @@ void menuPuzzle::nodeExecute(){
 	SubObMediator::Instance()->sendEvent(ev.getName(), ev);
 	viewport.x = startPos.x;
 	viewport.y = startPos.y;
-	bWatchTime = false;
+	bWatchTime = true;
 }
 //-------------------------------------------------------------------------------------------
 void menuPuzzle::setup(){
@@ -228,7 +231,7 @@ void menuPuzzle::nodeDraw(){
 	//ofEnableDepthTest();
 	//glPushMatrix();
 	ofPushMatrix();
-	glMultMatrixd(temp->GetTempMatrix()->GetTransparentData());
+	//////////glMultMatrixd(temp->GetTempMatrix()->GetTransparentData());
 	//temp->DestroyTempMatrix();
 	ofTranslate(viewport.width / 2, viewport.height / 2, position.z);
 	glScalef(0.3,0.3,0.3);
@@ -322,9 +325,9 @@ void menuPuzzle::loadObjectMP(sgC3DObject *obj, int ID){
 	//}  
 }
 //--------------------------------------------------------------
-//void menuPuzzle::loadPuzzle(puzzle *inpuzzle){
-//	myMenuPuzzle = inpuzzle;
-//}
+void menuPuzzle::loadPuzzle(puzzle *inpuzzle){
+	myMenuPuzzle = inpuzzle;
+}
 ////----------------------------------------------------------------
 //sgC3DObject* menuPuzzle::getObject(){
 //	return temp;
@@ -415,6 +418,6 @@ void menuPuzzle::exit(){
 	sgCObject::DeleteObject(temp);
 }
 //-------------------------------------------------------
-//puzzle* menuPuzzle::getPuzzle(){
-//	return myMenuPuzzle;
-//}
+puzzle* menuPuzzle::getPuzzle(){
+	return myMenuPuzzle;
+}

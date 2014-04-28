@@ -58,14 +58,28 @@ public:
 	ofxAssimpModelLoader loaderG;
 	void loadObjDirG(string _path);
 	/////////////////////////////////////////games
+	/////////////////////////puzzles
+	SG_VECTOR posGame;
+	float width;
+	float height;
 
-
-
+	SG_VECTOR slicingPos;  //where it gets sliced
+	//vector<myobject3D*> objectDisplayedVector;
+	myobject3D *objectDisplayed;
 	cutter *myCutter;
 	slicer *mySlicer;
+	armature *myArmature;
 	puzzle *myPuzzle;
-
 	//bool rotate;
+		////////////////////////////////////////middle puzzles
+	SG_VECTOR middlePuzzlePos;
+
+	vector<menuPuzzle*> middlePuzzles;
+	menuPuzzle *puzzleDisplayed;
+	int puzzleCounter; 
+
+	map<string,int> gameIds;
+	map<int, string> gameTags;
 
 	////////////////rendering  and textures
 	void initOFRender();
@@ -110,22 +124,11 @@ public:
 	int nextTouchId;
 	int touchIdOffset;
 
-	////////////////////////////////////////middle puzzles
-	SG_VECTOR middlePuzzlePos;
-	SG_POINT slicingPos;
 
-	vector<menuPuzzle*> middlePuzzles;
-	menuPuzzle *puzzleDisplayed;
-	int puzzleCounter; 
-
-	map<string,int> gameIds;
-	map<int, string> gameTags;
 
 	//SubObEvent ev;
 
 	ofPoint unprojectPoint(ofVec3f pnt);
 	double gestureAngles[6];
-
-
 	ofLight light;
 };

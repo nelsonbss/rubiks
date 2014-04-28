@@ -159,3 +159,18 @@ void CubieMesh::resetVertices(){
 		}
 	}
 }
+
+void CubieMesh::rotateTriangles(ofVec3f _pivot, ofVec3f _axis, float _angle){
+	//rotate triangles so taht cubie picking gets also updated on hit test of triangle info
+	for(auto tIter = triangles.begin(); tIter != triangles.end(); tIter++){
+		//tIter->getNormal().rotate(_angle, _axis);
+		vector<int>indeces = tIter->getIndeces();
+		vector<ofVec3f> vertices = tIter->getVertices(); 
+		for(int i = 0; i < indeces.size(); i++){
+			ofVec3f currV = getVertex(indeces[i]);
+			setVertex(indeces[i], vertices[i]);
+			ofVec3f newV = getVertex(indeces[i]);
+			//cout << "Set " << currV.x << ", " << currV.y << ", " << currV.z << " to " << newV.x << ", " << newV.y << ", " << newV.z << endl;
+		}
+	}
+}

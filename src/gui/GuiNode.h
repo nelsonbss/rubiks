@@ -46,6 +46,7 @@ public:
 
     GuiNode();
     virtual ~GuiNode(){}
+	string name;
     //Test if a touchscreen selection is within the node.
     virtual bool isInside(int _x, int _y);
     virtual bool isDragging(int _x, int _y){return false;}
@@ -182,7 +183,7 @@ protected:
 	ofVec2f drawSize;
     float scale;
 	ofVec2f size;
-    string name;
+    /*string name;*/
     string type;
     string parent;
     int dur;

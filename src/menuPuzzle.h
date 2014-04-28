@@ -6,15 +6,17 @@
 #include "GuiNode.h"
 #include "CubieMesh.h"
 
+class GuiNode;
+
 class menuPuzzle : public GuiNode{
 
 public:
 	menuPuzzle (SG_VECTOR pos, SG_VECTOR t, int ID);
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////
-	////////void loadPuzzle(puzzle *inpuzzle);
-	////////puzzle *myMenuPuzzle;
+	void loadPuzzle(puzzle *inpuzzle);
+	puzzle *myMenuPuzzle;
 
-	////////puzzle *getPuzzle();
+	puzzle *getPuzzle();
 	////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//void draw();
 	void setup();

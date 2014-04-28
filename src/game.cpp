@@ -351,7 +351,7 @@ void game::update(string _eventName, SubObEvent _event){
 		}
 	}
 	if(_eventName == prefix + ":menupuzzle-selected"){
-		
+
 		/*SubObEvent ev;
 		ev.setName("hide-node");
 		ev.addArg("target",prefix + ":3d-window");
@@ -862,17 +862,17 @@ void game::loadPuzzle(puzzle *inputPuzzle){
 		myPuzzle->exit();
 		myCutter->exit();
 		mySlicer->exit();
-		objectDisplayed->exit();
+		//objectDisplayed->exit();
 		objectID = -1;
 		step = 0;
 		armID = -1;
 	}else if (step==3){
-		objectDisplayed->exit();             //clean displayed object after puzzle is created, so we dont keep it until the exit or restart
+		//objectDisplayed->exit();             //clean displayed object after puzzle is created, so we dont keep it until the exit or restart
 		step = 0;
 		objectID = -1;
 		armID = -1;
 	}else if (step==1 || step==2){
-		objectDisplayed->exit();
+		//objectDisplayed->exit();
 		step = 0;
 		objectID = -1;
 		if(canvasB){
@@ -2008,19 +2008,19 @@ void game::prepareDrawing(){
 menuPuzzle*  game::savePuzzle(SG_POINT slicingPos, SG_VECTOR middlePuzzlePos){
 	//build a menuPuzzle object and give it to the mainApp
 	menuPuzzle *puzzleToSave = new menuPuzzle(slicingPos, middlePuzzlePos, 0);
-	puzzleToSave->loadObjectMP(objectDisplayed->getObject(),objectID);
-	puzzleToSave->setup();
-	puzzleToSave->update();
-	puzzleToSave->colorFacesMenu();
+	//////////puzzleToSave->loadObjectMP(objectDisplayed->getObject(),objectID);
+	//////////puzzleToSave->setup();
+	//////////puzzleToSave->update();
+	//////////puzzleToSave->colorFacesMenu();
 
-	//need to pass this data to menuPuzzle
-	//vector< ofFloatColor > colorsVMenu;
-	//vector< ofVec3f > uniqueNormals;
-	//ofVec3f offsetSlicer;
-	//ofVec3f rotateSlicer;
+	////////////need to pass this data to menuPuzzle
+	////////////vector< ofFloatColor > colorsVMenu;
+	////////////vector< ofVec3f > uniqueNormals;
+	////////////ofVec3f offsetSlicer;
+	////////////ofVec3f rotateSlicer;
 
-	////puzzleToSave->loadPuzzle(myPuzzle);
-	puzzleToSave->objectId = objectID; 
+	//////////////puzzleToSave->loadPuzzle(myPuzzle);
+	//////////puzzleToSave->objectId = objectID; 
 
 	return puzzleToSave;
 }
@@ -2389,8 +2389,8 @@ void game::makeMove(ofVec3f _pnt){
 				} 
 			}
 			cubiePos=myPuzzle->getCubieInfo(myPuzzle->activeCubie);
-			//ofVec3f normal = myPuzzle->activeTriangle.getNormal(); // swap this line for the next one if you want to use camera angle vs. selection normal
-			ofVec3f normal=camPosition-ofVec3f(posP.x, posP.y, posP.z);
+			ofVec3f normal = myPuzzle->activeTriangle.getNormal(); // swap this line for the next one if you want to use camera angle vs. selection normal
+			//ofVec3f normal=camPosition-ofVec3f(posP.x, posP.y, posP.z);
 			int normalNum=-1;
 			int normalAng=0;
 
@@ -2523,7 +2523,7 @@ void game::makeMove(ofVec3f _pnt){
 		}
 	}else{
 		//if (((dragDist-lastDragDistance)/300)>.5) {
-			rotateByIDandAxis(myPuzzle->activeCubie,axis,dir,5);
+		rotateByIDandAxis(myPuzzle->activeCubie,axis,dir,5);
 		//} else if (((dragDist-lastDragDistance)/300)<-.5) {
 		//	rotateByIDandAxis(myPuzzle->activeCubie,axis,dir,-5);
 		//}

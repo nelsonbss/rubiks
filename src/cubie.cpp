@@ -132,8 +132,9 @@ void cubie::faceRotate(SG_VECTOR axis,bool di,float angle){
 						}else{
 							masterAngle += angle;
 							for (int j=0; j < numObjs; j++){
-								objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,ofDegToRad(angle));
-								//////////myMeshs[j].updatePosition(protFaceV, vrotFaceV, angle);
+								//objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,ofDegToRad(angle));
+								myMeshs[j].updatePosition(protFaceV, vrotFaceV, angle);
+								//myMeshs[j].rotateTriangles(protFaceV, vrotFaceV, angle);
 							}
 							reducing = false;
 						}
@@ -153,8 +154,8 @@ void cubie::faceRotate(SG_VECTOR axis,bool di,float angle){
 						}else{
 							masterAngle -= angle;
 							for (int j=0; j < numObjs; j++){
-								objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,ofDegToRad(-angle));
-								//////////myMeshs[j].updatePosition(protFaceV, vrotFaceV, -angle);
+								//objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,ofDegToRad(-angle));
+								myMeshs[j].updatePosition(protFaceV, vrotFaceV, -angle);
 							}
 							reducing = false;
 						}
@@ -238,8 +239,8 @@ void cubie::update(){
 						masterAngle +=stepSize;
 						for (int j=0; j < numObjs; j++){
 							double aux =  ofDegToRad(stepSize);
-							objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,aux);
-							//////////myMeshs[j].updatePosition(protFaceV, vrotFaceV, stepSize);
+							//objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,aux);
+							myMeshs[j].updatePosition(protFaceV, vrotFaceV, stepSize);
 						}
 						reducing = false;
 					}
@@ -254,8 +255,8 @@ void cubie::update(){
 						masterAngle -=stepSize;
 						for (int j=0; j < numObjs; j++){
 							double aux =  ofDegToRad(stepSize);
-							objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,-aux);
-							//////////myMeshs[j].updatePosition(protFaceV, vrotFaceV, -stepSize);
+							//objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,-aux);
+							myMeshs[j].updatePosition(protFaceV, vrotFaceV, -stepSize);
 						}
 						reducing = false;
 					}
@@ -324,8 +325,8 @@ void cubie::update(){
 						masterAngle +=stepSize;
 						for (int j=0; j < numObjs; j++){
 							double aux =  ofDegToRad(stepSize);
-							objectList[0]->GetTempMatrix()->Rotate(protFace,vrotFace,aux);
-							//////////myMeshs[j].updatePosition(protFaceV, vrotFaceV, stepSize);
+							//objectList[0]->GetTempMatrix()->Rotate(protFace,vrotFace,aux);
+							myMeshs[j].updatePosition(protFaceV, vrotFaceV, stepSize);
 						}
 						reducing = false;
 					}
@@ -375,8 +376,8 @@ void cubie::update(){
 						masterAngle -=stepSize;
 						for (int j=0; j < numObjs; j++){
 							double aux =  ofDegToRad(stepSize);
-							objectList[0]->GetTempMatrix()->Rotate(protFace,vrotFace,-aux);
-							//////////myMeshs[j].updatePosition(protFaceV, vrotFaceV, -stepSize);
+							//objectList[0]->GetTempMatrix()->Rotate(protFace,vrotFace,-aux);
+							myMeshs[j].updatePosition(protFaceV, vrotFaceV, -stepSize);
 						}
 						reducing = false;
 					}
@@ -579,7 +580,7 @@ void cubie::draw(){
 			glPushMatrix();
 			//ofScale(1.2,1.2,1.2);
 			if (objectList[j]->GetTempMatrix()!=0)
-			glMultMatrixd(objectList[j]->GetTempMatrix()->GetTransparentData());
+			//glMultMatrixd(objectList[j]->GetTempMatrix()->GetTransparentData());
 			//objectList[j]->DestroyTempMatrix();
 			if(bDraw){
 				if(bDrawWire){

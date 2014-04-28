@@ -108,57 +108,95 @@ void testApp::setup(){
 	light.setSpecularColor( ofColor(255.f, 255.f, 255.f));
 
 
-	cout << "creating puzzle menu items" << endl;
 
-	middlePuzzlePos.x = 0;
+
+	middlePuzzlePos.x = ofGetWindowWidth();
 	middlePuzzlePos.y = (ofGetWindowHeight()/2)-90;
 	middlePuzzlePos.z = 0;
 	//////////////////////////////////create cutter
-	//ofVec3f offsetSlicer = ofVec3f(0,0,0);
-	//myCutter = new cutter(0.01,1000,100,1,offsetSlicer,3);// number of slices == same number in slicer /// where to get the grid value??
-	//myCutter->setup();
-	////////////////////////////////////create slicer
-	//mySlicer = new slicer(myCutter,3);
-	//mySlicer->setup();
+	ofVec3f offsetSlicer = ofVec3f(0,0,0);
+	ofVec3f rotateSlicer = ofVec3f (0,0,0);
 
 	slicingPos.x = 0;
 	slicingPos.y = 0;
 	slicingPos.z = 0;
 
-	//ofVec3f rotateSlicer = ofVec3f (0,0,0);
 	loadObjDirG("obj/");
-
+	/////////////////////////////////////Pre create puzzles to be loaded
+	cout << "creating puzzle menu items" << endl;
+	middlePuzzlePos.x = 0;
+	middlePuzzlePos.y = (ofGetWindowHeight()/2)-90;
+	middlePuzzlePos.z = -100;
 	for(int i=0; i < puzzleItems; i++){
 		middlePuzzlePos.x = 10 + (i * 10) + (i*180);
+		objectDisplayed = new myobject3D (slicingPos, middlePuzzlePos,"main");//all on 0,0,0
+		objectDisplayed->loadObjectOD((sgC3DObject*)objectsMP[i+1]->Clone(),i+1);
+
 		puzzleDisplayed = new menuPuzzle(slicingPos, middlePuzzlePos, i);
 		puzzleDisplayed->loadObjectMP((sgC3DObject*)objectsMP[i+1]->Clone(),i+1);
-		//if(i==0){
-		//	//puzzleDisplayed->loadObject(sgCreateTorus(100,70,50,50),1);
-		//}else if(i == 1){
-		//	//puzzleDisplayed->loadObject(sgCreateBox(300,300,300),2);
-		//}
-		cout << "created puzzle menu object: " << i <<endl;
+
+		objectDisplayed->setup();
+		objectDisplayed->update();
+		//objectDisplayed->colorFacesMenu();//implement this later
+		//objectDisplayed->init();//gui//no need for this, the objecs displayed will be created later "puzzles on demand"
 		puzzleDisplayed->setup();
 		puzzleDisplayed->update();
 		puzzleDisplayed->colorFacesMenu();
 		puzzleDisplayed->init();//gui
 
-		//mySlicer->intersectCubes((sgCObject*)puzzleDisplayed->getObject());
-		//myPuzzle = new puzzle(middlePuzzlePos, offsetSlicer,3); // it receives the position to be displayed AND the offset of the armature/cutter to adapt slicing
-		//myPuzzle->setup();
-		//myPuzzle->loadPieces(mySlicer->getPieces(),puzzleDisplayed->objectId,rotateSlicer);//selected object id is used for coloring
+		myCutter = new cutter(0.01,1000,100,1,offsetSlicer,3);// number of slices == same number in slicer /// where to get the grid value??
+		myCutter->setup();
+		mySlicer = new slicer(myCutter,3);
+		mySlicer->setup();
+		mySlicer->intersectCubes((sgCObject*)objectDisplayed->getObject());
+		myPuzzle = new puzzle(middlePuzzlePos, offsetSlicer,3); // it receives the position to be displayed AND the offset of the armature/cutter to adapt slicing
+		myPuzzle->setup();
+		myPuzzle->loadPieces(mySlicer->getPieces(),objectDisplayed->objectId,rotateSlicer);//selected object id is used for coloring
 
 		////this is a special function that takes, the unique normals, and unique colors of the menuPuzzle, to repeat those colors on the real puzzle of the menuPuzzle
-		//myPuzzle->colorFacesMenuPuzzle(puzzleDisplayed->objectId,puzzleDisplayed->uniqueNormals,puzzleDisplayed->colorsVMenu);
+		myPuzzle->colorFacesMenuPuzzle(puzzleDisplayed->objectId,puzzleDisplayed->uniqueNormals,puzzleDisplayed->colorsVMenu);
+		//myPuzzle->colorFaces(i+1);
+		myPuzzle->colorCubiesBlackSides();
 
-
-		//cout << "created puzzle menu puzzle: " << i <<endl;
-		//puzzleDisplayed->loadPuzzle(myPuzzle);
-
-		//cout << "created puzzle menu item: " << i << endl;
+		puzzleDisplayed->loadPuzzle(myPuzzle);
 		middlePuzzles.push_back(puzzleDisplayed);
+		cout << "puzzles menu created" << endl;
 	}
-	cout << "puzzles menu created" << endl;
+	////////////////////////////////Creatng puzzles on demand////////////////////////
+	middlePuzzlePos.x = 0;
+	middlePuzzlePos.y = (ofGetWindowHeight()/2)-90;
+	middlePuzzlePos.z = 0;
+	////////for(int i=0; i < puzzleItems; i++){
+	////////	middlePuzzlePos.x = 10 + (i * 10) + (i*180);
+	////////	puzzleDisplayed = new menuPuzzle(slicingPos, middlePuzzlePos, i);
+	////////	puzzleDisplayed->loadObjectMP((sgC3DObject*)objectsMP[i+1]->Clone(),i+1);
+	////////	//if(i==0){
+	////////	//	//puzzleDisplayed->loadObject(sgCreateTorus(100,70,50,50),1);
+	////////	//}else if(i == 1){
+	////////	//	//puzzleDisplayed->loadObject(sgCreateBox(300,300,300),2);
+	////////	//}
+	////////	cout << "created puzzle menu object: " << i <<endl;
+	////////	puzzleDisplayed->setup();
+	////////	puzzleDisplayed->update();
+	////////	puzzleDisplayed->colorFacesMenu();
+	////////	puzzleDisplayed->init();//gui
+
+	////////	//mySlicer->intersectCubes((sgCObject*)puzzleDisplayed->getObject());
+	////////	//myPuzzle = new puzzle(middlePuzzlePos, offsetSlicer,3); // it receives the position to be displayed AND the offset of the armature/cutter to adapt slicing
+	////////	//myPuzzle->setup();
+	////////	//myPuzzle->loadPieces(mySlicer->getPieces(),puzzleDisplayed->objectId,rotateSlicer);//selected object id is used for coloring
+
+	////////	////this is a special function that takes, the unique normals, and unique colors of the menuPuzzle, to repeat those colors on the real puzzle of the menuPuzzle
+	////////	//myPuzzle->colorFacesMenuPuzzle(puzzleDisplayed->objectId,puzzleDisplayed->uniqueNormals,puzzleDisplayed->colorsVMenu);
+
+
+	////////	//cout << "created puzzle menu puzzle: " << i <<endl;
+	////////	//puzzleDisplayed->loadPuzzle(myPuzzle);
+
+	////////	//cout << "created puzzle menu item: " << i << endl;
+	////////	middlePuzzles.push_back(puzzleDisplayed);
+	////////}
+
 	puzzleCounter = 0;
 
 	///////////////////////////////////////////////////create games
@@ -382,6 +420,13 @@ void testApp::draw(){
 
 
 	////////////////////////PUZZLE  //////////////////////
+
+	//////////glPushMatrix();
+	//////////glTranslatef(ofGetWindowWidth()/2,ofGetWindowHeight()/2,-30);
+	//////////myPuzzle->draw();
+	//////////glPopMatrix();
+
+
 	///////////////////////////////draw games
 	for(int i = 0; i < myGames.size(); i++){
 		myGames[i]->draw();
@@ -438,7 +483,7 @@ void testApp::keyPressed(int key){
 			//myGames[0]->loadPuzzle(middlePuzzles[3]->getPuzzle());
 			myGames[0]->clearDisplayedObject();
 			myGames[0]->loadMenuObject(middlePuzzles[0]->objectId,myGames[0]->slicingPos,myGames[0]->posP,middlePuzzles[0]->colorsVMenu,middlePuzzles[0]->uniqueNormals);
-			myGames[0]->setCurrentStep(5);
+			myGames[0]->setCurrentStep(7);
 		}
 		//if(key == 'o'){
 		//	//myGames[0]->loadPuzzle(middlePuzzles[8]->getPuzzle());
@@ -534,9 +579,14 @@ void testApp::update(string _eventName, SubObEvent _event){
 	if(_eventName == "menupuzzle-selected"){
 		int mpId = _event.getArg("puzzle-id")->getInt();
 		string gameTag = _event.getArg("game-tag")->getString();
-		////////myGames[gameIds[gameTag]]->loadPuzzle(middlePuzzles[mpId]->getPuzzle());
 		myGames[gameIds[gameTag]]->clearDisplayedObject();
-		myGames[gameIds[gameTag]]->loadMenuObject(middlePuzzles[mpId]->objectId,myGames[gameIds[gameTag]]->slicingPos,myGames[gameIds[gameTag]]->posP,middlePuzzles[mpId]->colorsVMenu,middlePuzzles[mpId]->uniqueNormals);
+		/////////////////////////////////////////////////////////////////////////////
+		//loadMenuObject loads an object and builds a puzzle in realtime
+		//myGames[gameIds[gameTag]]->loadMenuObject(middlePuzzles[mpId]->objectId,myGames[gameIds[gameTag]]->slicingPos,myGames[gameIds[gameTag]]->posP,middlePuzzles[mpId]->colorsVMenu,middlePuzzles[mpId]->uniqueNormals);
+		/////////////////////////////////////////////////////////////////////////////
+		//loadPuzzle loads a premade puzzle into a game
+		myGames[gameIds[gameTag]]->loadPuzzle(middlePuzzles[mpId]->getPuzzle());
+
 		//myGames[gameIds[gameTag]]->setCurrentStep(7);
 		myGames[gameIds[gameTag]]->prefix = gameTag;
 		myGames[gameIds[gameTag]]->update(gameTag + ":"+_eventName,_event);

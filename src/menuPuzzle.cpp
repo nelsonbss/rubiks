@@ -8,8 +8,8 @@ menuPuzzle::menuPuzzle(SG_VECTOR p, SG_VECTOR t, int ID ) : GuiNode(){
 
 	id = ID;
 	objectId=0;
-	////////object = NULL;
-	////////temp = NULL;
+	//object = NULL;
+	temp = NULL;
 
 	////////myMesh = CubieMesh();
 	////////myVbo = ofVbo();
@@ -81,8 +81,8 @@ void menuPuzzle::nodeInit(){
 	//drawPos.set((float)tempPos.x, (float)tempPos.y);
 	//drawPos.set(0,0);
 	//drawSize.set(200,200);
-	
-	
+
+
 
 	activate();
 	SubObMediator::Instance()->addObserver("menupuzzle-intercepted",this);
@@ -121,11 +121,11 @@ void menuPuzzle::setup(){
 	//glLightfv(GL_LIGHT1, GL_POSITION, light_position1);
 	//glEnable(GL_LIGHT1);
 
-	////light.setPointLight();
-	//light.setSpotlight(60.0);
-	////light.setDirectional();
-	//light.setDiffuseColor( ofColor(255.f, 255.f, 255.f));
-	//light.setSpecularColor( ofColor(255.f, 255.f, 255.f));
+	//light.setPointLight();
+	light.setSpotlight(60.0);
+	//light.setDirectional();
+	light.setDiffuseColor( ofColor(255.f, 255.f, 255.f));
+	light.setSpecularColor( ofColor(255.f, 255.f, 255.f));
 
 	//the real object is never rendered or moved::::it is used to make the boolean intersection
 	//the rendered and animated object is temp
@@ -228,26 +228,30 @@ void menuPuzzle::nodeDraw(){
 	ofEnableDepthTest();
 	ofViewport(viewport);
 	ofSetupScreen();
-	//ofEnableDepthTest();
+	
 	//glPushMatrix();
 	ofPushMatrix();
+	//ofEnableDepthTest();
 	glMultMatrixd(temp->GetTempMatrix()->GetTransparentData());
 	//temp->DestroyTempMatrix();
 	ofTranslate(viewport.width / 2, viewport.height / 2, position.z);
 	glScalef(0.3,0.3,0.3);
 
 
-	//ofEnableLighting();
-	//light.enable();
-	//light.setPosition(viewport.width / 2, viewport.height / 2, 400);
-	//light.lookAt(ofVec3f(tempPos.x, tempPos.y, tempPos.z));
-	//light.disable();
-	//ofDisableLighting();
+	//if(objectId>=8){
+	//	ofEnableLighting();
+	//	light.enable();
+	//	light.setPosition(viewport.width / 2, viewport.height / 2, 400);
+	//	light.lookAt(ofVec3f(tempPos.x, tempPos.y, tempPos.z));
+	//	light.disable();
+	//	ofDisableLighting();
+	//}
 
-	//myMenuPuzzle->draw();
-	myVbo.draw(GL_TRIANGLES, 0,myMesh.getNumIndices());
-	ofPopMatrix();
+	myMenuPuzzle->draw();
+	////myVbo.draw(GL_TRIANGLES, 0,myMesh.getNumIndices());
 	//ofDisableDepthTest();
+	ofPopMatrix();
+	ofDisableDepthTest();
 	ofPopView();
 	if(bWatchTime){
 		if(ofGetElapsedTimeMillis() - timeOfLastInteraction > 1000){
@@ -272,7 +276,7 @@ void menuPuzzle::nodeDraw(){
 //----------------------------------------------------------------
 void menuPuzzle::loadObjectMP(sgC3DObject *obj, int ID){
 
-	if(object==NULL){
+	if(temp==NULL){
 		//object = obj; //to make a puzzle at the beggining 
 		temp = obj;
 	}else{
@@ -325,8 +329,18 @@ void menuPuzzle::loadObjectMP(sgC3DObject *obj, int ID){
 	//}  
 }
 //--------------------------------------------------------------
-void menuPuzzle::loadPuzzle(puzzle *inpuzzle){
-	myMenuPuzzle = inpuzzle;
+void menuPuzzle::loadPuzzle(puzzle *inpuzzle, int turn){
+	if(turn==0){
+		myMenuPuzzle = inpuzzle;
+	}else if(turn==1){
+		MenuPuzzleBR = inpuzzle;
+	}else if(turn==2){
+		MenuPuzzleBL = inpuzzle;
+	}else if(turn==3){
+		MenuPuzzleTR = inpuzzle;
+	}else if(turn==4){
+		MenuPuzzleTL = inpuzzle;
+	}
 }
 ////----------------------------------------------------------------
 //sgC3DObject* menuPuzzle::getObject(){
@@ -381,24 +395,6 @@ void menuPuzzle::input(string _type, int _ID, int _n, int _phase, ofVec2f _absPo
 	timeOfLastInteraction = ofGetElapsedTimeMillis();
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 //----------------------------------------------------------------
 //void menuPuzzle::applyArmRotations(ofVec3f v){
 //	armRot = (v)*-1;
@@ -416,8 +412,30 @@ void menuPuzzle::input(string _type, int _ID, int _n, int _phase, ofVec2f _absPo
 //----------------------------------------------------------------
 void menuPuzzle::exit(){
 	sgCObject::DeleteObject(temp);
+	//free the puzzles
+	myMenuPuzzle->exit();
+	//MenuPuzzleBR->exit();
+	//MenuPuzzleBL->exit();
+	//MenuPuzzleTR->exit();
+	//MenuPuzzleTL->exit();
+
+	free(myMenuPuzzle);
+	//free(MenuPuzzleBR);
+	//free(MenuPuzzleBL);
+	//free(MenuPuzzleTR);
+	//free(MenuPuzzleTL);
 }
 //-------------------------------------------------------
-puzzle* menuPuzzle::getPuzzle(){
-	return myMenuPuzzle;
+puzzle* menuPuzzle::getPuzzle(string gameTag){
+	if(gameTag=="bl"){
+		return MenuPuzzleBL;
+	}else if(gameTag=="br"){
+		return MenuPuzzleBR;
+	}else if(gameTag=="tl"){
+		return MenuPuzzleTL;
+	}else{
+		//tr
+		return MenuPuzzleTR;
+	}
+	//return myMenuPuzzle; // this is never returned, its the one being showed in the middle
 }

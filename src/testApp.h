@@ -38,20 +38,8 @@ public:
 	//void loadOBJfiles();
 	//ofxAssimpModelLoader bunny;
 	//sgCObject *sgBunny;
-	//ofxAssimpModelLoader tetrahedron;
-	//sgCObject *sgTetrahedron;
-	//ofxAssimpModelLoader dodecahedron;
-	//sgCObject *sgDodecahedron;
-	//ofxAssimpModelLoader icosahedron;
-	//sgCObject *sgIcosahedron;
-	//ofxAssimpModelLoader octahedron;
-	//sgCObject *sgOctahedron;
-	//ofxAssimpModelLoader pot;
-	//sgCObject *sgTeapot;
-	//ofxAssimpModelLoader sphere;
-	//sgCObject *sgSphere;
+
 	vector <game*> myGames;
-	int currentGame;
 
 
 	map<int, sgCObject*> objectsMP;
@@ -65,11 +53,11 @@ public:
 
 	SG_VECTOR slicingPos;  //where it gets sliced
 	//vector<myobject3D*> objectDisplayedVector;
-	myobject3D *objectDisplayed;
+	myobject3D *objectToMakePuzzle;
 	cutter *myCutter;
 	slicer *mySlicer;
 	armature *myArmature;
-	puzzle *myPuzzle;
+	puzzle **myPuzzles;
 	//bool rotate;
 		////////////////////////////////////////middle puzzles
 	SG_VECTOR middlePuzzlePos;

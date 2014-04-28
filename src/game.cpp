@@ -2125,9 +2125,12 @@ void game::restart(){
 //----------------------------------------------------------------------
 void game::exit(){
 	//sgDeleteObject(sgBunny);
-
 	////////////have to delete the objects in 
 	//map<int, sgCObject*> objects;
+	int x = objects.size(); 
+	for(int i=0;i<x;i++){
+		free(objects[i]);
+	}
 }
 //--------------------------------------------------------------
 void game::mouseDragged(int x, int y, int button){

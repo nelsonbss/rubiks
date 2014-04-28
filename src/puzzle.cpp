@@ -1288,6 +1288,7 @@ void puzzle::colorTorus(){
 }
 //----------------------------------------------------------------
 void puzzle::colorFacesMenuPuzzle(int objectID,vector< ofVec3f > &menuUniqueNormals, vector< ofFloatColor > &vcolors){
+	////this is a special function that takes, the unique normals, and unique colors of the menuPuzzle, to repeat those colors on the real puzzle of the menuPuzzle
 	////goes through each cubie and makes sets of normals.. to determine all different normals in the object
 	//and apply colors to those normals
 

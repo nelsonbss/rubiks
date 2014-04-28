@@ -101,13 +101,11 @@ void testApp::setup(){
 	}
 
 
-	light.setPointLight();
-	light.setSpotlight(60.0);
-	light.setDirectional();
-	light.setDiffuseColor( ofColor(255.f, 255.f, 255.f));
-	light.setSpecularColor( ofColor(255.f, 255.f, 255.f));
-
-
+	//light.setPointLight();
+	//light.setSpotlight(60.0);
+	//light.setDirectional();
+	//light.setDiffuseColor( ofColor(255.f, 255.f, 255.f));
+	//light.setSpecularColor( ofColor(255.f, 255.f, 255.f));
 
 
 	middlePuzzlePos.x = ofGetWindowWidth();
@@ -127,16 +125,26 @@ void testApp::setup(){
 	middlePuzzlePos.x = 0;
 	middlePuzzlePos.y = (ofGetWindowHeight()/2)-90;
 	middlePuzzlePos.z = -100;
+
+	//ask for 50 puzzle memory, 5 for each menu puzzle displayed
+	//1 for the middle
+	//4 for the stations, one for each station
+	myPuzzles = (puzzle**)malloc(50*sizeof(puzzle*));
+	myCutter = new cutter(0.01,1000,100,1,offsetSlicer,3);// number of slices == same number in slicer /// where to get the grid value??
+	myCutter->setup();
+	mySlicer = new slicer(myCutter,3);
+	mySlicer->setup();
+
 	for(int i=0; i < puzzleItems; i++){
 		middlePuzzlePos.x = 10 + (i * 10) + (i*180);
-		objectDisplayed = new myobject3D (slicingPos, middlePuzzlePos,"main");//all on 0,0,0
-		objectDisplayed->loadObjectOD((sgC3DObject*)objectsMP[i+1]->Clone(),i+1);
+		objectToMakePuzzle = new myobject3D (slicingPos, middlePuzzlePos,"main");//all on 0,0,0
+		objectToMakePuzzle->loadObjectOD((sgC3DObject*)objectsMP[i+1]->Clone(),i+1);
 
 		puzzleDisplayed = new menuPuzzle(slicingPos, middlePuzzlePos, i);
 		puzzleDisplayed->loadObjectMP((sgC3DObject*)objectsMP[i+1]->Clone(),i+1);
 
-		objectDisplayed->setup();
-		objectDisplayed->update();
+		objectToMakePuzzle->setup();
+		objectToMakePuzzle->update();
 		//objectDisplayed->colorFacesMenu();//implement this later
 		//objectDisplayed->init();//gui//no need for this, the objecs displayed will be created later "puzzles on demand"
 		puzzleDisplayed->setup();
@@ -144,28 +152,27 @@ void testApp::setup(){
 		puzzleDisplayed->colorFacesMenu();
 		puzzleDisplayed->init();//gui
 
-		myCutter = new cutter(0.01,1000,100,1,offsetSlicer,3);// number of slices == same number in slicer /// where to get the grid value??
-		myCutter->setup();
-		mySlicer = new slicer(myCutter,3);
-		mySlicer->setup();
-		mySlicer->intersectCubes((sgCObject*)objectDisplayed->getObject());
-		myPuzzle = new puzzle(middlePuzzlePos, offsetSlicer,3); // it receives the position to be displayed AND the offset of the armature/cutter to adapt slicing
-		myPuzzle->setup();
-		myPuzzle->loadPieces(mySlicer->getPieces(),objectDisplayed->objectId,rotateSlicer);//selected object id is used for coloring
+		//loop to make 5 puzzles for each menuPuzzle (puzzleDisplayed)
+		for(int j=0;j<5;j++){
+			mySlicer->intersectCubes((sgCObject*)objectToMakePuzzle->getObject());
+			myPuzzles[j+(i*5)] = new puzzle(middlePuzzlePos, offsetSlicer,3); // it receives the position to be displayed AND the offset of the armature/cutter to adapt slicing
+			myPuzzles[j+(i*5)]->setup();
+			myPuzzles[j+(i*5)]->loadPieces(mySlicer->getPieces(),objectToMakePuzzle->objectId,rotateSlicer);//selected object id is used for coloring
+			myPuzzles[j+(i*5)]->colorFacesMenuPuzzle(puzzleDisplayed->objectId,puzzleDisplayed->uniqueNormals,puzzleDisplayed->colorsVMenu);
+			//myPuzzle->colorFaces(i+1);
+			myPuzzles[j+(i*5)]->colorCubiesBlackSides();
 
-		////this is a special function that takes, the unique normals, and unique colors of the menuPuzzle, to repeat those colors on the real puzzle of the menuPuzzle
-		myPuzzle->colorFacesMenuPuzzle(puzzleDisplayed->objectId,puzzleDisplayed->uniqueNormals,puzzleDisplayed->colorsVMenu);
-		//myPuzzle->colorFaces(i+1);
-		myPuzzle->colorCubiesBlackSides();
+			puzzleDisplayed->loadPuzzle(myPuzzles[j+(i*5)],j);
+		}
 
-		puzzleDisplayed->loadPuzzle(myPuzzle);
 		middlePuzzles.push_back(puzzleDisplayed);
+
 		cout << "puzzles menu created" << endl;
 	}
 	////////////////////////////////Creatng puzzles on demand////////////////////////
-	middlePuzzlePos.x = 0;
-	middlePuzzlePos.y = (ofGetWindowHeight()/2)-90;
-	middlePuzzlePos.z = 0;
+	////////middlePuzzlePos.x = 0;
+	////////middlePuzzlePos.y = (ofGetWindowHeight()/2)-90;
+	////////middlePuzzlePos.z = 0;
 	////////for(int i=0; i < puzzleItems; i++){
 	////////	middlePuzzlePos.x = 10 + (i * 10) + (i*180);
 	////////	puzzleDisplayed = new menuPuzzle(slicingPos, middlePuzzlePos, i);
@@ -222,7 +229,6 @@ void testApp::setup(){
 	tr.x = 960;
 	game *tempGame4 = new game(gamePos, ofGetWidth(), ofGetHeight(),displayPos, tr, iddleTime,"tr");
 	myGames.push_back(tempGame4);
-	currentGame = 1;
 	//create a second game
 	//game *tempGame2 = new game(gamePos, ofGetWidth(), ofGetHeight(),displayPos,iddleTime);
 	//myGames.push_back(tempGame2);
@@ -447,19 +453,19 @@ void testApp::draw(){
 	///////////////////////////////middle puzzles  ///////////////////////////////
 	//ofEnableDepthTest();
 	ofDisableAlphaBlending();
-	ofEnableLighting();
-	light.enable();
-	light.setPosition(ofGetWindowWidth()/ 2, ofGetWindowHeight()/ 2, -400);
-	light.lookAt(ofVec3f(ofGetWindowWidth()/ 2, ofGetWindowHeight()/ 2, 0));
+	////ofEnableLighting();
+	////light.enable();
+	////light.setPosition(ofGetWindowWidth()/ 2, ofGetWindowHeight()/ 2, 400);
+	////light.lookAt(ofVec3f(ofGetWindowWidth()/ 2, ofGetWindowHeight()/ 2, 0));
 
 
 	for(int i=0; i < middlePuzzles.size();i++){
 		middlePuzzles[i]->draw();
 	}
 	//ofEnableDepthTest();
-	light.disable();
-	ofDisableLighting();
-	ofEnableAlphaBlending();
+	//////light.disable();
+	//////ofDisableLighting();
+	//////ofEnableAlphaBlending();
 	//ofDisableDepthTest();
 	///////////////////////////////middle puzzles  ///////////////////////////////
 	ofEnableDepthTest();
@@ -468,9 +474,7 @@ void testApp::draw(){
 
 //-------------------------------------------------------------- 
 void testApp::keyPressed(int key){
-	if(currentGame == 1){
 		myGames[0]->guiInput(key);
-	}
 
 	////////////////////////////////////////////////////////////////////////
 	/////////////////////////////loading puzzles from the middle
@@ -585,14 +589,13 @@ void testApp::update(string _eventName, SubObEvent _event){
 		//myGames[gameIds[gameTag]]->loadMenuObject(middlePuzzles[mpId]->objectId,myGames[gameIds[gameTag]]->slicingPos,myGames[gameIds[gameTag]]->posP,middlePuzzles[mpId]->colorsVMenu,middlePuzzles[mpId]->uniqueNormals);
 		/////////////////////////////////////////////////////////////////////////////
 		//loadPuzzle loads a premade puzzle into a game
-		myGames[gameIds[gameTag]]->loadPuzzle(middlePuzzles[mpId]->getPuzzle(),middlePuzzles[mpId]->objectId,myGames[gameIds[gameTag]]->slicingPos,myGames[gameIds[gameTag]]->posP);
+		myGames[gameIds[gameTag]]->loadPuzzle(middlePuzzles[mpId]->getPuzzle(gameTag),middlePuzzles[mpId]->objectId,myGames[gameIds[gameTag]]->slicingPos,myGames[gameIds[gameTag]]->posP);
 
 		//myGames[gameIds[gameTag]]->setCurrentStep(7);
 		myGames[gameIds[gameTag]]->prefix = gameTag;
 		myGames[gameIds[gameTag]]->update(gameTag + ":"+_eventName,_event);
 	}
 }
-
 //--------------------------------------------------------------
 void testApp::gotMessage(ofMessage msg){
 }
@@ -604,21 +607,16 @@ void testApp::exit(){
 	//myGames[0]->restart();
 	//myGames[0]->exit();
 
-	/*myGames[1]->restart();
-	myGames[1]->exit();*/
-
 	//sgDeleteObject(sgBunny);
-	//sgDeleteObject(sgTetrahedron);
-	//sgDeleteObject(sgDodecahedron);
-	//sgDeleteObject(sgIcosahedron);
-	//sgDeleteObject(sgOctahedron);
-	//sgDeleteObject(sgTeapot);
 
-	//myCutter->exit();
-	//mySlicer->exit();
+	myCutter->exit();
+	mySlicer->exit();
 	//objectDisplayed->exit();
 	//delete menu puzzles correctly
-
+	free(myPuzzles);
+	for(int i=0; i < middlePuzzles.size();i++){
+		middlePuzzles[i]->exit();
+	}
 
 	//sgFreeKernel();
 }

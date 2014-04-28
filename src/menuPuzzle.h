@@ -13,10 +13,15 @@ class menuPuzzle : public GuiNode{
 public:
 	menuPuzzle (SG_VECTOR pos, SG_VECTOR t, int ID);
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////
-	void loadPuzzle(puzzle *inpuzzle);
+	void loadPuzzle(puzzle *inpuzzle, int turn);
 	puzzle *myMenuPuzzle;
 
-	puzzle *getPuzzle();
+	puzzle *MenuPuzzleBR;
+	puzzle *MenuPuzzleBL;
+	puzzle *MenuPuzzleTR;
+	puzzle *MenuPuzzleTL;
+
+	puzzle *getPuzzle(string gameTag);
 	////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//void draw();
 	void setup();
@@ -28,7 +33,7 @@ public:
 	//sgC3DObject* getObject();//it will return the object, i.e to be used in boolean
 
 	int objectId; //the id of the 3d selected object, the id comes from the main app
-	sgC3DObject *object;
+	//sgC3DObject *object;
 	sgC3DObject *temp;//the slicing object will be in 0,0,0 to be cut. the temp will be moved around and be drawn.
 	CubieMesh myMesh;// this will be used to draw the object, 
 	ofVbo myVbo;
@@ -71,7 +76,7 @@ public:
 	int timeOfLastInteraction;
 	string targetGame;
 
-	////ofLight light;
+	ofLight light;
 };
 
 #endif /* defined(__TmenuPuzzle__menuPuzzle__) */

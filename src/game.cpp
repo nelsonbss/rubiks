@@ -845,7 +845,7 @@ void game::rotateTwoIds(int cubieA, int cubieB,bool inside){
 	dir = true;
 }
 //----------------------------------------------------------------------
-void game::loadPuzzle(puzzle *inputPuzzle){
+void game::loadPuzzle(puzzle *inputPuzzle,int objID, SG_VECTOR p, SG_VECTOR t){
 
 	/////////////////////////////////////////////////////////
 	///////////do game reset..because loading a puzzle can happen at anytime
@@ -899,17 +899,46 @@ void game::loadPuzzle(puzzle *inputPuzzle){
 	}
 	//////////////////////////////////////////////////////////
 	//load a puzzle from the puzzle menu on the center
-	myPuzzle = inputPuzzle;
-	myPuzzle->pos.x = posP.x;
-	myPuzzle->pos.y = posP.y;
-	myPuzzle->pos.z = posP.z;
-	updatePuzzle = true;
-	step = 7;
-	objectID = -1;
-	SubObEvent ev;
-	ev.setName("hide-node");
-	ev.addArg("target", prefix + ":start-help");
-	SubObMediator::Instance()->sendEvent("hide-node", ev);
+	//if (objectID == -1){
+	//	objectDisplayed = new myobject3D(p,t,station);
+	//}else{
+	//	objectDisplayed->exit();
+	//	delete objectDisplayed;
+	//	objectDisplayed = new myobject3D(p,t,station);
+	//}
+	//objectID = objID;
+	//bool loaded = false;
+	//if(step == 0 || step==1 || step == 7){
+	//	if(objID != 200){
+	//		objectDisplayed->loadObjectOD((sgC3DObject*)objects[objectID]->Clone(), objectID);
+	//		loaded = true;
+	//	}
+	//	if(objID == 200){
+	//		//load extruded object
+	//		objectDisplayed->loadObjectOD((sgC3DObject *)extrudedObject->Clone(),200);
+	//		loaded = true;
+	//	}
+
+	//	if(loaded == true){
+			////////////////////////////////
+			//objectDisplayed->setup();
+			//step = 1;
+			myPuzzle = inputPuzzle;
+			//for(int i =0 ; i< myPuzzle->numPieces ; i++){
+			//	myPuzzle->myCubies[i]->numObjs= myPuzzle->numPieces;
+			//}
+			myPuzzle->pos.x = posP.x;
+			myPuzzle->pos.y = posP.y;
+			myPuzzle->pos.z = posP.z;
+			updatePuzzle = true;
+			step = 7;
+			SubObEvent ev;
+			ev.setName("hide-node");
+			ev.addArg("target", prefix + ":start-help");
+			SubObMediator::Instance()->sendEvent("hide-node", ev);
+			setPage("play2");
+	//	}
+	//}
 } 
 //----------------------------------------------------------------------
 void game::loadMenuObject(int objID, SG_VECTOR p, SG_VECTOR t,vector< ofFloatColor > colorsVMenu, vector< ofVec3f > uniqueNormals){
@@ -2040,7 +2069,8 @@ void game::clearDisplayedObject(){
 //----------------------------------------------------------------------
 void game::restart(){
 	if(step == 7){
-		myPuzzle->exit();
+		//myPuzzle->exit();
+		//objectDisplayed->exit();
 		step = 0;
 		objectID = -1;
 	}else if(step == 6){
@@ -2095,11 +2125,6 @@ void game::restart(){
 //----------------------------------------------------------------------
 void game::exit(){
 	//sgDeleteObject(sgBunny);
-	//sgDeleteObject(sgTetrahedron);
-	//sgDeleteObject(sgDodecahedron);
-	//sgDeleteObject(sgIcosahedron);
-	//sgDeleteObject(sgOctahedron);
-	//sgDeleteObject(sgTeapot);
 
 	////////////have to delete the objects in 
 	//map<int, sgCObject*> objects;

@@ -231,7 +231,7 @@ void menuPuzzle::nodeDraw(){
 	//ofEnableDepthTest();
 	//glPushMatrix();
 	ofPushMatrix();
-	//////////glMultMatrixd(temp->GetTempMatrix()->GetTransparentData());
+	glMultMatrixd(temp->GetTempMatrix()->GetTransparentData());
 	//temp->DestroyTempMatrix();
 	ofTranslate(viewport.width / 2, viewport.height / 2, position.z);
 	glScalef(0.3,0.3,0.3);

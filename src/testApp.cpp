@@ -585,7 +585,7 @@ void testApp::update(string _eventName, SubObEvent _event){
 		//myGames[gameIds[gameTag]]->loadMenuObject(middlePuzzles[mpId]->objectId,myGames[gameIds[gameTag]]->slicingPos,myGames[gameIds[gameTag]]->posP,middlePuzzles[mpId]->colorsVMenu,middlePuzzles[mpId]->uniqueNormals);
 		/////////////////////////////////////////////////////////////////////////////
 		//loadPuzzle loads a premade puzzle into a game
-		myGames[gameIds[gameTag]]->loadPuzzle(middlePuzzles[mpId]->getPuzzle());
+		myGames[gameIds[gameTag]]->loadPuzzle(middlePuzzles[mpId]->getPuzzle(),middlePuzzles[mpId]->objectId,myGames[gameIds[gameTag]]->slicingPos,myGames[gameIds[gameTag]]->posP);
 
 		//myGames[gameIds[gameTag]]->setCurrentStep(7);
 		myGames[gameIds[gameTag]]->prefix = gameTag;

@@ -46,11 +46,6 @@ public:
 	string station;
 	///OBJ file loading and convertion
 	//sgCObject *sgBunny;
-	//sgCObject *sgTetrahedron;
-	//sgCObject *sgDodecahedron;
-	//sgCObject *sgIcosahedron;
-	//sgCObject *sgOctahedron;
-	//sgCObject *sgTeapot;
 
 	map<int, sgCObject*> objects;
 	ofxAssimpModelLoader loader;
@@ -177,7 +172,7 @@ public:
 
 
 	///////interaction with puzzles on the center
-	void loadPuzzle(puzzle *inputPuzzle); //load a puzzle from the puzzle menu on the center
+	void loadPuzzle(puzzle *inputPuzzle,int objID, SG_VECTOR p, SG_VECTOR t); //load a puzzle from the puzzle menu on the center
 	void loadMenuObject (int objID,SG_VECTOR p,SG_VECTOR t,vector< ofFloatColor > colorsVMenu, vector< ofVec3f > uniqueNormalsG);
 	void loadArmatureMenu(int type);
 	void makePuzzle();

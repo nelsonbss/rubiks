@@ -62,6 +62,9 @@ menuPuzzle::menuPuzzle(SG_VECTOR p, SG_VECTOR t, int ID ) : GuiNode(){
 
 	setName("menu-puzzle-" + ofToString(id));
 
+	offsetSlicer = ofVec3f (0,0,0);
+	rotateSlicer = ofVec3f (0,0,0);
+
 	timeOfLastInteraction = 0;
 }
 //-------------------------------------------------------------------------------------------------------
@@ -228,7 +231,7 @@ void menuPuzzle::nodeDraw(){
 	ofEnableDepthTest();
 	ofViewport(viewport);
 	ofSetupScreen();
-	
+
 	//glPushMatrix();
 	ofPushMatrix();
 	//ofEnableDepthTest();

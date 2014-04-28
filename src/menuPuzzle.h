@@ -42,8 +42,8 @@ public:
 	////so that both objects have the same color
 	vector< ofFloatColor > colorsVMenu;
 	vector< ofVec3f > uniqueNormals;
-	////////ofVec3f offsetSlicer;
-	////////ofVec3f rotateSlicer;
+	ofVec3f offsetSlicer;
+	ofVec3f rotateSlicer;
 	SG_VECTOR position;
 	SG_VECTOR tempPos;
 	ofVec3f drawPos;

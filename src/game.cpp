@@ -68,10 +68,9 @@ game::game(SG_VECTOR gamePos, float w, float h, SG_VECTOR displayPos, ofRectangl
 	bExtrude = false;
 
 	myCanvasImage.loadImage("drawingGrid.png");
-	sc = ofFloatColor (1, 1, 0); //yellow
+	//sc = ofFloatColor (1, 1, 0); //yellow
 
 	savePuzzleB = false;
-
 
 	angleR = 0;
 	bUnproject = false;
@@ -330,9 +329,11 @@ void game::update(string _eventName, SubObEvent _event){
 	if(_eventName == prefix + ":save"){
 		//call save functionality here
 		//do nt make opengl calls here... no drawing anything
-		setPage("object-start");
-		camPosition.set(viewport.width / 2, viewport.height / 2, 400);
-		guiReset();
+		//for now its restarting
+		////setPage("object-start");
+		////camPosition.set(viewport.width / 2, viewport.height / 2, 400);
+		////guiReset();
+		savePuzzleB = true;
 	}
 	if(_eventName == prefix + ":object-selected"){
 		if(step == 0){
@@ -920,23 +921,23 @@ void game::loadPuzzle(puzzle *inputPuzzle,int objID, SG_VECTOR p, SG_VECTOR t){
 	//	}
 
 	//	if(loaded == true){
-			////////////////////////////////
-			//objectDisplayed->setup();
-			//step = 1;
-			myPuzzle = inputPuzzle;
-			//for(int i =0 ; i< myPuzzle->numPieces ; i++){
-			//	myPuzzle->myCubies[i]->numObjs= myPuzzle->numPieces;
-			//}
-			myPuzzle->pos.x = posP.x;
-			myPuzzle->pos.y = posP.y;
-			myPuzzle->pos.z = posP.z;
-			updatePuzzle = true;
-			step = 7;
-			SubObEvent ev;
-			ev.setName("hide-node");
-			ev.addArg("target", prefix + ":start-help");
-			SubObMediator::Instance()->sendEvent("hide-node", ev);
-			setPage("play2");
+	////////////////////////////////
+	//objectDisplayed->setup();
+	//step = 1;
+	myPuzzle = inputPuzzle;
+	//for(int i =0 ; i< myPuzzle->numPieces ; i++){
+	//	myPuzzle->myCubies[i]->numObjs= myPuzzle->numPieces;
+	//}
+	myPuzzle->pos.x = posP.x;
+	myPuzzle->pos.y = posP.y;
+	myPuzzle->pos.z = posP.z;
+	updatePuzzle = true;
+	step = 7;
+	SubObEvent ev;
+	ev.setName("hide-node");
+	ev.addArg("target", prefix + ":start-help");
+	SubObMediator::Instance()->sendEvent("hide-node", ev);
+	setPage("play2");
 	//	}
 	//}
 } 
@@ -1318,9 +1319,9 @@ void game::setCurrentStep(int s){
 	step = s;
 }
 //----------------------------------------------------------------------
-void game::changeColorToColor(ofFloatColor sc, ofFloatColor tc){
-	myPuzzle->changeColorToColor(sc,tc);
-}
+//void game::changeColorToColor(ofFloatColor sc, ofFloatColor tc){
+//	myPuzzle->changeColorToColor(sc,tc);
+//}
 
 void game::changeFaceColor(ofVec2f pos, ofFloatColor c){
 
@@ -1614,9 +1615,9 @@ void game::guiInput(int in){
 		//waiting for color change
 		if(in == '1') {
 			//call color change funtion
-			ofFloatColor sc = ofFloatColor (1, 1, 0); //yellow
-			ofFloatColor menuColor = ofFloatColor (1, 0, 1); //this color comes from the GUI
-			changeColorToColor(sc,menuColor);
+			//ofFloatColor sc = ofFloatColor (1, 1, 0); //yellow
+			//ofFloatColor menuColor = ofFloatColor (1, 0, 1); //this color comes from the GUI
+			//changeColorToColor(sc,menuColor);
 		}
 		//pressed NEXT
 		if(in == 'n') {
@@ -2034,13 +2035,19 @@ void game::prepareDrawing(){
 	step = 6;
 }
 //---------------------------------------------------------------------
-menuPuzzle*  game::savePuzzle(SG_POINT slicingPos, SG_VECTOR middlePuzzlePos){
+menuPuzzle*  game::savePuzzle(SG_POINT slicingPos, SG_VECTOR middlePuzzlePos, int puzzleCounter){
+
+	//return the puzzle that has been created
+	//also return the info on offset and rotation and object displayed
+
+
+
 	//build a menuPuzzle object and give it to the mainApp
-	menuPuzzle *puzzleToSave = new menuPuzzle(slicingPos, middlePuzzlePos, 0);
-	//////////puzzleToSave->loadObjectMP(objectDisplayed->getObject(),objectID);
-	//////////puzzleToSave->setup();
-	//////////puzzleToSave->update();
-	//////////puzzleToSave->colorFacesMenu();
+	menuPuzzle *puzzleToSave;// = new menuPuzzle(slicingPos, middlePuzzlePos, puzzleCounter);
+	////puzzleToSave->loadObjectMP(objectDisplayed->getObject(),objectID);
+	////puzzleToSave->setup();
+	////puzzleToSave->update();
+	////puzzleToSave->colorFacesMenu();
 
 	////////////need to pass this data to menuPuzzle
 	////////////vector< ofFloatColor > colorsVMenu;
@@ -2050,6 +2057,22 @@ menuPuzzle*  game::savePuzzle(SG_POINT slicingPos, SG_VECTOR middlePuzzlePos){
 
 	//////////////puzzleToSave->loadPuzzle(myPuzzle);
 	//////////puzzleToSave->objectId = objectID; 
+
+	puzzleToSave = new menuPuzzle(slicingPos, middlePuzzlePos, puzzleCounter);//needs the right place id (8,9,10) to be active on the gui
+
+	//////////////////////////////////////////////////////////////////////////
+	////no need to have the object IF we are showing puzzles in the middle, not unsliced objects
+	//puzzleToSave->loadObjectMP((sgC3DObject*)objectsMP[i+1]->Clone(),i+1);
+	//puzzleToSave->setup();
+	//puzzleToSave->update();
+	//puzzleToSave->colorFacesMenu();//implement this later
+	puzzleToSave->init();//gui
+
+	//we have one puzzle, use this puzzle to 
+	puzzleToSave->offsetSlicer = offsetSlicer;
+	puzzleToSave->rotateSlicer = rotateSlicer;
+
+	puzzleToSave->myMenuPuzzle = myPuzzle;
 
 	return puzzleToSave;
 }

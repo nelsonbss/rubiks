@@ -11,6 +11,7 @@
 #define DEPTH 3
 
 puzzle::puzzle(SG_VECTOR p, ofVec3f offset, int gSize){
+
 	gridSize=gSize;
 	numPieces=gSize*gSize*gSize;
 	myCubies = (cubie**)malloc(numPieces*sizeof(cubie*));

@@ -74,7 +74,7 @@ public:
 	bool bExtrude;
 	void guiExtrude(){bExtrude = true;}
 
-	ofFloatColor sc;
+	
 
 	/*
 	*/
@@ -130,7 +130,8 @@ public:
 	void rotateA(ofVec3f input);
 
 	////color change
-	void changeColorToColor(ofFloatColor Sc, ofFloatColor Tc);
+	//ofFloatColor sc;
+	//void changeColorToColor(ofFloatColor Sc, ofFloatColor Tc);
 	void changeFaceColor(ofVec2f pos, ofFloatColor c);
 
 	//armature rotation
@@ -177,7 +178,7 @@ public:
 	void loadArmatureMenu(int type);
 	void makePuzzle();
 	bool savePuzzleB;
-	menuPuzzle* savePuzzle(SG_POINT slicingPos, SG_VECTOR middlePuzzlePos);
+	menuPuzzle* savePuzzle(SG_POINT slicingPos, SG_VECTOR middlePuzzlePos, int puzzleCounter);
 	vector< ofFloatColor > colorsVMenuG;
 	vector< ofVec3f > uniqueNormalsG;
 	////////////////////////////////////////////

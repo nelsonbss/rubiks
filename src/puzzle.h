@@ -12,13 +12,12 @@
 #include "SubObEvent.h"
 #include "CubieMesh.h"
 
-#define MAX_DIST 1500.0
-
+#define MAX_DIST 500 //1500.0
+class Observer;
 class puzzle : public Observer{
 
 public:
 	puzzle(SG_VECTOR p, ofVec3f offset, int gSize);
-
 	int id;
 
 	void setup();

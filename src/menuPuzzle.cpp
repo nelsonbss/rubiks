@@ -4,6 +4,8 @@
 #include "ofRender.h"
 
 ///////////////////////////////////////////////////////
+menuPuzzle::menuPuzzle( ) : GuiNode(){
+}
 menuPuzzle::menuPuzzle(SG_VECTOR p, SG_VECTOR t, int ID ) : GuiNode(){
 
 	id = ID;
@@ -84,9 +86,6 @@ void menuPuzzle::nodeInit(){
 	//drawPos.set((float)tempPos.x, (float)tempPos.y);
 	//drawPos.set(0,0);
 	//drawSize.set(200,200);
-
-
-
 	activate();
 	SubObMediator::Instance()->addObserver("menupuzzle-intercepted",this);
 }
@@ -332,16 +331,16 @@ void menuPuzzle::loadObjectMP(sgC3DObject *obj, int ID){
 	//}  
 }
 //--------------------------------------------------------------
-void menuPuzzle::loadPuzzle(puzzle *inpuzzle, int turn){
-	if(turn==0){
+void menuPuzzle::loadPuzzle(puzzle *inpuzzle, int station){
+	if(station==0){
 		myMenuPuzzle = inpuzzle;
-	}else if(turn==1){
+	}else if(station==1){
 		MenuPuzzleBR = inpuzzle;
-	}else if(turn==2){
+	}else if(station==2){
 		MenuPuzzleBL = inpuzzle;
-	}else if(turn==3){
+	}else if(station==3){
 		MenuPuzzleTR = inpuzzle;
-	}else if(turn==4){
+	}else if(station==4){
 		MenuPuzzleTL = inpuzzle;
 	}
 }
@@ -417,16 +416,16 @@ void menuPuzzle::exit(){
 	sgCObject::DeleteObject(temp);
 	//free the puzzles
 	myMenuPuzzle->exit();
-	//MenuPuzzleBR->exit();
-	//MenuPuzzleBL->exit();
-	//MenuPuzzleTR->exit();
-	//MenuPuzzleTL->exit();
+	MenuPuzzleBR->exit();
+	MenuPuzzleBL->exit();
+	MenuPuzzleTR->exit();
+	MenuPuzzleTL->exit();
 
 	free(myMenuPuzzle);
-	//free(MenuPuzzleBR);
-	//free(MenuPuzzleBL);
-	//free(MenuPuzzleTR);
-	//free(MenuPuzzleTL);
+	free(MenuPuzzleBR);
+	free(MenuPuzzleBL);
+	free(MenuPuzzleTR);
+	free(MenuPuzzleTL);
 }
 //-------------------------------------------------------
 puzzle* menuPuzzle::getPuzzle(string gameTag){

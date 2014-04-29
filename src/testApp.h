@@ -18,6 +18,7 @@
 class testApp : public ofBaseApp, public Observer, public Subject{
 
 public:
+	testApp();
 	void setup();
 	void update();
 	void draw();
@@ -43,6 +44,7 @@ public:
 
 
 	map<int, sgCObject*> objectsMP;
+	int numObjects;
 	ofxAssimpModelLoader loaderG;
 	void loadObjDirG(string _path);
 	/////////////////////////////////////////games
@@ -57,17 +59,25 @@ public:
 	cutter *myCutter;
 	slicer *mySlicer;
 	armature *myArmature;
-	puzzle **myPuzzles;
+	
 	//bool rotate;
 		////////////////////////////////////////middle puzzles
 	SG_VECTOR middlePuzzlePos;
-
 	vector<menuPuzzle*> middlePuzzles;
+	puzzle **myPuzzles;
+	//vector<puzzle> myPuzzles;
 	menuPuzzle *puzzleDisplayed;
 	int puzzleCounter; 
+	ofVec3f offsetSlicer;
+	ofVec3f rotateSlicer;
 
+	
+	
+	
 	map<string,int> gameIds;
 	map<int, string> gameTags;
+
+
 
 	////////////////rendering  and textures
 	void initOFRender();

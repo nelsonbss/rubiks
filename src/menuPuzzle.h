@@ -12,8 +12,9 @@ class menuPuzzle : public GuiNode{
 
 public:
 	menuPuzzle (SG_VECTOR pos, SG_VECTOR t, int ID);
+	menuPuzzle ();
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////
-	void loadPuzzle(puzzle *inpuzzle, int turn);
+	void loadPuzzle(puzzle *inpuzzle, int station);
 	puzzle *myMenuPuzzle;
 
 	puzzle *MenuPuzzleBR;

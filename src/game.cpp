@@ -12,6 +12,8 @@
 
 #include <vector>
 
+#include <thread>
+
 #define planeThicknes 0.001
 #define tamCutter 1000
 
@@ -71,6 +73,7 @@ game::game(SG_VECTOR gamePos, float w, float h, SG_VECTOR displayPos, ofRectangl
 	//sc = ofFloatColor (1, 1, 0); //yellow
 
 	savePuzzleB = false;
+	hasSaved = false;
 
 	angleR = 0;
 	bUnproject = false;
@@ -97,6 +100,9 @@ game::game(SG_VECTOR gamePos, float w, float h, SG_VECTOR displayPos, ofRectangl
 	myCanvas.setViewport(viewport);
 
 	step=0;
+/*
+	thread t1(task1, "Hello");
+	t1.join();*/
 }
 //----------------------------------------------------------------------------------------
 void game::loadObjDir(string _path){
@@ -328,12 +334,11 @@ void game::update(){
 void game::update(string _eventName, SubObEvent _event){
 	if(_eventName == prefix + ":save"){
 		//call save functionality here
-		//do nt make opengl calls here... no drawing anything
-		//for now its restarting
-		////setPage("object-start");
-		////camPosition.set(viewport.width / 2, viewport.height / 2, 400);
-		////guiReset();
 		savePuzzleB = true;
+		//dont make opengl calls here... no drawing anything
+		setPage("object-start");
+		camPosition.set(viewport.width / 2, viewport.height / 2, 400);
+		guiReset();
 	}
 	if(_eventName == prefix + ":object-selected"){
 		if(step == 0){
@@ -543,7 +548,7 @@ void game::update(string _eventName, SubObEvent _event){
 		ofVec2f pos = _event.getArg("pos")->getVec2();
 		newFaceColor = ofFloatColor(newColor.x / 255.0, newColor.y / 255.0, newColor.z / 255.0);
 		if(!bUnproject){
-			mousePoint.set(pos.x,pos.y, 0);//(ofGetMouseX(), ofGetMouseY(), 0);
+			mousePoint.set(pos.x,pos.y, 0);//(ofGetMouseX(), ofGetMouseY(),0);
 			bUnproject = true;
 			unprojectMode = UP_MODE_COLOR;
 		}
@@ -787,7 +792,7 @@ void game::unprojectPoint(ofVec3f _pnt){
 		if(!bDragInput){
 			//cout << "down" << endl;
 			myPuzzle->checkCubiesForHit(unprojectedPoint);
-			lastUnprojectedPoint = unprojectedPoint;
+			lastUnprojectedPoint = mousePoint;//unprojectedPoint;
 			bHaveAxis = false;
 			startMove(mousePoint);
 			if(myPuzzle->activeCubie != -1){
@@ -797,7 +802,7 @@ void game::unprojectPoint(ofVec3f _pnt){
 			//myPuzzle->dragInput((unprojectedPoint - lastUnprojectedPoint) * 25.0);
 			if(myPuzzle->isMoving() == false){
 				//cout << "dragg" << endl;
-				makeMove((unprojectedPoint - lastUnprojectedPoint) * 25.0);
+				makeMove((mousePoint - lastUnprojectedPoint) * 25.0);//((unprojectedPoint - lastUnprojectedPoint) * 25.0);
 				//lastUnprojectedPoint = unprojectedPoint;
 			}
 		}
@@ -1274,7 +1279,7 @@ void game::createCutterSlicer(){
 void game::createPuzzle(SG_VECTOR p){
 	if(step == 3){
 		////////////////////////////////create puzzle///////////////////////////////////////
-		myPuzzle = new puzzle(p, offsetSlicer,armID); // it receives the position to be displayed AND the offset of the armature/cutter to adapt slicing
+		myPuzzle =  new puzzle(p, offsetSlicer,armID); // it receives the position to be displayed AND the offset of the armature/cutter to adapt slicing
 		myPuzzle->setup();
 
 		////boolean substraction//////////////////////////////////////////////////////////
@@ -2037,7 +2042,7 @@ menuPuzzle*  game::savePuzzle(SG_POINT slicingPos, SG_VECTOR middlePuzzlePos, in
 
 	//return the puzzle that has been created
 	//build a menuPuzzle object and give it to the mainApp
-	menuPuzzle *puzzleToSave;// = new menuPuzzle(slicingPos, middlePuzzlePos, puzzleCounter);
+	menuPuzzle *puzzleToSave = new menuPuzzle(slicingPos, middlePuzzlePos, puzzleCounter);
 	////puzzleToSave->loadObjectMP(objectDisplayed->getObject(),objectID);
 	////puzzleToSave->setup();
 	////puzzleToSave->update();
@@ -2052,8 +2057,6 @@ menuPuzzle*  game::savePuzzle(SG_POINT slicingPos, SG_VECTOR middlePuzzlePos, in
 	//////////////puzzleToSave->loadPuzzle(myPuzzle);
 	//////////puzzleToSave->objectId = objectID; 
 
-	puzzleToSave = new menuPuzzle(slicingPos, middlePuzzlePos, puzzleCounter);//needs the right place id (8,9,10) to be active on the gui
-
 	//////////////////////////////////////////////////////////////////////////
 	////no need to have the object IF we are showing puzzles in the middle, not unsliced objects
 	//puzzleToSave->loadObjectMP((sgC3DObject*)objectsMP[i+1]->Clone(),i+1);
@@ -2065,7 +2068,7 @@ menuPuzzle*  game::savePuzzle(SG_POINT slicingPos, SG_VECTOR middlePuzzlePos, in
 	//we have one puzzle, use this puzzle to 
 	puzzleToSave->offsetSlicer = offsetSlicer;
 	puzzleToSave->rotateSlicer = rotateSlicer;
-
+	//hasSaved = true;
 	return puzzleToSave;
 }
 //----------------------------------------------------------------------
@@ -2098,7 +2101,10 @@ void game::restart(){
 		step = 0;
 		objectID = -1;
 	}else if(step==4 || step==5){
-		myPuzzle->exit();
+		//dont delete the puzzle if it has been saved
+		//if(!hasSaved){
+			myPuzzle->exit();
+		//}
 		myCutter->exit();
 		mySlicer->exit();
 		objectDisplayed->exit();
@@ -2432,8 +2438,8 @@ void game::makeMove(ofVec3f _pnt){
 				} 
 			}
 			cubiePos=myPuzzle->getCubieInfo(myPuzzle->activeCubie);
-			ofVec3f normal = myPuzzle->activeTriangle.getNormal(); // swap this line for the next one if you want to use camera angle vs. selection normal
-			//ofVec3f normal=camPosition-ofVec3f(posP.x, posP.y, posP.z);
+			//ofVec3f normal = myPuzzle->activeTriangle.getNormal(); // swap this line for the next one if you want to use camera angle vs. selection normal
+			ofVec3f normal=camPosition-ofVec3f(posP.x, posP.y, posP.z);
 			int normalNum=-1;
 			int normalAng=0;
 
@@ -2590,4 +2596,10 @@ float game::getMainComponent(ofVec3f _pnt){
 	if(magZ > magX && magZ > magY){
 		return _pnt.z;
 	}
+}
+
+//----------------------------------------------------------------------------------------------------------------------------
+
+void game::task1(string msg){
+    cout << "task1 says: " << msg << endl;
 }

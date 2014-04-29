@@ -14,15 +14,16 @@
 #include "drawingCanvas.h"
 #include "menuPuzzle.h"
 #include "Picker.h"
+#include <thread>
+
 
 #define DELAY 30000
 
 enum{UP_MODE_MOUSE, UP_MODE_COLOR, UP_MODE_P};
-
+class Observer;
 class game : public Observer{
 public:
 	game(SG_VECTOR p, float w, float h, SG_VECTOR puzzlePos, ofRectangle _vp, float iddleTime, string myPrefix);
-
 	//void setup(sgCObject *sgBunnyi,sgCObject *sgTetrahedroni,sgCObject *sgDodecahedroni,sgCObject *sgIcosahedroni,sgCObject *sgOctahedroni, string _prefix);//,sgCObject *sgTeapoti);
 	void setup(string _prefix);
 	void setup();
@@ -41,6 +42,7 @@ public:
 	cutter *myCutter;
 	slicer *mySlicer;
 	armature *myArmature;
+
 	puzzle *myPuzzle;
 
 	string station;
@@ -129,7 +131,7 @@ public:
 	SG_VECTOR rotA;
 	void rotateA(ofVec3f input);
 
-	////color change
+	//////////////////////////////color change
 	//ofFloatColor sc;
 	//void changeColorToColor(ofFloatColor Sc, ofFloatColor Tc);
 	void changeFaceColor(ofVec2f pos, ofFloatColor c);
@@ -178,6 +180,7 @@ public:
 	void loadArmatureMenu(int type);
 	void makePuzzle();
 	bool savePuzzleB;
+	bool hasSaved;
 	menuPuzzle* savePuzzle(SG_POINT slicingPos, SG_VECTOR middlePuzzlePos, int puzzleCounter);
 	vector< ofFloatColor > colorsVMenuG;
 	vector< ofVec3f > uniqueNormalsG;
@@ -242,5 +245,10 @@ public:
 	int dragId;
 
 	void setPage(string _page);
+
+
+
+	
+	void task1(string msg);
 };
 #endif /* defined(__Tgame__game__) */

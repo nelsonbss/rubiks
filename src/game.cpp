@@ -265,6 +265,7 @@ void game::update(){
 			puzzleFinished = true;
 			step = 4;
 		}else{
+			setPage("color-start");
 			creatingPuzzle = false;
 		}
 	}
@@ -425,7 +426,7 @@ void game::update(string _eventName, SubObEvent _event){
 			setPage("armature-start");
 
 		} else if(step == 3){
-			setPage("color-start");
+			//setPage("color-start");
 		} else if(step == 4){
 			setPage("play");
 		} else {

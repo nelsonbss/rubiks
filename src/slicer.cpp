@@ -69,40 +69,41 @@ sgCGroup* slicer::getPiecesOneByOne(int cubieToGet){
 	//cout << "in get pieces: " << ofGetElapsedTimeMillis() << endl;
 	//make a copy of a single pieces[] to send outside
 
-	aux2 = (sgCGroup*)malloc(1*sizeof(sgCGroup*));
+	//aux2 = (sgCGroup*)malloc(1*sizeof(sgCGroup*));
 
-	sgCObject **objcts = (sgCObject**)malloc(50*sizeof(sgCObject*));
-	sgCObject **objcts1 = (sgCObject**)malloc(50*sizeof(sgCObject*));
-	int objctr = 0;
-	//break pieces[cubieToGet], there might be more than one mesh inside that cubie
+	//sgCObject **objcts = (sgCObject**)malloc(50*sizeof(sgCObject*));
+	//sgCObject **objcts1 = (sgCObject**)malloc(50*sizeof(sgCObject*));
+	//int objctr = 0;
+	////break pieces[cubieToGet], there might be more than one mesh inside that cubie
 
-	if(pieces[cubieToGet] != NULL){
-		const int ChCnt = pieces[cubieToGet]->GetChildrenList()->GetCount();
-		sgCObject** allParts = (sgCObject**)malloc(ChCnt*sizeof(sgCObject*));
-		pieces[cubieToGet]->BreakGroup(allParts);
-		sgDeleteObject(pieces[cubieToGet]); //break group and delete each object?
-		for (int j=0; j < ChCnt; j++){
-			//clone each object
-			sgCObject *temp = allParts[j];
-			//put clone on *[] tomake new group
-			objcts[objctr] = temp->Clone();
-			objcts1[objctr] = temp->Clone();
-			objctr ++;
-			sgCObject::DeleteObject(temp);
-		}
-		free(allParts);
-		//put that new group inside aux2->sgCGroup
-		pieces[cubieToGet] = sgCGroup::CreateGroup(objcts,objctr); //so pieces[] has the data again, and keeps it for future requests
-		aux2 = sgCGroup::CreateGroup(objcts1,objctr);  
-	}else{
-		pieces[cubieToGet] = NULL;
-		aux2 = NULL; 
-	}
-	free(objcts);
-	free(objcts1);
+	//if(pieces[cubieToGet] != NULL){
+	//	const int ChCnt = pieces[cubieToGet]->GetChildrenList()->GetCount();
+	//	sgCObject** allParts = (sgCObject**)malloc(ChCnt*sizeof(sgCObject*));
+	//	pieces[cubieToGet]->BreakGroup(allParts);
+	//	sgDeleteObject(pieces[cubieToGet]); //break group and delete each object?
+	//	for (int j=0; j < ChCnt; j++){
+	//		//clone each object
+	//		sgCObject *temp = allParts[j];
+	//		//put clone on *[] tomake new group
+	//		objcts[objctr] = temp->Clone();
+	//		objcts1[objctr] = temp->Clone();
+	//		objctr ++;
+	//		sgCObject::DeleteObject(temp);
+	//	}
+	//	free(allParts);
+	//	//put that new group inside aux2->sgCGroup
+	//	pieces[cubieToGet] = sgCGroup::CreateGroup(objcts,objctr); //so pieces[] has the data again, and keeps it for future requests
+	//	aux2 = sgCGroup::CreateGroup(objcts1,objctr);  
+	//}else{
+	//	pieces[cubieToGet] = NULL;
+	//	aux2 = NULL; 
+	//}
+	//free(objcts);
+	//free(objcts1);
 
-	//cout << "out get pieces: " << ofGetElapsedTimeMillis() << endl;
-	return aux2;
+	////cout << "out get pieces: " << ofGetElapsedTimeMillis() << endl;
+	//return aux2;
+	return pieces[cubieToGet];
 
 	//return pieces;
 	//return NULL; //here for memory leaks testing

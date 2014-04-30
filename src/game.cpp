@@ -1294,7 +1294,7 @@ void game::createPuzzle(SG_VECTOR p){
 
 		///////////////////////////////  color puzzle   ////////////////////////////////// 
 		//color all the faces for platonic solids!! colors outside for most objects(not bunny), black on the insides
-		if(objectID <8 ){
+		if(objectID < 8 ){
 			myPuzzle->colorFaces(objectID);
 		}else{
 			myPuzzle->colorTorus();
@@ -2164,6 +2164,7 @@ void game::mouseDragged(int x, int y, int button){
 		//lastMouse = mouse;
 		//curRot.getRotate(angle, axistb);
 		//camPosition.rotate(angle * 0.01, ofVec3f(posP.x, posP.y, posP.z), axistb);
+
 		ofVec3f mouse(x,y);
 		ofVec3f r = lastMouse - mouse;
 		camPosition.rotate (r.y * 0.01, ofVec3f(posP.x, posP.y, posP.z), ofVec3f(1,0,0));

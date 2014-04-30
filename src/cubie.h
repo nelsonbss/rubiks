@@ -25,7 +25,7 @@ public:
 
 	int selectedObjectID; // keeps the id of the object selected to become a puzzle, used for coloring
 
-	sgCGroup *objects;
+	//sgCGroup *objects;
 	float numObjs;
 	float getNumObjs();
 	sgC3DObject **objectList;

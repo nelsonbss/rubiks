@@ -4,7 +4,7 @@
 #include <math.h>
 
 cubie::cubie(float x, float y,float z, int idi, int selObjId, ofVec3f offset, int gs){
-	objects = NULL;
+	//objects = NULL;
 	id = idi;
 	selectedObjectID = selObjId;
 
@@ -99,7 +99,7 @@ void cubie::faceRotate(SG_VECTOR axis,bool di,float angle){
 	//this function is to handle a face rotation for a cubbie
 	//its invoked on a group of cubies determined by the puzzle..??(stil lneeds to be determined)
 	//use this cubies objectList to draw elements without ever loosing them on groupBreaking
-	if(objects != NULL){
+	if(numObjs != 0){
 		if(moving == false && goBackb == false && undoing == false){
 			if(locked == false){
 				SG_POINT protFace = {0,0,0};
@@ -325,7 +325,7 @@ void cubie::update(){
 						masterAngle +=stepSize;
 						for (int j=0; j < numObjs; j++){
 							double aux =  ofDegToRad(stepSize);
-							objectList[0]->GetTempMatrix()->Rotate(protFace,vrotFace,aux);
+							objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,aux);
 							//myMeshs[j].updatePosition(protFaceV, vrotFaceV, stepSize);
 						}
 						reducing = false;
@@ -376,7 +376,7 @@ void cubie::update(){
 						masterAngle -=stepSize;
 						for (int j=0; j < numObjs; j++){
 							double aux =  ofDegToRad(stepSize);
-							objectList[0]->GetTempMatrix()->Rotate(protFace,vrotFace,-aux);
+							objectList[j]->GetTempMatrix()->Rotate(protFace,vrotFace,-aux);
 							//myMeshs[j].updatePosition(protFaceV, vrotFaceV, -stepSize);
 						}
 						reducing = false;
@@ -567,7 +567,7 @@ void cubie::draw(){
 	//each cubie draws its own sgCGroup *objects;
 	//now it draws its vector of Vbos, myVbos
 	//use this cubies objectList[]
-	if(objects != NULL){
+	//if(objects != NULL){
 		for (int j=0; j < numObjs; j++){
 			glPushMatrix();
 			//ofScale(1.2,1.2,1.2);
@@ -591,14 +591,14 @@ void cubie::draw(){
 
 			glPopMatrix();
 		}
-	}
+	//}
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
 void cubie::faceRotate(SG_VECTOR axis,bool di){
 	//this function is to handle a face rotation for a cubbie
 	//its invoked on a group of cubies determined by the puzzle..??(stil lneeds to be determined)
 	//use this cubies objectList to draw elements without ever loosing them on groupBreaking
-	//if(objects != NULL){
+	////if(objects != NULL){
 	//	if(moving == false){
 	//		if(undoing == false){
 	//			SG_POINT protFace = {0,0,0};
@@ -615,9 +615,9 @@ void cubie::faceRotate(SG_VECTOR axis,bool di){
 	//			}
 	//		}
 	//	}
-	//}else{
-	//	//cout << "null at face rotation" << endl;
-	//}
+	////}else{
+	////	//cout << "null at face rotation" << endl;
+	////}
 }
 
 //-------------------------------------------------------------------------------------------------------------------------------------------
@@ -628,8 +628,8 @@ void cubie::setObjects(sgCGroup *objs,int cubieId,ofVec3f v){
 	armRotations = (v);//*-1; did not have to inverse the angle to compensate due to left hand and right hand rules on sgcore and on openframeworks
 
 	if(objs != NULL){
-		sgCObject **objcts = (sgCObject**)malloc(50*sizeof(sgCObject*));
-		int objctr = 0;
+		//sgCObject **objcts = (sgCObject**)malloc(50*sizeof(sgCObject*));
+		//int objctr = 0;
 		//break incomming group
 		const int ChCnt = objs->GetChildrenList()->GetCount();
 		numObjs = ChCnt;
@@ -645,16 +645,16 @@ void cubie::setObjects(sgCGroup *objs,int cubieId,ofVec3f v){
 			sgC3DObject *temp = (sgC3DObject*) allParts[j];
 			//put clone on *[] tomake new group
 			objectList[j] = (sgC3DObject*)temp->Clone();
-			objcts[objctr] = (sgC3DObject*)temp->Clone();
-			objctr ++;
+			//objcts[objctr] = (sgC3DObject*)temp->Clone();
+			//objctr ++;
 		}
 		free(allParts);
 		//put that new group inside *objects of this class, of every cubie
-		objects = sgCGroup::CreateGroup(objcts,objctr);
-		free(objcts);
+		//objects = sgCGroup::CreateGroup(objcts,objctr);
+		//free(objcts);
 	}else{
 		numObjs = 0;
-		objects = NULL;
+		//objects = NULL;
 	}
 }
 //-------------------------------------------------------------------------------------------------------------------------------------------
@@ -662,29 +662,29 @@ void cubie::crateOfMeshs(){
 	CubieMesh tempMesh;
 	ofRender *ofr = new ofRender(); //class that has the metods to transform sgCore to OF mesh and set the normals (in one function)
 
-	if(objects != NULL){
+	//if(objects != NULL){
 		for (int j=0; j < numObjs; j++){
 			//////////////////////create ofMEsh
 			sgC3DObject *o = (sgC3DObject*)objectList[j]->Clone();
 			o->Triangulate(SG_VERTEX_TRIANGULATION);
 			//convert to ofMEsh with cubie ID!!!
 			//ask if its a plain color puzzle:: bunny torus??
-			if(selectedObjectID == 1){
-				//torus
-				ofr->sgCoretoOFmesh(o,tempMesh,-1,selectedObjectID);
-			}else if(selectedObjectID == 4){
-				//bunny
-				ofr->sgCoretoOFmesh(o,tempMesh,-3,selectedObjectID);
-			}else{
+			//if(selectedObjectID == 1){
+			//	//torus
+			//	ofr->sgCoretoOFmesh(o,tempMesh,-1,selectedObjectID);
+			//}else if(selectedObjectID == 4){
+			//	//bunny
+			//	ofr->sgCoretoOFmesh(o,tempMesh,-3,selectedObjectID);
+			//}else{
 				ofr->sgCoretoOFmesh(o,tempMesh,id,selectedObjectID); //give cubie id!! so that it knows if its a plain color puzzle or not
-			}
+			//}
 			myMeshs.push_back(tempMesh);
 			ofVbo tempVbo;
 			tempVbo.setMesh(tempMesh, GL_STATIC_DRAW);
 			myVbos.push_back(tempVbo);
 			sgDeleteObject(o);
 		}
-	}
+	//}
 	getCentroid();
 	free(ofr);
 }
@@ -980,12 +980,12 @@ bool cubie::isMoving(){
 }
 //----------------------------------------------------------------
 void cubie::exit(){
-	if(objects != NULL){
+	//if(objects != NULL){
 		for (int j=0; j < numObjs; j++){
 			sgCObject::DeleteObject(objectList[j]);
 		}
-		free(objectList);
-		sgCObject::DeleteObject(objects);
-	}
+		//free(objectList);
+		//sgCObject::DeleteObject(objects);
+	//}
 }
 //----------------------------------------------------------------

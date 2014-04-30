@@ -140,7 +140,7 @@ int puzzle::giveNumCubies(){
 	//tell how many cubies we have with objects inside
 	int aux=0;
 	for(int i=0;i<numPieces;i++){
-		if(myCubies[i]->objects!= NULL){
+		if(myCubies[i]->numObjs != 0){
 			aux++;
 		}
 	}
@@ -148,6 +148,7 @@ int puzzle::giveNumCubies(){
 }
 //----------------------------------------------------------------
 void puzzle::loadPieces(sgCGroup **pcs,int selObjId, ofVec3f v){
+	cout << "enter load pieces: " << ofGetElapsedTimeMillis() << endl;
 	//it loads the pieces that the slicer made, the pieces are in a sgCGroup** pieces[], 
 	//this function receives a copy of that sgCGroup** made by mySlicer->getPieces()
 	//it loads them into its own cubies
@@ -162,12 +163,13 @@ void puzzle::loadPieces(sgCGroup **pcs,int selObjId, ofVec3f v){
 
 	for(int i=0;i<numPieces;i++){
 		//get group from pieces[] copy: pcs[]
-		sgCGroup *part = pcs[i];
+		//sgCGroup *part = pcs[i];
 
-		if(part != NULL){
-			const int ChCnt = part->GetChildrenList()->GetCount();
+		if( pcs[i] != NULL){
+			const int ChCnt = pcs[i]->GetChildrenList()->GetCount();;//part->GetChildrenList()->GetCount();
 			sgCObject** allParts = (sgCObject**)malloc(ChCnt*sizeof(sgCObject*));
-			part->BreakGroup(allParts);
+			 pcs[i]->BreakGroup(allParts);
+			 sgCObject::DeleteObject(pcs[i]);
 
 			sgCObject **obj = (sgCObject**)malloc(50*sizeof(sgCObject*));
 			int realNumPieces=0;
@@ -194,7 +196,7 @@ void puzzle::loadPieces(sgCGroup **pcs,int selObjId, ofVec3f v){
 				}
 				free(allParts);
 			}
-			sgDeleteObject(part);
+			//sgDeleteObject(part);
 		}else{
 			myCubies[i]->setObjects(NULL,i,v);
 			myCubies[i]->setup();
@@ -206,6 +208,7 @@ void puzzle::loadPieces(sgCGroup **pcs,int selObjId, ofVec3f v){
 	for(int i=0;i<numPieces;i++){
 		myCubies[i]->crateOfMeshs();
 	}
+	cout << "out load pieces: " << ofGetElapsedTimeMillis() << endl;
 }
 //----------------------------------------------------------------
 void puzzle::rotate(SG_VECTOR r){  

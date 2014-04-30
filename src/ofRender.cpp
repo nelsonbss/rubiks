@@ -145,6 +145,10 @@ void ofRender::sgCoretoOFmesh(sgC3DObject *obj, CubieMesh&mesh,int idCubie,int s
 		//look at normal
 		////Compute the triangle's normal
 		ofVec3f dir = ( (auxV2 - auxV1).crossed( auxV3 - auxV1 ) ).normalized();
+		//ofVec3f dir;
+		//dir.x = normals[i].x;
+		//dir.y = normals[i].y;
+		//dir.z = normals[i].z;
 		//set colors
 		ofFloatColor c;
 
@@ -152,25 +156,25 @@ void ofRender::sgCoretoOFmesh(sgC3DObject *obj, CubieMesh&mesh,int idCubie,int s
 		//ask if we color an original object with rubiks colors or plain color:: current selection is -2 for plain color
 		if(idCubie == -1){
 			//original shape with color...use this for pyramid 
-			c = redOrange;//decideColor(decideAxisRange(dir,0));
+			//c = redOrange;//decideColor(decideAxisRange(dir,0));
 		}else if (idCubie == -2){
 			//its an original shape  with plain color
 			c = mate;//colorsVector2[0];//mate
 		}else if (idCubie == -3){
 			//plain color, used for bunny
-			c = redOrange;
+			//c = redOrange;
 		}else{
 			//its another object
 			//we only want to color PLAIN the sample object
 			//the face coloring will be done separately
 
-			if(selectedObjectID >= 8){
+			//if(selectedObjectID >= 8){
 				//c = decideColorCubieBox(dir,idCubie); //we color the cube here so it gets the official colors on its faces
 				c = matePuzzle; //decideColorCubieDEBUG(dir,idCubie); //this is to test the offset slicing and rotations
 				//}else if(selectedObjectID == 3){
 				//	//cone(ish)
 				//	c = decideColor(decideAxisRange(dir,10.0));
-			}
+			//}
 		}
 
 		colorsVector2.push_back(c);

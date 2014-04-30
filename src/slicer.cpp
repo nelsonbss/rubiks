@@ -23,6 +23,7 @@ void slicer::draw(){
 }
 //--------------------------------------------------------------
 sgCGroup** slicer::getPieces(){
+	cout << "in get pieces: " << ofGetElapsedTimeMillis() << endl;
 	//make a copy of the group** to send outside pieces[]
 	aux = (sgCGroup**)malloc(numPieces*sizeof(sgCGroup*));
 	for(int i =0; i<numPieces; i ++){
@@ -56,8 +57,12 @@ sgCGroup** slicer::getPieces(){
 		free(objcts);
 		free(objcts1);
 	}
+		cout << "out get pieces: " << ofGetElapsedTimeMillis() << endl;
 	return aux;
+
+	//return pieces;
 	//return NULL; //here for memory leaks testing
+	
 }
 //--------------------------------------------------------------
 int slicer::countPieces(){
@@ -75,6 +80,7 @@ int slicer::countPieces(){
 //--------------------------------------------------------------
 //////////////////////////// Intersection///////////////////////
 void slicer::intersectCubes(sgCObject *obj){
+	cout << "enter intersect: " << ofGetElapsedTimeMillis() << endl;
 	//it uses intersection of numPieces cubes, on the object, to get all the pieces for each cubie in one oeration
 	//all pieces are left in pieces[]
 	for(int i =0; i<numPieces; i ++){
@@ -87,6 +93,7 @@ void slicer::intersectCubes(sgCObject *obj){
 		sgDeleteObject(tempObj);
 		sgDeleteObject(tempCutter);
 	}
+	cout << "out intersect: " << ofGetElapsedTimeMillis() << endl;
 }
 //---------------------------------------------------------------
 void slicer::undoArmRotations(ofVec3f v){
@@ -121,11 +128,11 @@ void slicer::undoArmRotations(ofVec3f v){
 void slicer::exit(){
 	//sgCObject::DeleteObject(*pieces); //break and delete all objects!!
 	free(myCutter);
-	for (int j=0; j < numPieces; j++){
-		if(pieces[j]!= NULL){
-			sgCObject::DeleteObject(pieces[j]);
-		}
-	}
+	//for (int j=0; j < numPieces; j++){
+	//	if(pieces[j]!= NULL){
+	//		sgCObject::DeleteObject(pieces[j]);
+	//	}
+	//}
 	free(pieces);
 	//free(aux);//this is generating conflict on adding group to scene on cutter.cpp
 }

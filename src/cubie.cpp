@@ -642,9 +642,9 @@ void cubie::setObjects(sgCGroup *objs,int cubieId,ofVec3f v){
 
 		for (int j=0; j < ChCnt; j++){
 			//clone each object
-			sgC3DObject *temp = (sgC3DObject*) allParts[j];
+			//sgC3DObject *temp = (sgC3DObject*) allParts[j];
 			//put clone on *[] tomake new group
-			objectList[j] = (sgC3DObject*)temp->Clone();
+			objectList[j] = (sgC3DObject*)allParts[j]->Clone();
 			//objcts[objctr] = (sgC3DObject*)temp->Clone();
 			//objctr ++;
 		}

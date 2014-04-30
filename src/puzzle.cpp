@@ -1249,19 +1249,18 @@ void puzzle::colorFaces(int objectID){
 
 	//if((objectID != 4) && (objectID != 1) && (objectID != 200)){
 	if((objectID != 200)){
-		//not the bunny or the cube -> they were already colored on puzzle::loadPieces->cubie::setObjects
 		ofr->colorFaces(myCubies,numPieces,0.01, objectID);
 	}
 	if(objectID == 200){
 		//extrudd object
 		ofr->colorFacesExtruded(myCubies,numPieces,0.01, objectID);
 	}
-	if(objectID != 4){
+	//if(objectID != 4){
 		//color black all the inside faces of each cubie (after all other face colors have been applied)
 		//all the puzzles have to do this
 		colorCubiesBlackSides();
 		//need to color black sides of bunny in a better way.. will they be colored? or leave it plain?
-	}
+	//}
 	free(ofr);
 }
 //----------------------------------------------------------------

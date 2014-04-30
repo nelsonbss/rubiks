@@ -252,9 +252,7 @@ void game::update(){
 	///////////////////////////////////////////////////////////////////////
 	/////////////////to create a puzzle on every frame
 	if(creatingPuzzle){
-		//loaded armature
-		//applied armature rotations
-		//created slicer and cutter
+		//loaded armature //applied armature rotations //created slicer and cutter
 		//now do slicing
 		//get thenumber of pieces from the slicer
 		if(cubieToCut < numPuzzlePieces){
@@ -339,7 +337,7 @@ void game::update(){
 	if(bHaveReset){
 		if(!bDragInput){
 			//to prevent resetting while doing a rotation
-			guiInput('r');
+			restart(); //same as //guiInput('r');
 			bHaveReset = false;
 		}
 	}
@@ -2171,6 +2169,7 @@ void game::restart(){
 		step = 0;
 		objectID = -1;
 		puzzleFinished = false;
+		creatingPuzzle = false;
 	}else if(step == 6){
 		if(canvasB){
 			//myCanvas->exit();
@@ -2192,6 +2191,7 @@ void game::restart(){
 		step = 0;
 		armID = -1;
 		puzzleFinished = false;
+		creatingPuzzle = false;
 	}else if (step==3){
 		objectDisplayed->exit();             //clean displayed object after puzzle is created, so we dont keep it until the exit or restart
 		step = 0;

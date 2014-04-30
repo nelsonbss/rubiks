@@ -28,6 +28,7 @@ public:
 
 	void loadPieces(sgCGroup **pcs, int selObjId, ofVec3f v);
 	void loadPiecesOneByOne(sgCGroup *pcs,int selObjId, ofVec3f v, int cubieToPlace);
+	int currentNumCubies;
 	//void loadPieces(sgCGroup **pcs, int selObjId, ofVec3f v, float angleA, ofVec3f axistbA, int mode);
 
 	int giveNumCubies();
@@ -53,7 +54,6 @@ public:
 	void rotateByIDandAxis(int id, SG_VECTOR axis,bool dir,float angle);
 	void rotateByIDandAxisNew(int id, SG_VECTOR axis, bool dir, float angle);
 
-
 	void rearange3dArray(SG_VECTOR axis, int plane, bool dir);
 	void rearrange3dArrayNew(int axisNum,int plane, bool dir);
 
@@ -75,11 +75,14 @@ public:
 
 	//color faces
 	void colorFaces(int objectID);
+	void colorFacesOneByOne(int objectID,int cubieToColor);
+
 	void colorFacesMenuPuzzle(int objectID,vector< ofVec3f > &menuUniqueNormals, vector< ofFloatColor > &vcolors);
 
-	void colorCubiesBlackSides();
 	void colorTorus();
 	void colorTorusMenuPuzzle();
+
+	void colorCubiesBlackSides();
 	///color change
 	void changeColorToColor(ofFloatColor Sc, ofFloatColor Tc);
 	//color cloning
@@ -127,7 +130,7 @@ public:
 	ofVec3f mousePoint;
 	ofVec3f unprojectedPoint;
 	bool bHavePoint;
-	
+
 	void setMousePoint(ofVec3f _pnt);
 	void checkCubiesForHit(ofVec3f _pnt);
 	void dragInput(ofVec3f _pnt);

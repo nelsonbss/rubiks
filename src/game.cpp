@@ -195,6 +195,8 @@ void game::setup(){
 	//light.setDirectional();
 	light.setDiffuseColor( ofColor(255.f, 255.f, 255.f));
 	light.setSpecularColor( ofColor(255.f, 255.f, 255.f));
+
+	objectID = -1;
 }
 //----------------------------------------------------------------------
 void game::update(){
@@ -254,16 +256,15 @@ void game::update(){
 		//applied armature rotations
 		//created slicer and cutter
 		//now do slicing
-		////////////////////////////////create puzzle///////////////////////////////////////
-		myPuzzle =  new puzzle(posP, offsetSlicer,armID); // it receives the position to be displayed AND the offset of the armature/cutter to adapt slicing
-		myPuzzle->setup();
-
 		//get thenumber of pieces from the slicer
 		if(cubieToCut < numPuzzlePieces){
 			createPuzzleOneByOne(cubieToCut);//create Puzzle goes to step 4 to show the puzzle
 			cubieToCut ++; //go to next cubie
+			//update the current number of cubies on the puzzle, since we are creating one by one
+			myPuzzle->currentNumCubies = cubieToCut; 
 		}else{
 			creatingPuzzle = false;
+			step = 4;
 			puzzleFinished = true;
 		}
 	}
@@ -1341,14 +1342,10 @@ void game::createPuzzleOneByOne(int cubieToBeMade){
 		///////////////////////////////  color puzzle   ////////////////////////////////// 
 		//color all the faces for platonic solids!! colors outside for most objects(not bunny), black on the insides
 		if(objectID < 8 ){
-			myPuzzle->colorFaces(objectID);
+			myPuzzle->colorFacesOneByOne(objectID,cubieToBeMade);
 		}else{
 			myPuzzle->colorTorus();
 		}
-
-		puzzleFinished = true;
-
-		step = 4;
 	}
 }
 //----------------------------------------------------------------------
@@ -1648,20 +1645,27 @@ void game::guiInput(int in){
 		}
 		/////////////////a puzzle can be made
 		if(in == 'n') {
-			numPuzzlePieces = 0;
-			cubieToCut = 0;
-			//send the armature rotations to the 3dObject
-			applyArmRotations();
-			//now we know the offset position from the armature to create-> cutter & slicer
-			createCutterSlicer();
+			if(creatingPuzzle==false){
+				numPuzzlePieces = 0;
+				cubieToCut = 0;
 
-			//get the number of pieces from the slicer...this changes with each armature
-			numPuzzlePieces = mySlicer->numPieces;
-			//open boolean gate to construct puzzle cubie by cubie, on every update
-			creatingPuzzle = true;
+				////////////////////////////////create puzzle///////////////////////////////////////
+				myPuzzle =  new puzzle(posP, offsetSlicer,armID); // it receives the position to be displayed AND the offset of the armature/cutter to adapt slicing
+				myPuzzle->setup();
 
-			////create puzzle all at once
-			//createPuzzle(posP);//create Puzzle goes to step 4 to show the puzzle
+				//send the armature rotations to the 3dObject
+				applyArmRotations();
+				//now we know the offset position from the armature to create-> cutter & slicer
+				createCutterSlicer();
+
+				//get the number of pieces from the slicer...this changes with each armature
+				numPuzzlePieces = mySlicer->numPieces;
+				//open boolean gate to construct puzzle cubie by cubie, on every update
+				creatingPuzzle = true;
+
+				////create puzzle all at once
+				//createPuzzle(posP);//create Puzzle goes to step 4 to show the puzzle
+			}
 		}
 	}
 	////////////////////////////////////////////step 4 inputs

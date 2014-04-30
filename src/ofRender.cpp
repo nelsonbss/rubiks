@@ -169,11 +169,11 @@ void ofRender::sgCoretoOFmesh(sgC3DObject *obj, CubieMesh&mesh,int idCubie,int s
 			//the face coloring will be done separately
 
 			//if(selectedObjectID >= 8){
-				//c = decideColorCubieBox(dir,idCubie); //we color the cube here so it gets the official colors on its faces
-				c = matePuzzle; //decideColorCubieDEBUG(dir,idCubie); //this is to test the offset slicing and rotations
-				//}else if(selectedObjectID == 3){
-				//	//cone(ish)
-				//	c = decideColor(decideAxisRange(dir,10.0));
+			//c = decideColorCubieBox(dir,idCubie); //we color the cube here so it gets the official colors on its faces
+			c = matePuzzle; //decideColorCubieDEBUG(dir,idCubie); //this is to test the offset slicing and rotations
+			//}else if(selectedObjectID == 3){
+			//	//cone(ish)
+			//	c = decideColor(decideAxisRange(dir,10.0));
 			//}
 		}
 
@@ -408,435 +408,631 @@ void ofRender::colorFaces(cubie **myCubies, int numPieces, float playRoom, int o
 	}
 }
 //---------------------------------------------------------------------------------------------------------------
-void ofRender::colorBlackSides(ofMesh &mesh, int idCubie, float playRoom, int objectID){
-	//color black the correct sides of each cubie
+void ofRender::colorFacesOneByOne(cubie *myCubie, float playRoom, int objectID){
+	//goes through each cubie and makes sets of normals.. to determine all different normals in the object
+	//i.e. this will give 8 + 6 faces for octahedor
 	vector< ofVec3f > tnormals;
 	vector< ofFloatColor > tcolors;
+	//create sets of distitnct normals from all the meshes of all the cubies of the puzzle
+	vector< ofVec3f > uniqueNormals;
+
+	float armX;
+	float armY;
+	float armZ;
 	ofPoint x = ofPoint(1,0,0);
 	ofPoint y = ofPoint(0,1,0);
 	ofPoint z = ofPoint(0,0,1);
 	ofPoint xn = ofPoint(-1,0,0);
 	ofPoint yn = ofPoint(0,-1,0);
 	ofPoint zn = ofPoint(0,0,-1);
-	ofFloatColor c;
+	float meshesCubie =0;
 
-	tnormals = mesh.getNormals();
-	tcolors = mesh.getColors();
-
-	//check each normal
-	//decide according to cubie[num]
-	for(int i=0; i<tnormals.size(); i++){
-		if(idCubie==0){
-			if(objectID == 200){
-				tcolors[i] = mateSolid;
-			}else{
-				//this is the center piece!! only color black the y and z axis
-				if(tnormals[i]==y){
-					c = black;
-				}else if(tnormals[i]==z){
-					c = black;
-				}else if(tnormals[i]==yn){
-					c = black;
-				}else if(tnormals[i]==zn){
-					c = black;
+	if(objectID < 8){//(objectID != 1 && objectID != 4){
+		meshesCubie =  myCubie->getNumObjs();
+		for (int j = 0 ; j< meshesCubie; j++){
+			//get the normals of the mesh!
+			tnormals = myCubie->myMeshs[j].getNormals();
+			armX = myCubie->armRotations.x;
+			armY = myCubie->armRotations.y;
+			armZ = myCubie->armRotations.z;
+			//verify each normal value on unique normals vector
+			for(int n=0; n< tnormals.size() ; n++){
+				if(uniqueNormals.size() == 0){
+					//the first normal of all the normals
+					//push the first one
+					uniqueNormals.push_back (tnormals[n]);
 				}else{
-					//leave same color
-					c = tcolors[i];
+					//it has at least one normal
+					//compare current normal with all other normals
+					for(int un = 0; un < uniqueNormals.size(); un ++){
+
+						if(((uniqueNormals[un].x - playRoom) <= tnormals[n].x) && 
+							(tnormals[n].x <= (uniqueNormals[un].x + playRoom)) &&
+							((uniqueNormals[un].y - playRoom) <= tnormals[n].y) && 
+							(tnormals[n].y <= (uniqueNormals[un].y + playRoom)) &&
+							((uniqueNormals[un].z - playRoom) <= tnormals[n].z) && 
+							(tnormals[n].z <= (uniqueNormals[un].z + playRoom))
+							){
+								//we already have that type of normal
+								//stop looking through the vector
+								un = uniqueNormals.size();
+						}else{
+							//its different
+							//keep going until the last element
+							if(un == uniqueNormals.size()-1){
+								//its the las element on the vector of unique normals
+								//if we got here its because the current normal (cn) is new to the set
+								uniqueNormals.push_back(tnormals[n]);
+								//stop this for.. we just changed the size
+								un = uniqueNormals.size();
+							}
+						}
+					}
 				}
-				//tcolors[i] =  black;
-				tcolors[i] =  c;
 			}
-		}else if (idCubie==1){
-			//middle center blue
-			if(decideAxisRange(tnormals[i],playRoom)==y){
-				c = black;
-			}else if(decideAxisRange(tnormals[i],playRoom)==z){
-				c = black;
-			}else if(decideAxisRange(tnormals[i],playRoom)==xn){
-				c = black;
-			}else if(decideAxisRange(tnormals[i],playRoom)==yn){
-				c = black;
-			}else if(decideAxisRange(tnormals[i],playRoom)==zn){
-				c = black;
-			}else{
-				//leave same color
-				c = tcolors[i];
+		}
+
+		//at this point we have the unique normals of the object
+		//each of these normals should have a unique color
+		vector< ofFloatColor > uniqueColors;
+		//build roster of colors for the current object
+		for(int i =0; i< uniqueNormals.size(); i++){
+			//for each unique normal
+			//for now we select from 9 possible colors that we have right now
+			ofFloatColor x =  colorsVector[i%16];
+			uniqueColors.push_back(x);
+		}
+		//now -> uniqueColors.size = uniqueNormals.size
+
+
+		//got through each cubie again
+
+		meshesCubie =  myCubie->getNumObjs();
+		for (int j = 0 ; j< meshesCubie; j++){
+			//go through each cubies meshes again
+			tnormals = myCubie->myMeshs[j].getNormals();
+			tcolors = myCubie->myMeshs[j].getColors();
+			//compare this normals to the uniqueNormals(index) to get the color from that uniqueColors(index)
+			//go through uniqueNormals
+			for(int un = 0; un<uniqueNormals.size();un++){
+				//compare each t normal with each unique normal
+				for(int n=0; n< tnormals.size() ; n++){
+					if(armX==0 && armY==0 && armZ == 0){
+						//if there are no arm rotations.. this works for cube official colors
+						if(objectID == 1){
+							//have to use the official colors
+							///rotate normal vectors to compensate for armature rotations z-y-x
+							//ask direction to color faces of cube 
+							if(tnormals[n].align(x, 2.0)){
+								tcolors[n] = blue; 
+							}else if(tnormals[n].align(y, 2.0)){
+								tcolors[n] = orange; 
+							}else if(tnormals[n].align(z, 2.0)){
+								tcolors[n] = yellow;
+							}else if(tnormals[n].align(xn, 2.0)){
+								tcolors[n] = green; 
+							}else if(tnormals[n].align(yn, 2.0)){
+								tcolors[n] = red; 
+							}else if(tnormals[n].align(zn, 2.0)){
+								tcolors[n] = white;
+							}
+						}else {
+							if (((uniqueNormals[un].x - playRoom) <= tnormals[n].x) && (tnormals[n].x <= (uniqueNormals[un].x + playRoom)) &&
+								((uniqueNormals[un].y - playRoom) <= tnormals[n].y) && (tnormals[n].y <= (uniqueNormals[un].y + playRoom)) &&
+								((uniqueNormals[un].z - playRoom) <= tnormals[n].z) && (tnormals[n].z <= (uniqueNormals[un].z + playRoom))
+								){
+									//if the cubies meshs normal is one of the unique normals
+									//we assign a color to that normal on the cubie
+									//the index of the tnormal that we are looking at, is the same on the tcolors vector
+									//the color that we want is the one that corresponds to the uniqueNormals(index) that matched-> that same index is used to get color from uniqueColors(index) vector
+									tcolors[n] = uniqueColors[un];
+							}
+						}
+					}else{
+						//arm rotations
+						if(objectID == 1){
+							//have to use the official colors
+							///rotate normal vectors to compensate for armature rotations z-y-x
+							//ask direction to color faces of cube 
+							ofVec3f t = tnormals[n].getRotated(armZ,ofVec3f(0,0,1));
+							ofVec3f t2 = t.getRotated(armY,ofVec3f(0,1,0));
+							ofVec3f t3 = t2.getRotated(armX,ofVec3f(1,0,0));
+
+							if(t3.align(x, 2.0)){
+								tcolors[n] = blue; 
+							}else if(t3.align(y, 2.0)){
+								tcolors[n] = orange; 
+							}else if(t3.align(z, 2.0)){
+								tcolors[n] = yellow;
+							}else if(t3.align(xn, 2.0)){
+								tcolors[n] = green; 
+							}else if(t3.align(yn, 2.0)){
+								tcolors[n] = red; 
+							}else if(t3.align(zn, 2.0)){
+								tcolors[n] = white;
+							}
+						}
+						else{
+							//another object, do as if there where no arm rotations
+							if(((uniqueNormals[un].x - playRoom) <= tnormals[n].x) && 
+								(tnormals[n].x <= (uniqueNormals[un].x + playRoom)) &&
+								((uniqueNormals[un].y - playRoom) <= tnormals[n].y) && 
+								(tnormals[n].y <= (uniqueNormals[un].y + playRoom)) &&
+								((uniqueNormals[un].z - playRoom) <= tnormals[n].z) && 
+								(tnormals[n].z <= (uniqueNormals[un].z + playRoom))
+								){
+									//if the cubies meshs normal is one of the unique normals
+									//we assign a color to that normal on the cubie
+									//the index of the tnormal that we are looking at, is the same on the tcolors vector
+									//the color that we want is the one that corresponds to the uniqueNormals(index) that matched-> that same index is used to get color from uniqueColors(index) vector
+									tcolors[n] = uniqueColors[un];
+							}
+						}
+					}
+				}
 			}
-			tcolors[i] =  c;
-		}else if (idCubie==2){
-			//middle right yellow.blue
-			if(decideAxisRange(tnormals[i],playRoom)==y){
-				c = black;
-			}else if(decideAxisRange(tnormals[i],playRoom)==xn){
-				c = black;
-			}else if(decideAxisRange(tnormals[i],playRoom)==yn){
-				c = black;
-			}else if(decideAxisRange(tnormals[i],playRoom)==zn){
-				c = black;
-			}else{
-				//leave same color
-				c = tcolors[i];
+			//we now have a colors Vector with new colors assigned
+			//put that colorVector on the current mesh of the current cubie
+			myCubie->myMeshs[j].clearColors();
+			myCubie->myMeshs[j].addColors(tcolors);
+			//have to replace the vbo
+			ofVbo tempVbo;
+			tempVbo.setMesh(myCubie->myMeshs[j], GL_STATIC_DRAW);
+			myCubie->myVbos[j]=tempVbo;
+		}
+	}else{
+		//got a rounded shape
+		//got through each cubie
+		float meshesCubie =  myCubie->getNumObjs();
+		for (int j = 0 ; j< meshesCubie; j++){
+			//go through each cubies meshes 
+			tcolors = myCubie->myMeshs[j].getColors();
+			//change colors
+			for (int i = 0; i< tcolors.size(); i++){
+				tcolors[i] = matePuzzle;
 			}
-			tcolors[i] =  c;
-		}else if (idCubie==3){
-			//middle center yellow
-			if(decideAxisRange(tnormals[i],playRoom)==x){
-				c = black;
-			}else if(decideAxisRange(tnormals[i],playRoom)==y){
-				c = black;
-			}else if(decideAxisRange(tnormals[i],playRoom)==xn){
-				c = black;
-			}else if(decideAxisRange(tnormals[i],playRoom)==yn){
-				c = black;
-			}else if(decideAxisRange(tnormals[i],playRoom)==zn){
-				c = black;
-			}else{
-				//leave same color
-				c = tcolors[i];
-			}
-			tcolors[i] =  c;
-		}else if(idCubie==4){
-			//middle left yellow/green
-			if(decideAxisRange(tnormals[i],playRoom)==x){
-				c = black;
-			}else if(decideAxisRange(tnormals[i],playRoom)==y){
-				c = black;
-			}else if(decideAxisRange(tnormals[i],playRoom)==yn){
-				c = black;
-			}else if(decideAxisRange(tnormals[i],playRoom)==zn){
-				c = black;
-			}else{
-				//leave same color
-				c = tcolors[i];
-			}
-			tcolors[i] =  c;
-		}else if(idCubie==5){
-			//middle center green
-			if(decideAxisRange(tnormals[i],playRoom)==x){
-				c = black;
-			}else if(decideAxisRange(tnormals[i],playRoom)==y){
-				c = black;
-			}else if(decideAxisRange(tnormals[i],playRoom)==z){
-				c = black;
-			}else if(decideAxisRange(tnormals[i],playRoom)==yn){
-				c = black;
-			}else if(decideAxisRange(tnormals[i],playRoom)==zn){
-				c = black;
-			}else{
-				//leave same color
-				c = tcolors[i];
-			}
-			tcolors[i] =  c;
-		}else if(idCubie==6){
-			//middle right white/green
-			if(decideAxisRange(tnormals[i],playRoom)==x){
-				c = black;
-			}else if(decideAxisRange(tnormals[i],playRoom)==y){
-				c = black;
-			}else if(decideAxisRange(tnormals[i],playRoom)==z){
-				c = black;
-			}else if(decideAxisRange(tnormals[i],playRoom)==yn){
-				c = black;
-			}else{
-				//leave same color
-				c = tcolors[i];
-			}
-			tcolors[i] =  c;
-		}else if(idCubie==7){
-			//middle center white
-			if(decideAxisRange(tnormals[i],playRoom)==x){
-				c = black;
-			}else if(decideAxisRange(tnormals[i],playRoom)==y){
-				c = black;
-			}else if(decideAxisRange(tnormals[i],playRoom)==z){
-				c = black;
-			}else if(decideAxisRange(tnormals[i],playRoom)==xn){
-				c = black;
-			}else if(decideAxisRange(tnormals[i],playRoom)==yn){
-				c = black;
-			}else{
-				//leave same color
-				c = tcolors[i];
-			}
-			tcolors[i] =  c;
-		}else if(idCubie==8){
-			//center left white/blue
-			if(decideAxisRange(tnormals[i],playRoom)==y){
-				c = black;
-			}else if(decideAxisRange(tnormals[i],playRoom)==z){
-				c = black;
-			}else if(decideAxisRange(tnormals[i],playRoom)==xn){
-				c = black;
-			}else if(decideAxisRange(tnormals[i],playRoom)==yn){
-				c = black;
-			}else{
-				//leave same color
-				c = tcolors[i];
-			}
-			tcolors[i] =  c;
-		}else if(idCubie==9){
-			//top center
-			if(decideAxisRange(tnormals[i],playRoom)==x){
-				c = black;
-			}else if(decideAxisRange(tnormals[i],playRoom)==y){
-				c = black;
-			}else if(decideAxisRange(tnormals[i],playRoom)==z){
-				c = black;
-			}else if(decideAxisRange(tnormals[i],playRoom)==xn){
-				c = black;
-			}else if(decideAxisRange(tnormals[i],playRoom)==zn){
-				c = black;
-			}else{
-				//leave same color
-				c = tcolors[i];
-			}
-			tcolors[i] =  c;
-		}else if(idCubie==10){
-			//top middle red/blue
-			if(decideAxisRange(tnormals[i],playRoom)==y){
-				c = black;
-			}else if(decideAxisRange(tnormals[i],playRoom)==z){
-				c = black;
-			}else if(decideAxisRange(tnormals[i],playRoom)==xn){
-				c = black;
-			}else if(decideAxisRange(tnormals[i],playRoom)==zn){
-				c = black;
-			}else{
-				//leave same color
-				c = tcolors[i];
-			}
-			tcolors[i] =  c;
-		}else if(idCubie==11){
-			//top right red/yello/blue
-			if(decideAxisRange(tnormals[i],playRoom)==y){
-				c = black;
-			}else if(decideAxisRange(tnormals[i],playRoom)==xn){
-				c = black;
-			}else if(decideAxisRange(tnormals[i],playRoom)==zn){
-				c = black;
-			}else{
-				//leave same color
-				c = tcolors[i];
-			}
-			tcolors[i] =  c;
-		}else if(idCubie==12){
-			//top middle red/yellow
-			if(decideAxisRange(tnormals[i],playRoom)==x){
-				c = black;
-			}else if(decideAxisRange(tnormals[i],playRoom)==y){
-				c = black;
-			}else if(decideAxisRange(tnormals[i],playRoom)==xn){
-				c = black;
-			}else if(decideAxisRange(tnormals[i],playRoom)==zn){
-				c = black;
-			}else{
-				//leave same color
-				c = tcolors[i];
-			}
-			tcolors[i] =  c;
-		}else if(idCubie==13){
-			//top left red/yellow/green
-			if(decideAxisRange(tnormals[i],playRoom)==x){
-				c = black;
-			}else if(decideAxisRange(tnormals[i],playRoom)==y){
-				c = black;
-			}else if(decideAxisRange(tnormals[i],playRoom)==zn){
-				c = black;
-			}else{
-				//leave same color
-				c = tcolors[i];
-			}
-			tcolors[i] =  c;
-		}else if(idCubie==14){
-			//top middle red/green
-			if(decideAxisRange(tnormals[i],playRoom)==x){
-				c = black;
-			}else if(decideAxisRange(tnormals[i],playRoom)==y){
-				c = black;
-			}else if(decideAxisRange(tnormals[i],playRoom)==z){
-				c = black;
-			}else if(decideAxisRange(tnormals[i],playRoom)==zn){
-				c = black;
-			}else{
-				//leave same color
-				c = tcolors[i];
-			}
-			tcolors[i] =  c;
-		}else if(idCubie==15){
-			//top right red/white/green
-			if(decideAxisRange(tnormals[i],playRoom)==x){
-				c = black;
-			}else if(decideAxisRange(tnormals[i],playRoom)==y){
-				c = black;
-			}else if(decideAxisRange(tnormals[i],playRoom)==z){
-				c = black;
-			}else{
-				//leave same color
-				c = tcolors[i];
-			}
-			tcolors[i] =  c;
-		}else if(idCubie==16){
-			//top middle red/white
-			if(decideAxisRange(tnormals[i],playRoom)==x){
-				c = black;
-			}else if(decideAxisRange(tnormals[i],playRoom)==y){
-				c = black;
-			}else if(decideAxisRange(tnormals[i],playRoom)==z){
-				c = black;
-			}else if(decideAxisRange(tnormals[i],playRoom)==xn){
-				c = black;
-			}else{
-				//leave same color
-				c = tcolors[i];
-			}
-			tcolors[i] =  c;
-		}else if(idCubie==17){
-			//top left red/blue/white
-			if(decideAxisRange(tnormals[i],playRoom)==y){
-				c = black;
-			}else if(decideAxisRange(tnormals[i],playRoom)==z){
-				c = black;
-			}else if(decideAxisRange(tnormals[i],playRoom)==xn){
-				c = black;
-			}else{
-				//leave same color
-				c = tcolors[i];
-			}
-			tcolors[i] =  c;
-		}else if(idCubie==18){
-			//bottom center orange
-			if(decideAxisRange(tnormals[i],playRoom)==x){
-				c = black;
-			}else if(decideAxisRange(tnormals[i],playRoom)==z){
-				c = black;
-			}else if(decideAxisRange(tnormals[i],playRoom)==xn){
-				c = black;
-			}else if(decideAxisRange(tnormals[i],playRoom)==yn){
-				c = black;
-			}else if(decideAxisRange(tnormals[i],playRoom)==zn){
-				c = black;
-			}else{
-				//leave same color
-				c = tcolors[i];
-			}
-			tcolors[i] =  c;
-		}else if(idCubie==19){
-			//middle blue/orange
-			if(decideAxisRange(tnormals[i],playRoom)==z){
-				c = black;
-			}else if(decideAxisRange(tnormals[i],playRoom)==xn){
-				c = black;
-			}else if(decideAxisRange(tnormals[i],playRoom)==yn){
-				c = black;
-			}else if(decideAxisRange(tnormals[i],playRoom)==zn){
-				c = black;
-			}else{
-				//leave same color
-				c = tcolors[i];
-			}
-			tcolors[i] =  c;
-		}else if(idCubie==20){
-			//bottom right yellow/blue/orange
-			if(decideAxisRange(tnormals[i],playRoom)==xn){
-				c = black;
-			}else if(decideAxisRange(tnormals[i],playRoom)==yn){
-				c = black;
-			}else if(decideAxisRange(tnormals[i],playRoom)==zn){
-				c = black;
-			}else{
-				//leave same color
-				c = tcolors[i];
-			}
-			tcolors[i] =  c;
-		}else if(idCubie==21){
-			//botom middle yellow/orange
-			if(decideAxisRange(tnormals[i],playRoom)==x){
-				c = black;
-			}else if(decideAxisRange(tnormals[i],playRoom)==xn){
-				c = black;
-			}else if(decideAxisRange(tnormals[i],playRoom)==yn){
-				c = black;
-			}else if(decideAxisRange(tnormals[i],playRoom)==zn){
-				c = black;
-			}else{
-				//leave same color
-				c = tcolors[i];
-			}
-			tcolors[i] =  c;
-		}else if(idCubie==22){
-			//bottom left yellow/green/orange
-			if(decideAxisRange(tnormals[i],playRoom)==x){
-				c = black;
-			}else if(decideAxisRange(tnormals[i],playRoom)==yn){
-				c = black;
-			}else if(decideAxisRange(tnormals[i],playRoom)==zn){
-				c = black;
-			}else{
-				//leave same color
-				c = tcolors[i];
-			}
-			tcolors[i] =  c;
-		}if(idCubie==23){
-			//bottom middle green/orange
-			if(decideAxisRange(tnormals[i],playRoom)==x){
-				c = black;
-			}else if(decideAxisRange(tnormals[i],playRoom)==z){
-				c = black;
-			}else if(decideAxisRange(tnormals[i],playRoom)==yn){
-				c = black;
-			}else if(decideAxisRange(tnormals[i],playRoom)==zn){
-				c = black;
-			}else{
-				//leave same color
-				c = tcolors[i];
-			}
-			tcolors[i] =  c;
-		}else if(idCubie==24){
-			//bottom left white/green/orange
-			if(decideAxisRange(tnormals[i],playRoom)==x){
-				c = black;
-			}else if(decideAxisRange(tnormals[i],playRoom)==z){
-				c = black;
-			}else if(decideAxisRange(tnormals[i],playRoom)==yn){
-				c = black;
-			}else{
-				//leave same color
-				c = tcolors[i];
-			}
-			tcolors[i] =  c;
-		}else if(idCubie==25){
-			//bottom middle white/orange
-			if(decideAxisRange(tnormals[i],playRoom)==x){
-				c = black;
-			}else if(decideAxisRange(tnormals[i],playRoom)==z){
-				c = black;
-			}else if(decideAxisRange(tnormals[i],playRoom)==xn){
-				c = black;
-			}else if(decideAxisRange(tnormals[i],playRoom)==yn){
-				c = black;
-			}else{
-				//leave same color
-				c = tcolors[i];
-			}
-			tcolors[i] =  c;
-		}else if(idCubie==26){
-			//bottom right white/blue/orange
-			if(decideAxisRange(tnormals[i],playRoom)==z){
-				c = black;
-			}else if(decideAxisRange(tnormals[i],playRoom)==xn){
-				c = black;
-			}else if(decideAxisRange(tnormals[i],playRoom)==yn){
-				c = black;
-			}else{
-				//leave same color
-				c = tcolors[i];
-			}
-			tcolors[i] =  c;
+
+			//we now have a colors Vector with new colors assigned
+			//put that colorVector on the current mesh of the current cubie
+			myCubie->myMeshs[j].clearColors();
+			myCubie->myMeshs[j].addColors(tcolors);
+			//have to replace the vbo
+			ofVbo tempVbo;
+			tempVbo.setMesh(myCubie->myMeshs[j], GL_STATIC_DRAW);
+			myCubie->myVbos[j]=tempVbo;
 		}
 	}
-	//replace the colors vector on the mesh
-	mesh.clearColors();
-	mesh.addColors(tcolors);
+}
+//---------------------------------------------------------------------------------------------------------------
+void ofRender::colorBlackSides(ofMesh &mesh, int idCubie, float playRoom, int objectID){
+	////color black the correct sides of each cubie
+	//vector< ofVec3f > tnormals;
+	//vector< ofFloatColor > tcolors;
+	//ofPoint x = ofPoint(1,0,0);
+	//ofPoint y = ofPoint(0,1,0);
+	//ofPoint z = ofPoint(0,0,1);
+	//ofPoint xn = ofPoint(-1,0,0);
+	//ofPoint yn = ofPoint(0,-1,0);
+	//ofPoint zn = ofPoint(0,0,-1);
+	//ofFloatColor c;
+
+	//tnormals = mesh.getNormals();
+	//tcolors = mesh.getColors();
+
+	////check each normal
+	////decide according to cubie[num]
+	//for(int i=0; i<tnormals.size(); i++){
+	//	if(idCubie==0){
+	//		if(objectID == 200){
+	//			tcolors[i] = mateSolid;
+	//		}else{
+	//			//this is the center piece!! only color black the y and z axis
+	//			if(tnormals[i]==y){
+	//				c = black;
+	//			}else if(tnormals[i]==z){
+	//				c = black;
+	//			}else if(tnormals[i]==yn){
+	//				c = black;
+	//			}else if(tnormals[i]==zn){
+	//				c = black;
+	//			}else{
+	//				//leave same color
+	//				c = tcolors[i];
+	//			}
+	//			//tcolors[i] =  black;
+	//			tcolors[i] =  c;
+	//		}
+	//	}else if (idCubie==1){
+	//		//middle center blue
+	//		if(decideAxisRange(tnormals[i],playRoom)==y){
+	//			c = black;
+	//		}else if(decideAxisRange(tnormals[i],playRoom)==z){
+	//			c = black;
+	//		}else if(decideAxisRange(tnormals[i],playRoom)==xn){
+	//			c = black;
+	//		}else if(decideAxisRange(tnormals[i],playRoom)==yn){
+	//			c = black;
+	//		}else if(decideAxisRange(tnormals[i],playRoom)==zn){
+	//			c = black;
+	//		}else{
+	//			//leave same color
+	//			c = tcolors[i];
+	//		}
+	//		tcolors[i] =  c;
+	//	}else if (idCubie==2){
+	//		//middle right yellow.blue
+	//		if(decideAxisRange(tnormals[i],playRoom)==y){
+	//			c = black;
+	//		}else if(decideAxisRange(tnormals[i],playRoom)==xn){
+	//			c = black;
+	//		}else if(decideAxisRange(tnormals[i],playRoom)==yn){
+	//			c = black;
+	//		}else if(decideAxisRange(tnormals[i],playRoom)==zn){
+	//			c = black;
+	//		}else{
+	//			//leave same color
+	//			c = tcolors[i];
+	//		}
+	//		tcolors[i] =  c;
+	//	}else if (idCubie==3){
+	//		//middle center yellow
+	//		if(decideAxisRange(tnormals[i],playRoom)==x){
+	//			c = black;
+	//		}else if(decideAxisRange(tnormals[i],playRoom)==y){
+	//			c = black;
+	//		}else if(decideAxisRange(tnormals[i],playRoom)==xn){
+	//			c = black;
+	//		}else if(decideAxisRange(tnormals[i],playRoom)==yn){
+	//			c = black;
+	//		}else if(decideAxisRange(tnormals[i],playRoom)==zn){
+	//			c = black;
+	//		}else{
+	//			//leave same color
+	//			c = tcolors[i];
+	//		}
+	//		tcolors[i] =  c;
+	//	}else if(idCubie==4){
+	//		//middle left yellow/green
+	//		if(decideAxisRange(tnormals[i],playRoom)==x){
+	//			c = black;
+	//		}else if(decideAxisRange(tnormals[i],playRoom)==y){
+	//			c = black;
+	//		}else if(decideAxisRange(tnormals[i],playRoom)==yn){
+	//			c = black;
+	//		}else if(decideAxisRange(tnormals[i],playRoom)==zn){
+	//			c = black;
+	//		}else{
+	//			//leave same color
+	//			c = tcolors[i];
+	//		}
+	//		tcolors[i] =  c;
+	//	}else if(idCubie==5){
+	//		//middle center green
+	//		if(decideAxisRange(tnormals[i],playRoom)==x){
+	//			c = black;
+	//		}else if(decideAxisRange(tnormals[i],playRoom)==y){
+	//			c = black;
+	//		}else if(decideAxisRange(tnormals[i],playRoom)==z){
+	//			c = black;
+	//		}else if(decideAxisRange(tnormals[i],playRoom)==yn){
+	//			c = black;
+	//		}else if(decideAxisRange(tnormals[i],playRoom)==zn){
+	//			c = black;
+	//		}else{
+	//			//leave same color
+	//			c = tcolors[i];
+	//		}
+	//		tcolors[i] =  c;
+	//	}else if(idCubie==6){
+	//		//middle right white/green
+	//		if(decideAxisRange(tnormals[i],playRoom)==x){
+	//			c = black;
+	//		}else if(decideAxisRange(tnormals[i],playRoom)==y){
+	//			c = black;
+	//		}else if(decideAxisRange(tnormals[i],playRoom)==z){
+	//			c = black;
+	//		}else if(decideAxisRange(tnormals[i],playRoom)==yn){
+	//			c = black;
+	//		}else{
+	//			//leave same color
+	//			c = tcolors[i];
+	//		}
+	//		tcolors[i] =  c;
+	//	}else if(idCubie==7){
+	//		//middle center white
+	//		if(decideAxisRange(tnormals[i],playRoom)==x){
+	//			c = black;
+	//		}else if(decideAxisRange(tnormals[i],playRoom)==y){
+	//			c = black;
+	//		}else if(decideAxisRange(tnormals[i],playRoom)==z){
+	//			c = black;
+	//		}else if(decideAxisRange(tnormals[i],playRoom)==xn){
+	//			c = black;
+	//		}else if(decideAxisRange(tnormals[i],playRoom)==yn){
+	//			c = black;
+	//		}else{
+	//			//leave same color
+	//			c = tcolors[i];
+	//		}
+	//		tcolors[i] =  c;
+	//	}else if(idCubie==8){
+	//		//center left white/blue
+	//		if(decideAxisRange(tnormals[i],playRoom)==y){
+	//			c = black;
+	//		}else if(decideAxisRange(tnormals[i],playRoom)==z){
+	//			c = black;
+	//		}else if(decideAxisRange(tnormals[i],playRoom)==xn){
+	//			c = black;
+	//		}else if(decideAxisRange(tnormals[i],playRoom)==yn){
+	//			c = black;
+	//		}else{
+	//			//leave same color
+	//			c = tcolors[i];
+	//		}
+	//		tcolors[i] =  c;
+	//	}else if(idCubie==9){
+	//		//top center
+	//		if(decideAxisRange(tnormals[i],playRoom)==x){
+	//			c = black;
+	//		}else if(decideAxisRange(tnormals[i],playRoom)==y){
+	//			c = black;
+	//		}else if(decideAxisRange(tnormals[i],playRoom)==z){
+	//			c = black;
+	//		}else if(decideAxisRange(tnormals[i],playRoom)==xn){
+	//			c = black;
+	//		}else if(decideAxisRange(tnormals[i],playRoom)==zn){
+	//			c = black;
+	//		}else{
+	//			//leave same color
+	//			c = tcolors[i];
+	//		}
+	//		tcolors[i] =  c;
+	//	}else if(idCubie==10){
+	//		//top middle red/blue
+	//		if(decideAxisRange(tnormals[i],playRoom)==y){
+	//			c = black;
+	//		}else if(decideAxisRange(tnormals[i],playRoom)==z){
+	//			c = black;
+	//		}else if(decideAxisRange(tnormals[i],playRoom)==xn){
+	//			c = black;
+	//		}else if(decideAxisRange(tnormals[i],playRoom)==zn){
+	//			c = black;
+	//		}else{
+	//			//leave same color
+	//			c = tcolors[i];
+	//		}
+	//		tcolors[i] =  c;
+	//	}else if(idCubie==11){
+	//		//top right red/yello/blue
+	//		if(decideAxisRange(tnormals[i],playRoom)==y){
+	//			c = black;
+	//		}else if(decideAxisRange(tnormals[i],playRoom)==xn){
+	//			c = black;
+	//		}else if(decideAxisRange(tnormals[i],playRoom)==zn){
+	//			c = black;
+	//		}else{
+	//			//leave same color
+	//			c = tcolors[i];
+	//		}
+	//		tcolors[i] =  c;
+	//	}else if(idCubie==12){
+	//		//top middle red/yellow
+	//		if(decideAxisRange(tnormals[i],playRoom)==x){
+	//			c = black;
+	//		}else if(decideAxisRange(tnormals[i],playRoom)==y){
+	//			c = black;
+	//		}else if(decideAxisRange(tnormals[i],playRoom)==xn){
+	//			c = black;
+	//		}else if(decideAxisRange(tnormals[i],playRoom)==zn){
+	//			c = black;
+	//		}else{
+	//			//leave same color
+	//			c = tcolors[i];
+	//		}
+	//		tcolors[i] =  c;
+	//	}else if(idCubie==13){
+	//		//top left red/yellow/green
+	//		if(decideAxisRange(tnormals[i],playRoom)==x){
+	//			c = black;
+	//		}else if(decideAxisRange(tnormals[i],playRoom)==y){
+	//			c = black;
+	//		}else if(decideAxisRange(tnormals[i],playRoom)==zn){
+	//			c = black;
+	//		}else{
+	//			//leave same color
+	//			c = tcolors[i];
+	//		}
+	//		tcolors[i] =  c;
+	//	}else if(idCubie==14){
+	//		//top middle red/green
+	//		if(decideAxisRange(tnormals[i],playRoom)==x){
+	//			c = black;
+	//		}else if(decideAxisRange(tnormals[i],playRoom)==y){
+	//			c = black;
+	//		}else if(decideAxisRange(tnormals[i],playRoom)==z){
+	//			c = black;
+	//		}else if(decideAxisRange(tnormals[i],playRoom)==zn){
+	//			c = black;
+	//		}else{
+	//			//leave same color
+	//			c = tcolors[i];
+	//		}
+	//		tcolors[i] =  c;
+	//	}else if(idCubie==15){
+	//		//top right red/white/green
+	//		if(decideAxisRange(tnormals[i],playRoom)==x){
+	//			c = black;
+	//		}else if(decideAxisRange(tnormals[i],playRoom)==y){
+	//			c = black;
+	//		}else if(decideAxisRange(tnormals[i],playRoom)==z){
+	//			c = black;
+	//		}else{
+	//			//leave same color
+	//			c = tcolors[i];
+	//		}
+	//		tcolors[i] =  c;
+	//	}else if(idCubie==16){
+	//		//top middle red/white
+	//		if(decideAxisRange(tnormals[i],playRoom)==x){
+	//			c = black;
+	//		}else if(decideAxisRange(tnormals[i],playRoom)==y){
+	//			c = black;
+	//		}else if(decideAxisRange(tnormals[i],playRoom)==z){
+	//			c = black;
+	//		}else if(decideAxisRange(tnormals[i],playRoom)==xn){
+	//			c = black;
+	//		}else{
+	//			//leave same color
+	//			c = tcolors[i];
+	//		}
+	//		tcolors[i] =  c;
+	//	}else if(idCubie==17){
+	//		//top left red/blue/white
+	//		if(decideAxisRange(tnormals[i],playRoom)==y){
+	//			c = black;
+	//		}else if(decideAxisRange(tnormals[i],playRoom)==z){
+	//			c = black;
+	//		}else if(decideAxisRange(tnormals[i],playRoom)==xn){
+	//			c = black;
+	//		}else{
+	//			//leave same color
+	//			c = tcolors[i];
+	//		}
+	//		tcolors[i] =  c;
+	//	}else if(idCubie==18){
+	//		//bottom center orange
+	//		if(decideAxisRange(tnormals[i],playRoom)==x){
+	//			c = black;
+	//		}else if(decideAxisRange(tnormals[i],playRoom)==z){
+	//			c = black;
+	//		}else if(decideAxisRange(tnormals[i],playRoom)==xn){
+	//			c = black;
+	//		}else if(decideAxisRange(tnormals[i],playRoom)==yn){
+	//			c = black;
+	//		}else if(decideAxisRange(tnormals[i],playRoom)==zn){
+	//			c = black;
+	//		}else{
+	//			//leave same color
+	//			c = tcolors[i];
+	//		}
+	//		tcolors[i] =  c;
+	//	}else if(idCubie==19){
+	//		//middle blue/orange
+	//		if(decideAxisRange(tnormals[i],playRoom)==z){
+	//			c = black;
+	//		}else if(decideAxisRange(tnormals[i],playRoom)==xn){
+	//			c = black;
+	//		}else if(decideAxisRange(tnormals[i],playRoom)==yn){
+	//			c = black;
+	//		}else if(decideAxisRange(tnormals[i],playRoom)==zn){
+	//			c = black;
+	//		}else{
+	//			//leave same color
+	//			c = tcolors[i];
+	//		}
+	//		tcolors[i] =  c;
+	//	}else if(idCubie==20){
+	//		//bottom right yellow/blue/orange
+	//		if(decideAxisRange(tnormals[i],playRoom)==xn){
+	//			c = black;
+	//		}else if(decideAxisRange(tnormals[i],playRoom)==yn){
+	//			c = black;
+	//		}else if(decideAxisRange(tnormals[i],playRoom)==zn){
+	//			c = black;
+	//		}else{
+	//			//leave same color
+	//			c = tcolors[i];
+	//		}
+	//		tcolors[i] =  c;
+	//	}else if(idCubie==21){
+	//		//botom middle yellow/orange
+	//		if(decideAxisRange(tnormals[i],playRoom)==x){
+	//			c = black;
+	//		}else if(decideAxisRange(tnormals[i],playRoom)==xn){
+	//			c = black;
+	//		}else if(decideAxisRange(tnormals[i],playRoom)==yn){
+	//			c = black;
+	//		}else if(decideAxisRange(tnormals[i],playRoom)==zn){
+	//			c = black;
+	//		}else{
+	//			//leave same color
+	//			c = tcolors[i];
+	//		}
+	//		tcolors[i] =  c;
+	//	}else if(idCubie==22){
+	//		//bottom left yellow/green/orange
+	//		if(decideAxisRange(tnormals[i],playRoom)==x){
+	//			c = black;
+	//		}else if(decideAxisRange(tnormals[i],playRoom)==yn){
+	//			c = black;
+	//		}else if(decideAxisRange(tnormals[i],playRoom)==zn){
+	//			c = black;
+	//		}else{
+	//			//leave same color
+	//			c = tcolors[i];
+	//		}
+	//		tcolors[i] =  c;
+	//	}if(idCubie==23){
+	//		//bottom middle green/orange
+	//		if(decideAxisRange(tnormals[i],playRoom)==x){
+	//			c = black;
+	//		}else if(decideAxisRange(tnormals[i],playRoom)==z){
+	//			c = black;
+	//		}else if(decideAxisRange(tnormals[i],playRoom)==yn){
+	//			c = black;
+	//		}else if(decideAxisRange(tnormals[i],playRoom)==zn){
+	//			c = black;
+	//		}else{
+	//			//leave same color
+	//			c = tcolors[i];
+	//		}
+	//		tcolors[i] =  c;
+	//	}else if(idCubie==24){
+	//		//bottom left white/green/orange
+	//		if(decideAxisRange(tnormals[i],playRoom)==x){
+	//			c = black;
+	//		}else if(decideAxisRange(tnormals[i],playRoom)==z){
+	//			c = black;
+	//		}else if(decideAxisRange(tnormals[i],playRoom)==yn){
+	//			c = black;
+	//		}else{
+	//			//leave same color
+	//			c = tcolors[i];
+	//		}
+	//		tcolors[i] =  c;
+	//	}else if(idCubie==25){
+	//		//bottom middle white/orange
+	//		if(decideAxisRange(tnormals[i],playRoom)==x){
+	//			c = black;
+	//		}else if(decideAxisRange(tnormals[i],playRoom)==z){
+	//			c = black;
+	//		}else if(decideAxisRange(tnormals[i],playRoom)==xn){
+	//			c = black;
+	//		}else if(decideAxisRange(tnormals[i],playRoom)==yn){
+	//			c = black;
+	//		}else{
+	//			//leave same color
+	//			c = tcolors[i];
+	//		}
+	//		tcolors[i] =  c;
+	//	}else if(idCubie==26){
+	//		//bottom right white/blue/orange
+	//		if(decideAxisRange(tnormals[i],playRoom)==z){
+	//			c = black;
+	//		}else if(decideAxisRange(tnormals[i],playRoom)==xn){
+	//			c = black;
+	//		}else if(decideAxisRange(tnormals[i],playRoom)==yn){
+	//			c = black;
+	//		}else{
+	//			//leave same color
+	//			c = tcolors[i];
+	//		}
+	//		tcolors[i] =  c;
+	//	}
+	//}
+	////replace the colors vector on the mesh
+	//mesh.clearColors();
+	//mesh.addColors(tcolors);
 }
 //---------------------------------------------------------------------------------------------------------------
 void ofRender::colorBlackSidesFromAxes(ofMesh &mesh, int xp, int yp, int zp, int gridSize, float playRoom){

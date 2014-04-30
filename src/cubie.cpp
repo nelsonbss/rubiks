@@ -760,7 +760,7 @@ void cubie::setMousePoint(ofVec3f _pnt){
 		bUnproject = true;
 	}
 }
-
+//------------------------------------------------------------------------------------------------------------
 float cubie::getDistanceByVertex(ofVec3f _pos){
 	float nearestDist = 10000;
 	ofVec3f nearestVertex;
@@ -791,7 +791,7 @@ float cubie::getDistanceByVertex(ofVec3f _pos){
 	selectedMesh = nearestMesh;
 	return nearestDist;
 }
-
+//--------------------------------------------------------------------------------------------------------------
 void cubie::dragInput(ofVec3f _pnt){
 	ofVec3f pnt = _pnt.normalize();
 	float angle = 0;

@@ -14,6 +14,7 @@ puzzle::puzzle(SG_VECTOR p, ofVec3f offset, int gSize){
 
 	gridSize=gSize;
 	numPieces=gSize*gSize*gSize;
+	currentNumCubies = 0;
 	myCubies = (cubie**)malloc(numPieces*sizeof(cubie*));
 
 	cubiesOffset = offset;
@@ -77,7 +78,9 @@ void puzzle::setup(){
 void puzzle::update(){
 	//iterate through cubies
 	//cout << "UPDATING PUZZLE" << endl;
-	for(int i=0;i<numPieces;i++){
+	//it can only update up to the current number of cubies created, since we are doing one on each frame
+
+	for(int i=0;i<currentNumCubies;i++){
 		if(myCubies[i] != NULL){
 			myCubies[i]->update();
 			/*if(myCubies[i]->getRotate()){
@@ -124,7 +127,7 @@ void puzzle::draw(){
 	ofPushMatrix();
 	//ofTranslate(pos.x,pos.y,pos.z);
 	//puzzle tells every cubie to attach objects to scene
-	for(int i=0;i<numPieces;i++){
+	for(int i=0;i<currentNumCubies;i++){
 		if(myCubies[i] != NULL){
 			myCubies[i]->draw();
 		}
@@ -139,7 +142,7 @@ void puzzle::draw(){
 int puzzle::giveNumCubies(){
 	//tell how many cubies we have with objects inside
 	int aux=0;
-	for(int i=0;i<numPieces;i++){
+	for(int i=0;i<currentNumCubies;i++){
 		if(myCubies[i]->numObjs != 0){
 			aux++;
 		}
@@ -290,7 +293,7 @@ void puzzle::move(SG_VECTOR p){
 	pos.x +=  p.x;
 	pos.y +=  p.y;
 	pos.z +=  p.z;
-	for(int i=0;i<numPieces;i++){
+	for(int i=0;i<currentNumCubies;i++){
 		if(myCubies[i] != NULL){
 			myCubies[i]->move(pos);
 		}
@@ -898,9 +901,6 @@ void puzzle::endRotation(){
 void puzzle::update(string _eventName, SubObEvent _event){
 }
 //----------------------------------------------------------------------------------------------
-//--------------------------------------------------------------
-
-//----------------------------------------------------------------------------------------------
 //void puzzle::unprojectPoint(ofVec3f _pnt){
 //	cout << "cubie unprojecting point. - " << _pnt.x << ", " << _pnt.y << ", " << _pnt.z << endl;
 //	GLint viewport[4];
@@ -1313,11 +1313,34 @@ void puzzle::colorFaces(int objectID){
 		ofr->colorFacesExtruded(myCubies,numPieces,0.01, objectID);
 	}
 	//if(objectID != 4){
-		//color black all the inside faces of each cubie (after all other face colors have been applied)
-		//all the puzzles have to do this
-		colorCubiesBlackSides();
-		//need to color black sides of bunny in a better way.. will they be colored? or leave it plain?
+	//color black all the inside faces of each cubie (after all other face colors have been applied)
+	//all the puzzles have to do this
+	colorCubiesBlackSides();
+	//need to color black sides of bunny in a better way.. will they be colored? or leave it plain?
 	//}
+	free(ofr);
+}
+//----------------------------------------------------------------
+void puzzle::colorFacesOneByOne(int objectID,int cubieToColor){
+	////goes through a cubie and makes sets of normals ????.. to determine all different normals in the object
+	//will this work on one by one??
+	//and apply colors to those normals
+	ofRender *ofr = new ofRender();
+
+	if((objectID != 200)){
+		ofr->colorFacesOneByOne(myCubies[cubieToColor],0.01,objectID);
+	}
+	if(objectID == 200){
+		//extruded object
+		ofr->colorFacesExtruded(myCubies,numPieces,0.01, objectID);
+	}
+
+	//color black all the inside faces of each cubie (after all other face colors have been applied)
+	//all the puzzles have to do this
+
+	//colorCubiesBlackSides();
+	//need to color black sides of bunny in a better way.. will they be colored? or leave it plain?
+
 	free(ofr);
 }
 //----------------------------------------------------------------

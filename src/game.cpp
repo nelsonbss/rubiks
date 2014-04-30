@@ -262,10 +262,10 @@ void game::update(){
 			cubieToCut ++; //go to next cubie
 			//update the current number of cubies on the puzzle, since we are creating one by one
 			myPuzzle->currentNumCubies = cubieToCut; 
+			puzzleFinished = true;
+			step = 4;
 		}else{
 			creatingPuzzle = false;
-			step = 4;
-			puzzleFinished = true;
 		}
 	}
 
@@ -1321,31 +1321,26 @@ void game::createPuzzle(SG_VECTOR p){
 		}else{
 			myPuzzle->colorTorus();
 		}
-
 		puzzleFinished = true;
-
 		step = 4;
 	}
 }
 //-----------------------------------------------------------------------------------------
 void game::createPuzzleOneByOne(int cubieToBeMade){
-	if(step == 3){
+	mySlicer->intersectCubesOneByOne((sgCObject*)objectDisplayed->getObject(),cubieToBeMade); 
 
-		mySlicer->intersectCubesOneByOne((sgCObject*)objectDisplayed->getObject(),cubieToBeMade); 
+	//now slicer has one more cubie inside sgCGroup ** pieces[]
 
-		//now slicer has one more cubie inside sgCGroup ** pieces[]
+	//puzzle recieves the armature rotations to undo them and show the puzzle in an original possition
+	myPuzzle->loadPiecesOneByOne(mySlicer->getPiecesOneByOne(cubieToBeMade),objectID,rotateSlicer,cubieToBeMade);
+	////////////////////////////////end create puzzle/////////////////////////////////
 
-		//puzzle recieves the armature rotations to undo them and show the puzzle in an original possition
-		myPuzzle->loadPiecesOneByOne(mySlicer->getPiecesOneByOne(cubieToBeMade),objectID,rotateSlicer,cubieToBeMade);
-		////////////////////////////////end create puzzle/////////////////////////////////
-
-		///////////////////////////////  color puzzle   ////////////////////////////////// 
-		//color all the faces for platonic solids!! colors outside for most objects(not bunny), black on the insides
-		if(objectID < 8 ){
-			myPuzzle->colorFacesOneByOne(objectID,cubieToBeMade);
-		}else{
-			myPuzzle->colorTorus();
-		}
+	///////////////////////////////  color puzzle   ////////////////////////////////// 
+	//color all the faces for platonic solids!! colors outside for most objects(not bunny), black on the insides
+	if(objectID < 8 ){
+		myPuzzle->colorFacesOneByOne(objectID,cubieToBeMade);
+	}else{
+		myPuzzle->colorTorusOneByOne(cubieToBeMade);
 	}
 }
 //----------------------------------------------------------------------

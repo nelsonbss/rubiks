@@ -80,9 +80,12 @@ public:
 	void colorFacesMenuPuzzle(int objectID,vector< ofVec3f > &menuUniqueNormals, vector< ofFloatColor > &vcolors);
 
 	void colorTorus();
+	void colorTorusOneByOne(int cubieToColor);
 	void colorTorusMenuPuzzle();
 
 	void colorCubiesBlackSides();
+	void colorCubiesBlackSidesOneByOne(int cubieToColor);
+
 	///color change
 	void changeColorToColor(ofFloatColor Sc, ofFloatColor Tc);
 	//color cloning

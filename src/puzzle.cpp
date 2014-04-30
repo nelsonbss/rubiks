@@ -126,6 +126,8 @@ void puzzle::draw(){
 
 	ofPushMatrix();
 	//ofTranslate(pos.x,pos.y,pos.z);
+	ofRotateX(30);
+	ofRotateZ(15);
 	//puzzle tells every cubie to attach objects to scene
 	for(int i=0;i<currentNumCubies;i++){
 		if(myCubies[i] != NULL){
@@ -1345,12 +1347,18 @@ void puzzle::colorFacesOneByOne(int objectID,int cubieToColor){
 }
 //----------------------------------------------------------------
 void puzzle::colorTorus(){
-	//currently not used since torus will be only one solid color
 	for(int i=0;i<numPieces;i++){
 		//set random color for each cubie on the torus
 		myCubies[i]->colorTorus();
 	}
 	colorCubiesBlackSides();
+}
+//----------------------------------------------------------------
+void puzzle::colorTorusOneByOne(int cubieToColor){
+
+	myCubies[cubieToColor]->colorTorus();
+
+	colorCubiesBlackSidesOneByOne(cubieToColor);
 }
 //----------------------------------------------------------------
 void puzzle::colorFacesMenuPuzzle(int objectID,vector< ofVec3f > &menuUniqueNormals, vector< ofFloatColor > &vcolors){
@@ -1395,6 +1403,10 @@ void puzzle::colorCubiesBlackSides(){
 	for(int i=0;i<numPieces;i++){
 		myCubies[i]->colorBlackSides(i,0.1);
 	}
+}
+//----------------------------------------------------------------
+void puzzle::colorCubiesBlackSidesOneByOne(int cubieToColor){
+	myCubies[cubieToColor]->colorBlackSides(cubieToColor,0.1);
 }
 //----------------------------------------------------------------
 void puzzle::changeColorToColor(ofFloatColor Sc, ofFloatColor Tc){

@@ -966,7 +966,6 @@ void cubie::colorTorus(){
 		tempVbo.setMesh(myMeshs[j], GL_STATIC_DRAW);
 		myVbos[j]=tempVbo;
 	}
-
 	free(ofr);
 }
 //----------------------------------------------------------------

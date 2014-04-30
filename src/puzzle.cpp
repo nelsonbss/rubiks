@@ -166,10 +166,10 @@ void puzzle::loadPieces(sgCGroup **pcs,int selObjId, ofVec3f v){
 		//sgCGroup *part = pcs[i];
 
 		if( pcs[i] != NULL){
-			const int ChCnt = pcs[i]->GetChildrenList()->GetCount();;//part->GetChildrenList()->GetCount();
+			const int ChCnt = pcs[i]->GetChildrenList()->GetCount();//part->GetChildrenList()->GetCount();
 			sgCObject** allParts = (sgCObject**)malloc(ChCnt*sizeof(sgCObject*));
-			 pcs[i]->BreakGroup(allParts);
-			 sgCObject::DeleteObject(pcs[i]);
+			pcs[i]->BreakGroup(allParts);
+			sgCObject::DeleteObject(pcs[i]);
 
 			sgCObject **obj = (sgCObject**)malloc(50*sizeof(sgCObject*));
 			int realNumPieces=0;
@@ -208,6 +208,65 @@ void puzzle::loadPieces(sgCGroup **pcs,int selObjId, ofVec3f v){
 	for(int i=0;i<numPieces;i++){
 		myCubies[i]->crateOfMeshs();
 	}
+	cout << "out load pieces: " << ofGetElapsedTimeMillis() << endl;
+}
+//----------------------------------------------------------------
+void puzzle::loadPiecesOneByOne(sgCGroup *pc,int selObjId, ofVec3f v, int cubieToPlace){
+	cout << "enter load pieces: " << ofGetElapsedTimeMillis() << endl;
+	//it loads the new piece that the slicer has made, the piece is in a sgCGroup** pieces[cubieToPlace], 
+	//this function receives a copy of that sgCGroup** made by mySlicer->getPiecesOneByOne(cubieToGet)
+	//it loads them into its own myCubies[]
+
+	//create new cubie
+	cubie *auxCubie = new cubie(pos.x,pos.y,pos.z,cubieToPlace,selObjId,cubiesOffset,gridSize);
+	//add this cubie to mycubies[]
+	myCubies[cubieToPlace] = auxCubie;
+
+	//get group from pieces[] copy: pcs[]
+
+	if( pc != NULL){
+		const int ChCnt = pc->GetChildrenList()->GetCount();
+		sgCObject** allParts = (sgCObject**)malloc(ChCnt*sizeof(sgCObject*));
+		pc->BreakGroup(allParts);
+		sgCObject::DeleteObject(pc);
+
+		sgCObject **obj = (sgCObject**)malloc(50*sizeof(sgCObject*));
+		int realNumPieces=0;
+
+		for (int j=0; j < ChCnt; j++){
+			//clone each part
+			obj[j] =allParts[j];
+			realNumPieces ++;
+		}
+		//make them a group
+		cubieGroup = sgCGroup::CreateGroup(obj,realNumPieces);
+		myCubies[cubieToPlace]->setObjects(cubieGroup,cubieToPlace,v);//here goes the group of clones from the iriginal slicing pieces[]
+		myCubies[cubieToPlace]->setup();
+		//i is the cubie ID
+		//put that cubie on the cubies[]
+
+		//cleanup
+		free(obj);
+		if(allParts != NULL){
+			for (int j=0; j < ChCnt; j++){
+				if(allParts[j] != NULL){
+					sgCObject::DeleteObject(allParts[j]);
+				}
+			}
+			free(allParts);
+		}
+		//sgDeleteObject(part);
+	}else{
+		myCubies[cubieToPlace]->setObjects(NULL,cubieToPlace,v);
+		myCubies[cubieToPlace]->setup();
+	}
+
+
+	//create the meshes from the sgCore objects
+	//so the objects can be renderes by openFrameworks
+
+	myCubies[cubieToPlace]->crateOfMeshs();
+
 	cout << "out load pieces: " << ofGetElapsedTimeMillis() << endl;
 }
 //----------------------------------------------------------------
@@ -919,7 +978,7 @@ void puzzle::checkCubiesForHit(ofVec3f _pnt){
 	if(nearestId != -1){
 		if(nearest < MAX_DIST){
 			if(activeCubie != nearestId){
-				
+
 				activeCubie = nearestId;
 				if(activeCubie > -1){
 					//myCubies[activeCubie]->setDrawWire(true);

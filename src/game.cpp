@@ -71,6 +71,8 @@ game::game(SG_VECTOR gamePos, float w, float h, SG_VECTOR displayPos, ofRectangl
 
 	creatingPuzzle = false;
 	puzzleFinished = false;
+	numPuzzlePieces = 0;
+	cubieToCut = 0;
 
 	extrudedB = false;
 	bExtrude = false;
@@ -256,9 +258,14 @@ void game::update(){
 		myPuzzle =  new puzzle(posP, offsetSlicer,armID); // it receives the position to be displayed AND the offset of the armature/cutter to adapt slicing
 		myPuzzle->setup();
 
-		createPuzzle(posP);//create Puzzle goes to step 4 to show the puzzle
-		creatingPuzzle = false;
-		puzzleFinished = true;
+		//get thenumber of pieces from the slicer
+		if(cubieToCut < numPuzzlePieces){
+			createPuzzleOneByOne(cubieToCut);//create Puzzle goes to step 4 to show the puzzle
+			cubieToCut ++; //go to next cubie
+		}else{
+			creatingPuzzle = false;
+			puzzleFinished = true;
+		}
 	}
 
 	/////////////////////////////////////////////////////
@@ -1295,17 +1302,40 @@ void game::createCutterSlicer(){
 void game::createPuzzle(SG_VECTOR p){
 	if(step == 3){
 		//////////////////////////////////create puzzle///////////////////////////////////////
-		//myPuzzle =  new puzzle(p, offsetSlicer,armID); // it receives the position to be displayed AND the offset of the armature/cutter to adapt slicing
-		//myPuzzle->setup();
+		myPuzzle =  new puzzle(p, offsetSlicer,armID); // it receives the position to be displayed AND the offset of the armature/cutter to adapt slicing
+		myPuzzle->setup();
 
-		////boolean substraction//////////////////////////////////////////////////////////
-		//mySlicer->xSlicing(*mySlicer->myCutter,objectDisplayed->getObject(),1,1);
-		///////////////  BOOLEAN INTERSECTION          ///////////////////////////////////
-		mySlicer->intersectCubes((sgCObject*)objectDisplayed->getObject()); 
+		///////////////  BOOLEAN INTERSECTION ///////////////////////////////////
+		mySlicer->intersectCubes((sgCObject*)objectDisplayed->getObject());
 
 		//now slicer has all the parts inside sgCGroup ** pieces[]
-		//it recieves the armature rotations to undo them and show the puzzle in an original possition
+		//puzzle recieves the armature rotations to undo them and show the puzzle in an original possition
 		myPuzzle->loadPieces(mySlicer->getPieces(),objectID,rotateSlicer);
+		////////////////////////////////end create puzzle/////////////////////////////////
+
+		///////////////////////////////  color puzzle   ////////////////////////////////// 
+		//color all the faces for platonic solids!! colors outside for most objects(not bunny), black on the insides
+		if(objectID < 8 ){
+			myPuzzle->colorFaces(objectID);
+		}else{
+			myPuzzle->colorTorus();
+		}
+
+		puzzleFinished = true;
+
+		step = 4;
+	}
+}
+//-----------------------------------------------------------------------------------------
+void game::createPuzzleOneByOne(int cubieToBeMade){
+	if(step == 3){
+
+		mySlicer->intersectCubesOneByOne((sgCObject*)objectDisplayed->getObject(),cubieToBeMade); 
+
+		//now slicer has one more cubie inside sgCGroup ** pieces[]
+
+		//puzzle recieves the armature rotations to undo them and show the puzzle in an original possition
+		myPuzzle->loadPiecesOneByOne(mySlicer->getPiecesOneByOne(cubieToBeMade),objectID,rotateSlicer,cubieToBeMade);
 		////////////////////////////////end create puzzle/////////////////////////////////
 
 		///////////////////////////////  color puzzle   ////////////////////////////////// 
@@ -1618,13 +1648,19 @@ void game::guiInput(int in){
 		}
 		/////////////////a puzzle can be made
 		if(in == 'n') {
+			numPuzzlePieces = 0;
+			cubieToCut = 0;
 			//send the armature rotations to the 3dObject
 			applyArmRotations();
 			//now we know the offset position from the armature to create-> cutter & slicer
 			createCutterSlicer();
-			//open boolean gate to construct puzzle on every update
+
+			//get the number of pieces from the slicer...this changes with each armature
+			numPuzzlePieces = mySlicer->numPieces;
+			//open boolean gate to construct puzzle cubie by cubie, on every update
 			creatingPuzzle = true;
-			////do slicing
+
+			////create puzzle all at once
 			//createPuzzle(posP);//create Puzzle goes to step 4 to show the puzzle
 		}
 	}

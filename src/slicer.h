@@ -21,13 +21,16 @@ public:
 	//!!!important
 	//its an array of groups because in one siliced piece, there might be 1 or more 3Dobjects
 	//as the result of the boolean operation!!!
-	sgCGroup** getPieces(); //returns the array of * of groups of objects for each volume(smallCube) of the puzzle
+	sgCGroup** getPieces(); //returns the array of * of groups of objects for each volume(cubie) of the puzzle
+	sgCGroup* getPiecesOneByOne(int cubieToGet);//returns a single *group, with an individual cubie, the one that just got created
 	int countPieces();
 
 	//// algorithms variables
 	///cubes
 	sgCGroup **aux;
 	void intersectCubes(sgCObject *obj);
+	sgCGroup *aux2;
+	void intersectCubesOneByOne(sgCObject *obj, int cubieToCut);
 	//planes
 	void xSlicing(cutter &cut, sgCObject *obj, int turn, int cubePart);
 	void ySlicing(cutter &cut, sgCGroup *grp, int turn, int cubePart);

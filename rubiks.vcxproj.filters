@@ -91,9 +91,6 @@
     <ClCompile Include="src\SceneManager.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\game.cpp" />
-    <ClCompile Include="src\history.cpp" />
-    <ClCompile Include="src\ofRender.cpp" />
     <ClCompile Include="src\gwc\GWCUtils.cpp">
       <Filter>src\gwc</Filter>
     </ClCompile>
@@ -112,8 +109,6 @@
     <ClCompile Include="src\subob\SubObEvent.cpp">
       <Filter>src\subob</Filter>
     </ClCompile>
-    <ClCompile Include="src\drawingCanvas.cpp" />
-    <ClCompile Include="src\ofxTimer.cpp" />
     <ClCompile Include="src\gui\GuiWindow.cpp">
       <Filter>src\gui</Filter>
     </ClCompile>
@@ -131,6 +126,21 @@
     </ClCompile>
     <ClCompile Include="src\gui\GuiScrollBar.cpp">
       <Filter>src\gui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\drawingCanvas.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\history.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ofRender.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ofxTimer.cpp">
+      <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -361,9 +371,6 @@
     <ClInclude Include="src\SceneManager.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="src\game.h" />
-    <ClInclude Include="src\history.h" />
-    <ClInclude Include="src\ofRender.h" />
     <ClInclude Include="src\gwc\GWCUtils.h">
       <Filter>src\gwc</Filter>
     </ClInclude>
@@ -382,8 +389,6 @@
     <ClInclude Include="src\subob\SubObEvent.h">
       <Filter>src\subob</Filter>
     </ClInclude>
-    <ClInclude Include="src\drawingCanvas.h" />
-    <ClInclude Include="src\ofxTimer.h" />
     <ClInclude Include="src\gui\GuiWindow.h">
       <Filter>src\gui</Filter>
     </ClInclude>
@@ -402,8 +407,25 @@
     <ClInclude Include="src\gui\GuiScrollBar.h">
       <Filter>src\gui</Filter>
     </ClInclude>
+    <ClInclude Include="src\ofxTimer.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\drawingCanvas.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\history.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ofRender.h">
+      <Filter>src</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="icon.rc" />
+    <ResourceCompile Include="icon.rc">
+      <Filter>src</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>

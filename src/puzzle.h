@@ -27,6 +27,7 @@ public:
 	void exit();
 
 	void loadPieces(sgCGroup **pcs, int selObjId, ofVec3f v);
+	void loadPiecesOneByOne(sgCGroup *pcs,int selObjId, ofVec3f v, int cubieToPlace);
 	//void loadPieces(sgCGroup **pcs, int selObjId, ofVec3f v, float angleA, ofVec3f axistbA, int mode);
 
 	int giveNumCubies();

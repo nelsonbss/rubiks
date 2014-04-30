@@ -42,7 +42,6 @@ public:
 	cutter *myCutter;
 	slicer *mySlicer;
 	armature *myArmature;
-
 	puzzle *myPuzzle;
 
 	string station;
@@ -55,6 +54,9 @@ public:
 	////
 	void loadObjectG(int objID,SG_VECTOR p,SG_VECTOR t);
 	int objectID;
+	int getCurrentStep();
+	void setCurrentStep(int step);
+	void restart();
 
 	/*
 	Paul's
@@ -77,17 +79,18 @@ public:
 	void guiExtrude(){bExtrude = true;}
 
 	//////////////////////////////////////create puzzles
-	bool creatingPuzzle;
-	bool puzzleFinished;
 	void loadArmature(int type);
 	int armID;
 	void createCutterSlicer();//(float thick, float tamPlane, float tamCuby,float numCutr, float x, float y, float z);
 
-	void createPuzzle(SG_VECTOR p);
+	//////two ways of creating a puzzle
+	void createPuzzle(SG_VECTOR p);//all at once
+	void createPuzzleOneByOne(int cubieToCut);//cubie by cubie
+	bool creatingPuzzle;
+	bool puzzleFinished;
+	int numPuzzlePieces;
+	int cubieToCut;
 
-	int getCurrentStep();
-	void setCurrentStep(int step);
-	void restart();
 	/////////////////////////////move all puzzle: every cubbie moves the same way
 	SG_VECTOR posP;
 	void moveP (SG_VECTOR p);

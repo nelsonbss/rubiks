@@ -76,11 +76,9 @@ public:
 	bool bExtrude;
 	void guiExtrude(){bExtrude = true;}
 
-	
-
-	/*
-	*/
-
+	//////////////////////////////////////create puzzles
+	bool creatingPuzzle;
+	bool puzzleFinished;
 	void loadArmature(int type);
 	int armID;
 	void createCutterSlicer();//(float thick, float tamPlane, float tamCuby,float numCutr, float x, float y, float z);
@@ -103,7 +101,6 @@ public:
 	float tamCubie;
 
 	/////////////////face rotations
-	bool updatePuzzle;
 	int idcubie;
 	bool dir;
 	SG_VECTOR axis;
@@ -117,7 +114,7 @@ public:
 	void unDo();
 	void decideMove();
 
-	//face rotation bytwo ids
+	/////////////////////////face rotation bytwo ids
 	void rotateTwoIds(int cubieA, int cubieB,bool inside);
 	bool faceRotateB;
 	int idcubieA;
@@ -138,6 +135,17 @@ public:
 
 	//armature rotation
 	void applyArmRotations();
+
+	///////interaction with puzzles on the center
+	void loadPuzzle(puzzle *inputPuzzle,int objID, SG_VECTOR p, SG_VECTOR t); //load a puzzle from the puzzle menu on the center
+	void loadMenuObject (int objID,SG_VECTOR p,SG_VECTOR t,vector< ofFloatColor > colorsVMenu, vector< ofVec3f > uniqueNormalsG);
+	void loadArmatureMenu(int type);
+	void makePuzzle();
+	bool savePuzzleB;
+	bool hasSaved;
+	menuPuzzle* savePuzzle(SG_POINT slicingPos, SG_VECTOR middlePuzzlePos, int puzzleCounter);
+	vector< ofFloatColor > colorsVMenuG;
+	vector< ofVec3f > uniqueNormalsG;
 
 	//gui communication
 	bool rotateB;
@@ -173,17 +181,6 @@ public:
 	sgC3DObject* extrudedObject;
 	bool extrudedB;
 
-
-	///////interaction with puzzles on the center
-	void loadPuzzle(puzzle *inputPuzzle,int objID, SG_VECTOR p, SG_VECTOR t); //load a puzzle from the puzzle menu on the center
-	void loadMenuObject (int objID,SG_VECTOR p,SG_VECTOR t,vector< ofFloatColor > colorsVMenu, vector< ofVec3f > uniqueNormalsG);
-	void loadArmatureMenu(int type);
-	void makePuzzle();
-	bool savePuzzleB;
-	bool hasSaved;
-	menuPuzzle* savePuzzle(SG_POINT slicingPos, SG_VECTOR middlePuzzlePos, int puzzleCounter);
-	vector< ofFloatColor > colorsVMenuG;
-	vector< ofVec3f > uniqueNormalsG;
 	////////////////////////////////////////////
 	Picker picker;
 	ofVec3f unprojectedPoint;
@@ -246,9 +243,6 @@ public:
 
 	void setPage(string _page);
 
-
-
-	
 	void task1(string msg);
 };
 #endif /* defined(__Tgame__game__) */

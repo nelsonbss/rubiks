@@ -62,9 +62,15 @@ game::game(SG_VECTOR gamePos, float w, float h, SG_VECTOR displayPos, ofRectangl
 
 	armID = -1; //initialized in -1 when there is no armature selected
 	objectID = -1; //initialized on -1 because on stage=0 there is no object selected
+	step = -1;
+	idcubie = 0;
+	dragId = -1;
 
 	bHaveNewObject = false;
 	bHaveNext = false;
+
+	creatingPuzzle = false;
+	puzzleFinished = false;
 
 	extrudedB = false;
 	bExtrude = false;
@@ -75,7 +81,7 @@ game::game(SG_VECTOR gamePos, float w, float h, SG_VECTOR displayPos, ofRectangl
 	savePuzzleB = false;
 	hasSaved = false;
 
-	angleR = 0;
+	angleR = 0; //is the angle sent to the rotateByIDandAxisNew
 	bUnproject = false;
 
 	bDragInput = false;
@@ -99,8 +105,10 @@ game::game(SG_VECTOR gamePos, float w, float h, SG_VECTOR displayPos, ofRectangl
 
 	myCanvas.setViewport(viewport);
 
-	step=0;
-/*
+	faceRotate = false;
+	faceRotateB = false;//used in the 2 id rotation function
+
+	/*
 	thread t1(task1, "Hello");
 	t1.join();*/
 }
@@ -159,14 +167,7 @@ void game::setup(string _prefix){
 }
 //-------------------------------------------------------------
 void game::setup(){
-	step = -1;
-	idcubie=0;
 
-	/////////////////////////////////////////PUZzLE //////////
-	updatePuzzle = false;
-	//
-	faceRotate = false;
-	faceRotateB = false;//used in the 2 id rotation function
 
 	SubObMediator::Instance()->addObserver(prefix + ":ibox:2", this);
 	SubObMediator::Instance()->addObserver(prefix + ":ibox-tap", this);
@@ -184,8 +185,6 @@ void game::setup(){
 
 	goToAttract();
 
-	bHaveNewObject = false;
-	objectID = -1;
 	SubObMediator::Instance()->addObserver(prefix + ":make-one2", this);
 	SubObMediator::Instance()->addObserver(prefix + ":menupuzzle-selected", this);
 
@@ -194,8 +193,6 @@ void game::setup(){
 	//light.setDirectional();
 	light.setDiffuseColor( ofColor(255.f, 255.f, 255.f));
 	light.setSpecularColor( ofColor(255.f, 255.f, 255.f));
-
-	dragId = -1;
 }
 //----------------------------------------------------------------------
 void game::update(){
@@ -248,8 +245,25 @@ void game::update(){
 	//	//myArmature->update();//now its rotating onits own
 	//}
 
+	///////////////////////////////////////////////////////////////////////
+	/////////////////to create a puzzle on every frame
+	if(creatingPuzzle){
+		//loaded armature
+		//applied armature rotations
+		//created slicer and cutter
+		//now do slicing
+		////////////////////////////////create puzzle///////////////////////////////////////
+		myPuzzle =  new puzzle(posP, offsetSlicer,armID); // it receives the position to be displayed AND the offset of the armature/cutter to adapt slicing
+		myPuzzle->setup();
+
+		createPuzzle(posP);//create Puzzle goes to step 4 to show the puzzle
+		creatingPuzzle = false;
+		puzzleFinished = true;
+	}
+
+	/////////////////////////////////////////////////////
 	///////////////////////////////////////update cubies
-	if(updatePuzzle){
+	if(puzzleFinished){
 		if(step == 4 || step == 5 || step == 7){
 			myPuzzle->update();
 			////////////////////////////////////////////////////move all puzzle
@@ -269,6 +283,8 @@ void game::update(){
 				}
 			}
 			//updatePuzzle = false;
+
+			///do face rotations with two cubie ids
 			//if(myPuzzle->faceRotateB == true) {
 			//	//////int ans = myPuzzle->rotateTwoIds(idcubieA,idcubieB,dir);
 
@@ -934,7 +950,7 @@ void game::loadPuzzle(puzzle *inputPuzzle,int objID, SG_VECTOR p, SG_VECTOR t){
 	myPuzzle->pos.x = posP.x;
 	myPuzzle->pos.y = posP.y;
 	myPuzzle->pos.z = posP.z;
-	updatePuzzle = true;
+	//updatePuzzle = true;
 	step = 7;
 	SubObEvent ev;
 	ev.setName("hide-node");
@@ -1037,7 +1053,7 @@ void game::loadMenuObject(int objID, SG_VECTOR p, SG_VECTOR t,vector< ofFloatCol
 			myPuzzle->loadPieces(mySlicer->getPieces(),objectID,rotateSlicer);
 			myPuzzle->colorFacesMenuPuzzle(objectDisplayed->objectId,uniqueNormalsG,colorsVMenuG);
 			//myPuzzle->colorFaces(objectID);
-			updatePuzzle = true;
+			puzzleFinished = true;
 			step = 7;
 			SubObEvent ev;
 			ev.setName("hide-node");
@@ -1278,9 +1294,9 @@ void game::createCutterSlicer(){
 //-----------------------------------------------------------------------------------------
 void game::createPuzzle(SG_VECTOR p){
 	if(step == 3){
-		////////////////////////////////create puzzle///////////////////////////////////////
-		myPuzzle =  new puzzle(p, offsetSlicer,armID); // it receives the position to be displayed AND the offset of the armature/cutter to adapt slicing
-		myPuzzle->setup();
+		//////////////////////////////////create puzzle///////////////////////////////////////
+		//myPuzzle =  new puzzle(p, offsetSlicer,armID); // it receives the position to be displayed AND the offset of the armature/cutter to adapt slicing
+		//myPuzzle->setup();
 
 		////boolean substraction//////////////////////////////////////////////////////////
 		//mySlicer->xSlicing(*mySlicer->myCutter,objectDisplayed->getObject(),1,1);
@@ -1300,7 +1316,7 @@ void game::createPuzzle(SG_VECTOR p){
 			myPuzzle->colorTorus();
 		}
 
-		updatePuzzle = true;
+		puzzleFinished = true;
 
 		step = 4;
 	}
@@ -1606,8 +1622,10 @@ void game::guiInput(int in){
 			applyArmRotations();
 			//now we know the offset position from the armature to create-> cutter & slicer
 			createCutterSlicer();
-			//do slicing
-			createPuzzle(posP);//create Puzzle goes to step 4 to show the puzzle
+			//open boolean gate to construct puzzle on every update
+			creatingPuzzle = true;
+			////do slicing
+			//createPuzzle(posP);//create Puzzle goes to step 4 to show the puzzle
 		}
 	}
 	////////////////////////////////////////////step 4 inputs
@@ -2087,10 +2105,11 @@ void game::clearDisplayedObject(){
 //----------------------------------------------------------------------
 void game::restart(){
 	if(step == 7){
-		//myPuzzle->exit();
+		myPuzzle->exit();//if we pass this puzzle to the saved games, we cant delete it!!!!!!!!!
 		//objectDisplayed->exit();
 		step = 0;
 		objectID = -1;
+		puzzleFinished = false;
 	}else if(step == 6){
 		if(canvasB){
 			//myCanvas->exit();
@@ -2103,7 +2122,7 @@ void game::restart(){
 	}else if(step==4 || step==5){
 		//dont delete the puzzle if it has been saved
 		//if(!hasSaved){
-			myPuzzle->exit();
+		myPuzzle->exit();
 		//}
 		myCutter->exit();
 		mySlicer->exit();
@@ -2111,6 +2130,7 @@ void game::restart(){
 		objectID = -1;
 		step = 0;
 		armID = -1;
+		puzzleFinished = false;
 	}else if (step==3){
 		objectDisplayed->exit();             //clean displayed object after puzzle is created, so we dont keep it until the exit or restart
 		step = 0;
@@ -2602,5 +2622,5 @@ float game::getMainComponent(ofVec3f _pnt){
 //----------------------------------------------------------------------------------------------------------------------------
 
 void game::task1(string msg){
-    cout << "task1 says: " << msg << endl;
+	cout << "task1 says: " << msg << endl;
 }

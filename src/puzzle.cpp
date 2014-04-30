@@ -10,12 +10,15 @@
 #define WIDTH 3
 #define DEPTH 3
 
-puzzle::puzzle(SG_VECTOR p, ofVec3f offset, int gSize){
+puzzle::puzzle(SG_VECTOR p, ofVec3f offset, int gSize,vector< ofVec3f > ObjectUniqueNormalsIn){
 
 	gridSize=gSize;
 	numPieces=gSize*gSize*gSize;
 	currentNumCubies = 0;
 	myCubies = (cubie**)malloc(numPieces*sizeof(cubie*));
+
+	ObjectUniqueNormals = ObjectUniqueNormalsIn;
+
 
 	cubiesOffset = offset;
 
@@ -126,8 +129,10 @@ void puzzle::draw(){
 
 	ofPushMatrix();
 	//ofTranslate(pos.x,pos.y,pos.z);
-	ofRotateX(30);
-	ofRotateZ(15);
+	
+	//ofRotateX(-45);
+	//ofRotateY(-45);
+
 	//puzzle tells every cubie to attach objects to scene
 	for(int i=0;i<currentNumCubies;i++){
 		if(myCubies[i] != NULL){
@@ -217,7 +222,7 @@ void puzzle::loadPieces(sgCGroup **pcs,int selObjId, ofVec3f v){
 }
 //----------------------------------------------------------------
 void puzzle::loadPiecesOneByOne(sgCGroup *pc,int selObjId, ofVec3f v, int cubieToPlace){
-	cout << "enter load pieces: " << ofGetElapsedTimeMillis() << endl;
+	//cout << "enter load pieces: " << ofGetElapsedTimeMillis() << endl;
 	//it loads the new piece that the slicer has made, the piece is in a sgCGroup** pieces[cubieToPlace], 
 	//this function receives a copy of that sgCGroup** made by mySlicer->getPiecesOneByOne(cubieToGet)
 	//it loads them into its own myCubies[]
@@ -270,7 +275,7 @@ void puzzle::loadPiecesOneByOne(sgCGroup *pc,int selObjId, ofVec3f v, int cubieT
 
 	myCubies[cubieToPlace]->crateOfMeshs();
 
-	cout << "out load pieces: " << ofGetElapsedTimeMillis() << endl;
+	//cout << "out load pieces: " << ofGetElapsedTimeMillis() << endl;
 }
 //----------------------------------------------------------------
 void puzzle::rotate(SG_VECTOR r){  
@@ -1330,7 +1335,7 @@ void puzzle::colorFacesOneByOne(int objectID,int cubieToColor){
 	ofRender *ofr = new ofRender();
 
 	if((objectID != 200)){
-		ofr->colorFacesOneByOne(myCubies[cubieToColor],0.01,objectID);
+		ofr->colorFacesOneByOne(myCubies[cubieToColor],0.01,objectID,ObjectUniqueNormals);
 	}
 	if(objectID == 200){
 		//extruded object
@@ -1340,7 +1345,7 @@ void puzzle::colorFacesOneByOne(int objectID,int cubieToColor){
 	//color black all the inside faces of each cubie (after all other face colors have been applied)
 	//all the puzzles have to do this
 
-	//colorCubiesBlackSides();
+	colorCubiesBlackSidesOneByOne(cubieToColor);
 	//need to color black sides of bunny in a better way.. will they be colored? or leave it plain?
 
 	free(ofr);

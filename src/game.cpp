@@ -1055,7 +1055,15 @@ void game::loadMenuObject(int objID, SG_VECTOR p, SG_VECTOR t,vector< ofFloatCol
 			applyArmRotations();
 			createCutterSlicer();
 			////createPuzzle(posP);
-			myPuzzle = new puzzle(posP, offsetSlicer,grid);
+			vector< ofVec3f > ObjectUniqueNormals;
+
+			ObjectUniqueNormals.push_back(ofVec3f(1,0,0));
+			ObjectUniqueNormals.push_back(ofVec3f(0,1,0));
+			ObjectUniqueNormals.push_back(ofVec3f(0,0,1));
+			ObjectUniqueNormals.push_back(ofVec3f(-1,0,0));
+			ObjectUniqueNormals.push_back(ofVec3f(0,-1,0));
+			ObjectUniqueNormals.push_back(ofVec3f(0,0,-1));
+			myPuzzle = new puzzle(posP, offsetSlicer,grid,ObjectUniqueNormals);
 			myPuzzle->setup();
 			mySlicer->intersectCubes((sgCObject*)objectDisplayed->getObject()); 
 			myPuzzle->loadPieces(mySlicer->getPieces(),objectID,rotateSlicer);
@@ -1303,7 +1311,15 @@ void game::createCutterSlicer(){
 void game::createPuzzle(SG_VECTOR p){
 	if(step == 3){
 		//////////////////////////////////create puzzle///////////////////////////////////////
-		myPuzzle =  new puzzle(p, offsetSlicer,armID); // it receives the position to be displayed AND the offset of the armature/cutter to adapt slicing
+		vector< ofVec3f > ObjectUniqueNormals;
+
+		ObjectUniqueNormals.push_back(ofVec3f(1,0,0));
+		ObjectUniqueNormals.push_back(ofVec3f(0,1,0));
+		ObjectUniqueNormals.push_back(ofVec3f(0,0,1));
+		ObjectUniqueNormals.push_back(ofVec3f(-1,0,0));
+		ObjectUniqueNormals.push_back(ofVec3f(0,-1,0));
+		ObjectUniqueNormals.push_back(ofVec3f(0,0,-1));
+		myPuzzle =  new puzzle(p, offsetSlicer,armID,ObjectUniqueNormals); // it receives the position to be displayed AND the offset of the armature/cutter to adapt slicing
 		myPuzzle->setup();
 
 		///////////////  BOOLEAN INTERSECTION ///////////////////////////////////
@@ -1330,7 +1346,6 @@ void game::createPuzzleOneByOne(int cubieToBeMade){
 	mySlicer->intersectCubesOneByOne((sgCObject*)objectDisplayed->getObject(),cubieToBeMade); 
 
 	//now slicer has one more cubie inside sgCGroup ** pieces[]
-
 	//puzzle recieves the armature rotations to undo them and show the puzzle in an original possition
 	myPuzzle->loadPiecesOneByOne(mySlicer->getPiecesOneByOne(cubieToBeMade),objectID,rotateSlicer,cubieToBeMade);
 	////////////////////////////////end create puzzle/////////////////////////////////
@@ -1645,7 +1660,17 @@ void game::guiInput(int in){
 				cubieToCut = 0;
 
 				////////////////////////////////create puzzle///////////////////////////////////////
-				myPuzzle =  new puzzle(posP, offsetSlicer,armID); // it receives the position to be displayed AND the offset of the armature/cutter to adapt slicing
+				//select the unique normals for the object that wants to be a puzzle
+				vector< ofVec3f > ObjectUniqueNormals;
+
+				ObjectUniqueNormals.push_back(ofVec3f(1,0,0));
+				ObjectUniqueNormals.push_back(ofVec3f(0,1,0));
+				ObjectUniqueNormals.push_back(ofVec3f(0,0,1));
+				ObjectUniqueNormals.push_back(ofVec3f(-1,0,0));
+				ObjectUniqueNormals.push_back(ofVec3f(0,-1,0));
+				ObjectUniqueNormals.push_back(ofVec3f(0,0,-1));
+
+				myPuzzle =  new puzzle(posP, offsetSlicer,armID, ObjectUniqueNormals); // it receives the position to be displayed AND the offset of the armature/cutter to adapt slicing
 				myPuzzle->setup();
 
 				//send the armature rotations to the 3dObject

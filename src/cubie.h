@@ -20,7 +20,7 @@ public:
 	void draw();
 	void exit();
 
-	int id; //id of the cuie to be used on the selection of the cuie to rotate
+	int id; //id of the cubie to be used on the selection of the cubie to rotate
 	int getId();
 
 	int selectedObjectID; // keeps the id of the object selected to become a puzzle, used for coloring
@@ -29,11 +29,12 @@ public:
 	float numObjs;
 	float getNumObjs();
 	sgC3DObject **objectList;
-	vector<CubieMesh> myMeshs; // this will be used to store the objet to be drawn 
+	vector<CubieMesh> myMeshs; // this will be used to store the objet to be drawn
 	void crateOfMeshs();
 	vector<ofVbo>  myVbos;
 
-	float color;
+	vector< ofVec3f > ObjectUniqueNormals;//this will change depending on the original shape normals
+	//float color;
 
 	void setObjects(sgCGroup *objs,int cubieId,ofVec3f v);
 	

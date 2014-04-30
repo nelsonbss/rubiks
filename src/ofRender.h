@@ -36,7 +36,7 @@ public:
 	void changeColorToColor(ofFloatColor Sc, ofFloatColor Tc, ofMesh &mesh); //from a source color to a target color of the mesh
 
 	void colorFaces(cubie **myCubies, int numPieces,float playRoom, int objectID); //to color faces of any polyhedra (not cube - not tetrahedron)
-	void colorFacesOneByOne(cubie *myCubie, float playRoom, int objectID);
+	void colorFacesOneByOne(cubie *myCubie, float playRoom, int objectID,vector< ofVec3f > ObjectUniqueNormals);
 
 	void colorBlackSides(ofMesh &mesh, int idCubie, float playRoom, int objectID); //to color black side faces of polyhedra  (not cube - not tetrahedron)
 	void colorBlackSidesFromAxes(ofMesh &mesh, int xp, int yp, int zp, int gridSize, float playRoom);

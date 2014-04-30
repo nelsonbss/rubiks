@@ -231,12 +231,12 @@ void ofRender::colorFaces(cubie **myCubies, int numPieces, float playRoom, int o
 
 		for(int i=0;i<numPieces;i++){
 			float meshesCubie =  myCubies[i]->getNumObjs();
+			armX = myCubies[i]->armRotations.x;
+			armY = myCubies[i]->armRotations.y;
+			armZ = myCubies[i]->armRotations.z;
 			for (int j = 0 ; j< meshesCubie; j++){
 				//get the normals of the mesh!
 				tnormals = myCubies[i]->myMeshs[j].getNormals();
-				armX = myCubies[i]->armRotations.x;
-				armY = myCubies[i]->armRotations.y;
-				armZ = myCubies[i]->armRotations.z;
 				//verify each normal value on unique normals vector
 				for(int n=0; n< tnormals.size() ; n++){
 					if(uniqueNormals.size() == 0){
@@ -408,7 +408,8 @@ void ofRender::colorFaces(cubie **myCubies, int numPieces, float playRoom, int o
 	}
 }
 //---------------------------------------------------------------------------------------------------------------
-void ofRender::colorFacesOneByOne(cubie *myCubie, float playRoom, int objectID){
+void ofRender::colorFacesOneByOne(cubie *myCubie, float playRoom, int objectID,vector< ofVec3f > ObjectUniqueNormals){
+	cout << "in COLOR FACES oneBone: " << ofGetElapsedTimeMillis() << endl;
 	//goes through each cubie and makes sets of normals.. to determine all different normals in the object
 	//i.e. this will give 8 + 6 faces for octahedor
 	vector< ofVec3f > tnormals;
@@ -429,48 +430,50 @@ void ofRender::colorFacesOneByOne(cubie *myCubie, float playRoom, int objectID){
 
 	if(objectID < 8){//(objectID != 1 && objectID != 4){
 		meshesCubie =  myCubie->getNumObjs();
-		for (int j = 0 ; j< meshesCubie; j++){
-			//get the normals of the mesh!
-			tnormals = myCubie->myMeshs[j].getNormals();
-			armX = myCubie->armRotations.x;
-			armY = myCubie->armRotations.y;
-			armZ = myCubie->armRotations.z;
-			//verify each normal value on unique normals vector
-			for(int n=0; n< tnormals.size() ; n++){
-				if(uniqueNormals.size() == 0){
-					//the first normal of all the normals
-					//push the first one
-					uniqueNormals.push_back (tnormals[n]);
-				}else{
-					//it has at least one normal
-					//compare current normal with all other normals
-					for(int un = 0; un < uniqueNormals.size(); un ++){
+		uniqueNormals = ObjectUniqueNormals;
+		armX = myCubie->armRotations.x;
+		armY = myCubie->armRotations.y;
+		armZ = myCubie->armRotations.z;
+		////create unique normals
+		//for (int j = 0 ; j< meshesCubie; j++){
+		//	//get the normals of the mesh!
+		//	tnormals = myCubie->myMeshs[j].getNormals();
+		//	//verify each normal value on unique normals vector
+		//	for(int n=0; n< tnormals.size() ; n++){
+		//		if(uniqueNormals.size() == 0){
+		//			//the first normal of all the normals
+		//			//push the first one
+		//			uniqueNormals.push_back (tnormals[n]);
+		//		}else{
+		//			//it has at least one normal
+		//			//compare current normal with all other normals
+		//			for(int un = 0; un < uniqueNormals.size(); un ++){
 
-						if(((uniqueNormals[un].x - playRoom) <= tnormals[n].x) && 
-							(tnormals[n].x <= (uniqueNormals[un].x + playRoom)) &&
-							((uniqueNormals[un].y - playRoom) <= tnormals[n].y) && 
-							(tnormals[n].y <= (uniqueNormals[un].y + playRoom)) &&
-							((uniqueNormals[un].z - playRoom) <= tnormals[n].z) && 
-							(tnormals[n].z <= (uniqueNormals[un].z + playRoom))
-							){
-								//we already have that type of normal
-								//stop looking through the vector
-								un = uniqueNormals.size();
-						}else{
-							//its different
-							//keep going until the last element
-							if(un == uniqueNormals.size()-1){
-								//its the las element on the vector of unique normals
-								//if we got here its because the current normal (cn) is new to the set
-								uniqueNormals.push_back(tnormals[n]);
-								//stop this for.. we just changed the size
-								un = uniqueNormals.size();
-							}
-						}
-					}
-				}
-			}
-		}
+		//				if(((uniqueNormals[un].x - playRoom) <= tnormals[n].x) && 
+		//					(tnormals[n].x <= (uniqueNormals[un].x + playRoom)) &&
+		//					((uniqueNormals[un].y - playRoom) <= tnormals[n].y) && 
+		//					(tnormals[n].y <= (uniqueNormals[un].y + playRoom)) &&
+		//					((uniqueNormals[un].z - playRoom) <= tnormals[n].z) && 
+		//					(tnormals[n].z <= (uniqueNormals[un].z + playRoom))
+		//					){
+		//						//we already have that type of normal
+		//						//stop looking through the vector
+		//						un = uniqueNormals.size();
+		//				}else{
+		//					//its different
+		//					//keep going until the last element
+		//					if(un == uniqueNormals.size()-1){
+		//						//its the las element on the vector of unique normals
+		//						//if we got here its because the current normal (cn) is new to the set
+		//						uniqueNormals.push_back(tnormals[n]);
+		//						//stop this for.. we just changed the size
+		//						un = uniqueNormals.size();
+		//					}
+		//				}
+		//			}
+		//		}
+		//	}
+		//}
 
 		//at this point we have the unique normals of the object
 		//each of these normals should have a unique color
@@ -602,6 +605,7 @@ void ofRender::colorFacesOneByOne(cubie *myCubie, float playRoom, int objectID){
 			myCubie->myVbos[j]=tempVbo;
 		}
 	}
+	cout << "out COLOR FACES oneBone: " << ofGetElapsedTimeMillis() << endl;
 }
 //---------------------------------------------------------------------------------------------------------------
 void ofRender::colorBlackSides(ofMesh &mesh, int idCubie, float playRoom, int objectID){

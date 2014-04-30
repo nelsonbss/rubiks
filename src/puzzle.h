@@ -17,7 +17,7 @@ class Observer;
 class puzzle : public Observer{
 
 public:
-	puzzle(SG_VECTOR p, ofVec3f offset, int gSize);
+	puzzle(SG_VECTOR p, ofVec3f offset, int gSize,vector< ofVec3f > ObjectUniqueNormalsIn);
 	int id;
 
 	void setup();
@@ -76,6 +76,7 @@ public:
 	//color faces
 	void colorFaces(int objectID);
 	void colorFacesOneByOne(int objectID,int cubieToColor);
+	vector< ofVec3f > ObjectUniqueNormals;//this will change depending on the original shape normals
 
 	void colorFacesMenuPuzzle(int objectID,vector< ofVec3f > &menuUniqueNormals, vector< ofFloatColor > &vcolors);
 

@@ -165,10 +165,18 @@ void testApp::setup(){
 
 			//only need to make boolean operation, slicer will save a copy of the pieces, we use those pieces copies, mySlicer->getPieces()
 			mySlicer->intersectCubes((sgCObject*)objectToMakePuzzle->getObject()); 
+			vector< ofVec3f > ObjectUniqueNormals;
+
+			ObjectUniqueNormals.push_back(ofVec3f(1,0,0));
+			ObjectUniqueNormals.push_back(ofVec3f(0,1,0));
+			ObjectUniqueNormals.push_back(ofVec3f(0,0,1));
+			ObjectUniqueNormals.push_back(ofVec3f(-1,0,0));
+			ObjectUniqueNormals.push_back(ofVec3f(0,-1,0));
+			ObjectUniqueNormals.push_back(ofVec3f(0,0,-1));
 			for(int j=0;j<5;j++){
-				myPuzzles[j+(i*5)] = new puzzle(middlePuzzlePos, offsetSlicer,3); // it receives the position to be displayed AND the offset of the armature/cutter to adapt slicing
+				myPuzzles[j+(i*5)] = new puzzle(middlePuzzlePos, offsetSlicer,3,ObjectUniqueNormals); // it receives the position to be displayed AND the offset of the armature/cutter to adapt slicing
 				//myPuzzles[j+(i*5)]->setup();
-				
+
 				myPuzzles[j+(i*5)]->loadPieces(mySlicer->getPieces(),objectToMakePuzzle->objectId,rotateSlicer);//selected object id is used for coloring
 				myPuzzles[j+(i*5)]->colorFacesMenuPuzzle(puzzleDisplayed->objectId,puzzleDisplayed->uniqueNormals,puzzleDisplayed->colorsVMenu);
 				//myPuzzle->colorFaces(i+1);
@@ -309,8 +317,16 @@ void testApp::update(){
 
 			//only need to make boolean operation, slicer will save a copy of the pieces, we use those pieces copies, mySlicer->getPieces()
 			mySlicer->intersectCubes((sgCObject*)objectToMakePuzzle->getObject()); 
+			vector< ofVec3f > ObjectUniqueNormals;
+
+			ObjectUniqueNormals.push_back(ofVec3f(1,0,0));
+			ObjectUniqueNormals.push_back(ofVec3f(0,1,0));
+			ObjectUniqueNormals.push_back(ofVec3f(0,0,1));
+			ObjectUniqueNormals.push_back(ofVec3f(-1,0,0));
+			ObjectUniqueNormals.push_back(ofVec3f(0,-1,0));
+			ObjectUniqueNormals.push_back(ofVec3f(0,0,-1));
 			for(int j=0;j<5;j++){
-				myPuzzles[j+(numObjects*5)] = new puzzle(middlePuzzlePos, offsetSlicer,3); // it receives the position to be displayed AND the offset of the armature/cutter to adapt slicing
+				myPuzzles[j+(numObjects*5)] = new puzzle(middlePuzzlePos, offsetSlicer,3,ObjectUniqueNormals); // it receives the position to be displayed AND the offset of the armature/cutter to adapt slicing
 				//myPuzzles[j+(i*5)]->setup();
 				myPuzzles[j+(numObjects*5)]->loadPieces(mySlicer->getPieces(),objectToMakePuzzle->objectId,rotateSlicer);//selected object id is used for coloring
 				myPuzzles[j+(numObjects*5)]->colorFacesMenuPuzzle(puzzleDisplayed->objectId,puzzleDisplayed->uniqueNormals,puzzleDisplayed->colorsVMenu);

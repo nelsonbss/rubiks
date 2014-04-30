@@ -222,9 +222,7 @@ void puzzle::loadPiecesOneByOne(sgCGroup *pc,int selObjId, ofVec3f v, int cubieT
 	//add this cubie to mycubies[]
 	myCubies[cubieToPlace] = auxCubie;
 
-	//get group from pieces[] copy: pcs[]
-
-	if( pc != NULL){
+	if(pc != NULL){
 		const int ChCnt = pc->GetChildrenList()->GetCount();
 		sgCObject** allParts = (sgCObject**)malloc(ChCnt*sizeof(sgCObject*));
 		pc->BreakGroup(allParts);
@@ -1308,11 +1306,10 @@ void puzzle::colorFaces(int objectID){
 
 	//if((objectID != 4) && (objectID != 1) && (objectID != 200)){
 	if((objectID != 200)){
-		//not the bunny or the cube -> they were already colored on puzzle::loadPieces->cubie::setObjects
 		ofr->colorFaces(myCubies,numPieces,0.01, objectID);
 	}
 	if(objectID == 200){
-		//extrudd object
+		//extruded object
 		ofr->colorFacesExtruded(myCubies,numPieces,0.01, objectID);
 	}
 	if(objectID != 4){

@@ -57,12 +57,12 @@ sgCGroup** slicer::getPieces(){
 		free(objcts);
 		free(objcts1);
 	}
-		cout << "out get pieces: " << ofGetElapsedTimeMillis() << endl;
+	cout << "out get pieces: " << ofGetElapsedTimeMillis() << endl;
 	return aux;
 
 	//return pieces;
 	//return NULL; //here for memory leaks testing
-	
+
 }
 //--------------------------------------------------------------
 sgCGroup* slicer::getPiecesOneByOne(int cubieToGet){
@@ -71,42 +71,42 @@ sgCGroup* slicer::getPiecesOneByOne(int cubieToGet){
 
 	aux2 = (sgCGroup*)malloc(1*sizeof(sgCGroup*));
 
-		sgCObject **objcts = (sgCObject**)malloc(50*sizeof(sgCObject*));
-		sgCObject **objcts1 = (sgCObject**)malloc(50*sizeof(sgCObject*));
-		int objctr = 0;
-		//break each pieces[i]
+	sgCObject **objcts = (sgCObject**)malloc(50*sizeof(sgCObject*));
+	sgCObject **objcts1 = (sgCObject**)malloc(50*sizeof(sgCObject*));
+	int objctr = 0;
+	//break pieces[cubieToGet], there might be more than one mesh inside that cubie
 
-		if(pieces[cubieToGet] != NULL){
-			const int ChCnt = pieces[cubieToGet]->GetChildrenList()->GetCount();
-			sgCObject** allParts = (sgCObject**)malloc(ChCnt*sizeof(sgCObject*));
-			pieces[cubieToGet]->BreakGroup(allParts);
-			sgDeleteObject(pieces[cubieToGet]); //break group and delete each object?
-			for (int j=0; j < ChCnt; j++){
-				//clone each object
-				sgCObject *temp = allParts[j];
-				//put clone on *[] tomake new group
-				objcts[objctr] = temp->Clone();
-				objcts1[objctr] = temp->Clone();
-				objctr ++;
-				sgCObject::DeleteObject(temp);
-			}
-			free(allParts);
-			//put that new group inside aux2->sgCGroup
-			pieces[cubieToGet] = sgCGroup::CreateGroup(objcts,objctr); //so pieces[] has the data again, and keeps it for future requests
-			aux2 = sgCGroup::CreateGroup(objcts1,objctr);  
-		}else{
-			pieces[cubieToGet] = NULL;
-			aux2 = NULL; 
+	if(pieces[cubieToGet] != NULL){
+		const int ChCnt = pieces[cubieToGet]->GetChildrenList()->GetCount();
+		sgCObject** allParts = (sgCObject**)malloc(ChCnt*sizeof(sgCObject*));
+		pieces[cubieToGet]->BreakGroup(allParts);
+		sgDeleteObject(pieces[cubieToGet]); //break group and delete each object?
+		for (int j=0; j < ChCnt; j++){
+			//clone each object
+			sgCObject *temp = allParts[j];
+			//put clone on *[] tomake new group
+			objcts[objctr] = temp->Clone();
+			objcts1[objctr] = temp->Clone();
+			objctr ++;
+			sgCObject::DeleteObject(temp);
 		}
-		free(objcts);
-		free(objcts1);
+		free(allParts);
+		//put that new group inside aux2->sgCGroup
+		pieces[cubieToGet] = sgCGroup::CreateGroup(objcts,objctr); //so pieces[] has the data again, and keeps it for future requests
+		aux2 = sgCGroup::CreateGroup(objcts1,objctr);  
+	}else{
+		pieces[cubieToGet] = NULL;
+		aux2 = NULL; 
+	}
+	free(objcts);
+	free(objcts1);
 
-		cout << "out get pieces: " << ofGetElapsedTimeMillis() << endl;
+	cout << "out get pieces: " << ofGetElapsedTimeMillis() << endl;
 	return aux2;
 
 	//return pieces;
 	//return NULL; //here for memory leaks testing
-	
+
 }
 //--------------------------------------------------------------
 int slicer::countPieces(){
@@ -144,16 +144,16 @@ void slicer::intersectCubesOneByOne(sgCObject *obj, int cubieToCut){
 	cout << "enter intersect: " << ofGetElapsedTimeMillis() << endl;
 	//it uses intersection of numPieces cubes, on the object, to get the piece of that cubie, one by one
 	//all pieces are left in pieces[]
-	
-		sgCObject *tempObj = obj->Clone();
-		sgCObject *tempCutter = myCutter->cubes[cubieToCut]->Clone();
-		//do intersecton at origin
-		pieces[cubieToCut] = sgBoolean::Intersection(*(sgC3DObject*)tempObj,*(sgC3DObject*)tempCutter); 
-		//now we have the whole piece that goes into a cubie for that slicning cube
-		//clean up
-		sgDeleteObject(tempObj);
-		sgDeleteObject(tempCutter);
-	
+
+	sgCObject *tempObj = obj->Clone();
+	sgCObject *tempCutter = myCutter->cubes[cubieToCut]->Clone();
+	//do intersecton at origin
+	pieces[cubieToCut] = sgBoolean::Intersection(*(sgC3DObject*)tempObj,*(sgC3DObject*)tempCutter); 
+	//now we have the whole piece that goes into a cubie for that slicning cube
+	//clean up
+	sgDeleteObject(tempObj);
+	sgDeleteObject(tempCutter);
+
 	cout << "out intersect: " << ofGetElapsedTimeMillis() << endl;
 }
 //---------------------------------------------------------------

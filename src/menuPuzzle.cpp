@@ -249,8 +249,8 @@ void menuPuzzle::nodeDraw(){
 	//	ofDisableLighting();
 	//}
 
-	myMenuPuzzle->draw();
-	////myVbo.draw(GL_TRIANGLES, 0,myMesh.getNumIndices());
+	myMenuPuzzle->drawMenuPuzzle();
+	//myVbo.draw(GL_TRIANGLES, 0,myMesh.getNumIndices());
 	//ofDisableDepthTest();
 	ofPopMatrix();
 	ofDisableDepthTest();
@@ -276,7 +276,7 @@ void menuPuzzle::nodeDraw(){
 	}
 }
 //----------------------------------------------------------------
-void menuPuzzle::loadObjectMP(sgC3DObject *obj, int ID){
+void menuPuzzle::loadObjectMP(sgC3DObject *obj, int ID,vector< ofVec3f > ObjectUniqueNormalsIN){
 
 	if(temp==NULL){
 		//object = obj; //to make a puzzle at the beggining 
@@ -288,7 +288,7 @@ void menuPuzzle::loadObjectMP(sgC3DObject *obj, int ID){
 		temp = obj;
 	}
 	objectId = ID;
-
+	ObjectUniqueNormals = ObjectUniqueNormalsIN;
 	//if(objectId == 1){
 	//	//torus
 	//	SG_VECTOR offset = {0,0,0}; //for torus to be in place, the 

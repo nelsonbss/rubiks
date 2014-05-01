@@ -76,7 +76,7 @@ public:
 	void unDo(SG_VECTOR axis,bool di);
 
 	///color change
-	void changeColorToColor(ofFloatColor Sc, ofFloatColor Tc);
+	//void changeColorToColor(ofFloatColor Sc, ofFloatColor Tc);
 	void colorBlackSides(int cubieId, float playRoom);
 	
 	void colorTorus();

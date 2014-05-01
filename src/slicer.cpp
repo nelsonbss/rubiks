@@ -23,7 +23,7 @@ void slicer::draw(){
 }
 //--------------------------------------------------------------
 sgCGroup** slicer::getPieces(){
-	cout << "in get pieces: " << ofGetElapsedTimeMillis() << endl;
+	//cout << "in get pieces: " << ofGetElapsedTimeMillis() << endl;
 	//make a copy of the group** to send outside pieces[]
 	aux = (sgCGroup**)malloc(numPieces*sizeof(sgCGroup*));
 	for(int i =0; i<numPieces; i ++){
@@ -57,7 +57,7 @@ sgCGroup** slicer::getPieces(){
 		free(objcts);
 		free(objcts1);
 	}
-	cout << "out get pieces: " << ofGetElapsedTimeMillis() << endl;
+	//cout << "out get pieces: " << ofGetElapsedTimeMillis() << endl;
 	return aux;
 
 	//return pieces;
@@ -125,7 +125,7 @@ int slicer::countPieces(){
 //--------------------------------------------------------------
 //////////////////////////// Intersection///////////////////////
 void slicer::intersectCubes(sgCObject *obj){
-	cout << "enter intersect: " << ofGetElapsedTimeMillis() << endl;
+	//cout << "enter intersect: " << ofGetElapsedTimeMillis() << endl;
 	//it uses intersection of numPieces cubes, on the object, to get all the pieces for each cubie in one oeration
 	//all pieces are left in pieces[]
 	for(int i =0; i<numPieces; i ++){
@@ -138,7 +138,7 @@ void slicer::intersectCubes(sgCObject *obj){
 		sgDeleteObject(tempObj);
 		sgDeleteObject(tempCutter);
 	}
-	cout << "out intersect: " << ofGetElapsedTimeMillis() << endl;
+	//cout << "out intersect: " << ofGetElapsedTimeMillis() << endl;
 }
 //---------------------------------------------------------------
 void slicer::intersectCubesOneByOne(sgCObject *obj, int cubieToCut){

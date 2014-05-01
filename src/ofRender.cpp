@@ -92,7 +92,7 @@ ofRender::ofRender(){
 	colorsVector.push_back(indigo);//14
 	colorsVector.push_back(redOrange);//15
 }
-
+//-----------------------------------------------------------------------------------------------------------------------
 void ofRender::sgCoretoOFmesh(sgC3DObject *obj, CubieMesh&mesh,int idCubie,int selectedObjectID){
 	vector <ofFloatColor> colorsVector2;
 	//convert to of mesh and draw as of
@@ -190,24 +190,24 @@ void ofRender::sgCoretoOFmesh(sgC3DObject *obj, CubieMesh&mesh,int idCubie,int s
 	//setNormals(mesh);//before normals were done at the end, now they are done for each created triangle, so we can color it according to the normal
 }
 //---------------------------------------------------------------------------------------------------------------
-void ofRender::changeColorToColor(ofFloatColor Sc, ofFloatColor Tc, ofMesh &mesh){
-	//it recieves a target color tolook for
-	//a target color to change to
-	//and the mesh in which to look for it
-	vector <ofFloatColor> colorsVectorT;
-	colorsVectorT = mesh.getColors();
-	//looks on the colorvector for this color
-	for(int i=0; i< colorsVectorT.size(); i++){
-		ofFloatColor c = colorsVectorT[i];
-		if((c.r == Sc.r) && (c.g == Sc.g)  && (c.b == Sc.b)){
-			//when it finds it->replace it for the incoming color
-			colorsVectorT[i] = Tc;
-		}
-	}
-	//replace the colors vector on the mesh
-	mesh.clearColors();
-	mesh.addColors(colorsVectorT);
-}
+//void ofRender::changeColorToColor(ofFloatColor Sc, ofFloatColor Tc, ofMesh &mesh){
+//	//it recieves a target color tolook for
+//	//a target color to change to
+//	//and the mesh in which to look for it
+//	vector <ofFloatColor> colorsVectorT;
+//	colorsVectorT = mesh.getColors();
+//	//looks on the colorvector for this color
+//	for(int i=0; i< colorsVectorT.size(); i++){
+//		ofFloatColor c = colorsVectorT[i];
+//		if((c.r == Sc.r) && (c.g == Sc.g)  && (c.b == Sc.b)){
+//			//when it finds it->replace it for the incoming color
+//			colorsVectorT[i] = Tc;
+//		}
+//	}
+//	//replace the colors vector on the mesh
+//	mesh.clearColors();
+//	mesh.addColors(colorsVectorT);
+//}
 //---------------------------------------------------------------------------------------------------------------
 void ofRender::colorFaces(cubie **myCubies, int numPieces, float playRoom, int objectID){
 	//goes through each cubie and makes sets of normals.. to determine all different normals in the object
@@ -608,7 +608,7 @@ void ofRender::colorFacesOneByOne(cubie *myCubie, float playRoom, int objectID,v
 	cout << "out COLOR FACES oneBone: " << ofGetElapsedTimeMillis() << endl;
 }
 //---------------------------------------------------------------------------------------------------------------
-void ofRender::colorBlackSides(ofMesh &mesh, int idCubie, float playRoom, int objectID){
+//void ofRender::colorBlackSides(ofMesh &mesh, int idCubie, float playRoom, int objectID){
 	////color black the correct sides of each cubie
 	//vector< ofVec3f > tnormals;
 	//vector< ofFloatColor > tcolors;
@@ -1037,7 +1037,7 @@ void ofRender::colorBlackSides(ofMesh &mesh, int idCubie, float playRoom, int ob
 	////replace the colors vector on the mesh
 	//mesh.clearColors();
 	//mesh.addColors(tcolors);
-}
+//}
 //---------------------------------------------------------------------------------------------------------------
 void ofRender::colorBlackSidesFromAxes(ofMesh &mesh, int xp, int yp, int zp, int gridSize, float playRoom){
 	//color black the correct sides of each cubie

@@ -23,6 +23,7 @@ public:
 	void setup();
 	void update();
 	void draw();
+	void drawMenuPuzzle();
 
 	void exit();
 
@@ -88,7 +89,7 @@ public:
 	void colorCubiesBlackSidesOneByOne(int cubieToColor);
 
 	///color change
-	void changeColorToColor(ofFloatColor Sc, ofFloatColor Tc);
+	//void changeColorToColor(ofFloatColor Sc, ofFloatColor Tc);
 	//color cloning
 	void clonePuzzleColors(puzzle &templatePuzzle);
 

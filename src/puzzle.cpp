@@ -140,10 +140,21 @@ void puzzle::draw(){
 		}
 	}
 	ofPopMatrix();
-	if(bDrawLine && bHaveLine){
-		ofSetColor(255,0,0);
-		ofLine(lineStart.x, lineStart.y, lineStart.z, lineStop.x, lineStop.y, lineStop.z);
+	//if(bDrawLine && bHaveLine){
+	//	ofSetColor(255,0,0);
+	//	ofLine(lineStart.x, lineStart.y, lineStart.z, lineStop.x, lineStop.y, lineStop.z);
+	//}
+}
+//----------------------------------------------------------------
+void puzzle::drawMenuPuzzle(){  
+	ofPushMatrix();
+	//puzzle tells every cubie to attach objects to scene
+	for(int i=0;i<numPieces ;i++){
+		if(myCubies[i] != NULL){
+			myCubies[i]->draw();
+		}
 	}
+	ofPopMatrix();
 }
 //----------------------------------------------------------------
 int puzzle::giveNumCubies(){
@@ -1414,11 +1425,11 @@ void puzzle::colorCubiesBlackSidesOneByOne(int cubieToColor){
 	myCubies[cubieToColor]->colorBlackSides(cubieToColor,0.1);
 }
 //----------------------------------------------------------------
-void puzzle::changeColorToColor(ofFloatColor Sc, ofFloatColor Tc){
-	for(int i=0;i<numPieces;i++){
-		myCubies[i]->changeColorToColor(Sc,Tc);
-	}
-}
+//void puzzle::changeColorToColor(ofFloatColor Sc, ofFloatColor Tc){
+//	for(int i=0;i<numPieces;i++){
+//		myCubies[i]->changeColorToColor(Sc,Tc);
+//	}
+//}
 //------------------------------------------------------------------
 void puzzle::clonePuzzleColors(puzzle &templatePuzzle){
 	//gets the colors from the templatepuzzle and applies those to the current puzzle cubies

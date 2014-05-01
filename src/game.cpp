@@ -424,14 +424,13 @@ void game::update(string _eventName, SubObEvent _event){
 			setPage("armature-start");
 
 		} else if(step == 3){
-			//setPage("color-start");
+			//setPage("color-start");//this is now getting called after a puzzle is finishd being created, on update()
 		} else if(step == 4){
 			setPage("play");
 		} else {
 			setPage("object-start");
 			camPosition.set(viewport.width / 2, viewport.height / 2, 400);
 			guiReset();
-
 		}
 	}
 	if(_eventName == prefix + ":armature-selected"){
@@ -785,7 +784,7 @@ void game::draw(){
 		//ofFill();
 		//ofBox(100);
 		//glTranslatef(-posP.x,-posP.y,-posP.z);
-		myPuzzle->draw();
+		myPuzzle->drawMenuPuzzle();
 		if(bUnproject){
 			if(unprojectMode != UP_MODE_P){
 				unprojectPoint(mousePoint);//mousePoint gets set on bUnproject
@@ -1054,15 +1053,15 @@ void game::loadMenuObject(int objID, SG_VECTOR p, SG_VECTOR t,vector< ofFloatCol
 			applyArmRotations();
 			createCutterSlicer();
 			////createPuzzle(posP);
-			vector< ofVec3f > ObjectUniqueNormals;
+			//vector< ofVec3f > ObjectUniqueNormals;
 
-			ObjectUniqueNormals.push_back(ofVec3f(1,0,0));
-			ObjectUniqueNormals.push_back(ofVec3f(0,1,0));
-			ObjectUniqueNormals.push_back(ofVec3f(0,0,1));
-			ObjectUniqueNormals.push_back(ofVec3f(-1,0,0));
-			ObjectUniqueNormals.push_back(ofVec3f(0,-1,0));
-			ObjectUniqueNormals.push_back(ofVec3f(0,0,-1));
-			myPuzzle = new puzzle(posP, offsetSlicer,grid,ObjectUniqueNormals);
+			//ObjectUniqueNormals.push_back(ofVec3f(1,0,0));
+			//ObjectUniqueNormals.push_back(ofVec3f(0,1,0));
+			//ObjectUniqueNormals.push_back(ofVec3f(0,0,1));
+			//ObjectUniqueNormals.push_back(ofVec3f(-1,0,0));
+			//ObjectUniqueNormals.push_back(ofVec3f(0,-1,0));
+			//ObjectUniqueNormals.push_back(ofVec3f(0,0,-1));
+			myPuzzle = new puzzle(posP, offsetSlicer,grid,objectDisplayed->ObjectUniqueNormals);
 			myPuzzle->setup();
 			mySlicer->intersectCubes((sgCObject*)objectDisplayed->getObject()); 
 			myPuzzle->loadPieces(mySlicer->getPieces(),objectID,rotateSlicer);
@@ -1310,15 +1309,15 @@ void game::createCutterSlicer(){
 void game::createPuzzle(SG_VECTOR p){
 	if(step == 3){
 		//////////////////////////////////create puzzle///////////////////////////////////////
-		vector< ofVec3f > ObjectUniqueNormals;
+		//vector< ofVec3f > ObjectUniqueNormals;
 
-		ObjectUniqueNormals.push_back(ofVec3f(1,0,0));
-		ObjectUniqueNormals.push_back(ofVec3f(0,1,0));
-		ObjectUniqueNormals.push_back(ofVec3f(0,0,1));
-		ObjectUniqueNormals.push_back(ofVec3f(-1,0,0));
-		ObjectUniqueNormals.push_back(ofVec3f(0,-1,0));
-		ObjectUniqueNormals.push_back(ofVec3f(0,0,-1));
-		myPuzzle =  new puzzle(p, offsetSlicer,armID,ObjectUniqueNormals); // it receives the position to be displayed AND the offset of the armature/cutter to adapt slicing
+		//ObjectUniqueNormals.push_back(ofVec3f(1,0,0));
+		//ObjectUniqueNormals.push_back(ofVec3f(0,1,0));
+		//ObjectUniqueNormals.push_back(ofVec3f(0,0,1));
+		//ObjectUniqueNormals.push_back(ofVec3f(-1,0,0));
+		//ObjectUniqueNormals.push_back(ofVec3f(0,-1,0));
+		//ObjectUniqueNormals.push_back(ofVec3f(0,0,-1));
+		myPuzzle =  new puzzle(p, offsetSlicer,armID,objectDisplayed->ObjectUniqueNormals); // it receives the position to be displayed AND the offset of the armature/cutter to adapt slicing
 		myPuzzle->setup();
 
 		///////////////  BOOLEAN INTERSECTION ///////////////////////////////////
@@ -1660,16 +1659,16 @@ void game::guiInput(int in){
 
 				////////////////////////////////create puzzle///////////////////////////////////////
 				//select the unique normals for the object that wants to be a puzzle
-				vector< ofVec3f > ObjectUniqueNormals;
+				//vector< ofVec3f > ObjectUniqueNormals;
 
-				ObjectUniqueNormals.push_back(ofVec3f(1,0,0));
-				ObjectUniqueNormals.push_back(ofVec3f(0,1,0));
-				ObjectUniqueNormals.push_back(ofVec3f(0,0,1));
-				ObjectUniqueNormals.push_back(ofVec3f(-1,0,0));
-				ObjectUniqueNormals.push_back(ofVec3f(0,-1,0));
-				ObjectUniqueNormals.push_back(ofVec3f(0,0,-1));
+				//ObjectUniqueNormals.push_back(ofVec3f(1,0,0));
+				//ObjectUniqueNormals.push_back(ofVec3f(0,1,0));
+				//ObjectUniqueNormals.push_back(ofVec3f(0,0,1));
+				//ObjectUniqueNormals.push_back(ofVec3f(-1,0,0));
+				//ObjectUniqueNormals.push_back(ofVec3f(0,-1,0));
+				//ObjectUniqueNormals.push_back(ofVec3f(0,0,-1));
 
-				myPuzzle =  new puzzle(posP, offsetSlicer,armID, ObjectUniqueNormals); // it receives the position to be displayed AND the offset of the armature/cutter to adapt slicing
+				myPuzzle =  new puzzle(posP, offsetSlicer,armID, objectDisplayed->ObjectUniqueNormals); // it receives the position to be displayed AND the offset of the armature/cutter to adapt slicing
 				myPuzzle->setup();
 
 				//send the armature rotations to the 3dObject
@@ -2164,7 +2163,7 @@ void game::clearDisplayedObject(){
 //----------------------------------------------------------------------
 void game::restart(){
 	if(step == 7){
-		myPuzzle->exit();//if we pass this puzzle to the saved games, we cant delete it!!!!!!!!!
+		//myPuzzle->exit();//if we pass this puzzle to the saved games, we cant delete it!!!!!!!!!or we delete the menu puzzle for the future
 		//objectDisplayed->exit();
 		step = 0;
 		objectID = -1;

@@ -928,18 +928,18 @@ void cubie::unDo(SG_VECTOR axis,bool di){
 	}
 }
 //---------------------------------------------------------------
-void cubie::changeColorToColor(ofFloatColor Sc, ofFloatColor Tc){
-	ofRender *ofr = new ofRender(); 
-	for(int j=0; j< numObjs; j++){
-		ofr->changeColorToColor(Sc,Tc,myMeshs[j]);
-		//have to replace the vbo
-		ofVbo tempVbo;
-		tempVbo.setMesh(myMeshs[j], GL_STATIC_DRAW);
-		myVbos[j]=tempVbo;
-	}
-
-	free(ofr);
-}
+//void cubie::changeColorToColor(ofFloatColor Sc, ofFloatColor Tc){
+//	ofRender *ofr = new ofRender(); 
+//	for(int j=0; j< numObjs; j++){
+//		ofr->changeColorToColor(Sc,Tc,myMeshs[j]);
+//		//have to replace the vbo
+//		ofVbo tempVbo;
+//		tempVbo.setMesh(myMeshs[j], GL_STATIC_DRAW);
+//		myVbos[j]=tempVbo;
+//	}
+//
+//	free(ofr);
+//}
 //-----------------------------------------------------------------
 void cubie::colorBlackSides(int idCubie, float playRoom){
 	//have key sides of cubie colored black

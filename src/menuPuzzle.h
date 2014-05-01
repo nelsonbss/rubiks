@@ -30,7 +30,7 @@ public:
 	void exit();
 	////////////////////////////////////////////////////////////////////////////////////////////////////////
 	int id;
-	void loadObjectMP(sgC3DObject *obj, int ID); //it will load a sgCore lib object: torus, box...
+	void loadObjectMP(sgC3DObject *obj, int ID,vector< ofVec3f > ObjectUniqueNormals); //it will load a sgCore lib object: torus, box...
 	//sgC3DObject* getObject();//it will return the object, i.e to be used in boolean
 
 	int objectId; //the id of the 3d selected object, the id comes from the main app
@@ -38,6 +38,8 @@ public:
 	sgC3DObject *temp;//the slicing object will be in 0,0,0 to be cut. the temp will be moved around and be drawn.
 	CubieMesh myMesh;// this will be used to draw the object, 
 	ofVbo myVbo;
+
+	vector< ofVec3f > ObjectUniqueNormals;
 
 	////to controll colors on displayed object and displayed puzzle for that object
 	////so that both objects have the same color

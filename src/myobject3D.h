@@ -25,6 +25,9 @@ public:
 	CubieMesh myMesh;// this will be used to draw the object, 
 	ofVbo myVbo;
 
+	void createUniqueNormals(float playRoom);
+	vector< ofVec3f > ObjectUniqueNormals;
+
 	SG_VECTOR pos;
 	SG_VECTOR tempPos;
 	ofVec3f armRot;

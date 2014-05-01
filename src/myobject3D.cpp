@@ -32,6 +32,9 @@ void myobject3D::setup(){
 	ofRender *ofr = new ofRender(); //class that has the metods to transform sgCore to OF mesh and set the normals (in one function)
 	//ofr->sgCoretoOFmesh(temp,myMesh,-1); //-1 because its not a cubie but want color on the sample object
 	ofr->sgCoretoOFmesh(temp,myMesh,-2,objectId); //-2 for plain color
+	if(objectId < 8){
+		createUniqueNormals(0.01);
+	}
 	myVbo.setMesh(myMesh, GL_STATIC_DRAW);
 	free(ofr);
 }
@@ -124,7 +127,7 @@ void myobject3D::loadObjectOD(sgC3DObject *obj, int ID){
 	}
 	objectId = ID;
 
-	//flip 180 on x axis the object for bl and br game stations
+	////flip 180 on x axis the object for bl and br game stations
 	if(station.compare("bl")==0){
 		SG_POINT rotP = {0,0,0};
 		SG_VECTOR rotV = {1,0,0};
@@ -203,6 +206,50 @@ void myobject3D::applyArmRotations(ofVec3f v){
 	//object->GetTempMatrix()->Rotate(rotP,rotV3,ofDegToRad(armRot.z));
 	object->ApplyTempMatrix();
 	object->DestroyTempMatrix(); 
+}
+//---------------------------------------------------------------
+void myobject3D::createUniqueNormals(float playRoom){
+	//create unique normals
+	vector< ofVec3f > tnormals;
+	//get the normals of the mesh!
+	tnormals = myMesh.getNormals();
+	//verify each normal value on unique normals vector
+	for(int n=0; n< tnormals.size() ; n++){
+		if(ObjectUniqueNormals.size() == 0){
+			//the first normal of all the normals
+			//push the first one
+			ObjectUniqueNormals.push_back (tnormals[n]);
+		}else{
+			//it has at least one normal
+			//compare current normal with all other normals
+			for(int un = 0; un < ObjectUniqueNormals.size(); un ++){
+
+				if(((ObjectUniqueNormals[un].x - playRoom) <= tnormals[n].x) && 
+					(tnormals[n].x <= (ObjectUniqueNormals[un].x + playRoom)) &&
+					((ObjectUniqueNormals[un].y - playRoom) <= tnormals[n].y) && 
+					(tnormals[n].y <= (ObjectUniqueNormals[un].y + playRoom)) &&
+					((ObjectUniqueNormals[un].z - playRoom) <= tnormals[n].z) && 
+					(tnormals[n].z <= (ObjectUniqueNormals[un].z + playRoom))
+					){
+						//we already have that type of normal
+						//stop looking through the vector
+						un = ObjectUniqueNormals.size();
+				}else{
+					//its different
+					//keep going until the last element
+					if(un == ObjectUniqueNormals.size()-1){
+						//its the las element on the vector of unique normals
+						//if we got here its because the current normal (cn) is new to the set
+						ObjectUniqueNormals.push_back(tnormals[n]);
+						//stop this for.. we just changed the size
+						un = ObjectUniqueNormals.size();
+					}
+				}
+			}
+		}
+	}
+	//now ObjectUniqueNormals has all the normals for that original object
+	//these will be used for coloring cubies for that object
 }
 //----------------------------------------------------------------
 void myobject3D::exit(){

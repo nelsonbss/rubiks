@@ -971,6 +971,8 @@ void game::loadPuzzle(puzzle *inputPuzzle,int objID, SG_VECTOR p, SG_VECTOR t){
 
 	myPuzzle = inputPuzzle;
 
+	armID = myPuzzle->gridSize;
+
 	myPuzzle->pos.x = posP.x;
 	myPuzzle->pos.y = posP.y;
 	myPuzzle->pos.z = posP.z;

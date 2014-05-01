@@ -180,7 +180,7 @@ int puzzle::giveNumCubies(){
 }
 //----------------------------------------------------------------
 void puzzle::loadPieces(sgCGroup **pcs,int selObjId, ofVec3f v){
-	cout << "enter load pieces: " << ofGetElapsedTimeMillis() << endl;
+	//cout << "enter load pieces: " << ofGetElapsedTimeMillis() << endl;
 	//it loads the pieces that the slicer made, the pieces are in a sgCGroup** pieces[], 
 	//this function receives a copy of that sgCGroup** made by mySlicer->getPieces()
 	//it loads them into its own cubies
@@ -240,7 +240,7 @@ void puzzle::loadPieces(sgCGroup **pcs,int selObjId, ofVec3f v){
 	for(int i=0;i<numPieces;i++){
 		myCubies[i]->crateOfMeshs();
 	}
-	cout << "out load pieces: " << ofGetElapsedTimeMillis() << endl;
+	//cout << "out load pieces: " << ofGetElapsedTimeMillis() << endl;
 }
 //----------------------------------------------------------------
 void puzzle::loadPiecesOneByOne(sgCGroup *pc,int selObjId, ofVec3f v, int cubieToPlace){

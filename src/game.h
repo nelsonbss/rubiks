@@ -23,7 +23,11 @@ enum{UP_MODE_MOUSE, UP_MODE_COLOR, UP_MODE_P};
 class Observer;
 class game : public Observer{
 public:
-	game(SG_VECTOR p, float w, float h, SG_VECTOR puzzlePos, ofRectangle _vp, float iddleTime, string myPrefix);
+	game(SG_VECTOR p, float w, float h, SG_VECTOR puzzlePos, ofRectangle _vp, float iddleTime, string myPrefix, int saving);
+	////take this out in final release
+	//this is to turn on/off the save functionality
+	bool savingMode;
+
 	//void setup(sgCObject *sgBunnyi,sgCObject *sgTetrahedroni,sgCObject *sgDodecahedroni,sgCObject *sgIcosahedroni,sgCObject *sgOctahedroni, string _prefix);//,sgCObject *sgTeapoti);
 	void setup(string _prefix);
 	void setup();
@@ -251,5 +255,8 @@ public:
 	void setPage(string _page);
 
 	void task1(string msg);
+
+
+	
 };
 #endif /* defined(__Tgame__game__) */

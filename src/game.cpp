@@ -21,7 +21,12 @@
 
 #define USE_LIGHT 1  //0 is off
 
-game::game(SG_VECTOR gamePos, float w, float h, SG_VECTOR displayPos, ofRectangle _vp, float iddleTime, string myPrefix){
+game::game(SG_VECTOR gamePos, float w, float h, SG_VECTOR displayPos, ofRectangle _vp, float iddleTime, string myPrefix, int saving){
+	////take this out in final release
+	//this is to turn on/off the save functionality
+	//and the funtion parameters attached to it
+	savingMode = saving;
+
 	posGame = gamePos;
 	slicingPos = posGame;
 	width = w;
@@ -361,12 +366,16 @@ void game::update(){
 //----------------------------------------------------------------------
 void game::update(string _eventName, SubObEvent _event){
 	if(_eventName == prefix + ":save"){
-		//call save functionality here
-		savePuzzleB = true;
-		//dont make opengl calls here... no drawing anything
-		setPage("object-start");
-		camPosition.set(viewport.width / 2, viewport.height / 2, 400);
-		guiReset();
+		if(savingMode == 0){
+			//call save functionality here
+			savePuzzleB = true;
+			//dont make opengl calls here... no drawing anything
+			setPage("object-start");
+			camPosition.set(viewport.width / 2, viewport.height / 2, 400);
+			guiReset();
+		}else{
+			unDoMenuPuzzle();
+		}
 	}
 	if(_eventName == prefix + ":object-selected"){
 		if(step == 0){

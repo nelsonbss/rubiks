@@ -10,6 +10,11 @@
 #define puzzleItems 10
 #define USE_MOUSE 1
 
+////take this out in final release
+	//this is to turn on/off the save functionality
+	//and the funtion parameters attached to it
+#define saving 1; //0 saving
+
 std::map<int,gwc::Point> active_points;
 
 testApp::testApp() : puzzleDisplayed(){
@@ -234,17 +239,26 @@ void testApp::setup(){
 	tr.width = 660;
 	tr.height = 320;
 	//myGames.erase (myGames.begin(),myGames.end());
-	game *tempGame = new game(gamePos, ofGetWidth(), ofGetHeight(),displayPos, tr, iddleTime,"bl");
+
+
+	////take this out in final release
+	//this is to turn on/off the save functionality
+	//and the funtion parameters attached to it
+	int auxSaving = saving;
+
+
+
+	game *tempGame = new game(gamePos, ofGetWidth(), ofGetHeight(),displayPos, tr, iddleTime,"bl",auxSaving);
 	myGames.push_back(tempGame);
 	tr.x = 960;
-	game *tempGame2 = new game(gamePos, ofGetWidth(), ofGetHeight(),displayPos, tr, iddleTime,"br");
+	game *tempGame2 = new game(gamePos, ofGetWidth(), ofGetHeight(),displayPos, tr, iddleTime,"br",auxSaving);
 	myGames.push_back(tempGame2);
 	tr.x = 300;
 	tr.y = 60;
-	game *tempGame3 = new game(gamePos, ofGetWidth(), ofGetHeight(),displayPos, tr, iddleTime,"tl");
+	game *tempGame3 = new game(gamePos, ofGetWidth(), ofGetHeight(),displayPos, tr, iddleTime,"tl",auxSaving);
 	myGames.push_back(tempGame3);
 	tr.x = 960;
-	game *tempGame4 = new game(gamePos, ofGetWidth(), ofGetHeight(),displayPos, tr, iddleTime,"tr");
+	game *tempGame4 = new game(gamePos, ofGetWidth(), ofGetHeight(),displayPos, tr, iddleTime,"tr",auxSaving);
 	myGames.push_back(tempGame4);
 	//create a second game
 	//game *tempGame2 = new game(gamePos, ofGetWidth(), ofGetHeight(),displayPos,iddleTime);

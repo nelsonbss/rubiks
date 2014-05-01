@@ -120,7 +120,7 @@ void testApp::setup(){
 	offsetSlicer = ofVec3f(0,0,0);
 	rotateSlicer = ofVec3f (0,0,0);
 
-	int gridSize = 5;//this will be a shuffled int for diferent shapes, and predetermined for predetermined shapes
+	int gridSize = 2;//this will be a shuffled int for diferent shapes, and predetermined for predetermined shapes
 
 	if(numObjects !=0){
 		middlePuzzlePos.x = ofGetWindowWidth();

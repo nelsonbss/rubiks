@@ -146,7 +146,7 @@ public:
 	void makePuzzle();
 	bool savePuzzleB;
 	bool hasSaved;
-	menuPuzzle* savePuzzle(SG_POINT slicingPos, SG_VECTOR middlePuzzlePos, int puzzleCounter);
+	void savePuzzle();
 	vector< ofFloatColor > colorsVMenuG;
 	vector< ofVec3f > uniqueNormalsG;
 

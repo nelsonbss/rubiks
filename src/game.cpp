@@ -62,7 +62,7 @@ game::game(SG_VECTOR gamePos, float w, float h, SG_VECTOR displayPos, ofRectangl
 
 	armID = -1; //initialized in -1 when there is no armature selected
 	objectID = -1; //initialized on -1 because on stage=0 there is no object selected
-	
+
 
 	creatingPuzzle = false;
 	puzzleFinished = false;
@@ -191,13 +191,13 @@ void game::setup(){
 	light.setDiffuseColor( ofColor(255.f, 255.f, 255.f));
 	light.setSpecularColor( ofColor(255.f, 255.f, 255.f));
 
+	dragId = -1;
+	bHaveNewObject = false;
 	objectID = -1;
 	step = -1;
-	idcubie = 0;
-	dragId = -1;
-
-	bHaveNewObject = false;
-	bHaveNext = false;
+	idcubie=0;
+	faceRotate = false;
+	//faceRotateB = false;//used in the 2 id rotation function
 }
 //----------------------------------------------------------------------
 void game::update(){
@@ -2102,38 +2102,38 @@ void game::prepareDrawing(){
 	step = 6;
 }
 //---------------------------------------------------------------------
-menuPuzzle*  game::savePuzzle(SG_POINT slicingPos, SG_VECTOR middlePuzzlePos, int puzzleCounter){
+void  game::savePuzzle(){
+	hasSaved = true;
+	////return the puzzle that has been created
+	////build a menuPuzzle object and give it to the mainApp
+	//menuPuzzle *puzzleToSave = new menuPuzzle(slicingPos, middlePuzzlePos, puzzleCounter);
+	//////puzzleToSave->loadObjectMP(objectDisplayed->getObject(),objectID);
+	//////puzzleToSave->setup();
+	//////puzzleToSave->update();
+	//////puzzleToSave->colorFacesMenu();
 
-	//return the puzzle that has been created
-	//build a menuPuzzle object and give it to the mainApp
-	menuPuzzle *puzzleToSave = new menuPuzzle(slicingPos, middlePuzzlePos, puzzleCounter);
-	////puzzleToSave->loadObjectMP(objectDisplayed->getObject(),objectID);
+	//////////////need to pass this data to menuPuzzle
+	//////////////vector< ofFloatColor > colorsVMenu;
+	//////////////vector< ofVec3f > uniqueNormals;
+	//////////////ofVec3f offsetSlicer;
+	//////////////ofVec3f rotateSlicer;
+
+	////////////////puzzleToSave->loadPuzzle(myPuzzle);
+	////////////puzzleToSave->objectId = objectID; 
+
+	////////////////////////////////////////////////////////////////////////////
+	//////no need to have the object IF we are showing puzzles in the middle, not unsliced objects
+	////puzzleToSave->loadObjectMP((sgC3DObject*)objectsMP[i+1]->Clone(),i+1);
 	////puzzleToSave->setup();
 	////puzzleToSave->update();
-	////puzzleToSave->colorFacesMenu();
+	////puzzleToSave->colorFacesMenu();//implement this later
+	//puzzleToSave->init();//gui
 
-	////////////need to pass this data to menuPuzzle
-	////////////vector< ofFloatColor > colorsVMenu;
-	////////////vector< ofVec3f > uniqueNormals;
-	////////////ofVec3f offsetSlicer;
-	////////////ofVec3f rotateSlicer;
-
-	//////////////puzzleToSave->loadPuzzle(myPuzzle);
-	//////////puzzleToSave->objectId = objectID; 
-
-	//////////////////////////////////////////////////////////////////////////
-	////no need to have the object IF we are showing puzzles in the middle, not unsliced objects
-	//puzzleToSave->loadObjectMP((sgC3DObject*)objectsMP[i+1]->Clone(),i+1);
-	//puzzleToSave->setup();
-	//puzzleToSave->update();
-	//puzzleToSave->colorFacesMenu();//implement this later
-	puzzleToSave->init();//gui
-
-	//we have one puzzle, use this puzzle to 
-	puzzleToSave->offsetSlicer = offsetSlicer;
-	puzzleToSave->rotateSlicer = rotateSlicer;
-	//hasSaved = true;
-	return puzzleToSave;
+	////we have one puzzle, use this puzzle to 
+	//puzzleToSave->offsetSlicer = offsetSlicer;
+	//puzzleToSave->rotateSlicer = rotateSlicer;
+	////hasSaved = true;
+	//return puzzleToSave;
 }
 //----------------------------------------------------------------------
 void game::clearDisplayedObject(){
@@ -2168,9 +2168,10 @@ void game::restart(){
 		objectID = -1;
 	}else if(step==4 || step==5){
 		//dont delete the puzzle if it has been saved
-		//if(!hasSaved){
-		myPuzzle->exit();
-		//}
+		if(!hasSaved){
+			//myPuzzle->exit();
+		}
+		hasSaved = false;
 		myCutter->exit();
 		mySlicer->exit();
 		objectDisplayed->exit();

@@ -62,12 +62,7 @@ game::game(SG_VECTOR gamePos, float w, float h, SG_VECTOR displayPos, ofRectangl
 
 	armID = -1; //initialized in -1 when there is no armature selected
 	objectID = -1; //initialized on -1 because on stage=0 there is no object selected
-	step = -1;
-	idcubie = 0;
-	dragId = -1;
-
-	bHaveNewObject = false;
-	bHaveNext = false;
+	
 
 	creatingPuzzle = false;
 	puzzleFinished = false;
@@ -197,6 +192,12 @@ void game::setup(){
 	light.setSpecularColor( ofColor(255.f, 255.f, 255.f));
 
 	objectID = -1;
+	step = -1;
+	idcubie = 0;
+	dragId = -1;
+
+	bHaveNewObject = false;
+	bHaveNext = false;
 }
 //----------------------------------------------------------------------
 void game::update(){

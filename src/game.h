@@ -26,7 +26,7 @@ public:
 	game(SG_VECTOR p, float w, float h, SG_VECTOR puzzlePos, ofRectangle _vp, float iddleTime, string myPrefix, int saving);
 	////take this out in final release
 	//this is to turn on/off the save functionality
-	bool savingMode;
+	int savingMode;
 
 	//void setup(sgCObject *sgBunnyi,sgCObject *sgTetrahedroni,sgCObject *sgDodecahedroni,sgCObject *sgIcosahedroni,sgCObject *sgOctahedroni, string _prefix);//,sgCObject *sgTeapoti);
 	void setup(string _prefix);

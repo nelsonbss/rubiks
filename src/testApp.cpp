@@ -8,7 +8,7 @@
 #define displayZ -800
 #define iddleTime 120
 #define puzzleItems 10
-#define USE_MOUSE 1
+#define USE_MOUSE 0
 
 ////take this out in final release
 	//this is to turn on/off the save functionality

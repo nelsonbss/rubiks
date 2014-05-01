@@ -22,6 +22,7 @@ public:
 
 	void setup();
 	void update();
+	void updateMenuPuzzle();
 	void draw();
 	void drawMenuPuzzle();
 

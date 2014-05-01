@@ -272,7 +272,11 @@ void game::update(){
 	///////////////////////////////////////update cubies
 	if(puzzleFinished){
 		if(step == 4 || step == 5 || step == 7){
-			myPuzzle->update();
+			if(step == 7){
+				myPuzzle->updateMenuPuzzle();
+			}else{
+				myPuzzle->update();
+			}
 			////////////////////////////////////////////////////move all puzzle
 			//myPuzzle->move(posP);
 			////////////////////////////////////////////rotate all puzzle
@@ -862,6 +866,7 @@ void game::rotateByIDandAxis(int id, SG_VECTOR axs, bool d, float anglei){
 		axis = axs;
 		angleR += anglei;
 		//updatePuzzle = true;
+		puzzleFinished = true;
 		faceRotate = true;
 	}
 }
@@ -1309,14 +1314,6 @@ void game::createCutterSlicer(){
 void game::createPuzzle(SG_VECTOR p){
 	if(step == 3){
 		//////////////////////////////////create puzzle///////////////////////////////////////
-		//vector< ofVec3f > ObjectUniqueNormals;
-
-		//ObjectUniqueNormals.push_back(ofVec3f(1,0,0));
-		//ObjectUniqueNormals.push_back(ofVec3f(0,1,0));
-		//ObjectUniqueNormals.push_back(ofVec3f(0,0,1));
-		//ObjectUniqueNormals.push_back(ofVec3f(-1,0,0));
-		//ObjectUniqueNormals.push_back(ofVec3f(0,-1,0));
-		//ObjectUniqueNormals.push_back(ofVec3f(0,0,-1));
 		myPuzzle =  new puzzle(p, offsetSlicer,armID,objectDisplayed->ObjectUniqueNormals); // it receives the position to be displayed AND the offset of the armature/cutter to adapt slicing
 		myPuzzle->setup();
 
@@ -1656,18 +1653,8 @@ void game::guiInput(int in){
 			if(creatingPuzzle==false){
 				numPuzzlePieces = 0;
 				cubieToCut = 0;
-
 				////////////////////////////////create puzzle///////////////////////////////////////
 				//select the unique normals for the object that wants to be a puzzle
-				//vector< ofVec3f > ObjectUniqueNormals;
-
-				//ObjectUniqueNormals.push_back(ofVec3f(1,0,0));
-				//ObjectUniqueNormals.push_back(ofVec3f(0,1,0));
-				//ObjectUniqueNormals.push_back(ofVec3f(0,0,1));
-				//ObjectUniqueNormals.push_back(ofVec3f(-1,0,0));
-				//ObjectUniqueNormals.push_back(ofVec3f(0,-1,0));
-				//ObjectUniqueNormals.push_back(ofVec3f(0,0,-1));
-
 				myPuzzle =  new puzzle(posP, offsetSlicer,armID, objectDisplayed->ObjectUniqueNormals); // it receives the position to be displayed AND the offset of the armature/cutter to adapt slicing
 				myPuzzle->setup();
 

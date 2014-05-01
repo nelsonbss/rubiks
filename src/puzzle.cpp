@@ -118,6 +118,17 @@ void puzzle::update(){
 	}
 }
 //----------------------------------------------------------------
+void puzzle::updateMenuPuzzle(){
+	//iterate through cubies
+	//cout << "UPDATING PUZZLE" << endl;
+	//it can only update up to the current number of cubies created, since we are doing one on each frame
+	for(int i=0;i<numPieces;i++){
+		if(myCubies[i] != NULL){
+			myCubies[i]->update();
+		}
+	}
+}
+//----------------------------------------------------------------
 void puzzle::draw(){  
 
 	/*

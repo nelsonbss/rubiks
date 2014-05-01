@@ -883,6 +883,9 @@ void game::loadPuzzle(puzzle *inputPuzzle,int objID, SG_VECTOR p, SG_VECTOR t){
 
 	/////////////////////////////////////////////////////////
 	///////////do game reset..because loading a puzzle can happen at anytime
+	if(step == 7){
+		unDoMenuPuzzle();
+	}
 	if(step == 6){
 		if(canvasB){
 			//myCanvas->exit();

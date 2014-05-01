@@ -250,6 +250,8 @@ void menuPuzzle::nodeDraw(){
 	//}
 
 	myMenuPuzzle->drawMenuPuzzle();
+
+
 	//myVbo.draw(GL_TRIANGLES, 0,myMesh.getNumIndices());
 	//ofDisableDepthTest();
 	ofPopMatrix();

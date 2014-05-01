@@ -578,8 +578,8 @@ void cubie::draw(){
 			if(bDrawWire){
 				myMeshs[j].drawWireframe();
 			} else {
-				myVbos[j].draw(GL_TRIANGLES, 0,myMeshs[j].getNumIndices());
-				//myMeshs[j].draw();
+				//myVbos[j].draw(GL_TRIANGLES, 0,myMeshs[j].getNumIndices());
+				myMeshs[j].draw();
 			}
 		}
 		//ofPushMatrix();

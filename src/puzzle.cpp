@@ -158,14 +158,13 @@ void puzzle::draw(){
 }
 //----------------------------------------------------------------
 void puzzle::drawMenuPuzzle(){  
-	ofPushMatrix();
-	//puzzle tells every cubie to attach objects to scene
+	//ofPushMatrix();
 	for(int i=0;i<numPieces ;i++){
 		if(myCubies[i] != NULL){
 			myCubies[i]->draw();
 		}
 	}
-	ofPopMatrix();
+	//ofPopMatrix();
 }
 //----------------------------------------------------------------
 int puzzle::giveNumCubies(){

@@ -33,6 +33,7 @@ public:
 	void loadObjectMP(sgC3DObject *obj, int ID,vector< ofVec3f > ObjectUniqueNormals); //it will load a sgCore lib object: torus, box...
 	//sgC3DObject* getObject();//it will return the object, i.e to be used in boolean
 
+
 	int objectId; //the id of the 3d selected object, the id comes from the main app
 	//sgC3DObject *object;
 	sgC3DObject *temp;//the slicing object will be in 0,0,0 to be cut. the temp will be moved around and be drawn.

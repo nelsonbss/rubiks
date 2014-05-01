@@ -8,12 +8,12 @@
 #define displayZ -800
 #define iddleTime 120
 #define puzzleItems 10
-#define USE_MOUSE 0
+#define USE_MOUSE 1
 
 ////take this out in final release
 	//this is to turn on/off the save functionality
 	//and the funtion parameters attached to it
-#define saving 1; //0 saving
+#define saving 0; //0 saving
 
 std::map<int,gwc::Point> active_points;
 
@@ -341,13 +341,18 @@ void testApp::update(){
 
 
 
-
+			
 
 			middlePuzzlePos.x = 10 + ((puzzleCounter+7) * 10) + ((puzzleCounter+7)*180);
 			objectToMakePuzzle = new myobject3D (slicingPos, middlePuzzlePos,"main");//all on 0,0,0
 			objectToMakePuzzle->loadObjectOD((sgC3DObject*)objectsMP[1]->Clone(),1);
 			objectToMakePuzzle->setup();
 			objectToMakePuzzle->update();
+
+			////////////////////////////////////////////////////
+			//VERY IMPORTANT TO DO THIS HERE so the new middle puzzle gets registered as a subOb  guiNode properly
+			free(middlePuzzles.at((puzzleCounter +7)));
+			/////////////////////////////////////////////////////
 
 			puzzleDisplayed = new menuPuzzle(slicingPos, middlePuzzlePos, (puzzleCounter+7));
 			puzzleDisplayed->loadObjectMP((sgC3DObject*)objectsMP[1]->Clone(),1,objectToMakePuzzle->ObjectUniqueNormals);
@@ -383,7 +388,9 @@ void testApp::update(){
 			//replace current position 8,9,10 on the middelPuzzle Vector
 			//because we are only showing 10 puzzles on the middle
 			//we will replace the last 3
-			middlePuzzles.at( (puzzleCounter+7)) = (menuPuzzle *) puzzleDisplayed;
+			
+			//middlePuzzles.erase(middlePuzzles.begin() + (puzzleCounter+7));
+			middlePuzzles.at((puzzleCounter +7)) = puzzleDisplayed;
 			////keep count of the saved puzzles
 			puzzleCounter ++;
 			if(puzzleCounter == 3){

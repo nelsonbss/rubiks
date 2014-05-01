@@ -106,13 +106,13 @@
     </node>
     -->
   <node type="button" name="3d-window-box">
-    <pos>0.0,0.73</pos>
+    <pos>0.0,0.65</pos>
     <size>1.0,1.0</size>
     <scale>1.0</scale>
     <pages>object-start,object-selected,armature-start,armature-selected,color-start,draw</pages>
     <param>
       <name>image</name>
-      <val>Exports/Rectangle_0x89.png</val>
+      <val>Exports/twisty_bg_%COLOR%.png</val>
     </param>
     <param>
       <name>z</name>
@@ -124,7 +124,7 @@
     </param>
     <param>
       <name>draw-position</name>
-      <val>front</val>
+      <val>back</val>
     </param>
   </node>
   <node type="button" name="bg-language">
@@ -178,10 +178,10 @@
     </param>
   </node>
   <node type="window" name="bg-language-dropdown">
-    <pos>0.0,0.68</pos>
+    <pos>-0.001,0.6875</pos>
     <size>0.236,0.042</size>
     <scale>1.0</scale>
-    <columns>5</columns>
+    <columns>3</columns>
     <column-width>0.078</column-width>
     <column-height>0.041</column-height>
     <pages>object-start,object-selected,armature-start,armature-selected,color-start,play,play2,draw</pages>
@@ -238,7 +238,7 @@
       </param>
       <param>
         <name>font-size</name>
-        <val>10</val>
+        <val>12</val>
       </param>
       <param>
         <name>text-align</name>
@@ -282,7 +282,7 @@
       </param>
       <param>
         <name>font-size</name>
-        <val>10</val>
+        <val>12</val>
       </param>
       <param>
         <name>text-align</name>
@@ -326,7 +326,7 @@
       </param>
       <param>
         <name>font-size</name>
-        <val>10</val>
+        <val>12</val>
       </param>
       <param>
         <name>text-align</name>
@@ -343,12 +343,12 @@
     </node>
   </node>
   <node type="window" name="3d-window">
-    <pos>0.0,0.73</pos>
+    <pos>0.005,0.73</pos>
     <size>0.154,0.2215</size>
     <scale>1.0</scale>
     <pages>object-start,object-selected,draw</pages>
     <columns>3</columns>
-    <column-width>0.05</column-width>
+    <column-width>0.045</column-width>
     <column-height>0.07</column-height>
     <directory>windows/objects/%COLOR%/</directory>
     <param>
@@ -367,7 +367,7 @@
   <node type="window" name="arm-window">
     <pos>0.0,0.73</pos>
     <size>0.154,0.2215</size>
-    <scale>1.0</scale>
+    <scale>1</scale>
     <pages>armature-start,armature-selected</pages>
     <columns>3</columns>
     <column-width>0.05</column-width>
@@ -397,13 +397,13 @@
     </param>
   </node>
   <node type="window" name="color-window">
-    <pos>0.0,0.73</pos>
-    <size>0.154,0.2215</size>
+    <pos>0.005,0.73</pos>
+    <size>0.144,0.2215</size>
     <scale>1.0</scale>
     <pages>color-start</pages>
     <columns>4</columns>
-    <column-width>0.038</column-width>
-    <column-height>0.05</column-height>
+    <column-width>0.035</column-width>
+    <column-height>0.055</column-height>
     <directory>windows/colors/</directory>
     <offset>0,10</offset>
     <param>
@@ -520,11 +520,15 @@
     </param>
     <param>
       <name>font-size</name>
-      <val>10</val>
+      <val>14</val>
     </param>
     <param>
       <name>text-position</name>
       <val>25,140</val>
+    </param>
+    <param>
+      <name>text-position-flipped</name>
+      <val>265,140</val>
     </param>
     <param>
       <name>text-color</name>
@@ -558,23 +562,23 @@
     </param>
     <param>
       <name>font-size</name>
-      <val>10</val>
+      <val>12</val>
     </param>
     <param>
       <name>text-position</name>
-      <val>18,116</val>
+      <val>13,116</val>
     </param>
     <param>
       <name>text-position2</name>
-      <val>90,250</val>
+      <val>85,250</val>
     </param>
     <param>
       <name>text-position-flipped</name>
-      <val>106,215</val>
+      <val>173,66</val>
     </param>
     <param>
       <name>text-position2-flipped</name>
-      <val>47,78</val>
+      <val>245,200</val>
     </param>
     <param>
       <name>text-color</name>
@@ -612,7 +616,7 @@
     </param>
     <param>
       <name>font-size</name>
-      <val>10</val>
+      <val>12</val>
     </param>
     <param>
       <name>text-position</name>
@@ -658,11 +662,19 @@
     </param>
     <param>
       <name>font-size</name>
-      <val>10</val>
+      <val>12</val>
     </param>
     <param>
       <name>text-position</name>
-      <val>25,90</val>
+      <val>25,82</val>
+    </param>
+    <param>
+      <name>text-position-mirrored</name>
+      <val>-15,0</val>
+    </param>
+    <param>
+      <name>text-position-flipped</name>
+      <val>190,90</val>
     </param>
     <param>
       <name>text-color</name>
@@ -704,11 +716,19 @@
     </param>
     <param>
       <name>font-size</name>
-      <val>10</val>
+      <val>12</val>
     </param>
     <param>
       <name>text-position</name>
-      <val>20,90</val>
+      <val>25,82</val>
+    </param>
+    <param>
+      <name>text-position-mirrored</name>
+      <val>-15,0</val>
+    </param>
+    <param>
+      <name>text-position-flipped</name>
+      <val>190,90</val>
     </param>
     <param>
       <name>text-color</name>
@@ -754,23 +774,23 @@
     </param>
     <param>
       <name>font-size</name>
-      <val>10</val>
+      <val>12</val>
     </param>
     <param>
       <name>text-position</name>
-      <val>8,100</val>
+      <val>8,105</val>
     </param>
     <param>
       <name>text-position2</name>
-      <val>30,250</val>
+      <val>27,255</val>
     </param>
     <param>
       <name>text-position-flipped</name>
-      <val>55,225</val>
+      <val>192,220</val>
     </param>
     <param>
       <name>text-position2-flipped</name>
-      <val>47,78</val>
+      <val>175,73</val>
     </param>
     <param>
       <name>text-color</name>
@@ -794,8 +814,8 @@
     </param>
   </node>
   <node type="button" name="reset">
-    <pos>0.33,0.95</pos>
-    <pos-mirrored>0.4,0.95</pos-mirrored>
+    <pos>0.10,0.96</pos>
+    <pos-mirrored>0.10,0.96</pos-mirrored>
     <size>1.0,1.0</size>
     <scale>1.0</scale>
     <pages>object-start,object-selected,armature-start,armature-selected,color-start,play,play2,draw</pages>
@@ -822,7 +842,7 @@
     </param>
     <param>
       <name>font-size</name>
-      <val>10</val>
+      <val>12</val>
     </param>
     <param>
       <name>text-align</name>
@@ -842,11 +862,11 @@
     </param>
   </node>
   <node type="button" name="next-inactive">
-    <pos>0.4,0.95</pos>
+    <pos>0.4,0.96</pos>
     <pos-mirrored>0.33,0.95</pos-mirrored>
     <size>1.0,1.0</size>
     <scale>1.0</scale>
-    <pages>object-start</pages>
+    <pages>object-start,armature-start</pages>
     <param>
       <name>image</name>
       <val>Exports/Button_Next_789x328_%COLOR%1.png</val>
@@ -861,7 +881,7 @@
     </param>
     <param>
       <name>font-size</name>
-      <val>10</val>
+      <val>14</val>
     </param>
     <param>
       <name>text-align</name>
@@ -881,11 +901,11 @@
     </param>
   </node>
   <node type="button" name="next-active">
-    <pos>0.4,0.95</pos>
+    <pos>0.4,0.96</pos>
     <pos-mirrored>0.33,0.95</pos-mirrored>
     <size>1.0,1.0</size>
     <scale>1.0</scale>
-    <pages>object-selected,armature-start,armature-selected,color-start</pages>
+    <pages>object-selected,armature-selected,color-start</pages>
     <event name="next-step"></event>
     <param>
       <name>tap</name>
@@ -917,7 +937,7 @@
     </param>
     <param>
       <name>font-size</name>
-      <val>10</val>
+      <val>14</val>
     </param>
     <param>
       <name>text-align</name>
@@ -973,7 +993,7 @@
     </param>
     <param>
       <name>font-size</name>
-      <val>10</val>
+      <val>14</val>
     </param>
     <param>
       <name>text-align</name>
@@ -1029,7 +1049,7 @@
     </param>
     <param>
       <name>font-size</name>
-      <val>10</val>
+      <val>14</val>
     </param>
     <param>
       <name>text-align</name>

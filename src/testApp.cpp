@@ -198,7 +198,7 @@ void testApp::setup(){
 		//this is to control puzzles that are being saved
 		puzzleCounter = 0;
 
-		////////////////////////////////Creating puzzles when menupuzzle is dragged to station, not previously created////////////////////////
+		////////////////////////////////Creating puzzles when menupuzzle is dragged to station, not previously created, this approach takes longer////////////////////////
 		////////middlePuzzlePos.x = 0;
 		////////middlePuzzlePos.y = (ofGetWindowHeight()/2)-90;
 		////////middlePuzzlePos.z = 0;
@@ -368,13 +368,22 @@ void testApp::update(){
 			puzzleDisplayed->rotateSlicer =  myGames[i]->rotateSlicer;
 
 
-			//bring the puzzle from the game that wants to save it
+			//put up a flag on the game that its saving the puzzle//used on restart()
 			myGames[i]->savePuzzle();
+
+			
 
 			for(int j=0;j<5;j++){
 				puzzleDisplayed->loadPuzzle(myGames[i]->myPuzzle,j);
-				//mySlicer->intersectCubes((sgCObject*)objectToMakePuzzle->getObject());
-				myPuzzles[j+((puzzleCounter+7)*5)] = myGames[i]->myPuzzle;//new puzzle(middlePuzzlePos,tempMidPuzzle->offsetSlicer,3); // it receives the position to be displayed AND the offset of the armature/cutter to adapt slicing
+				//have to clone the puzzle to make th eother 4 *puzzle
+				myPuzzles[j+((puzzleCounter+7)*5)] = myGames[i]->myPuzzle;
+				//myPuzzles[j+((puzzleCounter+7)*5)] = puzzleDisplayed->cloneMyPuzzle();
+
+
+
+
+
+
 				//myPuzzles[j+((puzzleCounter+7)*5)]->setup();
 				////////myPuzzles[j+((numObjects-1)*5)]->loadPieces(myGames[i]->mySlicer->getPieces(),myGames[i]->objectID,tempMidPuzzle->rotateSlicer);//selected object id is used for coloring
 				//copy color from original puzle

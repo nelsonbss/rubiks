@@ -22,6 +22,8 @@ public:
 	puzzle *MenuPuzzleTR;
 	puzzle *MenuPuzzleTL;
 
+	puzzle *cloneMyPuzzle();
+
 	puzzle *getPuzzle(string gameTag);
 	////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//void draw();

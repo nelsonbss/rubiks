@@ -57,7 +57,7 @@ GuiButton::GuiButton(string _img) : GuiNode(){
 
 void GuiButton::nodeInit(){
 	if(params.count("image")){
-		cout << "loading image - " << params["image"] << endl;;
+		//cout << "loading image - " << params["image"] << endl;;
 		inactive.loadImage(params["image"]);
 		drawSize.x = inactive.getWidth();
 		drawSize.y = inactive.getHeight();
@@ -72,7 +72,7 @@ void GuiButton::nodeInit(){
 	bSendActions = false;
 	if(params.count("droppable")){
 		if(params["droppable"] == "true"){
-			cout << "setting droppable on " << name << " to true." << endl;
+			//cout << "setting droppable on " << name << " to true." << endl;
 			bSendActions = true;
 			SubObMediator::Instance()->addObserver("object-intercepted",this);
 		}
@@ -95,7 +95,7 @@ void GuiButton::nodeExecute(){
 	bReadyForInput = false;
 	timer->addTimer(200, (int*)&bReadyForInput, 1);
 	if(bSendSample){
-		cout << "sending sample from" << getPrefix() << endl;
+		//cout << "sending sample from" << getPrefix() << endl;
 		SubObEvent ev;
 		ev.setName(getPrefix() + ":new-color");
 		ev.addArg("color", sampleColor);
@@ -153,7 +153,7 @@ bool GuiButton::processMouse(int _x, int _y, int _state){
 		}
 	}
 	if(bSelected){
-		cout << "deselecting." << endl;
+		//cout << "deselecting." << endl;
 		bSelected = false;
 	}
 	return false;
@@ -206,7 +206,7 @@ void GuiButton::sampleImage(){
 	int bpp = inactive.bpp / 8;
 	unsigned char * pixels = inactive.getPixels();
 	int p = (h / 2) * w + (w / 2);
-	cout << "p = " << p << endl;
+	//cout << "p = " << p << endl;
 	float r = pixels[p*bpp+0];
 	float g = pixels[p*bpp+1];
 	float b = pixels[p*bpp+2];

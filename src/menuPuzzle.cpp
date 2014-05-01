@@ -346,6 +346,17 @@ void menuPuzzle::loadPuzzle(puzzle *inpuzzle, int station){
 		MenuPuzzleTL = inpuzzle;
 	}
 }
+//------------------------------------------------------------------
+puzzle *menuPuzzle::cloneMyPuzzle(){
+	//takes myMenuPuzzle as a template to create new *puzzle
+
+	//create a new puzzle with the data from the already loaded puzzle
+	puzzle *tempPuzzle = new puzzle(myMenuPuzzle->pos,myMenuPuzzle->cubiesOffset,myMenuPuzzle->gridSize,myMenuPuzzle->ObjectUniqueNormals);
+	//feed this new puzzle the cubies of myMenuPuzzle
+	//tempPuzzle->myCubies = myMenuPuzzle->myCubies;
+
+	return tempPuzzle;
+}
 ////----------------------------------------------------------------
 //sgC3DObject* menuPuzzle::getObject(){
 //	return temp;

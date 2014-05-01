@@ -584,7 +584,7 @@ void game::update(string _eventName, SubObEvent _event){
 		ofVec2f pos = _event.getArg("pos")->getVec2();
 		newFaceColor = ofFloatColor(newColor.x / 255.0, newColor.y / 255.0, newColor.z / 255.0);
 		if(!bUnproject){
-			mousePoint.set(pos.x,pos.y, 0);//(ofGetMouseX(), ofGetMouseY(),0);
+			mousePoint.set(pos.x+35,pos.y+19, 0);//(ofGetMouseX(), ofGetMouseY(),0);
 			bUnproject = true;
 			unprojectMode = UP_MODE_COLOR;
 		}

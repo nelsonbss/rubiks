@@ -52,9 +52,10 @@ void GuiNode::draw(){
 				if(bFlipped){
 					ofRectangle bounds = font.getStringBoundingBox(currentText, 0, 0);
 					ofPushMatrix();
-					ofTranslate(drawPos.x + textPositionFlipped.x  + bounds.width / 2, drawPos.y + textPositionFlipped.y + bounds.height / 2, 0);
+					ofTranslate(drawPos.x + textPositionFlipped.x, drawPos.y + textPositionFlipped.y, 0);
+//					ofTranslate(drawPos.x + textPositionFlipped.x  - bounds.width / 2, drawPos.y + textPositionFlipped.y - bounds.height / 2, 0);
 					ofRotateZ(180.0);
-					font.drawString(currentText, -bounds.width / 2, bounds.height / 2);
+					font.drawString(currentText, 0, 0);
 					ofPopMatrix();
 				} else {
 					font.drawString(currentText, drawPos.x + textPosition.x, drawPos.y + textPosition.y);
@@ -64,9 +65,11 @@ void GuiNode::draw(){
 					if(bFlipped){
 						ofRectangle bounds = font.getStringBoundingBox(currentText, 0, 0);
 						ofPushMatrix();
-						ofTranslate(drawPos.x + textPosition2Flipped.x  + bounds.width / 2, drawPos.y + textPosition2Flipped.y + bounds.height / 2, 0);
+//						ofTranslate(drawPos.x + textPosition2Flipped.x  - bounds.width / 2, drawPos.y + textPosition2Flipped.y - bounds.height / 2, 0);
+						ofTranslate(drawPos.x + textPosition2Flipped.x, drawPos.y + textPosition2Flipped.y, 0);
 						ofRotateZ(180.0);
-						font.drawString(currentText, -bounds.width / 2, bounds.height / 2);
+//						font.drawString(currentText, bounds.width / 2, bounds.height / 2);
+						font.drawString(currentText, 0, 0);
 						ofPopMatrix();
 					} else {
 						font.drawString(currentText, drawPos.x + textPosition2.x, drawPos.y + textPosition2.y);
@@ -98,7 +101,7 @@ bool GuiNode::isInside(int _x, int _y){
     //cout << name << " checking insides " << drawPos.x << ", " << drawPos.x + (scale * drawSize.x) << " - " << drawPos.y << ", " << drawPos.y + (scale * drawSize.y);
 	//cout << " against " << _x << ", " << _y << endl;
     if(bHaveCustomArea){
-		if(/*(drawPos.x + drawSize.x) < customArea.x || */drawPos.y < customArea.y /*|| (drawPos.x + drawSize.x) > (customArea.x + customSize.x)*/ || (drawPos.y + drawSize.y) > (customArea.y + customSize.y)){
+		if(/*(drawPos.x + drawSize.x) < customArea.x || */(drawPos.y + drawSize.y) < customArea.y /*|| (drawPos.x + drawSize.x) > (customArea.x + customSize.x)*/ || (drawPos.y) > (customArea.y + customSize.y)){
 			return false;
 		}
 	}
@@ -154,7 +157,7 @@ void GuiNode::init(){
 }
 
 void GuiNode::registerPages(string _pages){
-	cout << getName() << " registering pages - " << _pages << endl;
+//	cout << getName() << " registering pages - " << _pages << endl;
 	vector<string> pages = ofSplitString(_pages, ",");
 	for(auto pIter = pages.begin(); pIter != pages.end(); pIter++){
 		if(*pIter == "all"){
@@ -171,7 +174,10 @@ void GuiNode::setupText(){
 		fSize = ofToInt(params["font-size"]);
 	}
 	if(params.count("font")){
-		font.loadFont(params["font"], fSize, true, true);
+		font.loadFont(params["font"], fSize*1.333, true, true,false,.3,72);
+		font.setSpaceSize(.5);
+		font.setLetterSpacing(.9);
+		font.setLineHeight(ceil(fSize*1.25));
 	} else {
 		font.loadFont("comic.ttf", fSize, true, true);
 	}
@@ -194,6 +200,16 @@ void GuiNode::setupText(){
 			}
 		}
 	}
+	if(params.count("text-position-mirrored")){
+		cout << "THIS BUTTON IS..........." << bMirrored << " , " << bFlipped << endl;
+		if (bMirrored && !bFlipped) {
+			textPosition += stringToVec2f(params["text-position-mirrored"]);
+		} 
+		if (bMirrored && bFlipped) {
+			textPositionFlipped += stringToVec2f(params["text-position-mirrored"]);
+		}
+	}
+
 	if(params.count("text2")){
 		bHaveText2 = true;
 		text2 = params["text2"];

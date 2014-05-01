@@ -379,7 +379,7 @@ void GuiConfigurator::specialTextLoadingCopOut(){
 
 	texts["color"] = GuiText();
 	texts["color"].setText("english", "Drag colors to\ndecorate your puzzle.");
-	texts["color"].setText("french", "Faites glisser les\ncouleurs pour décorer votre\npuzzle.");
+	texts["color"].setText("french", "Faites glisser les\ncouleurs pour décorer\nvotre puzzle.");
 	texts["color"].setText("spanish", "Para decorar tu puzle,\narrastra los colores.");
 
 	texts["arm-start"] = GuiText();
@@ -394,8 +394,8 @@ void GuiConfigurator::specialTextLoadingCopOut(){
 
 	texts["arm-rotate-2"] = GuiText();
 	texts["arm-rotate-2"].setText("english", "Two-finger swipe\nrotates structure.");
-	texts["arm-rotate-2"].setText("french", "Glissez avec deux doigts\npour faire tourner la structure.");
-	texts["arm-rotate-2"].setText("spanish", "Para rotar la estructura,\ndeslízala con dos dedos.");
+	texts["arm-rotate-2"].setText("french", "Glissez avec deux doigts\npour faire tourner\nla structure.");
+	texts["arm-rotate-2"].setText("spanish", "Para rotar la estructura,\ndeslízala con dos\ndedos.");
 
 	texts["draw-help"] = GuiText();
 	texts["draw-help"].setText("english", "Draw an outline with \nyour finger to make\nyour own shape.");
@@ -407,18 +407,18 @@ void GuiConfigurator::specialTextLoadingCopOut(){
 
 	texts["play-help-1"] = GuiText();
 	texts["play-help-1"].setText("english", "Single finger swipe\ntwists puzzle.");
-	texts["play-help-1"].setText("french", "Un doigt = glisse/déplace\nles pièces");
+	texts["play-help-1"].setText("french", "Un doigt = glisse/\ndéplace les pièces");
 	texts["play-help-1"].setText("spanish", "Un solo dedo mueve o\ndesliza las piezas");
 
 	texts["play-help-2"] = GuiText();
 	texts["play-help-2"].setText("english", "Two finger swipe\nrotates puzzle.");
-	texts["play-help-2"].setText("french", "Deux doigts = glisse/tourne\nle cube");
-	texts["play-help-2"].setText("spanish", "Dos dedos deslizan,\narrastran o hacen rotar al cubo");
+	texts["play-help-2"].setText("french", "Deux doigts = glisse/\ntourne le cube");
+	texts["play-help-2"].setText("spanish", "Dos dedos deslizan,\narrastran o hacen\nrotar al cubo");
 
 	texts["start-help"] = GuiText();
 	texts["start-help"].setText("english", "Drag A Puzzle From\nAbove Or A Shape Here\nto Play");
-	texts["start-help"].setText("french", "Faites glisser un puzzle\nci-dessus ou une forme\nici pour jouer");
-	texts["start-help"].setText("spanish", "Para jugar, arrastra aquí\nuna forma o un rompecabezas\ndesde arriba");
+	texts["start-help"].setText("french", "Faites glisser un puzzle\nci-dessus ou une forme ici\npour jouer");
+	texts["start-help"].setText("spanish", "Para jugar, arrastra aquí una\nforma o un rompecabezas\ndesde arriba");
 }
 
 void GuiConfigurator::loadSheets(){
@@ -452,7 +452,7 @@ void GuiConfigurator::loadNodes(string _sheetName, GuiWindow* _win){
 		}
 		nodeName = prefix + ":" + nodeName;
 		string nodeType = mXML.getAttribute("node","type","none",i);
-		cout << "have node of type - " << nodeType << endl;
+		//cout << "have node of type - " << nodeType << endl;
 		if(nodeType == "none"){
 			continue;
 		}
@@ -531,7 +531,7 @@ void GuiConfigurator::loadNodes(string _sheetName, GuiWindow* _win){
 }
 
 void GuiConfigurator::loadNodesFromDirectory(string _path, GuiWindow* _win){
-	cout << "Loading directory - " << _path << endl;
+	//cout << "Loading directory - " << _path << endl;
 	string path = _path;
 	for(auto pIter = patterns.begin(); pIter != patterns.end(); pIter++){
 		ofStringReplace(path, pIter->first, pIter->second);
@@ -678,7 +678,7 @@ void GuiConfigurator::addAttributeMap(string _sheet, vector<string> &_names, vec
 }
 
 void GuiConfigurator::makeGUI(){
-	cout << "making GUI" << endl;
+	//cout << "making GUI" << endl;
 	map<string, vector<map<string,string> > >::iterator sIter;
 	vector<map<string, string> >::iterator gIter;
 	for(sIter = attrs.begin(); sIter != attrs.end(); sIter++){

@@ -44,7 +44,7 @@
       <pages>all</pages>
       <param>
         <name>image</name>
-        <val>Exports/Background_Top.png</val>
+        <val>twisty_bg.png</val>
       </param>
       <param>
         <name>z</name>
@@ -59,7 +59,7 @@
         <val>back</val>
       </param>
     </node>
-    <node type="button" name="bg-middle">
+    <!-- <node type="button" name="bg-middle">
       <pos>0.0,0.351</pos>
       <size>1.0,1.0</size>
       <scale>1.0</scale>
@@ -102,6 +102,6 @@
         <name>draw-position</name>
         <val>back</val>
       </param>
-    </node>
+    </node>     -->
    </sheet>
 </gui>

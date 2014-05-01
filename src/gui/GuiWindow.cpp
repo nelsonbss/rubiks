@@ -49,6 +49,9 @@ void GuiWindow::nodeInit(){
 	//offset.set(0,0);
 	topMax = offset.y;
 	topMin = drawSize.y - windowHeight;
+	if (bFlipped && bScrollable) {
+		currentTop=topMin;
+	}
 }
 
 void GuiWindow::nodeActivate(){
@@ -56,6 +59,9 @@ void GuiWindow::nodeActivate(){
 		(*nIter)->activate();
 	}
 	currentTop = 0;
+	if (bFlipped) {
+		currentTop=topMin;
+	}
 	positionNodes();
 }
 
@@ -64,6 +70,9 @@ void GuiWindow::nodeDeactivate(){
 		(*nIter)->deactivate();
 	}
 	currentTop = 0;
+	if (bFlipped) {
+		currentTop=topMin;
+	}
 }
 
 void GuiWindow::nodeDraw(){
@@ -173,48 +182,41 @@ void GuiWindow::positionNodes(){
 	int numNodes = nodes.size();
 	int row = 0;
 	int column = 0;
-	/*ofVec2f startPos = drawPos;
-	ofVec2f addPos(0,0);
-	if(bFlipped){
-	startPos.y = drawPos.y + drawSize.y;
-	addPos.y = drawSize.y;
-	}*/
+	int numRows=ceil(numNodes/numColumns);
+	
+	windowHeight = (numRows+1) * (columnHeight * ofGetHeight());
+	//cout << "Window height = " << windowHeight << endl;
+	if(windowHeight > drawSize.y+60){
+		bScrollable = true;
+	}
+
 	for(int i = 0;i < numNodes; i++){
 		if(i > 0){
 			column = i % numColumns;
 			row = i / numColumns;
 		}
+
+		if (bFlipped) {
+			column=numColumns-column-1;
+			row=numRows-row;
+		}
+
 		float nodeX = column * (columnWidth * ofGetWidth());
 		float nodeY = row * (columnHeight * ofGetHeight());
+
 		ofVec2f nodePos = ofVec2f(0, currentTop) + ofVec2f(nodeX, nodeY);
 		nodePos += offset;
-		if(bMirrored){
+		if(bMirrored && bScrollable){
 			nodePos += ofVec2f(40,0);
 		}
 		ofVec2f nodePosD = nodePos + drawPos;
 		ofVec2f nodePosF(nodePos.x / ofGetWidth(), nodePos.y / ofGetHeight());
-		//cout << "setting node position to - " << nodePos.x << ", " << nodePos.y << endl;
-		//nodes[i]->setPosition(nodePosF);
+		
 		nodes[i]->setDrawPosition(nodePosD);
-		/*
-		if((nodePosD.y < drawPos.y) || (nodePosD.y > (drawPos.y + drawSize.y))){
-		if(nodes[i]->isActive()){
-		nodes[i]->deactivate();
-		}
-		} else {
-		if(!nodes[i]->isActive()){
-		nodes[i]->activate();
-		}
-		}
-		*/
+
 		nodes[i]->setCustomArea(drawPos, drawSize);
 		nodePositions[i].set(nodePos);
 		nodes[i]->setControlled();
-	}
-	windowHeight = (row + 1) * (columnHeight * ofGetHeight());
-	//cout << "Window height = " << windowHeight << endl;
-	if(windowHeight > drawSize.y){
-		bScrollable = true;
 	}
 }
 
@@ -227,6 +229,8 @@ void GuiWindow::update(string _eventName, SubObEvent _event){
 		} else if(currentTop < topMin){
 			currentTop = topMin;
 		}
+//		cout << "scrollrange:" << currentTop << ":" << topMax << ":" << topMin << endl;
+		
 		positionNodes();
 	}
 	if(_eventName == prefix + ":toggle"){

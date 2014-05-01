@@ -63,7 +63,9 @@ public:
 	int rotateTwoIds(int cubieA, int cubieB,bool inside);
 	bool faceRotateB;
 
+	////////////////////undo
 	void unDo(int id, SG_VECTOR axis, bool dir);
+	void unDoMenuPuzzle();
 
 	bool pmoving;
 	bool isMoving();

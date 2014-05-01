@@ -1415,7 +1415,6 @@ ofVec3f game::giveOffset(){
 }
 //----------------------------------------------------------------------
 void game::unDo(){
-	//new aproach
 	//to do 1 undo:
 	//undo will look for the other 9 cubies involved and do add a move opposite to the last one
 	//when it stops animation andits on the new place
@@ -1428,7 +1427,17 @@ void game::unDo(){
 		historyV.pop_back();
 	}
 }
+//----------------------------------------------------------------------
+void game::unDoMenuPuzzle(){
+	//this completley undos the rotation matrix for each cubie on the puzzle
+	if(historyV.size()>0){//game history
 
+		myPuzzle->unDoMenuPuzzle();
+		historyV.pop_back();
+		int x = 0;
+
+	}
+}
 //----------------------------------------------------------------------
 void game::guiLoad(int _obj){
 	/*
@@ -2153,10 +2162,16 @@ void game::restart(){
 	if(step == 7){
 		//myPuzzle->exit();//if we pass this puzzle to the saved games, we cant delete it!!!!!!!!!or we delete the menu puzzle for the future
 		//objectDisplayed->exit();
+
+		//have to undo the moves made on the puzzle that was loaded
+		unDoMenuPuzzle();
+
+
 		step = 0;
 		objectID = -1;
 		puzzleFinished = false;
 		creatingPuzzle = false;
+		historyV.clear();
 	}else if(step == 6){
 		if(canvasB){
 			//myCanvas->exit();
@@ -2180,6 +2195,7 @@ void game::restart(){
 		armID = -1;
 		puzzleFinished = false;
 		creatingPuzzle = false;
+		historyV.clear();
 	}else if (step==3){
 		objectDisplayed->exit();             //clean displayed object after puzzle is created, so we dont keep it until the exit or restart
 		step = 0;

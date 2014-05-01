@@ -568,29 +568,29 @@ void cubie::draw(){
 	//now it draws its vector of Vbos, myVbos
 	//use this cubies objectList[]
 	//if(objects != NULL){
-		for (int j=0; j < numObjs; j++){
-			glPushMatrix();
-			//ofScale(1.2,1.2,1.2);
-			if (objectList[j]->GetTempMatrix()!=0)
-				glMultMatrixd(objectList[j]->GetTempMatrix()->GetTransparentData());
-			//objectList[j]->DestroyTempMatrix();
-			if(bDraw){
-				if(bDrawWire){
-					myMeshs[j].drawWireframe();
-				} else {
-					myVbos[j].draw(GL_TRIANGLES, 0,myMeshs[j].getNumIndices());
-					//myMeshs[j].draw();
-				}
+	for (int j=0; j < numObjs; j++){
+		glPushMatrix();
+		//ofScale(1.2,1.2,1.2);
+		if (objectList[j]->GetTempMatrix()!=0)
+			glMultMatrixd(objectList[j]->GetTempMatrix()->GetTransparentData());
+		//objectList[j]->DestroyTempMatrix();
+		if(bDraw){
+			if(bDrawWire){
+				myMeshs[j].drawWireframe();
+			} else {
+				myVbos[j].draw(GL_TRIANGLES, 0,myMeshs[j].getNumIndices());
+				//myMeshs[j].draw();
 			}
-			//ofPushMatrix();
-			//ofTranslate(centroid3d.x, centroid3d.y, centroid3d.z);
-			//ofSetColor(centroidColor.x, centroidColor.y, centroidColor.z);
-			//ofDrawSphere(0,0,0,radiurS);
-			//centroid2d = projectPoint(centroid3d);
-			//ofPopMatrix();
-
-			glPopMatrix();
 		}
+		//ofPushMatrix();
+		//ofTranslate(centroid3d.x, centroid3d.y, centroid3d.z);
+		//ofSetColor(centroidColor.x, centroidColor.y, centroidColor.z);
+		//ofDrawSphere(0,0,0,radiurS);
+		//centroid2d = projectPoint(centroid3d);
+		//ofPopMatrix();
+
+		glPopMatrix();
+	}
 	//}
 }
 //------------------------------------------------------------------------------------------------------------------------------------------
@@ -663,27 +663,27 @@ void cubie::crateOfMeshs(){
 	ofRender *ofr = new ofRender(); //class that has the metods to transform sgCore to OF mesh and set the normals (in one function)
 
 	//if(objects != NULL){
-		for (int j=0; j < numObjs; j++){
-			//////////////////////create ofMEsh
-			sgC3DObject *o = (sgC3DObject*)objectList[j]->Clone();
-			o->Triangulate(SG_VERTEX_TRIANGULATION);
-			//convert to ofMEsh with cubie ID!!!
-			//ask if its a plain color puzzle:: bunny torus??
-			//if(selectedObjectID == 1){
-			//	//torus
-			//	ofr->sgCoretoOFmesh(o,tempMesh,-1,selectedObjectID);
-			//}else if(selectedObjectID == 4){
-			//	//bunny
-			//	ofr->sgCoretoOFmesh(o,tempMesh,-3,selectedObjectID);
-			//}else{
-				ofr->sgCoretoOFmesh(o,tempMesh,id,selectedObjectID); //give cubie id!! so that it knows if its a plain color puzzle or not
-			//}
-			myMeshs.push_back(tempMesh);
-			ofVbo tempVbo;
-			tempVbo.setMesh(tempMesh, GL_STATIC_DRAW);
-			myVbos.push_back(tempVbo);
-			sgDeleteObject(o);
-		}
+	for (int j=0; j < numObjs; j++){
+		//////////////////////create ofMEsh
+		sgC3DObject *o = (sgC3DObject*)objectList[j]->Clone();
+		o->Triangulate(SG_VERTEX_TRIANGULATION);
+		//convert to ofMEsh with cubie ID!!!
+		//ask if its a plain color puzzle:: bunny torus??
+		//if(selectedObjectID == 1){
+		//	//torus
+		//	ofr->sgCoretoOFmesh(o,tempMesh,-1,selectedObjectID);
+		//}else if(selectedObjectID == 4){
+		//	//bunny
+		//	ofr->sgCoretoOFmesh(o,tempMesh,-3,selectedObjectID);
+		//}else{
+		ofr->sgCoretoOFmesh(o,tempMesh,id,selectedObjectID); //give cubie id!! so that it knows if its a plain color puzzle or not
+		//}
+		myMeshs.push_back(tempMesh);
+		ofVbo tempVbo;
+		tempVbo.setMesh(tempMesh, GL_STATIC_DRAW);
+		myVbos.push_back(tempVbo);
+		sgDeleteObject(o);
+	}
 	//}
 	getCentroid();
 	free(ofr);
@@ -927,6 +927,22 @@ void cubie::unDo(SG_VECTOR axis,bool di){
 		}
 	}
 }
+//--------------------------------------------------------------
+void cubie::unDoMenuPuzzle(){
+	//it removes the las element on the vector with the history of each cubie
+	if(myMatrix.size()>1){
+		for (int j=0; j < numObjs; j++){
+			if (objectList[j]->GetTempMatrix()!=0)
+				objectList[j]->DestroyTempMatrix();
+		}
+		setup();//to restore initial TempMatrix
+
+		//have to reset the position of each cubie so puzzle continues to be stable on next runs
+		zpos=id%gridSize;
+		ypos=(id/gridSize)%gridSize;
+		xpos=(id/(gridSize*gridSize))%gridSize;
+	}
+}
 //---------------------------------------------------------------
 //void cubie::changeColorToColor(ofFloatColor Sc, ofFloatColor Tc){
 //	ofRender *ofr = new ofRender(); 
@@ -980,11 +996,11 @@ bool cubie::isMoving(){
 //----------------------------------------------------------------
 void cubie::exit(){
 	//if(objects != NULL){
-		for (int j=0; j < numObjs; j++){
-			sgCObject::DeleteObject(objectList[j]);
-		}
-		//free(objectList);
-		//sgCObject::DeleteObject(objects);
+	for (int j=0; j < numObjs; j++){
+		sgCObject::DeleteObject(objectList[j]);
+	}
+	//free(objectList);
+	//sgCObject::DeleteObject(objects);
 	//}
 }
 //----------------------------------------------------------------

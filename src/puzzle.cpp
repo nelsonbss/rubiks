@@ -1520,6 +1520,14 @@ void puzzle::unDo(int id, SG_VECTOR axis, bool dir){
 	}
 }
 //----------------------------------------------------------------
+void puzzle::unDoMenuPuzzle(){
+	for(int i=0;i<numPieces;i++){
+		if(myCubies[i] != NULL){
+			myCubies[i]->unDoMenuPuzzle();
+		}
+	}
+}
+//-----------------------------------------------------------------
 void puzzle::exit(){
 	for(int i=0;i<currentNumCubies;i++){
 		if(myCubies[i] != NULL){

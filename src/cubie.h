@@ -74,6 +74,7 @@ public:
 	//undo
 	bool undoing;
 	void unDo(SG_VECTOR axis,bool di);
+	void unDoMenuPuzzle();
 
 	///color change
 	//void changeColorToColor(ofFloatColor Sc, ofFloatColor Tc);

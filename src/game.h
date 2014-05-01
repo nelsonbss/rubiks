@@ -112,10 +112,12 @@ public:
 	float angleR;
 
 	bool faceRotate;
-	//history to undo
+	
+	///////////////////////////////history to undo
 	vector<history> historyV; 
 	void unDo();
-	void decideMove();
+	void unDoMenuPuzzle();
+	
 
 	/////////////////////////face rotation bytwo ids
 	void rotateTwoIds(int cubieA, int cubieB,bool inside);
@@ -217,8 +219,10 @@ public:
 
 	int timeOfLastInteraction;
 	bool bInAttract;
+	//////////////////////////////////////twisting rotations
 	void startMove(ofVec3f _pnt);
 	void makeMove(ofVec3f _pnt);
+	void decideMove();
 	float getMainComponent(ofVec3f _pnt);
 	bool bHaveAxis;
 	SG_VECTOR v;

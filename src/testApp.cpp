@@ -120,6 +120,8 @@ void testApp::setup(){
 	offsetSlicer = ofVec3f(0,0,0);
 	rotateSlicer = ofVec3f (0,0,0);
 
+	int gridSize = 5;//this will be a shuffled int for diferent shapes, and predetermined for predetermined shapes
+
 	if(numObjects !=0){
 		middlePuzzlePos.x = ofGetWindowWidth();
 		middlePuzzlePos.y = (ofGetWindowHeight()/2)-90;
@@ -139,9 +141,9 @@ void testApp::setup(){
 		//4 for the stations, one for each station
 		myPuzzles = (puzzle**)malloc((numObjects*5)*sizeof(puzzle*));
 
-		myCutter = new cutter(0.01,1000,100,1,offsetSlicer,3);// number of slices == same number in slicer /// where to get the grid value??
+		myCutter = new cutter(0.01,1000,100,1,offsetSlicer,gridSize);// number of slices == same number in slicer /// where to get the grid value??
 		myCutter->setup();
-		mySlicer = new slicer(myCutter,3);
+		mySlicer = new slicer(myCutter,gridSize);
 		mySlicer->setup();
 
 		for(int i=0; i < numObjects; i++){
@@ -171,7 +173,7 @@ void testApp::setup(){
 			mySlicer->intersectCubes((sgCObject*)objectToMakePuzzle->getObject()); 
 			for(int j=0;j<5;j++){
 				//mySlicer->intersectCubes((sgCObject*)objectToMakePuzzle->getObject());
-				myPuzzles[j+(i*5)] = new puzzle(middlePuzzlePos, offsetSlicer,3,objectToMakePuzzle->ObjectUniqueNormals); // it receives the position to be displayed AND the offset of the armature/cutter to adapt slicing
+				myPuzzles[j+(i*5)] = new puzzle(middlePuzzlePos, offsetSlicer,gridSize,objectToMakePuzzle->ObjectUniqueNormals); // it receives the position to be displayed AND the offset of the armature/cutter to adapt slicing
 				//myPuzzles[j+(i*5)]->setup();
 
 				myPuzzles[j+(i*5)]->loadPieces(mySlicer->getPieces(),objectToMakePuzzle->objectId,rotateSlicer);//selected object id is used for coloring

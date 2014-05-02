@@ -403,6 +403,7 @@ void testApp::update(){
 			//////////////reset save puzzle boolean on the game
 			myGames[i]->savePuzzleB = false;
 			//////////////reset game
+			myGames[i]->guiReset();
 			myGames[i]->restart();
 		}
 	}

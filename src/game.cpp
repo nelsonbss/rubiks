@@ -372,7 +372,7 @@ void game::update(string _eventName, SubObEvent _event){
 			//dont make opengl calls here... no drawing anything
 			setPage("object-start");
 			camPosition.set(viewport.width / 2, viewport.height / 2, 400);
-			guiReset();
+			/*guiReset();*/
 		}else{
 			unDoMenuPuzzle();
 		}
@@ -2174,7 +2174,7 @@ void game::clearDisplayedObject(){
 //----------------------------------------------------------------------
 void game::restart(){
 	if(step == 7){
-		//myPuzzle->exit();//if we pass this puzzle to the saved games, we cant delete it!!!!!!!!!or we delete the menu puzzle for the future
+		myPuzzle->exit();//if we pass this puzzle to the saved games, we cant delete it!!!!!!!!!or we delete the menu puzzle for the future
 		//objectDisplayed->exit();
 
 		//have to undo the moves made on the puzzle that was loaded
@@ -2195,9 +2195,9 @@ void game::restart(){
 		objectID = -1;
 	}else if(step==4 || step==5){
 		//dont delete the puzzle if it has been saved
-		if(!hasSaved){
-			//myPuzzle->exit();
-		}
+		//if(!hasSaved){
+			myPuzzle->exit();
+		//}
 		hasSaved = false;
 		myCutter->exit();
 		mySlicer->exit();

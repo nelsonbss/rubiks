@@ -375,6 +375,7 @@ puzzle *menuPuzzle::cloneMyPuzzle(puzzle* toClone, int selObjId){
 	for(int i=0;i<tempPuzzle->numPieces;i++){
 		tempPuzzle->myCubies[i]->crateOfMeshs();
 	}
+
 	//for(int i=0;i<tempPuzzle->numPieces;i++){
 	//	int numObjs2 = toClone->myCubies[i]->numObjs;
 	//	for (int j=0; j < numObjs2; j++){
@@ -382,12 +383,20 @@ puzzle *menuPuzzle::cloneMyPuzzle(puzzle* toClone, int selObjId){
 	//		tempPuzzle->myCubies[i]->myVbos = toClone->myCubies[i]->myVbos;
 	//	}
 	//}
+
+	//generate puzzle colors
+	if(selObjId < 8 ){
+			tempPuzzle->colorFaces(selObjId);
+		}else{
+			tempPuzzle->colorTorus();
+		}
+	 
 	//copy the color information for each myMeshs[] from toClone->myCubies[i]
 	for(int i=0;i<tempPuzzle->numPieces;i++){
 		int numObjs2 = toClone->myCubies[i]->numObjs;
 		for (int j=0; j < numObjs2; j++){
 			vector< ofFloatColor > tcolors = toClone->myCubies[i]->myMeshs[j].getColors();
-			tempPuzzle->myCubies[i]->myMeshs[j].addColors(tcolors);
+			//tempPuzzle->myCubies[i]->myMeshs[j].addColors(tcolors);
 		}
 	}
 

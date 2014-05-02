@@ -371,18 +371,11 @@ void testApp::update(){
 			//put up a flag on the game that its saving the puzzle//used on restart()
 			myGames[i]->savePuzzle();
 
-			
-
 			for(int j=0;j<5;j++){
-				puzzleDisplayed->loadPuzzle(myGames[i]->myPuzzle,j);
 				//have to clone the puzzle to make th eother 4 *puzzle
-				myPuzzles[j+((puzzleCounter+7)*5)] = myGames[i]->myPuzzle;
-				//myPuzzles[j+((puzzleCounter+7)*5)] = puzzleDisplayed->cloneMyPuzzle();
-
-
-
-
-
+				//myPuzzles[j+((puzzleCounter+7)*5)] = myGames[i]->myPuzzle;
+				myPuzzles[j+((puzzleCounter+7)*5)] = puzzleDisplayed->cloneMyPuzzle(myGames[i]->myPuzzle,myGames[i]->objectID);
+				puzzleDisplayed->loadPuzzle(myPuzzles[j+((puzzleCounter+7)*5)],j);
 
 				//myPuzzles[j+((puzzleCounter+7)*5)]->setup();
 				////////myPuzzles[j+((numObjects-1)*5)]->loadPieces(myGames[i]->mySlicer->getPieces(),myGames[i]->objectID,tempMidPuzzle->rotateSlicer);//selected object id is used for coloring

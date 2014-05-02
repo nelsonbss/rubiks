@@ -22,7 +22,7 @@ public:
 	puzzle *MenuPuzzleTR;
 	puzzle *MenuPuzzleTL;
 
-	puzzle *cloneMyPuzzle();
+	puzzle *cloneMyPuzzle(puzzle* toClone,int selObjId);
 
 	puzzle *getPuzzle(string gameTag);
 	////////////////////////////////////////////////////////////////////////////////////////////////////////

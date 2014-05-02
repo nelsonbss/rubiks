@@ -347,13 +347,49 @@ void menuPuzzle::loadPuzzle(puzzle *inpuzzle, int station){
 	}
 }
 //------------------------------------------------------------------
-puzzle *menuPuzzle::cloneMyPuzzle(){
-	//takes myMenuPuzzle as a template to create new *puzzle
+puzzle *menuPuzzle::cloneMyPuzzle(puzzle* toClone, int selObjId){
+	//takes toClone as a template to create new *puzzle
 
 	//create a new puzzle with the data from the already loaded puzzle
-	puzzle *tempPuzzle = new puzzle(myMenuPuzzle->pos,myMenuPuzzle->cubiesOffset,myMenuPuzzle->gridSize,myMenuPuzzle->ObjectUniqueNormals);
-	//feed this new puzzle the cubies of myMenuPuzzle
-	//tempPuzzle->myCubies = myMenuPuzzle->myCubies;
+	puzzle *tempPuzzle = new puzzle(toClone->pos,toClone->cubiesOffset,toClone->gridSize,toClone->ObjectUniqueNormals);
+	//create new cuibies to transfer info to them
+	for(int i=0;i<tempPuzzle->numPieces;i++){
+		cubie *auxCubie = new cubie(tempPuzzle->pos.x,tempPuzzle->pos.y,tempPuzzle->pos.z,i,selObjId,tempPuzzle->cubiesOffset,tempPuzzle->gridSize);
+		//auxCubie->setup();
+		//add this cubie to mycubies[]
+		tempPuzzle->myCubies[i] = auxCubie;
+	}
+	//copy mesh data from  toClone->myCubies;
+	for(int i=0;i<tempPuzzle->numPieces;i++){
+		int numObjs2 = toClone->myCubies[i]->numObjs;
+		tempPuzzle->myCubies[i]->numObjs = numObjs2;
+		tempPuzzle->myCubies[i]->objectList = (sgC3DObject**)malloc(numObjs2*sizeof(sgC3DObject*));
+		for (int j=0; j < numObjs2; j++){
+			//get sgcore object information
+			tempPuzzle->myCubies[i]->objectList[j] = (sgC3DObject*) toClone->myCubies[i]->objectList[j]->Clone();
+		}
+		tempPuzzle->myCubies[i]->setup();
+	}
+	//create the meshes from the sgCore objects
+	//so the objects can be renderes by openFrameworks
+	for(int i=0;i<tempPuzzle->numPieces;i++){
+		tempPuzzle->myCubies[i]->crateOfMeshs();
+	}
+	//for(int i=0;i<tempPuzzle->numPieces;i++){
+	//	int numObjs2 = toClone->myCubies[i]->numObjs;
+	//	for (int j=0; j < numObjs2; j++){
+	//		tempPuzzle->myCubies[i]->myMeshs = toClone->myCubies[i]->myMeshs.;
+	//		tempPuzzle->myCubies[i]->myVbos = toClone->myCubies[i]->myVbos;
+	//	}
+	//}
+	//copy the color information for each myMeshs[] from toClone->myCubies[i]
+	for(int i=0;i<tempPuzzle->numPieces;i++){
+		int numObjs2 = toClone->myCubies[i]->numObjs;
+		for (int j=0; j < numObjs2; j++){
+			vector< ofFloatColor > tcolors = toClone->myCubies[i]->myMeshs[j].getColors();
+			tempPuzzle->myCubies[i]->myMeshs[j].addColors(tcolors);
+		}
+	}
 
 	return tempPuzzle;
 }

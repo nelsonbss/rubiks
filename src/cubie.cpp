@@ -103,10 +103,30 @@ void cubie::faceRotate(SG_VECTOR axis,bool di,float angle){
 		if(moving == false && goBackb == false && undoing == false){
 			if(locked == false){
 				SG_POINT protFace = {pointRotate.x,pointRotate.y,pointRotate.z};
-				//SG_VECTOR vrotFace = axis;
-				vrotFace.x = axis.x;
-				vrotFace.y = axis.y;
-				vrotFace.z = axis.z;
+				ofVec3f t;
+				ofVec3f t2;
+				ofVec3f t3;
+
+				if(armRotations.x==0 && armRotations.y==0 && armRotations.z == 0){
+					vrotFace.x = axis.x;
+					vrotFace.y = axis.y;
+					vrotFace.z = axis.z;
+				}else{
+					ofVec3f aux;
+					aux.x = axis.x;
+					aux.y = axis.y;
+					aux.z = axis.z;
+					t = aux.getRotated(armRotations.z,ofVec3f(0,0,1));
+					t2 = t.getRotated(armRotations.x,ofVec3f(0,1,0));
+					t3 = t2.getRotated(-armRotations.y,ofVec3f(1,0,0));
+					vrotFace.x = t3.x;
+					vrotFace.y = t3.y;
+					vrotFace.z = t3.z;
+				}
+
+
+
+
 				//ofVec3f protFaceV(pointRotate.x, pointRotate.y, pointRotate.z);
 				//ofVec3f vrotFaceV(vrotFace.x, vrotFace.y, vrotFace.z);
 				dir = di;

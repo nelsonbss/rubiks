@@ -538,8 +538,8 @@ void ofRender::colorFacesOneByOne(cubie *myCubie, float playRoom, int objectID,v
 							///rotate normal vectors to compensate for armature rotations z-y-x
 							//ask direction to color faces of cube 
 							ofVec3f t = tnormals[n].getRotated(armZ,ofVec3f(0,0,1));
-							ofVec3f t2 = t.getRotated(armY,ofVec3f(0,1,0));
-							ofVec3f t3 = t2.getRotated(armX,ofVec3f(1,0,0));
+							ofVec3f t2 = t.getRotated(armX,ofVec3f(0,1,0));
+							ofVec3f t3 = t2.getRotated(-armY,ofVec3f(1,0,0));
 
 							if(t3.align(x, 2.0)){
 								tcolors[n] = blue; 

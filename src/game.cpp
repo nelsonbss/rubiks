@@ -2179,7 +2179,7 @@ void game::restart(){
 		//objectDisplayed->exit();
 
 		//have to undo the moves made on the puzzle that was loaded
-		unDoMenuPuzzle();
+		//unDoMenuPuzzle();
 		step = 0;
 		objectID = -1;
 		puzzleFinished = false;

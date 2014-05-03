@@ -1441,22 +1441,22 @@ void puzzle::colorCubiesBlackSidesOneByOne(int cubieToColor){
 //	}
 //}
 //------------------------------------------------------------------
-void puzzle::clonePuzzleColors(puzzle &templatePuzzle){
-	//gets the colors from the templatepuzzle and applies those to the current puzzle cubies
-	for(int i=0;i<numPieces;i++){
-		int numMeshes = templatePuzzle.myCubies[i]->myMeshs.size();
-		for(int j=0;j<numMeshes;j++){
-			//get the colors from the meshs of the template
-			vector <ofFloatColor> colorsVectorTemplate = templatePuzzle.myCubies[i]->myMeshs[j].getColors();
-			//put those colors in the current puzzles cubie
-			myCubies[i]->myMeshs[j].clearColors();
-			myCubies[i]->myMeshs[j].addColors(colorsVectorTemplate);
-			ofVbo tempVbo;
-			tempVbo.setMesh(myCubies[i]->myMeshs[j], GL_STATIC_DRAW);
-			myCubies[i]->myVbos[j]=tempVbo;
-		}
-	}
-}
+////void puzzle::clonePuzzleColors(puzzle &templatePuzzle){
+////	//gets the colors from the templatepuzzle and applies those to the current puzzle cubies
+////	for(int i=0;i<numPieces;i++){
+////		int numMeshes = templatePuzzle.myCubies[i]->myMeshs.size();
+////		for(int j=0;j<numMeshes;j++){
+////			//get the colors from the meshs of the template
+////			vector <ofFloatColor> colorsVectorTemplate = templatePuzzle.myCubies[i]->myMeshs[j].getColors();
+////			//put those colors in the current puzzles cubie
+////			myCubies[i]->myMeshs[j].clearColors();
+////			myCubies[i]->myMeshs[j].addColors(colorsVectorTemplate);
+////			ofVbo tempVbo;
+////			tempVbo.setMesh(myCubies[i]->myMeshs[j], GL_STATIC_DRAW);
+////			myCubies[i]->myVbos[j]=tempVbo;
+////		}
+////	}
+////}
 //----------------------------------------------------------------
 void puzzle::unDo(int id, SG_VECTOR axis, bool dir){
 	//it receives the id of a cubie,the axis and the direction of rotation

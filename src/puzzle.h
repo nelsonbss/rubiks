@@ -94,7 +94,7 @@ public:
 	///color change
 	//void changeColorToColor(ofFloatColor Sc, ofFloatColor Tc);
 	//color cloning
-	void clonePuzzleColors(puzzle &templatePuzzle);
+	//void clonePuzzleColors(puzzle &templatePuzzle);
 
 	int gridSize;
 

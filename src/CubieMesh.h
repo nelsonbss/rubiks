@@ -37,9 +37,9 @@ public:
 	void setColorToSet(vector<Triangle>, ofFloatColor _c);
 	void setColorToCurvedObject(ofFloatColor _c);
 
-	void rotateNormals(float _angle, ofVec3f _axis);
+	//void rotateNormals(float _angle, ofVec3f _axis);
 	void rotateNormalsAround(float _angle, ofVec3f _axis, ofVec3f _pivot);
-	void rotateVertices(float _angle, ofVec3f _axis);
+	//void rotateVertices(float _angle, ofVec3f _axis);
 	void rotateVerticesAround(float _angle, ofVec3f _axis, ofVec3f _pivot);
 	void updatePosition(ofVec3f _pivot, ofVec3f _axis, float _angle);
 	void resetVertices();

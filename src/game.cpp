@@ -507,6 +507,7 @@ void game::update(string _eventName, SubObEvent _event){
 		//cout << "game bl:1" << endl;
 		if(step == 3){
 			ofVec3f m = _event.getArg("deltaPos")->getVec2();
+			cout << m << endl;
 			moveA(m);
 		}
 		if(step == 6){
@@ -1396,11 +1397,11 @@ void game::changeFaceColor(ofVec2f pos, ofFloatColor c){
 //----------------------------------------------------------------------
 void game::moveA (ofVec3f input){
 	int xp = offsetSlicer.x + input.x;
-	int xm = offsetSlicer.x + input.x;
+	int xn = offsetSlicer.x + input.x;
 	int yp = offsetSlicer.y + input.y;
-	int ym = offsetSlicer.y + input.y;
-	if(xp <= 140 &&  xm >= -140){
-		if( yp <= 140 && ym >= -140){
+	int yn = offsetSlicer.y + input.y;
+	if(xp <= 140 &&  xn >= -140){
+		if( yp <= 140 && yn >= -140){
 			myArmature->moveA(input);
 			//move the offset vector of the cutter at the same time as the armature
 			offsetSlicer.x += input.x;

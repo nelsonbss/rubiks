@@ -409,7 +409,7 @@ void ofRender::colorFaces(cubie **myCubies, int numPieces, float playRoom, int o
 }
 //---------------------------------------------------------------------------------------------------------------
 void ofRender::colorFacesOneByOne(cubie *myCubie, float playRoom, int objectID,vector< ofVec3f > ObjectUniqueNormals){
-	cout << "in COLOR FACES oneBone: " << ofGetElapsedTimeMillis() << endl;
+	//cout << "in COLOR FACES oneBone: " << ofGetElapsedTimeMillis() << endl;
 	//goes through each cubie and makes sets of normals.. to determine all different normals in the object
 	//i.e. this will give 8 + 6 faces for octahedor
 	vector< ofVec3f > tnormals;
@@ -605,7 +605,7 @@ void ofRender::colorFacesOneByOne(cubie *myCubie, float playRoom, int objectID,v
 			myCubie->myVbos[j]=tempVbo;
 		}
 	}
-	cout << "out COLOR FACES oneBone: " << ofGetElapsedTimeMillis() << endl;
+	//cout << "out COLOR FACES oneBone: " << ofGetElapsedTimeMillis() << endl;
 }
 //---------------------------------------------------------------------------------------------------------------
 //void ofRender::colorBlackSides(ofMesh &mesh, int idCubie, float playRoom, int objectID){

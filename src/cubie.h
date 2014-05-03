@@ -144,7 +144,7 @@ public:
 
 	void printCurrentCentroid();
 
-	void updatePosition();
+	//void updatePosition();
 };
 
 #endif /* defined(__Tcubie__cubie__) */

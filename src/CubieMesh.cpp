@@ -104,11 +104,11 @@ void CubieMesh::setColorToCurvedObject(ofFloatColor _c){
 }
 
 
-void CubieMesh::rotateNormals(float _angle, ofVec3f _axis){
-	for(auto tIter = triangles.begin(); tIter != triangles.end(); tIter++){
-		tIter->setNormal(tIter->getNormal().rotate(_angle, _axis).normalize());
-	}
-}
+//void CubieMesh::rotateNormals(float _angle, ofVec3f _axis){
+//	for(auto tIter = triangles.begin(); tIter != triangles.end(); tIter++){
+//		tIter->setNormal(tIter->getNormal().rotate(_angle, _axis).normalize());
+//	}
+//}
 
 void CubieMesh::rotateNormalsAround(float _angle, ofVec3f _axis, ofVec3f _pivot){
 	for(auto tIter = triangles.begin(); tIter != triangles.end(); tIter++){
@@ -116,14 +116,14 @@ void CubieMesh::rotateNormalsAround(float _angle, ofVec3f _axis, ofVec3f _pivot)
 	}
 }
 
-void CubieMesh::rotateVertices(float _angle, ofVec3f _axis){
-	for(auto tIter = triangles.begin(); tIter != triangles.end(); tIter++){
-		//tIter->getNormal().rotate(_angle, _axis);
-		tIter->getVertices()[0].rotate(_angle, _axis);
-		tIter->getVertices()[1].rotate(_angle, _axis);
-		tIter->getVertices()[2].rotate(_angle, _axis);
-	}
-}
+//void CubieMesh::rotateVertices(float _angle, ofVec3f _axis){
+//	for(auto tIter = triangles.begin(); tIter != triangles.end(); tIter++){
+//		//tIter->getNormal().rotate(_angle, _axis);
+//		tIter->getVertices()[0].rotate(_angle, _axis);
+//		tIter->getVertices()[1].rotate(_angle, _axis);
+//		tIter->getVertices()[2].rotate(_angle, _axis);
+//	}
+//}
 
 void CubieMesh::rotateVerticesAround(float _angle, ofVec3f _axis, ofVec3f _pivot){
 	for(auto tIter = triangles.begin(); tIter != triangles.end(); tIter++){

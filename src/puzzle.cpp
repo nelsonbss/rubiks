@@ -18,8 +18,6 @@ puzzle::puzzle(SG_VECTOR p, ofVec3f offset, int gSize,vector< ofVec3f > ObjectUn
 	myCubies = (cubie**)malloc(numPieces*sizeof(cubie*));
 
 	ObjectUniqueNormals = ObjectUniqueNormalsIn;
-
-
 	cubiesOffset = offset;
 
 	pos.x = p.x;

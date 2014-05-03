@@ -439,7 +439,7 @@ void cutter::setup(){
 	//the order of the rotation doesnt matter
 
 	allCubes->ApplyTempMatrix();  
-	allCubes->DestroyTempMatrix();
+	//allCubes->DestroyTempMatrix();
 }
 
 //--------------------------------------------------------------

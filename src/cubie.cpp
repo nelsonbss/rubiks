@@ -102,13 +102,13 @@ void cubie::faceRotate(SG_VECTOR axis,bool di,float angle){
 	if(numObjs != 0){
 		if(moving == false && goBackb == false && undoing == false){
 			if(locked == false){
-				SG_POINT protFace = {0,0,0};
+				SG_POINT protFace = {pointRotate.x,pointRotate.y,pointRotate.z};
 				//SG_VECTOR vrotFace = axis;
 				vrotFace.x = axis.x;
 				vrotFace.y = axis.y;
 				vrotFace.z = axis.z;
-				ofVec3f protFaceV(pointRotate.x, pointRotate.y, pointRotate.z);
-				ofVec3f vrotFaceV(vrotFace.x, vrotFace.y, vrotFace.z);
+				//ofVec3f protFaceV(pointRotate.x, pointRotate.y, pointRotate.z);
+				//ofVec3f vrotFaceV(vrotFace.x, vrotFace.y, vrotFace.z);
 				dir = di;
 
 				//ct1 = ofGetElapsedTimeMillis();
@@ -220,8 +220,8 @@ void cubie::update(){
 			//do animation to 0 position from masterAngle position
 			//for (int j=0; j < numObjs; j++){
 			SG_POINT protFace = {pointRotate.x,pointRotate.y,pointRotate.z};		///////////////////////////////////////////								 
-			ofVec3f protFaceV(pointRotate.x, pointRotate.y, pointRotate.z);
-			ofVec3f vrotFaceV(vrotFace.x, vrotFace.y, vrotFace.z);
+			//ofVec3f protFaceV(pointRotate.x, pointRotate.y, pointRotate.z);
+			//ofVec3f vrotFaceV(vrotFace.x, vrotFace.y, vrotFace.z);
 			bool reducing = true;
 			if(masterAngle == 0){
 				goBackb = false;
@@ -270,8 +270,8 @@ void cubie::update(){
 			//do 90 deg animation to new position
 			//for (int j=0; j < numObjs; j++){
 			SG_POINT protFace = {pointRotate.x,pointRotate.y,pointRotate.z};
-			ofVec3f protFaceV(pointRotate.x, pointRotate.y, pointRotate.z);
-			ofVec3f vrotFaceV(vrotFace.x, vrotFace.y, vrotFace.z);
+			//ofVec3f protFaceV(pointRotate.x, pointRotate.y, pointRotate.z);
+			//ofVec3f vrotFaceV(vrotFace.x, vrotFace.y, vrotFace.z);
 			bool reducing = true;
 			//////if(masterAngle == 90 || masterAngle == -90){
 			//////	moving = false;
@@ -857,19 +857,19 @@ void cubie::setColorToCurvedObject(ofFloatColor _c){
 	myVbos[0]=tempVbo;
 }
 
-void cubie::updatePosition(){
-	ofVec3f axis(vrotFace.x, vrotFace.y, vrotFace.z);
-	float angle = 0.0;
-	if(dir){
-		angle = 90.0;
-	} else {
-		angle = -90.0;
-	}
-	for(auto cIter = myMeshs.begin(); cIter != myMeshs.end(); cIter++){
-		cIter->rotateNormals(angle, axis);
-		cIter->rotateVertices(angle, axis);
-	}
-}
+//void cubie::updatePosition(){
+//	ofVec3f axis(vrotFace.x, vrotFace.y, vrotFace.z);
+//	float angle = 0.0;
+//	if(dir){
+//		angle = 90.0;
+//	} else {
+//		angle = -90.0;
+//	}
+//	for(auto cIter = myMeshs.begin(); cIter != myMeshs.end(); cIter++){
+		//cIter->rotateNormals(angle, axis);
+//		cIter->rotateVertices(angle, axis);
+//	}
+//}
 
 //-------------------------------------------------------------------------------------------------------------------------------------------
 void cubie::move(SG_VECTOR p){

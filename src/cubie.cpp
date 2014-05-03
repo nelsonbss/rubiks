@@ -69,7 +69,7 @@ void cubie::setup(){
 		SG_VECTOR vrotY = {0,1,0}; 							 
 		objectList[j]->GetTempMatrix()->Rotate(puzzleRotate,vrotY,ofDegToRad(armRotations.x));
 		SG_VECTOR vrotX = {1,0,0}; 							 
-		objectList[j]->InitTempMatrix()->Rotate(puzzleRotate,vrotX,ofDegToRad(-armRotations.y));
+		objectList[j]->GetTempMatrix()->Rotate(puzzleRotate,vrotX,ofDegToRad(-armRotations.y));
 		objectList[j]->ApplyTempMatrix();
 	}
 

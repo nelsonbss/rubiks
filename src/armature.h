@@ -71,8 +71,8 @@ public:
 	void update();
 	void draw();
     
-    void togglePlanes();
-    bool btogglePlanes;
+    //void togglePlanes();
+    //bool btogglePlanes;
     
     ofVec3f center;
 	void moveA(ofVec3f input);

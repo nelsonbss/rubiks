@@ -2271,7 +2271,7 @@ void game::mouseDragged(int x, int y, int button){
 		myCanvas.mouseDragged(x,y,button);
 	} else if(step == 3){
 		ofVec3f mouse(x,y);
-		ofVec3f r = lastMouse - mouse;
+		ofVec3f r = mouse - lastMouse;
 		rotateA(r);
 		lastMouse = mouse;
 	}

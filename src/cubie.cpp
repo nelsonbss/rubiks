@@ -69,7 +69,7 @@ void cubie::setup(){
 		SG_VECTOR vrotY = {0,1,0}; 							 
 		objectList[j]->GetTempMatrix()->Rotate(puzzleRotate,vrotY,ofDegToRad(armRotations.x));
 		SG_VECTOR vrotX = {1,0,0}; 							 
-		objectList[j]->GetTempMatrix()->Rotate(puzzleRotate,vrotX,ofDegToRad(armRotations.y));
+		objectList[j]->InitTempMatrix()->Rotate(puzzleRotate,vrotX,ofDegToRad(-armRotations.y));
 		objectList[j]->ApplyTempMatrix();
 	}
 
@@ -621,11 +621,11 @@ void cubie::faceRotate(SG_VECTOR axis,bool di){
 }
 
 //-------------------------------------------------------------------------------------------------------------------------------------------
-void cubie::setObjects(sgCGroup *objs,int cubieId,ofVec3f v){
+void cubie::setObjects(sgCGroup *objs,int cubieId,ofVec3f rotationCompensation){
 	////it receives a group, when Puzzle loadsPieces(ySlicer->getPieces())  on main
 	////it takes the input group and breaks it, to put parts on cubie group "objects"
 
-	armRotations = (v);//*-1; did not have to inverse the angle to compensate due to left hand and right hand rules on sgcore and on openframeworks
+	armRotations = (rotationCompensation);
 
 	if(objs != NULL){
 		//sgCObject **objcts = (sgCObject**)malloc(50*sizeof(sgCObject*));
@@ -866,7 +866,7 @@ void cubie::setColorToCurvedObject(ofFloatColor _c){
 //		angle = -90.0;
 //	}
 //	for(auto cIter = myMeshs.begin(); cIter != myMeshs.end(); cIter++){
-		//cIter->rotateNormals(angle, axis);
+//cIter->rotateNormals(angle, axis);
 //		cIter->rotateVertices(angle, axis);
 //	}
 //}

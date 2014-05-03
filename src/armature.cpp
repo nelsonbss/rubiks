@@ -183,7 +183,7 @@ armature::armature(ofVec3f cntr, float w, float h, float d, float bs, int gSize)
 	//side = height/blockSide;
 	side = bs;
 
-	btogglePlanes = false;
+	//btogglePlanes = false;
 
 	rot.x=0;
 	rot.y=0;
@@ -261,44 +261,35 @@ void armature::update(string _eventName, SubObEvent* _event){
 }
 
 //--------------------------------------------------------------
-void armature::togglePlanes(){
-	if(btogglePlanes == true){
-		cout << "Time: " << ofGetElapsedTimef() << endl;
-		btogglePlanes =false;
-	}else{
-		btogglePlanes=true;
-	}
-}
+//void armature::togglePlanes(){
+//	if(btogglePlanes == true){
+//		cout << "Time: " << ofGetElapsedTimef() << endl;
+//		btogglePlanes =false;
+//	}else{
+//		btogglePlanes=true;
+//	}
+//}
 //--------------------------------------------------------------
 void armature::draw(){
 	glPushMatrix();
 
 	glTranslatef(center.x,center.y,center.z);
+	glRotatef(-rot.y,1,0,0);
+	glRotatef(rot.x,0,1,0);
 	glRotatef(rot.z,0,0,1);
-	glRotatef(rot.y,0,1,0);
-	glRotatef(rot.x,1,0,0);
 	
-
-
-	
-
 	////////////////// Cylinders ////////////////////////////////////////////////////////////////////
-
 	ofSetColor(0);
 	ofFill();
 	for (int i=0;i<numCylinders;i++) {
 		cylinders[i].draw();
 	}
-	
-
 	ofSetColor(255);
 	ofFill();
 	cylinderA.draw();
 	cylinderB.draw();
 	cylinderC.draw();
-
 	///////////////////////////////////////////////////////////////////////////////////////
-
 	glPopMatrix();
 }
 //--------------------------------------------------------------

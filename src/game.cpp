@@ -21,11 +21,8 @@
 
 #define USE_LIGHT 1  //0 is off
 
-game::game(SG_VECTOR gamePos, float w, float h, SG_VECTOR displayPos, ofRectangle _vp, float iddleTime, string myPrefix, int saving){
-	////take this out in final release
-	//this is to turn on/off the save functionality
-	//and the funtion parameters attached to it
-	savingMode = saving;
+game::game(SG_VECTOR gamePos, float w, float h, SG_VECTOR displayPos, ofRectangle _vp, float iddleTime, string myPrefix){
+
 
 	posGame = gamePos;
 	slicingPos = posGame;
@@ -184,6 +181,7 @@ void game::setup(){
 	SubObMediator::Instance()->addObserver(prefix + ":extrusion-success", this);
 	SubObMediator::Instance()->addObserver(prefix + ":interaction", this);
 	SubObMediator::Instance()->addObserver(prefix + ":save", this); //to make the save button registered to do something
+	SubObMediator::Instance()->addObserver(prefix + ":solve", this);
 
 	goToAttract();
 
@@ -365,17 +363,16 @@ void game::update(){
 }
 //----------------------------------------------------------------------
 void game::update(string _eventName, SubObEvent _event){
+	if(_eventName == prefix + ":solve"){
+		unDoMenuPuzzle();
+	}
 	if(_eventName == prefix + ":save"){
-		if(savingMode == 0){
-			//call save functionality here
-			savePuzzleB = true;
-			//dont make opengl calls here... no drawing anything
-			setPage("object-start");
-			camPosition.set(viewport.width / 2, viewport.height / 2, 400);
-			/*guiReset();*/
-		}else{
-			unDoMenuPuzzle();
-		}
+		//call save functionality here
+		savePuzzleB = true;
+		//dont make opengl calls here... no drawing anything
+		setPage("object-start");
+		camPosition.set(viewport.width / 2, viewport.height / 2, 400);
+		/*guiReset();*/
 	}
 	if(_eventName == prefix + ":object-selected"){
 		if(step == 0){
@@ -2387,7 +2384,7 @@ void game::makeMove(ofVec3f _pnt){
 					double dist= abs(dragAngle-gestureAngles[i]);
 					double dist2= abs(dragAngle-gestureAngles[i]+(2*3.14159));
 					double dist3= abs(dragAngle-gestureAngles[i]-(2*3.14159));
-	
+
 					if (dist < offset){
 						offset = dist;
 						closest = i;
@@ -2402,11 +2399,11 @@ void game::makeMove(ofVec3f _pnt){
 					} 
 				}
 			}
-			
+
 
 			cubiePos=myPuzzle->getCubieInfo(myPuzzle->activeCubie);
 
-		//	cout << "CAMERA NORMAL IS " << normalAng << endl; 
+			//	cout << "CAMERA NORMAL IS " << normalAng << endl; 
 
 			if (closest==1 || closest==0) {
 				// x axis

@@ -362,6 +362,11 @@ void GuiConfigurator::specialTextLoadingCopOut(){
 	texts["save"].setText("french","ENREGISTER");
 	texts["save"].setText("spanish","GUARDAR");
 
+	texts["solve"] = GuiText();
+	texts["solve"].setText("english","SOLVE");
+	texts["solve"].setText("french","RÉSOUDRE");
+	texts["solve"].setText("spanish","RESOLVER");
+
 	texts["next"] = GuiText();
 	texts["next"].setText("english", "NEXT");
 	texts["next"].setText("french", "SUIVANT");

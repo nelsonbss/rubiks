@@ -138,7 +138,7 @@ void puzzle::draw(){
 
 	ofPushMatrix();
 	//ofTranslate(pos.x,pos.y,pos.z);
-	
+
 	//ofRotateX(-45);
 	//ofRotateY(-45);
 
@@ -849,7 +849,7 @@ void puzzle::rearrange3dArrayNew(int axisNum,int plane, bool dir) {
 	}
 }
 //--------------------------------------------------------------------------------------------
-void puzzle::decideMove(){
+void puzzle::decideMove(SG_POINT axis){
 	//ask for the current masterangle of the selected cubies
 	//selected[] will have the latest 9 cubies active on the rotation
 
@@ -863,15 +863,17 @@ void puzzle::decideMove(){
 
 		if(dirM == true){
 			//positive angle
-			if(angleM >= 5){
+			if(angleM >= 30){
 				for(int i=0;i<counter;i++){
 					myCubies[selected[i]]->goForward();
 				}
 				//rearrange cubies involved on the move
-				if(myCubies[selected[0]]->vrotFace.x != 0){
+				if(axis.x != 0){
+					//if(myCubies[selected[0]]->vrotFace.x != 0){
 					rearrange3dArrayNew(0,selX,dirM);
 					//rearange3dArray(myCubies[selected[0]]->vrotFace,selX,dirM);
-				}else if(myCubies[selected[0]]->vrotFace.y != 0){
+				}else if(axis.y != 0){
+					//}else if(myCubies[selected[0]]->vrotFace.y != 0){
 					rearrange3dArrayNew(1,selY,dirM);
 					//rearange3dArray(myCubies[selected[0]]->vrotFace,selY,dirM);
 				}else{
@@ -886,17 +888,19 @@ void puzzle::decideMove(){
 			}
 		}else{
 			//negative angle
-			if(angleM <= -5){
+			if(angleM <= -30){
 				for(int i=0;i<counter;i++){
 					//only need to ask one of the selected cubies, thay all have the same rotation angle
 					myCubies[selected[i]]->goForward();
 					//myCubies[selected[i]]->updatePosition();
 				}
 				//rearrange cubies involved on the move
-				if(myCubies[selected[0]]->vrotFace.x != 0){
+				if(axis.x != 0){
+					//if(myCubies[selected[0]]->vrotFace.x != 0){
 					rearrange3dArrayNew(0,selX,dirM);
 					//rearange3dArray(myCubies[selected[0]]->vrotFace,selX,dirM);
-				}else if(myCubies[selected[0]]->vrotFace.y != 0){
+				}else if(axis.y != 0){
+					//}else if(myCubies[selected[0]]->vrotFace.y != 0){
 					rearrange3dArrayNew(1,selY,dirM);
 					//rearange3dArray(myCubies[selected[0]]->vrotFace,selY,dirM);
 				}else{

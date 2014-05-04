@@ -119,6 +119,9 @@ void cubie::faceRotate(SG_VECTOR axis,bool di,float angle){
 					t = aux.getRotated(armRotations.z,ofVec3f(0,0,1));
 					t2 = t.getRotated(armRotations.x,ofVec3f(0,1,0));
 					t3 = t2.getRotated(-armRotations.y,ofVec3f(1,0,0));
+					//t = aux.getRotated(-armRotations.y,ofVec3f(1,0,0));
+					//t2 = t.getRotated(armRotations.x,ofVec3f(0,1,0));
+					//t3 = t2.getRotated(armRotations.z,ofVec3f(0,0,1));
 					vrotFace.x = t3.x;
 					vrotFace.y = t3.y;
 					vrotFace.z = t3.z;
@@ -847,6 +850,10 @@ float cubie::getDistanceByCentroid(ofVec3f _pos){
 }
 
 Triangle cubie::getNearestTri(ofVec3f _pnt){
+	if (myMeshs.size()==0) {
+		Triangle tri(0,1,2,ofVec3f(0,0,0),ofVec3f(0,0,0),ofVec3f(0,0,0),ofVec3f(0,0,1),ofFloatColor(0,1));
+		return tri;
+	}
 	nearestTri = myMeshs[0].getNearest(_pnt);
 	return nearestTri;
 }

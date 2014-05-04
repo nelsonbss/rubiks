@@ -495,7 +495,7 @@ void game::update(string _eventName, SubObEvent _event){
 		}
 		if(bDragInput){
 			//myPuzzle->endRotation();
-			myPuzzle->decideMove();
+			myPuzzle->decideMove(axis);
 			faceRotate = false;
 			bDragInput = false;
 		}
@@ -819,6 +819,9 @@ void game::draw(){
 		}
 		cam.end();
 	}
+	//if (step>=5) {
+	//	drawPoints();
+	//}
 }
 //--------------------------------------------------------------------------------------------------------------------------------------
 void game::unprojectPoint(ofVec3f _pnt){
@@ -2021,7 +2024,7 @@ void game::guiInput(int in){
 //----------------------------------------------------------------------
 void game::decideMove(){
 	//it looks at current face rotation angle and decides to do a cmplete move, or go back to previous possition
-	myPuzzle->decideMove();
+	myPuzzle->decideMove(axis);
 	//}
 }
 //----------------------------------------------------------------------
@@ -2197,7 +2200,7 @@ void game::restart(){
 	}else if(step==4 || step==5){
 		//dont delete the puzzle if it has been saved
 		//if(!hasSaved){
-			myPuzzle->exit();
+		myPuzzle->exit();
 		//}
 		hasSaved = false;
 		myCutter->exit();
@@ -2314,13 +2317,25 @@ void game::startMove(ofVec3f _pnt){
 
 		// translate the six axes into 2D screen/camera space:
 
-		cp0 = picker.project(ofVec3f (0,0,0), &viewport);
-		cp1 = picker.project(ofVec3f (dist,0,0), &viewport);
-		cp2 = picker.project(ofVec3f (-dist,0,0), &viewport);
-		cp3 = picker.project(ofVec3f (0,dist,0), &viewport);
-		cp4 = picker.project(ofVec3f (0,-dist,0), &viewport);
-		cp5 = picker.project(ofVec3f (0,0,dist), &viewport);
-		cp6 = picker.project(ofVec3f (0,0,-dist), &viewport);
+		cp0 = picker.project(rotateToArmature(ofVec3f (0,0,0)), &viewport);
+		cp1 = picker.project(rotateToArmature(ofVec3f (dist,0,0)), &viewport);
+		cp2 = picker.project(rotateToArmature(ofVec3f (-dist,0,0)), &viewport);
+		cp3 = picker.project(rotateToArmature(ofVec3f (0,dist,0)), &viewport);
+		cp4 = picker.project(rotateToArmature(ofVec3f (0,-dist,0)), &viewport);
+		cp5 = picker.project(rotateToArmature(ofVec3f (0,0,dist)), &viewport);
+		cp6 = picker.project(rotateToArmature(ofVec3f (0,0,-dist)), &viewport);
+
+		double diffx=cp1.distance(cp2);
+		double diffy=cp3.distance(cp4);
+		double diffz=cp5.distance(cp6);
+
+		if (diffx<diffz && diffx<diffy) {
+			normalAng=0;
+		} else if (diffy<diffz) {
+			normalAng=1;
+		} else {
+			normalAng=2;
+		}
 		//Point cp0 = Viewport3DHelper.Point3DtoPoint2D(view1.Viewport, new Point3D(0, 0, 0));
 
 		//// and calculate their angles (in radians) from the center of the axes:
@@ -2332,180 +2347,28 @@ void game::startMove(ofVec3f _pnt){
 		gestureAngles[5] = atan2(cp6.y - cp0.y, cp6.x - cp0.x);
 	}
 }
-//--------------------------------------------------------------------------------------------------------------------------
-//void game::makeMove(ofVec3f _pnt){
-//	//SG_POINT axis;
-//	// get angle of gesture
-//	double dragDist=sqrt((_pnt.y*_pnt.y)+(_pnt.x*_pnt.x));
-//	if(bHaveAxis == false){
-//		if(dragDist > 75){
-//
-//			double dragAngle = atan2(_pnt.y,_pnt.x);//atan2(newPt.Y - twistStartPoint.Y, newPt.X - twistStartPoint.X);
-//
-//			double offset = 100000;
-//			int closest=-1;
-//			for (int i = 0; i < 6; i++)
-//			{
-//				double dist= abs(dragAngle-gestureAngles[i]);
-//				double dist2= abs(dragAngle-gestureAngles[i]+(2*3.14159));
-//				double dist3= abs(dragAngle-gestureAngles[i]-(2*3.14159));
-//				if (dist < offset){
-//					offset = dist;
-//					closest = i;
-//				} 
-//				if (dist2 < offset){
-//					offset = dist2;
-//					closest = i;
-//				} 
-//				if (dist3 < offset){
-//					offset = dist3;
-//					closest = i;
-//				} 
-//			}
-//			cubiePos=myPuzzle->getCubieInfo(myPuzzle->activeCubie);
-//			//normal
-//			//ofVec3f normal = myPuzzle->activeTriangle.getNormal();
-//			ofVec3f normal=camPosition-ofVec3f(posP.x, posP.y, posP.z);
-//			//
-//			int normalNum=-1;
-//			int normalAng=0;
-//
-//			// this one is easy since we're only dealing with six absolute directions... so we can see which vector of the normal is the most extreme
-//			if(abs(normal.x)>abs(normal.y) && abs(normal.x)>abs(normal.z)){
-//				// x axis is most prominent
-//				normalAng=0;
-//				if(normal.x>0){
-//					normalNum=0;
-//				}else{
-//					normalNum=1;
-//				}
-//			}else if (abs(normal.y)>abs(normal.z)) {
-//				// y axis is most prominent
-//				normalAng=1;
-//				if(normal.y>0){
-//					normalNum=2;
-//				}else{
-//					normalNum=3;
-//				}
-//			}else {
-//				// z axis is most prominent
-//				normalAng=2;
-//				if (normal.z>0) {
-//					normalNum=4;
-//				} else {
-//					normalNum=5;
-//				}
-//			}
-//			if (closest==1 || closest==0) {
-//				// x axis
-//				bHaveAxis = true;
-//				if (normalAng==1) {
-//					// rotate on z
-//					axis.x = 0;
-//					axis.y = 0;
-//					axis.z = 1;
-//					dir=true;
-//					if(myPuzzle->getCubieInfo(myPuzzle->activeCubie).y >= 1) {
-//						dir = false;
-//					}
-//					if (closest==1) {
-//						dir=!dir;
-//					}
-//					rotateByIDandAxis(myPuzzle->activeCubie,axis,dir,10);
-//
-//				}else{
-//					// rotate on y
-//					axis.x = 0;
-//					axis.y = 1;
-//					axis.z = 0;
-//
-//					dir=true;
-//					if(myPuzzle->getCubieInfo(myPuzzle->activeCubie).z <= 1) {
-//						dir = false;
-//					}
-//					if (closest==1) {
-//						dir=!dir;
-//					}
-//					rotateByIDandAxis(myPuzzle->activeCubie,axis,dir,10);
-//				}
-//			}
-//			if (closest==3 || closest==2) {
-//				// y axis
-//				bHaveAxis = true;
-//				if (normalAng==0) {
-//					// rotate on z
-//					axis.x = 0;
-//					axis.y = 0;
-//					axis.z = 1;
-//					dir=true;
-//					if(myPuzzle->getCubieInfo(myPuzzle->activeCubie).x <= 1) {
-//						dir = false;
-//					}
-//					if (closest==3) {
-//						dir=!dir;
-//					}
-//					rotateByIDandAxis(myPuzzle->activeCubie,axis,dir,10);
-//
-//				} else {
-//					// rotate on x
-//					axis.x = 1;
-//					axis.y = 0;
-//					axis.z = 0;
-//
-//					dir=false;
-//					if(myPuzzle->getCubieInfo(myPuzzle->activeCubie).z <= 1) {
-//						dir = true;
-//					}
-//					if (closest==3) {
-//						dir=!dir;
-//					}
-//					rotateByIDandAxis(myPuzzle->activeCubie,axis,dir,10);
-//				}
-//			}
-//			if (closest==4 || closest==5) {
-//				// z axis
-//				bHaveAxis = true;
-//
-//				if(normalAng==0){
-//					// rotate on y
-//					axis.x = 0;
-//					axis.y = 1;
-//					axis.z = 0;
-//					dir=false;
-//					if(myPuzzle->getCubieInfo(myPuzzle->activeCubie).x <= 1) {
-//						dir = true;
-//					}
-//					if (closest==5) {
-//						dir=!dir;
-//					}
-//					rotateByIDandAxis(myPuzzle->activeCubie,axis,dir,10);
-//				} else {
-//					// rotate on x
-//					axis.x = 1;
-//					axis.y = 0;
-//					axis.z = 0;
-//
-//					dir=true;
-//					if(myPuzzle->getCubieInfo(myPuzzle->activeCubie).y <= 1) {
-//						dir = false;
-//					}
-//					if (closest==5) {
-//						dir=!dir;
-//					}
-//					rotateByIDandAxis(myPuzzle->activeCubie,axis,dir,10);
-//
-//				}
-//			}
-//		}
-//	}else{
-//		//if (((dragDist-lastDragDistance)/300)>.5) {
-//		rotateByIDandAxis(myPuzzle->activeCubie,axis,dir,5);
-//		//} else if (((dragDist-lastDragDistance)/300)<-.5) {
-//		//	rotateByIDandAxis(myPuzzle->activeCubie,axis,dir,-5);
-//		//}
-//	}
-//	lastDragDistance=dragDist;
-//}
+//----------------------------------------------------------------------------------------------------
+ofVec3f game::rotateToArmature(ofVec3f ax) {
+	ofVec3f temp=ax.getRotated(rotateSlicer.z,ofVec3f(0,0,1));
+	temp=temp.getRotated(rotateSlicer.x,ofVec3f(0,1,0));
+	temp=temp.getRotated(-rotateSlicer.y,ofVec3f(1,0,0));
+	return temp;
+}
+//----------------------------------------------------------------------------------------------------
+void game::drawPoints(){
+	ofFill();
+	ofSetColor(255,0,0);
+	ofCircle(cp1,10);
+	ofCircle(cp2,5);
+	ofSetColor(0,255,0);
+	ofCircle(cp3,10);
+	ofCircle(cp4,5);
+	ofSetColor(0,0,255);
+	ofCircle(cp5,10);
+	ofCircle(cp6,5);
+	ofSetColor(0,0,0);
+	ofCircle(cp0,10);
+}
 //--------------------------------------------------------------------------------------------------------------------------
 void game::makeMove(ofVec3f _pnt){
 	//SG_POINT axis;
@@ -2520,54 +2383,31 @@ void game::makeMove(ofVec3f _pnt){
 			int closest=-1;
 			for (int i = 0; i < 6; i++)
 			{
-				double dist= abs(dragAngle-gestureAngles[i]);
-				double dist2= abs(dragAngle-gestureAngles[i]+(2*3.14159));
-				double dist3= abs(dragAngle-gestureAngles[i]-(2*3.14159));
-				if (dist < offset){
-					offset = dist;
-					closest = i;
-				} 
-				if (dist2 < offset){
-					offset = dist2;
-					closest = i;
-				} 
-				if (dist3 < offset){
-					offset = dist3;
-					closest = i;
-				} 
+				if (i!=normalAng*2 && i!=normalAng*2+1) {
+					double dist= abs(dragAngle-gestureAngles[i]);
+					double dist2= abs(dragAngle-gestureAngles[i]+(2*3.14159));
+					double dist3= abs(dragAngle-gestureAngles[i]-(2*3.14159));
+	
+					if (dist < offset){
+						offset = dist;
+						closest = i;
+					} 
+					if (dist2 < offset){
+						offset = dist2;
+						closest = i;
+					} 
+					if (dist3 < offset){
+						offset = dist3;
+						closest = i;
+					} 
+				}
 			}
-			cubiePos=myPuzzle->getCubieInfo(myPuzzle->activeCubie);
-			//ofVec3f normal = myPuzzle->activeTriangle.getNormal(); // swap this line for the next one if you want to use camera angle vs. selection normal
-			ofVec3f normal=camPosition-ofVec3f(posP.x, posP.y, posP.z);
-			int normalNum=-1;
-			int normalAng=0;
+			
 
-			// this one is easy since we're only dealing with six absolute directions... so we can see which vector of the normal is the most extreme
-			if(abs(normal.x)>abs(normal.y) && abs(normal.x)>abs(normal.z)){
-				// x axis is most prominent
-				normalAng=0;
-				if(normal.x>0){
-					normalNum=0;
-				}else{
-					normalNum=1;
-				}
-			}else if (abs(normal.y)>abs(normal.z)) {
-				// y axis is most prominent
-				normalAng=1;
-				if(normal.y>0){
-					normalNum=2;
-				}else{
-					normalNum=3;
-				}
-			}else {
-				// z axis is most prominent
-				normalAng=2;
-				if (normal.z>0) {
-					normalNum=4;
-				} else {
-					normalNum=5;
-				}
-			}
+			cubiePos=myPuzzle->getCubieInfo(myPuzzle->activeCubie);
+
+		//	cout << "CAMERA NORMAL IS " << normalAng << endl; 
+
 			if (closest==1 || closest==0) {
 				// x axis
 				bHaveAxis = true;
@@ -2670,11 +2510,11 @@ void game::makeMove(ofVec3f _pnt){
 			}
 		}
 	}else{
-		//if (((dragDist-lastDragDistance)/300)>.5) {
-		rotateByIDandAxis(myPuzzle->activeCubie,axis,dir,5);
-		//} else if (((dragDist-lastDragDistance)/300)<-.5) {
-		//	rotateByIDandAxis(myPuzzle->activeCubie,axis,dir,-5);
-		//}
+		if (((dragDist-lastDragDistance)/300)>.5) {
+			rotateByIDandAxis(myPuzzle->activeCubie,axis,dir,5);
+		} else if (((dragDist-lastDragDistance)/300)<-.5) {
+			rotateByIDandAxis(myPuzzle->activeCubie,axis,dir,-5);
+		}
 	}
 	lastDragDistance=dragDist;
 }

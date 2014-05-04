@@ -232,6 +232,7 @@ public:
 	SG_VECTOR v;
 	double gestureAngles[6];
 	bool bClicked;
+	ofVec3f rotateToArmature(ofVec3f ax);
 
 	ofVec3f cubiePos;
 	double lastDragDistance;
@@ -255,7 +256,8 @@ public:
 	void setPage(string _page);
 
 	void task1(string msg);
-
+	void game::drawPoints();
+	int normalAng;
 
 	
 };

@@ -75,7 +75,7 @@ public:
 	int selX;
 	int selY;
 	int selZ;
-	void decideMove();
+	void decideMove(SG_POINT axis);
 
 	//color faces
 	void colorFaces(int objectID);

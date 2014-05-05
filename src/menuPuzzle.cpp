@@ -142,7 +142,7 @@ void menuPuzzle::setup(){
 	temp->Triangulate(SG_VERTEX_TRIANGULATION);
 	ofRender *ofr = new ofRender(); //class that has the metods to transform sgCore to OF mesh and set the normals (in one function)
 	//ofr->sgCoretoOFmesh(temp,myMesh,-1); //-1 because its not a cubie but want color on the sample object
-	ofr->sgCoretoOFmesh(temp,myMesh,-2,objectId); //-2 for plain color
+	ofr->sgCoretoOFmesh(temp,myMesh,-2,objectId,"no"); //-2 for plain color
 	myVbo.setMesh(myMesh, GL_STATIC_DRAW);
 	free(ofr);
 }
@@ -373,7 +373,8 @@ puzzle *menuPuzzle::cloneMyPuzzle(puzzle* toClone, int selObjId){
 	//create the meshes from the sgCore objects
 	//so the objects can be renderes by openFrameworks
 	for(int i=0;i<tempPuzzle->numPieces;i++){
-		tempPuzzle->myCubies[i]->crateOfMeshs();
+		//tempPuzzle->myCubies[i]->crateOfMeshs();
+		tempPuzzle->myCubies[i]->myMeshs = toClone->myCubies[i]->myMeshs;
 	}
 
 	//for(int i=0;i<tempPuzzle->numPieces;i++){

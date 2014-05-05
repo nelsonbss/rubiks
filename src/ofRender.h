@@ -10,7 +10,7 @@ class ofRender{
 
 public:
 	ofRender();
-	void sgCoretoOFmesh(sgC3DObject *obj, CubieMesh &mesh,int numCubie,int selectedObjectID);
+	void sgCoretoOFmesh(sgC3DObject *obj, CubieMesh &mesh,int numCubie,int selectedObjectID,string station);
 	void setNormals(ofMesh &mesh);
 	vector <ofFloatColor> colorsVector;
 	ofFloatColor mate;

@@ -699,7 +699,7 @@ void cubie::crateOfMeshs(){
 		//	//bunny
 		//	ofr->sgCoretoOFmesh(o,tempMesh,-3,selectedObjectID);
 		//}else{
-		ofr->sgCoretoOFmesh(o,tempMesh,id,selectedObjectID); //give cubie id!! so that it knows if its a plain color puzzle or not
+		ofr->sgCoretoOFmesh(o,tempMesh,id,selectedObjectID,"no"); //give cubie id!! so that it knows if its a plain color puzzle or not
 		//}
 		myMeshs.push_back(tempMesh);
 		ofVbo tempVbo;

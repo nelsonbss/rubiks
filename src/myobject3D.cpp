@@ -31,7 +31,7 @@ void myobject3D::setup(){
 	temp->Triangulate(SG_VERTEX_TRIANGULATION);
 	ofRender *ofr = new ofRender(); //class that has the metods to transform sgCore to OF mesh and set the normals (in one function)
 	//ofr->sgCoretoOFmesh(temp,myMesh,-1); //-1 because its not a cubie but want color on the sample object
-	ofr->sgCoretoOFmesh(temp,myMesh,-2,objectId); //-2 for plain color
+	ofr->sgCoretoOFmesh(temp,myMesh,-2,objectId,station); //-2 for plain color
 	if(objectId < 8){
 		createUniqueNormals(0.001);
 	}
@@ -45,17 +45,20 @@ void myobject3D::update(){
 	//flip 180 on x axis the object for bl and br game stations
 	if(station.compare("bl") ==0){
 		SG_POINT rotP = {tempPos.x,tempPos.y,tempPos.z};
-		SG_VECTOR rotV = {1,0,0};
-		SG_VECTOR offset = {0,0,0}; //for the cube to be in place
 		temp->InitTempMatrix()->Translate(rotP);//this translates the object to be cut!!
-		temp->GetTempMatrix()->Rotate(rotP,rotV,ofDegToRad(180));
-		SG_VECTOR rotV2 = {0,1,0};
-		temp->GetTempMatrix()->Rotate(rotP,rotV2,ofDegToRad(180));
+		if(objectId != 3){
+			SG_VECTOR rotV = {1,0,0};
+			temp->GetTempMatrix()->Rotate(rotP,rotV,ofDegToRad(180));
+			SG_VECTOR rotV2 = {0,1,0};
+			temp->GetTempMatrix()->Rotate(rotP,rotV2,ofDegToRad(180));
+		}else{
+			//SG_VECTOR rotV2 = {0,1,0};
+			//temp->GetTempMatrix()->Rotate(rotP,rotV2,ofDegToRad(180));
+		}
 		temp->ApplyTempMatrix(); 
 	}else if (station.compare("br")==0){
 		SG_POINT rotP = {tempPos.x,tempPos.y,tempPos.z};
 		SG_VECTOR rotV = {1,0,0};
-		SG_VECTOR offset = {0,0,0}; //for the cube to be in place
 		temp->InitTempMatrix()->Translate(rotP);//this translates the object to be cut!!
 		temp->GetTempMatrix()->Rotate(rotP,rotV,ofDegToRad(180));
 		SG_VECTOR rotV2 = {0,1,0};
@@ -130,12 +133,20 @@ void myobject3D::loadObjectOD(sgC3DObject *obj, int ID){
 	////flip 180 on x axis the object for bl and br game stations
 	if(station.compare("bl")==0){
 		SG_POINT rotP = {0,0,0};
-		SG_VECTOR rotV = {1,0,0};
-		object->InitTempMatrix()->Rotate(rotP,rotV,ofDegToRad(180));
-		SG_VECTOR rotV2 = {0,1,0};
-		object->GetTempMatrix()->Rotate(rotP,rotV2,ofDegToRad(180));
-		object->ApplyTempMatrix(); 
-		object->DestroyTempMatrix();
+		if(objectId != 3){
+			SG_VECTOR rotV = {1,0,0};
+			object->InitTempMatrix()->Rotate(rotP,rotV,ofDegToRad(180));
+			SG_VECTOR rotV2 = {0,1,0};
+			object->GetTempMatrix()->Rotate(rotP,rotV2,ofDegToRad(180));
+			object->ApplyTempMatrix(); 
+			object->DestroyTempMatrix();
+		}else{
+			//SG_VECTOR rotV2 = {0,1,0};
+			//object->InitTempMatrix()->Rotate(rotP,rotV2,ofDegToRad(180));
+			object->ApplyTempMatrix(); 
+			object->DestroyTempMatrix();
+		}
+
 	}else if(station.compare("br")==0){
 		SG_POINT rotP = {0,0,0};
 		SG_VECTOR rotV = {1,0,0};

@@ -93,7 +93,7 @@ ofRender::ofRender(){
 	colorsVector.push_back(redOrange);//15
 }
 //-----------------------------------------------------------------------------------------------------------------------
-void ofRender::sgCoretoOFmesh(sgC3DObject *obj, CubieMesh&mesh,int idCubie,int selectedObjectID){
+void ofRender::sgCoretoOFmesh(sgC3DObject *obj, CubieMesh&mesh,int idCubie,int selectedObjectID,string station){
 	vector <ofFloatColor> colorsVector2;
 	//convert to of mesh and draw as of
 	mesh.setMode(OF_PRIMITIVE_TRIANGLES);
@@ -159,7 +159,16 @@ void ofRender::sgCoretoOFmesh(sgC3DObject *obj, CubieMesh&mesh,int idCubie,int s
 			//c = redOrange;//decideColor(decideAxisRange(dir,0));
 		}else if (idCubie == -2){
 			//its an original shape  with plain color
-			c = mate;//colorsVector2[0];//mate
+			if(station.compare("bl") ==0){
+				c = ofFloatColor(blue,0.7);//colorsVector2[0];//mate
+			}else if (station.compare("br")==0){
+				c = ofFloatColor(red,0.7);
+			}else if (station.compare("tr")==0){
+				c = ofFloatColor(orange,0.7);
+			}else if (station.compare("tl")==0){
+				c = ofFloatColor(green,0.7);
+			}
+
 		}else if (idCubie == -3){
 			//plain color, used for bunny
 			//c = redOrange;

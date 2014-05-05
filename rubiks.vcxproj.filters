@@ -142,6 +142,9 @@
     <ClCompile Include="src\ofxTimer.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\hiddenButton.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -420,6 +423,9 @@
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\ofRender.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\hiddenButton.h">
       <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>

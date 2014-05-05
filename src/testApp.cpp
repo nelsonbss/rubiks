@@ -1,6 +1,7 @@
 #include "testApp.h"
 #include "game.h"
 #include "ofxAssimpModelLoader.h"
+#include "hiddenButton.h"
 ///////////////////////////////////////////
 
 #define displayXBlue 550
@@ -8,7 +9,7 @@
 #define displayZ -800
 #define iddleTime 120
 #define puzzleItems 10
-#define USE_MOUSE 1
+#define USE_MOUSE 0
 
 std::map<int,gwc::Point> active_points;
 
@@ -236,12 +237,6 @@ void testApp::setup(){
 	tr.width = 660;
 	tr.height = 320;
 	//myGames.erase (myGames.begin(),myGames.end());
-
-
-
-
-
-
 	game *tempGame = new game(gamePos, ofGetWidth(), ofGetHeight(),displayPos, tr, iddleTime,"bl");
 	myGames.push_back(tempGame);
 	tr.x = 960;
@@ -277,7 +272,17 @@ void testApp::setup(){
 	//ofSetupScreenPerspective(ofGetWidth(), ofGetHeight(), 0.0);
 	//ofEnableAntiAliasing();
 
+	//create hidden buttons
+	ofVec2f sizeHB = ofVec2f(100,100);
 
+	ofVec2f posHB1 = ofVec2f(0,(ofGetWindowHeight()/2)+100);
+	ofVec2f posHB2 = ofVec2f(ofGetWindowWidth()-100,(ofGetWindowHeight()/2)+100);
+	ofVec2f posHB3 = ofVec2f(260,ofGetWindowHeight()/2);
+
+	
+	hb1 = new hiddenButton(posHB1,sizeHB);
+	hb2 = new hiddenButton(posHB2,sizeHB);
+	hb3 = new hiddenButton(posHB3,sizeHB);
 }
 //--------------------------------------------------------------
 void testApp::update(){
@@ -579,7 +584,13 @@ void testApp::draw(){
 	//////ofDisableLighting();
 	//////ofEnableAlphaBlending();
 	//ofDisableDepthTest();
-	///////////////////////////////middle puzzles  ///////////////////////////////
+	///////////////////////////////hidde buttons ///////////////////////////////
+
+	hb1->draw();
+	hb2->draw();
+	hb3->draw();
+
+
 	ofEnableDepthTest();
 	ofEnableAlphaBlending();
 }
@@ -721,15 +732,18 @@ void testApp::exit(){
 
 	//sgDeleteObject(sgBunny);
 
-	//myCutter->exit();
-	//mySlicer->exit();
+	myCutter->exit();
+	mySlicer->exit();
 	//objectDisplayed->exit();
 	//delete menu puzzles correctly
 	//free(myPuzzles);
-	//for(int i=0; i < middlePuzzles.size();i++){
-	//	middlePuzzles[i]->exit();
-	//}
+	for(int i=0; i < middlePuzzles.size();i++){
+		middlePuzzles[i]->exit();
+	}
 
+	free(hb1);
+	free(hb2);
+	free(hb3);
 	//sgFreeKernel();
 }
 //----------------------------------------------------------------------------------------

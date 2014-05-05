@@ -2175,7 +2175,7 @@ void game::clearDisplayedObject(){
 //----------------------------------------------------------------------
 void game::restart(){
 	if(step == 7){
-		myPuzzle->exit();//if we pass this puzzle to the saved games, we cant delete it!!!!!!!!!or we delete the menu puzzle for the future
+		//myPuzzle->exit();//if we pass this puzzle to the saved games, we cant delete it!!!!!!!!!or we delete the menu puzzle for the future
 		//objectDisplayed->exit();
 
 		//have to undo the moves made on the puzzle that was loaded

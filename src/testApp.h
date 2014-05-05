@@ -13,6 +13,7 @@
 #include <math.h>
 #include "menuPuzzle.h"
 #include "ofxAssimpModelLoader.h"
+#include "hiddenButton.h"
 #include <vector>
 
 class testApp : public ofBaseApp, public Observer, public Subject{
@@ -129,4 +130,10 @@ public:
 	ofPoint unprojectPoint(ofVec3f pnt);
 	double gestureAngles[6];
 	ofLight light;
+
+
+	//hidden buttons
+	hiddenButton *hb1;
+	hiddenButton *hb2;
+	hiddenButton *hb3;
 };

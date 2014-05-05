@@ -257,6 +257,7 @@ public:
 	void game::drawPoints();
 	int normalAng;
 
+	bool undoingPuzzle;
 	
 };
 #endif /* defined(__Tgame__game__) */

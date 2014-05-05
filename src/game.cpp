@@ -68,6 +68,7 @@ game::game(SG_VECTOR gamePos, float w, float h, SG_VECTOR displayPos, ofRectangl
 
 	creatingPuzzle = false;
 	puzzleFinished = false;
+	undoingPuzzle = false;
 	numPuzzlePieces = 0;
 	cubieToCut = 0;
 
@@ -107,6 +108,7 @@ game::game(SG_VECTOR gamePos, float w, float h, SG_VECTOR displayPos, ofRectangl
 	faceRotate = false;
 	faceRotateB = false;//used in the 2 id rotation function
 
+	
 	/*
 	thread t1(task1, "Hello");
 	t1.join();*/
@@ -365,14 +367,26 @@ void game::update(){
 //----------------------------------------------------------------------
 void game::update(string _eventName, SubObEvent _event){
 	if(_eventName == prefix + ":solve"){
-		unDoMenuPuzzle();
+		if(creatingPuzzle == false){
+			if(savePuzzleB == false){
+				undoingPuzzle = true;
+				unDoMenuPuzzle();
+				undoingPuzzle = false;
+			}
+		}
 	}
 	if(_eventName == prefix + ":save"){
-		//call save functionality here
-		savePuzzleB = true;
-		//dont make opengl calls here... no drawing anything
-		setPage("object-start");
-		camPosition.set(viewport.width / 2, viewport.height / 2, 400);
+		if(creatingPuzzle == false){
+			if(savePuzzleB == false){
+				if(undoingPuzzle == false){
+					//call save functionality here
+					savePuzzleB = true;
+					//dont make opengl calls here... no drawing anything
+					setPage("object-start");
+					camPosition.set(viewport.width / 2, viewport.height / 2, 400);
+				}
+			}
+		}
 	}
 	if(_eventName == prefix + ":object-selected"){
 		if(step == 0){
@@ -436,8 +450,11 @@ void game::update(string _eventName, SubObEvent _event){
 
 		} else if(step == 3){
 			//setPage("color-start");//this is now getting called after a puzzle is finishd being created, on update()
+
 		} else if(step == 4){
-			setPage("play");
+			if(creatingPuzzle == false){
+				setPage("play");
+			}
 		} else {
 			setPage("object-start");
 			camPosition.set(viewport.width / 2, viewport.height / 2, 400);
@@ -904,13 +921,20 @@ void game::loadPuzzle(puzzle *inputPuzzle,int objID, SG_VECTOR p, SG_VECTOR t){
 		step = 0;
 		objectID = -1;
 	}else if(step==4 || step==5){
+		//dont delete the puzzle if it has been saved
+		//if(!hasSaved){
 		myPuzzle->exit();
+		//}
+		hasSaved = false;
 		myCutter->exit();
 		mySlicer->exit();
-		//objectDisplayed->exit();
+		objectDisplayed->exit();
 		objectID = -1;
 		step = 0;
 		armID = -1;
+		puzzleFinished = false;
+		creatingPuzzle = false;
+		historyV.clear();
 	}else if (step==3){
 		//objectDisplayed->exit();             //clean displayed object after puzzle is created, so we dont keep it until the exit or restart
 		step = 0;

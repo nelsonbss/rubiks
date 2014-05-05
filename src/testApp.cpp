@@ -9,11 +9,12 @@
 #define displayZ -800
 #define iddleTime 120
 #define puzzleItems 10
-#define USE_MOUSE 1
+#define USE_MOUSE 0
 
 std::map<int,gwc::Point> active_points;
 
 testApp::testApp() : puzzleDisplayed(){
+
 }
 //--------------------------------------------------------------
 void testApp::setup(){
@@ -403,6 +404,13 @@ void testApp::update(){
 			myGames[i]->restart();
 		}
 	}
+	if((hb1Flag == true) && (hb2Flag == true) && (hb1Flag2==true)){
+		exit();
+		hb1Flag = false;
+		hb2Flag = false;
+		hb1Flag2 = false;
+	}
+
 
 	/*
 
@@ -681,12 +689,7 @@ void testApp::mousePressed(int x, int y, int button){
 				hb1Flag2 = true;
 			}
 		}
-		if((hb1Flag == true) && (hb2Flag == true) && (hb1Flag2==true)){
-			exit();
-			hb1Flag = false;
-			hb2Flag = false;
-			hb1Flag2 = false;
-		}
+
 		//////////////////////////////////////////////
 
 		touchId = nextTouchId;

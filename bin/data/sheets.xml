@@ -814,8 +814,8 @@
     </param>
   </node>
   <node type="button" name="reset">
-    <pos>0.10,0.96</pos>
-    <pos-mirrored>0.10,0.96</pos-mirrored>
+    <pos>0.12,0.96</pos>
+    <pos-mirrored>0.12,0.96</pos-mirrored>
     <size>1.0,1.0</size>
     <scale>1.0</scale>
     <pages>object-start,object-selected,armature-start,armature-selected,color-start,play,play2,draw</pages>
@@ -863,7 +863,7 @@
   </node>
   <node type="button" name="next-inactive">
     <pos>0.4,0.96</pos>
-    <pos-mirrored>0.33,0.95</pos-mirrored>
+    <pos-mirrored>0.33,0.96</pos-mirrored>
     <size>1.0,1.0</size>
     <scale>1.0</scale>
     <pages>object-start,armature-start</pages>
@@ -902,7 +902,7 @@
   </node>
   <node type="button" name="next-active">
     <pos>0.4,0.96</pos>
-    <pos-mirrored>0.33,0.95</pos-mirrored>
+    <pos-mirrored>0.33,0.96</pos-mirrored>
     <size>1.0,1.0</size>
     <scale>1.0</scale>
     <pages>object-selected,armature-selected,color-start</pages>
@@ -957,8 +957,8 @@
     </param>
   </node>
   <node type="button" name="save">
-    <pos>0.4,0.95</pos>
-    <pos-mirrored>0.33,0.95</pos-mirrored>
+    <pos>0.4,0.96</pos>
+    <pos-mirrored>0.33,0.96</pos-mirrored>
     <size>1.0,1.0</size>
     <scale>1.0</scale>
     <pages>play</pages>
@@ -1013,8 +1013,8 @@
     </param>
   </node>
   <node type="button" name="solve">
-    <pos>0.3,0.95</pos>
-    <pos-mirrored>0.23,0.95</pos-mirrored>
+    <pos>0.3,0.96</pos>
+    <pos-mirrored>0.23,0.96</pos-mirrored>
     <size>1.0,1.0</size>
     <scale>1.0</scale>
     <pages>play,play2</pages>
@@ -1076,8 +1076,8 @@
   
   
   <node type="button" name="make-one">
-    <pos>0.4,0.95</pos>
-    <pos-mirrored>0.33,0.95</pos-mirrored>
+    <pos>0.4,0.96</pos>
+    <pos-mirrored>0.33,0.96</pos-mirrored>
     <size>1.0,1.0</size>
     <scale>1.0</scale>
     <pages>play2,draw</pages>

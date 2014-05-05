@@ -266,6 +266,6 @@ void myobject3D::createUniqueNormals(float playRoom){
 }
 //----------------------------------------------------------------
 void myobject3D::exit(){
-	sgCObject::DeleteObject(temp);
-	sgCObject::DeleteObject(object);
+	//sgCObject::DeleteObject(temp);
+	//sgCObject::DeleteObject(object);
 }

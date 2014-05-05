@@ -1229,9 +1229,9 @@ void game::loadArmature(int type){
 	rotateSlicer.y=0;
 	rotateSlicer.z=0;
 
-	if (type==1) {
-		type=3;
-	}
+	//if (type==1) {
+	//	type=3;
+	//}
 
 	if (armID == -1){
 		armID=type;

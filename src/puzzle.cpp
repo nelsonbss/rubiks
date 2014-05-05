@@ -1358,7 +1358,7 @@ void puzzle::colorFacesOneByOne(int objectID,int cubieToColor){
 	ofRender *ofr = new ofRender();
 
 	if((objectID != 200)){
-		ofr->colorFacesOneByOne(myCubies[cubieToColor],0.01,objectID,ObjectUniqueNormals);
+		ofr->colorFacesOneByOne(myCubies[cubieToColor],0.001,objectID,ObjectUniqueNormals);
 	}
 	if(objectID == 200){
 		//extruded object

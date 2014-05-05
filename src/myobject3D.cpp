@@ -33,7 +33,7 @@ void myobject3D::setup(){
 	//ofr->sgCoretoOFmesh(temp,myMesh,-1); //-1 because its not a cubie but want color on the sample object
 	ofr->sgCoretoOFmesh(temp,myMesh,-2,objectId); //-2 for plain color
 	if(objectId < 8){
-		createUniqueNormals(0.01);
+		createUniqueNormals(0.001);
 	}
 	myVbo.setMesh(myMesh, GL_STATIC_DRAW);
 	free(ofr);

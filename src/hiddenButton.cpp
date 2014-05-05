@@ -21,3 +21,16 @@ void hiddenButton::draw(){
 }
 void hiddenButton::exit(){
 }
+//-----------------------------
+bool hiddenButton::hitTest(int mx, int my){
+	if(mx>=pos.x && mx<= pos.x+size.x){
+		if(my>=pos.y && my<=pos.y+size.y){
+			return true;
+		}
+		else{
+			return false;
+		}
+	}else{
+		return false;
+	}
+}

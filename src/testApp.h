@@ -134,6 +134,9 @@ public:
 
 	//hidden buttons
 	hiddenButton *hb1;
+	bool hb1Flag;
+	bool hb1Flag2;
+	float shutDownTime;
 	hiddenButton *hb2;
-	hiddenButton *hb3;
+	bool hb2Flag;
 };

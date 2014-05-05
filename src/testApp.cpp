@@ -9,7 +9,7 @@
 #define displayZ -800
 #define iddleTime 120
 #define puzzleItems 10
-#define USE_MOUSE 0
+#define USE_MOUSE 1
 
 std::map<int,gwc::Point> active_points;
 
@@ -173,7 +173,7 @@ void testApp::setup(){
 				//myPuzzles[j+(i*5)]->setup();
 
 				myPuzzles[j+(i*5)]->loadPieces(mySlicer->getPieces(),objectToMakePuzzle->objectId,rotateSlicer);//selected object id is used for coloring
-				
+
 				if(objectToMakePuzzle->objectId < 8 ){
 					myPuzzles[j+(i*5)]->colorFaces(objectToMakePuzzle->objectId);
 				}else{
@@ -273,16 +273,18 @@ void testApp::setup(){
 	//ofEnableAntiAliasing();
 
 	//create hidden buttons
-	ofVec2f sizeHB = ofVec2f(100,100);
+	ofVec2f sizeHB = ofVec2f(80,80);
 
 	ofVec2f posHB1 = ofVec2f(0,(ofGetWindowHeight()/2)+100);
-	ofVec2f posHB2 = ofVec2f(ofGetWindowWidth()-100,(ofGetWindowHeight()/2)+100);
-	ofVec2f posHB3 = ofVec2f(260,ofGetWindowHeight()/2);
+	ofVec2f posHB2 = ofVec2f(ofGetWindowWidth()-80,(ofGetWindowHeight()/2)+100);
 
-	
 	hb1 = new hiddenButton(posHB1,sizeHB);
 	hb2 = new hiddenButton(posHB2,sizeHB);
-	hb3 = new hiddenButton(posHB3,sizeHB);
+
+	hb1Flag = false;
+	hb1Flag2 = false;
+	hb2Flag = false;
+	shutDownTime =0;
 }
 //--------------------------------------------------------------
 void testApp::update(){
@@ -306,8 +308,6 @@ void testApp::update(){
 	/////////////////////////////////////////watch for new puzzles being saved
 	for(int i = 0; i < myGames.size(); i++){
 		if(myGames[i]->savePuzzleB == true){
-
-
 
 			////////middlePuzzlePos.x = 10 + (numObjects * 10) + (numObjects*180);
 			////////objectToMakePuzzle = new myobject3D (slicingPos, middlePuzzlePos,"main");//all on 0,0,0
@@ -340,7 +340,6 @@ void testApp::update(){
 
 
 
-			
 
 			middlePuzzlePos.x = 10 + ((puzzleCounter+7) * 10) + ((puzzleCounter+7)*180);
 			objectToMakePuzzle = new myobject3D (slicingPos, middlePuzzlePos,"main");//all on 0,0,0
@@ -389,7 +388,7 @@ void testApp::update(){
 			//replace current position 8,9,10 on the middelPuzzle Vector
 			//because we are only showing 10 puzzles on the middle
 			//we will replace the last 3
-			
+
 			//middlePuzzles.erase(middlePuzzles.begin() + (puzzleCounter+7));
 			middlePuzzles.at((puzzleCounter +7)) = puzzleDisplayed;
 			////keep count of the saved puzzles
@@ -588,7 +587,6 @@ void testApp::draw(){
 
 	hb1->draw();
 	hb2->draw();
-	hb3->draw();
 
 
 	ofEnableDepthTest();
@@ -657,6 +655,40 @@ void testApp::mouseDragged(int x, int y, int button){
 //--------------------------------------------------------------
 void testApp::mousePressed(int x, int y, int button){
 	if(button == 0){
+		//to make hidden buttons work for shutdown
+		if(hb1->hitTest(x,y)){
+			//first button pressed
+			hb1Flag = true;
+			shutDownTime = ofGetElapsedTimeMillis();
+		}
+		if(hb1Flag==true & hb2->hitTest(x,y)){
+			//second button pressed, only after first button has been pressed
+			int currentTime = ofGetElapsedTimeMillis();
+			if(currentTime - shutDownTime > 5000){
+				//too much time
+				hb1Flag = false; // have to restart shut down sequence 
+			}else{
+				hb2Flag = true;
+			}
+		}
+		if(hb1->hitTest(x,y) && hb2Flag == true){
+			//first button pressed for the second time
+			int currentTime = ofGetElapsedTimeMillis();
+			if(currentTime - shutDownTime > 5000){
+				hb1Flag = false;
+				hb2Flag = false;
+			}else{
+				hb1Flag2 = true;
+			}
+		}
+		if((hb1Flag == true) && (hb2Flag == true) && (hb1Flag2==true)){
+			exit();
+			hb1Flag = false;
+			hb2Flag = false;
+			hb1Flag2 = false;
+		}
+		//////////////////////////////////////////////
+
 		touchId = nextTouchId;
 		nextTouchId = (nextTouchId + 1) % 16;
 		SubObEvent ev("add-touch-point");
@@ -729,21 +761,23 @@ void testApp::dragEvent(ofDragInfo dragInfo){
 void testApp::exit(){
 	//myGames[0]->restart();
 	//myGames[0]->exit();
-
+	//for(int i = 0; i < myGames.size(); i++){
+	//	myGames[i]->restart();
+	//	myGames[i]->exit();
+	//}
 	//sgDeleteObject(sgBunny);
 
-	myCutter->exit();
-	mySlicer->exit();
+	//myCutter->exit();
+	//mySlicer->exit();
 	//objectDisplayed->exit();
 	//delete menu puzzles correctly
 	//free(myPuzzles);
-	for(int i=0; i < middlePuzzles.size();i++){
-		middlePuzzles[i]->exit();
-	}
+	//for(int i=0; i < middlePuzzles.size();i++){
+	//	middlePuzzles[i]->exit();
+	//}
 
 	free(hb1);
 	free(hb2);
-	free(hb3);
 	//sgFreeKernel();
 }
 //----------------------------------------------------------------------------------------

@@ -213,6 +213,7 @@ void game::update(){
 	//		step = -1;
 	//	}
 	//}
+
 	if(bHaveNewObject){
 		SG_VECTOR objectPos = {0,0,0};
 		if(step == 1 || step == 7){
@@ -372,7 +373,6 @@ void game::update(string _eventName, SubObEvent _event){
 		//dont make opengl calls here... no drawing anything
 		setPage("object-start");
 		camPosition.set(viewport.width / 2, viewport.height / 2, 400);
-		/*guiReset();*/
 	}
 	if(_eventName == prefix + ":object-selected"){
 		if(step == 0){
@@ -428,7 +428,7 @@ void game::update(string _eventName, SubObEvent _event){
 		guiNext();
 		cout << "set game to - " << step << endl;
 		if(step == 0){
-			cout << "No more attract" << endl;
+			//cout << "No more attract" << endl;
 			setPage("object-start");
 			bInAttract = false;
 		} else if(step == 1){
@@ -602,7 +602,6 @@ void game::update(string _eventName, SubObEvent _event){
 		//cout << "got interaction" << endl;
 		timeOfLastInteraction = ofGetElapsedTimeMillis();
 	}
-	timeOfLastInteraction = ofGetElapsedTimeMillis();
 }
 //------------------------------------------------------------------------
 void game::goToAttract(){
@@ -653,7 +652,6 @@ void game::goToAttract(){
 	ev.setName("unhide-node");
 	ev.addArg("target", prefix + ":attract");
 	SubObMediator::Instance()->sendEvent("unhide-node", ev);
-
 	*/
 
 	setPage("attract");

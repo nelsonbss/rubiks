@@ -16,6 +16,8 @@ public:
 	ofVec2f pos;
 	ofVec2f size;
 
+	bool hitTest(int mx, int my);
+
 };
 
 #endif /* defined(__ThiddenButton__hiddenButton__) */

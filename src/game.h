@@ -17,7 +17,7 @@
 #include <thread>
 
 
-#define DELAY 90000
+#define DELAY 120000
 
 enum{UP_MODE_MOUSE, UP_MODE_COLOR, UP_MODE_P};
 class Observer;
@@ -257,7 +257,6 @@ public:
 	void game::drawPoints();
 	int normalAng;
 
-	bool undoingPuzzle;
 	
 };
 #endif /* defined(__Tgame__game__) */

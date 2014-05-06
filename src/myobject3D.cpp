@@ -150,12 +150,12 @@ void myobject3D::loadObjectOD(sgC3DObject *obj, int ID){
 	}else if(station.compare("br")==0){
 		SG_POINT rotP = {0,0,0};
 		if(objectId != 3){
-		SG_VECTOR rotV = {1,0,0};
-		object->InitTempMatrix()->Rotate(rotP,rotV,ofDegToRad(180));
-		SG_VECTOR rotV2 = {0,1,0};
-		object->GetTempMatrix()->Rotate(rotP,rotV2,ofDegToRad(180));
-		object->ApplyTempMatrix(); 
-		object->DestroyTempMatrix();
+			SG_VECTOR rotV = {1,0,0};
+			object->InitTempMatrix()->Rotate(rotP,rotV,ofDegToRad(180));
+			SG_VECTOR rotV2 = {0,1,0};
+			object->GetTempMatrix()->Rotate(rotP,rotV2,ofDegToRad(180));
+			object->ApplyTempMatrix(); 
+			object->DestroyTempMatrix();
 		}
 	}
 
@@ -266,6 +266,8 @@ void myobject3D::createUniqueNormals(float playRoom){
 }
 //----------------------------------------------------------------
 void myobject3D::exit(){
-	//sgCObject::DeleteObject(temp);
-	//sgCObject::DeleteObject(object);
+	if(temp->DestroyTempMatrix()){
+		sgCObject::DeleteObject(temp);
+		sgCObject::DeleteObject(object);
+	}
 }

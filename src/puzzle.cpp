@@ -1137,9 +1137,19 @@ void puzzle::changeFaceColor(ofVec3f _pnt, ofFloatColor _c){
 		obid = myCubies[activeCubie]->selectedObjectID;
 		if(obid < 8){
 			//object with flat faces
-			ofVec3f n = activeTriangle.getNormal();
-			vector<Triangle> tris = myCubies[activeCubie]->getTrianglesByNormal(n);
-			myCubies[activeCubie]->setColorToSet(tris, _c);
+			if(myCubies[activeCubie]->armRotations.x==0 && myCubies[activeCubie]->armRotations.y==0 && myCubies[activeCubie]->armRotations.z == 0){
+				ofVec3f n = activeTriangle.getNormal();
+				vector<Triangle> tris = myCubies[activeCubie]->getTrianglesByNormal(n);
+				myCubies[activeCubie]->setColorToSet(tris, _c);
+				colorCubiesBlackSidesOneByOne(activeCubie);
+			}else{
+				//we have armature rotations and triangle normals are weird...
+				//ofVec3f n = activeTriangle.getNormal();
+				//ofFloatColor  cc = activeTriangle.getColor();
+				//vector<Triangle> tris = myCubies[activeCubie]->getTrianglesByNormal(n);
+				myCubies[activeCubie]->setColorToSetArmature(_c);
+				colorCubiesBlackSidesOneByOne(activeCubie);
+			}
 		}else{
 			//objects with curved faces
 			myCubies[activeCubie]->setColorToCurvedObject(_c);
@@ -1188,17 +1198,17 @@ float puzzle::getMainComponent(ofVec3f _pnt){
 }
 //----------------------------------------------------------------------------------------------------------------
 void puzzle::doRotation(){
-	if(bHaveActiveCubie && bHaveRotationCubie){
-		//rotateTwoIds(activeCubie, rotationCubie, true);
-		faceRotateB = true;
-		//bHaveActiveCubie = bHaveRotationCubie = false;
-		cout << "double rotation." << endl;
-	} else if(bHaveActiveCubie == true){
-		//rotateTwoIds(activeCubie, activeCubie, true);
-		faceRotateB = true;
-		//bHaveActiveCubie = false;
-		cout << "single rotation." << endl;
-	}
+	//if(bHaveActiveCubie && bHaveRotationCubie){
+	//	//rotateTwoIds(activeCubie, rotationCubie, true);
+	//	faceRotateB = true;
+	//	//bHaveActiveCubie = bHaveRotationCubie = false;
+	//	cout << "double rotation." << endl;
+	//} else if(bHaveActiveCubie == true){
+	//	//rotateTwoIds(activeCubie, activeCubie, true);
+	//	faceRotateB = true;
+	//	//bHaveActiveCubie = false;
+	//	cout << "single rotation." << endl;
+	//}
 }
 //-------------------------------------------------------------------------------------------------------------------------------------
 void puzzle::input(string _type, int _ID, int _n, int _phase, ofVec2f _absPos, ofVec2f _deltaPos){

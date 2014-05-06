@@ -55,6 +55,7 @@ public:
 	void faceRotate(SG_VECTOR axis, bool dir,float angle);
 	float masterAngle;
 	SG_VECTOR vrotFace;
+	SG_POINT protFace;
 	bool dir;
 	bool moving;
 	bool isMoving();
@@ -140,10 +141,13 @@ public:
 	Triangle getNearestTri(ofVec3f _pnt);
 	vector<Triangle> getTrianglesByNormal(ofVec3f _n){return myMeshs[0].getTrianglesByNormal(_n);}
 	void setColorToSet(vector<Triangle> _tris, ofFloatColor _c);
+	void setColorToSetArmature(ofFloatColor _c);
+
 	void setColorToCurvedObject(ofFloatColor _c);
 
 	void printCurrentCentroid();
 
+	bool pivotTransformed;
 	//void updatePosition();
 };
 

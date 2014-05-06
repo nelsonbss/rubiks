@@ -55,7 +55,7 @@ vector<Triangle> CubieMesh::getTrianglesByNormal(ofVec3f _n){
 		ofVec3f n = tIter->getNormal();
 		//float d = n.distance(_n);
 		//cout << "compared " << n.x << ", " << n.y << ", " << n.z << " to " << _n.x << ", " << _n.y << ", " << _n.z << " got " << d << endl;
-		if(tIter->getNormal().distance(_n) < 0.05){
+		if(tIter->getNormal().distance(_n) < 1.05){
 			//cout << "adding to vector." << endl;
 			tris.push_back(*tIter);
 		}
@@ -89,10 +89,19 @@ void CubieMesh::setColorToSet(vector<Triangle> tris, ofFloatColor _c){
 		colorsVectorT[tIter->getIndeces()[1]] = _c;
 		colorsVectorT[tIter->getIndeces()[2]] = _c;
 	}
+
 	clearColors();
 	addColors(colorsVectorT);
 }
-
+void CubieMesh::setColorToSetArmature(ofFloatColor _c){
+	vector <ofFloatColor> colorsVectorT;
+	colorsVectorT = getColors();
+	for(int i=0; i< colorsVectorT.size(); i++){
+		colorsVectorT.at(i) = _c;
+	}
+	clearColors();
+	addColors(colorsVectorT);
+}
 void CubieMesh::setColorToCurvedObject(ofFloatColor _c){
 	vector <ofFloatColor> colorsVectorT;
 	colorsVectorT = getColors();

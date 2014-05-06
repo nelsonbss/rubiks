@@ -33,8 +33,17 @@ cubie::cubie(float x, float y,float z, int idi, int selObjId, ofVec3f offset, in
 	sample = true;
 	//rotXa = 0.0;
 	//initializing cubie history
+
+	vrotFace.x = 0;
+	vrotFace.y = 0;
+	vrotFace.z = 0;
+
+	protFace.x = 0;
+	protFace.y = 0;
+	protFace.z = 0;
+	pivotTransformed = false;
+
 	SG_POINT axis = {0,0,0};
-	SG_VECTOR vrotFace = {0,0,0};
 	myMatrix.push_back(matrix(axis,0.0,true));
 	//to control undo
 	undoing = false;
@@ -102,7 +111,13 @@ void cubie::faceRotate(SG_VECTOR axis,bool di,float angle){
 	if(numObjs != 0){
 		if(moving == false && goBackb == false && undoing == false){
 			if(locked == false){
-				SG_POINT protFace = {pointRotate.x,pointRotate.y,pointRotate.z};
+				protFace.x = pointRotate.x;
+				protFace.y = pointRotate.y;
+				protFace.z = pointRotate.z;
+				ofVec3f p;
+				ofVec3f p2;
+				ofVec3f p3;
+
 				ofVec3f t;
 				ofVec3f t2;
 				ofVec3f t3;
@@ -125,9 +140,25 @@ void cubie::faceRotate(SG_VECTOR axis,bool di,float angle){
 					vrotFace.x = t3.x;
 					vrotFace.y = t3.y;
 					vrotFace.z = t3.z;
+					if(pivotTransformed == false){
+						/////////////////////////////////////////////////////
+						//transform the point of rotation
+						aux.x = protFace.x;
+						aux.y = protFace.y;
+						aux.z = protFace.z;
+/*						p = aux.getRotated(armRotations.z,ofVec3f(0,0,1));
+						p2 = p.getRotated(armRotations.x,ofVec3f(0,1,0));
+						p3 = p2.getRotated(-armRotations.y,ofVec3f(1,0,0))*/;
+						p = aux.getRotated(-armRotations.y,ofVec3f(1,0,0));
+						p2 = p.getRotated(armRotations.x,ofVec3f(0,1,0));
+						p3 = p2.getRotated(armRotations.z,ofVec3f(0,0,1));
+						protFace.x = p3.x;
+						protFace.y = p3.y;
+						protFace.z = p3.z;
+
+						pivotTransformed = true;
+					}				
 				}
-
-
 
 
 				//ofVec3f protFaceV(pointRotate.x, pointRotate.y, pointRotate.z);
@@ -870,18 +901,31 @@ void cubie::setRotate(bool _rotate){
 }
 
 void cubie::setColorToSet(vector<Triangle> _tris, ofFloatColor _c){
-	myMeshs[0].setColorToSet(_tris, _c);
-	ofVbo tempVbo;
-	tempVbo.setMesh(myMeshs[0], GL_STATIC_DRAW);
-	myVbos[0]=tempVbo;
+	for(int i = 0; i < myMeshs.size(); i++){
+		myMeshs[i].setColorToSet(_tris, _c);
+		ofVbo tempVbo;
+		tempVbo.setMesh(myMeshs[i], GL_STATIC_DRAW);
+		myVbos[i]=tempVbo;
+	}
+}
+
+void cubie::setColorToSetArmature(ofFloatColor _c){
+	for(int i = 0; i < myMeshs.size(); i++){
+		myMeshs[i].setColorToSetArmature(_c);
+		ofVbo tempVbo;
+		tempVbo.setMesh(myMeshs[i], GL_STATIC_DRAW);
+		myVbos[i]=tempVbo;
+	}
 }
 
 void cubie::setColorToCurvedObject(ofFloatColor _c){
-	myMeshs[0].setColorToCurvedObject(_c);
-	//need to recolor black faces
-	ofVbo tempVbo;
-	tempVbo.setMesh(myMeshs[0], GL_STATIC_DRAW);
-	myVbos[0]=tempVbo;
+	for(int i = 0; i < myMeshs.size(); i++){
+		myMeshs[i].setColorToCurvedObject(_c);
+		//need to recolor black faces
+		ofVbo tempVbo;
+		tempVbo.setMesh(myMeshs[i], GL_STATIC_DRAW);
+		myVbos[i]=tempVbo;
+	}
 }
 
 //void cubie::updatePosition(){

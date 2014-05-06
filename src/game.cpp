@@ -68,7 +68,6 @@ game::game(SG_VECTOR gamePos, float w, float h, SG_VECTOR displayPos, ofRectangl
 
 	creatingPuzzle = false;
 	puzzleFinished = false;
-	undoingPuzzle = false;
 	numPuzzlePieces = 0;
 	cubieToCut = 0;
 
@@ -108,7 +107,6 @@ game::game(SG_VECTOR gamePos, float w, float h, SG_VECTOR displayPos, ofRectangl
 	faceRotate = false;
 	faceRotateB = false;//used in the 2 id rotation function
 
-	
 	/*
 	thread t1(task1, "Hello");
 	t1.join();*/
@@ -367,25 +365,18 @@ void game::update(){
 //----------------------------------------------------------------------
 void game::update(string _eventName, SubObEvent _event){
 	if(_eventName == prefix + ":solve"){
-		if(creatingPuzzle == false){
-			if(savePuzzleB == false){
-				undoingPuzzle = true;
-				unDoMenuPuzzle();
-				undoingPuzzle = false;
-			}
+		if(savePuzzleB == false){
+			unDoMenuPuzzle();
 		}
 	}
 	if(_eventName == prefix + ":save"){
-		if(creatingPuzzle == false){
-			if(savePuzzleB == false){
-				if(undoingPuzzle == false){
-					//call save functionality here
-					savePuzzleB = true;
-					//dont make opengl calls here... no drawing anything
-					setPage("object-start");
-					camPosition.set(viewport.width / 2, viewport.height / 2, 400);
-				}
-			}
+		if(savePuzzleB == false){
+			//call save functionality here
+			unDoMenuPuzzle();
+			savePuzzleB = true;
+			//dont make opengl calls here... no drawing anything
+			setPage("object-start");
+			camPosition.set(viewport.width / 2, viewport.height / 2, 400);
 		}
 	}
 	if(_eventName == prefix + ":object-selected"){
@@ -405,37 +396,6 @@ void game::update(string _eventName, SubObEvent _event){
 		}
 	}
 	if(_eventName == prefix + ":menupuzzle-selected"){
-
-		/*SubObEvent ev;
-		ev.setName("hide-node");
-		ev.addArg("target",prefix + ":3d-window");
-		SubObMediator::Instance()->sendEvent("hide-node", ev);
-		ev.addArg("target",prefix + ":3d-window-box");
-		SubObMediator::Instance()->sendEvent("hide-node", ev);
-		ev.addArg("target",prefix + ":attract");
-		SubObMediator::Instance()->sendEvent("hide-node", ev);
-		ev.addArg("target",prefix + ":color-window");
-		SubObMediator::Instance()->sendEvent("hide-node", ev);
-		ev.addArg("target",prefix + ":arm-window");
-		SubObMediator::Instance()->sendEvent("hide-node", ev);
-		ev.addArg("target",prefix + ":arm-rotate");
-		SubObMediator::Instance()->sendEvent("hide-node", ev);
-		ev.addArg("target",prefix + ":arm-help");
-		SubObMediator::Instance()->sendEvent("hide-node", ev);
-		///
-		ev.setName("unhide-node");
-		ev.addArg("target", prefix + ":reset");
-		SubObMediator::Instance()->sendEvent("unhide-node", ev);
-		ev.addArg("target", prefix + ":make-one");
-		SubObMediator::Instance()->sendEvent("unhide-node", ev);
-		ev.addArg("target", prefix + ":bg-language");
-		SubObMediator::Instance()->sendEvent("unhide-node", ev);
-		ev.addArg("target", prefix + ":bg-info");
-		SubObMediator::Instance()->sendEvent("unhide-node", ev);
-		ev.addArg("target",prefix + ":puzzle-help");
-		SubObMediator::Instance()->sendEvent("unhide-node", ev);
-		ev.addArg("target",prefix + ":ibox");
-		SubObMediator::Instance()->sendEvent("unhide-node", ev);*/
 		//setPage("draw");
 	}
 	if(_eventName == prefix + ":next-step"){
@@ -450,7 +410,6 @@ void game::update(string _eventName, SubObEvent _event){
 
 		} else if(step == 3){
 			//setPage("color-start");//this is now getting called after a puzzle is finishd being created, on update()
-
 		} else if(step == 4){
 			if(creatingPuzzle == false){
 				setPage("play");

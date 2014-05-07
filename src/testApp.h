@@ -72,6 +72,8 @@ public:
 	ofVec3f offsetSlicer;
 	ofVec3f rotateSlicer;
 
+	/////////////////////////////////puzzle saving
+
 	
 	
 	

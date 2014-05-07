@@ -52,6 +52,7 @@ public:
 	typedef std::vector<OneDimension>TwoDimensions;
 	typedef std::vector<TwoDimensions>ThreeDimensions;
 	ThreeDimensions three_dim1;
+
 	void rotateByIDandAxis(int id, SG_VECTOR axis,bool dir);
 	void rotateByIDandAxis(int id, SG_VECTOR axis,bool dir,float angle);
 	void rotateByIDandAxisNew(int id, SG_VECTOR axis, bool dir, float angle);
@@ -76,6 +77,7 @@ public:
 	int selY;
 	int selZ;
 	void decideMove(SG_POINT axis);
+	bool isActive();
 
 	//color faces
 	void colorFaces(int objectID);

@@ -330,11 +330,24 @@ bool puzzle::isMoving(){
 	//returns the state of the moving boolean
 	//to prevent key press events from messing up the movements
 	//moving = false;
-	int count=0;
+	//int count=0;
 	for(int i=0;i<numPieces;i++){
 		if(myCubies[i] != NULL){
 			if(myCubies[i]->isMoving()){
 				return true;//pmoving;
+			}else{
+				return false;
+			}
+		}
+	}
+}
+//---------------------------------------------------------------
+bool puzzle::isActive(){
+	//returns true if the puzzle is in the midle of a twisting gesture
+	for(int i=0;i<numPieces;i++){
+		if(myCubies[i] != NULL){
+			if(myCubies[i]->active == true){
+				return true;
 			}else{
 				return false;
 			}

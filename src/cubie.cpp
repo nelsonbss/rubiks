@@ -50,6 +50,7 @@ cubie::cubie(float x, float y,float z, int idi, int selObjId, ofVec3f offset, in
 	goBackb = false;
 	moving = false;
 	locked = true;
+	active = false;
 
 	bDraw = true;
 	bDrawWire = false;
@@ -111,6 +112,8 @@ void cubie::faceRotate(SG_VECTOR axis,bool di,float angle){
 	if(numObjs != 0){
 		if(moving == false && goBackb == false && undoing == false){
 			if(locked == false){
+				active = true;
+
 				protFace.x = pointRotate.x;
 				protFace.y = pointRotate.y;
 				protFace.z = pointRotate.z;
@@ -143,18 +146,22 @@ void cubie::faceRotate(SG_VECTOR axis,bool di,float angle){
 					if(pivotTransformed == false){
 						/////////////////////////////////////////////////////
 						//transform the point of rotation
-						aux.x = protFace.x;
-						aux.y = protFace.y;
-						aux.z = protFace.z;
-/*						p = aux.getRotated(armRotations.z,ofVec3f(0,0,1));
-						p2 = p.getRotated(armRotations.x,ofVec3f(0,1,0));
-						p3 = p2.getRotated(-armRotations.y,ofVec3f(1,0,0))*/;
-						p = aux.getRotated(-armRotations.y,ofVec3f(1,0,0));
-						p2 = p.getRotated(armRotations.x,ofVec3f(0,1,0));
-						p3 = p2.getRotated(armRotations.z,ofVec3f(0,0,1));
-						protFace.x = p3.x;
-						protFace.y = p3.y;
-						protFace.z = p3.z;
+//						aux.x = protFace.x;
+//						aux.y = protFace.y;
+//						aux.z = protFace.z;
+///*						p = aux.getRotated(armRotations.z,ofVec3f(0,0,1));
+//						p2 = p.getRotated(armRotations.x,ofVec3f(0,1,0));
+//						p3 = p2.getRotated(-armRotations.y,ofVec3f(1,0,0))*/;
+//						p = aux.getRotated(-armRotations.y,ofVec3f(1,0,0));
+//						p2 = p.getRotated(armRotations.x,ofVec3f(0,1,0));
+//						p3 = p2.getRotated(armRotations.z,ofVec3f(0,0,1));
+//						protFace.x = p3.x;
+//						protFace.y = p3.y;
+//						protFace.z = p3.z;
+
+						protFace.x = -1 * protFace.x;
+						protFace.y = -1 * protFace.y;
+						protFace.z = -1 * protFace.z;
 
 						pivotTransformed = true;
 					}				
@@ -299,6 +306,7 @@ void cubie::update(){
 						reducing = false;
 					}
 				}
+				active = false;
 			}else if(masterAngle > 0 ){
 
 				while (reducing){
@@ -315,6 +323,7 @@ void cubie::update(){
 						reducing = false;
 					}
 				}
+				active = false;
 			}
 			//}
 		}
@@ -386,6 +395,7 @@ void cubie::update(){
 					}
 
 				}
+				active = false;
 				/*if(rotXa < tempDeg2){*/
 				//ct2 = ofGetElapsedTimeMillis();
 				//rotXa += stepSize;//animTime;//0.1;//(ct2 - ct1)*((1.57)/animTime);
@@ -436,6 +446,7 @@ void cubie::update(){
 						reducing = false;
 					}
 				}
+				active = false;
 				//tempDeg2 = -90-masterAngle;
 				////if(movingXCC == true){
 				//if(rotXa > tempDeg2){
@@ -1006,7 +1017,7 @@ void cubie::unDoMenuPuzzle(){
 			if (objectList[j]->GetTempMatrix()!=0)
 				objectList[j]->DestroyTempMatrix();
 		}
-		setup();//to restore initial TempMatrix
+		setup();//to restore initial TempMatrix with possible armature rotationss
 
 		//have to reset the position of each cubie so puzzle continues to be stable on next runs
 		zpos=id%gridSize;

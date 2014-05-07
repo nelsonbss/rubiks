@@ -64,13 +64,15 @@ public:
 	void goForward();
 	bool locked;
 
+	bool active;//to prevent saving or solving or reseting while in the middle of a twisting action
+
 	//float ct1;
 	//float ct2;
 	float animTime;
 
 	bool sample;
 	//double rotXa;
-	double tempDeg2;
+	//double tempDeg2;
 
 	//undo
 	bool undoing;

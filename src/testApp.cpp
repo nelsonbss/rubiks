@@ -405,6 +405,7 @@ void testApp::update(){
 	}
 	if((hb1Flag == true) && (hb2Flag == true) && (hb1Flag2==true)){
 		exit();
+		
 		hb1Flag = false;
 		hb2Flag = false;
 		hb1Flag2 = false;
@@ -778,9 +779,10 @@ void testApp::exit(){
 	//	middlePuzzles[i]->exit();
 	//}
 
-	free(hb1);
-	free(hb2);
+	//free(hb1);
+	//free(hb2);
 	//sgFreeKernel();
+	std::exit(0);
 }
 //----------------------------------------------------------------------------------------
 void testApp::loadObjDirG(string _path){

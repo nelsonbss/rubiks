@@ -366,17 +366,21 @@ void game::update(){
 void game::update(string _eventName, SubObEvent _event){
 	if(_eventName == prefix + ":solve"){
 		if(savePuzzleB == false){
-			unDoMenuPuzzle();
+			if(myPuzzle->isActive() == false){
+				unDoMenuPuzzle();
+			}
 		}
 	}
 	if(_eventName == prefix + ":save"){
 		if(savePuzzleB == false){
-			//call save functionality here
-			unDoMenuPuzzle();
-			savePuzzleB = true;
-			//dont make opengl calls here... no drawing anything
-			setPage("object-start");
-			camPosition.set(viewport.width / 2, viewport.height / 2, 400);
+			if(myPuzzle->isActive() == false){
+				//call save functionality here
+				unDoMenuPuzzle();
+				savePuzzleB = true;
+				//dont make opengl calls here... no drawing anything
+				setPage("object-start");
+				camPosition.set(viewport.width / 2, viewport.height / 2, 400);
+			}
 		}
 	}
 	if(_eventName == prefix + ":object-selected"){
@@ -386,7 +390,7 @@ void game::update(string _eventName, SubObEvent _event){
 		}
 		if(step == 0  || step == 1 || step == 6 || step == 7){
 			int obj = _event.getArg("object")->getInt();
-			SG_VECTOR objectPos = {0,0,0};  //where it gets sliced
+			//SG_VECTOR objectPos = {0,0,0};  //where it gets sliced
 			guiLoad(obj);
 		}
 		if(_event.getArg("object")->getInt() == 50){
@@ -444,9 +448,18 @@ void game::update(string _eventName, SubObEvent _event){
 		setPage("object-selected");
 	}
 	if((_eventName == prefix + ":reset") ){
-		setPage("object-start");
-		camPosition.set(viewport.width / 2, viewport.height / 2, 400);
-		guiReset();
+		if(step >= 4){
+			if(myPuzzle->isActive() == false){
+				setPage("object-start");
+				camPosition.set(viewport.width / 2, viewport.height / 2, 400);
+				guiReset();
+			}
+		}else{
+			setPage("object-start");
+			camPosition.set(viewport.width / 2, viewport.height / 2, 400);
+			guiReset();
+		}
+
 		//SceneManager::Instance()->reset();
 		//cout << "RESET" << endl;
 	}
@@ -468,6 +481,7 @@ void game::update(string _eventName, SubObEvent _event){
 		}
 		if(bDragInput){
 			//myPuzzle->endRotation();
+			//it looks at current face rotation angle and decides to do a cmplete move, or go back to previous possition
 			myPuzzle->decideMove(axis);
 			faceRotate = false;
 			bDragInput = false;
@@ -887,13 +901,13 @@ void game::loadPuzzle(puzzle *inputPuzzle,int objID, SG_VECTOR p, SG_VECTOR t){
 		hasSaved = false;
 		myCutter->exit();
 		mySlicer->exit();
-		objectDisplayed->exit();
+		//objectDisplayed->exit();
 		objectID = -1;
 		step = 0;
 		armID = -1;
 		puzzleFinished = false;
 		creatingPuzzle = false;
-		historyV.clear();
+		
 	}else if (step==3){
 		//objectDisplayed->exit();             //clean displayed object after puzzle is created, so we dont keep it until the exit or restart
 		step = 0;
@@ -920,6 +934,7 @@ void game::loadPuzzle(puzzle *inputPuzzle,int objID, SG_VECTOR p, SG_VECTOR t){
 	rotateSlicer.z = 0;
 
 	curRot.set (ofVec4f(0,0,0,0));
+	historyV.clear();
 
 	if(extrudedB){
 		sgDeleteObject(extrudedObject);
@@ -1015,6 +1030,7 @@ void game::loadMenuObject(int objID, SG_VECTOR p, SG_VECTOR t,vector< ofFloatCol
 	rotateSlicer.z = 0;
 
 	curRot.set (ofVec4f(0,0,0,0));
+	historyV.clear();
 
 	if(extrudedB){
 		sgDeleteObject(extrudedObject);
@@ -1427,11 +1443,8 @@ void game::unDo(){
 void game::unDoMenuPuzzle(){
 	//this completley undos the rotation matrix for each cubie on the puzzle
 	if(historyV.size()>0){//game history
-
 		myPuzzle->unDoMenuPuzzle();
-		historyV.pop_back();
-		int x = 0;
-
+		historyV.clear();//pop_back();
 	}
 }
 //----------------------------------------------------------------------
@@ -2165,7 +2178,6 @@ void game::restart(){
 		objectID = -1;
 		puzzleFinished = false;
 		creatingPuzzle = false;
-		historyV.clear();
 	}else if(step == 6){
 		if(canvasB){
 			//myCanvas->exit();
@@ -2189,7 +2201,6 @@ void game::restart(){
 		armID = -1;
 		puzzleFinished = false;
 		creatingPuzzle = false;
-		historyV.clear();
 	}else if (step==3){
 		objectDisplayed->exit();             //clean displayed object after puzzle is created, so we dont keep it until the exit or restart
 		step = 0;
@@ -2216,6 +2227,7 @@ void game::restart(){
 	rotateSlicer.z = 0;
 
 	curRot.set (ofVec4f(0,0,0,0));
+	historyV.clear();
 
 	if(extrudedB){
 		sgDeleteObject(extrudedObject);

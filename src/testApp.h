@@ -73,9 +73,18 @@ public:
 	ofVec3f rotateSlicer;
 
 	/////////////////////////////////puzzle saving
+	int newPuzzleCOunterBL;
+	int currentCubieBL;
 
-	
-	
+	int newPuzzleCOunterBR;
+	int currentCubieBR;
+
+	int newPuzzleCOunterTL;
+	int currentCubieTL;
+
+	int newPuzzleCOunterTR;
+	int currentCubieTR;
+
 	
 	map<string,int> gameIds;
 	map<int, string> gameTags;

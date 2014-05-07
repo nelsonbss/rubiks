@@ -194,6 +194,18 @@ void testApp::setup(){
 		//this is to control puzzles that are being saved
 		puzzleCounter = 0;
 
+		newPuzzleCounterBL = 0;
+		currentCubieBL = 0;
+
+		newPuzzleCOunterBR = 0;
+		currentCubieBR = 0;
+
+		newPuzzleCOunterTL = 0;
+		currentCubieTL = 0;
+
+		newPuzzleCOunterTR = 0;
+		currentCubieTR = 0;
+
 		////////////////////////////////Creating puzzles when menupuzzle is dragged to station, not previously created, this approach takes longer////////////////////////
 		////////middlePuzzlePos.x = 0;
 		////////middlePuzzlePos.y = (ofGetWindowHeight()/2)-90;
@@ -309,6 +321,9 @@ void testApp::update(){
 	for(int i = 0; i < myGames.size(); i++){
 		if(myGames[i]->savePuzzleB == true){
 
+			/////////////////////////////////////////////////////////////////////////////
+			///make middle puzzles by building all puzzles from zero
+			//////////////////////////////////////////////////////////////////////////////
 			////////middlePuzzlePos.x = 10 + (numObjects * 10) + (numObjects*180);
 			////////objectToMakePuzzle = new myobject3D (slicingPos, middlePuzzlePos,"main");//all on 0,0,0
 			////////objectToMakePuzzle->loadObjectOD((sgC3DObject*)objectsMP[numObjects+1]->Clone(),numObjects+1);
@@ -337,114 +352,176 @@ void testApp::update(){
 			////////	puzzleDisplayed->loadPuzzle(myPuzzles[j+(numObjects*5)],j);
 			////////}
 			////////middlePuzzles.push_back(puzzleDisplayed);
+			///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 
+			////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+			///////////////////////make middle puzzles by making 5 clones
+			//////////middlePuzzlePos.x = 10 + ((puzzleCounter+7) * 10) + ((puzzleCounter+7)*180);
+			//////////objectToMakePuzzle = new myobject3D (slicingPos, middlePuzzlePos,"main");//all on 0,0,0
+			//////////objectToMakePuzzle->loadObjectOD((sgC3DObject*)objectsMP[1]->Clone(),1);
+			//////////objectToMakePuzzle->setup();
+			//////////objectToMakePuzzle->update();
 
-			middlePuzzlePos.x = 10 + ((puzzleCounter+7) * 10) + ((puzzleCounter+7)*180);
-			objectToMakePuzzle = new myobject3D (slicingPos, middlePuzzlePos,"main");//all on 0,0,0
-			objectToMakePuzzle->loadObjectOD((sgC3DObject*)objectsMP[1]->Clone(),1);
-			objectToMakePuzzle->setup();
-			objectToMakePuzzle->update();
+			//////////////////////////////////////////////////////////////
+			////////////VERY IMPORTANT TO DO THIS HERE so the new middle puzzle gets registered as a subOb  guiNode properly
+			//////////free(middlePuzzles.at((puzzleCounter +7)));
+			///////////////////////////////////////////////////////////////
 
-			////////////////////////////////////////////////////
-			//VERY IMPORTANT TO DO THIS HERE so the new middle puzzle gets registered as a subOb  guiNode properly
-			free(middlePuzzles.at((puzzleCounter +7)));
-			/////////////////////////////////////////////////////
+			//////////puzzleDisplayed = new menuPuzzle(slicingPos, middlePuzzlePos, (puzzleCounter+7));
+			//////////puzzleDisplayed->loadObjectMP((sgC3DObject*)objectsMP[1]->Clone(),1,objectToMakePuzzle->ObjectUniqueNormals);
 
-			puzzleDisplayed = new menuPuzzle(slicingPos, middlePuzzlePos, (puzzleCounter+7));
-			puzzleDisplayed->loadObjectMP((sgC3DObject*)objectsMP[1]->Clone(),1,objectToMakePuzzle->ObjectUniqueNormals);
-
-			////objectDisplayed->colorFacesMenu();//implement this later
-			puzzleDisplayed->setup();
-			puzzleDisplayed->update();
-			//puzzleDisplayed->colorFacesMenu();
-			puzzleDisplayed->init();//gui
-			puzzleDisplayed->offsetSlicer =  myGames[i]->offsetSlicer;
-			puzzleDisplayed->rotateSlicer =  myGames[i]->rotateSlicer;
+			//////////////objectDisplayed->colorFacesMenu();//implement this later
+			//////////puzzleDisplayed->setup();
+			//////////puzzleDisplayed->update();
+			////////////puzzleDisplayed->colorFacesMenu();
+			//////////puzzleDisplayed->init();//gui
+			//////////puzzleDisplayed->offsetSlicer =  myGames[i]->offsetSlicer;
+			//////////puzzleDisplayed->rotateSlicer =  myGames[i]->rotateSlicer;
 
 
-			//put up a flag on the game that its saving the puzzle//used on restart()
-			myGames[i]->savePuzzle();
+			////////////put up a flag on the game that its saving the puzzle//used on restart()
+			//////////myGames[i]->savePuzzle();
 
-			for(int j=0;j<5;j++){
-				//have to clone the puzzle to make th eother 4 *puzzle
-				//myPuzzles[j+((puzzleCounter+7)*5)] = myGames[i]->myPuzzle;
+			//////////for(int j=0;j<5;j++){
+			//////////	//have to clone the puzzle to make th eother 4 *puzzle
+			//////////	//myPuzzles[j+((puzzleCounter+7)*5)] = myGames[i]->myPuzzle;
+			//////////	myPuzzles[j+((puzzleCounter+7)*5)] = puzzleDisplayed->cloneMyPuzzle(myGames[i]->myPuzzle,myGames[i]->objectID);
+			//////////	puzzleDisplayed->loadPuzzle(myPuzzles[j+((puzzleCounter+7)*5)],j);
+
+			//////////	//myPuzzles[j+((puzzleCounter+7)*5)]->setup();
+			//////////	////////myPuzzles[j+((numObjects-1)*5)]->loadPieces(myGames[i]->mySlicer->getPieces(),myGames[i]->objectID,tempMidPuzzle->rotateSlicer);//selected object id is used for coloring
+			//////////	//copy color from original puzle
+			//////////	//the original puzzle is tempMidPuzzle->myMenuPuzzle
+			//////////	//myPuzzles[j+((puzzleCounter+7)*5)]->clonePuzzleColors(myGames[i]->myPuzzle);
+
+			//////////	////myPuzzles[j+((puzzleCounter+7)*5)]->colorFacesMenuPuzzle(puzzleDisplayed->objectId,puzzleDisplayed->uniqueNormals,puzzleDisplayed->colorsVMenu);
+			//////////	//myPuzzle->colorFaces(i+1);
+			//////////	////myPuzzles[j+((puzzleCounter+7)*5)]->colorCubiesBlackSides();
+			//////////	//myPuzzles[j+((numObjects-1)*5)],j);
+			//////////}
+
+			////////////replace current position 8,9,10 on the middelPuzzle Vector
+			////////////because we are only showing 10 puzzles on the middle
+			////////////we will replace the last 3
+
+			////////////middlePuzzles.erase(middlePuzzles.begin() + (puzzleCounter+7));
+			//////////middlePuzzles.at((puzzleCounter +7)) = puzzleDisplayed;
+			//////////////keep count of the saved puzzles
+			//////////puzzleCounter ++;
+			//////////if(puzzleCounter == 3){
+			//////////	puzzleCounter=0;
+			//////////}
+			////////////////////////reset save puzzle boolean on the game
+			//////////myGames[i]->savePuzzleB = false;
+			////////////////////////reset game
+			//////////myGames[i]->guiReset();
+			//////////myGames[i]->restart();
+			////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+			//////////////////////////////////////////////////////////////////////////////////////////////////////
+			/////////////make middle puzzles by making 5 clones ONE BY ONE
+			/////ONE BY ONE BY ONE BY ONE BY ONE BY ONE BY ONE BY ONE BY ONE
+			if(newPuzzleCounterBL < 6){
+				if(newPuzzleCounterBL ==0){
+					//we only do this once, for the first puzzle
+					middlePuzzlePos.x = 10 + ((puzzleCounter+7) * 10) + ((puzzleCounter+7)*180);
+					objectToMakePuzzle = new myobject3D (slicingPos, middlePuzzlePos,"main");//all on 0,0,0
+					objectToMakePuzzle->loadObjectOD((sgC3DObject*)objectsMP[1]->Clone(),1);
+					objectToMakePuzzle->setup();
+					objectToMakePuzzle->update();
+
+					////////////////////////////////////////////////////
+					//VERY IMPORTANT TO DO THIS HERE so the new middle puzzle gets registered as a subOb  guiNode properly
+					free(middlePuzzles.at((puzzleCounter +7)));
+					/////////////////////////////////////////////////////
+
+					puzzleDisplayed = new menuPuzzle(slicingPos, middlePuzzlePos, (puzzleCounter+7));
+					puzzleDisplayed->loadObjectMP((sgC3DObject*)objectsMP[1]->Clone(),1,objectToMakePuzzle->ObjectUniqueNormals);
+
+					////objectDisplayed->colorFacesMenu();//implement this later
+					puzzleDisplayed->setup();
+					puzzleDisplayed->update();
+					//puzzleDisplayed->colorFacesMenu();
+					puzzleDisplayed->init();//gui
+					puzzleDisplayed->offsetSlicer =  myGames[i]->offsetSlicer;
+					puzzleDisplayed->rotateSlicer =  myGames[i]->rotateSlicer;
+
+					//put up a flag on the game that its saving the puzzle//used on restart()
+					myGames[i]->savePuzzle();
+				}
+				//for(int j=0;j<5;j++){
 				myPuzzles[j+((puzzleCounter+7)*5)] = puzzleDisplayed->cloneMyPuzzle(myGames[i]->myPuzzle,myGames[i]->objectID);
 				puzzleDisplayed->loadPuzzle(myPuzzles[j+((puzzleCounter+7)*5)],j);
 
-				//myPuzzles[j+((puzzleCounter+7)*5)]->setup();
-				////////myPuzzles[j+((numObjects-1)*5)]->loadPieces(myGames[i]->mySlicer->getPieces(),myGames[i]->objectID,tempMidPuzzle->rotateSlicer);//selected object id is used for coloring
-				//copy color from original puzle
-				//the original puzzle is tempMidPuzzle->myMenuPuzzle
-				//myPuzzles[j+((puzzleCounter+7)*5)]->clonePuzzleColors(myGames[i]->myPuzzle);
+				//now we can count a puzzle being made
+				newPuzzleCounterBL ++;
 
-				////myPuzzles[j+((puzzleCounter+7)*5)]->colorFacesMenuPuzzle(puzzleDisplayed->objectId,puzzleDisplayed->uniqueNormals,puzzleDisplayed->colorsVMenu);
-				//myPuzzle->colorFaces(i+1);
-				////myPuzzles[j+((puzzleCounter+7)*5)]->colorCubiesBlackSides();
-				//myPuzzles[j+((numObjects-1)*5)],j);
+				//replace current position 8,9,10 on the middelPuzzle Vector
+				//because we are only showing 10 puzzles on the middle
+				//we will replace the last 3
+
+				middlePuzzles.at((puzzleCounter +7)) = puzzleDisplayed;
+
+				//////////////reset save puzzle boolean on the game
+				myGames[i]->savePuzzleB = false;
+				//////////////reset game
+				myGames[i]->guiReset();
+				myGames[i]->restart();
+				//////////////////////////////////////////////////////////////////////////////////////////////////////////
 			}
 
-			//replace current position 8,9,10 on the middelPuzzle Vector
-			//because we are only showing 10 puzzles on the middle
-			//we will replace the last 3
-
-			//middlePuzzles.erase(middlePuzzles.begin() + (puzzleCounter+7));
-			middlePuzzles.at((puzzleCounter +7)) = puzzleDisplayed;
-			////keep count of the saved puzzles
-			puzzleCounter ++;
-			if(puzzleCounter == 3){
-				puzzleCounter=0;
-			}
-			//////////////reset save puzzle boolean on the game
-			myGames[i]->savePuzzleB = false;
-			//////////////reset game
-			myGames[i]->guiReset();
-			myGames[i]->restart();
+		}
+		////keep count of the saved puzzles
+		puzzleCounter ++;
+		if(puzzleCounter == 3){
+			puzzleCounter=0;
 		}
 	}
-	if((hb1Flag == true) && (hb2Flag == true) && (hb1Flag2==true)){
-		exit();
-		
-		hb1Flag = false;
-		hb2Flag = false;
-		hb1Flag2 = false;
-	}
+}
+////////END saving puzzle
 
 
-	/*
+/*
 
-	if(GetTickCount() - last_tick_count < 16) {
-	return;
-	} else { last_tick_count = GetTickCount(); }
+if(GetTickCount() - last_tick_count < 16) {
+return;
+} else { last_tick_count = GetTickCount(); }
 
-	processFrame();
+processFrame();
 
-	std::vector<gwc::PointEvent> point_events = consumePointEvents();
+std::vector<gwc::PointEvent> point_events = consumePointEvents();
 
-	for(std::vector<gwc::PointEvent>::iterator event_it = point_events.begin(); event_it != point_events.end(); event_it++) {
-	//cout << "Touch Point = " << event_it->point_id << endl;
-	switch(event_it->status) {
-	case gwc::TOUCHADDED:
-	assignTouchPoint("touchReceiver", event_it->point_id);
-	case gwc::TOUCHUPDATE:
-	//If the point is being added, this will place it in our point map; the same line of code will update the point's
-	//position if it's already present, so we can use this command to handle new points as well as point updates
-	active_points[event_it->point_id] = gwc::Point(event_it->position.getX(),event_it->position.getY());
-	break;
-	case gwc::TOUCHREMOVED:
-	//Remove the point from the map
-	active_points.erase(event_it->point_id);
-	break;
-	}
-	}
+for(std::vector<gwc::PointEvent>::iterator event_it = point_events.begin(); event_it != point_events.end(); event_it++) {
+//cout << "Touch Point = " << event_it->point_id << endl;
+switch(event_it->status) {
+case gwc::TOUCHADDED:
+assignTouchPoint("touchReceiver", event_it->point_id);
+case gwc::TOUCHUPDATE:
+//If the point is being added, this will place it in our point map; the same line of code will update the point's
+//position if it's already present, so we can use this command to handle new points as well as point updates
+active_points[event_it->point_id] = gwc::Point(event_it->position.getX(),event_it->position.getY());
+break;
+case gwc::TOUCHREMOVED:
+//Remove the point from the map
+active_points.erase(event_it->point_id);
+break;
+}
+}
 
-	std::vector<gwc::GestureEvent> gesture_events = consumeGestureEvents();
+std::vector<gwc::GestureEvent> gesture_events = consumeGestureEvents();
 
-	for(std::vector<gwc::GestureEvent>::iterator gesture_it = gesture_events.begin(); gesture_it != gesture_events.end(); gesture_it++) {
-	cout << gesture_it->gesture_type << " - " << gesture_it->x << ", " << gesture_it->y << " - " << gesture_it->phase << endl;
-	}
-	*/
+for(std::vector<gwc::GestureEvent>::iterator gesture_it = gesture_events.begin(); gesture_it != gesture_events.end(); gesture_it++) {
+cout << gesture_it->gesture_type << " - " << gesture_it->x << ", " << gesture_it->y << " - " << gesture_it->phase << endl;
+}
+*/
+////////////////////////////////////////////////////////hidden buttons program shut down
+if((hb1Flag == true) && (hb2Flag == true) && (hb1Flag2==true)){
+	exit();
+}
 }
 //--------------------------------------------------------------
 void testApp::draw(){

@@ -73,7 +73,7 @@ public:
 	ofVec3f rotateSlicer;
 
 	/////////////////////////////////puzzle saving
-	int newPuzzleCOunterBL;
+	int newPuzzleCounterBL;
 	int currentCubieBL;
 
 	int newPuzzleCOunterBR;

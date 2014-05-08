@@ -54,6 +54,8 @@ class GuiButton : public GuiNode
 		bool bWatchTime;
 		bool bSendSample;
 		bool bSend;
+
+		bool showLangBar;
 };
 
 #endif // GUIBUTTON_H

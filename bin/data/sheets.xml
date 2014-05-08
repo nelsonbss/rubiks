@@ -155,7 +155,7 @@
       <val>front</val>
     </param>
   </node>
-  <node type="button" name="bg-info">
+  <!--<node type="button" name="bg-info">
     <pos>0.055,0.6475</pos>
     <size>1.0,1.0</size>
     <scale>1.0</scale>
@@ -176,7 +176,7 @@
       <name>draw-position</name>
       <val>front</val>
     </param>
-  </node>
+  </node>-->
   <node type="window" name="bg-language-dropdown">
     <pos>-0.001,0.6875</pos>
     <size>0.236,0.042</size>
@@ -219,6 +219,8 @@
           <type>string</type>
           <val>english</val>
         </arg>
+      </event>
+      <event name="toggle">
       </event>
       <param>
         <name>text</name>
@@ -264,6 +266,8 @@
           <val>french</val>
         </arg>
       </event>
+      <event name="toggle">
+      </event>
       <param>
         <name>tap</name>
         <val>true</val>
@@ -307,6 +311,8 @@
           <type>string</type>
           <val>spanish</val>
         </arg>
+      </event>
+      <event name="toggle">
       </event>
       <param>
         <name>tap</name>

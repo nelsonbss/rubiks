@@ -401,6 +401,9 @@ void game::update(string _eventName, SubObEvent _event){
 	}
 	if(_eventName == prefix + ":menupuzzle-selected"){
 		//setPage("draw");
+		SubObEvent ev;
+		ev.setName(prefix + ":interaction");
+		SubObMediator::Instance()->sendEvent(ev.getName(), ev);
 	}
 	if(_eventName == prefix + ":next-step"){
 		guiNext();
@@ -907,7 +910,7 @@ void game::loadPuzzle(puzzle *inputPuzzle,int objID, SG_VECTOR p, SG_VECTOR t){
 		armID = -1;
 		puzzleFinished = false;
 		creatingPuzzle = false;
-		
+
 	}else if (step==3){
 		//objectDisplayed->exit();             //clean displayed object after puzzle is created, so we dont keep it until the exit or restart
 		step = 0;

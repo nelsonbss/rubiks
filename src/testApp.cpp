@@ -753,7 +753,7 @@ void testApp::mouseDragged(int x, int y, int button){
 //--------------------------------------------------------------
 void testApp::mousePressed(int x, int y, int button){
 	if(button == 0){
-		//to make hidden buttons work for shutdown
+		////////////////////to make hidden buttons work for shutdown
 		if(hb1->hitTest(x,y)==true){
 			//first button pressed
 			hb1Flag = true;

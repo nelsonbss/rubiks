@@ -89,6 +89,7 @@ void GuiButton::nodeInit(){
 	}
 	bSend = false;
 	SubObMediator::Instance()->addObserver(prefix + ":language-changed", this);
+	//showLangBar = false;
 }
 
 void GuiButton::nodeExecute(){
@@ -102,6 +103,12 @@ void GuiButton::nodeExecute(){
 		ev.addArg("pos", dragPos);
 		SubObMediator::Instance()->sendEvent(ev.getName(), ev);
 	}
+	//if(showLangBar == true){
+	//	SubObEvent ev;
+	//	ev.setName(getPrefix() + ":toggle");
+	//	SubObMediator::Instance()->sendEvent(ev.getName(), ev);
+	//	showLangBar = false;
+	//}
 	//cout << name << " executing." << endl;
 }
 
@@ -197,6 +204,8 @@ void GuiButton::update(string _eventName, SubObEvent _event){
 	if(_eventName == prefix + ":language-changed"){
 		string lang = _event.getArg("lang")->getString();
 		currentLanguage = lang;
+		//toggle of the language bar
+		//showLangBar = true;
 	}
 }
 

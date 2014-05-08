@@ -168,26 +168,26 @@ void GuiConfigurator::update(string _eventName, SubObEvent _event){
 			}
 		}
 	}
-	if(_eventName == "hide-node"){
-		string target = _event.getArg("target")->getString();
-		if(activeNodes.count(target)){
-			if(!activeNodes[target]->isHidden()){
-				activeNodes[target]->hide();
-			}
-		} else {
-			cout << "NODE_HIDE - don't have node - " << target << endl;
-		}
-	}
-	if(_eventName == "unhide-node"){
-		string target = _event.getArg("target")->getString();
-		if(activeNodes.count(target)){
-			if(activeNodes[target]->isHidden()){
-				activeNodes[target]->unhide();
-			}
-		} else {
-			cout << "NODE_UNHIDE - don't have node - " << target << endl;
-		}
-	}
+	//if(_eventName == "hide-node"){
+	//	string target = _event.getArg("target")->getString();
+	//	if(activeNodes.count(target)){
+	//		if(!activeNodes[target]->isHidden()){
+	//			activeNodes[target]->hide();
+	//		}
+	//	} else {
+	//		cout << "NODE_HIDE - don't have node - " << target << endl;
+	//	}
+	//}
+	//if(_eventName == "unhide-node"){
+	//	string target = _event.getArg("target")->getString();
+	//	if(activeNodes.count(target)){
+	//		if(activeNodes[target]->isHidden()){
+	//			activeNodes[target]->unhide();
+	//		}
+	//	} else {
+	//		cout << "NODE_UNHIDE - don't have node - " << target << endl;
+	//	}
+	//}
 	if(_eventName == "toggle-node"){
 		string target = _event.getArg("target")->getString();
 		if(activeNodes.count(target)){

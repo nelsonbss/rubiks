@@ -68,6 +68,12 @@ menuPuzzle::menuPuzzle(SG_VECTOR p, SG_VECTOR t, int ID ) : GuiNode(){
 	rotateSlicer = ofVec3f (0,0,0);
 
 	timeOfLastInteraction = 0;
+
+	myMenuPuzzle = NULL;
+	MenuPuzzleBR = NULL;
+	MenuPuzzleBL = NULL;
+	MenuPuzzleTR = NULL;
+	MenuPuzzleTL = NULL;
 }
 //-------------------------------------------------------------------------------------------------------
 void menuPuzzle::nodeInit(){
@@ -490,14 +496,34 @@ void menuPuzzle::exit(){
 //-------------------------------------------------------
 puzzle* menuPuzzle::getPuzzle(string gameTag){
 	if(gameTag=="bl"){
-		return MenuPuzzleBL;
+		if(MenuPuzzleBL != NULL){
+			return MenuPuzzleBL;
+		}else{
+			//it is a saved puzzle and needs to clone the "bl" for the first time
+			return MenuPuzzleBL = cloneMyPuzzle(myMenuPuzzle,objectId);
+		}
 	}else if(gameTag=="br"){
-		return MenuPuzzleBR;
+		if(MenuPuzzleBR != NULL){
+			return MenuPuzzleBR;
+		}else{
+			//it is a saved puzzle and needs to clone the "br" for the first time
+			return MenuPuzzleBR = cloneMyPuzzle(myMenuPuzzle,objectId);
+		}
 	}else if(gameTag=="tl"){
-		return MenuPuzzleTL;
+		if(MenuPuzzleTL != NULL){
+			return MenuPuzzleTL;
+		}else{
+			//it is a saved puzzle and needs to clone the "tl" for the first time
+			return MenuPuzzleTL = cloneMyPuzzle(myMenuPuzzle,objectId);
+		}
 	}else{
 		//tr
-		return MenuPuzzleTR;
+		if(MenuPuzzleTR != NULL){
+			return MenuPuzzleTR;
+		}else{
+			//it is a saved puzzle and needs to clone the "tr" for the first time
+			return MenuPuzzleTR = cloneMyPuzzle(myMenuPuzzle,objectId);
+		}
 	}
 	//return myMenuPuzzle; // this is never returned, its the one being showed in the middle
 }

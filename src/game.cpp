@@ -375,7 +375,7 @@ void game::update(string _eventName, SubObEvent _event){
 		if(savePuzzleB == false){
 			if(myPuzzle->isActive() == false){
 				//call save functionality here
-				unDoMenuPuzzle();
+				//unDoMenuPuzzle();
 				savePuzzleB = true;
 				//dont make opengl calls here... no drawing anything
 				setPage("object-start");

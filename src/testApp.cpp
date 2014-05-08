@@ -11,6 +11,7 @@
 #define puzzleItems 10
 #define USE_MOUSE 1
 
+
 std::map<int,gwc::Point> active_points;
 
 testApp::testApp() : puzzleDisplayed(){
@@ -287,8 +288,8 @@ void testApp::setup(){
 	//create hidden buttons
 	ofVec2f sizeHB = ofVec2f(80,80);
 
-	ofVec2f posHB1 = ofVec2f(0,(ofGetWindowHeight()/2)+100);
-	ofVec2f posHB2 = ofVec2f(ofGetWindowWidth()-80,(ofGetWindowHeight()/2)+100);
+	ofVec2f posHB1 = ofVec2f(0,(ofGetWindowHeight()));
+	ofVec2f posHB2 = ofVec2f(ofGetWindowWidth()-80,-40);
 
 	hb1 = new hiddenButton(posHB1,sizeHB);
 	hb2 = new hiddenButton(posHB2,sizeHB);
@@ -425,7 +426,7 @@ void testApp::update(){
 			//////////////////////////////////////////////////////////////////////////////////////////////////////
 			/////////////make middle puzzles by making 5 clones ONE BY ONE
 			/////ONE BY ONE BY ONE BY ONE BY ONE BY ONE BY ONE BY ONE BY ONE
-			if(newPuzzleCounterBL < 5){
+			//if(newPuzzleCounterBL < 5){
 				//we only do this once, for the first puzzle
 				middlePuzzlePos.x = 10 + ((puzzleCounter+7) * 10) + ((puzzleCounter+7)*180);
 				objectToMakePuzzle = new myobject3D (slicingPos, middlePuzzlePos,"main");//all on 0,0,0
@@ -433,13 +434,13 @@ void testApp::update(){
 				objectToMakePuzzle->setup();
 				objectToMakePuzzle->update();
 
-				if(newPuzzleCounterBL == 0){
+				//if(newPuzzleCounterBL == 0){
 					//do this only once!!
 					////////////////////////////////////////////////////
 					//VERY IMPORTANT TO DO THIS HERE so the new middle puzzle gets registered as a subOb  guiNode properly
 					free(middlePuzzles.at((puzzleCounter +7)));
 					/////////////////////////////////////////////////////
-				}
+				//}
 
 				puzzleDisplayed = new menuPuzzle(slicingPos, middlePuzzlePos, (puzzleCounter+7));
 				puzzleDisplayed->loadObjectMP((sgC3DObject*)objectsMP[1]->Clone(),1,objectToMakePuzzle->ObjectUniqueNormals);
@@ -453,28 +454,30 @@ void testApp::update(){
 				puzzleDisplayed->rotateSlicer =  myGames[i]->rotateSlicer;
 
 
-				if(newPuzzleCounterBL == 0){
+				//if(newPuzzleCounterBL == 0){
 					//put upb a flag on the game that its saving the puzzle//used on restart()
 					myGames[i]->savePuzzle();
 					//clone the games id
-					myPuzzles[newPuzzleCounterBL+((puzzleCounter+7)*5)] = puzzleDisplayed->cloneMyPuzzle(myGames[i]->myPuzzle,myGames[i]->objectID);
-				}else{
-					//clone the first cloned puzzle, since the game got restarted
-					myPuzzles[newPuzzleCounterBL+((puzzleCounter+7)*5)] = puzzleDisplayed->cloneMyPuzzle(myPuzzles[(newPuzzleCounterBL-1)+((puzzleCounter+7)*5)],myPuzzles[(newPuzzleCounterBL-1)+((puzzleCounter+7)*5)]->myCubies[0]->selectedObjectID);
-				}
-				puzzleDisplayed->loadPuzzle(myPuzzles[newPuzzleCounterBL+((puzzleCounter+7)*5)],newPuzzleCounterBL);
+					//myPuzzles[newPuzzleCounterBL+((puzzleCounter+7)*5)] = puzzleDisplayed->cloneMyPuzzle(myGames[i]->myPuzzle,myGames[i]->objectID);
+					myPuzzles[((puzzleCounter+7)*5)] = puzzleDisplayed->cloneMyPuzzle(myGames[i]->myPuzzle,myGames[i]->objectID);
+				//}else{
+				//	//clone the first cloned puzzle, since the game got restarted
+				//	myPuzzles[newPuzzleCounterBL+((puzzleCounter+7)*5)] = puzzleDisplayed->cloneMyPuzzle(myPuzzles[(newPuzzleCounterBL-1)+((puzzleCounter+7)*5)],myPuzzles[(newPuzzleCounterBL-1)+((puzzleCounter+7)*5)]->myCubies[0]->selectedObjectID);
+				//}
+				//puzzleDisplayed->loadPuzzle(myPuzzles[newPuzzleCounterBL+((puzzleCounter+7)*5)],newPuzzleCounterBL);
+				puzzleDisplayed->loadPuzzle(myPuzzles[((puzzleCounter+7)*5)],0);
 
-				if(newPuzzleCounterBL == 0){
+				//if(newPuzzleCounterBL == 0){
 					//replace current position 8,9,10 on the middelPuzzle Vector
 					//because we are only showing 10 puzzles on the middle
 					//we will replace the last 3
 					middlePuzzles.at((puzzleCounter +7)) = puzzleDisplayed;
-				}
+				//}
 
-				//now we can count a local puzzle being made!!!!!!!!!!!!!!!
-				newPuzzleCounterBL =5;
+				////now we can count a local puzzle being made!!!!!!!!!!!!!!!
+				//newPuzzleCounterBL =5;
 
-				if(newPuzzleCounterBL == 5){
+				//if(newPuzzleCounterBL == 5){
 					////keep count of the saved puzzles
 					puzzleCounter ++;
 					if(puzzleCounter == 3){
@@ -482,10 +485,10 @@ void testApp::update(){
 					}
 					//////////////reset save puzzle boolean on the game
 					myGames[i]->savePuzzleB = false;
-					newPuzzleCounterBL = 0;
-				}
+					//newPuzzleCounterBL = 0;
+				//}
 				//////////////////////////////////////////////////////////////////////////////////////////////////////////
-			}
+			//}
 			//////////////reset game
 			myGames[i]->guiReset();
 			myGames[i]->restart();
@@ -751,25 +754,25 @@ void testApp::mouseDragged(int x, int y, int button){
 void testApp::mousePressed(int x, int y, int button){
 	if(button == 0){
 		//to make hidden buttons work for shutdown
-		if(hb1->hitTest(x,y)){
+		if(hb1->hitTest(x,y)==true){
 			//first button pressed
 			hb1Flag = true;
 			shutDownTime = ofGetElapsedTimeMillis();
 		}
-		if(hb1Flag==true & hb2->hitTest(x,y)){
+		if(hb1Flag==true && hb2->hitTest(x,y)==true){
 			//second button pressed, only after first button has been pressed
 			int currentTime = ofGetElapsedTimeMillis();
-			if(currentTime - shutDownTime > 5000){
+			if(currentTime - shutDownTime > 3000){
 				//too much time
 				hb1Flag = false; // have to restart shut down sequence 
 			}else{
 				hb2Flag = true;
 			}
 		}
-		if(hb1->hitTest(x,y) && hb2Flag == true){
+		if(hb1->hitTest(x,y)==true && hb2Flag == true){
 			//first button pressed for the second time
 			int currentTime = ofGetElapsedTimeMillis();
-			if(currentTime - shutDownTime > 5000){
+			if(currentTime - shutDownTime > 3000){
 				hb1Flag = false;
 				hb2Flag = false;
 			}else{

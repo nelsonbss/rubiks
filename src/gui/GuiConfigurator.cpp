@@ -395,12 +395,12 @@ void GuiConfigurator::specialTextLoadingCopOut(){
 	texts["arm-rotate-1"] = GuiText();
 	texts["arm-rotate-1"].setText("english", "Single finger swipe\nmoves structure.");
 	texts["arm-rotate-1"].setText("french", "Glissez avec un doigt\npour déplacer la\nstructure.");
-	texts["arm-rotate-1"].setText("spanish", "Para girar la estructura,\ndeslízala con un\nsolo dedo.");
+	texts["arm-rotate-1"].setText("spanish", "Para mover la estructura,\ndeslízala con un\nsolo dedo.");
 
 	texts["arm-rotate-2"] = GuiText();
 	texts["arm-rotate-2"].setText("english", "Two-finger swipe\nrotates structure.");
 	texts["arm-rotate-2"].setText("french", "Glissez avec deux doigts\npour faire tourner\nla structure.");
-	texts["arm-rotate-2"].setText("spanish", "Para rotar la estructura,\ndeslízala con dos\ndedos.");
+	texts["arm-rotate-2"].setText("spanish", "Para rotar la estructura,\ndeslízala con\ndos dedos.");
 
 	texts["draw-help"] = GuiText();
 	texts["draw-help"].setText("english", "Draw an outline with \nyour finger to make\nyour own shape.");

@@ -50,10 +50,10 @@ void GuiNode::draw(){
 	if(bHaveText){
 		ofSetColor(textColor.x, textColor.y, textColor.z);
 		string currentText = GuiConfigurator::Instance()->getText(text, currentLanguage);
-		//string str = currentText;
-		//string str_tex_ready;
-		//Poco::TextConverter(Poco::Latin9Encoding(), Poco::UTF8Encoding()).convert(str, str_tex_ready);
-		//currentText = str_tex_ready;
+		string str = currentText;
+		string str_tex_ready;
+		Poco::TextConverter(Poco::UTF8Encoding(), Poco::Latin9Encoding()).convert(str, str_tex_ready);
+		currentText = str_tex_ready;
 		//cout << "drawing text - " << currentText << endl;
 		if(textAlign == "position"){
 			if(bFlipped){
@@ -69,13 +69,17 @@ void GuiNode::draw(){
 			}
 			if(bHaveText2){
 				currentText = GuiConfigurator::Instance()->getText(text2, currentLanguage);
+				string str2 = currentText;
+				string str_tex_ready2;
+				Poco::TextConverter(Poco::UTF8Encoding(), Poco::Latin9Encoding()).convert(str2, str_tex_ready2);
+				currentText = str_tex_ready2;
 				if(bFlipped){
 					ofRectangle bounds = font.getStringBoundingBox(currentText, 0, 0);
 					ofPushMatrix();
-					//						ofTranslate(drawPos.x + textPosition2Flipped.x  - bounds.width / 2, drawPos.y + textPosition2Flipped.y - bounds.height / 2, 0);
+					//ofTranslate(drawPos.x + textPosition2Flipped.x  - bounds.width / 2, drawPos.y + textPosition2Flipped.y - bounds.height / 2, 0);
 					ofTranslate(drawPos.x + textPosition2Flipped.x, drawPos.y + textPosition2Flipped.y, 0);
 					ofRotateZ(180.0);
-					//						font.drawString(currentText, bounds.width / 2, bounds.height / 2);
+					//font.drawString(currentText, bounds.width / 2, bounds.height / 2);
 					font.drawString(currentText, 0, 0);
 					ofPopMatrix();
 				} else {

@@ -2,9 +2,12 @@
 #include "Utils.h"
 #include "GuiConfigurator.h"
 
+#include "Poco/TextConverter.h"
+#include "Poco/UTF8Encoding.h"
+#include "Poco/Latin9Encoding.h"
 
 GuiNode::GuiNode(){
-    drawColor.set(0,0,0);
+	drawColor.set(0,0,0);
 	bDrawArea = false;
 	bHaveText = false;
 	bHaveText2 = false;
@@ -36,85 +39,89 @@ void GuiNode::draw(){
 	ofEnableBlendMode(OF_BLENDMODE_ALPHA);
 	ofDisableDepthTest();
 	//if(!bHidden){
-		if(bDrawArea){
-			//cout << "drawing from " << drawPos.x << ", " << drawPos.y << " to " << drawSize.x << ", " << drawSize.y << endl;
-			ofNoFill();
-			ofSetColor(drawColor.x, drawColor.y, drawColor.z);
-			ofRect(drawPos.x, drawPos.y, drawSize.x, drawSize.y);
-		}
-		ofSetColor(255,255,255);
-		nodeDraw();
-		if(bHaveText){
-			ofSetColor(textColor.x, textColor.y, textColor.z);
-			string currentText = GuiConfigurator::Instance()->getText(text, currentLanguage);
-			//cout << "drawing text - " << currentText << endl;
-			if(textAlign == "position"){
+	if(bDrawArea){
+		//cout << "drawing from " << drawPos.x << ", " << drawPos.y << " to " << drawSize.x << ", " << drawSize.y << endl;
+		ofNoFill();
+		ofSetColor(drawColor.x, drawColor.y, drawColor.z);
+		ofRect(drawPos.x, drawPos.y, drawSize.x, drawSize.y);
+	}
+	ofSetColor(255,255,255);
+	nodeDraw();
+	if(bHaveText){
+		ofSetColor(textColor.x, textColor.y, textColor.z);
+		string currentText = GuiConfigurator::Instance()->getText(text, currentLanguage);
+		//string str = currentText;
+		//string str_tex_ready;
+		//Poco::TextConverter(Poco::Latin9Encoding(), Poco::UTF8Encoding()).convert(str, str_tex_ready);
+		//currentText = str_tex_ready;
+		//cout << "drawing text - " << currentText << endl;
+		if(textAlign == "position"){
+			if(bFlipped){
+				ofRectangle bounds = font.getStringBoundingBox(currentText, 0, 0);
+				ofPushMatrix();
+				ofTranslate(drawPos.x + textPositionFlipped.x, drawPos.y + textPositionFlipped.y, 0);
+				//ofTranslate(drawPos.x + textPositionFlipped.x  - bounds.width / 2, drawPos.y + textPositionFlipped.y - bounds.height / 2, 0);
+				ofRotateZ(180.0);
+				font.drawString(currentText, 0, 0);
+				ofPopMatrix();
+			} else {
+				font.drawString(currentText, drawPos.x + textPosition.x, drawPos.y + textPosition.y);
+			}
+			if(bHaveText2){
+				currentText = GuiConfigurator::Instance()->getText(text2, currentLanguage);
 				if(bFlipped){
 					ofRectangle bounds = font.getStringBoundingBox(currentText, 0, 0);
 					ofPushMatrix();
-					ofTranslate(drawPos.x + textPositionFlipped.x, drawPos.y + textPositionFlipped.y, 0);
-//					ofTranslate(drawPos.x + textPositionFlipped.x  - bounds.width / 2, drawPos.y + textPositionFlipped.y - bounds.height / 2, 0);
+					//						ofTranslate(drawPos.x + textPosition2Flipped.x  - bounds.width / 2, drawPos.y + textPosition2Flipped.y - bounds.height / 2, 0);
+					ofTranslate(drawPos.x + textPosition2Flipped.x, drawPos.y + textPosition2Flipped.y, 0);
 					ofRotateZ(180.0);
+					//						font.drawString(currentText, bounds.width / 2, bounds.height / 2);
 					font.drawString(currentText, 0, 0);
 					ofPopMatrix();
 				} else {
-					font.drawString(currentText, drawPos.x + textPosition.x, drawPos.y + textPosition.y);
-				}
-				if(bHaveText2){
-					currentText = GuiConfigurator::Instance()->getText(text2, currentLanguage);
-					if(bFlipped){
-						ofRectangle bounds = font.getStringBoundingBox(currentText, 0, 0);
-						ofPushMatrix();
-//						ofTranslate(drawPos.x + textPosition2Flipped.x  - bounds.width / 2, drawPos.y + textPosition2Flipped.y - bounds.height / 2, 0);
-						ofTranslate(drawPos.x + textPosition2Flipped.x, drawPos.y + textPosition2Flipped.y, 0);
-						ofRotateZ(180.0);
-//						font.drawString(currentText, bounds.width / 2, bounds.height / 2);
-						font.drawString(currentText, 0, 0);
-						ofPopMatrix();
-					} else {
-						font.drawString(currentText, drawPos.x + textPosition2.x, drawPos.y + textPosition2.y);
-					}
-				}
-			} else {
-				ofRectangle box = font.getStringBoundingBox(currentText,0,0);
-				float cx = 0;
-				float cy = drawPos.y + (drawSize.y / 2 + box.height / 2);
-				if(textAlign == "center"){
-					cx = drawPos.x + (drawSize.x / 2 - box.width / 2);
-				}
-				if(bFlipped){
-					ofPushMatrix();
-					ofTranslate(cx + box.width, cy - box.height, 0);
-					ofRotateZ(180.0);
-					font.drawString(currentText, 0, 0);
-					ofPopMatrix();
-				} else {
-					font.drawString(currentText, cx, cy);
+					font.drawString(currentText, drawPos.x + textPosition2.x, drawPos.y + textPosition2.y);
 				}
 			}
+		} else {
+			ofRectangle box = font.getStringBoundingBox(currentText,0,0);
+			float cx = 0;
+			float cy = drawPos.y + (drawSize.y / 2 + box.height / 2);
+			if(textAlign == "center"){
+				cx = drawPos.x + (drawSize.x / 2 - box.width / 2);
+			}
+			if(bFlipped){
+				ofPushMatrix();
+				ofTranslate(cx + box.width, cy - box.height, 0);
+				ofRotateZ(180.0);
+				font.drawString(currentText, 0, 0);
+				ofPopMatrix();
+			} else {
+				font.drawString(currentText, cx, cy);
+			}
 		}
+	}
 	//}
 	ofEnableDepthTest();
 }
 
 bool GuiNode::isInside(int _x, int _y){
-    //cout << name << " checking insides " << drawPos.x << ", " << drawPos.x + (scale * drawSize.x) << " - " << drawPos.y << ", " << drawPos.y + (scale * drawSize.y);
+	//cout << name << " checking insides " << drawPos.x << ", " << drawPos.x + (scale * drawSize.x) << " - " << drawPos.y << ", " << drawPos.y + (scale * drawSize.y);
 	//cout << " against " << _x << ", " << _y << endl;
-    if(bHaveCustomArea){
+	if(bHaveCustomArea){
 		if(/*(drawPos.x + drawSize.x) < customArea.x || */(drawPos.y + drawSize.y) < customArea.y /*|| (drawPos.x + drawSize.x) > (customArea.x + customSize.x)*/ || (drawPos.y) > (customArea.y + customSize.y)){
 			return false;
 		}
 	}
 	if((_x > drawPos.x && _x < (drawPos.x + (scale * drawSize.x)) &&
-       (_y > drawPos.y && _y < (drawPos.y + (scale * drawSize.y))))){
-		   if(getParam("send-select") == "true"){
-			   input("select", 0, 0, 0, ofVec2f(_x, _y), ofVec2f(0,0));
-		   }
-		   lastMouse.set(_x, _y);
-		   bSelected = true;
-		   return true;
-       }
-    return false;
+		(_y > drawPos.y && _y < (drawPos.y + (scale * drawSize.y))))){
+			if(getParam("send-select") == "true"){
+				input("select", 0, 0, 0, ofVec2f(_x, _y), ofVec2f(0,0));
+			}
+			lastMouse.set(_x, _y);
+			bSelected = true;
+			return true;
+	}
+	return false;
 }
 
 void GuiNode::setCustomArea(ofVec2f _a, ofVec2f _s){
@@ -157,7 +164,7 @@ void GuiNode::init(){
 }
 
 void GuiNode::registerPages(string _pages){
-//	cout << getName() << " registering pages - " << _pages << endl;
+	//	cout << getName() << " registering pages - " << _pages << endl;
 	vector<string> pages = ofSplitString(_pages, ",");
 	for(auto pIter = pages.begin(); pIter != pages.end(); pIter++){
 		if(*pIter == "all"){

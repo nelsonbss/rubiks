@@ -348,14 +348,14 @@ void GuiConfigurator::specialTextLoadingCopOut(){
 	texts["english"].setText("spanish", "English");
 
 	texts["french"] = GuiText();
-	texts["french"].setText("english", "Français");
-	texts["french"].setText("french", "Français");
-	texts["french"].setText("spanish", "Français");
+	texts["french"].setText("english", "FranÃ§ais");
+	texts["french"].setText("french", "FranÃ§ais");
+	texts["french"].setText("spanish", "FranÃ§ais");
 
 	texts["spanish"] = GuiText();
-	texts["spanish"].setText("english", "Español");
-	texts["spanish"].setText("french", "Español");
-	texts["spanish"].setText("spanish", "Español");
+	texts["spanish"].setText("english", "EspaÃ±ol");
+	texts["spanish"].setText("french", "EspaÃ±ol");
+	texts["spanish"].setText("spanish", "EspaÃ±ol");
 
 	texts["save"] = GuiText();
 	texts["save"].setText("english","SAVE");
@@ -364,7 +364,7 @@ void GuiConfigurator::specialTextLoadingCopOut(){
 
 	texts["solve"] = GuiText();
 	texts["solve"].setText("english","SOLVE");
-	texts["solve"].setText("french","RÉSOUDRE");
+	texts["solve"].setText("french","RÃ‰SOUDRE");
 	texts["solve"].setText("spanish","RESOLVER");
 
 	texts["next"] = GuiText();
@@ -374,37 +374,37 @@ void GuiConfigurator::specialTextLoadingCopOut(){
 
 	texts["reset"] = GuiText();
 	texts["reset"].setText("english", "START OVER");
-	texts["reset"].setText("french", "RÉINITIALISER");
+	texts["reset"].setText("french", "RÃ‰INITIALISER");
 	texts["reset"].setText("spanish", "REINICIA");
 
 	texts["make"] = GuiText();
 	texts["make"].setText("english", "MAKE ONE");
-	texts["make"].setText("french", "CRÉER");
+	texts["make"].setText("french", "CRÃ‰ER");
 	texts["make"].setText("spanish", "HAZ UNO");
 
 	texts["color"] = GuiText();
 	texts["color"].setText("english", "Drag colors to\ndecorate your puzzle.");
-	texts["color"].setText("french", "Faites glisser les\ncouleurs pour décorer\nvotre puzzle.");
+	texts["color"].setText("french", "Faites glisser les\ncouleurs pour dÃ©corer\nvotre puzzle.");
 	texts["color"].setText("spanish", "Para decorar tu puzle,\narrastra los colores.");
 
 	texts["arm-start"] = GuiText();
 	texts["arm-start"].setText("english", "Drag a structure\nto slice your shape.");
-	texts["arm-start"].setText("french", "Faites glisser une\nstructure pour découper\nvotre forme.");
+	texts["arm-start"].setText("french", "Faites glisser une\nstructure pour dÃ©couper\nvotre forme.");
 	texts["arm-start"].setText("spanish", "Para cortar tu forma,\narrastra una estructura.");
 
 	texts["arm-rotate-1"] = GuiText();
 	texts["arm-rotate-1"].setText("english", "Single finger swipe\nmoves structure.");
-	texts["arm-rotate-1"].setText("french", "Glissez avec un doigt\npour déplacer la\nstructure.");
-	texts["arm-rotate-1"].setText("spanish", "Para girar la estructura,\ndeslízala con un\nsolo dedo.");
+	texts["arm-rotate-1"].setText("french", "Glissez avec un doigt\npour dÃ©placer la\nstructure.");
+	texts["arm-rotate-1"].setText("spanish", "Para girar la estructura,\ndeslÃ­zala con un\nsolo dedo.");
 
 	texts["arm-rotate-2"] = GuiText();
 	texts["arm-rotate-2"].setText("english", "Two-finger swipe\nrotates structure.");
 	texts["arm-rotate-2"].setText("french", "Glissez avec deux doigts\npour faire tourner\nla structure.");
-	texts["arm-rotate-2"].setText("spanish", "Para rotar la estructura,\ndeslízala con dos\ndedos.");
+	texts["arm-rotate-2"].setText("spanish", "Para rotar la estructura,\ndeslÃ­zala con dos\ndedos.");
 
 	texts["draw-help"] = GuiText();
 	texts["draw-help"].setText("english", "Draw an outline with \nyour finger to make\nyour own shape.");
-	texts["draw-help"].setText("french", "Dessinez un contour\ndu doigt pour créer\nvotre propre forme.");
+	texts["draw-help"].setText("french", "Dessinez un contour\ndu doigt pour crÃ©er\nvotre propre forme.");
 	texts["draw-help"].setText("spanish", "Para crear tu propia figura,\ndibuja un contorno\ncon el dedo.");
 
 	texts["start"] = GuiText();
@@ -412,7 +412,7 @@ void GuiConfigurator::specialTextLoadingCopOut(){
 
 	texts["play-help-1"] = GuiText();
 	texts["play-help-1"].setText("english", "Single finger swipe\ntwists puzzle.");
-	texts["play-help-1"].setText("french", "Un doigt = glisse/\ndéplace les pièces");
+	texts["play-help-1"].setText("french", "Un doigt = glisse/\ndÃ©place les piÃ¨ces");
 	texts["play-help-1"].setText("spanish", "Un solo dedo mueve o\ndesliza las piezas");
 
 	texts["play-help-2"] = GuiText();
@@ -423,7 +423,7 @@ void GuiConfigurator::specialTextLoadingCopOut(){
 	texts["start-help"] = GuiText();
 	texts["start-help"].setText("english", "Drag A Puzzle From\nAbove Or A Shape Here\nto Play");
 	texts["start-help"].setText("french", "Faites glisser un puzzle\nci-dessus ou une forme ici\npour jouer");
-	texts["start-help"].setText("spanish", "Para jugar, arrastra aquí una\nforma o un rompecabezas\ndesde arriba");
+	texts["start-help"].setText("spanish", "Para jugar, arrastra aquÃ­ una\nforma o un rompecabezas\ndesde arriba");
 }
 
 void GuiConfigurator::loadSheets(){

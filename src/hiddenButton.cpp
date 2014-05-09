@@ -14,10 +14,10 @@ void hiddenButton::setup(){
 void hiddenButton::update(){
 }
 void hiddenButton::draw(){
-	ofPushMatrix();
-	ofColor(255,0,0);
-	ofRect(pos.x,pos.y,size.x,size.y);
-	ofPopMatrix();
+	//ofPushMatrix();
+	//ofColor(255,0,0);
+	//ofRect(pos.x,pos.y,size.x,size.y);
+	//ofPopMatrix();
 }
 void hiddenButton::exit(){
 }

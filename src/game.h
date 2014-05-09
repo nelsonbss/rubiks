@@ -17,7 +17,7 @@
 #include <thread>
 
 
-#define DELAY 5000
+#define DELAY 60000
 
 enum{UP_MODE_MOUSE, UP_MODE_COLOR, UP_MODE_P};
 class Observer;

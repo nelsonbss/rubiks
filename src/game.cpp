@@ -890,9 +890,9 @@ void game::loadPuzzle(puzzle *inputPuzzle,int objID, SG_VECTOR p, SG_VECTOR t){
 
 	/////////////////////////////////////////////////////////
 	///////////do game reset..because loading a puzzle can happen at anytime
-	if(step == 7){
+	//if(step == 7){
 		unDoMenuPuzzle();
-	}
+	//}
 	if(step == 6){
 		if(canvasB){
 			//myCanvas->exit();
@@ -2182,7 +2182,7 @@ void game::restart(){
 		//objectDisplayed->exit();
 
 		//have to undo the moves made on the puzzle that was loaded
-		//unDoMenuPuzzle();
+		unDoMenuPuzzle();
 		step = 0;
 		objectID = -1;
 		puzzleFinished = false;

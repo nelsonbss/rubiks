@@ -294,7 +294,7 @@ void testApp::setup(){
 	//create hidden buttons
 	ofVec2f sizeHB = ofVec2f(80,80);
 
-	ofVec2f posHB1 = ofVec2f(0,(ofGetWindowHeight())-40);
+	ofVec2f posHB1 = ofVec2f(0,(ofGetWindowHeight())-20);
 	ofVec2f posHB2 = ofVec2f(ofGetWindowWidth()-80,-40);
 
 	hb1 = new hiddenButton(posHB1,sizeHB);

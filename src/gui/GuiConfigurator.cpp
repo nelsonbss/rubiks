@@ -374,8 +374,8 @@ void GuiConfigurator::specialTextLoadingCopOut(){
 
 	texts["reset"] = GuiText();
 	texts["reset"].setText("english", "START OVER");
-	texts["reset"].setText("french", "RÉINITIALISER");
-	texts["reset"].setText("spanish", "REINICIA");
+	texts["reset"].setText("french", "RECOMMENCER");
+	texts["reset"].setText("spanish", "VOLVER A EMPEZAR");
 
 	texts["make"] = GuiText();
 	texts["make"].setText("english", "MAKE ONE");

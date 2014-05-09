@@ -160,7 +160,7 @@ void menuPuzzle::update(){
 	SG_VECTOR offset = {0,0,0}; //for the cube to be in place
 	temp->InitTempMatrix()->Rotate(rotP,rotV,ofDegToRad(-45));
 	SG_VECTOR rotV2 = {0,1,0};
-	temp->GetTempMatrix()->Rotate(rotP,rotV2,ofDegToRad(35));
+	temp->GetTempMatrix()->Rotate(rotP,rotV2,ofDegToRad(-35));
 	temp->ApplyTempMatrix(); 
 
 	//temp->InitTempMatrix()->Translate(transP);

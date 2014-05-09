@@ -404,6 +404,7 @@ void game::update(string _eventName, SubObEvent _event){
 		SubObEvent ev;
 		ev.setName(prefix + ":interaction");
 		SubObMediator::Instance()->sendEvent(ev.getName(), ev);
+		bInAttract = false;
 	}
 	if(_eventName == prefix + ":next-step"){
 		guiNext();
@@ -524,6 +525,7 @@ void game::update(string _eventName, SubObEvent _event){
 					mousePoint.set(p.x, p.y, 0);
 					unprojectMode = UP_MODE_MOUSE;
 					dragId = gId;
+					timeOfLastInteraction = ofGetElapsedTimeMillis();
 				}
 			} else if(phase == 1){
 				ofVec2f p = _event.getArg("absPos")->getVec2();
@@ -539,6 +541,7 @@ void game::update(string _eventName, SubObEvent _event){
 					//bDragInput = true;
 					mousePoint.set(p.x, p.y, 0);
 					unprojectMode = UP_MODE_MOUSE;
+					timeOfLastInteraction = ofGetElapsedTimeMillis();
 				}
 			} else if(phase > 1){
 				cout << "Ending rotation." << endl;
@@ -559,6 +562,7 @@ void game::update(string _eventName, SubObEvent _event){
 		if(step == 3){
 			ofVec3f r = _event.getArg("deltaPos")->getVec2();
 			rotateA(r);
+			timeOfLastInteraction = ofGetElapsedTimeMillis();
 		} else {
 			if(_event.getArg("phase")->getInt() == 0){
 				ofVec2f pos = _event.getArg("absPos")->getVec2();
@@ -566,6 +570,7 @@ void game::update(string _eventName, SubObEvent _event){
 			} else {
 				ofVec2f pos = _event.getArg("absPos")->getVec2();
 				mouseDragged(pos.x, pos.y, 2);
+				timeOfLastInteraction = ofGetElapsedTimeMillis();
 			}
 		}
 	}
@@ -578,6 +583,7 @@ void game::update(string _eventName, SubObEvent _event){
 			mousePoint.set(pos.x+35,pos.y+19, 0);//(ofGetMouseX(), ofGetMouseY(),0);
 			bUnproject = true;
 			unprojectMode = UP_MODE_COLOR;
+			timeOfLastInteraction = ofGetElapsedTimeMillis();
 		}
 		//else{
 		//	if(unprojectMode != UP_MODE_P){

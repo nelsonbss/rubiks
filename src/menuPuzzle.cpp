@@ -145,23 +145,23 @@ void menuPuzzle::setup(){
 	//object->ApplyTempMatrix();  
 	//object->DestroyTempMatrix();
 
-	////////temp->Triangulate(SG_VERTEX_TRIANGULATION);
-	////////ofRender *ofr = new ofRender(); //class that has the metods to transform sgCore to OF mesh and set the normals (in one function)
-	//////////ofr->sgCoretoOFmesh(temp,myMesh,-1); //-1 because its not a cubie but want color on the sample object
-	////////ofr->sgCoretoOFmesh(temp,myMesh,-2,objectId,"no"); //-2 for plain color
-	////////myVbo.setMesh(myMesh, GL_STATIC_DRAW);
-	////////free(ofr);
+	temp->Triangulate(SG_VERTEX_TRIANGULATION);
+	ofRender *ofr = new ofRender(); //class that has the metods to transform sgCore to OF mesh and set the normals (in one function)
+	//ofr->sgCoretoOFmesh(temp,myMesh,-1); //-1 because its not a cubie but want color on the sample object
+	ofr->sgCoretoOFmesh(temp,myMesh,-2,objectId,"no"); //-2 for plain color
+	myVbo.setMesh(myMesh, GL_STATIC_DRAW);
+	free(ofr);
 }
 //------------------------------------------------------------------------------------------
 void menuPuzzle::update(){
 
-	////////SG_POINT rotP = {position.x,position.y,position.z};
-	////////SG_VECTOR rotV = {1,0,0};
-	////////SG_VECTOR offset = {0,0,0}; //for the cube to be in place
-	////////temp->InitTempMatrix()->Rotate(rotP,rotV,ofDegToRad(-45));
-	////////SG_VECTOR rotV2 = {0,1,0};
-	////////temp->GetTempMatrix()->Rotate(rotP,rotV2,ofDegToRad(35));
-	////////temp->ApplyTempMatrix(); 
+	SG_POINT rotP = {position.x,position.y,position.z};
+	SG_VECTOR rotV = {1,0,0};
+	SG_VECTOR offset = {0,0,0}; //for the cube to be in place
+	temp->InitTempMatrix()->Rotate(rotP,rotV,ofDegToRad(-45));
+	SG_VECTOR rotV2 = {0,1,0};
+	temp->GetTempMatrix()->Rotate(rotP,rotV2,ofDegToRad(35));
+	temp->ApplyTempMatrix(); 
 
 	//temp->InitTempMatrix()->Translate(transP);
 	if(objectId == 2){
@@ -240,7 +240,7 @@ void menuPuzzle::nodeDraw(){
 	//glPushMatrix();
 	ofPushMatrix();
 	//ofEnableDepthTest();
-	//glMultMatrixd(temp->GetTempMatrix()->GetTransparentData());
+	glMultMatrixd(temp->GetTempMatrix()->GetTransparentData());
 	//temp->DestroyTempMatrix();
 	ofTranslate(viewport.width / 2, viewport.height / 2, position.z);
 	glScalef(0.3,0.3,0.3);

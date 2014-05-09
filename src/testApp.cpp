@@ -9,7 +9,7 @@
 #define displayZ -800
 #define iddleTime 120
 #define puzzleItems 10
-#define USE_MOUSE 0
+#define USE_MOUSE 1
 
 
 std::map<int,gwc::Point> active_points;
@@ -168,7 +168,7 @@ void testApp::setup(){
 
 			//only need to make boolean operation, slicer will save a copy of the pieces, we use those pieces copies, mySlicer->getPieces()
 			mySlicer->intersectCubes((sgCObject*)objectToMakePuzzle->getObject()); 
-			for(int j=0;j<1;j++){
+			for(int j=0;j<5;j++){
 				//mySlicer->intersectCubes((sgCObject*)objectToMakePuzzle->getObject());
 				myPuzzles[j+(i*5)] = new puzzle(middlePuzzlePos, offsetSlicer,gridSize,objectToMakePuzzle->ObjectUniqueNormals); // it receives the position to be displayed AND the offset of the armature/cutter to adapt slicing
 				//myPuzzles[j+(i*5)]->setup();
@@ -186,12 +186,12 @@ void testApp::setup(){
 				myPuzzles[j+(i*5)]->colorCubiesBlackSides();
 				puzzleDisplayed->loadPuzzle(myPuzzles[j+(i*5)],j);
 			}
-			for(int j=1;j<5;j++){
-				////puzzleDisplayed->loadPuzzle(myPuzzles[j+(i*5)],j);
+			//////for(int j=1;j<5;j++){
+			//////	////puzzleDisplayed->loadPuzzle(myPuzzles[j+(i*5)],j);
 
-				myPuzzles[j+(i*5)] = puzzleDisplayed->cloneMyPuzzle(myPuzzles[0+(i*5)],objectToMakePuzzle->objectId);
-				puzzleDisplayed->loadPuzzle(myPuzzles[j+(i*5)],0);
-			}
+			//////	myPuzzles[j+(i*5)] = puzzleDisplayed->cloneMyPuzzle(myPuzzles[0+(i*5)],objectToMakePuzzle->objectId);
+			//////	puzzleDisplayed->loadPuzzle(myPuzzles[j+(i*5)],0);
+			//////}
 
 			middlePuzzles.push_back(puzzleDisplayed);
 			cout << "end puzzle menu object: " << i <<endl;
@@ -438,28 +438,31 @@ void testApp::update(){
 			//objectToMakePuzzle = new myobject3D (slicingPos, middlePuzzlePos,"main");//all on 0,0,0
 			//objectToMakePuzzle->loadObjectOD((sgC3DObject*)objectsMP[1]->Clone(),1);
 			//objectToMakePuzzle->setup();
-			//objectToMakePuzzle->update();
+			objectToMakePuzzle->update();
 
 			////////////////////////////////////////////////////
 			//VERY IMPORTANT TO DO THIS HERE so the new middle puzzle gets registered as a subOb  guiNode properly
 			free(middlePuzzles.at((puzzleCounter +7)));
 			/////////////////////////////////////////////////////
+			//put upb a flag on the game that its saving the puzzle//used on restart()
+			myGames[i]->savePuzzle();
+
 
 			puzzleDisplayed = new menuPuzzle(slicingPos, middlePuzzlePos, (puzzleCounter+7));
 			//puzzleDisplayed->loadObjectMP((sgC3DObject*)objectsMP[1]->Clone(),1,objectToMakePuzzle->ObjectUniqueNormals);
 
 			////objectDisplayed->colorFacesMenu();//implement this later
 			//puzzleDisplayed->setup();
-			//puzzleDisplayed->update();
+			puzzleDisplayed->update();
 			//puzzleDisplayed->colorFacesMenu();
 			puzzleDisplayed->init();//gui
 			puzzleDisplayed->offsetSlicer =  myGames[i]->offsetSlicer;
 			puzzleDisplayed->rotateSlicer =  myGames[i]->rotateSlicer;
-			//put upb a flag on the game that its saving the puzzle//used on restart()
-			myGames[i]->savePuzzle();
+
 			//clone the games id
 			//myPuzzles[newPuzzleCounterBL+((puzzleCounter+7)*5)] = puzzleDisplayed->cloneMyPuzzle(myGames[i]->myPuzzle,myGames[i]->objectID);
 			myPuzzles[((puzzleCounter+7)*5)] = puzzleDisplayed->cloneMyPuzzle(myGames[i]->myPuzzle,myGames[i]->objectID);
+
 			puzzleDisplayed->loadPuzzle(myPuzzles[((puzzleCounter+7)*5)],0);
 
 			//replace current position 8,9,10 on the middelPuzzle Vector

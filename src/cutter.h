@@ -7,7 +7,8 @@
 class cutter {
 public:
 	cutter(float thick, float tamCutter, float tamCuby,float numCutrc, ofVec3f pos, int gsize);
-    
+    cutter(float thick, float tamCutter, float tamCuby,float numCutrc, ofVec3f pos, int gsize, ofVec3f rot);
+
 	void setup();
 	void update();
 	void draw();
@@ -26,7 +27,7 @@ public:
 	void moveUp();
 	void moveDown();
 
-	//ofVec3f rotCutter;
+	ofVec3f rotCutter;
 
 	float numCutter;
 

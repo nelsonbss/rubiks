@@ -509,7 +509,7 @@ void ofRender::colorFacesOneByOne(cubie *myCubie, float playRoom, int objectID,v
 			for(int un = 0; un<uniqueNormals.size();un++){
 				//compare each t normal with each unique normal
 				for(int n=0; n< tnormals.size() ; n++){
-					if(armX==0 && armY==0 && armZ == 0){
+					//if(armX==0 && armY==0 && armZ == 0){
 						//if there are no arm rotations.. this works for cube official colors
 						if(objectID == 1){
 							//have to use the official colors
@@ -540,47 +540,47 @@ void ofRender::colorFacesOneByOne(cubie *myCubie, float playRoom, int objectID,v
 									tcolors[n] = uniqueColors[un];
 							}
 						}
-					}else{
-						//arm rotations
-						ofVec3f t = tnormals[n].getRotated(armZ,ofVec3f(0,0,1));
-						ofVec3f t2 = t.getRotated(armX,ofVec3f(0,1,0));
-						ofVec3f t3 = t2.getRotated(-armY,ofVec3f(1,0,0));
+					//}else{
+					//	//arm rotations
+					//	ofVec3f t = tnormals[n].getRotated(armZ,ofVec3f(0,0,1));
+					//	ofVec3f t2 = t.getRotated(armX,ofVec3f(0,1,0));
+					//	ofVec3f t3 = t2.getRotated(-armY,ofVec3f(1,0,0));
 
-						if(objectID == 1){
-							//have to use the official colors
-							///rotate normal vectors to compensate for armature rotations z-y-x
-							//ask direction to color faces of cube 
-							if(t3.align(x, 2.0)){
-								tcolors[n] = blue; 
-							}else if(t3.align(y, 2.0)){
-								tcolors[n] = orange; 
-							}else if(t3.align(z, 2.0)){
-								tcolors[n] = yellow;
-							}else if(t3.align(xn, 2.0)){
-								tcolors[n] = green; 
-							}else if(t3.align(yn, 2.0)){
-								tcolors[n] = red; 
-							}else if(t3.align(zn, 2.0)){
-								tcolors[n] = white;
-							}
-						}
-						else{
-							//another object, do as if there where no arm rotations
-							if(((uniqueNormals[un].x - playRoom) <= t3.x) && 
-								(t3.x <= (uniqueNormals[un].x + playRoom)) &&
-								((uniqueNormals[un].y - playRoom) <= t3.y) && 
-								(t3.y <= (uniqueNormals[un].y + playRoom)) &&
-								((uniqueNormals[un].z - playRoom) <= t3.z) && 
-								(t3.z <= (uniqueNormals[un].z + playRoom))
-								){
-									//if the cubies meshs normal is one of the unique normals
-									//we assign a color to that normal on the cubie
-									//the index of the tnormal that we are looking at, is the same on the tcolors vector
-									//the color that we want is the one that corresponds to the uniqueNormals(index) that matched-> that same index is used to get color from uniqueColors(index) vector
-									tcolors[n] = uniqueColors[un];
-							}
-						}
-					}
+					//	if(objectID == 1){
+					//		//have to use the official colors
+					//		///rotate normal vectors to compensate for armature rotations z-y-x
+					//		//ask direction to color faces of cube 
+					//		if(t3.align(x, 2.0)){
+					//			tcolors[n] = blue; 
+					//		}else if(t3.align(y, 2.0)){
+					//			tcolors[n] = orange; 
+					//		}else if(t3.align(z, 2.0)){
+					//			tcolors[n] = yellow;
+					//		}else if(t3.align(xn, 2.0)){
+					//			tcolors[n] = green; 
+					//		}else if(t3.align(yn, 2.0)){
+					//			tcolors[n] = red; 
+					//		}else if(t3.align(zn, 2.0)){
+					//			tcolors[n] = white;
+					//		}
+					//	}
+					//	else{
+					//		//another object, do as if there where no arm rotations
+					//		if(((uniqueNormals[un].x - playRoom) <= t3.x) && 
+					//			(t3.x <= (uniqueNormals[un].x + playRoom)) &&
+					//			((uniqueNormals[un].y - playRoom) <= t3.y) && 
+					//			(t3.y <= (uniqueNormals[un].y + playRoom)) &&
+					//			((uniqueNormals[un].z - playRoom) <= t3.z) && 
+					//			(t3.z <= (uniqueNormals[un].z + playRoom))
+					//			){
+					//				//if the cubies meshs normal is one of the unique normals
+					//				//we assign a color to that normal on the cubie
+					//				//the index of the tnormal that we are looking at, is the same on the tcolors vector
+					//				//the color that we want is the one that corresponds to the uniqueNormals(index) that matched-> that same index is used to get color from uniqueColors(index) vector
+					//				tcolors[n] = uniqueColors[un];
+					//		}
+					//	}
+					//}
 				}
 			}
 			//we now have a colors Vector with new colors assigned

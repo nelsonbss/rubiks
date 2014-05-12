@@ -72,14 +72,14 @@ void cubie::setup(){
 	SG_VECTOR puzzleRotate = {0,0,0};
 	for (int j=0; j < numObjs; j++){
 		if (objectList[j]->GetTempMatrix()==0){
-			objectList[j]->InitTempMatrix()->Rotate(puzzleRotate,vrotZ,ofDegToRad(armRotations.z));
+			objectList[j]->InitTempMatrix()->Rotate(puzzleRotate,vrotZ,ofDegToRad(0));//armRotations.z));
 		}else{
-			objectList[j]->GetTempMatrix()->Rotate(puzzleRotate,vrotZ,ofDegToRad(armRotations.z));
+			objectList[j]->GetTempMatrix()->Rotate(puzzleRotate,vrotZ,ofDegToRad(0));//armRotations.z));
 		}
 		SG_VECTOR vrotY = {0,1,0}; 							 
-		objectList[j]->GetTempMatrix()->Rotate(puzzleRotate,vrotY,ofDegToRad(armRotations.x));
+		objectList[j]->GetTempMatrix()->Rotate(puzzleRotate,vrotY,ofDegToRad(0));//armRotations.x));
 		SG_VECTOR vrotX = {1,0,0}; 							 
-		objectList[j]->GetTempMatrix()->Rotate(puzzleRotate,vrotX,ofDegToRad(-armRotations.y));
+		objectList[j]->GetTempMatrix()->Rotate(puzzleRotate,vrotX,ofDegToRad(0));//-armRotations.y));
 		objectList[j]->ApplyTempMatrix();
 	}
 
@@ -134,12 +134,12 @@ void cubie::faceRotate(SG_VECTOR axis,bool di,float angle){
 					aux.x = axis.x;
 					aux.y = axis.y;
 					aux.z = axis.z;
-					t = aux.getRotated(armRotations.z,ofVec3f(0,0,1));
+					//////t = aux.getRotated(armRotations.z,ofVec3f(0,0,1));
+					//////t2 = t.getRotated(armRotations.x,ofVec3f(0,1,0));
+					//////t3 = t2.getRotated(-armRotations.y,ofVec3f(1,0,0));
+					t = aux.getRotated(-armRotations.y,ofVec3f(1,0,0));
 					t2 = t.getRotated(armRotations.x,ofVec3f(0,1,0));
-					t3 = t2.getRotated(-armRotations.y,ofVec3f(1,0,0));
-					//t = aux.getRotated(-armRotations.y,ofVec3f(1,0,0));
-					//t2 = t.getRotated(armRotations.x,ofVec3f(0,1,0));
-					//t3 = t2.getRotated(armRotations.z,ofVec3f(0,0,1));
+					t3 = t2.getRotated(armRotations.z,ofVec3f(0,0,1));
 					vrotFace.x = t3.x;
 					vrotFace.y = t3.y;
 					vrotFace.z = t3.z;

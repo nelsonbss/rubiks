@@ -36,6 +36,42 @@ cutter::cutter(float thick, float tamCutter, float tamCuby,float numCutr, ofVec3
 	///
 	infinity = (cutterSize-tamCubie)/2;
 }
+//---------------------------------------------------------------------------------------------------------
+cutter::cutter(float thick, float tamCutter, float tamCuby,float numCutr, ofVec3f pos, int gsize,ofVec3f rot){
+	numCutter = numCutr; //to use when we have more than one cutter
+	//cutterThick = thick; //only used on planes
+	///
+	cutterSize = tamCutter; //how big is the cutter cube
+	///
+	tamCubie = tamCuby;
+	tamCubie=3*tamCuby/gsize;
+
+	gridSize=gsize;
+	if (gsize==1) {
+		gridSize=3;
+	}
+	numPieces=gridSize*gridSize*gridSize;
+
+
+	//planes = (sgCObject**)malloc(6*sizeof(sgCObject*));
+	cubes = (sgCObject**)malloc(numPieces*sizeof(sgCObject*));
+	cc = (sgCBox**)malloc(numPieces*sizeof(sgCBox*));   ////clean this memory && use this to build the group
+	////
+	posCutter.x = pos.x;
+	posCutter.y = pos.y;
+	posCutter.z = pos.z;
+	////
+	rotCutter.x = rot.x;
+	rotCutter.y = rot.y;
+	rotCutter.z = rot.z;
+	//armRotH = armRotHi;
+	///
+	centerCube.x = -tamCubie/2;
+	centerCube.y = -tamCubie/2;
+	centerCube.z = -tamCubie/2; 
+	///
+	infinity = (cutterSize-tamCubie)/2;
+}
 //--------------------------------------------------------------
 void cutter::setup(){
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -422,18 +458,20 @@ void cutter::setup(){
 	//cubes[26] = c27;
 	//////create group
 	allCubes = sgCGroup::CreateGroup(cubes,numPieces);
+	
+	////rotating the cutter
+	/////////////////////////////////////works for only one rotation
+	SG_POINT rot = {0,0,0};//{posCutter.x,posCutter.y,posCutter.z};
+	SG_VECTOR rotX = {1,0,0};
+	allCubes->InitTempMatrix()->Rotate(rot,rotX,ofDegToRad(-rotCutter.y));
+	SG_VECTOR rotY = {0,1,0};
+	allCubes->GetTempMatrix()->Rotate(rot,rotY,ofDegToRad(rotCutter.x));
+	SG_VECTOR rotZ = {0,0,1};
+	allCubes->GetTempMatrix()->Rotate(rot,rotZ,ofDegToRad(rotCutter.z));
+
 	//move cubes where cuts are going to be made
 	SG_VECTOR transCubies = {posCutter.x,posCutter.y,posCutter.z};
-	allCubes->InitTempMatrix()->Translate(transCubies);
-	////rotating the cutter
-	///////////////////////////////////////works for only one rotation
-	//SG_POINT rot = {posCutter.x,posCutter.y,posCutter.z};
-	//SG_VECTOR rotX = {1,0,0};
-	//allCubes->GetTempMatrix()->Rotate(rot,rotX,ofDegToRad(rotCutter.x));
-	//SG_VECTOR rotY = {0,1,0};
-	//allCubes->GetTempMatrix()->Rotate(rot,rotY,ofDegToRad(rotCutter.y));
-	//SG_VECTOR rotZ = {0,0,1};
-	//allCubes->GetTempMatrix()->Rotate(rot,rotZ,ofDegToRad(rotCutter.z));
+	allCubes->GetTempMatrix()->Translate(transCubies);
 
 	//using history of rotations to have more than one
 	//the order of the rotation doesnt matter

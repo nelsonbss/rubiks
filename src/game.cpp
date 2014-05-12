@@ -1321,12 +1321,13 @@ void game::loadArmatureMenu(int type){
 //-----------------------------------------------------------------------------------------
 void game::applyArmRotations(){
 	//this rotates the object sgC3DObject to be sliced
-	objectDisplayed->applyArmRotations(rotateSlicer);
+	//objectDisplayed->applyArmRotations(rotateSlicer);
 }
 //-----------------------------------------------------------------------------------------
 void game::createCutterSlicer(){
 	////////////////////////////////create cutter
-	myCutter = new cutter(planeThicknes,tamCutter,tamCubie,1,offsetSlicer,armID);		
+	//myCutter = new cutter(planeThicknes,tamCutter,tamCubie,1,offsetSlicer,armID);	
+	myCutter = new cutter(planeThicknes,tamCutter,tamCubie,1,offsetSlicer,armID,rotateSlicer);
 	myCutter->setup();
 	//////////////////////////////////create slicer
 	mySlicer = new slicer(myCutter,armID);

@@ -159,9 +159,9 @@ void cubie::faceRotate(SG_VECTOR axis,bool di,float angle){
 //						protFace.y = p3.y;
 //						protFace.z = p3.z;
 
-						protFace.x = -1 * protFace.x;
-						protFace.y = -1 * protFace.y;
-						protFace.z = -1 * protFace.z;
+						//protFace.x = -1 * protFace.x;
+						//protFace.y = -1 * protFace.y;
+						//protFace.z = -1 * protFace.z;
 
 						pivotTransformed = true;
 					}				

@@ -38,6 +38,7 @@ Triangle CubieMesh::getNearest(ofVec3f _pnt){
 		addTriangle(0,1,2,ofVec3f(0,0,0),ofVec3f(0,0,0),ofVec3f(0,0,0),ofVec3f(0,0,1),ofFloatColor(0,1));
 	}
 	Triangle r = triangles[0];
+	int isNew=0;
 	float distance = r.getCenter().distance(_pnt);
 	for(auto tIter = triangles.begin() + 1; tIter != triangles.end(); tIter++){
 		float tDist = tIter->getCenter().distance(_pnt);
@@ -46,6 +47,9 @@ Triangle CubieMesh::getNearest(ofVec3f _pnt){
 			r = *tIter;
 		}
 	}
+
+	cout << "color!! " << r.getColor() << endl;
+
 	return r;
 }
 
@@ -62,7 +66,7 @@ vector<Triangle> CubieMesh::getTrianglesByNormal(ofVec3f _n){
 	}
 	return tris;
 }
-
+//-----------------------------------------------------------------
 vector<Triangle> CubieMesh::getTrianglesByColor(ofVec3f _c){
 	vector<Triangle> tris;
 	for(auto tIter = triangles.begin(); tIter != triangles.end(); tIter++){
@@ -77,6 +81,7 @@ vector<Triangle> CubieMesh::getTrianglesByColor(ofVec3f _c){
 	}
 	return tris;
 }
+//---------------------------------------------------------------------------------------
 void CubieMesh::setColorToSet(vector<Triangle> tris, ofFloatColor _c){
 	vector <ofFloatColor> colorsVectorT;
 	colorsVectorT = getColors();

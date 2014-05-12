@@ -1150,19 +1150,19 @@ void puzzle::changeFaceColor(ofVec3f _pnt, ofFloatColor _c){
 		obid = myCubies[activeCubie]->selectedObjectID;
 		if(obid < 8){
 			//object with flat faces
-			if(myCubies[activeCubie]->armRotations.x==0 && myCubies[activeCubie]->armRotations.y==0 && myCubies[activeCubie]->armRotations.z == 0){
+			////if(myCubies[activeCubie]->armRotations.x==0 && myCubies[activeCubie]->armRotations.y==0 && myCubies[activeCubie]->armRotations.z == 0){
 				ofVec3f n = activeTriangle.getNormal();
 				vector<Triangle> tris = myCubies[activeCubie]->getTrianglesByNormal(n);
 				myCubies[activeCubie]->setColorToSet(tris, _c);
 				colorCubiesBlackSidesOneByOne(activeCubie);
-			}else{
-				//we have armature rotations and triangle normals are weird...
-				//ofVec3f n = activeTriangle.getNormal();
-				//ofFloatColor  cc = activeTriangle.getColor();
-				//vector<Triangle> tris = myCubies[activeCubie]->getTrianglesByNormal(n);
-				myCubies[activeCubie]->setColorToSetArmature(_c);
-				colorCubiesBlackSidesOneByOne(activeCubie);
-			}
+			////}else{
+			////	//we have armature rotations and triangle normals are weird...
+			////	//ofVec3f n = activeTriangle.getNormal();
+			////	//ofFloatColor  cc = activeTriangle.getColor();
+			////	//vector<Triangle> tris = myCubies[activeCubie]->getTrianglesByNormal(n);
+			////	myCubies[activeCubie]->setColorToSetArmature(_c);
+			////	colorCubiesBlackSidesOneByOne(activeCubie);
+			////}
 		}else{
 			//objects with curved faces
 			myCubies[activeCubie]->setColorToCurvedObject(_c);

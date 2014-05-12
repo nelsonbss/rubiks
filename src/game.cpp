@@ -842,6 +842,7 @@ void game::unprojectPoint(ofVec3f _pnt){
 		}
 	} else if(unprojectMode == UP_MODE_COLOR){
 		myPuzzle->changeFaceColor(unprojectedPoint, newFaceColor);
+		//need to recolor black sides ??
 	}
 }
 //---------------------------------------------------------------------------------------------

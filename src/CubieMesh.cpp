@@ -59,6 +59,10 @@ Triangle CubieMesh::getNearest(ofVec3f _pnt){
 }
 //---------------------------------------------------------------------------------
 void Triangle::setColor(ofFloatColor colorIn){
+	//used when puzzle cubies get colored for the first time
+	//this is so we can ask for that original color when selecting the nearest triangle
+	//so we can ignore the black colored sides
+	//it only works with the original coloring, so this function is never used again after cubie coloring
 	color.r = colorIn.r;
 	color.g = colorIn.g;
 	color.b = colorIn.b;

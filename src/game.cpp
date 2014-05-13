@@ -942,7 +942,7 @@ void game::loadPuzzle(puzzle *inputPuzzle,int objID, SG_VECTOR p, SG_VECTOR t){
 	rotateSlicer.y = 0;
 	rotateSlicer.z = 0;
 
-	curRot.set (ofVec4f(0,0,0,0));
+	curRot.set (ofVec4f(1,0,0,0));
 	historyV.clear();
 
 	if(extrudedB){
@@ -1038,7 +1038,7 @@ void game::loadMenuObject(int objID, SG_VECTOR p, SG_VECTOR t,vector< ofFloatCol
 	rotateSlicer.y = 0;
 	rotateSlicer.z = 0;
 
-	curRot.set (ofVec4f(0,0,0,0));
+	curRot.set (ofVec4f(1,0,0,0));
 	historyV.clear();
 
 	if(extrudedB){
@@ -2236,7 +2236,7 @@ void game::restart(){
 	rotateSlicer.y = 0;
 	rotateSlicer.z = 0;
 
-	curRot.set (ofVec4f(0,0,0,0));
+	curRot.set (ofVec4f(1,0,0,0));
 	historyV.clear();
 
 	if(extrudedB){
@@ -2259,12 +2259,12 @@ void game::mouseDragged(int x, int y, int button){
 	if(step == 4 || step == 5 || step == 7){
 		//ofVec2f mouse(x,y);
 		//ofQuaternion yRot(x-lastMouse.x, ofVec3f(0,1,0));
-		//ofQuaternion xRot(y-lastMouse.y, ofVec3f(-1,0,0));
+		//ofQuaternion xRot(lastMouse.y-y, ofVec3f(1,0,0));
 		////curRot *= yRot*xRot;
-		//curRot.set(curRot*yRot*xRot);
+		//curRot.set(curRot*yRot);
 		//lastMouse = mouse;
 		//curRot.getRotate(angle, axistb);
-		//camPosition.rotate(angle * 0.01, ofVec3f(posP.x, posP.y, posP.z), axistb);
+		//camPosition.rotate(abs(angle) * 0.1, ofVec3f(posP.x, posP.y, posP.z), axistb);
 
 		ofVec3f mouse(x,y);
 		ofVec3f r = lastMouse - mouse;

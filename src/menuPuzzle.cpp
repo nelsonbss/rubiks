@@ -369,6 +369,8 @@ puzzle *menuPuzzle::cloneMyPuzzle(puzzle* toClone, int selObjId){
 	for(int i=0;i<tempPuzzle->numPieces;i++){
 		int numObjs2 = toClone->myCubies[i]->numObjs;
 		tempPuzzle->myCubies[i]->numObjs = numObjs2;
+		tempPuzzle->myCubies[i]->armRotations = toClone->myCubies[i]->armRotations;
+		tempPuzzle->myCubies[i]->pointRotate = toClone->myCubies[i]->pointRotate;
 		tempPuzzle->myCubies[i]->objectList = (sgC3DObject**)malloc(numObjs2*sizeof(sgC3DObject*));
 		for (int j=0; j < numObjs2; j++){
 			//get sgcore object information

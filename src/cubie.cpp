@@ -142,29 +142,7 @@ void cubie::faceRotate(SG_VECTOR axis,bool di,float angle){
 					t3 = t2.getRotated(armRotations.z,ofVec3f(0,0,1));
 					vrotFace.x = t3.x;
 					vrotFace.y = t3.y;
-					vrotFace.z = t3.z;
-					if(pivotTransformed == false){
-						/////////////////////////////////////////////////////
-						//transform the point of rotation
-//						aux.x = protFace.x;
-//						aux.y = protFace.y;
-//						aux.z = protFace.z;
-///*						p = aux.getRotated(armRotations.z,ofVec3f(0,0,1));
-//						p2 = p.getRotated(armRotations.x,ofVec3f(0,1,0));
-//						p3 = p2.getRotated(-armRotations.y,ofVec3f(1,0,0))*/;
-//						p = aux.getRotated(-armRotations.y,ofVec3f(1,0,0));
-//						p2 = p.getRotated(armRotations.x,ofVec3f(0,1,0));
-//						p3 = p2.getRotated(armRotations.z,ofVec3f(0,0,1));
-//						protFace.x = p3.x;
-//						protFace.y = p3.y;
-//						protFace.z = p3.z;
-
-						//protFace.x = -1 * protFace.x;
-						//protFace.y = -1 * protFace.y;
-						//protFace.z = -1 * protFace.z;
-
-						pivotTransformed = true;
-					}				
+					vrotFace.z = t3.z;			
 				}
 
 

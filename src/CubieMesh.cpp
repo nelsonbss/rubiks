@@ -27,8 +27,9 @@ void CubieMesh::addTriangle(int _in1, int _in2, int _in3, ofVec3f _v1, ofVec3f _
 	Triangle tri(_in1, _in2, _in3, _v1, _v2, _v3, _dir, _c);
 	triangles.push_back(tri);
 }
-
+//--------------------------------------------------------------------------------
 Triangle CubieMesh::getNearest(ofVec3f _pnt){
+
 	if (triangles.size()==0) {
 		/*
 		This changed so it will generate a triangle if it is empty when the function is called. 
@@ -42,26 +43,51 @@ Triangle CubieMesh::getNearest(ofVec3f _pnt){
 	float distance = r.getCenter().distance(_pnt);
 	for(auto tIter = triangles.begin() + 1; tIter != triangles.end(); tIter++){
 		float tDist = tIter->getCenter().distance(_pnt);
-		if(tDist < distance){
-			distance = tDist;
-			r = *tIter;
+		if(tIter->getColor().r != 0 && tIter->getColor().g !=0 && tIter->getColor().b != 0){
+			//if its not black.. I'm interested in checking distance
+			if(tDist < distance){
+				distance = tDist;
+				r = *tIter;
+			}
+		}else{
+			//that triangle is painted black
+			//so...choose another triangle
+			cout << "color!! " << tIter->getColor() << endl;
 		}
 	}
-
-	cout << "color!! " << r.getColor() << endl;
-
 	return r;
 }
+//---------------------------------------------------------------------------------
+void Triangle::setColor(ofFloatColor colorIn){
+	color.r = colorIn.r;
+	color.g = colorIn.g;
+	color.b = colorIn.b;
+	color.a = colorIn.a;
+}
 
+//---------------------------------------------------------------------------------
 vector<Triangle> CubieMesh::getTrianglesByNormal(ofVec3f _n){
 	vector<Triangle> tris;
 	for(auto tIter = triangles.begin(); tIter != triangles.end(); tIter++){
 		ofVec3f n = tIter->getNormal();
 		//float d = n.distance(_n);
 		//cout << "compared " << n.x << ", " << n.y << ", " << n.z << " to " << _n.x << ", " << _n.y << ", " << _n.z << " got " << d << endl;
-		if(tIter->getNormal().distance(_n) < 1.05){
-			//cout << "adding to vector." << endl;
-			tris.push_back(*tIter);
+		//if(tIter->getNormal().distance(_n) < 1.05){
+		//n.x =  abs(n.x);
+		//n.y = abs(n.y);
+		//n.z = abs(n.z);
+
+		//_n.x = abs(_n.x);
+		//_n.y = abs(_n.y);
+		//_n.z = abs(_n.z);
+		//if(n.align(_n,2.0)==true){
+
+		if (((n.x - 0.01) <= _n.x) && (_n.x <= (n.x + 0.01)) &&
+			((n.y - 0.01) <= _n.y) && (_n.y <= (n.y + 0.01)) &&
+			((n.z - 0.01) <= _n.z) && (_n.z <= (n.z + 0.01))
+			){
+				//cout << "adding to vector." << endl;
+				tris.push_back(*tIter);
 		}
 	}
 	return tris;

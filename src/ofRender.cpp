@@ -439,50 +439,10 @@ void ofRender::colorFacesOneByOne(cubie *myCubie, float playRoom, int objectID,v
 
 	if(objectID < 8){//(objectID != 1 && objectID != 4){
 		meshesCubie =  myCubie->getNumObjs();
-		uniqueNormals = ObjectUniqueNormals;
+		uniqueNormals = ObjectUniqueNormals;  //here we have the unique normals already... we dont have to survay to create the sets
 		armX = myCubie->armRotations.x;
 		armY = myCubie->armRotations.y;
 		armZ = myCubie->armRotations.z;
-		////create unique normals
-		//for (int j = 0 ; j< meshesCubie; j++){
-		//	//get the normals of the mesh!
-		//	tnormals = myCubie->myMeshs[j].getNormals();
-		//	//verify each normal value on unique normals vector
-		//	for(int n=0; n< tnormals.size() ; n++){
-		//		if(uniqueNormals.size() == 0){
-		//			//the first normal of all the normals
-		//			//push the first one
-		//			uniqueNormals.push_back (tnormals[n]);
-		//		}else{
-		//			//it has at least one normal
-		//			//compare current normal with all other normals
-		//			for(int un = 0; un < uniqueNormals.size(); un ++){
-
-		//				if(((uniqueNormals[un].x - playRoom) <= tnormals[n].x) && 
-		//					(tnormals[n].x <= (uniqueNormals[un].x + playRoom)) &&
-		//					((uniqueNormals[un].y - playRoom) <= tnormals[n].y) && 
-		//					(tnormals[n].y <= (uniqueNormals[un].y + playRoom)) &&
-		//					((uniqueNormals[un].z - playRoom) <= tnormals[n].z) && 
-		//					(tnormals[n].z <= (uniqueNormals[un].z + playRoom))
-		//					){
-		//						//we already have that type of normal
-		//						//stop looking through the vector
-		//						un = uniqueNormals.size();
-		//				}else{
-		//					//its different
-		//					//keep going until the last element
-		//					if(un == uniqueNormals.size()-1){
-		//						//its the las element on the vector of unique normals
-		//						//if we got here its because the current normal (cn) is new to the set
-		//						uniqueNormals.push_back(tnormals[n]);
-		//						//stop this for.. we just changed the size
-		//						un = uniqueNormals.size();
-		//					}
-		//				}
-		//			}
-		//		}
-		//	}
-		//}
 
 		//at this point we have the unique normals of the object
 		//each of these normals should have a unique color
@@ -495,8 +455,6 @@ void ofRender::colorFacesOneByOne(cubie *myCubie, float playRoom, int objectID,v
 			uniqueColors.push_back(x);
 		}
 		//now -> uniqueColors.size = uniqueNormals.size
-
-
 		//got through each cubie again
 
 		meshesCubie =  myCubie->getNumObjs();
@@ -516,17 +474,35 @@ void ofRender::colorFacesOneByOne(cubie *myCubie, float playRoom, int objectID,v
 						///rotate normal vectors to compensate for armature rotations z-y-x
 						//ask direction to color faces of cube 
 						if(tnormals[n].align(x, 2.0)){
-							tcolors[n] = blue; 
+							tcolors[n] = blue;
+							if(n%3 ==0){
+								myCubie->myMeshs[j].triangles[n/3].setColor(blue);
+							}
 						}else if(tnormals[n].align(y, 2.0)){
-							tcolors[n] = orange; 
+							tcolors[n] = orange;
+							if(n%3 ==0){
+								myCubie->myMeshs[j].triangles[n/3].setColor(orange);
+							}
 						}else if(tnormals[n].align(z, 2.0)){
 							tcolors[n] = yellow;
+							if(n%3 ==0){
+								myCubie->myMeshs[j].triangles[n/3].setColor(yellow);
+							}
 						}else if(tnormals[n].align(xn, 2.0)){
 							tcolors[n] = green; 
+							if(n%3 ==0){
+								myCubie->myMeshs[j].triangles[n/3].setColor(green);
+							}
 						}else if(tnormals[n].align(yn, 2.0)){
-							tcolors[n] = red; 
+							tcolors[n] = red;
+							if(n%3 ==0){
+								myCubie->myMeshs[j].triangles[n/3].setColor(red);
+							}
 						}else if(tnormals[n].align(zn, 2.0)){
 							tcolors[n] = white;
+							if(n%3 ==0){
+								myCubie->myMeshs[j].triangles[n/3].setColor(white);
+							}
 						}
 					}else {
 						if (((uniqueNormals[un].x - playRoom) <= tnormals[n].x) && (tnormals[n].x <= (uniqueNormals[un].x + playRoom)) &&
@@ -538,49 +514,12 @@ void ofRender::colorFacesOneByOne(cubie *myCubie, float playRoom, int objectID,v
 								//the index of the tnormal that we are looking at, is the same on the tcolors vector
 								//the color that we want is the one that corresponds to the uniqueNormals(index) that matched-> that same index is used to get color from uniqueColors(index) vector
 								tcolors[n] = uniqueColors[un];
+								if(n%3 ==0){
+									myCubie->myMeshs[j].triangles[n/3].setColor(tcolors[n]);
+								}
 						}
 					}
-					//}else{
-					//	//arm rotations
-					//	ofVec3f t = tnormals[n].getRotated(armZ,ofVec3f(0,0,1));
-					//	ofVec3f t2 = t.getRotated(armX,ofVec3f(0,1,0));
-					//	ofVec3f t3 = t2.getRotated(-armY,ofVec3f(1,0,0));
-
-					//	if(objectID == 1){
-					//		//have to use the official colors
-					//		///rotate normal vectors to compensate for armature rotations z-y-x
-					//		//ask direction to color faces of cube 
-					//		if(t3.align(x, 2.0)){
-					//			tcolors[n] = blue; 
-					//		}else if(t3.align(y, 2.0)){
-					//			tcolors[n] = orange; 
-					//		}else if(t3.align(z, 2.0)){
-					//			tcolors[n] = yellow;
-					//		}else if(t3.align(xn, 2.0)){
-					//			tcolors[n] = green; 
-					//		}else if(t3.align(yn, 2.0)){
-					//			tcolors[n] = red; 
-					//		}else if(t3.align(zn, 2.0)){
-					//			tcolors[n] = white;
-					//		}
-					//	}
-					//	else{
-					//		//another object, do as if there where no arm rotations
-					//		if(((uniqueNormals[un].x - playRoom) <= t3.x) && 
-					//			(t3.x <= (uniqueNormals[un].x + playRoom)) &&
-					//			((uniqueNormals[un].y - playRoom) <= t3.y) && 
-					//			(t3.y <= (uniqueNormals[un].y + playRoom)) &&
-					//			((uniqueNormals[un].z - playRoom) <= t3.z) && 
-					//			(t3.z <= (uniqueNormals[un].z + playRoom))
-					//			){
-					//				//if the cubies meshs normal is one of the unique normals
-					//				//we assign a color to that normal on the cubie
-					//				//the index of the tnormal that we are looking at, is the same on the tcolors vector
-					//				//the color that we want is the one that corresponds to the uniqueNormals(index) that matched-> that same index is used to get color from uniqueColors(index) vector
-					//				tcolors[n] = uniqueColors[un];
-					//		}
-					//	}
-					//}
+					////now we dont have to worry about armature rotations.... the object doesnt move around
 				}
 			}
 			//we now have a colors Vector with new colors assigned
@@ -1048,7 +987,7 @@ void ofRender::colorFacesOneByOne(cubie *myCubie, float playRoom, int objectID,v
 //mesh.addColors(tcolors);
 //}
 //---------------------------------------------------------------------------------------------------------------
-void ofRender::colorBlackSidesFromAxes(ofMesh &mesh, int xp, int yp, int zp, int gridSize, float playRoom,ofVec3f armRot){
+void ofRender::colorBlackSidesFromAxes(CubieMesh &mesh, int xp, int yp, int zp, int gridSize, float playRoom,ofVec3f armRot){
 	//color black the correct sides of each cubie
 	vector< ofVec3f > tnormals;
 	vector< ofFloatColor > tcolors;
@@ -1063,6 +1002,8 @@ void ofRender::colorBlackSidesFromAxes(ofMesh &mesh, int xp, int yp, int zp, int
 	tnormals = mesh.getNormals();
 	tcolors = mesh.getColors();
 
+
+	//for armatrue rotation compensation
 	ofVec3f t;
 	ofVec3f t2;
 	ofVec3f t3;
@@ -1071,6 +1012,7 @@ void ofRender::colorBlackSidesFromAxes(ofMesh &mesh, int xp, int yp, int zp, int
 	//decide according to cubie[num]
 	for(int i=0; i<tnormals.size(); i++){
 
+		//for armatrue rotation compensation
 		t = tnormals[i].getRotated(armRot.z,ofVec3f(0,0,1));
 		t2 = t.getRotated(-armRot.x,ofVec3f(0,1,0));
 		t3 = t2.getRotated(armRot.y,ofVec3f(1,0,0));
@@ -1079,31 +1021,49 @@ void ofRender::colorBlackSidesFromAxes(ofMesh &mesh, int xp, int yp, int zp, int
 		if (xp>0) {
 			if(decideAxisRange(t3,playRoom)==xn){
 				c = black;
+				if(i%3 ==0){
+					mesh.triangles[i/3].setColor(c);
+				}
 			}
 		} 
 		if (xp<gridSize-1) {
 			if(decideAxisRange(t3,playRoom)==x){
 				c = black;
+				if(i%3 ==0){
+					mesh.triangles[i/3].setColor(c);
+				}
 			}
 		}
 		if (yp>0) {
 			if(decideAxisRange(t3,playRoom)==yn){
 				c = black;
+				if(i%3 ==0){
+					mesh.triangles[i/3].setColor(c);
+				}
 			}
 		} 
 		if (yp<gridSize-1) {
 			if(decideAxisRange(t3,playRoom)==y){
 				c = black;
+				if(i%3 ==0){
+					mesh.triangles[i/3].setColor(c);
+				}
 			}
 		}
 		if (zp>0) {
 			if(decideAxisRange(t3,playRoom)==zn){
 				c = black;
+				if(i%3 ==0){
+					mesh.triangles[i/3].setColor(c);
+				}
 			}
 		} 
 		if (zp<gridSize-1) {
 			if(decideAxisRange(t3,playRoom)==z){
 				c = black;
+				if(i%3 ==0){
+					mesh.triangles[i/3].setColor(c);
+				}
 			}
 		}
 		tcolors[i] =  c;

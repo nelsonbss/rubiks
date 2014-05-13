@@ -39,7 +39,7 @@ public:
 	void colorFacesOneByOne(cubie *myCubie, float playRoom, int objectID,vector< ofVec3f > ObjectUniqueNormals);
 
 	//void colorBlackSides(ofMesh &mesh, int idCubie, float playRoom, int objectID); //to color black side faces of polyhedra  (not cube - not tetrahedron)
-	void colorBlackSidesFromAxes(ofMesh &mesh, int xp, int yp, int zp, int gridSize, float playRoom,ofVec3f armRot);
+	void colorBlackSidesFromAxes(CubieMesh &mesh, int xp, int yp, int zp, int gridSize, float playRoom,ofVec3f armRot);
 
 	void colorTorus(ofMesh &mesh);
 	void colorTorusMenu(ofMesh &mesh,vector< ofFloatColor > &vcolors);

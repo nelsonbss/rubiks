@@ -12,6 +12,7 @@ public:
 	void setNormal(ofVec3f _n){normal = _n;}
 	ofVec3f getCenter(){return center;}
 	ofFloatColor getColor(){return color;}
+	void setColor(ofFloatColor colorIn);
 	vector<int> getIndeces(){return indeces;}
 	vector<ofVec3f>getVertices(){return vertices;}
 	void setVertex(int _i, ofVec3f _v);

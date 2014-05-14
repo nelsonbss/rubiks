@@ -89,6 +89,7 @@ void GuiButton::nodeInit(){
 	}
 	bSend = false;
 	SubObMediator::Instance()->addObserver(prefix + ":language-changed", this);
+	//SubObMediator::Instance()->addObserver(prefix + ":toggle", this);
 	//showLangBar = false;
 }
 
@@ -180,7 +181,9 @@ void GuiButton::input(string _type, int _ID, int _n, int _phase, ofVec2f _absPos
 	}
 	if(_type == "tap"){
 		//cout << name << " - executing" << endl;
-		execute();
+		if(bActive){
+			execute();
+		}
 	}
 	if(!bSend){
 		bSend = true;
@@ -201,13 +204,9 @@ void GuiButton::update(string _eventName, SubObEvent _event){
 			execute();
 		}
 	}
-	if(bActive){
-		if(_eventName == prefix + ":language-changed"){
-			string lang = _event.getArg("lang")->getString();
-			currentLanguage = lang;
-			//toggle of the language bar
-			//showLangBar = true;
-		}
+	if(_eventName == prefix + ":language-changed"){
+		string lang = _event.getArg("lang")->getString();
+		currentLanguage = lang;
 	}
 }
 

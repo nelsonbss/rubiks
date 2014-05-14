@@ -362,6 +362,7 @@ void game::update(){
 			SubObEvent ev;
 			ev.setName(prefix + ":toggle2");
 			SubObMediator::Instance()->sendEvent(ev.getName(), ev);
+			setLanguage("english");
 		}
 	}
 }
@@ -667,11 +668,11 @@ void game::setPage(string _page){
 }
 //-------------------------------------------------------------------------
 void game::setLanguage(string _lang){
-	//currentLanguage = _lang;
-	//SubObEvent ev;
-	//ev.setName(prefix + ":language-changed");
-	//ev.addArg("lang", currentLanguage);
-	//SubObMediator::Instance()->sendEvent(ev.getName(), ev);
+	currentLanguage = _lang;
+	SubObEvent ev;
+	ev.setName(prefix + ":language-changed");
+	ev.addArg("lang", currentLanguage);
+	SubObMediator::Instance()->sendEvent(ev.getName(), ev);
 }
 //-----------------------------------------------------------------------
 void game::updateGui(){

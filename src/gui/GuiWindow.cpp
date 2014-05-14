@@ -241,18 +241,21 @@ void GuiWindow::update(string _eventName, SubObEvent _event){
 			if(bToggled == true){
 				for(auto nIter = nodes.begin(); nIter != nodes.end(); nIter++){
 					//(*nIter)->unhide();
+					(*nIter)->activate();
 					(*nIter)->setReadyForInput(bToggled);
 				}
 			}
 			else{
 				for(auto nIter = nodes.begin(); nIter != nodes.end(); nIter++){
-					(*nIter)->hide(); //bActive = false;// setReadyForInput(false);
+					//(*nIter)->hide(); 
+					(*nIter)->deactivate();
 				}
 			}
 			//cout << "bToggled = " << bToggled << endl;
 		}
 	}
 	if(_eventName == prefix + ":toggle2"){
+		//to make menu bar go away on timeouts!
 		if(bToggler){
 			if(bToggled){
 				bToggled = !bToggled;

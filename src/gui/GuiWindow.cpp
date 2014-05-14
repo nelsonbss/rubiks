@@ -12,6 +12,7 @@ void GuiWindow::nodeInit(){
 			bToggler = true;
 			bToggled = false;
 			SubObMediator::Instance()->addObserver(prefix + ":toggle", this);
+			SubObMediator::Instance()->addObserver(prefix + ":toggle2", this);
 			for(auto nIter = nodes.begin(); nIter != nodes.end(); nIter++){
 				(*nIter)->setReadyForInput(bToggled);
 			}
@@ -183,7 +184,7 @@ void GuiWindow::positionNodes(){
 	int row = 0;
 	int column = 0;
 	int numRows=ceil(numNodes/numColumns);
-	
+
 	windowHeight = (numRows+1) * (columnHeight * ofGetHeight());
 	//cout << "Window height = " << windowHeight << endl;
 	if(windowHeight > drawSize.y+60){
@@ -211,7 +212,7 @@ void GuiWindow::positionNodes(){
 		}
 		ofVec2f nodePosD = nodePos + drawPos;
 		ofVec2f nodePosF(nodePos.x / ofGetWidth(), nodePos.y / ofGetHeight());
-		
+
 		nodes[i]->setDrawPosition(nodePosD);
 
 		nodes[i]->setCustomArea(drawPos, drawSize);
@@ -229,18 +230,36 @@ void GuiWindow::update(string _eventName, SubObEvent _event){
 		} else if(currentTop < topMin){
 			currentTop = topMin;
 		}
-//		cout << "scrollrange:" << currentTop << ":" << topMax << ":" << topMin << endl;
-		
+		//		cout << "scrollrange:" << currentTop << ":" << topMax << ":" << topMin << endl;
+
 		positionNodes();
 	}
 	if(_eventName == prefix + ":toggle"){
 		//cout << prefix << " toggling." << endl;
 		if(bToggler){
 			bToggled = !bToggled;
-			for(auto nIter = nodes.begin(); nIter != nodes.end(); nIter++){
-				(*nIter)->setReadyForInput(bToggled);
+			if(bToggled == true){
+				for(auto nIter = nodes.begin(); nIter != nodes.end(); nIter++){
+					//(*nIter)->unhide();
+					(*nIter)->setReadyForInput(bToggled);
+				}
+			}
+			else{
+				for(auto nIter = nodes.begin(); nIter != nodes.end(); nIter++){
+					(*nIter)->hide(); //bActive = false;// setReadyForInput(false);
+				}
 			}
 			//cout << "bToggled = " << bToggled << endl;
+		}
+	}
+	if(_eventName == prefix + ":toggle2"){
+		if(bToggler){
+			if(bToggled){
+				bToggled = !bToggled;
+				for(auto nIter = nodes.begin(); nIter != nodes.end(); nIter++){
+					(*nIter)->setReadyForInput(bToggled);
+				}
+			}
 		}
 	}
 	if(_eventName == prefix + ":object-released"){

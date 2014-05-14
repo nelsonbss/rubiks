@@ -223,10 +223,6 @@
       <event name="toggle">
       </event>
       <param>
-        <name>toggler</name>
-        <val>true</val>
-      </param>
-      <param>
         <name>text</name>
         <val>english</val>
       </param>

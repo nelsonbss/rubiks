@@ -201,11 +201,13 @@ void GuiButton::update(string _eventName, SubObEvent _event){
 			execute();
 		}
 	}
-	if(_eventName == prefix + ":language-changed"){
-		string lang = _event.getArg("lang")->getString();
-		currentLanguage = lang;
-		//toggle of the language bar
-		//showLangBar = true;
+	if(bActive){
+		if(_eventName == prefix + ":language-changed"){
+			string lang = _event.getArg("lang")->getString();
+			currentLanguage = lang;
+			//toggle of the language bar
+			//showLangBar = true;
+		}
 	}
 }
 

@@ -359,6 +359,9 @@ void game::update(){
 		int currentTime = ofGetElapsedTimeMillis();
 		if(currentTime - timeOfLastInteraction > DELAY){
 			goToAttract();
+			SubObEvent ev;
+			ev.setName(prefix + ":toggle2");
+			SubObMediator::Instance()->sendEvent(ev.getName(), ev);
 		}
 	}
 }
@@ -664,11 +667,11 @@ void game::setPage(string _page){
 }
 //-------------------------------------------------------------------------
 void game::setLanguage(string _lang){
-	currentLanguage = _lang;
-	SubObEvent ev;
-	ev.setName(prefix + ":language-changed");
-	ev.addArg("lang", currentLanguage);
-	SubObMediator::Instance()->sendEvent(ev.getName(), ev);
+	//currentLanguage = _lang;
+	//SubObEvent ev;
+	//ev.setName(prefix + ":language-changed");
+	//ev.addArg("lang", currentLanguage);
+	//SubObMediator::Instance()->sendEvent(ev.getName(), ev);
 }
 //-----------------------------------------------------------------------
 void game::updateGui(){
@@ -891,7 +894,7 @@ void game::loadPuzzle(puzzle *inputPuzzle,int objID, SG_VECTOR p, SG_VECTOR t){
 	/////////////////////////////////////////////////////////
 	///////////do game reset..because loading a puzzle can happen at anytime
 	//if(step == 7){
-		unDoMenuPuzzle();
+	unDoMenuPuzzle();
 	//}
 	if(step == 6){
 		if(canvasB){

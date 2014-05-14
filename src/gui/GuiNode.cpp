@@ -119,6 +119,7 @@ bool GuiNode::isInside(int _x, int _y){
 	if((_x > drawPos.x && _x < (drawPos.x + (scale * drawSize.x)) &&
 		(_y > drawPos.y && _y < (drawPos.y + (scale * drawSize.y))))){
 			if(bActive){
+				//if its visible (specially done for language nodes)
 				if(getParam("send-select") == "true"){
 					input("select", 0, 0, 0, ofVec2f(_x, _y), ofVec2f(0,0));
 				}

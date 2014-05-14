@@ -239,15 +239,15 @@ void GuiWindow::update(string _eventName, SubObEvent _event){
 		if(bToggler){
 			bToggled = !bToggled;
 			if(bToggled == true){
+				//make language nodes active and visible
 				for(auto nIter = nodes.begin(); nIter != nodes.end(); nIter++){
-					//(*nIter)->unhide();
 					(*nIter)->activate();
 					(*nIter)->setReadyForInput(bToggled);
 				}
 			}
 			else{
+				//make language nodes NOT active when not visible
 				for(auto nIter = nodes.begin(); nIter != nodes.end(); nIter++){
-					//(*nIter)->hide(); 
 					(*nIter)->deactivate();
 				}
 			}

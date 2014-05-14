@@ -182,6 +182,7 @@ void GuiButton::input(string _type, int _ID, int _n, int _phase, ofVec2f _absPos
 	if(_type == "tap"){
 		//cout << name << " - executing" << endl;
 		if(bActive){
+			//if it is visible
 			execute();
 		}
 	}

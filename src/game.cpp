@@ -946,7 +946,7 @@ void game::loadPuzzle(puzzle *inputPuzzle,int objID, SG_VECTOR p, SG_VECTOR t){
 	rotateSlicer.y = 0;
 	rotateSlicer.z = 0;
 
-	curRot.set (ofVec4f(1,0,0,0));
+	curRot.set (ofVec4f(0,0,0,0));
 	historyV.clear();
 
 	if(extrudedB){
@@ -1042,7 +1042,7 @@ void game::loadMenuObject(int objID, SG_VECTOR p, SG_VECTOR t,vector< ofFloatCol
 	rotateSlicer.y = 0;
 	rotateSlicer.z = 0;
 
-	curRot.set (ofVec4f(1,0,0,0));
+	curRot.set (ofVec4f(0,0,0,0));
 	historyV.clear();
 
 	if(extrudedB){
@@ -2240,7 +2240,7 @@ void game::restart(){
 	rotateSlicer.y = 0;
 	rotateSlicer.z = 0;
 
-	curRot.set (ofVec4f(1,0,0,0));
+	curRot.set (ofVec4f(0,0,0,0));
 	historyV.clear();
 
 	if(extrudedB){

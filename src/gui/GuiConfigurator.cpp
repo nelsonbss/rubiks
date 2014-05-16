@@ -284,10 +284,10 @@ void GuiConfigurator::extendGui(string _sheet, string _file, bool _mirrored, boo
 	}
 }
 
-void GuiConfigurator::loadText(string _file){
+void GuiConfigurator::loadTexts(string _file){
 	/*
 	mXML.loadFile(_file);
-	mXML.pushTag("texts");
+	mXML.pushTag("languages");
 	int numTexts = mXML.getNumTags("text");
 	cout << "have " << numTexts << " texts" << endl;
 	for(int i = 0; i < numTexts; i++){
@@ -337,7 +337,49 @@ void GuiConfigurator::loadText(string _file){
 	lXML.setToParent();
 	}
 	*/
-	specialTextLoadingCopOut();
+	/////////////////////////////////////nel
+	lXML.loadFile(_file);
+	lXML.pushTag("languages");
+	int numTexts = lXML.getNumTags("text");
+	cout << "have " << numTexts << " texts." << endl;
+	for(int i = 0; i < numTexts; i++){
+		string textName = lXML.getAttribute("text","name","none",i);
+		//
+		texts[textName] = GuiText();
+		lXML.pushTag("text", i);
+		///
+		int numLanguages = lXML.getNumTags("language");
+		for(int j = 0; j < numLanguages; j++){
+			string value="";
+			string translation="";
+			lXML.pushTag("language", j);
+
+			int numTranslations = lXML.getNumTags("translation");
+
+			if(numTranslations==1){
+				value = lXML.getValue("value","none");
+				translation = lXML.getValue("translation","none");
+			}else{
+				value = lXML.getValue("value","none");
+				for(int k = 0; k < numTranslations; k++){
+					if(translation.compare("") == 0){
+						translation = translation.append(lXML.getValue("translation","none",k));
+					}else{
+						translation = translation.append("\n");
+						translation = translation.append(lXML.getValue("translation","none",k));
+					}
+				}
+			}
+			texts[textName].setText(value, translation);
+			lXML.popTag();
+		}
+		lXML.popTag();
+	}
+	mXML.popTag();
+
+
+	////////////////////////working fine for debug version
+	//specialTextLoadingCopOut();
 }
 
 void GuiConfigurator::specialTextLoadingCopOut(){
@@ -810,15 +852,15 @@ void GuiConfigurator::draw(string _position){
 		string page = currentPages[mIter->first];
 		/*
 		for(auto nIter = nodePages["all"][page].begin(); nIter != nodePages["all"][page].end(); nIter++){	
-			//cout << "\tDrawing " << (*nIter)->getName() << endl;
-			if(!(*nIter)->getIsControlled()){
-				if((*nIter)->getParam("draw-position") == _position){
-					//cout << "Drawing " << (*nIter)->getName() << endl;
-					(*nIter)->draw();
-				}
-			} else {
-				//cout << "\t" << (*nIter)->getName() << " not in " << _position << endl; 
-			}
+		//cout << "\tDrawing " << (*nIter)->getName() << endl;
+		if(!(*nIter)->getIsControlled()){
+		if((*nIter)->getParam("draw-position") == _position){
+		//cout << "Drawing " << (*nIter)->getName() << endl;
+		(*nIter)->draw();
+		}
+		} else {
+		//cout << "\t" << (*nIter)->getName() << " not in " << _position << endl; 
+		}
 		}*/
 		for(auto nIter = nodePages[mIter->first][page].begin(); nIter != nodePages[mIter->first][page].end(); nIter++){	
 			//cout << "\tDrawing " << (*nIter)->getName() << endl;

@@ -4,8 +4,8 @@
 #include "puzzle.h"
 #include "sgCore.h"
 #include "GuiNode.h"
-#include "CubieMesh.h"
 
+#include "CubieMesh.h"
 class GuiNode;
 
 class menuPuzzle : public GuiNode{

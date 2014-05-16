@@ -72,7 +72,7 @@ public:
 	void loadParams(GuiNode* _node);
 	void loadEvents(GuiNode* _node);
 	void loadArgs(SubObEvent* _event);
-	void loadText(string _file);
+	void loadTexts(string _file);
 	void specialTextLoadingCopOut();
 
 	map<string, GuiText> texts;
@@ -111,7 +111,7 @@ private:
     static GuiConfigurator* mInstance;
 
     ofxXmlSettings mXML;
-	ofXml lXML;
+	ofxXmlSettings lXML;
     void addAttributeMap(string _sheet, vector<string> &_names, vector<string> &_values);
 
 	map<string,GuiNode*> activeNodes;

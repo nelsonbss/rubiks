@@ -8,9 +8,8 @@
 #define displayYBlue 1150
 #define displayZ -800
 #define iddleTime 120
-#define puzzleItems 10
+#define puzzleItems 1
 #define USE_MOUSE 1
-
 
 std::map<int,gwc::Point> active_points;
 
@@ -54,6 +53,9 @@ void testApp::setup(){
 	GuiConfigurator::Instance()->addFile(guiFile);
 	GuiConfigurator::Instance()->loadGui(false, false);
 
+	string languagesFile = "languages.xml";
+	GuiConfigurator::Instance()->loadTexts(languagesFile);
+
 	map<string, string> patterns;
 
 	gameIds["bl"] = 0;
@@ -75,7 +77,7 @@ void testApp::setup(){
 	patterns["%COLOR%"] = "Orange";
 	GuiConfigurator::Instance()->extendGui("main", "sheets.xml", true, true, "tr", patterns);
 
-	GuiConfigurator::Instance()->loadText("assets.xml");
+	
 
 	/*SubObMediator::Instance()->addObserver("object-selected", this);
 	SubObMediator::Instance()->addObserver("armature-selected", this);

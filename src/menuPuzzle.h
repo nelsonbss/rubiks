@@ -28,6 +28,7 @@ public:
 	////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//void draw();
 	void setup();
+	void setup(SG_POINT targetpos);
 	void update();
 	void exit();
 	////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -87,8 +88,10 @@ public:
 	//animations
 	double menuPuzzleRotation;
 	double ct1,ct2;
-	float animpos;
+	SG_VECTOR animpos;//for normal animation movement
+	SG_VECTOR targetpos;//for animation when saved
 	bool draggingMe;
+	bool saveanim;
 };
 
 #endif /* defined(__TmenuPuzzle__menuPuzzle__) */

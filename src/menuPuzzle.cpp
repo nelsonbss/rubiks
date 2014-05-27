@@ -44,7 +44,7 @@ menuPuzzle::menuPuzzle(SG_VECTOR p, SG_VECTOR t, int ID ) : GuiNode(){
 	drawPos.y = tempPos.y;
 
 	startPos = drawPos;
-	
+
 	viewport.x = drawPos.x;   
 	viewport.y = drawPos.y;
 	viewport.width = tempSize.x;
@@ -78,7 +78,8 @@ menuPuzzle::menuPuzzle(SG_VECTOR p, SG_VECTOR t, int ID ) : GuiNode(){
 	menuPuzzleRotation = 0;
 	ct1 = 0;
 	ct2 = 0;
-	animpos = startPos.x;
+	animpos.x = startPos.x;
+	animpos.y = startPos.y;
 	draggingMe = false;
 }
 //-------------------------------------------------------------------------------------------------------
@@ -111,7 +112,8 @@ void menuPuzzle::nodeExecute(){
 	ev.addArg("game-tag", targetGame);
 	SubObMediator::Instance()->sendEvent(ev.getName(), ev);
 	draggingMe = false;
-	startPos.x = animpos;
+	startPos.x = animpos.x;
+	startPos.y = animpos.y;
 	viewport.x = startPos.x;
 	viewport.y = startPos.y;
 	bWatchTime = true;
@@ -161,6 +163,28 @@ void menuPuzzle::setup(){
 	free(ofr);
 
 	ct1 = ofGetElapsedTimeMillis();
+	saveanim = false;
+}
+//-------------------------------------------------------------------------------------------
+void menuPuzzle::setup(SG_POINT targetposIn){
+
+
+	light.setSpotlight(60.0);
+	light.setDiffuseColor( ofColor(255.f, 255.f, 255.f));
+	light.setSpecularColor( ofColor(255.f, 255.f, 255.f));
+
+	temp->Triangulate(SG_VERTEX_TRIANGULATION);
+	ofRender *ofr = new ofRender(); //class that has the metods to transform sgCore to OF mesh and set the normals (in one function)
+	ofr->sgCoretoOFmesh(temp,myMesh,-2,objectId,"no"); //-2 for plain color
+	myVbo.setMesh(myMesh, GL_STATIC_DRAW);
+	free(ofr);
+
+	ct1 = ofGetElapsedTimeMillis();
+
+	targetpos.x = targetposIn.x;
+	targetpos.y = targetposIn.y;
+
+	saveanim = true;
 }
 //------------------------------------------------------------------------------------------
 void menuPuzzle::update(){
@@ -171,25 +195,53 @@ void menuPuzzle::update(){
 	temp->InitTempMatrix()->Rotate(rotP,rotV,ofDegToRad(-40));
 	SG_VECTOR rotV2 = {0,1,0};
 	temp->GetTempMatrix()->Rotate(rotP,rotV2,ofDegToRad(menuPuzzleRotation));
+	menuPuzzleRotation = menuPuzzleRotation - 0.1;
 	temp->ApplyTempMatrix(); 
 
-	//move puzzles
+	///////////////move puzzles
 	ct2 = ofGetElapsedTimeMillis();
 	double diff = ct2 - ct1;
-	
 	ct1 = ct2;
-	menuPuzzleRotation = menuPuzzleRotation - 0.1;
-	animpos = animpos - 1;
-	if(draggingMe == false){
-		viewport.x =  animpos;//(diff/1000);
-	}else {
-		
+
+
+	if(saveanim==false){
+		animpos.x = animpos.x - 1;
+	}else{
+		targetpos.x = targetpos.x - 1;
 	}
+
+	if(draggingMe == false){
+		viewport.x =  animpos.x;//(diff/1000);
+		viewport.y =  animpos.y;
+	}
+
 	if(viewport.x < -(viewport.width)){
 		viewport.x = ofGetWindowWidth();
-		animpos = viewport.x;
+		animpos.x = viewport.x;
 	}
-	
+
+	if(saveanim==true){
+		if( targetpos.x != animpos.x || targetpos.y != animpos.y){
+			SG_VECTOR distance = sgSpaceMath::VectorsSub(targetpos,animpos);
+
+
+			if(targetpos.x < animpos.x){
+				animpos.x = animpos.x - 1;
+			}else if(targetpos.x > animpos.x){
+				animpos.x = animpos.x + 1;
+			}
+			//
+			if(targetpos.y < animpos.y){
+				animpos.y = animpos.y - 1;
+			}else if(targetpos.y > animpos.y){
+				animpos.y = animpos.y + 1;
+			}
+		}
+		if( targetpos.x == animpos.x && targetpos.y == animpos.y){
+			saveanim = false;
+		}
+	}
+
 
 	//temp->InitTempMatrix()->Translate(transP);
 	if(objectId == 2){
@@ -298,7 +350,8 @@ void menuPuzzle::nodeDraw(){
 			cout << "watch time triggered." << endl;
 			//setPosition();
 			draggingMe = false;
-			startPos.x = animpos;
+			startPos.x = animpos.x;
+			startPos.y = animpos.y;
 			viewport.x = startPos.x;
 			viewport.y = startPos.y;
 			bWatchTime = 0;

@@ -86,6 +86,9 @@ public:
 
 	//animations
 	double menuPuzzleRotation;
+	double ct1,ct2;
+	float animpos;
+	bool draggingMe;
 };
 
 #endif /* defined(__TmenuPuzzle__menuPuzzle__) */

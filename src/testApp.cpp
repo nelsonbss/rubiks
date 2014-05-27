@@ -8,7 +8,7 @@
 #define displayYBlue 1150
 #define displayZ -800
 #define iddleTime 120
-#define puzzleItems 3
+#define puzzleItems 10
 #define USE_MOUSE 1
 
 std::map<int,gwc::Point> active_points;
@@ -436,7 +436,8 @@ void testApp::update(){
 			/////ONE BY ONE BY ONE BY ONE BY ONE BY ONE BY ONE BY ONE BY ONE
 
 			//we only do this once, for the first puzzle
-			middlePuzzlePos.x = 10 + ((puzzleCounter+7) * 10) + ((puzzleCounter+7)*180);
+			//middlePuzzlePos.x = 10 + ((puzzleCounter+7) * 10) + ((puzzleCounter+7)*180);
+			middlePuzzlePos.x = middlePuzzles.at((puzzleCounter +7))->animpos;
 			objectToMakePuzzle = new myobject3D (slicingPos, middlePuzzlePos,"main");//all on 0,0,0
 			objectToMakePuzzle->loadObjectOD((sgC3DObject*)objectsMP[1]->Clone(),1);
 			objectToMakePuzzle->setup();

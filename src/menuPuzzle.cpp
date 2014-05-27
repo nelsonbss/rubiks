@@ -44,7 +44,7 @@ menuPuzzle::menuPuzzle(SG_VECTOR p, SG_VECTOR t, int ID ) : GuiNode(){
 	drawPos.y = tempPos.y;
 
 	startPos = drawPos;
-
+	
 	viewport.x = drawPos.x;   
 	viewport.y = drawPos.y;
 	viewport.width = tempSize.x;
@@ -76,6 +76,10 @@ menuPuzzle::menuPuzzle(SG_VECTOR p, SG_VECTOR t, int ID ) : GuiNode(){
 	MenuPuzzleTL = NULL;
 
 	menuPuzzleRotation = 0;
+	ct1 = 0;
+	ct2 = 0;
+	animpos = startPos.x;
+	draggingMe = false;
 }
 //-------------------------------------------------------------------------------------------------------
 void menuPuzzle::nodeInit(){
@@ -106,6 +110,8 @@ void menuPuzzle::nodeExecute(){
 	ev.addArg("puzzle-id", id);
 	ev.addArg("game-tag", targetGame);
 	SubObMediator::Instance()->sendEvent(ev.getName(), ev);
+	draggingMe = false;
+	startPos.x = animpos;
 	viewport.x = startPos.x;
 	viewport.y = startPos.y;
 	bWatchTime = true;
@@ -153,6 +159,8 @@ void menuPuzzle::setup(){
 	ofr->sgCoretoOFmesh(temp,myMesh,-2,objectId,"no"); //-2 for plain color
 	myVbo.setMesh(myMesh, GL_STATIC_DRAW);
 	free(ofr);
+
+	ct1 = ofGetElapsedTimeMillis();
 }
 //------------------------------------------------------------------------------------------
 void menuPuzzle::update(){
@@ -166,12 +174,22 @@ void menuPuzzle::update(){
 	temp->ApplyTempMatrix(); 
 
 	//move puzzles
-	//position.x = position.x -10;
+	ct2 = ofGetElapsedTimeMillis();
+	double diff = ct2 - ct1;
+	
+	ct1 = ct2;
 	menuPuzzleRotation = menuPuzzleRotation - 0.1;
-	viewport.x =  viewport.x - 1;
+	animpos = animpos - 1;
+	if(draggingMe == false){
+		viewport.x =  animpos;//(diff/1000);
+	}else {
+		
+	}
 	if(viewport.x < -(viewport.width)){
 		viewport.x = ofGetWindowWidth();
+		animpos = viewport.x;
 	}
+	
 
 	//temp->InitTempMatrix()->Translate(transP);
 	if(objectId == 2){
@@ -227,12 +245,14 @@ bool menuPuzzle::isInside(int _x, int _y){
 	//cout << getName() << " checking insides." << endl;
 	if((_x > viewport.x && _x < (viewport.x + viewport.width) &&
 		(_y > viewport.y && _y < (viewport.y + viewport.height)))){
+			draggingMe = true;
 			if(getParam("send-select") == "true"){
 				input("select", 0, 0, 0, ofVec2f(_x, _y), ofVec2f(0,0));
 			}
 			lastMouse.set(_x, _y);
 			return true;
 	}
+	draggingMe = false;
 	return false;
 }
 //------------------------------------------------------------------------
@@ -277,6 +297,8 @@ void menuPuzzle::nodeDraw(){
 		if(ofGetElapsedTimeMillis() - timeOfLastInteraction > 1000){
 			cout << "watch time triggered." << endl;
 			//setPosition();
+			draggingMe = false;
+			startPos.x = animpos;
 			viewport.x = startPos.x;
 			viewport.y = startPos.y;
 			bWatchTime = 0;

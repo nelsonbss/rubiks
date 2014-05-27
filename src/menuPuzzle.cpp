@@ -74,6 +74,8 @@ menuPuzzle::menuPuzzle(SG_VECTOR p, SG_VECTOR t, int ID ) : GuiNode(){
 	MenuPuzzleBL = NULL;
 	MenuPuzzleTR = NULL;
 	MenuPuzzleTL = NULL;
+
+	menuPuzzleRotation = 0;
 }
 //-------------------------------------------------------------------------------------------------------
 void menuPuzzle::nodeInit(){
@@ -160,8 +162,16 @@ void menuPuzzle::update(){
 	SG_VECTOR offset = {0,0,0}; //for the cube to be in place
 	temp->InitTempMatrix()->Rotate(rotP,rotV,ofDegToRad(-40));
 	SG_VECTOR rotV2 = {0,1,0};
-	temp->GetTempMatrix()->Rotate(rotP,rotV2,ofDegToRad(-35));
+	temp->GetTempMatrix()->Rotate(rotP,rotV2,ofDegToRad(menuPuzzleRotation));
 	temp->ApplyTempMatrix(); 
+
+	//move puzzles
+	//position.x = position.x -10;
+	menuPuzzleRotation = menuPuzzleRotation - 0.1;
+	viewport.x =  viewport.x - 1;
+	if(viewport.x < -(viewport.width)){
+		viewport.x = ofGetWindowWidth();
+	}
 
 	//temp->InitTempMatrix()->Translate(transP);
 	if(objectId == 2){

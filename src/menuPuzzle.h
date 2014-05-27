@@ -83,6 +83,9 @@ public:
 	string targetGame;
 
 	ofLight light;
+
+	//animations
+	double menuPuzzleRotation;
 };
 
 #endif /* defined(__TmenuPuzzle__menuPuzzle__) */

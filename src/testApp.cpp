@@ -438,12 +438,24 @@ void testApp::update(){
 			//we only do this once, for the first puzzle
 			//middlePuzzlePos.x = 10 + ((puzzleCounter+7) * 10) + ((puzzleCounter+7)*180);
 			middlePuzzlePos.x = middlePuzzles.at((puzzleCounter +7))->animpos.x;
-			middlePuzzlePos.y = middlePuzzles.at((puzzleCounter +7))->startPos.y;
+			middlePuzzlePos.y = middlePuzzles.at((puzzleCounter +7))->animpos.y;
 
 			SG_POINT startpoint;
 
-			startpoint.x = myGames[i]->posP.x;
-			startpoint.y= myGames[i]->posP.y;
+			if(i==0){
+				startpoint.x = 300 + 330;
+				startpoint.y = 700 + 160;
+			}else if(i==1){
+				startpoint.x = 960 + 330;
+				startpoint.y = 700 + 160;
+			}else if(i==2){
+				startpoint.x = 300 + 330;
+				startpoint.y = 60 + 160;
+			}else{
+				startpoint.x = 960 + 330;
+				startpoint.y = 60 + 160;
+			}
+			
 
 			objectToMakePuzzle = new myobject3D (slicingPos, startpoint,"main");//all on 0,0,0
 			objectToMakePuzzle->loadObjectOD((sgC3DObject*)objectsMP[1]->Clone(),1);

@@ -81,6 +81,7 @@ menuPuzzle::menuPuzzle(SG_VECTOR p, SG_VECTOR t, int ID ) : GuiNode(){
 	animpos.x = startPos.x;
 	animpos.y = startPos.y;
 	draggingMe = false;
+	ct1 = ofGetElapsedTimeMillis();
 }
 //-------------------------------------------------------------------------------------------------------
 void menuPuzzle::nodeInit(){
@@ -162,7 +163,7 @@ void menuPuzzle::setup(){
 	myVbo.setMesh(myMesh, GL_STATIC_DRAW);
 	free(ofr);
 
-	ct1 = ofGetElapsedTimeMillis();
+	
 	saveanim = false;
 }
 //-------------------------------------------------------------------------------------------
@@ -179,7 +180,7 @@ void menuPuzzle::setup(SG_POINT targetposIn){
 	myVbo.setMesh(myMesh, GL_STATIC_DRAW);
 	free(ofr);
 
-	ct1 = ofGetElapsedTimeMillis();
+	
 
 	targetpos.x = targetposIn.x;
 	targetpos.y = targetposIn.y;
@@ -195,23 +196,25 @@ void menuPuzzle::update(){
 	temp->InitTempMatrix()->Rotate(rotP,rotV,ofDegToRad(-40));
 	SG_VECTOR rotV2 = {0,1,0};
 	temp->GetTempMatrix()->Rotate(rotP,rotV2,ofDegToRad(menuPuzzleRotation));
-	menuPuzzleRotation = menuPuzzleRotation - 0.1;
+	menuPuzzleRotation = menuPuzzleRotation - 0.3;
 	temp->ApplyTempMatrix(); 
 
 	///////////////move puzzles
 	ct2 = ofGetElapsedTimeMillis();
 	double diff = ct2 - ct1;
+	double velPixels = 10;
+	double move = (diff * velPixels)/500;
 	ct1 = ct2;
 
 
 	if(saveanim==false){
 		animpos.x = animpos.x - 1;
 	}else{
-		targetpos.x = targetpos.x - 1;
+		targetpos.x = targetpos.x -1;
 	}
 
 	if(draggingMe == false){
-		viewport.x =  animpos.x;//(diff/1000);
+		viewport.x =  animpos.x;
 		viewport.y =  animpos.y;
 	}
 
@@ -221,25 +224,28 @@ void menuPuzzle::update(){
 	}
 
 	if(saveanim==true){
-		if( targetpos.x != animpos.x || targetpos.y != animpos.y){
-			SG_VECTOR distance = sgSpaceMath::VectorsSub(targetpos,animpos);
-
-
-			if(targetpos.x < animpos.x){
-				animpos.x = animpos.x - 1;
-			}else if(targetpos.x > animpos.x){
-				animpos.x = animpos.x + 1;
+		SG_VECTOR distance = sgSpaceMath::VectorsSub(targetpos,animpos);
+		if (distance.x > 0.9 || distance.y > 0.9){
+			if( targetpos.x != animpos.x || targetpos.y != animpos.y){
+					animpos.x = animpos.x + distance.x/10;
+					animpos.y = animpos.y + distance.y/10;
 			}
-			//
-			if(targetpos.y < animpos.y){
-				animpos.y = animpos.y - 1;
-			}else if(targetpos.y > animpos.y){
-				animpos.y = animpos.y + 1;
+			float playRoom = 1.1;
+			if(((targetpos.x - playRoom) <= animpos.x) && 
+				(animpos.x <= (targetpos.x + playRoom)) &&
+				((targetpos.y - playRoom) <= animpos.y) && 
+				(animpos.y <= (targetpos.y + playRoom))
+				){
+					animpos.x = targetpos.x;
+					animpos.y = targetpos.y;
+					saveanim = false;
 			}
-		}
-		if( targetpos.x == animpos.x && targetpos.y == animpos.y){
+		}else{
+			animpos.x = targetpos.x;
+			animpos.y = targetpos.y;
 			saveanim = false;
 		}
+
 	}
 
 

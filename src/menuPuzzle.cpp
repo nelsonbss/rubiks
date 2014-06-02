@@ -204,8 +204,8 @@ void menuPuzzle::update(){
 		///////////////move puzzles
 		ct2 = ofGetElapsedTimeMillis();
 		double diff = ct2 - ct1;
-		double velPixels = 10;
-		double move = (diff * velPixels)/500;
+		double velPixels = 13;
+		double move = (diff * velPixels)/500;//1;
 		ct1 = ct2;
 
 
@@ -232,7 +232,7 @@ void menuPuzzle::update(){
 					animpos.x = animpos.x + distance.x/10;
 					animpos.y = animpos.y + distance.y/10;
 				}
-				float playRoom = 1.1;
+				float playRoom = move + 0.1;
 				if(((targetpos.x - playRoom) <= animpos.x) && 
 					(animpos.x <= (targetpos.x + playRoom)) &&
 					((targetpos.y - playRoom) <= animpos.y) && 

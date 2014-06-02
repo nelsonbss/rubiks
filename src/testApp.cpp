@@ -331,6 +331,7 @@ void testApp::update(){
 		ct2 = ofGetElapsedTimeMillis();
 		double diff = ct2 - ct1;
 		if(diff > 10000){
+			//activate middle puzzle animation
 			for(int i=0; i < middlePuzzles.size();i++){
 				middlePuzzles[i]->ct1 = ofGetElapsedTimeMillis();
 				middlePuzzles[i]->activeAnimation = true;
@@ -458,11 +459,11 @@ void testApp::update(){
 			SG_POINT startpoint;
 
 			if(i==0){
-				startpoint.x = 300 + 330;
-				startpoint.y = 700 + 160;
+				startpoint.x = 200 + 330;
+				startpoint.y = 600 + 160;
 			}else if(i==1){
 				startpoint.x = 960 + 330;
-				startpoint.y = 700 + 160;
+				startpoint.y = 600 + 160;
 			}else if(i==2){
 				startpoint.x = 300 + 330;
 				startpoint.y = 60 + 160;
@@ -499,12 +500,14 @@ void testApp::update(){
 			myPuzzles[((puzzleCounter+7)*5)] = puzzleDisplayed->cloneMyPuzzle(myGames[i]->myPuzzle,myGames[i]->objectID);
 			puzzleDisplayed->loadPuzzle(myPuzzles[((puzzleCounter+7)*5)],0);
 
+			puzzleDisplayed->ct1 = ofGetElapsedTimeMillis();
+			puzzleDisplayed->activeAnimation = true;
+			puzzleDisplayed->saveanim = true;
+
 			//replace current position 8,9,10 on the middelPuzzle Vector
 			//because we are only showing 10 puzzles on the middle
 			//we will replace the last 3
 			middlePuzzles.at((puzzleCounter +7)) = puzzleDisplayed;
-			middlePuzzles.at((puzzleCounter +7))->ct1 = ofGetElapsedTimeMillis();
-			middlePuzzles.at((puzzleCounter +7))->activeAnimation = true;
 
 			////keep count of the saved puzzles
 			puzzleCounter ++;
@@ -518,7 +521,7 @@ void testApp::update(){
 			myGames[i]->guiReset();
 			myGames[i]->restart();
 
-			
+
 		}
 	}
 	////////END saving puzzle

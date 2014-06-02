@@ -118,6 +118,8 @@ void menuPuzzle::nodeExecute(){
 	startPos.y = animpos.y;
 	viewport.x = startPos.x;
 	viewport.y = startPos.y;
+	targetpos.x = 0;
+	targetpos.y = 0;
 	bWatchTime = true;
 }
 //-------------------------------------------------------------------------------------------
@@ -180,13 +182,8 @@ void menuPuzzle::setup(SG_POINT targetposIn){
 	ofr->sgCoretoOFmesh(temp,myMesh,-2,objectId,"no"); //-2 for plain color
 	myVbo.setMesh(myMesh, GL_STATIC_DRAW);
 	free(ofr);
-
-
-
 	targetpos.x = targetposIn.x;
 	targetpos.y = targetposIn.y;
-
-	saveanim = true;
 }
 //------------------------------------------------------------------------------------------
 void menuPuzzle::update(){
@@ -208,6 +205,9 @@ void menuPuzzle::update(){
 		double move = (diff * velPixels)/500;//1;
 		ct1 = ct2;
 
+		if(move > 1){
+			move = 1;
+		}
 
 		if(saveanim==false){
 			animpos.x = animpos.x - move;
@@ -226,13 +226,43 @@ void menuPuzzle::update(){
 		}
 
 		if(saveanim==true){
-			SG_VECTOR distance = sgSpaceMath::VectorsSub(targetpos,animpos);
-			if (distance.x > 0.9 || distance.y > 0.9){
-				if( targetpos.x != animpos.x || targetpos.y != animpos.y){
-					animpos.x = animpos.x + distance.x/10;
-					animpos.y = animpos.y + distance.y/10;
+			//SG_VECTOR distance = sgSpaceMath::VectorsSub(targetpos,animpos);
+			ofVec3f t;
+			t.x = targetpos.x;
+			t.y = targetpos.y;
+			ofVec3f a;
+			a.x = animpos.x;
+			a.y = animpos.y;
+
+			ofVec3f aux;
+			aux = t - a;
+
+			//aux.x = distance.x;
+			//aux.y = distance.y;
+			//aux.z = distance.z;
+
+			
+			//float tempX=0;
+			//float tempY=0;
+			//if(distance.x < 0){
+			//	tempX = distance.x * -(1);
+			//}else{
+			//	tempX = distance.x;
+			//}
+			//if(distance.y < 0){
+			//	tempY = distance.y * -(1);
+			//}else{
+			//	tempY = distance.y;
+			//}
+			//if (tempX > 0.9 || tempY > 0.9){
+			if(aux.length() > 2){
+				if( targetpos.x != animpos.x){
+					animpos.x = animpos.x + aux.x/10;
 				}
-				float playRoom = move + 0.1;
+				if(targetpos.y != animpos.y){
+					animpos.y = animpos.y + aux.y/10;
+				}
+				float playRoom = 10.5;
 				if(((targetpos.x - playRoom) <= animpos.x) && 
 					(animpos.x <= (targetpos.x + playRoom)) &&
 					((targetpos.y - playRoom) <= animpos.y) && 

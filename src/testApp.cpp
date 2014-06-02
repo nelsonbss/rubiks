@@ -77,7 +77,7 @@ void testApp::setup(){
 	patterns["%COLOR%"] = "Orange";
 	GuiConfigurator::Instance()->extendGui("main", "sheets.xml", true, true, "tr", patterns);
 
-	
+
 
 	/*SubObMediator::Instance()->addObserver("object-selected", this);
 	SubObMediator::Instance()->addObserver("armature-selected", this);
@@ -203,18 +203,20 @@ void testApp::setup(){
 		//this is to control puzzles that are being saved
 		puzzleCounter = 0;
 
-		newPuzzleCounterBL = 0;
-		currentCubieBL = 0;
+		//newPuzzleCounterBL = 0;
+		//currentCubieBL = 0;
 
-		newPuzzleCOunterBR = 0;
-		currentCubieBR = 0;
+		//newPuzzleCOunterBR = 0;
+		//currentCubieBR = 0;
 
-		newPuzzleCOunterTL = 0;
-		currentCubieTL = 0;
+		//newPuzzleCOunterTL = 0;
+		//currentCubieTL = 0;
 
-		newPuzzleCOunterTR = 0;
-		currentCubieTR = 0;
+		//newPuzzleCOunterTR = 0;
+		//currentCubieTR = 0;
 
+		ct1 = ofGetElapsedTimeMillis();
+		activeAnimation = false;
 		////////////////////////////////Creating puzzles when menupuzzle is dragged to station, not previously created, this approach takes longer////////////////////////
 		////////middlePuzzlePos.x = 0;
 		////////middlePuzzlePos.y = (ofGetWindowHeight()/2)-90;
@@ -322,6 +324,19 @@ void testApp::update(){
 	/////////////////////////////////////////update middle puzzles
 	for(int i=0; i < middlePuzzles.size();i++){
 		middlePuzzles[i]->update();
+	}
+
+	//////////////////////////////////move middle puzzles
+	if(activeAnimation == false){
+		ct2 = ofGetElapsedTimeMillis();
+		double diff = ct2 - ct1;
+		if(diff > 10000){
+			for(int i=0; i < middlePuzzles.size();i++){
+				middlePuzzles[i]->ct1 = ofGetElapsedTimeMillis();
+				middlePuzzles[i]->activeAnimation = true;
+			}
+			activeAnimation = true;
+		}
 	}
 
 	////////////////////////////////////////////////////////////////////////////////////
@@ -455,7 +470,7 @@ void testApp::update(){
 				startpoint.x = 960 + 330;
 				startpoint.y = 60 + 160;
 			}
-			
+
 
 			objectToMakePuzzle = new myobject3D (slicingPos, startpoint,"main");//all on 0,0,0
 			objectToMakePuzzle->loadObjectOD((sgC3DObject*)objectsMP[1]->Clone(),1);
@@ -488,6 +503,8 @@ void testApp::update(){
 			//because we are only showing 10 puzzles on the middle
 			//we will replace the last 3
 			middlePuzzles.at((puzzleCounter +7)) = puzzleDisplayed;
+			middlePuzzles.at((puzzleCounter +7))->ct1 = ofGetElapsedTimeMillis();
+			middlePuzzles.at((puzzleCounter +7))->activeAnimation = true;
 
 			////keep count of the saved puzzles
 			puzzleCounter ++;
@@ -500,6 +517,8 @@ void testApp::update(){
 			//////////////reset game
 			myGames[i]->guiReset();
 			myGames[i]->restart();
+
+			
 		}
 	}
 	////////END saving puzzle

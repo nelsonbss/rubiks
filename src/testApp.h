@@ -73,17 +73,17 @@ public:
 	ofVec3f rotateSlicer;
 
 	/////////////////////////////////puzzle saving
-	int newPuzzleCounterBL;
-	int currentCubieBL;
+	//int newPuzzleCounterBL;
+	//int currentCubieBL;
 
-	int newPuzzleCOunterBR;
-	int currentCubieBR;
+	//int newPuzzleCOunterBR;
+	//int currentCubieBR;
 
-	int newPuzzleCOunterTL;
-	int currentCubieTL;
+	//int newPuzzleCOunterTL;
+	//int currentCubieTL;
 
-	int newPuzzleCOunterTR;
-	int currentCubieTR;
+	//int newPuzzleCOunterTR;
+	//int currentCubieTR;
 
 	
 	map<string,int> gameIds;
@@ -150,4 +150,8 @@ public:
 	float shutDownTime;
 	hiddenButton *hb2;
 	bool hb2Flag;
+
+	//middle puzzle animation control
+	double ct1,ct2;
+	bool activeAnimation;
 };

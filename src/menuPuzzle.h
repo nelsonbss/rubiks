@@ -86,6 +86,7 @@ public:
 	ofLight light;
 
 	//animations
+	bool activeAnimation;
 	double menuPuzzleRotation;
 	double ct1,ct2;
 	SG_VECTOR animpos;//for normal animation movement

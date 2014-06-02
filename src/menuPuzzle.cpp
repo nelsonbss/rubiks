@@ -82,6 +82,7 @@ menuPuzzle::menuPuzzle(SG_VECTOR p, SG_VECTOR t, int ID ) : GuiNode(){
 	animpos.y = startPos.y;
 	draggingMe = false;
 	ct1 = ofGetElapsedTimeMillis();
+	activeAnimation = false;
 }
 //-------------------------------------------------------------------------------------------------------
 void menuPuzzle::nodeInit(){
@@ -163,7 +164,7 @@ void menuPuzzle::setup(){
 	myVbo.setMesh(myMesh, GL_STATIC_DRAW);
 	free(ofr);
 
-	
+
 	saveanim = false;
 }
 //-------------------------------------------------------------------------------------------
@@ -180,7 +181,7 @@ void menuPuzzle::setup(SG_POINT targetposIn){
 	myVbo.setMesh(myMesh, GL_STATIC_DRAW);
 	free(ofr);
 
-	
+
 
 	targetpos.x = targetposIn.x;
 	targetpos.y = targetposIn.y;
@@ -199,53 +200,55 @@ void menuPuzzle::update(){
 	menuPuzzleRotation = menuPuzzleRotation - 0.3;
 	temp->ApplyTempMatrix(); 
 
-	///////////////move puzzles
-	ct2 = ofGetElapsedTimeMillis();
-	double diff = ct2 - ct1;
-	double velPixels = 10;
-	double move = (diff * velPixels)/500;
-	ct1 = ct2;
+	if(activeAnimation == true){
+		///////////////move puzzles
+		ct2 = ofGetElapsedTimeMillis();
+		double diff = ct2 - ct1;
+		double velPixels = 10;
+		double move = (diff * velPixels)/500;
+		ct1 = ct2;
 
 
-	if(saveanim==false){
-		animpos.x = animpos.x - 1;
-	}else{
-		targetpos.x = targetpos.x -1;
-	}
-
-	if(draggingMe == false){
-		viewport.x =  animpos.x;
-		viewport.y =  animpos.y;
-	}
-
-	if(viewport.x < -(viewport.width)){
-		viewport.x = ofGetWindowWidth();
-		animpos.x = viewport.x;
-	}
-
-	if(saveanim==true){
-		SG_VECTOR distance = sgSpaceMath::VectorsSub(targetpos,animpos);
-		if (distance.x > 0.9 || distance.y > 0.9){
-			if( targetpos.x != animpos.x || targetpos.y != animpos.y){
-					animpos.x = animpos.x + distance.x/10;
-					animpos.y = animpos.y + distance.y/10;
-			}
-			float playRoom = 1.1;
-			if(((targetpos.x - playRoom) <= animpos.x) && 
-				(animpos.x <= (targetpos.x + playRoom)) &&
-				((targetpos.y - playRoom) <= animpos.y) && 
-				(animpos.y <= (targetpos.y + playRoom))
-				){
-					animpos.x = targetpos.x;
-					animpos.y = targetpos.y;
-					saveanim = false;
-			}
+		if(saveanim==false){
+			animpos.x = animpos.x - move;
 		}else{
-			animpos.x = targetpos.x;
-			animpos.y = targetpos.y;
-			saveanim = false;
+			targetpos.x = targetpos.x - move;
 		}
 
+		if(draggingMe == false){
+			viewport.x =  animpos.x;
+			viewport.y =  animpos.y;
+		}
+
+		if(viewport.x < -(viewport.width)){
+			viewport.x = ofGetWindowWidth();
+			animpos.x = viewport.x;
+		}
+
+		if(saveanim==true){
+			SG_VECTOR distance = sgSpaceMath::VectorsSub(targetpos,animpos);
+			if (distance.x > 0.9 || distance.y > 0.9){
+				if( targetpos.x != animpos.x || targetpos.y != animpos.y){
+					animpos.x = animpos.x + distance.x/10;
+					animpos.y = animpos.y + distance.y/10;
+				}
+				float playRoom = 1.1;
+				if(((targetpos.x - playRoom) <= animpos.x) && 
+					(animpos.x <= (targetpos.x + playRoom)) &&
+					((targetpos.y - playRoom) <= animpos.y) && 
+					(animpos.y <= (targetpos.y + playRoom))
+					){
+						animpos.x = targetpos.x;
+						animpos.y = targetpos.y;
+						saveanim = false;
+				}
+			}else{
+				animpos.x = targetpos.x;
+				animpos.y = targetpos.y;
+				saveanim = false;
+			}
+
+		}
 	}
 
 

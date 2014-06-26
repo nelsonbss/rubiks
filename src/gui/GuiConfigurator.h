@@ -30,7 +30,7 @@ public:
 	void setText(string _lang, string _text){texts[_lang] = _text;}
 	string getText(string _lang){return texts[_lang];}
 
-private:
+//private:
 	map<string, string> texts;
 };
 
@@ -105,7 +105,7 @@ public:
 
 	void setCurrentPage(string _member, string _page);
 	map<string, string> currentPages;
-private:
+//private:
 
     GuiConfigurator();
     static GuiConfigurator* mInstance;

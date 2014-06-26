@@ -35,18 +35,18 @@ GuiButton::GuiButton(map<string, string> &_attrs, vector<SubObEvent*> _events) :
 	drawActive = false;
 	setName("button");
 	setChannel("button");
-	haveArabic = false;
-	map<string,string>::iterator mIter;
-	mIter = attrs.find("arabic");
-	if(mIter != attrs.end()){
-		haveArabic = true;
-		arabic.loadImage(attrs["arabic"]);
-	}
+	//haveArabic = false;
+	//map<string,string>::iterator mIter;
+	//mIter = attrs.find("arabic");
+	//if(mIter != attrs.end()){
+	//	haveArabic = true;
+	//	arabic.loadImage(attrs["arabic"]);
+	//}
 }
 
 GuiButton::GuiButton(string _img) : GuiNode(){
 	inactive.loadImage(_img);
-	haveArabic = false;
+	//haveArabic = false;
 	size.x = inactive.getWidth();
 	size.y = inactive.getHeight();
 	haveImage = true;
@@ -68,7 +68,7 @@ void GuiButton::nodeInit(){
 	}
 	drawActive = false;
 	haveActive = false;
-	haveArabic = false;
+	//haveArabic = false;
 	bSendActions = false;
 	if(params.count("droppable")){
 		if(params["droppable"] == "true"){

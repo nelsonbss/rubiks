@@ -50,13 +50,12 @@ void GuiNode::draw(){
 	if(bHaveText){
 		ofSetColor(textColor.x, textColor.y, textColor.z);
 		string currentText = GuiConfigurator::Instance()->getText(text, currentLanguage);
-		//string str = currentText;
-		//string str_tex_ready;
-		//Poco::TextConverter(Poco::UTF8Encoding(), Poco::Latin9Encoding()).convert(str, str_tex_ready);
-		//currentText = str_tex_ready;
-		//cout << "drawing text - " << currentText << endl;
+
 		if(textAlign == "position"){
+			//intructions
+
 			if(bFlipped){
+				//TOP stations
 				ofRectangle bounds = font.getStringBoundingBox(currentText, 0, 0);
 				ofPushMatrix();
 				ofTranslate(drawPos.x + textPositionFlipped.x, drawPos.y + textPositionFlipped.y, 0);
@@ -65,14 +64,14 @@ void GuiNode::draw(){
 				font.drawString(currentText, 0, 0);
 				ofPopMatrix();
 			} else {
+				//BOTTOM stations
+				ofPushMatrix();
 				font.drawString(currentText, drawPos.x + textPosition.x, drawPos.y + textPosition.y);
+				ofPopMatrix();
 			}
+
 			if(bHaveText2){
 				currentText = GuiConfigurator::Instance()->getText(text2, currentLanguage);
-				//string str2 = currentText;
-				//string str_tex_ready2;
-				//Poco::TextConverter(Poco::UTF8Encoding(), Poco::Latin9Encoding()).convert(str2, str_tex_ready2);
-				//currentText = str_tex_ready2;
 				if(bFlipped){
 					ofRectangle bounds = font.getStringBoundingBox(currentText, 0, 0);
 					ofPushMatrix();
@@ -83,24 +82,65 @@ void GuiNode::draw(){
 					font.drawString(currentText, 0, 0);
 					ofPopMatrix();
 				} else {
+					ofPushMatrix();
 					font.drawString(currentText, drawPos.x + textPosition2.x, drawPos.y + textPosition2.y);
+					ofPopMatrix();
 				}
 			}
 		} else {
+			//language bar texts & buttons
+
+
+
 			ofRectangle box = font.getStringBoundingBox(currentText,0,0);
 			float cx = 0;
 			float cy = drawPos.y + (drawSize.y / 2 + box.height / 2);
 			if(textAlign == "center"){
 				cx = drawPos.x + (drawSize.x / 2 - box.width / 2);
 			}
+
+
 			if(bFlipped){
+				//the stations on top
+				//string str2 = currentText;
+				//string str_tex_ready2;
+				//Poco::TextConverter(Poco::UTF8Encoding(), Poco::Latin9Encoding()).convert(str2, str_tex_ready2);
+				//string currentText2 = str_tex_ready2;
+
 				ofPushMatrix();
 				ofTranslate(cx + box.width, cy - box.height, 0);
 				ofRotateZ(180.0);
-				font.drawString(currentText, 0, 0);
+
+				//if(bMirrored){
+				//	//top right side ORANGE
+
+
+				//	font.drawString(currentText, 0, 0);
+				//}else{
+					//top left side GREEN
+
+
+					font.drawString(currentText, 0, 0);
+				//}
 				ofPopMatrix();
 			} else {
-				font.drawString(currentText, cx, cy);
+				//string str3 = currentText;
+				//string str_tex_ready3;
+				//Poco::TextConverter(Poco::UTF8Encoding(), Poco::Latin9Encoding()).convert(str3, str_tex_ready3);
+				//string currentText3 = str_tex_ready3;
+
+				ofPushMatrix();
+
+
+				//the stations on the bottom
+				//if(bMirrored){
+					//bottom right side RED
+					font.drawString(currentText, cx, cy);
+				//}else{
+					//bottom left side BLUE
+				//	font.drawString(currentText, cx, cy);
+				//}
+				ofPopMatrix();
 			}
 		}
 	}

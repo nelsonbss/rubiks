@@ -1,5 +1,9 @@
 #include "GuiConfigurator.h"
 
+#include "Poco/TextConverter.h"
+#include "Poco/UTF8Encoding.h"
+#include "Poco/Latin9Encoding.h"
+
 GuiConfigurator* GuiConfigurator::mInstance = NULL;
 
 GuiConfigurator::GuiConfigurator(){
@@ -357,8 +361,16 @@ void GuiConfigurator::loadTexts(string _file){
 			int numTranslations = lXML.getNumTags("translation");
 
 			if(numTranslations==1){
-				value = lXML.getValue("value","none");
-				translation = lXML.getValue("translation","none");
+				value = lXML.getValue("value","none",0);
+				
+
+				////string str2 = translation;
+				//string str_tex_ready2;
+				//Poco::TextConverter(Poco::UTF8Encoding(), Poco::UTF8Encoding()).convert(lXML.getValue("translation","none",0), str_tex_ready2);
+				////translation = str_tex_ready2;
+				//translation = translation.append(str_tex_ready2);
+
+				translation = translation.append(lXML.getValue("translation","none",0));
 			}else{
 				value = lXML.getValue("value","none");
 				for(int k = 0; k < numTranslations; k++){
@@ -370,6 +382,7 @@ void GuiConfigurator::loadTexts(string _file){
 					}
 				}
 			}
+
 			texts[textName].setText(value, translation);
 			lXML.popTag();
 		}
@@ -377,95 +390,93 @@ void GuiConfigurator::loadTexts(string _file){
 	}
 	mXML.popTag();
 
-
-	////////////////////////working fine for debug version
-	//specialTextLoadingCopOut();
+	specialTextLoadingCopOut();
 }
 
 void GuiConfigurator::specialTextLoadingCopOut(){
 
-	texts["english"] = GuiText();
-	texts["english"].setText("english", "English");
-	texts["english"].setText("french", "English");
-	texts["english"].setText("spanish", "English");
+	//texts["english"] = GuiText();
+	//texts["english"].setText("english", "English");
+	//texts["english"].setText("french", "English");
+	//texts["english"].setText("spanish", "English");
 
-	texts["french"] = GuiText();
-	texts["french"].setText("english", "Français");
-	texts["french"].setText("french", "Français");
-	texts["french"].setText("spanish", "Français");
+	//texts["french"] = GuiText();
+	//texts["french"].setText("english", "Français");
+	//texts["french"].setText("french", "Français");
+	//texts["french"].setText("spanish", "Français");
 
-	texts["spanish"] = GuiText();
-	texts["spanish"].setText("english", "Español");
-	texts["spanish"].setText("french", "Español");
-	texts["spanish"].setText("spanish", "Español");
+	//texts["spanish"] = GuiText();
+	//texts["spanish"].setText("english", "Español");
+	//texts["spanish"].setText("french", "Español");
+	//texts["spanish"].setText("spanish", "Español");
 
-	texts["save"] = GuiText();
-	texts["save"].setText("english","SAVE");
-	texts["save"].setText("french","ENREGISTER");
-	texts["save"].setText("spanish","GUARDAR");
+	//texts["save"] = GuiText();
+	//texts["save"].setText("english","SAVE");
+	//texts["save"].setText("french","ENREGISTER");
+	//texts["save"].setText("spanish","GUARDAR");
 
-	texts["solve"] = GuiText();
-	texts["solve"].setText("english","SOLVE");
-	texts["solve"].setText("french","RÉSOUDRE");
-	texts["solve"].setText("spanish","RESOLVER");
+	//texts["solve"] = GuiText();
+	//texts["solve"].setText("english","SOLVE");
+	//texts["solve"].setText("french","RÉSOUDRE");
+	//texts["solve"].setText("spanish","RESOLVER");
 
-	texts["next"] = GuiText();
-	texts["next"].setText("english", "NEXT");
-	texts["next"].setText("french", "SUIVANT");
-	texts["next"].setText("spanish", "SIGUIENTE");
+	//texts["make"] = GuiText();
+	//texts["make"].setText("english", "MAKE ONE");
+	//texts["make"].setText("french", "CRÉER");
+	//texts["make"].setText("spanish", "HAZ UNO");
 
-	texts["reset"] = GuiText();
-	texts["reset"].setText("english", "START OVER");
-	texts["reset"].setText("french", "RECOMMENCER");
-	texts["reset"].setText("spanish", "REINICIAR");
+	//texts["next"] = GuiText();
+	//texts["next"].setText("english", "NEXT");
+	//texts["next"].setText("french", "SUIVANT");
+	//texts["next"].setText("spanish", "SIGUIENTE");
 
-	texts["make"] = GuiText();
-	texts["make"].setText("english", "MAKE ONE");
-	texts["make"].setText("french", "CRÉER");
-	texts["make"].setText("spanish", "HAZ UNO");
+	//texts["reset"] = GuiText();
+	//texts["reset"].setText("english", "START OVER");
+	//texts["reset"].setText("french", "RECOMMENCER");
+	//texts["reset"].setText("spanish", "REINICIAR");
 
-	texts["color"] = GuiText();
-	texts["color"].setText("english", "Drag colors to\ndecorate your puzzle.");
-	texts["color"].setText("french", "Faites glisser les\ncouleurs pour décorer\nvotre puzzle.");
-	texts["color"].setText("spanish", "Para decorar tu puzle,\narrastra los colores.");
+	//texts["color"] = GuiText();
+	//texts["color"].setText("english", "Drag colors to\ndecorate your puzzle.");
+	//texts["color"].setText("french", "Faites glisser les\ncouleurs pour décorer\nvotre puzzle.");
+	//texts["color"].setText("spanish", "Para decorar tu puzle,\narrastra los colores.");
 
-	texts["arm-start"] = GuiText();
-	texts["arm-start"].setText("english", "Drag a structure\nto slice your shape.");
-	texts["arm-start"].setText("french", "Faites glisser une\nstructure pour découper\nvotre forme.");
-	texts["arm-start"].setText("spanish", "Para cortar tu forma,\narrastra una estructura.");
+	//texts["arm-start"] = GuiText();
+	//texts["arm-start"].setText("english", "Drag a structure\nto slice your shape.");
+	//texts["arm-start"].setText("french", "Faites glisser une\nstructure pour découper\nvotre forme.");
+	//texts["arm-start"].setText("spanish", "Para cortar tu forma,\narrastra una estructura.");
 
-	texts["arm-rotate-1"] = GuiText();
-	texts["arm-rotate-1"].setText("english", "Single finger swipe\nmoves structure.");
-	texts["arm-rotate-1"].setText("french", "Glissez avec un doigt\npour déplacer la\nstructure.");
-	texts["arm-rotate-1"].setText("spanish", "Para mover la estructura,\ndeslízala con un\nsolo dedo.");
+	//texts["arm-rotate-1"] = GuiText();
+	//texts["arm-rotate-1"].setText("english", "Single finger swipe\nmoves structure.");
+	//texts["arm-rotate-1"].setText("french", "Glissez avec un doigt\npour déplacer la\nstructure.");
+	//texts["arm-rotate-1"].setText("spanish", "Para mover la estructura,\ndeslízala con un\nsolo dedo.");
 
-	texts["arm-rotate-2"] = GuiText();
-	texts["arm-rotate-2"].setText("english", "Two-finger swipe\nrotates structure.");
-	texts["arm-rotate-2"].setText("french", "Glissez avec deux doigts\npour faire tourner\nla structure.");
-	texts["arm-rotate-2"].setText("spanish", "Para rotar la estructura,\ndeslízala con\ndos dedos.");
+	//texts["arm-rotate-2"] = GuiText();
+	//texts["arm-rotate-2"].setText("english", "Two-finger swipe\nrotates structure.");
+	//texts["arm-rotate-2"].setText("french", "Glissez avec deux doigts\npour faire tourner\nla structure.");
+	//texts["arm-rotate-2"].setText("spanish", "Para rotar la estructura,\ndeslízala con\ndos dedos.");
 
-	texts["draw-help"] = GuiText();
-	texts["draw-help"].setText("english", "Draw an outline with \nyour finger to make\nyour own shape.");
-	texts["draw-help"].setText("french", "Dessinez un contour\ndu doigt pour créer\nvotre propre forme.");
-	texts["draw-help"].setText("spanish", "Para crear tu propia figura,\ndibuja un contorno\ncon el dedo.");
+	//texts["draw-help"] = GuiText();
+	//texts["draw-help"].setText("english", "Draw an outline with \nyour finger to make\nyour own shape.");
+	//texts["draw-help"].setText("french", "Dessinez un contour\ndu doigt pour créer\nvotre propre forme.");
+	//texts["draw-help"].setText("spanish", "Para crear tu propia figura,\ndibuja un contorno\ncon el dedo.");
 
-	texts["start"] = GuiText();
-	texts["start"].setText("english", "Drag a shape to begin\nto make a puzzle like\nthe one you selected.");
+	//texts["start"] = GuiText();
+	//texts["start"].setText("english", "Drag a shape to begin\nto make a puzzle like\nthe one you selected.");
 
-	texts["play-help-1"] = GuiText();
-	texts["play-help-1"].setText("english", "Single finger swipe\ntwists puzzle.");
-	texts["play-help-1"].setText("french", "Un doigt = glisse/\ndéplace les pièces");
-	texts["play-help-1"].setText("spanish", "Un solo dedo mueve o\ndesliza las piezas");
+	//texts["play-help-1"] = GuiText();
+	//texts["play-help-1"].setText("english", "Single finger swipe\ntwists puzzle.");
+	//texts["play-help-1"].setText("french", "Un doigt = glisse/\ndéplace les pièces");
+	//texts["play-help-1"].setText("spanish", "Un solo dedo mueve o\ndesliza las piezas");
 
-	texts["play-help-2"] = GuiText();
-	texts["play-help-2"].setText("english", "Two finger swipe\nrotates puzzle.");
-	texts["play-help-2"].setText("french", "Deux doigts = glisse/\ntourne le cube");
-	texts["play-help-2"].setText("spanish", "Dos dedos deslizan,\narrastran o hacen\nrotar al cubo");
+	//texts["play-help-2"] = GuiText();
+	//texts["play-help-2"].setText("english", "Two finger swipe\nrotates puzzle.");
+	//texts["play-help-2"].setText("french", "Deux doigts = glisse/\ntourne le cube");
+	//texts["play-help-2"].setText("spanish", "Dos dedos deslizan,\narrastran o hacen\nrotar al cubo");
 
-	texts["start-help"] = GuiText();
-	texts["start-help"].setText("english", "Drag A Puzzle From\nAbove Or A Shape Here\nto Play");
-	texts["start-help"].setText("french", "Faites glisser un puzzle\nci-dessus ou une forme ici\npour jouer");
-	texts["start-help"].setText("spanish", "Para jugar, arrastra aquí una\nforma o un rompecabezas\ndesde arriba");
+	//texts["start-help"] = GuiText();
+	//texts["start-help"].setText("english", "Drag A Puzzle From\nAbove Or A Shape Here\nto Play");
+	//texts["start-help"].setText("french", "Faites glisser un puzzle\nci-dessus ou une forme ici\npour jouer");
+	//texts["start-help"].setText("spanish", "Para jugar, arrastra aquí una\nforma o un rompecabezas\ndesde arriba");
 }
 
 void GuiConfigurator::loadSheets(){

@@ -428,9 +428,7 @@
     <ClInclude Include="src\hiddenButton.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="src\threadedObject.h">
-      <Filter>src</Filter>
-    </ClInclude>
+    <ClInclude Include="src\myThread.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="icon.rc">

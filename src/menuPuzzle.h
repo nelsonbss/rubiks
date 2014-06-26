@@ -89,6 +89,7 @@ public:
 	bool activeAnimation;
 	double menuPuzzleRotation;
 	double ct1,ct2;
+	double sv1,sv2;
 	SG_VECTOR animpos;//for normal animation movement
 	SG_VECTOR targetpos;//for animation when saved
 	bool draggingMe;

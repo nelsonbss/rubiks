@@ -501,6 +501,7 @@ void testApp::update(){
 			puzzleDisplayed->loadPuzzle(myPuzzles[((puzzleCounter+7)*5)],0);
 
 			puzzleDisplayed->ct1 = ofGetElapsedTimeMillis();
+			puzzleDisplayed->sv1 = ofGetElapsedTimeMillis();
 			puzzleDisplayed->activeAnimation = true;
 			puzzleDisplayed->saveanim = true;
 

@@ -201,6 +201,7 @@ void menuPuzzle::update(){
 		///////////////move puzzles
 		ct2 = ofGetElapsedTimeMillis();
 		double diff = ct2 - ct1;
+		double saveDiff = ct2 - sv1;
 		double velPixels = 13;
 		double move = (diff * velPixels)/500;//1;
 		ct1 = ct2;
@@ -212,6 +213,7 @@ void menuPuzzle::update(){
 		if(saveanim==false){
 			animpos.x = animpos.x - move;
 		}else{
+//			animpos.x = animpos.x - move;
 			targetpos.x = targetpos.x - move;
 		}
 
@@ -226,16 +228,17 @@ void menuPuzzle::update(){
 		}
 
 		if(saveanim==true){
-			//SG_VECTOR distance = sgSpaceMath::VectorsSub(targetpos,animpos);
 			ofVec3f t;
-			t.x = targetpos.x;
-			t.y = targetpos.y;
+			t.x = tempPos.x;
+			t.y = tempPos.y;
 			ofVec3f a;
-			a.x = animpos.x;
-			a.y = animpos.y;
+			a.x = targetpos.x;
+			a.y = targetpos.y;
 
-			ofVec3f aux;
-			aux = t - a;
+			ofVec3f distance;
+			distance = a - t;
+
+
 
 			//aux.x = distance.x;
 			//aux.y = distance.y;
@@ -255,12 +258,12 @@ void menuPuzzle::update(){
 			//	tempY = distance.y;
 			//}
 			//if (tempX > 0.9 || tempY > 0.9){
-			if(aux.length() > 2){
+			/*if(distance.length() > 2){
 				if( targetpos.x != animpos.x){
-					animpos.x = animpos.x + aux.x/10;
+					animpos.x = animpos.x + distance.x/10;
 				}
 				if(targetpos.y != animpos.y){
-					animpos.y = animpos.y + aux.y/10;
+					animpos.y = animpos.y + distance.y/10;
 				}
 				float playRoom = 10.5;
 				if(((targetpos.x - playRoom) <= animpos.x) && 
@@ -273,6 +276,16 @@ void menuPuzzle::update(){
 						saveanim = false;
 				}
 			}else{
+				animpos.x = targetpos.x;
+				animpos.y = targetpos.y;
+				saveanim = false;
+			}*/
+
+			if (saveDiff<2000) {
+				double ease =  (1-cos((saveDiff/2000)*(PI)))/2;
+				animpos.x=tempPos.x+ ease * distance.x;//(saveDiff/2000)*distance.x;
+				animpos.y=tempPos.y+ ease * distance.y;//(saveDiff/2000)*distance.y;
+			} else {
 				animpos.x = targetpos.x;
 				animpos.y = targetpos.y;
 				saveanim = false;

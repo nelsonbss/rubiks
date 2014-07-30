@@ -89,9 +89,6 @@ void GuiNode::draw(){
 			}
 		} else {
 			//language bar texts & buttons
-
-
-
 			ofRectangle box = font.getStringBoundingBox(currentText,0,0);
 			float cx = 0;
 			float cy = drawPos.y + (drawSize.y / 2 + box.height / 2);
@@ -228,7 +225,8 @@ void GuiNode::setupText(){
 		fSize = ofToInt(params["font-size"]);
 	}
 	if(params.count("font")){
-		font.loadFont(params["font"], fSize*1.333, true, true,false,.3,72);
+		//font.loadFont(params["font"], fSize*1.333, true, true,false,.3,72);
+		font.loadFont(params["font"], fSize*1.333, true, true,.3,72);
 		font.setSpaceSize(.5);
 		font.setLetterSpacing(.9);
 		font.setLineHeight(ceil(fSize*1.25));

@@ -145,6 +145,9 @@
     <ClCompile Include="src\hiddenButton.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxTrueTypeFontUC\src\ofxTrueTypeFontUC.cpp">
+      <Filter>addons\ofxTrueTypeFontUC\src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -194,6 +197,12 @@
     </Filter>
     <Filter Include="src\gwc">
       <UniqueIdentifier>{02d788c6-5e0d-479d-abaf-15f1c475fdc6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxTrueTypeFontUC">
+      <UniqueIdentifier>{8eef39ab-3e8c-40a7-b304-37b830973291}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="addons\ofxTrueTypeFontUC\src">
+      <UniqueIdentifier>{977014d8-9846-43be-90ef-95344de21759}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -429,6 +438,9 @@
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\myThread.h" />
+    <ClInclude Include="..\..\..\addons\ofxTrueTypeFontUC\src\ofxTrueTypeFontUC.h">
+      <Filter>addons\ofxTrueTypeFontUC\src</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="icon.rc">

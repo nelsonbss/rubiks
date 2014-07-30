@@ -390,12 +390,12 @@ void GuiConfigurator::loadTexts(string _file){
 	}
 	mXML.popTag();
 
-	specialTextLoadingCopOut();
+	//specialTextLoadingCopOut();
 }
 
 void GuiConfigurator::specialTextLoadingCopOut(){
 
-	//texts["english"] = GuiText();
+	///*texts["english"] = GuiText();
 	//texts["english"].setText("english", "English");
 	//texts["english"].setText("french", "English");
 	//texts["english"].setText("spanish", "English");
@@ -476,7 +476,7 @@ void GuiConfigurator::specialTextLoadingCopOut(){
 	//texts["start-help"] = GuiText();
 	//texts["start-help"].setText("english", "Drag A Puzzle From\nAbove Or A Shape Here\nto Play");
 	//texts["start-help"].setText("french", "Faites glisser un puzzle\nci-dessus ou une forme ici\npour jouer");
-	//texts["start-help"].setText("spanish", "Para jugar, arrastra aquí una\nforma o un rompecabezas\ndesde arriba");
+	//texts["start-help"].setText("spanish", "Para jugar, arrastra aquí una\nforma o un rompecabezas\ndesde arriba");*/
 }
 
 void GuiConfigurator::loadSheets(){

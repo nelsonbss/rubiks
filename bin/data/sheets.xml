@@ -34,7 +34,7 @@
     </param>
     <param>
       <name>font</name>
-      <val>Fonts/Gotham-Bold.otf</val>
+      <val>Fonts/verdana.ttf</val>
     </param>
     <param>
       <name>font-size</name>

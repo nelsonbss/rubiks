@@ -8,6 +8,7 @@
 #include "SubObMediator.h"
 #include "ofxTimer.h"
 #include "Utils.h"
+#include "ofxTrueTypeFontUC.h"
 
 class SubObEvent;
 
@@ -98,7 +99,7 @@ public:
 
 	bool bHaveText;
 	bool bHaveText2;
-	ofTrueTypeFont font;
+	ofxTrueTypeFontUC font;
 	string text;
 	string text2;
 	string textAlign;

@@ -27,7 +27,7 @@ menuPuzzle::menuPuzzle(SG_VECTOR p, SG_VECTOR t, int ID ) : GuiNode(){
 	addParam("drag", "true");
 	addParam("n", "1");
 	addParam("droppable", "true");
-	addParam("tap","true");
+	//addParam("tap","true");
 	addParam("active","true");
 	addParam("hidden","false");
 	addParam("draw-position", "front");
@@ -346,17 +346,17 @@ void menuPuzzle::update(string _eventName, SubObEvent _event){
 bool menuPuzzle::isInside(int _x, int _y){
 	//cout << getName() << " checking insides " << viewport.x << ", " << viewport.x + viewport.width << " - " << viewport.y << ", " << viewport.y + viewport.height;
 	//cout << " against " << _x << ", " << _y << endl;
-	//cout << getName() << " checking insides." << endl;
+	cout << getName() << " checking insides." << endl;
 	if((_x > viewport.x && _x < (viewport.x + viewport.width) &&
 		(_y > viewport.y && _y < (viewport.y + viewport.height)))){
-			draggingMe = true;
+			//draggingMe = true;
 			if(getParam("send-select") == "true"){
 				input("select", 0, 0, 0, ofVec2f(_x, _y), ofVec2f(0,0));
 			}
 			lastMouse.set(_x, _y);
 			return true;
 	}
-	draggingMe = false;
+	//draggingMe = false;
 	return false;
 }
 //------------------------------------------------------------------------
@@ -588,10 +588,11 @@ void menuPuzzle::input(string _type, int _ID, int _n, int _phase, ofVec2f _absPo
 		viewport.x += delta.x;
 		viewport.y += delta.y;
 		lastMouse = currentMouse;
+		draggingMe = true;
 	}
 	if(_type == "tap"){
-		cout << name << " - executing" << endl;
-		execute();
+		//bcout << name << " - executing" << endl;
+		//execute();
 	}
 	if(!bWatchTime){
 		bWatchTime = true;

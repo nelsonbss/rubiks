@@ -55,6 +55,11 @@ void myobject3D::update(){
 			//SG_VECTOR rotV2 = {0,1,0};
 			//temp->GetTempMatrix()->Rotate(rotP,rotV2,ofDegToRad(180));
 		}
+		if(objectId == 10){
+			//torus
+			SG_VECTOR rotV = {0,1,0};
+			temp->GetTempMatrix()->Rotate(rotP,rotV,ofDegToRad(90));
+		}
 		temp->ApplyTempMatrix(); 
 	}else if (station.compare("br")==0){
 		SG_POINT rotP = {tempPos.x,tempPos.y,tempPos.z};
@@ -63,14 +68,29 @@ void myobject3D::update(){
 		temp->GetTempMatrix()->Rotate(rotP,rotV,ofDegToRad(180));
 		SG_VECTOR rotV2 = {0,1,0};
 		temp->GetTempMatrix()->Rotate(rotP,rotV2,ofDegToRad(180));
+		if(objectId == 10){
+			//torus
+			SG_VECTOR rotV = {0,1,0};
+			temp->GetTempMatrix()->Rotate(rotP,rotV,ofDegToRad(90));
+		}
 		temp->ApplyTempMatrix(); 
 	}else if (station.compare("tr")==0){
 		SG_POINT rotP = {tempPos.x,tempPos.y,tempPos.z};
 		temp->InitTempMatrix()->Translate(rotP);//this translates the object to be cut!!
+		if(objectId == 10){
+			//torus
+			SG_VECTOR rotV = {0,1,0};
+			temp->GetTempMatrix()->Rotate(rotP,rotV,ofDegToRad(90));
+		}
 		temp->ApplyTempMatrix(); 
 	}else if (station.compare("tl")==0){
 		SG_POINT rotP = {tempPos.x,tempPos.y,tempPos.z};
 		temp->InitTempMatrix()->Translate(rotP);//this translates the object to be cut!!
+		if(objectId == 10){
+			//torus
+			SG_VECTOR rotV = {0,1,0};
+			temp->GetTempMatrix()->Rotate(rotP,rotV,ofDegToRad(90));
+		}
 		temp->ApplyTempMatrix(); 
 	}
 
@@ -100,6 +120,12 @@ void myobject3D::update(){
 		//SG_POINT rotP2 = transP;//{tempPos.x,tempPos.y,tempPos.z};
 		//SG_VECTOR rotV2 = {1,0,0};
 		////temp->GetTempMatrix()->Rotate(rotP2,rotV2,ofDegToRad(180));
+	}else if(objectId == 10){
+		//torus
+		//SG_POINT rotP3 = {tempPos.x,tempPos.y,tempPos.z};
+		//SG_VECTOR rotV3 = {1,0,0};
+		//temp->InitTempMatrix()->Rotate(rotP3,rotV3,ofDegToRad(90));
+		//temp->ApplyTempMatrix(); 
 	}else if(objectId == 200){
 		//extruded object
 		SG_VECTOR offset = {0,150,0}; 
@@ -120,7 +146,7 @@ void myobject3D::draw(){
 }
 //----------------------------------------------------------------
 void myobject3D::loadObjectOD(sgC3DObject *obj, int ID){
-	//it will load a sgCore lib object: torus, box
+	//it will load a shape into a game station
 
 	if(object==NULL){
 		object = obj;
@@ -193,6 +219,13 @@ void myobject3D::loadObjectOD(sgC3DObject *obj, int ID){
 		//object->GetTempMatrix()->Translate(offset);*/
 		//object->ApplyTempMatrix();  
 		//object->DestroyTempMatrix();
+	}else if(objectId == 10){
+		//torus
+		SG_POINT rotP = {0,0,0};
+		SG_VECTOR rotV = {0,1,0};
+		object->InitTempMatrix()->Rotate(rotP,rotV,ofDegToRad(90));
+		object->ApplyTempMatrix();  
+		object->DestroyTempMatrix();
 	}else if(objectId == 200){
 		//extruded object
 		SG_VECTOR offset = {0,150,0}; 

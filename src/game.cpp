@@ -231,8 +231,10 @@ void game::update(){
 		objectDisplayed->update();
 	}
 
+	////////////////////////////////////extrusion
+	////////////////
 	if(bExtrude){
-		cout << "calling extrude." << endl;
+		//cout << "calling extrude." << endl;
 		if(myCanvas.drawingExists()){
 			//make extruded object
 			if(extrudeObject(myCanvas.getPolyline())){
@@ -1463,10 +1465,6 @@ void game::unDoMenuPuzzle(){
 }
 //----------------------------------------------------------------------
 void game::guiLoad(int _obj){
-	/*
-	SG_VECTOR objectPos = {0,0,0};
-	loadObjectOD(_obj, objectPos, posP);
-	*/
 	bHaveNewObject = true;
 	newObject = _obj;
 }

@@ -1170,7 +1170,6 @@ void puzzle::changeFaceColor(ofVec3f _pnt, ofFloatColor _c){
 	}else{
 		cout << "NOT setting color." << endl;
 		//we dont have a cubie... thats why its not setting a color..
-
 	}
 }
 //----------------------------------------------------------------------------------------------------------------

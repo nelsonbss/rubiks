@@ -289,6 +289,7 @@ void menuPuzzle::update(){
 				animpos.x = targetpos.x;
 				animpos.y = targetpos.y;
 				saveanim = false;
+				animpos.y = (ofGetWindowHeight()/2)-90;
 			}
 
 		}
@@ -346,7 +347,7 @@ void menuPuzzle::update(string _eventName, SubObEvent _event){
 bool menuPuzzle::isInside(int _x, int _y){
 	//cout << getName() << " checking insides " << viewport.x << ", " << viewport.x + viewport.width << " - " << viewport.y << ", " << viewport.y + viewport.height;
 	//cout << " against " << _x << ", " << _y << endl;
-	cout << getName() << " checking insides." << endl;
+	//cout << getName() << " checking insides." << endl;
 	if((_x > viewport.x && _x < (viewport.x + viewport.width) &&
 		(_y > viewport.y && _y < (viewport.y + viewport.height)))){
 			//draggingMe = true;

@@ -55,11 +55,11 @@ void myobject3D::update(){
 			//SG_VECTOR rotV2 = {0,1,0};
 			//temp->GetTempMatrix()->Rotate(rotP,rotV2,ofDegToRad(180));
 		}
-		if(objectId == 10){
-			//torus
-			SG_VECTOR rotV = {0,1,0};
-			temp->GetTempMatrix()->Rotate(rotP,rotV,ofDegToRad(90));
-		}
+		//if(objectId == 10){
+		//	//torus
+		//	SG_VECTOR rotV = {0,1,0};
+		//	temp->GetTempMatrix()->Rotate(rotP,rotV,ofDegToRad(90));
+		//}
 		temp->ApplyTempMatrix(); 
 	}else if (station.compare("br")==0){
 		SG_POINT rotP = {tempPos.x,tempPos.y,tempPos.z};
@@ -68,29 +68,29 @@ void myobject3D::update(){
 		temp->GetTempMatrix()->Rotate(rotP,rotV,ofDegToRad(180));
 		SG_VECTOR rotV2 = {0,1,0};
 		temp->GetTempMatrix()->Rotate(rotP,rotV2,ofDegToRad(180));
-		if(objectId == 10){
-			//torus
-			SG_VECTOR rotV = {0,1,0};
-			temp->GetTempMatrix()->Rotate(rotP,rotV,ofDegToRad(90));
-		}
+		//if(objectId == 10){
+		//	//torus
+		//	SG_VECTOR rotV = {0,1,0};
+		//	temp->GetTempMatrix()->Rotate(rotP,rotV,ofDegToRad(90));
+		//}
 		temp->ApplyTempMatrix(); 
 	}else if (station.compare("tr")==0){
 		SG_POINT rotP = {tempPos.x,tempPos.y,tempPos.z};
 		temp->InitTempMatrix()->Translate(rotP);//this translates the object to be cut!!
-		if(objectId == 10){
-			//torus
-			SG_VECTOR rotV = {0,1,0};
-			temp->GetTempMatrix()->Rotate(rotP,rotV,ofDegToRad(90));
-		}
+		//if(objectId == 10){
+		//	//torus
+		//	SG_VECTOR rotV = {0,1,0};
+		//	temp->GetTempMatrix()->Rotate(rotP,rotV,ofDegToRad(90));
+		//}
 		temp->ApplyTempMatrix(); 
 	}else if (station.compare("tl")==0){
 		SG_POINT rotP = {tempPos.x,tempPos.y,tempPos.z};
 		temp->InitTempMatrix()->Translate(rotP);//this translates the object to be cut!!
-		if(objectId == 10){
-			//torus
-			SG_VECTOR rotV = {0,1,0};
-			temp->GetTempMatrix()->Rotate(rotP,rotV,ofDegToRad(90));
-		}
+		//if(objectId == 10){
+		//	//torus
+		//	SG_VECTOR rotV = {0,1,0};
+		//	temp->GetTempMatrix()->Rotate(rotP,rotV,ofDegToRad(90));
+		//}
 		temp->ApplyTempMatrix(); 
 	}
 
@@ -221,11 +221,11 @@ void myobject3D::loadObjectOD(sgC3DObject *obj, int ID){
 		//object->DestroyTempMatrix();
 	}else if(objectId == 10){
 		//torus
-		SG_POINT rotP = {0,0,0};
-		SG_VECTOR rotV = {0,1,0};
-		object->InitTempMatrix()->Rotate(rotP,rotV,ofDegToRad(90));
-		object->ApplyTempMatrix();  
-		object->DestroyTempMatrix();
+		//SG_POINT rotP = {0,0,0};
+		//SG_VECTOR rotV = {0,1,0};
+		//object->InitTempMatrix()->Rotate(rotP,rotV,ofDegToRad(90));
+		//object->ApplyTempMatrix();  
+		//object->DestroyTempMatrix();
 	}else if(objectId == 200){
 		//extruded object
 		SG_VECTOR offset = {0,150,0}; 

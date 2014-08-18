@@ -150,6 +150,7 @@ bool GuiNode::isInside(int _x, int _y){
 	//cout << " against " << _x << ", " << _y << endl;
 	if(bHaveCustomArea){
 		if(/*(drawPos.x + drawSize.x) < customArea.x || */(drawPos.y + drawSize.y) < customArea.y /*|| (drawPos.x + drawSize.x) > (customArea.x + customSize.x)*/ || (drawPos.y) > (customArea.y + customSize.y)){
+		//if( (drawPos.y < customArea.y) || ((drawPos.y + drawSize.y - 3) > (customArea.y+ customSize.y))){
 			return false;
 		}
 	}
@@ -161,7 +162,7 @@ bool GuiNode::isInside(int _x, int _y){
 					input("select", 0, 0, 0, ofVec2f(_x, _y), ofVec2f(0,0));
 				}
 				lastMouse.set(_x, _y);
-				bSelected = true;
+				//bSelected = true;
 				return true;
 			}
 	}

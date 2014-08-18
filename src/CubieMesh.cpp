@@ -139,9 +139,12 @@ void CubieMesh::setColorToSetArmature(ofFloatColor _c){
 }
 void CubieMesh::setColorToCurvedObject(ofFloatColor _c){
 	vector <ofFloatColor> colorsVectorT;
+	ofFloatColor black = ofFloatColor(0,0,0);
 	colorsVectorT = getColors();
 	for(int i=0; i< colorsVectorT.size(); i++){
-		colorsVectorT[i] = _c;
+		if(colorsVectorT[i] != black){
+			colorsVectorT[i] = _c;
+		}
 	}
 	clearColors();
 	addColors(colorsVectorT);

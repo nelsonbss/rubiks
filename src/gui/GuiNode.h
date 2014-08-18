@@ -137,7 +137,7 @@ public:
     virtual void execute();
     virtual void executeDrag(int _x, int _y){}
     virtual void drawLoosie(){}
-    virtual void update(){}
+	virtual void update(){}
 	virtual void nodeInit(){}
 	virtual void nodeDraw(){}
 	virtual void nodeExecute(){}
@@ -170,6 +170,7 @@ public:
 	void setControlled(){bControlled = true;}
 	bool getIsControlled(){return bControlled;}
 	bool bControlled;
+	bool bSelected;
 
 protected:
 
@@ -197,7 +198,7 @@ protected:
 	bool bFlipped;
 
 	string prefix;
-	bool bSelected;
+	
 
 	string currentLanguage;
 

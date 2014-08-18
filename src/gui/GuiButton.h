@@ -46,7 +46,7 @@ class GuiButton : public GuiNode
 		//Draggable members
 		bool bSendActions;
 		bool bDraggable;
-		bool bSelected;
+		//bool bSelected;
 		bool bTacky;
 		ofVec2f selectionLocation;
 		ofVec2f dragStartLocation;

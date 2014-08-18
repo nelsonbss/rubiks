@@ -147,7 +147,7 @@ void GuiConfigurator::update(string _eventName, SubObEvent _event){
 			int eventN = _event.getArg("n")->getInt();
 			if(targetN != "__NONE__"){
 				n = ofToInt(targetN);
-			}
+			}	
 			//cout << "event n = " << eventN << " and target n = " << targetN << endl;
 			if(activeNodes[target]->getParam(type) == "true"){
 				if(eventN == n || n == -1){
@@ -641,7 +641,10 @@ void GuiConfigurator::loadNodesFromDirectory(string _path, GuiWindow* _win){
 		buttonPtr->setName(prefix + "-" + name);
 		buttonPtr->addParam("image", path + name);
 		buttonPtr->addParam("drag", "true");
+		buttonPtr->addParam("tap", "true");
+		//buttonPtr->addParam("tap-execute", "false");
 		buttonPtr->addParam("n","1");
+		//buttonPtr->addParam("tap-n","0");
 		buttonPtr->addParam("droppable", "true");
 		buttonPtr->addParam("hidden", "true");
 		buttonPtr->addParam("active", "false");

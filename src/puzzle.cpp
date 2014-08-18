@@ -1456,7 +1456,7 @@ void puzzle::colorCubiesBlackSides(){
 }
 //----------------------------------------------------------------
 void puzzle::colorCubiesBlackSidesOneByOne(int cubieToColor){
-	myCubies[cubieToColor]->colorBlackSides(cubieToColor,0.1);
+	myCubies[cubieToColor]->colorBlackSides(cubieToColor,0.01);
 }
 //----------------------------------------------------------------
 //void puzzle::changeColorToColor(ofFloatColor Sc, ofFloatColor Tc){

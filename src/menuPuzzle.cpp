@@ -80,6 +80,7 @@ menuPuzzle::menuPuzzle(SG_VECTOR p, SG_VECTOR t, int ID ) : GuiNode(){
 	ct2 = 0;
 	animpos.x = startPos.x;
 	animpos.y = startPos.y;
+	Masteranimpos = animpos;
 	draggingMe = false;
 	ct1 = ofGetElapsedTimeMillis();
 	activeAnimation = false;
@@ -210,21 +211,34 @@ void menuPuzzle::update(){
 			move = 1;
 		}
 
+		//normal middle puzzle animation movement
 		if(saveanim==false){
 			animpos.x = animpos.x - move;
+			Masteranimpos.x = Masteranimpos.x - move;
 		}else{
 //			animpos.x = animpos.x - move;
+			Masteranimpos.x = Masteranimpos.x - move;
 			targetpos.x = targetpos.x - move;
 		}
 
 		if(draggingMe == false){
-			viewport.x =  animpos.x;
-			viewport.y =  animpos.y;
+			/*viewport.x =  animpos.x;
+			viewport.y =  animpos.y;*/
+
+			viewport.x =  Masteranimpos.x;
+			viewport.y =  Masteranimpos.y;
+		}else{
+			
 		}
 
-		if(viewport.x < -(viewport.width)){
-			viewport.x = ofGetWindowWidth();
-			animpos.x = viewport.x;
+		if(Masteranimpos.x < -(viewport.width)){//if(viewport.x < -(viewport.width)){ //going out on the left side
+			Masteranimpos.x = ofGetWindowWidth();
+			//viewport.x = ofGetWindowWidth();
+			if(draggingMe == false){
+				viewport.x = Masteranimpos.x;
+				animpos.x = viewport.x;
+			}
+			//Masteranimpos = animpos;
 		}
 
 		if(saveanim==true){

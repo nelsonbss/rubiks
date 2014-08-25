@@ -114,7 +114,7 @@ void testApp::setup(){
 	//light.setSpecularColor( ofColor(255.f, 255.f, 255.f));
 	numObjects = 0;
 	loadObjDirG("obj/");
-	numObjects = puzzleItems;//for now we over write with a selected number, it will load all the 3d objects available
+	numObjects = puzzleItems;//for now we over write with a selected number(11), it will load all the 3d objects available
 
 	offsetSlicer = ofVec3f(0,0,0);
 	rotateSlicer = ofVec3f (0,0,0);

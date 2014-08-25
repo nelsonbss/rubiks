@@ -91,6 +91,7 @@ public:
 	double ct1,ct2;
 	double sv1,sv2;
 	SG_VECTOR animpos;//for normal animation movement
+	SG_VECTOR Masteranimpos; // to always keep track of the possition it should be at, to correct overlapping on extreme cases
 	SG_VECTOR targetpos;//for animation when saved
 	bool draggingMe;
 	bool saveanim;

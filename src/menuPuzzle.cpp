@@ -119,6 +119,8 @@ void menuPuzzle::nodeExecute(){
 	startPos.y = animpos.y;
 	viewport.x = startPos.x;
 	viewport.y = startPos.y;
+	//Masteranimpos.x = startPos.x;
+	//Masteranimpos.y = startPos.y;
 	targetpos.x = 0;
 	targetpos.y = 0;
 	bWatchTime = true;
@@ -183,7 +185,7 @@ void menuPuzzle::setup(SG_POINT targetposIn){
 	ofr->sgCoretoOFmesh(temp,myMesh,-2,objectId,"no"); //-2 for plain color
 	myVbo.setMesh(myMesh, GL_STATIC_DRAW);
 	free(ofr);
-	targetpos.x = targetposIn.x;
+	targetpos.x = targetposIn.x;//where the wanna be saved puzzle is going to go
 	targetpos.y = targetposIn.y;
 }
 //------------------------------------------------------------------------------------------
@@ -215,44 +217,59 @@ void menuPuzzle::update(){
 		if(saveanim==false){
 			animpos.x = animpos.x - move;
 			Masteranimpos.x = Masteranimpos.x - move;
+			//animpos.x = Masteranimpos.x;
 		}else{
-//			animpos.x = animpos.x - move;
-			Masteranimpos.x = Masteranimpos.x - move;
+			//saving animation happening
+			//Masteranimpos.x = Masteranimpos.x - move;
+			//animpos.x = animpos.x - move;
 			targetpos.x = targetpos.x - move;
 		}
 
-		if(draggingMe == false){
-			/*viewport.x =  animpos.x;
-			viewport.y =  animpos.y;*/
-
-			viewport.x =  Masteranimpos.x;
-			viewport.y =  Masteranimpos.y;
+		if(draggingMe == false && saveanim==true){
+			viewport.x =  animpos.x;
+			viewport.y =  animpos.y;
 		}else{
-			
+			if(draggingMe == false && saveanim==false){
+				viewport.x =  Masteranimpos.x;
+				viewport.y =  Masteranimpos.y;
+			}
 		}
+
 
 		if(Masteranimpos.x < -(viewport.width)){//if(viewport.x < -(viewport.width)){ //going out on the left side
 			Masteranimpos.x = ofGetWindowWidth();
 			//viewport.x = ofGetWindowWidth();
 			if(draggingMe == false){
 				viewport.x = Masteranimpos.x;
-				animpos.x = viewport.x;
+				animpos.x = Masteranimpos.x;
 			}
-			//Masteranimpos = animpos;
 		}
-
+		//3112145312
 		if(saveanim==true){
-			ofVec3f t;
+			ofVec2f t;
 			t.x = tempPos.x;
 			t.y = tempPos.y;
-			ofVec3f a;
+			ofVec2f a;
 			a.x = targetpos.x;
-			a.y = targetpos.y;
+			a.y = (ofGetWindowHeight()/2)-90;//targetpos.y;
 
-			ofVec3f distance;
+			ofVec2f distance;
 			distance = a - t;
 
-
+			if (saveDiff<2000) {
+				double ease =  (1-cos((saveDiff/2000)*(PI)))/2;
+				animpos.x=tempPos.x+ ease * distance.x;//(saveDiff/2000)*distance.x;
+				animpos.y=tempPos.y+ ease * distance.y;//(saveDiff/2000)*distance.y;
+			} else {
+				//animpos.x = targetpos.x;
+				//animpos.y = targetpos.y;
+				//animpos.y = (ofGetWindowHeight()/2)-90;
+				Masteranimpos.x = targetpos.x;
+				Masteranimpos.y = targetpos.y;
+				animpos.x = Masteranimpos.x;
+				animpos.y = Masteranimpos.y;
+				saveanim = false;
+			}
 
 			//aux.x = distance.x;
 			//aux.y = distance.y;
@@ -295,16 +312,7 @@ void menuPuzzle::update(){
 				saveanim = false;
 			}*/
 
-			if (saveDiff<2000) {
-				double ease =  (1-cos((saveDiff/2000)*(PI)))/2;
-				animpos.x=tempPos.x+ ease * distance.x;//(saveDiff/2000)*distance.x;
-				animpos.y=tempPos.y+ ease * distance.y;//(saveDiff/2000)*distance.y;
-			} else {
-				animpos.x = targetpos.x;
-				animpos.y = targetpos.y;
-				saveanim = false;
-				animpos.y = (ofGetWindowHeight()/2)-90;
-			}
+			
 
 		}
 	}
@@ -406,6 +414,8 @@ void menuPuzzle::nodeDraw(){
 
 	myMenuPuzzle->drawMenuPuzzle();
 
+	ofCircle(Masteranimpos.x,Masteranimpos.y,Masteranimpos.z,20);
+
 
 	//myVbo.draw(GL_TRIANGLES, 0,myMesh.getNumIndices());
 	//ofDisableDepthTest();
@@ -417,8 +427,8 @@ void menuPuzzle::nodeDraw(){
 			cout << "watch time triggered." << endl;
 			//setPosition();
 			draggingMe = false;
-			startPos.x = animpos.x;
-			startPos.y = animpos.y;
+			startPos.x = Masteranimpos.x;
+			startPos.y = Masteranimpos.y;
 			viewport.x = startPos.x;
 			viewport.y = startPos.y;
 			bWatchTime = 0;

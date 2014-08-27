@@ -414,9 +414,6 @@ void menuPuzzle::nodeDraw(){
 
 	myMenuPuzzle->drawMenuPuzzle();
 
-	ofCircle(Masteranimpos.x,Masteranimpos.y,Masteranimpos.z,20);
-
-
 	//myVbo.draw(GL_TRIANGLES, 0,myMesh.getNumIndices());
 	//ofDisableDepthTest();
 	ofPopMatrix();

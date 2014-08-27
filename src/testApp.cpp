@@ -330,7 +330,7 @@ void testApp::update(){
 	if(activeAnimation == false){
 		ct2 = ofGetElapsedTimeMillis();
 		double diff = ct2 - ct1;
-		if(diff > 10000){
+		if(diff > 20000){
 			//activate middle puzzle animation
 			for(int i=0; i < middlePuzzles.size();i++){
 				middlePuzzles[i]->ct1 = ofGetElapsedTimeMillis();

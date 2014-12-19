@@ -9,7 +9,7 @@
 #define displayZ -800
 #define iddleTime 120
 #define puzzleItems 11
-#define USE_MOUSE 0
+#define USE_MOUSE 1
 
 std::map<int,gwc::Point> active_points;
 
@@ -121,10 +121,10 @@ void testApp::setup(){
 
 	int gridSize = 3;//this will be a shuffled int for diferent shapes, and predetermined for predetermined shapes
 
-	if(numObjects !=0){
-		middlePuzzlePos.x = ofGetWindowWidth();
+	if(numObjects != 0){
+		/*middlePuzzlePos.x = ofGetWindowWidth();
 		middlePuzzlePos.y = (ofGetWindowHeight()/2)-90;
-		middlePuzzlePos.z = 0;
+		middlePuzzlePos.z = 0;*/
 		//////////////////////////////////create cutter
 		slicingPos.x = 0;
 		slicingPos.y = 0;
@@ -334,7 +334,7 @@ void testApp::update(){
 			//activate middle puzzle animation
 			for(int i=0; i < middlePuzzles.size();i++){
 				middlePuzzles[i]->ct1 = ofGetElapsedTimeMillis();
-				middlePuzzles[i]->activeAnimation = true;
+				middlePuzzles[i]->activeAnimationMP = true;
 			}
 			activeAnimation = true;
 		}
@@ -453,8 +453,11 @@ void testApp::update(){
 
 			//we only do this once, for the first puzzle
 			//middlePuzzlePos.x = 10 + ((puzzleCounter+7) * 10) + ((puzzleCounter+7)*180);
-			middlePuzzlePos.x = middlePuzzles.at((puzzleCounter +7))->animpos.x;
-			middlePuzzlePos.y = middlePuzzles.at((puzzleCounter +7))->animpos.y;
+			middlePuzzlePos.x = middlePuzzles.at((puzzleCounter +7))->Masteranimpos.x;// animpos.x;
+			middlePuzzlePos.y = middlePuzzles.at((puzzleCounter +7))->Masteranimpos.y;
+			middlePuzzlePos.z = -100;
+
+			//(ofGetWindowHeight()/2)-90;
 
 			SG_POINT startpoint;
 
@@ -502,7 +505,9 @@ void testApp::update(){
 
 			puzzleDisplayed->ct1 = ofGetElapsedTimeMillis();
 			puzzleDisplayed->sv1 = ofGetElapsedTimeMillis();
-			puzzleDisplayed->activeAnimation = true;
+			if(activeAnimation == true){
+				puzzleDisplayed->activeAnimationMP = true;
+			}
 			puzzleDisplayed->saveanim = true;
 
 			//replace current position 8,9,10 on the middelPuzzle Vector

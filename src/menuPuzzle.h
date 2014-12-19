@@ -86,7 +86,7 @@ public:
 	ofLight light;
 
 	//animations
-	bool activeAnimation;
+	bool activeAnimationMP;
 	double menuPuzzleRotation;
 	double ct1,ct2;
 	double sv1,sv2;

@@ -83,7 +83,7 @@ menuPuzzle::menuPuzzle(SG_VECTOR p, SG_VECTOR t, int ID ) : GuiNode(){
 	Masteranimpos = animpos;
 	draggingMe = false;
 	ct1 = ofGetElapsedTimeMillis();
-	activeAnimation = false;
+	activeAnimationMP = false;
 }
 //-------------------------------------------------------------------------------------------------------
 void menuPuzzle::nodeInit(){
@@ -200,7 +200,7 @@ void menuPuzzle::update(){
 	menuPuzzleRotation = menuPuzzleRotation - 0.3;
 	temp->ApplyTempMatrix(); 
 
-	if(activeAnimation == true){
+	if(activeAnimationMP == true){
 		///////////////move puzzles
 		ct2 = ofGetElapsedTimeMillis();
 		double diff = ct2 - ct1;
@@ -216,11 +216,12 @@ void menuPuzzle::update(){
 		//normal middle puzzle animation movement
 		if(saveanim==false){
 			animpos.x = animpos.x - move;
+			animpos.y = (ofGetWindowHeight()/2)-90;
 			Masteranimpos.x = Masteranimpos.x - move;
 			//animpos.x = Masteranimpos.x;
 		}else{
 			//saving animation happening
-			//Masteranimpos.x = Masteranimpos.x - move;
+			Masteranimpos.x = Masteranimpos.x - move;
 			//animpos.x = animpos.x - move;
 			targetpos.x = targetpos.x - move;
 		}
@@ -244,14 +245,14 @@ void menuPuzzle::update(){
 				animpos.x = Masteranimpos.x;
 			}
 		}
-		//3112145312
+
 		if(saveanim==true){
 			ofVec2f t;
 			t.x = tempPos.x;
 			t.y = tempPos.y;
 			ofVec2f a;
 			a.x = targetpos.x;
-			a.y = (ofGetWindowHeight()/2)-90;//targetpos.y;
+			a.y = targetpos.y;// (ofGetWindowHeight()/2)-90;//targetpos.y;
 
 			ofVec2f distance;
 			distance = a - t;
